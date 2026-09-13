@@ -1,0 +1,21 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "synthetic-blob",
+  "renderer": "synthetic/v1",
+  "initial_state": { "value": "A" },
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "Step",
+      "commentary": {
+        "text": "Text.",
+        "links": [
+          { "id": "unsafe", "label": "Unsafe", "href": "blob:https://evil.example/x" }
+        ]
+      },
+      "state": { "value": "B" }
+    }
+  ]
+}
