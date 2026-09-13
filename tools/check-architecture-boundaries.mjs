@@ -247,6 +247,15 @@ async function readPackagePolicy(rootDir) {
   }
 }
 
+function noProductionSourcesViolation() {
+  return {
+    rule: 'no-production-sources',
+    file: 'src/',
+    target: 'production source discovery',
+    message: 'Architecture verification requires at least one production source file under src/; zero files means the source walker cannot prove the dependency graph.'
+  };
+}
+
 export async function checkArchitectureBoundaries(rootDir = ROOT) {
   const srcDir = resolve(rootDir, 'src');
   let files = [];
@@ -254,8 +263,14 @@ export async function checkArchitectureBoundaries(rootDir = ROOT) {
   try {
     files = await walk(srcDir);
   } catch (error) {
-    if (error.code === 'ENOENT') return { filesChecked: 0, violations: [] };
+    if (error.code === 'ENOENT') {
+      return { filesChecked: 0, violations: [noProductionSourcesViolation()] };
+    }
     throw error;
+  }
+
+  if (files.length === 0) {
+    return { filesChecked: 0, violations: [noProductionSourcesViolation()] };
   }
 
   const packagePolicy = await readPackagePolicy(rootDir);
