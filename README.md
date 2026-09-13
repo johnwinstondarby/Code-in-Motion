@@ -14,7 +14,7 @@ Current architecture branch: `docs/architecture-v1`
 
 ```text
 Code-in-Motion/
-├── docs/                 Architecture, specifications, events, and ADRs
+├── docs/                 Architecture, specifications, events, faults, and ADRs
 ├── src/                  Production runtime modules
 │   ├── runtime/          CiMInstance composition and orchestration
 │   ├── core/             Canonical semantic session state and commits
@@ -34,6 +34,8 @@ Code-in-Motion/
 ├── tests/                Unit, integration, and conformance tests
 └── examples/             Minimal integration examples
 ```
+
+Normative cross-component contracts live under `docs/`, including `CIM-ARCHITECTURE.md`, `CIM-SPEC.md`, `EXPERIENCE-SCHEMA.md`, `EVENTS.md`, `FAULTS.md`, and the ADR set.
 
 ## Architectural rules
 
