@@ -17,12 +17,14 @@ The v1 experience contract follows these rules:
 - one runtime schema serves generated and hand-authored ingestion paths;
 - Core may inspect shared structural fields but never the contents of subject `state` or `renderer_config`;
 - every experience has an explicit initial stable state;
-- semantic step IDs are unique and stable;
+- the reserved semantic boundary ID `initial` identifies that initial stable state;
+- authored semantic step IDs are unique, stable, and may not use reserved IDs;
 - commentary and links are structured data;
 - experience content cannot contain executable runtime logic;
 - raw HTML and JavaScript are outside the contract;
 - renderer-specific animation instructions are outside the shared schema for v1;
-- the selected renderer may interpret opaque state and renderer configuration.
+- the selected renderer may interpret opaque state and renderer configuration;
+- optional authored dwell is instructional pacing data, not renderer animation data.
 
 ## 3. Minimum Top-Level Shape
 
@@ -45,86 +47,69 @@ A valid v1 experience has the following conceptual shape:
 
 ### `schema`
 
-Required string.
-
-For v1 the value is exactly:
-
-```text
-localis.cim/v1
-```
+Required string. For v1 the value is exactly `localis.cim/v1`.
 
 ### `engine_min`
 
-Required semantic-version string.
-
-Declares the minimum CiM engine version required to load the experience.
-
-An engine that cannot satisfy this version must fail clearly before playback.
+Required semantic-version string declaring the minimum CiM engine version required to load the experience.
 
 ### `experience_version`
 
-Required semantic-version string.
-
-Identifies the version of the instructional experience independently from the engine and schema versions.
+Required semantic-version string identifying the instructional experience independently from engine and schema versions.
 
 ### `id`
 
-Required stable experience identifier.
+Required stable experience identifier used by host resolution and deep linking.
 
-The identifier is used by host resolution and deep linking. It must remain stable across storage-location changes.
-
-Recommended syntax for v1:
+Recommended v1 syntax:
 
 ```text
 lowercase letters, digits, and hyphens
 ```
 
-Example:
-
-```text
-git-basic-cycle
-```
+Example: `git-basic-cycle`.
 
 ### `renderer`
 
-Required renderer identifier.
+Required renderer identifier, for example `synthetic/v1` or `git-four-place/v1`.
 
-Examples:
-
-```text
-synthetic/v1
-git-four-place/v1
-```
-
-Runtime resolves this identifier through the renderer registry. An unresolved renderer ID prevents normal initialization.
+An unresolved renderer ID prevents normal initialization.
 
 ### `renderer_config`
 
-Optional opaque object.
-
-The selected renderer may inspect this object. Core passes it through without interpreting its contents.
-
-Experience-level renderer configuration applies to the experience as a whole.
+Optional opaque object interpreted only by the selected renderer. Core passes it through without inspecting its contents.
 
 ### `initial_state`
 
 Required opaque value accepted by the selected renderer.
 
-It must contain enough subject state for the renderer to construct the initial stable boundary independently of prior renderer history.
+It must contain enough subject state for the renderer to construct the `initial` stable boundary independently of prior renderer history.
 
 Core must not inspect its internal structure.
 
 ### `steps`
 
-Required ordered array of semantic steps.
+Required ordered array of authored semantic steps.
 
 The array order defines the default linear semantic timeline for v1.
 
-Step IDs must be unique within the experience.
-
 At least one semantic step is required for an interactive v1 experience.
 
-## 5. Step Shape
+## 5. Reserved Semantic Boundary IDs
+
+The following semantic boundary ID is reserved by the shared v1 contract:
+
+```text
+initial
+```
+
+`initial` identifies the stable boundary represented by `initial_state`.
+
+An authored `steps[].id` equal to `initial` is invalid.
+
+Future schema versions may add reserved IDs. A v1 validator must reject currently reserved IDs rather than silently renaming them.
+
+## 6. Step Shape
 
 A semantic step has the following conceptual structure:
 
@@ -138,7 +123,8 @@ A semantic step has the following conceptual structure:
     "links": []
   },
   "state": {},
-  "renderer_config": {}
+  "renderer_config": {},
+  "dwell_ms": 1500
 }
 ```
 
@@ -148,45 +134,52 @@ Required stable step identifier.
 
 The ID participates in deep links and replay evidence. Rewording a label must not require changing the step ID.
 
-Recommended syntax follows the same lowercase/digit/hyphen convention as experience IDs.
+Recommended syntax follows the lowercase/digit/hyphen convention used for experience IDs.
+
+The value `initial` is reserved and invalid for authored steps.
 
 ### `label`
 
-Required learner-facing label.
-
-The label names the semantic operation or position in the progress controls and related accessible output.
+Required learner-facing label naming the semantic operation or position.
 
 ### `marker`
 
-Optional short learner-facing marker label.
-
-The marker is intended for compact semantic progress controls. Absence of `marker` does not remove the step from the semantic timeline.
+Optional short learner-facing marker label. Absence of `marker` does not remove the step from the semantic timeline.
 
 ### `commentary`
 
-Required commentary object for v1 steps.
-
-The object contains the instructional explanation associated with the semantic step and any structured links.
+Required commentary object for every v1 authored step.
 
 ### `state`
 
-Required opaque value.
+Required opaque value containing the complete destination state for the selected renderer at the step's stable boundary.
 
-This value is the complete destination state for the selected renderer at the step's stable boundary.
-
-Core must not inspect or normalize it.
-
-Two steps may legally contain equivalent or identical state values.
+Core must not inspect or normalize it. Two steps may legally contain equivalent or identical state values.
 
 ### `renderer_config`
 
 Optional opaque object specific to this step.
 
-The selected renderer may interpret this object. Core passes it through unchanged.
+The selected renderer may interpret it. Core passes it through unchanged.
 
-Step-level renderer configuration supplements experience-level configuration. The renderer owns any precedence rules between its own configuration fields, but those rules must be documented by the renderer.
+Step-level renderer configuration supplements experience-level configuration. Renderer-owned precedence rules must be documented by that renderer.
 
-## 6. Commentary Shape
+### `dwell_ms`
+
+Optional non-negative integer.
+
+`dwell_ms` specifies instructional dwell time in milliseconds after this step commits during continuous playback and before Runtime begins the following transition.
+
+Rules:
+
+- omission means zero authored dwell;
+- direct navigation and deep-link initialization ignore dwell;
+- reduced-motion mode preserves dwell;
+- Runtime owns dwell scheduling through the injected CiM clock;
+- renderer transition duration remains renderer-owned and is not represented by this field;
+- site configuration may clamp dwell, but deterministic replay must include effective runtime configuration when clamping changes the authored value.
+
+## 7. Commentary Shape
 
 A commentary object has the following conceptual shape:
 
@@ -205,17 +198,15 @@ A commentary object has the following conceptual shape:
 
 ### `text`
 
-Required string.
-
-The value is plain authored content. It is rendered as text, not interpreted as raw HTML.
+Required string rendered as authored text rather than raw HTML.
 
 ### `links`
 
-Required array. It may be empty.
+Required array that may be empty.
 
-Each link is structured separately from the commentary text so the runtime and host can validate destinations without accepting arbitrary markup.
+Each link is structured separately from commentary text so destinations can be validated without accepting arbitrary markup.
 
-## 7. Commentary Link Shape
+## 8. Commentary Link Shape
 
 The minimum v1 link shape is:
 
@@ -227,23 +218,13 @@ The minimum v1 link shape is:
 }
 ```
 
-### `id`
+`id`, `label`, and `href` are required.
 
-Required stable link identifier within the commentary entry.
+The host/runtime link policy validates URL or fragment destinations and rejects executable schemes.
 
-### `label`
+Optional metadata may be added later without changing the rule that links remain structured data.
 
-Required visible link text or term.
-
-### `href`
-
-Required destination string.
-
-The host/runtime link policy validates the URL or fragment before it is exposed to the learner. Validation must reject executable schemes.
-
-The v1 schema may later add optional metadata such as link kind or relationship without changing the basic rule that links remain structured data.
-
-## 8. Opaque State Rule
+## 9. Opaque State Rule
 
 The shared schema validates that `state` and `initial_state` are present. It does not define their subject-specific internal properties.
 
@@ -259,30 +240,35 @@ The shared Core must not:
 
 Subject renderers may define additional schemas for their opaque state and configuration. Those validations occur at the renderer boundary and cannot change the shared `localis.cim/v1` structural contract.
 
-## 9. Renderer Configuration Rule
+## 10. Renderer Configuration Rule
 
 `renderer_config` is data, not executable behavior.
 
-The shared v1 schema does not define declarative micro-animation instructions.
+The shared v1 schema does not define declarative micro-animation instructions or a generic authored transition-duration field.
 
 A renderer may use renderer configuration for stable presentation choices or domain-specific rendering hints, but the experience file must not become a second animation engine.
 
-## 10. Initial State Rule
+## 11. Initial State Rule
 
 `initial_state` is required even when the first semantic step immediately changes the subject.
 
-This provides one explicit restoration point for:
+Its canonical semantic boundary identifier is `initial`.
+
+This provides one explicit restoration and addressing point for:
 
 - initial mount;
+- `seek("initial")`;
 - `home()`;
 - `restart()`;
 - reverse navigation from the first semantic step;
 - recovery to initial state;
-- deterministic replay setup.
+- deterministic replay setup;
+- deep link `#cim/{experience-id}/initial`;
+- event `from_step` and `to_step` fields.
 
-The initial boundary is separate from `steps[0]`.
+The initial boundary is separate from `steps[0]` and has no authored commentary entry or semantic marker in v1.
 
-## 11. Observation Steps
+## 12. Observation Steps
 
 A semantic step does not have to change subject state.
 
@@ -296,7 +282,7 @@ step-01 id != step-02 id
 
 The runtime must still advance canonical semantic position, marker state, commentary, and event sequence when moving from `step-01` to `step-02`.
 
-## 12. Content Safety
+## 13. Content Safety
 
 Experience data is untrusted input.
 
@@ -310,7 +296,7 @@ The v1 contract prohibits:
 
 Terminal/code content is represented as data and rendered as text nodes by the appropriate renderer.
 
-## 13. Version Compatibility
+## 14. Version Compatibility
 
 An experience is loadable only when:
 
@@ -318,11 +304,11 @@ An experience is loadable only when:
 - the engine version satisfies `engine_min`;
 - the shared structural validator succeeds;
 - the renderer identifier resolves;
-- any renderer-owned validation required for the opaque state succeeds.
+- any renderer-owned validation required for opaque state succeeds.
 
-Failure at any of these gates prevents normal playback.
+Failure at any gate prevents normal playback.
 
-## 14. Validation Failures
+## 15. Validation Failures
 
 At minimum, validation must detect:
 
@@ -334,16 +320,18 @@ At minimum, validation must detect:
 - missing `initial_state`;
 - missing or invalid `steps` array;
 - duplicate step IDs;
+- reserved step ID `initial`;
 - missing required step state;
-- malformed commentary object;
+- missing or malformed commentary object;
 - malformed commentary link;
-- disallowed link scheme.
+- disallowed link scheme;
+- non-integer or negative `dwell_ms`.
 
-Authoring adapters should preserve source line/column information so human-facing tools can report errors against the original `.cim` source where possible.
+Authoring adapters should preserve source line/column information so human-facing tools can report errors against original source where possible.
 
-## 15. Neutral Reference Fixture
+## 16. Neutral Reference Fixture
 
-The first schema fixture should remain subject-neutral:
+The first schema fixture remains subject-neutral:
 
 ```json
 {
@@ -359,14 +347,16 @@ The first schema fixture should remain subject-neutral:
       "label": "Change to B",
       "marker": "B",
       "commentary": { "text": "State changes to B.", "links": [] },
-      "state": { "value": "B" }
+      "state": { "value": "B" },
+      "dwell_ms": 500
     },
     {
       "id": "step-02",
       "label": "Observe B",
       "marker": "OBSERVE",
       "commentary": { "text": "The process is observed without changing state.", "links": [] },
-      "state": { "value": "B" }
+      "state": { "value": "B" },
+      "dwell_ms": 1000
     },
     {
       "id": "step-03",
@@ -388,13 +378,14 @@ The first schema fixture should remain subject-neutral:
 
 This fixture must be sufficient to prove shared platform behavior before Git-specific experience data exists.
 
-## 16. Deferred from v1
+## 17. Deferred from v1
 
 The shared v1 schema does not define:
 
 - branching or conditional step graphs;
 - learner-authored state mutation;
 - declarative animation timelines;
+- generic authored transition duration;
 - embedded scripts;
 - raw HTML commentary;
 - renderer-specific subject properties in the shared schema;
