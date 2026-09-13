@@ -36,6 +36,8 @@ Renderers may depend on dependency-free shared contracts and explicitly approved
 
 Renderers receive validated frozen opaque state, separate experience-level and step-level renderer configuration, transition identity, reduced-motion state, a read-only abort facade, and a transition-scoped clock facade through the public interface.
 
+`RendererCancelledError` is the v1 distinguished renderer-cancellation outcome. Runtime honors it as expected cancellation only when the transition's read-only abort facade is already aborted and the error reason matches the abort reason. Throwing the class without a matching Runtime-owned abort remains a renderer error.
+
 ## Prohibited dependencies
 
 Renderers must not import or receive live Runtime, Core, transport, commentary, host, telemetry implementation, harness implementation, or semantic-control authority.
@@ -54,6 +56,7 @@ The renderer-interface gate must prove:
 - deep-frozen validated experience input;
 - paused transitions emit no delayed or frame callbacks;
 - settled, aborted, and disposed transitions revoke clock authority;
+- expected cancellation requires a matching Runtime-owned abort and distinguished cancellation outcome;
 - direct seek, sequential arrival, restoration, reverse arrival, and reduced-motion arrival at the same semantic boundary produce canonically equivalent rendered output;
 - evidence identifies both `render_digest` and `canonicalizer_id`;
 - every new rule includes a near-miss test.
