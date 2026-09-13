@@ -16,6 +16,7 @@ function makeCore(overrides = {}) {
     instanceId: 'instance-01',
     experienceId: 'synthetic-core',
     experienceVersion: '1.0.0',
+    stepIds: ['step-01', 'step-02', 'step-03', 'step-04'],
     ...overrides
   });
 }
@@ -47,16 +48,19 @@ test('Core initializes the exact canonical v1 session-state surface', () => {
   assert.equal(Object.isFrozen(state), true);
 });
 
-test('read capability and privileged status capability are structurally separate', () => {
+test('read, navigation, and privileged status capabilities are structurally separate', () => {
   const core = makeCore();
 
-  assert.deepEqual(Object.keys(core), ['read', 'statusControl']);
-  assert.deepEqual(Reflect.ownKeys(core.read), ['snapshot']);
+  assert.deepEqual(Object.keys(core), ['read', 'navigation', 'statusControl']);
+  assert.deepEqual(Reflect.ownKeys(core.read), ['snapshot', 'boundaryIds']);
+  assert.deepEqual(Reflect.ownKeys(core.navigation), ['resolve']);
   assert.deepEqual(Reflect.ownKeys(core.statusControl), ['setStatus']);
   assert.equal('setStatus' in core.read, false);
-  assert.equal('snapshot' in core.statusControl, false);
+  assert.equal('setStatus' in core.navigation, false);
+  assert.equal('resolve' in core.statusControl, false);
   assert.equal(Object.isFrozen(core), true);
   assert.equal(Object.isFrozen(core.read), true);
+  assert.equal(Object.isFrozen(core.navigation), true);
   assert.equal(Object.isFrozen(core.statusControl), true);
 });
 
@@ -105,9 +109,10 @@ test('Core instances own isolated canonical state', () => {
   assert.equal(right.read.snapshot().status, SESSION_STATUS.IDLE);
 });
 
-test('Core identity fields reject empty or absent values', () => {
+test('Core identity fields and boundary model input reject missing values', () => {
   assert.throws(() => createCoreEngine(), /instanceId/);
   assert.throws(() => makeCore({ instanceId: '' }), /instanceId/);
   assert.throws(() => makeCore({ experienceId: '' }), /experienceId/);
   assert.throws(() => makeCore({ experienceVersion: '' }), /experienceVersion/);
+  assert.throws(() => makeCore({ stepIds: [] }), /stepIds/);
 });

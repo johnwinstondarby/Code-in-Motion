@@ -3,6 +3,7 @@ import {
   SESSION_STATUS,
   SESSION_STATUS_VALUES
 } from '../contracts/session.mjs';
+import { createBoundaryModel } from './boundary-model.mjs';
 
 const STATUS_SET = new Set(SESSION_STATUS_VALUES);
 
@@ -33,7 +34,7 @@ function snapshot(state) {
   });
 }
 
-export function createCoreEngine({ instanceId, experienceId, experienceVersion } = {}) {
+export function createCoreEngine({ instanceId, experienceId, experienceVersion, stepIds } = {}) {
   const state = {
     instanceId: requireNonEmptyString(instanceId, 'instanceId'),
     experienceId: requireNonEmptyString(experienceId, 'experienceId'),
@@ -44,10 +45,20 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion }
     revealFrontier: INITIAL_BOUNDARY_ID,
     error: null
   };
+  const boundaries = createBoundaryModel(stepIds);
 
   const read = Object.freeze({
     snapshot() {
       return snapshot(state);
+    },
+    boundaryIds() {
+      return boundaries.boundaryIds();
+    }
+  });
+
+  const navigation = Object.freeze({
+    resolve(request) {
+      return boundaries.resolve(state.currentStepId, request);
     }
   });
 
@@ -64,5 +75,5 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion }
     }
   });
 
-  return Object.freeze({ read, statusControl });
+  return Object.freeze({ read, navigation, statusControl });
 }
