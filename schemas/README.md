@@ -10,9 +10,11 @@ This directory contains machine-readable schemas for CiM runtime contracts.
 - [`fixtures/valid/`](fixtures/valid/) — experiences that must satisfy the shared contract
 - [`fixtures/invalid/`](fixtures/invalid/) — experiences that must fail with the expected stable `CIM-EXP-*` condition
 
-`tools/check-schema-fixtures.mjs` verifies the fixture set with no external package dependency.
+`tools/check-schema-fixtures.mjs` compiles the published schema with Ajv and validates every fixture against that artifact. Ajv is a development/CI-only dependency and is not imported by production code under `src/`.
 
-JSON Schema owns structural constraints such as required fields, identifier shapes, reserved `initial`, non-negative integer `dwell_ms`, renderer ID shape, and the authored-content envelope. Cross-item rules that JSON Schema does not express cleanly, especially uniqueness of `steps[].id`, are enforced by the contract verifier and remain part of the normative `localis.cim/v1` contract.
+JSON Schema owns structural constraints such as required fields, identifier shapes, reserved `initial`, non-null opaque state, non-negative integer `dwell_ms`, renderer ID shape, commentary structure, and the authored-link allowlist. Cross-item rules that JSON Schema does not express cleanly, especially uniqueness of `steps[].id` and link IDs within one commentary entry, are enforced by semantic post-validation.
+
+The fixture gate requires each invalid fixture to produce exactly its intended distinct `CIM-EXP-*` code rather than passing because of unrelated extra failures.
 
 ## Owns
 
@@ -26,7 +28,7 @@ JSON Schema owns structural constraints such as required fields, identifier shap
 ## Does not own
 
 - Human `.cim` authoring grammar
-- Subject-specific interpretation of opaque `state`
+- Subject-specific interpretation of non-null opaque `state`
 - Subject-specific interpretation of `renderer_config`
 - Engine control policy
 - Renderer-specific subject schemas
@@ -43,12 +45,13 @@ The common schema must not accumulate Git-specific fields, executable behavior, 
 
 `npm run check:schema` must prove:
 
-- the machine-readable schema preserves the normative v1 invariants;
-- valid fixtures pass;
+- the published JSON Schema itself is compiled and exercised;
+- valid fixtures pass, including the permissive optional-field surface;
+- empty `steps`, malformed renderer IDs, and missing commentary links fail structurally;
 - unsupported schema identifiers produce `CIM-EXP-001`;
-- incomplete shared structure produces `CIM-EXP-002`;
+- incomplete shared structure and null state produce `CIM-EXP-002`;
 - duplicate step IDs produce `CIM-EXP-003`;
 - authored use of reserved `initial` produces `CIM-EXP-004`;
 - invalid `dwell_ms` produces `CIM-EXP-005`;
-- malformed or executable commentary links produce `CIM-EXP-006`;
-- opaque subject state remains uninterpreted by the shared contract checker.
+- malformed, obfuscated, or non-allowlisted commentary links produce `CIM-EXP-006`;
+- opaque non-null subject state remains uninterpreted by the shared contract checker.
