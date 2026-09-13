@@ -45,6 +45,19 @@ Its stable probe IDs are:
 
 The battery intentionally overlaps focused tests where the overlap proves behavior across component seams. A green focused unit test does not replace the corresponding hostile probe.
 
+## Absolute-state synthetic renderer probes
+
+`synthetic-absolute-state.test.mjs` applies the shared renderer contract to the neutral `synthetic/v1` renderer and makes ADR 0003's absolute-state invariant executable.
+
+Its stable probe IDs are:
+
+- `RC-A01`: sequential animated, direct seek, reverse absolute, restart then seek, recovery restoration, reduced-motion, and replay-equivalent arrivals produce identical `cim-dom-svg/v1` evidence
+- `RC-A02`: animated settlement waits for the injected virtual frame loop rather than wall-clock timing
+- `RC-A03`: the canonical evidence surface detects a path-dependent stable-output leak
+- `RC-A04`: abort during animation rejects with the distinguished cancellation outcome and preserves the previous stable output
+
+The synthetic renderer remains subject-neutral. These probes establish the renderer-interface invariant before Git-specific rendering exists.
+
 Every newly added renderer-interface rule must add or extend a plausible near-miss probe in the same review set.
 
 ## Verification
