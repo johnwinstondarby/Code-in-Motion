@@ -24,10 +24,12 @@ When pause occurs during a transition:
 Core.currentStepId = last committed stable boundary
 Core.targetStepId = pending destination
 Runtime.transitionProgress = frozen current progress
-Core.status = paused
+Runtime -> Core.setStatus("paused")
 ```
 
-Pause does not commit the target step. A later play resumes the same transition under the injected CiM clock.
+Runtime freezes the injected clock and operational transition state first, then requests the canonical status change through `Core.setStatus(nextStatus)`. Core stores `status` but does not derive activity status from Runtime-owned operational fields.
+
+Pause does not commit the target step. A later play resumes the same transition under the injected CiM clock and Runtime requests the corresponding activity-status update through the same Core interface.
 
 When pause occurs during authored dwell, Runtime freezes the remaining dwell interval. A later play resumes the remainder.
 
@@ -73,6 +75,7 @@ The runtime does not maintain an unbounded queue of semantic navigation commands
 - Pause remains a true freeze of learner-controlled time.
 - Semantic navigation never depends on partially rendered intermediate state.
 - Navigation leaves the learner at the requested stable destination instead of silently continuing continuous playback.
+- Core remains the canonical store for `status`, while Runtime is the sole production writer of activity-status changes through the documented Core interface.
 - Stable commit remains transactional: a destination becomes current only after successful settlement.
 - Recovery can return to the last committed stable boundary if destination settlement fails.
 - Scrub uses the same seek semantics after its transport-local preview commits.
@@ -105,6 +108,7 @@ The harness must prove:
 
 - pause freezes transition progress and leaves canonical `currentStepId` unchanged;
 - pause freezes dwell without consuming virtual time;
+- Runtime requests `paused`, `playing`, and `transitioning` status changes through Core's documented status interface;
 - play resumes the same transition or remaining dwell;
 - navigation clears playback intent;
 - navigation during animation cancels the active transition;
