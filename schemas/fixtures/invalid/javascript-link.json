@@ -1,0 +1,25 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "invalid-javascript-link",
+  "renderer": "synthetic/v1",
+  "initial_state": { "value": "A" },
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "Unsafe link",
+      "commentary": {
+        "text": "The commentary link uses an executable scheme.",
+        "links": [
+          {
+            "id": "unsafe-link",
+            "label": "Unsafe",
+            "href": "javascript:alert(1)"
+          }
+        ]
+      },
+      "state": { "value": "B" }
+    }
+  ]
+}
