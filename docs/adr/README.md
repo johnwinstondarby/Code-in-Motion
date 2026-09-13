@@ -16,6 +16,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0006`](0006-transition-pacing-and-dwell.md) | Transition Pacing and Dwell Ownership | 2026-09-12 | Accepted |
 | [`0007`](0007-semantic-scrub-contract.md) | Semantic Scrub Contract | 2026-09-12 | Accepted |
 | [`0008`](0008-shared-contracts-and-privileged-core-control.md) | Shared Contracts and Privileged Core Control | 2026-09-13 | Accepted |
+| [`0009`](0009-renderer-capability-boundary.md) | Renderer Capability Boundary | 2026-09-13 | Accepted |
 
 ## Owns
 
