@@ -137,6 +137,7 @@ Runtime configuration is included when site policy changes effective semantic ti
 7. A rejected command cannot emit a successful transition for that command ID.
 8. Recovery events follow the fault that triggered them.
 9. Disposal is terminal for the instance event stream except sink-side archival metadata.
+10. When final-step dwell is non-zero during continuous playback, `dwell.completed` precedes `playback.stopped` with `details.reason: "at_end"`.
 
 ## 6. Command Events
 
@@ -244,11 +245,13 @@ dispose
 
 Every discrete navigation command clears continuous playback intent. If playback was active, `playback.stopped` precedes the new navigation settlement sequence.
 
+If continuous playback reaches the final step with non-zero authored dwell, `playback.stopped` with reason `at_end` is emitted only after the required final `dwell.completed` event. With zero final dwell, the stop follows final-step settlement directly.
+
 ### `dwell.started`
 
-Optional but recommended runtime evidence that an authored dwell interval began after a stable commit during continuous playback.
+Required whenever a non-zero effective authored dwell interval begins after a stable commit during continuous playback.
 
-Suggested fields:
+Required fields:
 
 ```text
 step_id
@@ -257,13 +260,17 @@ details.dwell_ms
 
 ### `dwell.completed`
 
-Optional evidence that dwell expired normally and Runtime may begin the next transition.
+Required whenever a non-zero dwell interval expires normally.
+
+On a non-final step it precedes the following transition start. On the final step it precedes `playback.stopped` with reason `at_end`.
 
 ### `dwell.cancelled`
 
-Optional evidence that pause-preserved or active dwell was cancelled by navigation, restart, fault, or disposal.
+Required whenever an active or pause-preserved non-zero dwell is cancelled by navigation, restart, fault, or disposal.
 
-Dwell events are Runtime-owned.
+Include the cancellation reason and remaining dwell when available in structured details.
+
+Dwell events are Runtime-owned. A v1 implementation with non-zero authored dwell cannot omit the applicable dwell events.
 
 ## 8. Transition Events
 
@@ -366,9 +373,11 @@ Optional renderer-level evidence that a render call completed stable output. Run
 
 ### `renderer.cancelled`
 
-Reports or optionally records that an in-flight render honored expected cancellation.
+Required whenever an in-flight render honors an expected abort/cancellation request.
 
-Expected abort is not `renderer.error` and does not trigger fault recovery by itself.
+The event must carry the applicable `transition_id` and `result: "cancelled"`. Expected abort is not `renderer.error` and does not trigger fault recovery by itself.
+
+If cancellation is requested but the renderer has no in-flight work to abort, no `renderer.cancelled` event is required.
 
 ### `renderer.error`
 
@@ -394,7 +403,7 @@ Restoration failed and normal playback cannot continue.
 
 ### `instance.faulted`
 
-Core entered terminal runtime fault state for normal playback.
+Reports that Core has stored canonical `faulted` status after Runtime cleared active playback/transition/dwell operational state.
 
 ### `host.fallback.shown`
 
@@ -417,6 +426,10 @@ Reports unresolved renderer identifier.
 ### `experience.load.failed`
 
 Reports inability to obtain the experience definition.
+
+### `host.deeplink.invalid`
+
+Reports an unresolvable CiM deep-link target. The resolver falls back to the applicable experience's `initial` boundary when an experience can be initialized, according to `FAULTS.md`.
 
 ## 14. Accessibility Evidence
 
@@ -491,9 +504,9 @@ playback.started
 playback.paused
 playback.resumed
 playback.stopped
-dwell.started                   optional/recommended
-dwell.completed                 optional/recommended
-dwell.cancelled                 optional/recommended
+dwell.started                   required when non-zero dwell begins
+dwell.completed                 required when non-zero dwell completes
+dwell.cancelled                 required when active non-zero dwell is cancelled
 transition.started
 transition.cancelled
 transition.settled
@@ -505,7 +518,7 @@ commentary.frontier.changed
 commentary.autofollow.changed   optional
 renderer.mounted
 renderer.settled                optional
-renderer.cancelled              optional
+renderer.cancelled              required when renderer honors an in-flight abort
 renderer.error
 renderer.disposed
 recovery.started
@@ -517,6 +530,7 @@ experience.validation.succeeded optional
 experience.validation.failed
 renderer.resolve.failed
 experience.load.failed
+host.deeplink.invalid
 accessibility.focus.changed      verification
 accessibility.announcement       verification
 accessibility.reduced_motion.applied verification
@@ -532,14 +546,17 @@ The harness must be able to assert that:
 - all semantic timestamps come from the injected clock;
 - `initial` is represented consistently rather than as `null`;
 - transition start precedes settlement or cancellation;
-- stale cancelled transitions cannot settle successfully;
+- honored renderer aborts produce required `renderer.cancelled` evidence and stale cancelled transitions cannot settle successfully;
 - semantic commit occurs only after stable settlement and is Core-owned;
 - observation steps advance semantic position even when digests remain equal;
 - valid start/end boundary commands are accepted `no_change` results rather than rejections;
 - navigation clears continuous playback intent;
+- non-zero dwell produces required start/completion/cancellation evidence as applicable;
 - pause and resume preserve transition or dwell timing semantics;
+- final-step dwell completes before `playback.stopped` with reason `at_end`;
 - scrub commit emits one seek and drag preview emits no semantic seek;
+- invalid deep links produce diagnostic evidence and deterministic fallback to `initial` when an experience is available;
 - faults precede recovery attempts;
 - recovery outcome is explicit;
-- unrecoverable failures lead to instance fault/fallback evidence;
+- unrecoverable failures lead to ordered instance fault/fallback evidence;
 - multiple instance streams remain independently ordered.
