@@ -24,9 +24,11 @@ The architecture checker resolves relative imports and declared `package.json` i
 
 ## Production-source floor
 
-During `feat/schema-v1`, the repository contains no production source files, so `check:architecture` correctly reports zero production files checked.
+The production-source floor is active beginning with `feat/renderer-interface`, the first branch to add executable production code under `src/`.
 
-Beginning with the first branch that adds production code under `src/`, verification must add a floor assertion that fails when zero production source files are discovered. This prevents a broken walker or path-resolution regression from producing a false-green architecture check.
+`check:architecture` fails with `no-production-sources` when its source walker discovers zero supported production source files. A green architecture result therefore proves both that the dependency scan found production code and that the discovered files satisfied the current fences.
+
+The floor has a near-miss regression fixture containing `src/` documentation but no supported source file, plus a positive fixture proving that one production source file is counted.
 
 ## Verification rule
 
