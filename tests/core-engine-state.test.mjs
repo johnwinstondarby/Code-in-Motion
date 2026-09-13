@@ -48,19 +48,24 @@ test('Core initializes the exact canonical v1 session-state surface', () => {
   assert.equal(Object.isFrozen(state), true);
 });
 
-test('read, navigation, and privileged status capabilities are structurally separate', () => {
+test('read, navigation, semantic mutation, and status capabilities are structurally separate', () => {
   const core = makeCore();
 
-  assert.deepEqual(Object.keys(core), ['read', 'navigation', 'statusControl']);
+  assert.deepEqual(Object.keys(core), ['read', 'navigation', 'semanticControl', 'statusControl']);
   assert.deepEqual(Reflect.ownKeys(core.read), ['snapshot', 'boundaryIds']);
   assert.deepEqual(Reflect.ownKeys(core.navigation), ['resolve']);
+  assert.deepEqual(Reflect.ownKeys(core.semanticControl), ['beginTarget', 'commitTarget', 'abandonTarget']);
   assert.deepEqual(Reflect.ownKeys(core.statusControl), ['setStatus']);
   assert.equal('setStatus' in core.read, false);
   assert.equal('setStatus' in core.navigation, false);
-  assert.equal('resolve' in core.statusControl, false);
+  assert.equal('setStatus' in core.semanticControl, false);
+  assert.equal('commitTarget' in core.read, false);
+  assert.equal('commitTarget' in core.navigation, false);
+  assert.equal('commitTarget' in core.statusControl, false);
   assert.equal(Object.isFrozen(core), true);
   assert.equal(Object.isFrozen(core.read), true);
   assert.equal(Object.isFrozen(core.navigation), true);
+  assert.equal(Object.isFrozen(core.semanticControl), true);
   assert.equal(Object.isFrozen(core.statusControl), true);
 });
 
@@ -97,7 +102,12 @@ test('disposed Core state is terminal', () => {
     () => core.statusControl.setStatus(SESSION_STATUS.IDLE),
     (error) => error instanceof CoreStateTransitionError && /terminal/.test(error.message)
   );
+  assert.throws(
+    () => core.semanticControl.beginTarget('step-01'),
+    (error) => error instanceof CoreStateTransitionError && /terminal/.test(error.message)
+  );
   assert.equal(core.read.snapshot().status, SESSION_STATUS.DISPOSED);
+  assert.equal(core.read.snapshot().targetStepId, null);
 });
 
 test('Core instances own isolated canonical state', () => {
@@ -105,8 +115,11 @@ test('Core instances own isolated canonical state', () => {
   const right = makeCore({ instanceId: 'right' });
 
   left.statusControl.setStatus(SESSION_STATUS.PAUSED);
+  left.semanticControl.beginTarget('step-01');
   assert.equal(left.read.snapshot().status, SESSION_STATUS.PAUSED);
+  assert.equal(left.read.snapshot().targetStepId, 'step-01');
   assert.equal(right.read.snapshot().status, SESSION_STATUS.IDLE);
+  assert.equal(right.read.snapshot().targetStepId, null);
 });
 
 test('Core identity fields and boundary model input reject missing values', () => {

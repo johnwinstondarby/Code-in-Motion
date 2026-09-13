@@ -47,6 +47,33 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion, 
   };
   const boundaries = createBoundaryModel(stepIds);
 
+  function assertMutable() {
+    if (state.status === SESSION_STATUS.DISPOSED) {
+      throw new CoreStateTransitionError('disposed Core state is terminal.');
+    }
+  }
+
+  function requireKnownBoundary(stepId, name) {
+    requireNonEmptyString(stepId, name);
+    if (!boundaries.has(stepId)) {
+      throw new TypeError(`${name} must name a known semantic boundary; received ${stepId}.`);
+    }
+    return stepId;
+  }
+
+  function requirePendingTarget(expectedStepId, operation) {
+    const expected = requireKnownBoundary(expectedStepId, 'expectedStepId');
+    if (state.targetStepId === null) {
+      throw new CoreStateTransitionError(`${operation} requires a pending semantic target.`);
+    }
+    if (state.targetStepId !== expected) {
+      throw new CoreStateTransitionError(
+        `${operation} expected pending target ${expected}, but active target is ${state.targetStepId}.`
+      );
+    }
+    return expected;
+  }
+
   const read = Object.freeze({
     snapshot() {
       return snapshot(state);
@@ -58,7 +85,36 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion, 
 
   const navigation = Object.freeze({
     resolve(request) {
-      return boundaries.resolve(state.currentStepId, request);
+      return boundaries.resolve(state.currentStepId, state.targetStepId, request);
+    }
+  });
+
+  const semanticControl = Object.freeze({
+    beginTarget(stepId) {
+      assertMutable();
+      const target = requireKnownBoundary(stepId, 'stepId');
+      if (state.targetStepId !== null) {
+        throw new CoreStateTransitionError(
+          `cannot begin target ${target} while pending target ${state.targetStepId} is active.`
+        );
+      }
+      state.targetStepId = target;
+      return snapshot(state);
+    },
+
+    commitTarget(expectedStepId) {
+      assertMutable();
+      const target = requirePendingTarget(expectedStepId, 'commitTarget');
+      state.currentStepId = target;
+      state.targetStepId = null;
+      return snapshot(state);
+    },
+
+    abandonTarget(expectedStepId) {
+      assertMutable();
+      requirePendingTarget(expectedStepId, 'abandonTarget');
+      state.targetStepId = null;
+      return snapshot(state);
     }
   });
 
@@ -75,5 +131,5 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion, 
     }
   });
 
-  return Object.freeze({ read, navigation, statusControl });
+  return Object.freeze({ read, navigation, semanticControl, statusControl });
 }

@@ -95,15 +95,18 @@ export function createBoundaryModel(stepIds) {
   const indexById = new Map(boundaryIds.map((stepId, index) => [stepId, index]));
   const finalStepId = authoredStepIds[authoredStepIds.length - 1];
 
-  function requireCurrentStepId(currentStepId) {
-    if (!indexById.has(currentStepId)) {
-      throw new TypeError(`currentStepId must name a known semantic boundary; received ${String(currentStepId)}.`);
+  function requireKnownBoundary(stepId, name) {
+    if (!indexById.has(stepId)) {
+      throw new TypeError(`${name} must name a known semantic boundary; received ${String(stepId)}.`);
     }
-    return currentStepId;
+    return stepId;
   }
 
-  function resolve(currentStepId, requestInput) {
-    const fromStepId = requireCurrentStepId(currentStepId);
+  function resolve(currentStepId, pendingTargetStepId, requestInput) {
+    const fromStepId = requireKnownBoundary(currentStepId, 'currentStepId');
+    if (pendingTargetStepId !== null) {
+      requireKnownBoundary(pendingTargetStepId, 'pendingTargetStepId');
+    }
     const request = requireRequest(requestInput);
     const currentIndex = indexById.get(fromStepId);
 
@@ -115,6 +118,9 @@ export function createBoundaryModel(stepIds) {
         return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, boundaryIds[currentIndex + 1]);
 
       case NAVIGATION_COMMAND.PREVIOUS:
+        if (pendingTargetStepId !== null) {
+          return resolution(request.command, COMMAND_RESULT.NO_CHANGE, fromStepId, fromStepId);
+        }
         if (currentIndex === 0) {
           return resolution(request.command, COMMAND_RESULT.NO_CHANGE, fromStepId, fromStepId, NAVIGATION_REASON.AT_START);
         }
