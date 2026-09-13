@@ -15,6 +15,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0005`](0005-semantic-navigation-and-abort.md) | Semantic Navigation and In-Flight Transition Handling | 2026-09-12 | Accepted |
 | [`0006`](0006-transition-pacing-and-dwell.md) | Transition Pacing and Dwell Ownership | 2026-09-12 | Accepted |
 | [`0007`](0007-semantic-scrub-contract.md) | Semantic Scrub Contract | 2026-09-12 | Accepted |
+| [`0008`](0008-shared-contracts-and-privileged-core-control.md) | Shared Contracts and Privileged Core Control | 2026-09-13 | Accepted |
 
 ## Owns
 
