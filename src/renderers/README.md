@@ -38,6 +38,8 @@ Renderers receive validated frozen opaque state, separate experience-level and s
 
 `RendererCancelledError` is the v1 distinguished renderer-cancellation outcome. Runtime honors it as expected cancellation only when the transition's read-only abort facade is already aborted and the error reason matches the abort reason. Throwing the class without a matching Runtime-owned abort remains a renderer error.
 
+The capability inspector is defense in depth over inert ingestion output. It is descriptor-based and is not independently proxy-proof. Experience ingestion must continue rebuilding caller-supplied data into fresh plain objects and arrays before renderer capability inspection; the inspector does not replace that boundary.
+
 ## Prohibited dependencies
 
 Renderers must not import or receive live Runtime, Core, transport, commentary, host, telemetry implementation, harness implementation, or semantic-control authority.

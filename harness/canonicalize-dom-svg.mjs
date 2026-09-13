@@ -64,7 +64,11 @@ function elementName(node, path) {
   if (typeof localName !== 'string' || localName.length === 0) {
     fail(path, 'element localName is required.');
   }
-  return [node.namespaceURI ?? '', localName];
+  const namespaceURI = node.namespaceURI ?? null;
+  if (typeof namespaceURI !== 'string' || namespaceURI.length === 0) {
+    fail(path, 'element namespaceURI is required; v1 does not canonicalize namespace-less elements.');
+  }
+  return [namespaceURI, localName];
 }
 
 function attributeRecord(attribute, path) {

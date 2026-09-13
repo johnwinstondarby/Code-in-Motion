@@ -56,7 +56,7 @@ function baseContext(overrides = {}) {
   };
 }
 
-test('validated experience is deep-frozen in place across state, config, commentary, and links', () => {
+test('validated experience is rebuilt and deep-frozen across state, config, commentary, and links', () => {
   const experience = {
     schema: 'localis.cim/v1',
     renderer_config: { nested: { speed: 1 } },
@@ -70,18 +70,20 @@ test('validated experience is deep-frozen in place across state, config, comment
   };
 
   const frozen = freezeValidatedExperience(experience);
-  assert.equal(frozen, experience);
-  assert.equal(Object.isFrozen(experience), true);
-  assert.equal(Object.isFrozen(experience.renderer_config.nested), true);
-  assert.equal(Object.isFrozen(experience.initial_state.nodes), true);
-  assert.equal(Object.isFrozen(experience.initial_state.nodes[0]), true);
-  assert.equal(Object.isFrozen(experience.steps), true);
-  assert.equal(Object.isFrozen(experience.steps[0].state.nodes[0]), true);
-  assert.equal(Object.isFrozen(experience.steps[0].renderer_config.emphasis), true);
-  assert.equal(Object.isFrozen(experience.steps[0].commentary.links[0]), true);
+  assert.notEqual(frozen, experience);
+  assert.deepEqual(frozen, experience);
+  assert.equal(Object.isFrozen(frozen), true);
+  assert.equal(Object.isFrozen(frozen.renderer_config.nested), true);
+  assert.equal(Object.isFrozen(frozen.initial_state.nodes), true);
+  assert.equal(Object.isFrozen(frozen.initial_state.nodes[0]), true);
+  assert.equal(Object.isFrozen(frozen.steps), true);
+  assert.equal(Object.isFrozen(frozen.steps[0].state.nodes[0]), true);
+  assert.equal(Object.isFrozen(frozen.steps[0].renderer_config.emphasis), true);
+  assert.equal(Object.isFrozen(frozen.steps[0].commentary.links[0]), true);
 
-  assert.throws(() => { experience.steps[0].state.nodes[0].id = 'mutated'; }, TypeError);
-  assert.equal(experience.steps[0].state.nodes[0].id, 'B');
+  assert.throws(() => { frozen.steps[0].state.nodes[0].id = 'mutated'; }, TypeError);
+  assert.equal(frozen.steps[0].state.nodes[0].id, 'B');
+  assert.equal(Object.isFrozen(experience), false, 'ingestion leaves the caller graph untouched');
 });
 
 test('freeze boundary rejects accessor-backed data without invoking the getter', () => {
@@ -182,4 +184,55 @@ test('renderer configs remain separate and null optional configs stay explicit',
   assert.equal(context.rendererConfig, null);
   assert.equal(context.stepRendererConfig, null);
   assert.equal(Object.keys(context).length, 10);
+});
+
+test('experience ingestion rebuilds a fresh graph instead of freezing caller objects', () => {
+  const shared = { unit: 'px' };
+  const source = {
+    schema: 'localis.cim/v1',
+    initial_state: { node: 'A', units: shared },
+    steps: [{ id: 'step-01', state: { node: 'B', units: shared, tags: ['x', 'y'] } }]
+  };
+
+  const rebuilt = freezeValidatedExperience(source);
+
+  assert.notEqual(rebuilt, source);
+  assert.notEqual(rebuilt.steps, source.steps);
+  assert.notEqual(rebuilt.initial_state.units, shared);
+  assert.deepEqual(rebuilt, source);
+
+  assert.equal(Object.isFrozen(source), false, 'caller data must not be frozen in place');
+  assert.equal(Object.isFrozen(shared), false);
+
+  assert.equal(Object.isFrozen(rebuilt.steps[0].state.tags), true);
+  assert.equal(
+    rebuilt.initial_state.units,
+    rebuilt.steps[0].state.units,
+    'shared source references stay shared in the rebuilt graph'
+  );
+
+  source.steps[0].state.node = 'MUTATED';
+  assert.equal(rebuilt.steps[0].state.node, 'B', 'rebuilt data is independent of later source mutation');
+});
+
+test('a proxy that lies about its own property descriptors cannot smuggle authority through ingestion', () => {
+  const authority = { setStatus() { return 'reachable'; } };
+  const liar = new Proxy({ harmless: 1 }, {
+    get: (target, key) => (key === 'harmless' ? authority : Reflect.get(target, key)),
+    getOwnPropertyDescriptor: () => ({ value: 1, writable: false, enumerable: true, configurable: true })
+  });
+
+  const rebuilt = freezeValidatedExperience({ initial_state: { liar } });
+
+  assert.equal(rebuilt.initial_state.liar.harmless, 1, 'only the descriptor value survives the rebuild');
+  assert.equal(Object.getPrototypeOf(rebuilt.initial_state.liar), Object.prototype);
+  assert.equal(typeof rebuilt.initial_state.liar.harmless, 'number');
+});
+
+test('near miss: a proxy reporting a function-valued descriptor is rejected as non-JSON data', () => {
+  const liar = new Proxy({ harmless: 1 }, {
+    getOwnPropertyDescriptor: () => ({ value() { return 'authority'; }, writable: false, enumerable: true, configurable: true })
+  });
+
+  assert.throws(() => freezeValidatedExperience({ initial_state: { liar } }), /must remain JSON data; found function/);
 });

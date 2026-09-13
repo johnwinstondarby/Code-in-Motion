@@ -209,3 +209,26 @@ test('unsupported node types fail closed', () => {
   const root = element('div', { children: [{ nodeType: 11, childNodes: [] }] });
   assert.throws(() => canonicalizeDomSvg(root), /unsupported DOM nodeType 11/);
 });
+
+test('elements without an explicit namespace fail closed', () => {
+  const root = element('div');
+  assert.throws(
+    () => canonicalizeDomSvg({ ...root, namespaceURI: null }),
+    /element namespaceURI is required/
+  );
+  assert.throws(
+    () => canonicalizeDomSvg({ ...root, namespaceURI: undefined }),
+    /element namespaceURI is required/
+  );
+});
+
+test('near miss: an empty-string namespace is not accepted as a namespace', () => {
+  const root = element('div');
+  assert.throws(
+    () => canonicalizeDomSvg({ ...root, namespaceURI: '' }),
+    /element namespaceURI is required/
+  );
+
+  const nested = element('div', { children: [{ ...element('span'), namespaceURI: '' }] });
+  assert.throws(() => canonicalizeDomSvg(nested), /element namespaceURI is required/);
+});
