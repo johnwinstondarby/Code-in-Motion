@@ -361,45 +361,100 @@ render(state, context)
 dispose()
 ```
 
+The detailed renderer capability and conformance contract is `RENDERER-CONTRACT.md`, preserved by ADR 0009. This section defines the runtime-facing renderer obligations and must remain aligned with that document.
+
 ### 10.1 `mount(context)`
 
-Mount receives the renderer root, instance identity, accessibility/runtime services required by the renderer contract, and any experience-level renderer configuration.
+Mount receives the renderer root, instance identity, and only the renderer-facing services defined by the public renderer contract.
 
-The renderer must not install mutable global state shared across CiM instances.
+The renderer must not receive a live `CiMInstance`, Core object, Runtime object, transport object, commentary object, telemetry sink, host adapter, or harness object. It must not install mutable global state shared across CiM instances.
 
 ### 10.2 `render(state, context)`
 
-`state` is the complete destination state for the semantic boundary.
+`state` is the complete, non-null destination state for the semantic boundary.
 
-`context` may include:
+Every render call receives a frozen context object with exactly these ten own enumerable keys:
 
 ```text
 animate
 fromState
-stepId
 fromStepId
+stepId
 rendererConfig
+stepRendererConfig
 transitionId
 abortSignal
 clock
 reducedMotion
 ```
 
-The renderer may inspect subject state and renderer configuration. Core may not.
+Every key is present on every render call. No v1 implementation may omit one of these keys or add another key.
+
+The field rules are:
+
+- `animate` is a required boolean.
+- `fromState` is the complete prior subject state only for a true animated continuity transition; otherwise it is exactly `null`.
+- `fromStepId` is the prior semantic boundary ID only when `fromState` is supplied; otherwise it is exactly `null`.
+- `stepId` is the required destination semantic boundary ID, including `initial`.
+- `rendererConfig` is the experience-level renderer configuration object as validated and frozen, or exactly `null` when absent.
+- `stepRendererConfig` is the destination-step renderer configuration object as validated and frozen, or exactly `null` when absent or when the destination is `initial`.
+- `transitionId` is the required transition correlation identity for the render request.
+- `abortSignal` is the frozen read-only cancellation facade defined below.
+- `clock` is the transition-scoped renderer clock facade defined below.
+- `reducedMotion` is a required boolean.
+
+Direct seek, recovery restoration, reverse absolute navigation, deep-link initialization, and other non-animated absolute arrivals use `fromState: null` and `fromStepId: null` even when a previously committed semantic boundary exists.
+
+Runtime does not merge renderer configuration. Experience-level and step-level configuration are passed separately. The selected renderer owns any documented precedence rule between them. Core and Runtime do not inspect, merge, normalize, or derive semantic behavior from those configuration contents.
 
 When `animate:false`, the renderer settles directly to the destination without depending on prior renderer history.
 
-When `animate:true`, the renderer may animate from prior context toward the destination but must settle to the same canonical output as `animate:false`.
+When `animate:true`, the renderer may animate from the supplied prior context toward the destination but must settle to the same canonical output as `animate:false`.
 
-The renderer must use the injected CiM clock/scheduler for semantically significant animation timing. Pausing that clock freezes renderer progress.
+Validated experience data and the render context are immutable before renderer delivery. A renderer that needs mutable working state creates a private copy.
 
-The renderer must honor cancellation. An aborted render rejects with a distinguished cancellation outcome that Runtime does not classify as a renderer fault. Runtime must report an honored expected cancellation as `renderer.cancelled`, correlated by `transition_id`; it must not report the cancellation as `renderer.error`.
+The renderer must not receive semantic control authority through the context graph. Reachable function-valued members are limited to the exact documented methods of `abortSignal` and `clock`; the detailed descriptor/prototype capability rule is defined in `RENDERER-CONTRACT.md` §7.
+
+#### 10.2.1 Read-only abort facade
+
+A renderer does not receive a native `AbortSignal`.
+
+The renderer-facing `abortSignal` is frozen and exposes exactly these own enumerable keys:
+
+```text
+aborted
+reason
+onAbort
+```
+
+The renderer may observe cancellation and register an abort callback. It cannot dispatch, trigger, clear, replace, or otherwise control cancellation state.
+
+An aborted render rejects with the distinguished renderer-cancellation outcome. Runtime reports an honored expected cancellation as `renderer.cancelled`, correlated by `transition_id`, and does not report it as `renderer.error`.
+
+#### 10.2.2 Transition-scoped clock facade
+
+A renderer does not receive Runtime's scheduler directly.
+
+The renderer-facing `clock` is frozen, bound to the render request's `transitionId`, and exposes exactly:
+
+```text
+now
+schedule
+cancel
+onFrame
+```
+
+`now()` returns virtual CiM time. `schedule(fn, ms)` schedules delayed work in virtual CiM time. `cancel(handle)` cancels a handle created by that facade. `onFrame(fn)` registers virtual frame work and returns a handle cancellable by `cancel(handle)`.
+
+Pause freezes both delayed callbacks and frame callbacks. A renderer must not use `requestAnimationFrame`, `setTimeout`, `setInterval`, or another wall-clock scheduling path for semantically significant transition progress.
+
+The clock facade is revoked when the render settles, aborts, or the renderer is disposed. After revocation, new scheduling cannot create active work, queued callbacks perform no renderer-visible work, frame callbacks stop, and stale work cannot mutate renderer output or affect canonical settlement.
 
 A non-cancelled render resolves only when the destination has reached stable output or rejects with a stable renderer error.
 
 ### 10.3 `dispose()`
 
-Dispose cancels renderer-owned scheduled work, removes instance-scoped listeners, releases resources, and prevents further output mutation from the disposed renderer.
+Dispose revokes renderer timing capability, cancels renderer-owned scheduled work, removes instance-scoped listeners, releases resources, and prevents further output mutation from the disposed renderer.
 
 ## 11. Absolute Render Equivalence
 
