@@ -34,7 +34,11 @@
     "renderer_config": {
       "type": "object"
     },
-    "initial_state": {},
+    "initial_state": {
+      "not": {
+        "type": "null"
+      }
+    },
     "steps": {
       "type": "array",
       "minItems": 1,
@@ -88,7 +92,11 @@
         "commentary": {
           "$ref": "#/$defs/commentary"
         },
-        "state": {},
+        "state": {
+          "not": {
+            "type": "null"
+          }
+        },
         "renderer_config": {
           "type": "object"
         },
@@ -137,7 +145,7 @@
         "href": {
           "type": "string",
           "minLength": 1,
-          "pattern": "^(?![jJ][aA][vV][aA][sS][cC][rR][iI][pP][tT]:)(?![dD][aA][tT][aA]:)(?![vV][bB][sS][cC][rR][iI][pP][tT]:).+"
+          "pattern": "^(?:[hH][tT][tT][pP][sS]?://|[mM][aA][iI][lL][tT][oO]:|/|#)"
         }
       }
     }
