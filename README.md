@@ -6,33 +6,33 @@ Git in Motion is the first real experience and reference implementation. The syn
 
 ## Development status
 
-CiM is in architecture definition. Runtime implementation begins only after the public component contracts and dependency rules are settled and reviewed.
-
-Current architecture branch: `docs/architecture-v1`
+CiM v1 architecture contracts are merged to `main`. The current implementation branch is `feat/schema-v1`, which instantiates the machine-readable experience schema and the first automated architecture fences.
 
 ## Repository map
 
 ```text
 Code-in-Motion/
-├── docs/                 Architecture, specifications, events, faults, and ADRs
-├── src/                  Production runtime modules
-│   ├── runtime/          CiMInstance composition and orchestration
-│   ├── core/             Canonical semantic session state and commits
-│   ├── transport/        Learner controls and semantic timeline UI
-│   ├── commentary/       Persistent running commentary projection
-│   ├── accessibility/    Shared accessibility contracts and helpers
-│   ├── renderers/        Renderer interface and implementations
-│   ├── experience/       Experience loading and schema-gated ingestion
-│   ├── host/             Host and WordPress adapter
-│   ├── faults/           Shared runtime fault taxonomy and evidence shape
-│   ├── telemetry/        Observation, evidence, replay, and analysis interfaces
-│   └── styles/           Shared CiM presentation assets
-├── experiences/          Validated experience data
-├── schemas/              Machine-readable CiM schemas
-├── authoring/            Human and generated authoring adapters
-├── harness/              Synthetic operations and fault-injection system
-├── tests/                Unit, integration, and conformance tests
-└── examples/             Minimal integration examples
+├── .github/workflows/     Automated contract verification
+├── docs/                  Architecture, specifications, events, faults, and ADRs
+├── src/                   Production runtime modules
+│   ├── runtime/           CiMInstance composition and orchestration
+│   ├── core/              Canonical semantic session state and commits
+│   ├── transport/         Learner controls and semantic timeline UI
+│   ├── commentary/        Persistent running commentary projection
+│   ├── accessibility/     Shared accessibility contracts and helpers
+│   ├── renderers/         Renderer interface and implementations
+│   ├── experience/        Experience loading and schema-gated ingestion
+│   ├── host/              Host and WordPress adapter
+│   ├── faults/            Shared runtime fault taxonomy and evidence shape
+│   ├── telemetry/         Observation, evidence, replay, and analysis interfaces
+│   └── styles/            Shared CiM presentation assets
+├── experiences/           Validated experience data
+├── schemas/               Machine-readable CiM schemas and fixtures
+├── authoring/             Human and generated authoring adapters
+├── harness/               Synthetic operations and fault-injection system
+├── tests/                 Unit, integration, architecture, and conformance tests
+├── tools/                 Repository contract and boundary verification
+└── examples/              Minimal integration examples
 ```
 
 Normative cross-component contracts live under `docs/`, including `CIM-ARCHITECTURE.md`, `CIM-SPEC.md`, `EXPERIENCE-SCHEMA.md`, `EVENTS.md`, `FAULTS.md`, and the ADR set.
@@ -50,6 +50,18 @@ Normative cross-component contracts live under `docs/`, including `CIM-ARCHITECT
 9. Semantic timing uses the injected CiM clock rather than renderer-owned wall-clock timing.
 10. The reserved semantic boundary ID `initial` identifies the stable state before `steps[0]`.
 11. Git-specific behavior remains outside the shared engine and core contracts.
+12. Production calls to `Core.setStatus(nextStatus)` originate only from `src/runtime/`.
+
+## Verification
+
+`npm run verify` runs the zero-dependency repository checks:
+
+- machine-readable schema and fixture verification;
+- architecture import-boundary enforcement;
+- the Runtime-only `Core.setStatus` caller rule;
+- Node test suites for schema and boundary behavior.
+
+The same command runs in GitHub Actions for pull requests and pushes to `main`.
 
 ## Branch model
 
