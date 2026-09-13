@@ -17,8 +17,8 @@ Code-in-Motion/
 ├── docs/                 Architecture, specifications, events, and ADRs
 ├── src/                  Production runtime modules
 │   ├── runtime/          CiMInstance composition and orchestration
-│   ├── core/             Canonical semantic session state
-│   ├── transport/        Learner controls and semantic timeline
+│   ├── core/             Canonical semantic session state and commits
+│   ├── transport/        Learner controls and semantic timeline UI
 │   ├── commentary/       Persistent running commentary projection
 │   ├── accessibility/    Shared accessibility contracts and helpers
 │   ├── renderers/        Renderer interface and implementations
@@ -37,7 +37,7 @@ Code-in-Motion/
 
 ## Architectural rules
 
-1. `CiMInstance` owns runtime orchestration and canonical session position.
+1. `CiMInstance` owns runtime composition, command sequencing, transition mechanics, and playback intent. Core owns and mutates canonical semantic session state through its documented interface.
 2. Core does not inspect subject-specific renderer state or renderer configuration.
 3. Renderers reproduce stable semantic boundaries from absolute state.
 4. Semantic position is independent from subject-state or render-digest equality.
@@ -46,7 +46,8 @@ Code-in-Motion/
 7. All authoring paths converge on validated `localis.cim/v1` data before runtime initialization.
 8. Experience-authored content is untrusted data and cannot inject executable page content.
 9. Semantic timing uses the injected CiM clock rather than renderer-owned wall-clock timing.
-10. Git-specific behavior remains outside the shared engine and core contracts.
+10. The reserved semantic boundary ID `initial` identifies the stable state before `steps[0]`.
+11. Git-specific behavior remains outside the shared engine and core contracts.
 
 ## Branch model
 
