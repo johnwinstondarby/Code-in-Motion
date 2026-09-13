@@ -75,6 +75,14 @@ error
 
 `revealFrontier` begins at `initial` and is monotonic during a session except for the explicit reset performed by `restart()`.
 
+`status` is stored canonically by Core. Runtime is the only production component authorized to request activity-status changes through the documented interface:
+
+```text
+Core.setStatus(nextStatus)
+```
+
+Core may validate lifecycle legality, such as preventing transitions out of `disposed`, but it does not derive `playing`, `transitioning`, or `paused` by inspecting Runtime-owned operational fields.
+
 ### 3.2 Runtime-owned operational state
 
 Runtime must represent at least:
@@ -93,6 +101,8 @@ activeAbortState
 
 Operational transition state does not independently define canonical semantic position.
 
+Runtime determines activity-status changes from these operational facts and requests the corresponding canonical status through `Core.setStatus(nextStatus)`.
+
 ### 3.3 Status values
 
 The externally meaningful v1 statuses are:
@@ -103,6 +113,8 @@ The externally meaningful v1 statuses are:
 - `paused`: learner-controlled time is frozen; an active transition or dwell may be preserved;
 - `faulted`: normal playback is unavailable because stable continuation failed;
 - `disposed`: the instance no longer accepts commands.
+
+For `playing`, `transitioning`, and `paused`, Runtime determines the requested status from Runtime-owned operational facts and calls `Core.setStatus(nextStatus)`. Core remains the canonical store and event authority for the resulting status value.
 
 Implementations may use additional private substates but must preserve these observable semantics.
 
@@ -171,7 +183,9 @@ The source does not change command semantics.
 
 ### 6.1 `play()`
 
-At a stable boundary with a following authored step, `play()` sets continuous playback intent and begins the next transition, subject to any dwell already in progress from a resumed playback session.
+At a stable boundary with a following authored step, an explicit `play()` sets continuous playback intent and begins the following transition immediately.
+
+Authored dwell on the already-committed boundary is not consumed before that transition. Dwell is consumed only after a step commits as the result of continuous playback. Resuming a dwell that was explicitly paused follows §7.2 and is not a fresh stable-boundary `play()`.
 
 At the final step, `play()` is accepted with `result: "no_change"` and `details.reason: "at_end"`. It does not wrap.
 
@@ -257,14 +271,18 @@ While paused mid-transition:
 Core.currentStepId = last committed boundary
 Core.targetStepId = pending destination
 Runtime.transitionProgress = frozen progress
-Core.status = paused
+Runtime -> Core.setStatus("paused")
 ```
+
+Runtime freezes transition progress and the injected clock before requesting the canonical status change. Core stores `paused` but does not infer it from Runtime-owned state.
 
 No semantic commit occurs.
 
-### 7.2 Play after paused transition
+### 7.2 Play after paused transition or dwell
 
-`play()` resumes the same transition from the frozen progress position. The semantic destination remains unchanged. Runtime may replace a private scheduling token but must preserve semantic transition correlation.
+If `pause()` preserved an in-flight transition, `play()` resumes that same transition from the frozen progress position. The semantic destination remains unchanged. Runtime may replace a private scheduling token but must preserve semantic transition correlation and requests the appropriate canonical activity status through Core.
+
+If `pause()` preserved an authored dwell interval, `play()` resumes the remaining dwell. This is the only case where a `play()` call begins by consuming dwell rather than immediately starting the next transition.
 
 ### 7.3 Navigation during transition
 
@@ -293,18 +311,20 @@ Renderer implementations own transition duration. Runtime does not inspect a gen
 
 Renderers must use the injected CiM clock/scheduler for semantically significant animation timing.
 
-An experience step may provide optional `dwell_ms`. Runtime consumes this value only during continuous playback after the step commits and before beginning the following transition.
+An experience step may provide optional `dwell_ms`. Runtime consumes this value only after that step commits as the result of continuous playback and before beginning the following transition.
 
 Rules:
 
 - absent `dwell_ms` means zero authored dwell;
-- direct navigation and deep-link initialization ignore dwell;
-- reduced motion preserves authored dwell even when renderer animation is suppressed or shortened;
+- direct navigation and deep-link initialization discard dwell for that arrival;
+- an explicit `play()` from an already-committed navigated-to boundary begins the following transition immediately;
+- reduced motion preserves authored dwell after continuous-playback commits even when renderer animation is suppressed or shortened;
 - `pause()` during dwell freezes the virtual clock and preserves the remaining dwell interval;
-- `play()` resumes a preserved dwell interval;
+- `play()` resumes a dwell interval only when that dwell was previously paused;
 - navigation during dwell cancels the remaining dwell and clears playback intent;
-- a final-step dwell never causes wraparound;
 - if site configuration clamps authored dwell, deterministic replay records the effective runtime configuration.
+
+If continuous playback commits the final semantic step and that step has non-zero `dwell_ms`, Runtime consumes the final dwell, emits `dwell.completed`, then clears playback intent and emits `playback.stopped` with `details.reason: "at_end"`. No following transition is scheduled. With zero final-step dwell, the `at_end` stop follows final-step settlement directly.
 
 See ADR 0006.
 
@@ -373,7 +393,7 @@ When `animate:true`, the renderer may animate from prior context toward the dest
 
 The renderer must use the injected CiM clock/scheduler for semantically significant animation timing. Pausing that clock freezes renderer progress.
 
-The renderer must honor cancellation. An aborted render rejects with a distinguished cancellation outcome that Runtime does not classify as a renderer fault. Runtime reports expected cancellation as `renderer.cancelled`, correlated by `transition_id`; it does not report the cancellation as `renderer.error`.
+The renderer must honor cancellation. An aborted render rejects with a distinguished cancellation outcome that Runtime does not classify as a renderer fault. Runtime must report an honored expected cancellation as `renderer.cancelled`, correlated by `transition_id`; it must not report the cancellation as `renderer.error`.
 
 A non-cancelled render resolves only when the destination has reached stable output or rejects with a stable renderer error.
 
@@ -465,9 +485,9 @@ The reserved initial boundary is addressable as:
 
 On initialization, a matching mounted experience resolves directly to the requested boundary through non-animated absolute rendering.
 
-A non-matching instance ignores the fragment.
+A non-matching instance ignores a fragment addressed to another mounted experience.
 
-An unknown experience or step fragment must not leave an instance partially initialized. The host/runtime may expose a diagnostic and continue at the configured default entry point.
+If a fragment names the current experience but its step is unknown, or if host-level resolution cannot resolve the requested CiM target, the resolver records the stable deep-link diagnostic defined in `FAULTS.md`, initializes the applicable experience at `initial`, and leaves the surrounding page usable. An invalid deep link never leaves a partially initialized semantic position.
 
 Ordinary learner-driven semantic navigation should update the current fragment with `history.replaceState()` or equivalent behavior so browser history is not flooded with every step.
 
@@ -514,7 +534,9 @@ Successful restoration leaves the instance usable and records the failed transit
 
 ### 18.2 Unrecoverable renderer failure
 
-If restoration fails, Core enters `faulted`, Runtime clears playback intent, and the host exposes the standard static fallback or unavailable state while leaving the surrounding page usable.
+If restoration fails, Runtime first clears `playbackIntent` and any active transition/dwell operational state. Runtime then calls `Core.setStatus("faulted")`. After Core stores the canonical `faulted` status, the runtime event stream reports `instance.faulted`, and the host exposes the standard static fallback or unavailable state while leaving the surrounding page usable.
+
+This ordering prevents canonical fault status from being stored while Runtime still advertises active playback intent.
 
 ### 18.3 Invalid command
 
@@ -547,23 +569,26 @@ The synthetic harness must prove at least:
 5. observation-step position advance with unchanged state/render digests;
 6. pause at stable boundary;
 7. pause during animation with frozen progress;
-8. pause during dwell with frozen remaining dwell;
+8. pause during dwell with frozen remaining dwell and required dwell evidence;
 9. resume of paused transition and paused dwell;
-10. navigation cancellation of active transition or dwell;
+10. navigation cancellation of active transition or dwell with required cancellation evidence;
 11. navigation clears playback intent;
-12. stale callback rejection;
-13. direct and sequential render equivalence;
-14. animated and non-animated render equivalence;
-15. reduced-motion render equivalence with preserved dwell;
-16. restart reveal reset to `initial`;
-17. backward-seek reveal-frontier monotonicity;
-18. renderer failure restoration;
-19. unrecoverable renderer failure fallback;
-20. duplicate, reserved-ID, dwell, and schema validation failure;
-21. deep-link initialization, including `/initial`;
-22. scrub emits one seek only on commit;
-23. multiple-instance isolation;
-24. deterministic replay from scenario, seed, versions, validated experience, runtime configuration, commands, and virtual clock.
+12. Runtime is the sole production requester of activity-status changes through `Core.setStatus(nextStatus)`;
+13. explicit `play()` from a navigated-to committed boundary starts the following transition immediately rather than consuming that boundary's dwell;
+14. final-step dwell, when reached through continuous playback, completes before `playback.stopped` with reason `at_end`;
+15. stale callback rejection;
+16. direct and sequential render equivalence;
+17. animated and non-animated render equivalence;
+18. reduced-motion render equivalence with preserved dwell;
+19. restart reveal reset to `initial`;
+20. backward-seek reveal-frontier monotonicity;
+21. renderer failure restoration;
+22. unrecoverable renderer failure fallback and ordered `faulted` status settlement;
+23. duplicate, reserved-ID, dwell, and schema validation failure;
+24. deep-link initialization, including `/initial`, and invalid-target fallback to `initial`;
+25. scrub emits one seek only on commit;
+26. multiple-instance isolation;
+27. deterministic replay from scenario, seed, versions, validated experience, runtime configuration, commands, and virtual clock.
 
 ## 21. Non-Goals for v1
 
