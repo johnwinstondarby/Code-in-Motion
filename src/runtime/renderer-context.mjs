@@ -1,3 +1,4 @@
+import { assertRendererContextCapabilities } from '../renderers/capability-inspector.mjs';
 import {
   ABORT_SIGNAL_KEYS,
   RENDER_CLOCK_KEYS,
@@ -108,7 +109,7 @@ export function createRendererContext(input) {
   assertExactFrozenFacade(abortSignal, ABORT_SIGNAL_KEYS, 'renderer context abortSignal');
   assertExactFrozenFacade(clock, RENDER_CLOCK_KEYS, 'renderer context clock');
 
-  return Object.freeze({
+  const context = Object.freeze({
     animate,
     fromState,
     fromStepId,
@@ -120,4 +121,7 @@ export function createRendererContext(input) {
     clock,
     reducedMotion
   });
+
+  assertRendererContextCapabilities(context);
+  return context;
 }

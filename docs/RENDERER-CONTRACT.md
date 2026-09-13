@@ -121,18 +121,23 @@ This is a renderer-side defense against the stale-callback class represented by 
 
 Renderer conformance validates capability reachability, not only top-level context keys.
 
-The capability inspector walks the renderer context graph to a documented bounded depth and:
+The v1 capability inspector walks the renderer context graph to a maximum of eight object edges from the root context. If another reachable object exists beyond that bound, inspection fails closed rather than leaving part of the graph uninspected.
 
-- traverses own properties and prototypes;
+`Object.prototype`, `Array.prototype`, and `null` are terminal intrinsic prototype boundaries. Any custom prototype between a context value and those intrinsic boundaries is inspected descriptor-by-descriptor.
+
+The capability inspector:
+
+- traverses own properties and custom prototypes;
 - reads property descriptors rather than invoking getters;
-- fails if an accessor property is encountered outside an explicitly approved facade shape;
+- fails if an accessor property is encountered outside the two documented read-only abort-state accessors;
 - never invokes an unknown getter during inspection;
 - fails on any reachable function-valued member except the exact documented methods of `abortSignal` and `clock`;
-- rejects reachable live component or authority objects regardless of member names.
+- rejects reachable live component or authority objects regardless of member names;
+- fails if the graph exceeds the eight-edge v1 inspection bound.
 
 The rule is an allowlist of permitted capabilities, not a denylist of suspicious method names.
 
-A required near-miss fixture supplies an innocently named class instance with a prototype method through an otherwise plausible context value and must fail capability inspection.
+A required near-miss fixture supplies an innocently named class instance with a prototype method through an otherwise plausible context value and must fail capability inspection. A second fixture supplies an accessor with a side effect and must prove the inspector rejects it without invoking the getter.
 
 ## 8. Immutability
 
@@ -228,7 +233,8 @@ The renderer-interface branch must include executable tests proving at least:
 14. expected abort rejection is distinguished from renderer failure;
 15. direct, animated, reverse, restoration, reduced-motion, and replay-equivalent arrivals canonicalize identically;
 16. evidence records `render_digest` with `canonicalizer_id`;
-17. every new renderer-interface rule includes a near-miss test demonstrating the plausible accidental violation.
+17. every new renderer-interface rule includes a near-miss test demonstrating the plausible accidental violation;
+18. capability inspection fails closed when a reachable graph exceeds the eight-edge v1 bound.
 
 ## 13. Dependency Boundary
 
