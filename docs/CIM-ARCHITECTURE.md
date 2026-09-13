@@ -8,7 +8,7 @@ Code in Motion (CiM) is a reusable Localis teaching platform for demonstrating t
 
 Git in Motion is the first real experience and reference implementation. Shared platform architecture remains independent of Git.
 
-This document defines component ownership, dependency direction, composition rules, runtime authority, ingestion boundaries, timing ownership, and harness separation. Detailed runtime semantics belong in `CIM-SPEC.md`. Experience shape belongs in `EXPERIENCE-SCHEMA.md`. Observable event records belong in `EVENTS.md`.
+This document defines component ownership, dependency direction, composition rules, runtime authority, ingestion boundaries, timing ownership, shared contracts, and harness separation. Detailed runtime semantics belong in `CIM-SPEC.md`. Experience shape belongs in `EXPERIENCE-SCHEMA.md`. Observable event records belong in `EVENTS.md`.
 
 ## 2. Architectural Principles
 
@@ -31,6 +31,8 @@ This document defines component ownership, dependency direction, composition rul
 17. Previously revealed commentary remains revealed while navigating backward within a session.
 18. Stable semantic boundaries, including `initial`, are deep-linkable.
 19. Multiple CiM instances on the same page remain isolated.
+20. Cross-component value vocabulary lives in dependency-free `src/contracts/` rather than creating exceptions to component fences.
+21. Core status mutation is a privileged capability held only by Runtime. Static source checks are defense in depth rather than the sole authority mechanism.
 
 ## 3. Composition Model
 
@@ -52,9 +54,13 @@ Host / WordPress adapter
          +--> semantic timeline and canonical commit
          +--> validated experience structure
 
+Runtime --> privileged Core control capability
 Runtime --> clock / scheduler interface
 Runtime --> event / diagnostics interfaces
 Renderer --> clock / scheduler interface
+
+Production components --> shared contracts
+Shared contracts -X-> production components
 
 Harness -> injected dependencies + observation only
 Telemetry -> observation only
@@ -63,6 +69,8 @@ Telemetry -> observation only
 `CiMInstance` wires concrete modules together, sequences commands, owns operational transition mechanics and playback intent, coordinates stable-state settlement, and scopes runtime behavior to one mounted experience.
 
 Core owns canonical semantic authority. Runtime does not replace that authority merely because it orchestrates the surrounding work.
+
+Shared contracts provide immutable cross-component vocabulary without moving component behavior into a common dependency.
 
 ## 4. Component Ownership
 
@@ -79,9 +87,12 @@ Runtime may:
 - own transition identity, normalized transition progress, cancellation, abort coordination, and dwell scheduling;
 - create command and correlation identifiers;
 - scope faults, events, and cleanup to one instance;
-- ask Core to commit a semantic destination only after stable renderer settlement.
+- ask Core to commit a semantic destination only after stable renderer settlement;
+- hold the privileged Core status-control capability used to request canonical activity-status changes.
 
-Runtime does not own canonical semantic commit authority, subject-specific state interpretation, visual representation, commentary content, transport presentation, or host-page business logic.
+Runtime does not own canonical semantic commit authority, canonical status storage, subject-specific state interpretation, visual representation, commentary content, transport presentation, or host-page business logic.
+
+Runtime must not distribute the privileged Core status-control capability to another production component.
 
 ### 4.2 Core
 
@@ -101,11 +112,15 @@ The normative session model and Runtime/Core state split are defined once in `CI
 
 Core must not inspect the internal structure of experience `state` or `renderer_config` values.
 
+Core stores canonical status. Runtime alone determines activity-status changes from Runtime-owned operational facts and requests those changes through a privileged control capability. The Core implementation must not expose that mutation capability through a broadly shared read/projection object. See ADR 0008.
+
 ### 4.3 Transport
 
 Transport owns learner-facing progress and playback controls, semantic markers, keyboard interaction assigned to transport, and transport-local scrub preview.
 
-Transport sends commands to `CiMInstance`. It does not call renderers, commentary, telemetry, or subject implementations directly.
+Transport sends commands to `CiMInstance`. It does not call renderers, commentary, telemetry, or Core directly.
+
+Transport may import dependency-free shared values from `src/contracts/` rather than importing Core for status names, boundary identifiers, result/reason codes, or event vocabulary.
 
 V1 scrub drag does not change canonical position or renderer state. Scrub commit submits one `seek(stepId)`.
 
@@ -115,13 +130,15 @@ Commentary owns persistent event-history presentation, active commentary present
 
 Commentary receives canonical position and reveal information through runtime-controlled interfaces. It does not infer canonical position from its DOM or independently advance the session.
 
+Commentary may import dependency-free shared vocabulary from `src/contracts/` but does not import Core.
+
 At `initial`, no authored commentary entry or semantic marker is active in v1.
 
 ### 4.5 Accessibility
 
 Accessibility is a cross-cutting contract. Shared helpers may live under `src/accessibility/`, but each component that emits interactive or visual output owns the accessibility of that output.
 
-Accessibility helpers do not gain control authority over runtime state.
+Accessibility helpers do not gain control authority over Runtime or Core state.
 
 ### 4.6 Renderer Interface
 
@@ -131,19 +148,19 @@ Renderers own transition duration and may use prior state as animation context, 
 
 Renderers use the injected CiM clock/scheduler for semantically significant animation timing.
 
-Renderers do not own playback policy, semantic navigation, commentary progression, dwell scheduling, URL history, or canonical semantic position.
+Renderers do not own playback policy, semantic navigation, commentary progression, dwell scheduling, URL history, canonical semantic position, or Runtime/Core control.
 
 ### 4.7 Subject-Specific Renderers
 
 Subject renderers implement visual representation for a domain such as Git. They depend on the public renderer contract and subject data passed through the experience definition.
 
-Subject renderers must not introduce direct dependencies on transport, commentary, host adapters, harness code, or another subject renderer.
+Subject renderers must not introduce direct dependencies on transport, commentary, host adapters, Runtime, Core, harness code, or another subject renderer.
 
 ### 4.8 Experience Data and Schema
 
 Experience definitions describe instructional data rather than engine control logic.
 
-The shared schema owns version metadata, renderer identity, semantic steps, required commentary structure, links, opaque state, opaque renderer configuration, and optional `dwell_ms`.
+The shared schema owns version metadata, renderer identity, semantic steps, required commentary structure, links, non-null opaque state, opaque renderer configuration, and optional `dwell_ms`.
 
 `initial` is reserved by the shared schema and cannot be used as an authored step ID.
 
@@ -151,9 +168,11 @@ Experience definitions contain no executable JavaScript, raw HTML, or engine-con
 
 ### 4.9 Host / WordPress Adapter
 
-The host adapter resolves an experience ID, loads production assets, mounts CiM instances, and preserves a usable surrounding page if CiM initialization fails.
+The host adapter resolves an experience ID, loads production assets, mounts CiM instances through Runtime, and preserves a usable surrounding page if CiM initialization fails.
 
 The WordPress implementation should be a plugin that enqueues external assets. Publication pages invoke an experience through stable markup or shortcode rather than embedded runtime code.
+
+Host does not bypass Runtime to control Core, Transport, Commentary, or Renderers directly.
 
 ### 4.10 Runtime Fault Management
 
@@ -170,6 +189,8 @@ The normative fault ownership matrix is `FAULTS.md`.
 Runtime telemetry records ordered semantic behavior and faults without participating in control.
 
 All semantic event timestamps come from the injected CiM clock. Replay reissues recorded commands against the same versioned inputs and effective runtime configuration, then compares resulting evidence.
+
+Telemetry does not import Runtime/Core control surfaces or presentation modules merely to observe them. Observation is supplied through documented event/evidence interfaces and shared contracts.
 
 Frame-level animation and pointer-level scrub-preview activity do not belong in the semantic event stream.
 
@@ -191,6 +212,24 @@ The harness may provide:
 
 The harness is never imported by production runtime code.
 
+### 4.13 Shared Contracts
+
+`src/contracts/` owns dependency-free value and interface vocabulary required by more than one production component.
+
+Appropriate contents include:
+
+- canonical status names;
+- reserved semantic boundary identifiers;
+- stable command result and reason values;
+- shared event/fault identifiers;
+- immutable value shapes required across component boundaries.
+
+Shared contracts contain no mutable session state, orchestration, renderer behavior, DOM behavior, or component implementation.
+
+Production components may import shared contracts. Shared contracts do not import production components.
+
+See ADR 0008.
+
 ## 5. Dependency Direction
 
 ```text
@@ -200,20 +239,28 @@ host -> runtime -> core
                 -> renderer interface -> subject renderer
                 -> telemetry interface
 
+production components -> contracts
+contracts -X-> production components
+
 experience adapter -> schema validation -> validated experience -> runtime/core
 
 harness -> public production interfaces
 production -X-> harness
 ```
 
-Peer presentation modules do not control one another:
+Peer presentation and observation modules do not control one another:
 
-- transport does not call renderers;
-- transport does not advance commentary;
-- commentary does not move transport;
-- renderers do not command runtime navigation;
-- telemetry does not command runtime behavior;
-- subject renderers do not inspect another module's DOM or private state.
+- transport does not import Core or call renderers/commentary;
+- commentary does not import Core or move transport;
+- renderers do not import Runtime/Core/Transport/Commentary/Host;
+- host reaches semantic control through Runtime rather than Core;
+- telemetry observes documented evidence rather than importing Runtime/Core control;
+- accessibility helpers do not obtain Runtime/Core authority;
+- experience loading/validation does not import Runtime/Core;
+- subject renderers do not inspect another module's DOM or private state;
+- shared contracts do not import production components.
+
+Package subpath aliases must resolve to the same dependency graph as relative imports. An alias cannot weaken an architectural fence.
 
 ## 6. Canonical Runtime Authority
 
@@ -233,7 +280,9 @@ Core decides and records canonical semantic commit.
 
 Operational transition identity, progress, abort state, dwell scheduling, and continuous playback intent belong to Runtime and do not independently redefine canonical semantic position.
 
-The authoritative session-model field list is `CIM-SPEC.md` §3.
+Canonical activity status is stored by Core, while Runtime is the only production holder of the privileged capability that requests activity-status mutation. Shared status vocabulary belongs in `src/contracts/`; possession of vocabulary never grants mutation authority.
+
+The authoritative session-model field list is `CIM-SPEC.md` §3. ADR 0008 defines the shared-contract and privileged-control boundary.
 
 ## 7. Absolute-State Rendering
 
@@ -354,7 +403,8 @@ The platform requires:
 - no experience-supplied JavaScript;
 - no `innerHTML` path for authored content;
 - structured commentary links rather than arbitrary markup;
-- URL scheme validation;
+- URL destination allowlisting appropriate to link type;
+- v1 commentary links limited to `http://`, `https://`, `mailto:`, root-relative `/`, and fragment `#` forms after scheme-analysis normalization;
 - renderer configuration interpreted as data rather than executable instructions.
 
 ## 15. WordPress Boundary
@@ -391,9 +441,11 @@ A branch changing a public interface updates the corresponding normative documen
 
 `main` remains releasable. Subject-specific implementation work cannot redefine a shared platform contract implicitly.
 
+Repository verification must resolve relative imports and configured package aliases through the same dependency rules. Unknown production bare imports fail closed unless they are declared runtime dependencies.
+
 ## 18. Architecture-v1 Acceptance Gate
 
-Before `docs/architecture-v1` merges:
+Before shared architecture changes merge:
 
 - Core ownership of canonical semantic state is explicit and consistent;
 - `initial` is reserved and represented consistently across schema, runtime, deep links, and events;
@@ -410,4 +462,7 @@ Before `docs/architecture-v1` merges:
 - fault ownership and fallback boundaries are documented;
 - telemetry and replay remain observational;
 - harness dependencies cannot leak into production;
+- shared cross-component vocabulary has a dependency-free home;
+- privileged Core mutation capability is held only by Runtime;
+- package aliases cannot bypass dependency fences;
 - no unresolved public-interface decision blocks independent component implementation.
