@@ -15,6 +15,7 @@ Code-in-Motion/
 ├── .github/workflows/     Automated contract verification
 ├── docs/                  Architecture, specifications, events, faults, and ADRs
 ├── src/                   Production runtime modules
+│   ├── contracts/         Dependency-free shared value/interface vocabulary
 │   ├── runtime/           CiMInstance composition and orchestration
 │   ├── core/              Canonical semantic session state and commits
 │   ├── transport/         Learner controls and semantic timeline UI
@@ -50,18 +51,20 @@ Normative cross-component contracts live under `docs/`, including `CIM-ARCHITECT
 9. Semantic timing uses the injected CiM clock rather than renderer-owned wall-clock timing.
 10. The reserved semantic boundary ID `initial` identifies the stable state before `steps[0]`.
 11. Git-specific behavior remains outside the shared engine and core contracts.
-12. Production calls to `Core.setStatus(nextStatus)` originate only from `src/runtime/`.
+12. Production references to the privileged Core `setStatus` seam originate only from `src/runtime/`; Core may declare the seam but does not derive activity status from Runtime-owned fields.
+13. Cross-component value vocabulary belongs in dependency-free `src/contracts/` rather than creating exceptions to component fences.
 
 ## Verification
 
-`npm run verify` runs the zero-dependency repository checks:
+`npm run verify` runs the repository contract gates:
 
-- machine-readable schema and fixture verification;
+- the published Draft 2020-12 JSON Schema against valid and invalid fixtures;
+- cross-item semantic checks that JSON Schema does not conveniently express;
 - architecture import-boundary enforcement;
-- the Runtime-only `Core.setStatus` caller rule;
+- the Runtime-only privileged `setStatus` seam rule;
 - Node test suites for schema and boundary behavior.
 
-The same command runs in GitHub Actions for pull requests and pushes to `main`.
+Ajv is a development/CI-only dependency used to execute the published JSON Schema. It is not a production `src/` dependency. The same `npm run verify` command runs in GitHub Actions for pull requests and pushes to `main`.
 
 ## Branch model
 
