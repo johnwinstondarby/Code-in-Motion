@@ -1,0 +1,15 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "invalid-missing-state",
+  "renderer": "synthetic/v1",
+  "initial_state": { "value": "A" },
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "Missing state",
+      "commentary": { "text": "The required state field is absent.", "links": [] }
+    }
+  ]
+}
