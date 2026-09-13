@@ -47,7 +47,29 @@ Normal CiM operation cannot continue. The instance enters `faulted` or fails ini
 
 A callback or completion belongs to a superseded transition. It is discarded without changing canonical state and without classifying the condition as a learner-facing fault.
 
-## 4. V1 Fault Matrix
+## 4. Canonical Core Fault State
+
+When a runtime session exists, Core's canonical `error` field is either `null` or one frozen record with exactly:
+
+```text
+code
+component
+recoveryClass
+```
+
+`code` uses one namespace from §2. `component` must correspond to that namespace. `recoveryClass` is either `recover` or `fallback`.
+
+`reject` and `ignore stale work` do not populate canonical `error`. Their evidence remains observational because they do not represent active recovery or terminal instance fault state.
+
+Core stores canonical fault state only after the active semantic target has been cancelled or abandoned. `currentStepId` therefore remains the last committed recovery anchor and `targetStepId` is `null` when canonical fault state is recorded.
+
+A `recover` record represents transient active recovery context. It does not by itself force status to `faulted`. Successful restoration clears the matching recoverable record. The event stream preserves the original fault and recovery evidence after canonical error state is cleared.
+
+A `fallback` record atomically enters canonical status `faulted`. Direct status mutation to `faulted` without a matching fallback record is invalid. A recoverable record may be replaced by a fallback record when restoration fails. A fallback record cannot be cleared as recovered or by restart; faulted state may advance only to `disposed`.
+
+A successfully settled restart may clear an active `recover` record while resetting semantic position and reveal state to `initial`.
+
+## 5. V1 Fault Matrix
 
 | Condition | Owning component | Recovery class | Canonical anchor | Learner-facing outcome | Initial code |
 |---|---|---|---|---|---|
@@ -70,7 +92,7 @@ A callback or completion belongs to a superseded transition. It is discarded wit
 | Commentary projection fails after semantic commit | Commentary | Recover if projection can be rebuilt from Core state | Current committed boundary | Rebuild commentary projection or fallback component presentation | `CIM-COM-001` |
 | Telemetry sink fails | Telemetry | Recover locally; must not change control flow | Current committed boundary | CiM continues; diagnostic may degrade | `CIM-TEL-001` |
 
-## 5. Ownership Rules
+## 6. Ownership Rules
 
 - Core rejects invalid semantic destinations and owns canonical commit/fault status.
 - Runtime coordinates transition cancellation, stale-work rejection, restoration requests, status-write requests, and cross-component settlement.
@@ -79,7 +101,7 @@ A callback or completion belongs to a superseded transition. It is discarded wit
 - Host owns page-level fallback after initialization or loading failure and participates in deterministic deep-link fallback.
 - Telemetry failure cannot command or stop otherwise healthy runtime behavior unless required evidence is explicitly configured as a test gate in the harness.
 
-## 6. Recovery Evidence
+## 7. Recovery Evidence
 
 Recoverable production faults must preserve enough evidence to identify:
 
@@ -97,7 +119,7 @@ recovery outcome
 
 A successful recovery does not erase the original fault event.
 
-## 7. Harness Requirements
+## 8. Harness Requirements
 
 The harness must inject and verify at least:
 

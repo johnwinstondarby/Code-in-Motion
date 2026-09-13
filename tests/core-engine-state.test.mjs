@@ -48,27 +48,28 @@ test('Core initializes the exact canonical v1 session-state surface', () => {
   assert.equal(Object.isFrozen(state), true);
 });
 
-test('read, navigation, semantic mutation, and status capabilities are structurally separate', () => {
+test('read, navigation, semantic, fault, and status capabilities are structurally separate', () => {
   const core = makeCore();
 
-  assert.deepEqual(Object.keys(core), ['read', 'navigation', 'semanticControl', 'statusControl']);
+  assert.deepEqual(Object.keys(core), ['read', 'navigation', 'semanticControl', 'faultControl', 'statusControl']);
   assert.deepEqual(Reflect.ownKeys(core.read), ['snapshot', 'boundaryIds']);
   assert.deepEqual(Reflect.ownKeys(core.navigation), ['resolve']);
   assert.deepEqual(Reflect.ownKeys(core.semanticControl), ['beginTarget', 'commitTarget', 'abandonTarget', 'commitRestart']);
+  assert.deepEqual(Reflect.ownKeys(core.faultControl), ['recordFault', 'clearRecoverableFault']);
   assert.deepEqual(Reflect.ownKeys(core.statusControl), ['setStatus']);
   assert.equal('setStatus' in core.read, false);
   assert.equal('setStatus' in core.navigation, false);
   assert.equal('setStatus' in core.semanticControl, false);
-  assert.equal('commitTarget' in core.read, false);
-  assert.equal('commitTarget' in core.navigation, false);
-  assert.equal('commitTarget' in core.statusControl, false);
-  assert.equal('commitRestart' in core.read, false);
-  assert.equal('commitRestart' in core.navigation, false);
-  assert.equal('commitRestart' in core.statusControl, false);
+  assert.equal('setStatus' in core.faultControl, false);
+  assert.equal('recordFault' in core.read, false);
+  assert.equal('recordFault' in core.navigation, false);
+  assert.equal('recordFault' in core.semanticControl, false);
+  assert.equal('recordFault' in core.statusControl, false);
   assert.equal(Object.isFrozen(core), true);
   assert.equal(Object.isFrozen(core.read), true);
   assert.equal(Object.isFrozen(core.navigation), true);
   assert.equal(Object.isFrozen(core.semanticControl), true);
+  assert.equal(Object.isFrozen(core.faultControl), true);
   assert.equal(Object.isFrozen(core.statusControl), true);
 });
 
@@ -81,13 +82,24 @@ test('snapshots cannot mutate Core-owned state', () => {
   assert.notEqual(core.read.snapshot(), first);
 });
 
-test('privileged status control accepts every canonical status', () => {
-  for (const nextStatus of SESSION_STATUS_VALUES) {
+test('privileged status control accepts non-fault activity statuses and disposal', () => {
+  const accepted = SESSION_STATUS_VALUES.filter((status) => status !== SESSION_STATUS.FAULTED);
+  for (const nextStatus of accepted) {
     const core = makeCore();
     const result = core.statusControl.setStatus(nextStatus);
     assert.equal(result.status, nextStatus);
     assert.equal(core.read.snapshot().status, nextStatus);
   }
+});
+
+test('faulted status cannot be written without canonical fallback fault state', () => {
+  const core = makeCore();
+  assert.throws(
+    () => core.statusControl.setStatus(SESSION_STATUS.FAULTED),
+    (error) => error instanceof CoreStateTransitionError && /faultControl\.recordFault/.test(error.message)
+  );
+  assert.equal(core.read.snapshot().status, SESSION_STATUS.IDLE);
+  assert.equal(core.read.snapshot().error, null);
 });
 
 test('invalid status writes fail without changing canonical state', () => {
@@ -111,6 +123,10 @@ test('disposed Core state is terminal', () => {
   );
   assert.throws(
     () => core.semanticControl.commitRestart(),
+    (error) => error instanceof CoreStateTransitionError && /terminal/.test(error.message)
+  );
+  assert.throws(
+    () => core.faultControl.recordFault({ code: 'CIM-RND-004', component: 'renderer', recoveryClass: 'recover' }),
     (error) => error instanceof CoreStateTransitionError && /terminal/.test(error.message)
   );
   assert.equal(core.read.snapshot().status, SESSION_STATUS.DISPOSED);
