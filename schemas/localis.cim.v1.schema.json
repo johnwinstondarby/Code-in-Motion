@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localis.services/schemas/localis.cim.v1.schema.json",
+  "title": "Code in Motion Experience v1",
+  "description": "Machine-readable structural contract for localis.cim/v1 experiences.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "engine_min",
+    "experience_version",
+    "id",
+    "renderer",
+    "initial_state",
+    "steps"
+  ],
+  "properties": {
+    "schema": {
+      "const": "localis.cim/v1"
+    },
+    "engine_min": {
+      "$ref": "#/$defs/semver"
+    },
+    "experience_version": {
+      "$ref": "#/$defs/semver"
+    },
+    "id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "renderer": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*/v[1-9][0-9]*$"
+    },
+    "renderer_config": {
+      "type": "object"
+    },
+    "initial_state": {},
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/step"
+      }
+    }
+  },
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "stepId": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identifier"
+        },
+        {
+          "not": {
+            "const": "initial"
+          }
+        }
+      ]
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "commentary",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/stepId"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "marker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commentary": {
+          "$ref": "#/$defs/commentary"
+        },
+        "state": {},
+        "renderer_config": {
+          "type": "object"
+        },
+        "dwell_ms": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "commentary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "links"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        }
+      }
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "href"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "href": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?![jJ][aA][vV][aA][sS][cC][rR][iI][pP][tT]:)(?![dD][aA][tT][aA]:)(?![vV][bB][sS][cC][rR][iI][pP][tT]:).+"
+        }
+      }
+    }
+  }
+}
