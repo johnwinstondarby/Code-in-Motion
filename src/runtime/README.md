@@ -16,12 +16,16 @@ The runtime composition layer creates one isolated CiM instance and coordinates 
 - Multi-instance isolation
 - Initial deep-link dispatch to the matching experience
 - Requesting canonical semantic commits from Core only after stable renderer settlement
+- Requesting canonical activity-status changes through `Core.setStatus(nextStatus)`
 
 The normative split between Core-owned semantic state and Runtime-owned operational state is defined in `docs/CIM-SPEC.md` §3.
+
+Runtime determines activity-status changes from its operational facts and is the only production component authorized to request `playing`, `transitioning`, or `paused` through Core's status interface. Core stores the resulting canonical status.
 
 ## Does not own
 
 - Canonical semantic commit authority
+- Canonical status storage
 - Subject state interpretation
 - Renderer internals
 - Commentary DOM internals
@@ -37,4 +41,4 @@ No direct access to another component's private DOM or mutable internal state. N
 
 ## Verification
 
-Integration tests must prove command ordering, instance isolation, navigation cancellation, navigation clearing playback intent, pause/resume continuity for transition and dwell, deep-link dispatch including `initial`, scrub-originated single-seek flow, and clean disposal.
+Integration tests must prove command ordering, instance isolation, navigation cancellation, navigation clearing playback intent, pause/resume continuity for transition and dwell, ordered status writes, deep-link dispatch including `initial`, scrub-originated single-seek flow, and clean disposal.
