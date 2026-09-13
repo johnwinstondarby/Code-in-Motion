@@ -8,11 +8,11 @@ CiM uses one ordered semantic event model for runtime diagnostics, harness evide
 
 Events are observational. They do not participate in production control flow.
 
-Commands enter through direct runtime interfaces. Events report what the runtime accepted, attempted, settled, rejected, or recovered.
+Commands enter through direct runtime interfaces. Events report what Runtime and Core accepted, attempted, settled, rejected, cancelled, or recovered.
 
 ## 2. Event Envelope
 
-Every semantic event must provide the following common fields:
+Every semantic event must provide:
 
 ```json
 {
@@ -20,7 +20,7 @@ Every semantic event must provide the following common fields:
   "instance_id": "cim-17",
   "sequence": 17,
   "timestamp_ms": 2840,
-  "component": "runtime",
+  "component": "core",
   "event": "step.changed",
   "result": "success"
 }
@@ -28,41 +28,29 @@ Every semantic event must provide the following common fields:
 
 ### `schema`
 
-Required string.
-
-For v1:
-
-```text
-localis.cim.event/v1
-```
+Required string. V1 value: `localis.cim.event/v1`.
 
 ### `instance_id`
 
-Required string.
-
-Identifies the mounted CiM instance that emitted or owns the event.
+Required string identifying the mounted CiM instance.
 
 ### `sequence`
 
-Required positive integer.
+Required positive integer, monotonic and unique within one instance event stream.
 
-Sequence numbers are monotonic and unique within one instance event stream.
-
-Ordering is determined by `sequence`, not by timestamp.
+Ordering is determined by `sequence`, not timestamp.
 
 ### `timestamp_ms`
 
-Required non-negative number.
+Required non-negative number from the injected CiM clock for **all semantic events**.
 
-Represents elapsed time from the instance/runtime evidence epoch using the injected CiM clock where semantic timing is involved.
-
-Wall-clock UTC may be added by a telemetry sink as external metadata, but it does not define semantic ordering or replay timing.
+Wall-clock UTC may be added by a telemetry sink as external metadata, but it never defines semantic ordering or replay timing.
 
 ### `component`
 
 Required string naming the component that owns the reported operation.
 
-Initial v1 component names include:
+Initial component names include:
 
 ```text
 host
@@ -76,26 +64,15 @@ experience
 telemetry
 ```
 
-Subject renderers may additionally include a stable renderer identifier in `details`.
+Canonical semantic commits are Core-owned and therefore `step.changed` uses `component: "core"`.
 
 ### `event`
 
-Required stable event name.
-
-Event names use dotted lower-case identifiers such as:
-
-```text
-command.accepted
-transition.started
-step.changed
-renderer.error
-```
+Required stable dotted lower-case event name.
 
 ### `result`
 
-Required stable result string.
-
-Initial shared values are:
+Required stable result string. Initial shared values:
 
 ```text
 success
@@ -106,11 +83,9 @@ recovered
 no_change
 ```
 
-Specific events may restrict the applicable subset.
+## 3. Correlation Fields
 
-## 3. Optional Correlation Fields
-
-Events include the following fields when applicable:
+Events include these fields when applicable:
 
 ```json
 {
@@ -125,45 +100,17 @@ Events include the following fields when applicable:
 }
 ```
 
-### `command_id`
+`command_id` correlates events caused by one command.
 
-Correlates events caused by one accepted learner, host, or replay command.
+`transition_id` correlates one semantic destination transition. A cancelled transition ID cannot later commit a step.
 
-### `transition_id`
+`from_step`, `to_step`, and `step_id` use canonical semantic boundary IDs. The initial boundary is always represented by the literal string `initial`, never `null`.
 
-Correlates events belonging to one semantic destination transition.
-
-A cancelled transition ID cannot later commit a step.
-
-### `from_step`
-
-The committed source step before an operation. The initial boundary may be represented as `null`.
-
-### `to_step`
-
-The requested destination step. The initial boundary may be represented as `null`.
-
-### `step_id`
-
-The semantic step primarily associated with the event when a from/to pair is unnecessary.
-
-### `error_code`
-
-Stable production error code for fault events.
-
-### `recovered`
-
-Boolean recovery outcome where a fault event reports recovery directly.
-
-### `details`
-
-Structured event-specific diagnostic data.
-
-`details` must not become an alternate control or state channel. Consumers cannot depend on undocumented private keys for platform correctness.
+`details` carries structured event-specific diagnostic data. It cannot become an undocumented alternate control or state channel.
 
 ## 4. Run Metadata
 
-Harness and replay systems may associate the event stream with run-level metadata such as:
+Harness and replay systems may associate event streams with metadata such as:
 
 ```json
 {
@@ -172,84 +119,151 @@ Harness and replay systems may associate the event stream with run-level metadat
   "seed": 12345,
   "engine_version": "1.0.0",
   "experience_id": "synthetic-basic",
-  "experience_version": "1.0.0"
+  "experience_version": "1.0.0",
+  "runtime_config": {}
 }
 ```
 
-Run metadata may live beside the event stream rather than being repeated in every event.
+Runtime configuration is included when site policy changes effective semantic timing, such as clamping authored dwell.
 
-A sink may repeat `run_id` in event records for convenience, but runtime correctness cannot depend on that field.
-
-## 5. Event Ordering Rules
-
-The following rules are normative:
+## 5. Ordering Rules
 
 1. Each instance owns one monotonic semantic `sequence` counter.
 2. `sequence` determines total order within the instance.
 3. Timestamps may be equal for multiple deterministic events.
 4. A transition cannot settle before it starts.
 5. A cancelled transition cannot emit a later successful settlement for the same transition ID.
-6. `step.changed` occurs only after stable destination settlement succeeds.
+6. `step.changed` occurs only after stable destination settlement succeeds and Core commits the destination.
 7. A rejected command cannot emit a successful transition for that command ID.
 8. Recovery events follow the fault that triggered them.
-9. Disposal is terminal for the instance event stream except for sink-side archival metadata.
+9. Disposal is terminal for the instance event stream except sink-side archival metadata.
 
 ## 6. Command Events
 
 ### `command.received`
 
-Optional diagnostic event recording that runtime received a command request.
-
-This event does not imply acceptance.
-
-Suggested fields:
-
-```text
-command_id
-details.command
-step_id or details.requested_step
-```
+Optional diagnostic event indicating a command request arrived. It does not imply acceptance.
 
 ### `command.accepted`
 
-Reports that runtime accepted a command for execution.
+Reports that Runtime accepted a command.
+
+Accepted commands may produce `result: "no_change"`, including valid navigation that reaches a semantic boundary limit.
+
+Boundary examples:
+
+```json
+{
+  "event": "command.accepted",
+  "result": "no_change",
+  "details": {
+    "command": "next",
+    "reason": "at_end",
+    "source": "transport"
+  }
+}
+```
+
+or:
+
+```json
+{
+  "event": "command.accepted",
+  "result": "no_change",
+  "details": {
+    "command": "previous",
+    "reason": "at_start",
+    "source": "transport"
+  }
+}
+```
 
 ### `command.rejected`
 
-Reports that runtime rejected a command without changing canonical semantic state.
+Reports that Runtime rejected a genuinely invalid command without changing canonical semantic state.
 
-Suggested `details.reason` values may include:
+Initial `details.reason` values may include:
 
 ```text
 unknown_step
-at_start
-at_end
 faulted
 disposed
 invalid_state
+reserved_step_id
 ```
 
-Result codes must remain stable once published.
+`at_start` and `at_end` are not rejection reasons in v1.
 
-## 7. Playback Events
+### Command source
+
+`details.source` should identify the initiating control surface when useful:
+
+```text
+transport
+marker
+commentary
+scrub
+deep_link
+host
+replay
+```
+
+Scrub commit uses `source: "scrub"` and produces exactly one semantic `seek()` command event sequence.
+
+## 7. Playback and Dwell Events
 
 ### `playback.started`
 
-Continuous playback intent begins from a stable boundary.
+Continuous playback intent begins.
 
 ### `playback.paused`
 
 Learner-controlled time is paused.
 
-If emitted during an in-flight transition, include `transition_id` and current normalized progress in `details.transition_progress`.
+If pause occurs during an in-flight transition, include `transition_id` and `details.transition_progress`.
+
+If pause occurs during dwell, include `details.dwell_remaining_ms`.
 
 ### `playback.resumed`
 
-A paused in-flight transition resumes.
+A paused transition or dwell resumes.
 
 ### `playback.stopped`
 
-Continuous playback intent ends because of explicit stop-equivalent behavior, restart, final-step settlement, or fault. The reason belongs in structured details.
+Continuous playback intent ends.
+
+Initial reason values include:
+
+```text
+navigation
+restart
+at_end
+fault
+dispose
+```
+
+Every discrete navigation command clears continuous playback intent. If playback was active, `playback.stopped` precedes the new navigation settlement sequence.
+
+### `dwell.started`
+
+Optional but recommended runtime evidence that an authored dwell interval began after a stable commit during continuous playback.
+
+Suggested fields:
+
+```text
+step_id
+details.dwell_ms
+```
+
+### `dwell.completed`
+
+Optional evidence that dwell expired normally and Runtime may begin the next transition.
+
+### `dwell.cancelled`
+
+Optional evidence that pause-preserved or active dwell was cancelled by navigation, restart, fault, or disposal.
+
+Dwell events are Runtime-owned.
 
 ## 8. Transition Events
 
@@ -268,27 +282,23 @@ to_step
 
 ### `transition.cancelled`
 
-Reports that a pending transition was cancelled or superseded.
-
-A cancellation is expected behavior during semantic navigation and is not automatically an error.
+Reports that a pending transition was cancelled or superseded. Expected semantic navigation cancellation is not an error.
 
 ### `transition.settled`
 
 Reports successful stable renderer settlement for the destination.
 
-`transition.settled` precedes the canonical `step.changed` event for a semantic step destination.
+It precedes the Core-owned `step.changed` event when semantic position moves.
 
 ### `transition.failed`
 
-Reports that stable renderer settlement failed.
-
-The runtime may then attempt restoration of the last committed boundary.
+Reports stable renderer settlement failure.
 
 ## 9. Step Events
 
 ### `step.changed`
 
-Reports canonical semantic position commit.
+Reports a canonical semantic position commit owned by Core.
 
 Example:
 
@@ -309,68 +319,60 @@ Example:
 }
 ```
 
-An observation step may emit `step.changed` even when state and render digests are unchanged.
+An observation step emits `step.changed` even when state and render digests are unchanged.
+
+A valid no-movement command does not emit `step.changed` because no canonical commit occurred.
 
 ### `step.initial`
 
-Optional initialization evidence indicating settlement at the initial boundary.
+Optional initialization evidence indicating stable settlement at the canonical `initial` boundary.
 
-Implementations may instead represent initialization through instance and renderer events as long as replay evidence can prove the initial state deterministically.
+When emitted:
+
+```text
+step_id = initial
+component = core
+```
 
 ## 10. Commentary Events
 
 ### `commentary.active.changed`
 
-Reports that the active commentary projection moved to a new semantic step.
+Reports movement of the active authored commentary entry.
+
+At `initial`, there is no authored active commentary entry in v1. A transition to `initial` may therefore report the active entry clearing through structured details.
 
 ### `commentary.frontier.changed`
 
 Reports an increase or explicit restart reset of the reveal frontier.
 
-Backward seeks do not emit a frontier decrease.
+The initial frontier is `initial`.
 
-A restart reset may set the frontier to the initial value and should state the reason in details.
+Backward seeks do not reduce the frontier. Restart may reset it to `initial`.
 
 ### `commentary.autofollow.changed`
 
-Optional UI-observation event for harness accessibility/interaction coverage. It has no authority over semantic position.
+Optional UI-observation event with no semantic authority.
 
 ## 11. Renderer Events
 
 ### `renderer.mounted`
 
-Reports successful renderer mount for the instance.
+Reports successful renderer mount.
 
 ### `renderer.settled`
 
-Optional renderer-level evidence that a specific render call completed stable output.
-
-The runtime-level `transition.settled` remains the semantic settlement event.
+Optional renderer-level evidence that a render call completed stable output. Runtime-level `transition.settled` remains the semantic settlement event.
 
 ### `renderer.cancelled`
 
-Optional evidence that an in-flight render honored cancellation.
+Reports or optionally records that an in-flight render honored expected cancellation.
+
+Expected abort is not `renderer.error` and does not trigger fault recovery by itself.
 
 ### `renderer.error`
 
 Reports a renderer-owned failure.
-
-Example:
-
-```json
-{
-  "schema": "localis.cim.event/v1",
-  "instance_id": "cim-17",
-  "sequence": 23,
-  "timestamp_ms": 3310,
-  "component": "renderer",
-  "event": "renderer.error",
-  "transition_id": "txn-19",
-  "step_id": "step-03",
-  "error_code": "CIM-RND-004",
-  "result": "failed"
-}
-```
 
 ### `renderer.disposed`
 
@@ -380,53 +382,47 @@ Reports completed renderer disposal.
 
 ### `recovery.started`
 
-Reports that runtime began restoration to a known committed stable boundary.
+Runtime began restoration to a known committed stable boundary.
 
 ### `recovery.succeeded`
 
-Reports successful restoration.
-
-Result is `recovered`.
+Restoration succeeded. Result is `recovered`.
 
 ### `recovery.failed`
 
-Reports that restoration failed and the instance cannot resume normal playback.
+Restoration failed and normal playback cannot continue.
 
 ### `instance.faulted`
 
-Reports transition to the terminal runtime fault state for normal playback.
+Core entered terminal runtime fault state for normal playback.
 
 ### `host.fallback.shown`
 
-Reports that the host exposed the static fallback or unavailable presentation for the failed instance.
-
-The surrounding page must remain usable.
+Host exposed the static fallback or unavailable presentation while preserving the surrounding page.
 
 ## 13. Validation and Loading Events
 
 ### `experience.validation.succeeded`
 
-Optional runtime diagnostic confirming that the shared schema gate passed.
+Optional evidence that the shared schema gate passed.
 
 ### `experience.validation.failed`
 
-Reports failure of the shared experience validation gate.
-
-Include stable validation code(s) or structured diagnostics in `details`.
+Reports schema-gate failure, including stable validation diagnostics.
 
 ### `renderer.resolve.failed`
 
-Reports that the requested renderer identifier could not be resolved.
+Reports unresolved renderer identifier.
 
 ### `experience.load.failed`
 
-Reports host/runtime inability to obtain the experience definition.
+Reports inability to obtain the experience definition.
 
 ## 14. Accessibility Evidence
 
-Accessibility is a cross-cutting contract rather than a control subsystem.
+Accessibility is cross-cutting rather than a control subsystem.
 
-The harness may record semantic accessibility evidence such as:
+The harness may record evidence such as:
 
 ```text
 accessibility.focus.changed
@@ -434,15 +430,11 @@ accessibility.announcement
 accessibility.reduced_motion.applied
 ```
 
-These events are intended for verification and diagnostics. They cannot command playback or semantic navigation.
-
-The exact required accessibility event subset may expand as the accessibility module is specified.
+These events cannot command playback or semantic navigation.
 
 ## 15. Render and State Digests
 
-Harness evidence may associate canonical state and render digests with settlement events or assertion records.
-
-Recommended evidence shape:
+Harness evidence may associate canonical state and render digests with settlement events or assertion records:
 
 ```json
 {
@@ -454,15 +446,17 @@ Recommended evidence shape:
 
 Digests are evidence, not semantic identifiers.
 
-Two different semantic positions may intentionally have the same digest values.
+Two different semantic positions may intentionally have identical digest values.
 
-The harness canonicalizer owns `render_digest` normalization. Renderer code does not provide its own conformance digest.
+The harness canonicalizer owns render-digest normalization. Renderer code does not provide its own conformance digest.
 
-## 16. Frame-Level Data
+## 16. Frame-Level and Scrub-Preview Data
 
-Animation-frame events, per-frame transforms, and high-frequency renderer ticks are outside the normal semantic event stream.
+Animation-frame events, per-frame transforms, high-frequency renderer ticks, and pointer-level scrub-preview changes are outside the semantic event stream.
 
-A specialized performance profiler may capture such data separately, but that stream must not redefine semantic ordering or replay authority.
+A specialized profiler may capture such data separately, but that data cannot redefine semantic ordering or replay authority.
+
+V1 scrub emits semantic events only when the gesture commits its single `seek()`.
 
 ## 17. Replay Contract
 
@@ -472,42 +466,46 @@ Deterministic replay stores or reconstructs:
 scenario
 seed
 engine version
+renderer identifier/version
 experience version
 validated experience
+effective runtime configuration
 command sequence
+command source where semantically relevant
 command timing on the virtual clock
 ```
 
-Replay reissues commands through the same runtime interfaces used by normal operation.
+Replay reissues commands through normal runtime interfaces.
 
 The resulting semantic event stream and evidence are compared with expected or recorded results.
 
-Replay does not drive runtime by feeding prior semantic events back into the engine.
+Replay does not drive Runtime by feeding prior semantic events back into the engine.
 
 ## 18. Initial Event Catalog
 
-The initial v1 catalog is:
-
 ```text
-command.received               optional
+command.received                optional
 command.accepted
 command.rejected
 playback.started
 playback.paused
 playback.resumed
 playback.stopped
+dwell.started                   optional/recommended
+dwell.completed                 optional/recommended
+dwell.cancelled                 optional/recommended
 transition.started
 transition.cancelled
 transition.settled
 transition.failed
 step.changed
-step.initial                   optional
+step.initial                    optional
 commentary.active.changed
 commentary.frontier.changed
-commentary.autofollow.changed  optional
+commentary.autofollow.changed   optional
 renderer.mounted
-renderer.settled               optional
-renderer.cancelled             optional
+renderer.settled                optional
+renderer.cancelled              optional
 renderer.error
 renderer.disposed
 recovery.started
@@ -519,8 +517,8 @@ experience.validation.succeeded optional
 experience.validation.failed
 renderer.resolve.failed
 experience.load.failed
-accessibility.focus.changed     verification
-accessibility.announcement      verification
+accessibility.focus.changed      verification
+accessibility.announcement       verification
 accessibility.reduced_motion.applied verification
 ```
 
@@ -528,14 +526,19 @@ Adding an event in v1 must not change the meaning or required ordering of an alr
 
 ## 19. Harness Assertions
 
-The harness must be able to assert from the event stream that:
+The harness must be able to assert that:
 
 - command order is deterministic;
+- all semantic timestamps come from the injected clock;
+- `initial` is represented consistently rather than as `null`;
 - transition start precedes settlement or cancellation;
 - stale cancelled transitions cannot settle successfully;
-- semantic commit occurs only after stable settlement;
+- semantic commit occurs only after stable settlement and is Core-owned;
 - observation steps advance semantic position even when digests remain equal;
-- pause and resume preserve transition identity and progress semantics;
+- valid start/end boundary commands are accepted `no_change` results rather than rejections;
+- navigation clears continuous playback intent;
+- pause and resume preserve transition or dwell timing semantics;
+- scrub commit emits one seek and drag preview emits no semantic seek;
 - faults precede recovery attempts;
 - recovery outcome is explicit;
 - unrecoverable failures lead to instance fault/fallback evidence;
