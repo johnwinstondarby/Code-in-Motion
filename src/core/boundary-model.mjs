@@ -7,6 +7,10 @@ import {
 } from '../contracts/session.mjs';
 
 const COMMAND_SET = new Set(NAVIGATION_COMMAND_VALUES);
+const LIFECYCLE_REJECTION_REASONS = new Set([
+  NAVIGATION_REASON.FAULTED,
+  NAVIGATION_REASON.DISPOSED
+]);
 
 function requireStepIds(stepIds) {
   if (!Array.isArray(stepIds) || stepIds.length === 0) {
@@ -102,12 +106,26 @@ export function createBoundaryModel(stepIds) {
     return stepId;
   }
 
-  function resolve(currentStepId, pendingTargetStepId, requestInput) {
+  function resolve(currentStepId, pendingTargetStepId, requestInput, lifecycleRejectionReason = null) {
     const fromStepId = requireKnownBoundary(currentStepId, 'currentStepId');
     if (pendingTargetStepId !== null) {
       requireKnownBoundary(pendingTargetStepId, 'pendingTargetStepId');
     }
     const request = requireRequest(requestInput);
+
+    if (lifecycleRejectionReason !== null) {
+      if (!LIFECYCLE_REJECTION_REASONS.has(lifecycleRejectionReason)) {
+        throw new TypeError('lifecycleRejectionReason must be faulted, disposed, or null.');
+      }
+      return resolution(
+        request.command,
+        COMMAND_RESULT.REJECTED,
+        fromStepId,
+        null,
+        lifecycleRejectionReason
+      );
+    }
+
     const currentIndex = indexById.get(fromStepId);
 
     switch (request.command) {

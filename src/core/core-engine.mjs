@@ -1,5 +1,6 @@
 import {
   INITIAL_BOUNDARY_ID,
+  NAVIGATION_REASON,
   SESSION_STATUS,
   SESSION_STATUS_VALUES
 } from '../contracts/session.mjs';
@@ -168,6 +169,12 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion, 
     }
   }
 
+  function lifecycleRejectionReason() {
+    if (state.status === SESSION_STATUS.FAULTED) return NAVIGATION_REASON.FAULTED;
+    if (state.status === SESSION_STATUS.DISPOSED) return NAVIGATION_REASON.DISPOSED;
+    return null;
+  }
+
   const read = Object.freeze({
     snapshot() {
       return snapshot(state);
@@ -179,7 +186,12 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion, 
 
   const navigation = Object.freeze({
     resolve(request) {
-      return boundaries.resolve(state.currentStepId, state.targetStepId, request);
+      return boundaries.resolve(
+        state.currentStepId,
+        state.targetStepId,
+        request,
+        lifecycleRejectionReason()
+      );
     }
   });
 
