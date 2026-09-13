@@ -11,5 +11,8 @@
     "check:architecture": "node tools/check-architecture-boundaries.mjs",
     "test": "node --test",
     "verify": "npm run check:schema && npm run check:architecture && npm test"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0"
   }
 }
