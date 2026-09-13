@@ -10,14 +10,14 @@ Fault injection belongs to the synthetic harness. Fault handling belongs to the 
 
 ## 2. Error-Code Namespaces
 
-V1 uses stable component namespaces:
+V1 uses stable component or subsystem namespaces:
 
 ```text
-CIM-HST-*   host / loading / fallback
+CIM-HST-*   host / loading / fallback / deep-link resolution
 CIM-EXP-*   experience validation and resolution
 CIM-CORE-*  canonical semantic-state operations
 CIM-RT-*    runtime orchestration and scheduling
-CIM-RND-*   renderer lifecycle and settlement
+CIM-RND-*   renderer subsystem, including renderer resolution, lifecycle, and settlement
 CIM-COM-*   commentary projection
 CIM-TRN-*   transport input and mapping
 CIM-TEL-*   telemetry/evidence sinks
@@ -25,11 +25,15 @@ CIM-TEL-*   telemetry/evidence sinks
 
 Expected cancellation is not a fault. Renderer cancellation is reported as `renderer.cancelled` rather than `renderer.error`.
 
+`CIM-TRN-*` is reserved for transport input/mapping faults; the initial v1 matrix does not yet assign a transport fault code.
+
+Within the renderer subsystem, `CIM-RND-002` and `CIM-RND-003` are reserved for later v1 renderer-lifecycle assignments so existing published codes do not need renumbering. `CIM-RND-001` covers renderer resolution even though Runtime composition invokes the resolver.
+
 ## 3. Recovery Classes
 
 ### Reject
 
-The requested operation is invalid before mutation. Canonical state remains unchanged.
+The requested operation is invalid before mutation. Canonical state remains unchanged or initialization resolves to a defined safe boundary.
 
 ### Recover
 
@@ -48,6 +52,7 @@ A callback or completion belongs to a superseded transition. It is discarded wit
 | Condition | Owning component | Recovery class | Canonical anchor | Learner-facing outcome | Initial code |
 |---|---|---|---|---|---|
 | Experience load fails | Host / experience loader | Fallback | No runtime session required | Static fallback; page remains usable | `CIM-HST-001` |
+| Invalid or unresolvable CiM deep-link target | Host / Runtime deep-link resolver | Reject | `initial` when an experience can be initialized | Diagnostic recorded; experience opens at `initial`; page remains usable | `CIM-HST-002` |
 | Unsupported schema | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus diagnostic | `CIM-EXP-001` |
 | Invalid/incomplete experience | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus validation diagnostic | `CIM-EXP-002` |
 | Duplicate step ID | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus duplicate-ID diagnostic | `CIM-EXP-003` |
@@ -68,10 +73,10 @@ A callback or completion belongs to a superseded transition. It is discarded wit
 ## 5. Ownership Rules
 
 - Core rejects invalid semantic destinations and owns canonical commit/fault status.
-- Runtime coordinates transition cancellation, stale-work rejection, restoration requests, and cross-component settlement.
-- Renderer owns visual settlement failures and restoration rendering.
+- Runtime coordinates transition cancellation, stale-work rejection, restoration requests, status-write requests, and cross-component settlement.
+- Renderer owns visual settlement failures and restoration rendering; the renderer subsystem namespace also covers renderer resolution.
 - Experience validation failures occur before normal playback.
-- Host owns page-level fallback after initialization or loading failure.
+- Host owns page-level fallback after initialization or loading failure and participates in deterministic deep-link fallback.
 - Telemetry failure cannot command or stop otherwise healthy runtime behavior unless required evidence is explicitly configured as a test gate in the harness.
 
 ## 6. Recovery Evidence
@@ -102,6 +107,7 @@ The harness must inject and verify at least:
 - invalid dwell;
 - unknown renderer identifier;
 - invalid seek;
+- invalid or unresolvable deep-link target;
 - renderer throw during transition;
 - incomplete renderer settlement;
 - failed renderer restoration;
