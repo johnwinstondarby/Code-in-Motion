@@ -28,6 +28,14 @@ The harness may instantiate production modules through their documented public s
 
 Production code must never import harness code. The harness must never participate in normal production control flow. Renderers cannot supply their own conformance-normalization rules.
 
+## DOM/SVG canonicalization
+
+`canonicalize-dom-svg.mjs` implements the harness-owned `cim-dom-svg/v1` canonicalizer and `render_digest` evidence surface used by renderer conformance.
+
+The concrete v1 normalization policy is normative in `docs/DOM-SVG-CANONICALIZER-v1.md`. A renderer cannot alter that policy. Any change to canonicalization semantics requires a new `canonicalizer_id`.
+
+The canonicalizer is intentionally conservative. Undocumented DOM/SVG differences remain evidence differences.
+
 ## Verification
 
 A run is reproducible from scenario, seed, engine version, experience version, and virtual clock. Expected results are declared independently from the implementation being tested.
