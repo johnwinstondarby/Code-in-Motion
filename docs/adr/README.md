@@ -1,0 +1,43 @@
+# Architecture Decision Records
+
+## Purpose
+
+ADRs preserve decisions that constrain multiple CiM components or future implementations.
+
+## Accepted decisions
+
+| ADR | Decision | Date | Status |
+|---|---|---|---|
+| [`0001`](0001-canonical-runtime-ownership.md) | Canonical Runtime Ownership | 2026-09-12 | Accepted |
+| [`0002`](0002-control-vs-observation.md) | Control Versus Observation | 2026-09-12 | Accepted |
+| [`0003`](0003-absolute-state-rendering.md) | Absolute-State Rendering | 2026-09-12 | Accepted |
+| [`0004`](0004-authoring-ingestion.md) | Authoring and Experience Ingestion | 2026-09-12 | Accepted |
+| [`0005`](0005-semantic-navigation-and-abort.md) | Semantic Navigation and In-Flight Transition Handling | 2026-09-12 | Accepted |
+| [`0006`](0006-transition-pacing-and-dwell.md) | Transition Pacing and Dwell Ownership | 2026-09-12 | Accepted |
+| [`0007`](0007-semantic-scrub-contract.md) | Semantic Scrub Contract | 2026-09-12 | Accepted |
+
+## Owns
+
+- Decision context
+- Chosen rule
+- Consequences and rejected alternatives
+- Supersession history
+
+## Does not own
+
+- Routine implementation notes
+- Feature-specific TODO lists
+
+## Allowed dependencies
+
+ADRs may reference normative files under `docs/` and affected component READMEs.
+
+## Prohibited dependencies
+
+An ADR must not silently redefine a public contract without updating the corresponding normative specification.
+
+## Verification
+
+Each ADR is numbered, dated in this index, assigned a status, and linked to the normative specification or component boundary it affects.
+
+A superseding ADR must identify the prior ADR and the normative documents changed by the new decision.
