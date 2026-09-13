@@ -46,6 +46,8 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion, 
     error: null
   };
   const boundaries = createBoundaryModel(stepIds);
+  const boundaryIds = boundaries.boundaryIds();
+  const boundaryIndex = new Map(boundaryIds.map((stepId, index) => [stepId, index]));
 
   function assertMutable() {
     if (state.status === SESSION_STATUS.DISPOSED) {
@@ -74,12 +76,19 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion, 
     return expected;
   }
 
+  function advanceRevealFrontier(stepId) {
+    const target = requireKnownBoundary(stepId, 'stepId');
+    if (boundaryIndex.get(target) > boundaryIndex.get(state.revealFrontier)) {
+      state.revealFrontier = target;
+    }
+  }
+
   const read = Object.freeze({
     snapshot() {
       return snapshot(state);
     },
     boundaryIds() {
-      return boundaries.boundaryIds();
+      return boundaryIds;
     }
   });
 
@@ -107,6 +116,7 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion, 
       const target = requirePendingTarget(expectedStepId, 'commitTarget');
       state.currentStepId = target;
       state.targetStepId = null;
+      advanceRevealFrontier(target);
       return snapshot(state);
     },
 
@@ -114,6 +124,21 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion, 
       assertMutable();
       requirePendingTarget(expectedStepId, 'abandonTarget');
       state.targetStepId = null;
+      return snapshot(state);
+    },
+
+    commitRestart() {
+      assertMutable();
+      if (state.targetStepId !== null) {
+        requirePendingTarget(INITIAL_BOUNDARY_ID, 'commitRestart');
+      } else if (state.currentStepId !== INITIAL_BOUNDARY_ID) {
+        throw new CoreStateTransitionError(
+          'commitRestart requires initial to be the committed boundary or the active pending target.'
+        );
+      }
+      state.currentStepId = INITIAL_BOUNDARY_ID;
+      state.targetStepId = null;
+      state.revealFrontier = INITIAL_BOUNDARY_ID;
       return snapshot(state);
     }
   });

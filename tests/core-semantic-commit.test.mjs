@@ -22,6 +22,7 @@ test('beginTarget records a pending destination without advancing the committed 
 
   assert.equal(result.currentStepId, INITIAL_BOUNDARY_ID);
   assert.equal(result.targetStepId, 'step-01');
+  assert.equal(result.revealFrontier, INITIAL_BOUNDARY_ID);
   assert.equal(core.read.snapshot().currentStepId, INITIAL_BOUNDARY_ID);
   assert.equal(core.read.snapshot().targetStepId, 'step-01');
 });
@@ -47,13 +48,14 @@ test('one Core instance holds at most one pending semantic target', () => {
   assert.equal(core.read.snapshot().targetStepId, 'step-01');
 });
 
-test('commitTarget atomically advances currentStepId and clears the pending target', () => {
+test('commitTarget atomically advances currentStepId, clears the pending target, and reveals the committed boundary', () => {
   const core = makeCore();
   core.semanticControl.beginTarget('step-01');
   const committed = core.semanticControl.commitTarget('step-01');
 
   assert.equal(committed.currentStepId, 'step-01');
   assert.equal(committed.targetStepId, null);
+  assert.equal(committed.revealFrontier, 'step-01');
   assert.equal(core.read.snapshot().currentStepId, 'step-01');
   assert.equal(core.read.snapshot().targetStepId, null);
 });
@@ -90,6 +92,7 @@ test('abandonTarget clears only the expected target and preserves currentStepId'
   const abandoned = core.semanticControl.abandonTarget('step-02');
   assert.equal(abandoned.currentStepId, 'step-01');
   assert.equal(abandoned.targetStepId, null);
+  assert.equal(abandoned.revealFrontier, 'step-01');
 });
 
 test('stale abandon cannot clear a different active target', () => {
@@ -115,7 +118,7 @@ test('paused transition preserves committed and pending semantic positions', () 
   assert.equal(paused.targetStepId, 'step-01');
 });
 
-test('semantic control does not change status, reveal frontier, or error fields', () => {
+test('target lifecycle leaves status and error unchanged and reveals only on successful commit', () => {
   const core = makeCore();
   const before = core.read.snapshot();
   core.semanticControl.beginTarget('step-01');
@@ -127,6 +130,6 @@ test('semantic control does not change status, reveal frontier, or error fields'
   assert.equal(pending.revealFrontier, before.revealFrontier);
   assert.equal(pending.error, before.error);
   assert.equal(committed.status, before.status);
-  assert.equal(committed.revealFrontier, before.revealFrontier);
+  assert.equal(committed.revealFrontier, 'step-01');
   assert.equal(committed.error, before.error);
 });

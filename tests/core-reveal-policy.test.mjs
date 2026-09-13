@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { CoreStateTransitionError, createCoreEngine } from '../src/core/core-engine.mjs';
+import { INITIAL_BOUNDARY_ID } from '../src/contracts/session.mjs';
+
+function makeCore(){return createCoreEngine({instanceId:'instance-01',experienceId:'synthetic-core',experienceVersion:'1.0.0',stepIds:['step-01','step-02','step-03','step-04']});}
+function settle(core, stepId){core.semanticControl.beginTarget(stepId);return core.semanticControl.commitTarget(stepId);}
+
+test('successful forward commits advance revealFrontier monotonically',()=>{const core=makeCore();settle(core,'step-01');assert.equal(core.read.snapshot().revealFrontier,'step-01');settle(core,'step-03');assert.equal(core.read.snapshot().revealFrontier,'step-03');});
+test('backward commit changes active semantic position without lowering revealFrontier',()=>{const core=makeCore();settle(core,'step-03');settle(core,'step-01');const s=core.read.snapshot();assert.equal(s.currentStepId,'step-01');assert.equal(s.revealFrontier,'step-03');});
+test('home to initial preserves previously revealed commentary',()=>{const core=makeCore();settle(core,'step-03');const home=core.navigation.resolve({command:'home'});core.semanticControl.beginTarget(home.toStepId);const s=core.semanticControl.commitTarget(home.toStepId);assert.equal(s.currentStepId,INITIAL_BOUNDARY_ID);assert.equal(s.revealFrontier,'step-03');});
+test('end reveals through the final semantic boundary',()=>{const core=makeCore();settle(core,'step-01');const end=core.navigation.resolve({command:'end'});core.semanticControl.beginTarget(end.toStepId);const s=core.semanticControl.commitTarget(end.toStepId);assert.equal(s.currentStepId,'step-04');assert.equal(s.revealFrontier,'step-04');});
+test('restart commit resets pending destination and reveal frontier only after initial is settled',()=>{const core=makeCore();settle(core,'step-03');const restart=core.navigation.resolve({command:'restart'});core.semanticControl.beginTarget(restart.toStepId);const pending=core.read.snapshot();assert.equal(pending.revealFrontier,'step-03');const s=core.semanticControl.commitRestart();assert.equal(s.currentStepId,INITIAL_BOUNDARY_ID);assert.equal(s.targetStepId,null);assert.equal(s.revealFrontier,INITIAL_BOUNDARY_ID);});
+test('restart at an already stable initial boundary can reset a preserved frontier',()=>{const core=makeCore();settle(core,'step-03');settle(core,INITIAL_BOUNDARY_ID);assert.equal(core.read.snapshot().revealFrontier,'step-03');const s=core.semanticControl.commitRestart();assert.equal(s.currentStepId,INITIAL_BOUNDARY_ID);assert.equal(s.revealFrontier,INITIAL_BOUNDARY_ID);});
+test('commitRestart fails closed when initial is neither committed nor pending',()=>{const core=makeCore();settle(core,'step-02');const before=core.read.snapshot();assert.throws(()=>core.semanticControl.commitRestart(),CoreStateTransitionError);assert.deepEqual(core.read.snapshot(),before);});
+test('commitRestart cannot erase a non-initial pending target',()=>{const core=makeCore();settle(core,'step-01');core.semanticControl.beginTarget('step-02');const before=core.read.snapshot();assert.throws(()=>core.semanticControl.commitRestart(),CoreStateTransitionError);assert.deepEqual(core.read.snapshot(),before);});

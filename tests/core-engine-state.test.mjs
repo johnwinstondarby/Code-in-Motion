@@ -54,7 +54,7 @@ test('read, navigation, semantic mutation, and status capabilities are structura
   assert.deepEqual(Object.keys(core), ['read', 'navigation', 'semanticControl', 'statusControl']);
   assert.deepEqual(Reflect.ownKeys(core.read), ['snapshot', 'boundaryIds']);
   assert.deepEqual(Reflect.ownKeys(core.navigation), ['resolve']);
-  assert.deepEqual(Reflect.ownKeys(core.semanticControl), ['beginTarget', 'commitTarget', 'abandonTarget']);
+  assert.deepEqual(Reflect.ownKeys(core.semanticControl), ['beginTarget', 'commitTarget', 'abandonTarget', 'commitRestart']);
   assert.deepEqual(Reflect.ownKeys(core.statusControl), ['setStatus']);
   assert.equal('setStatus' in core.read, false);
   assert.equal('setStatus' in core.navigation, false);
@@ -62,6 +62,9 @@ test('read, navigation, semantic mutation, and status capabilities are structura
   assert.equal('commitTarget' in core.read, false);
   assert.equal('commitTarget' in core.navigation, false);
   assert.equal('commitTarget' in core.statusControl, false);
+  assert.equal('commitRestart' in core.read, false);
+  assert.equal('commitRestart' in core.navigation, false);
+  assert.equal('commitRestart' in core.statusControl, false);
   assert.equal(Object.isFrozen(core), true);
   assert.equal(Object.isFrozen(core.read), true);
   assert.equal(Object.isFrozen(core.navigation), true);
@@ -104,6 +107,10 @@ test('disposed Core state is terminal', () => {
   );
   assert.throws(
     () => core.semanticControl.beginTarget('step-01'),
+    (error) => error instanceof CoreStateTransitionError && /terminal/.test(error.message)
+  );
+  assert.throws(
+    () => core.semanticControl.commitRestart(),
     (error) => error instanceof CoreStateTransitionError && /terminal/.test(error.message)
   );
   assert.equal(core.read.snapshot().status, SESSION_STATUS.DISPOSED);

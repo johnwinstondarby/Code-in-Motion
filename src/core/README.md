@@ -57,6 +57,7 @@ semanticControl
   beginTarget(stepId)
   commitTarget(expectedStepId)
   abandonTarget(expectedStepId)
+  commitRestart()
 
 statusControl
   setStatus(nextStatus)
@@ -72,7 +73,15 @@ statusControl
 
 `abandonTarget(expectedStepId)` clears only the matching pending target and preserves `currentStepId`. Renderer failure or cancellation can therefore leave the last committed semantic boundary as the recovery anchor required by `CIM-SPEC.md` §9.
 
-Checkpoint 3 does not mutate status, reveal frontier, or canonical error as a side effect of target begin/commit/abandon. Reveal policy, restart reset behavior, and canonical fault settlement remain later Core checkpoints.
+## Checkpoint 4 reveal frontier and restart policy
+
+Successful ordinary semantic commits advance `revealFrontier` to the later of its existing high-water mark and the committed destination. This makes reveal state monotonic across normal navigation. Forward playback, forward seek, deep-link-style arrival, and `end()` can advance the frontier. Backward seek, `previous()`, and `home()` can change `currentStepId` without hiding commentary already revealed.
+
+`beginTarget()` and `abandonTarget()` do not reveal commentary. Reveal advancement occurs only after `commitTarget()` confirms stable settlement.
+
+`restart()` is the single v1 operation allowed to lower the reveal frontier. Runtime resolves restart to `initial`, settles that destination, then calls `commitRestart()`. The operation succeeds when `initial` is the active pending target, or when `initial` is already the committed stable boundary. It sets `currentStepId` to `initial`, clears `targetStepId`, and resets `revealFrontier` to `initial` synchronously. A different active target or an unstabilized non-initial position fails closed without changing state.
+
+Canonical error classification and restart-specific clearing of recoverable error state remain part of the later fault-state checkpoint because Core does not yet have a typed error model that can distinguish recoverable transient faults from terminal faults.
 
 `statusControl` remains the privileged activity-status capability. Production composition code may retain it only in Runtime. The read and navigation capabilities contain no mutation authority.
 
@@ -105,5 +114,7 @@ Checkpoint 1 proves exact initial state, frozen read snapshots, structural separ
 Checkpoint 2 proves canonical boundary ordering, exact navigation-request validation, non-wrapping next/previous behavior, valid and invalid seek behavior, home/end/restart destination resolution, semantic advancement independent of subject-state identity, and zero canonical-state mutation during stable-boundary resolution.
 
 Checkpoint 3 proves one-pending-target ownership, target validation, atomic commit-and-clear, stale commit and stale abandon rejection, failure/cancellation preservation of the committed recovery anchor, paused-transition position preservation, and in-flight `previous()` semantics.
+
+Checkpoint 4 proves monotonic reveal advancement on successful commit, backward-navigation reveal preservation, `home()` preservation, `end()` advancement, transactional restart reset, stable-initial restart reset, and fail-closed restart guards.
 
 The full Core implementation gate must additionally prove that only Runtime receives privileged Core mutation capabilities.
