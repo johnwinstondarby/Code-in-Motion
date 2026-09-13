@@ -1,0 +1,16 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "synthetic-null-initial",
+  "renderer": "synthetic/v1",
+  "initial_state": null,
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "Step",
+      "commentary": { "text": "Text.", "links": [] },
+      "state": { "value": "B" }
+    }
+  ]
+}

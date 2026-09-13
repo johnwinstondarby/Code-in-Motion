@@ -1,0 +1,17 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "invalid-negative-dwell",
+  "renderer": "synthetic/v1",
+  "initial_state": { "value": "A" },
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "Invalid dwell",
+      "commentary": { "text": "Negative dwell is invalid.", "links": [] },
+      "state": { "value": "B" },
+      "dwell_ms": -1
+    }
+  ]
+}

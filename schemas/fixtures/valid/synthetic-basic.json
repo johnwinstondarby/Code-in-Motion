@@ -1,0 +1,70 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "synthetic-basic",
+  "renderer": "synthetic/v1",
+  "renderer_config": {
+    "layout": "linear"
+  },
+  "initial_state": {
+    "value": "A"
+  },
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "Change to B",
+      "marker": "B",
+      "commentary": {
+        "text": "State changes to B.",
+        "links": []
+      },
+      "state": {
+        "value": "B"
+      }
+    },
+    {
+      "id": "step-02",
+      "label": "Observe B",
+      "marker": "OBSERVE",
+      "commentary": {
+        "text": "The process is observed without changing state.",
+        "links": [
+          {
+            "id": "reference",
+            "label": "Reference",
+            "href": "/reference/"
+          }
+        ]
+      },
+      "state": {
+        "value": "B"
+      },
+      "dwell_ms": 1200
+    },
+    {
+      "id": "step-03",
+      "label": "Change to C",
+      "marker": "C",
+      "commentary": {
+        "text": "State changes to C.",
+        "links": []
+      },
+      "state": {
+        "value": "C"
+      }
+    },
+    {
+      "id": "step-04",
+      "label": "Change to D",
+      "marker": "D",
+      "commentary": {
+        "text": "State changes to D.",
+        "links": []
+      },
+      "state": {
+        "value": "D"
+      }
+    }
+  ]
+}

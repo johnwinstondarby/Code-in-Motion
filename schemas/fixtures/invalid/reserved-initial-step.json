@@ -1,0 +1,16 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "invalid-reserved-initial",
+  "renderer": "synthetic/v1",
+  "initial_state": { "value": "A" },
+  "steps": [
+    {
+      "id": "initial",
+      "label": "Invalid authored initial",
+      "commentary": { "text": "This authored ID is reserved.", "links": [] },
+      "state": { "value": "B" }
+    }
+  ]
+}

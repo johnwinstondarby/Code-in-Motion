@@ -1,0 +1,16 @@
+{
+  "schema": "localis.cim/v2",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "invalid-schema-version",
+  "renderer": "synthetic/v1",
+  "initial_state": { "value": "A" },
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "Wrong schema",
+      "commentary": { "text": "The schema identifier is unsupported.", "links": [] },
+      "state": { "value": "B" }
+    }
+  ]
+}

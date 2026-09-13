@@ -81,7 +81,7 @@ Optional opaque object interpreted only by the selected renderer. Core passes it
 
 ### `initial_state`
 
-Required opaque value accepted by the selected renderer.
+Required opaque, non-null value accepted by the selected renderer.
 
 It must contain enough subject state for the renderer to construct the `initial` stable boundary independently of prior renderer history.
 
@@ -152,7 +152,7 @@ Required commentary object for every v1 authored step.
 
 ### `state`
 
-Required opaque value containing the complete destination state for the selected renderer at the step's stable boundary.
+Required opaque, non-null value containing the complete destination state for the selected renderer at the step's stable boundary.
 
 Core must not inspect or normalize it. Two steps may legally contain equivalent or identical state values.
 
@@ -206,6 +206,8 @@ Required array that may be empty.
 
 Each link is structured separately from commentary text so destinations can be validated without accepting arbitrary markup.
 
+Link IDs must be unique within one commentary entry.
+
 ## 8. Commentary Link Shape
 
 The minimum v1 link shape is:
@@ -220,13 +222,25 @@ The minimum v1 link shape is:
 
 `id`, `label`, and `href` are required.
 
-The host/runtime link policy validates URL or fragment destinations and rejects executable schemes.
+`href` uses an explicit v1 allowlist. Accepted destination forms begin with:
+
+```text
+http://
+https://
+mailto:
+/
+#
+```
+
+Validators must normalize ASCII whitespace and C0 control characters for scheme analysis and reject any destination whose normalized form does not match an allowed prefix. Raw values that fail the published JSON Schema are rejected before runtime ingestion.
+
+This rule rejects executable or unapproved schemes such as `javascript:`, `data:`, `vbscript:`, and `blob:` as well as arbitrary non-URL text.
 
 Optional metadata may be added later without changing the rule that links remain structured data.
 
 ## 9. Opaque State Rule
 
-The shared schema validates that `state` and `initial_state` are present. It does not define their subject-specific internal properties.
+The shared schema validates that `state` and `initial_state` are present and non-null. It does not define their subject-specific internal properties.
 
 The selected renderer owns interpretation of those values.
 
@@ -291,7 +305,7 @@ The v1 contract prohibits:
 - executable JavaScript supplied by an experience;
 - raw HTML as an authored-content mechanism;
 - callbacks or function bodies inside experience data;
-- `javascript:` or equivalent executable link schemes;
+- link destinations outside the explicit v1 allowlist;
 - engine-control instructions embedded in `state` or `renderer_config` and interpreted by Core.
 
 Terminal/code content is represented as data and rendered as text nodes by the appropriate renderer.
@@ -306,6 +320,8 @@ An experience is loadable only when:
 - the renderer identifier resolves;
 - any renderer-owned validation required for opaque state succeeds.
 
+The v1 schema rejects unknown structural fields with `additionalProperties: false`. A later contract that adds fields must use a versioned schema contract rather than relying on a v1 validator to ignore them.
+
 Failure at any gate prevents normal playback.
 
 ## 15. Validation Failures
@@ -317,14 +333,15 @@ At minimum, validation must detect:
 - invalid version strings;
 - invalid or empty experience ID;
 - unresolved renderer identifier at composition time;
-- missing `initial_state`;
-- missing or invalid `steps` array;
+- missing or null `initial_state`;
+- missing, empty, or invalid `steps` array;
 - duplicate step IDs;
 - reserved step ID `initial`;
-- missing required step state;
+- missing or null required step state;
 - missing or malformed commentary object;
+- duplicate link IDs within one commentary entry;
 - malformed commentary link;
-- disallowed link scheme;
+- link destination outside the allowlist;
 - non-integer or negative `dwell_ms`.
 
 Authoring adapters should preserve source line/column information so human-facing tools can report errors against original source where possible.

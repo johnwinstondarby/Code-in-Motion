@@ -1,0 +1,31 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "synthetic-permissive",
+  "renderer": "synthetic/v1",
+  "renderer_config": {
+    "layout": "compact"
+  },
+  "initial_state": ["A", 0, false],
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "Permissive surface",
+      "commentary": {
+        "text": "Exercises optional fields and all supported link forms.",
+        "links": [
+          { "id": "web", "label": "Web", "href": "https://example.com/reference" },
+          { "id": "mail", "label": "Mail", "href": "mailto:docs@example.com" },
+          { "id": "root", "label": "Root", "href": "/reference/path" },
+          { "id": "fragment", "label": "Fragment", "href": "#section" }
+        ]
+      },
+      "state": false,
+      "renderer_config": {
+        "mode": "detail"
+      },
+      "dwell_ms": 0
+    }
+  ]
+}
