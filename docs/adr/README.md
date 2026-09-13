@@ -13,6 +13,8 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0003`](0003-absolute-state-rendering.md) | Absolute-State Rendering | 2026-09-12 | Accepted |
 | [`0004`](0004-authoring-ingestion.md) | Authoring and Experience Ingestion | 2026-09-12 | Accepted |
 | [`0005`](0005-semantic-navigation-and-abort.md) | Semantic Navigation and In-Flight Transition Handling | 2026-09-12 | Accepted |
+| [`0006`](0006-transition-pacing-and-dwell.md) | Transition Pacing and Dwell Ownership | 2026-09-12 | Accepted |
+| [`0007`](0007-semantic-scrub-contract.md) | Semantic Scrub Contract | 2026-09-12 | Accepted |
 
 ## Owns
 
