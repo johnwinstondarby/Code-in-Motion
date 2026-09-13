@@ -1,0 +1,9 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "synthetic-empty",
+  "renderer": "synthetic/v1",
+  "initial_state": { "value": "A" },
+  "steps": []
+}
