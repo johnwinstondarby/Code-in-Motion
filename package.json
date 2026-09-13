@@ -1,0 +1,15 @@
+{
+  "name": "code-in-motion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check:schema": "node tools/check-schema-fixtures.mjs",
+    "check:architecture": "node tools/check-architecture-boundaries.mjs",
+    "test": "node --test",
+    "verify": "npm run check:schema && npm run check:architecture && npm test"
+  }
+}
