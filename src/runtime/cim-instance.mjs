@@ -1,5 +1,6 @@
 import {
   COMMAND_RESULT,
+  CONTINUITY_COMMAND,
   INITIAL_BOUNDARY_ID,
   NAVIGATION_COMMAND,
   NAVIGATION_REASON,
@@ -24,15 +25,13 @@ import {
   isPlainObject,
   readExperienceEnvelope
 } from './runtime-data.mjs';
-import { createRendererContext } from './renderer-context.mjs';
-import {
-  createRendererAbortCapability,
-  createRendererClockCapability
-} from './renderer-capabilities.mjs';
-import { classifyRendererRejection } from './renderer-outcome.mjs';
 import { createRuntimeCoreSession } from './core-session.mjs';
 import { createRuntimeCorrelation } from './correlation.mjs';
 import { createRuntimeEventStream } from './event-stream.mjs';
+import {
+  beginRuntimeRender,
+  closeRuntimeRender
+} from './render-transition.mjs';
 
 class CiMInstance {
   #controls;
@@ -49,6 +48,7 @@ class CiMInstance {
   #initialized = false;
   #initializing = false;
   #activeTransition = null;
+  #activeDwell = null;
 
   constructor({
     instanceId,
@@ -94,15 +94,16 @@ class CiMInstance {
     });
 
     this.read = Object.freeze({
-      snapshot: () => Object.freeze({
-        canonical: this.#session.read.snapshot(),
-        operational: operational.read.snapshot()
-      }),
+      snapshot: () => {
+        this.#refreshDwellRemaining();
+        return Object.freeze({
+          canonical: this.#session.read.snapshot(),
+          operational: operational.read.snapshot()
+        });
+      },
       boundaryIds: () => this.#session.read.boundaryIds()
     });
-
     this.events = eventStream.observe;
-
     Object.freeze(this);
   }
 
@@ -120,19 +121,12 @@ class CiMInstance {
         root: this.#rendererRoot,
         instanceId: this.identity.instanceId
       }));
-
       this.#eventControl.emit({
         component: EVENT_COMPONENT.RENDERER,
         event: EVENT_NAME.RENDERER_MOUNTED,
         result: EVENT_RESULT.SUCCESS
       });
-
-      const transitionId = this.#correlation.nextTransitionId();
-      const outcome = await this.#renderInitial(transitionId);
-      if (outcome.kind !== 'settled') {
-        throw outcome.error ?? new Error('initial renderer settlement failed.');
-      }
-
+      await this.#settleInitial();
       this.#initialized = true;
       return this.read.snapshot();
     } finally {
@@ -164,40 +158,112 @@ class CiMInstance {
     return this.#submitNavigation({ command: NAVIGATION_COMMAND.RESTART }, source);
   }
 
-  async #renderInitial(transitionId) {
-    const boundary = this.#boundaryData.get(INITIAL_BOUNDARY_ID);
-    const capabilities = this.#createRenderCapabilities(transitionId);
-    const context = createRendererContext({
-      animate: false,
-      fromState: null,
-      fromStepId: null,
-      stepId: INITIAL_BOUNDARY_ID,
-      rendererConfig: this.#rendererConfig,
-      stepRendererConfig: null,
-      transitionId,
-      abortSignal: capabilities.abort.facade,
-      clock: capabilities.clock.facade,
-      reducedMotion: this.#reducedMotion
+  async play(sourceInput = COMMAND_SOURCE.HOST) {
+    const source = assertSource(sourceInput);
+    const commandId = this.#correlation.nextCommandId();
+    const command = CONTINUITY_COMMAND.PLAY;
+    const canonical = this.#session.read.snapshot();
+
+    if (!this.#initialized || this.#initializing) {
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
+    }
+    if (canonical.status === SESSION_STATUS.FAULTED) {
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.FAULTED);
+    }
+    if (canonical.status === SESSION_STATUS.DISPOSED) {
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.DISPOSED);
+    }
+    if (
+      this.#operational.playbackIntent ||
+      this.#activeTransition ||
+      this.#activeDwell ||
+      canonical.status !== SESSION_STATUS.IDLE
+    ) {
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
+    }
+
+    const nextStepId = this.#nextBoundaryId(canonical.currentStepId);
+    if (nextStepId === null) {
+      this.#eventControl.emit({
+        component: EVENT_COMPONENT.RUNTIME,
+        event: EVENT_NAME.COMMAND_ACCEPTED,
+        result: EVENT_RESULT.NO_CHANGE,
+        command_id: commandId,
+        from_step: canonical.currentStepId,
+        to_step: canonical.currentStepId,
+        details: detailsForCommand(command, source, NAVIGATION_REASON.AT_END)
+      });
+      return commandOutcome({
+        commandId,
+        command,
+        result: COMMAND_RESULT.NO_CHANGE,
+        fromStepId: canonical.currentStepId,
+        toStepId: canonical.currentStepId,
+        reason: NAVIGATION_REASON.AT_END
+      });
+    }
+
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.COMMAND_ACCEPTED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: commandId,
+      from_step: canonical.currentStepId,
+      to_step: nextStepId,
+      details: detailsForCommand(command, source)
     });
 
-    this.#controls.statusControl.setStatus(SESSION_STATUS.TRANSITIONING);
+    this.#operational.playbackIntent = true;
+    this.#controls.statusControl.setStatus(SESSION_STATUS.PLAYING);
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.PLAYBACK_STARTED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: commandId,
+      from_step: canonical.currentStepId,
+      details: { source }
+    });
+
+    let record;
+    try {
+      record = this.#launchPlayback(commandId, source, canonical.currentStepId, nextStepId);
+    } catch (error) {
+      this.#stopPlayback(commandId, 'fault', source);
+      throw error;
+    }
+
+    return commandOutcome({
+      commandId,
+      command,
+      result: COMMAND_RESULT.SUCCESS,
+      fromStepId: canonical.currentStepId,
+      toStepId: nextStepId,
+      transitionId: record.transitionId
+    });
+  }
+
+  async #settleInitial() {
+    const transitionId = this.#correlation.nextTransitionId();
+    const boundary = this.#boundaryData.get(INITIAL_BOUNDARY_ID);
+    const task = beginRuntimeRender({
+      renderer: this.#renderer,
+      scheduler: this.#scheduler,
+      rendererConfig: this.#rendererConfig,
+      reducedMotion: this.#reducedMotion,
+      transitionId,
+      stepId: INITIAL_BOUNDARY_ID,
+      state: boundary.state,
+      stepRendererConfig: null,
+      animate: false
+    });
+
     this.#setOperationalTransition(transitionId);
-
-    const renderDone = Promise.resolve()
-      .then(() => this.#renderer.render(boundary.state, context))
-      .then(
-        () => Object.freeze({ kind: 'settled' }),
-        (error) => classifyRendererRejection(error, {
-          abortSignal: capabilities.abort.facade,
-          transitionId
-        })
-      );
-
-    const outcome = await renderDone;
-    capabilities.clock.controller.revoke();
-    capabilities.abort.controller.close();
+    this.#controls.statusControl.setStatus(SESSION_STATUS.TRANSITIONING);
+    const outcome = await task.renderDone;
+    closeRuntimeRender(task);
 
     if (outcome.kind === 'settled') {
+      this.#operational.transitionProgress = 1;
       this.#eventControl.emit({
         component: EVENT_COMPONENT.RENDERER,
         event: EVENT_NAME.RENDERER_SETTLED,
@@ -214,7 +280,7 @@ class CiMInstance {
         transition_id: transitionId,
         step_id: INITIAL_BOUNDARY_ID
       });
-      return outcome;
+      return;
     }
 
     this.#clearOperationalTransition(transitionId);
@@ -225,53 +291,22 @@ class CiMInstance {
       fromStepId: INITIAL_BOUNDARY_ID,
       toStepId: INITIAL_BOUNDARY_ID
     }, outcome);
-    return outcome;
+    throw outcome.error ?? new Error('initial renderer settlement failed.');
   }
 
   async #submitNavigation(request, sourceInput) {
     const source = assertSource(sourceInput);
     const commandId = this.#correlation.nextCommandId();
     const command = request.command;
+    const canonical = this.#session.read.snapshot();
 
     if (!this.#initialized || this.#initializing) {
-      const fromStepId = this.#session.read.snapshot().currentStepId;
-      this.#eventControl.emit({
-        component: EVENT_COMPONENT.RUNTIME,
-        event: EVENT_NAME.COMMAND_REJECTED,
-        result: EVENT_RESULT.REJECTED,
-        command_id: commandId,
-        from_step: fromStepId,
-        details: detailsForCommand(command, source, NAVIGATION_REASON.INVALID_STATE)
-      });
-      return commandOutcome({
-        commandId,
-        command,
-        result: COMMAND_RESULT.REJECTED,
-        fromStepId,
-        toStepId: null,
-        reason: NAVIGATION_REASON.INVALID_STATE
-      });
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
     }
 
     const resolution = this.#session.navigation.resolve(request);
-
     if (resolution.result === COMMAND_RESULT.REJECTED) {
-      this.#eventControl.emit({
-        component: EVENT_COMPONENT.RUNTIME,
-        event: EVENT_NAME.COMMAND_REJECTED,
-        result: EVENT_RESULT.REJECTED,
-        command_id: commandId,
-        from_step: resolution.fromStepId,
-        details: detailsForCommand(command, source, resolution.reason)
-      });
-      return commandOutcome({
-        commandId,
-        command,
-        result: resolution.result,
-        fromStepId: resolution.fromStepId,
-        toStepId: resolution.toStepId,
-        reason: resolution.reason
-      });
+      return this.#rejectCommand(commandId, command, source, resolution.fromStepId, resolution.reason);
     }
 
     this.#eventControl.emit({
@@ -285,18 +320,12 @@ class CiMInstance {
     });
 
     this.#stopPlaybackForNavigation(commandId, command, source);
-
     const hadActiveTransition = this.#activeTransition !== null;
     if (hadActiveTransition) {
-      await this.#cancelActiveTransition(
-        command === NAVIGATION_COMMAND.RESTART ? 'restart' : 'navigation'
-      );
+      await this.#cancelActiveTransition(command === NAVIGATION_COMMAND.RESTART ? 'restart' : 'navigation');
     }
 
-    const requiresSettlement =
-      resolution.result === COMMAND_RESULT.SUCCESS || hadActiveTransition;
-
-    if (!requiresSettlement) {
+    if (resolution.result !== COMMAND_RESULT.SUCCESS && !hadActiveTransition) {
       return commandOutcome({
         commandId,
         command,
@@ -307,80 +336,27 @@ class CiMInstance {
       });
     }
 
-    const targetStepId = resolution.toStepId ?? resolution.fromStepId;
-    return this.#settleNavigation({
-      commandId,
-      source,
-      resolution,
-      targetStepId
-    });
+    return this.#settleDiscrete(commandId, source, resolution, resolution.toStepId ?? resolution.fromStepId);
   }
 
-  async #settleNavigation({ commandId, source, resolution, targetStepId }) {
+  async #settleDiscrete(commandId, source, resolution, targetStepId) {
     this.#controls.semanticControl.beginTarget(targetStepId);
-
-    const transitionId = this.#correlation.nextTransitionId();
-    const capabilities = this.#createRenderCapabilities(transitionId);
-    const record = {
+    const record = this.#beginTransition({
+      mode: 'navigation',
       commandId,
       command: resolution.command,
       source,
-      transitionId,
       fromStepId: resolution.fromStepId,
       toStepId: targetStepId,
-      resolution,
-      capabilities,
-      cancelled: false,
-      cancelReason: null,
-      transitionCancelledReported: false,
-      rendererOutcomeReported: false,
-      renderDone: null
-    };
-
-    this.#activeTransition = record;
-    this.#setOperationalTransition(transitionId);
-    this.#controls.statusControl.setStatus(SESSION_STATUS.TRANSITIONING);
-
-    this.#eventControl.emit({
-      component: EVENT_COMPONENT.RUNTIME,
-      event: EVENT_NAME.TRANSITION_STARTED,
-      result: EVENT_RESULT.SUCCESS,
-      command_id: commandId,
-      transition_id: transitionId,
-      from_step: resolution.fromStepId,
-      to_step: targetStepId
+      animate: false
     });
 
-    const boundary = this.#boundaryData.get(targetStepId);
-    const context = createRendererContext({
-      animate: false,
-      fromState: null,
-      fromStepId: null,
-      stepId: targetStepId,
-      rendererConfig: this.#rendererConfig,
-      stepRendererConfig: boundary.stepRendererConfig,
-      transitionId,
-      abortSignal: capabilities.abort.facade,
-      clock: capabilities.clock.facade,
-      reducedMotion: this.#reducedMotion
-    });
-
-    record.renderDone = Promise.resolve()
-      .then(() => this.#renderer.render(boundary.state, context))
-      .then(
-        () => Object.freeze({ kind: 'settled' }),
-        (error) => classifyRendererRejection(error, {
-          abortSignal: capabilities.abort.facade,
-          transitionId
-        })
-      );
-
-    const outcome = await record.renderDone;
-    capabilities.clock.controller.revoke();
-    capabilities.abort.controller.close();
+    const outcome = await record.task.renderDone;
+    closeRuntimeRender(record.task);
 
     if (record.cancelled || this.#activeTransition !== record || outcome.kind === 'cancelled') {
       this.#reportTransitionRendererOutcome(record, outcome);
+      this.#clearActiveTransition(record);
       return commandOutcome({
         commandId,
         command: resolution.command,
@@ -388,65 +364,28 @@ class CiMInstance {
         fromStepId: resolution.fromStepId,
         toStepId: targetStepId,
         reason: record.cancelReason ?? 'navigation',
-        transitionId
+        transitionId: record.transitionId
       });
     }
 
     if (outcome.kind === 'error') {
       this.#reportTransitionRendererOutcome(record, outcome);
-      this.#eventControl.emit({
-        component: EVENT_COMPONENT.RUNTIME,
-        event: EVENT_NAME.TRANSITION_FAILED,
-        result: EVENT_RESULT.FAILED,
-        command_id: commandId,
-        transition_id: transitionId,
-        from_step: resolution.fromStepId,
-        to_step: targetStepId
-      });
+      this.#emitTransitionFailed(record);
       this.#controls.semanticControl.abandonTarget(targetStepId);
       this.#clearActiveTransition(record);
       this.#controls.statusControl.setStatus(SESSION_STATUS.IDLE);
       throw outcome.error;
     }
 
-    this.#eventControl.emit({
-      component: EVENT_COMPONENT.RENDERER,
-      event: EVENT_NAME.RENDERER_SETTLED,
-      result: EVENT_RESULT.SUCCESS,
-      command_id: commandId,
-      transition_id: transitionId,
-      step_id: targetStepId
-    });
-    this.#eventControl.emit({
-      component: EVENT_COMPONENT.RUNTIME,
-      event: EVENT_NAME.TRANSITION_SETTLED,
-      result: EVENT_RESULT.SUCCESS,
-      command_id: commandId,
-      transition_id: transitionId,
-      from_step: resolution.fromStepId,
-      to_step: targetStepId
-    });
-
-    const beforeCommit = this.#session.read.snapshot();
-    const afterCommit = resolution.command === NAVIGATION_COMMAND.RESTART
+    this.#emitSettled(record);
+    const before = this.#session.read.snapshot();
+    const after = resolution.command === NAVIGATION_COMMAND.RESTART
       ? this.#controls.semanticControl.commitRestart()
       : this.#controls.semanticControl.commitTarget(targetStepId);
 
     this.#clearActiveTransition(record);
     this.#controls.statusControl.setStatus(SESSION_STATUS.IDLE);
-
-    if (beforeCommit.currentStepId !== afterCommit.currentStepId) {
-      this.#eventControl.emit({
-        component: EVENT_COMPONENT.CORE,
-        event: EVENT_NAME.STEP_CHANGED,
-        result: EVENT_RESULT.SUCCESS,
-        command_id: commandId,
-        transition_id: transitionId,
-        from_step: beforeCommit.currentStepId,
-        to_step: afterCommit.currentStepId,
-        step_id: afterCommit.currentStepId
-      });
-    }
+    this.#emitStepChanged(record, before, after);
 
     return commandOutcome({
       commandId,
@@ -455,8 +394,121 @@ class CiMInstance {
       fromStepId: resolution.fromStepId,
       toStepId: targetStepId,
       reason: resolution.reason,
-      transitionId
+      transitionId: record.transitionId
     });
+  }
+
+  #launchPlayback(commandId, source, fromStepId, toStepId) {
+    this.#controls.semanticControl.beginTarget(toStepId);
+    let record;
+    try {
+      record = this.#beginTransition({
+        mode: 'playback',
+        commandId,
+        command: CONTINUITY_COMMAND.PLAY,
+        source,
+        fromStepId,
+        toStepId,
+        animate: true
+      });
+    } catch (error) {
+      this.#controls.semanticControl.abandonTarget(toStepId);
+      throw error;
+    }
+
+    void this.#finishPlayback(record).catch(() => {
+      const canonical = this.#session.read.snapshot();
+      if (canonical.targetStepId === record.toStepId) {
+        try {
+          this.#controls.semanticControl.abandonTarget(record.toStepId);
+        } catch {}
+      }
+      this.#clearActiveTransition(record);
+      this.#stopPlayback(record.commandId, 'fault', record.source);
+    });
+    return record;
+  }
+
+  async #finishPlayback(record) {
+    const outcome = await record.task.renderDone;
+    closeRuntimeRender(record.task);
+
+    if (record.cancelled || this.#activeTransition !== record || outcome.kind === 'cancelled') {
+      this.#reportTransitionRendererOutcome(record, outcome);
+      this.#clearActiveTransition(record);
+      return;
+    }
+
+    if (outcome.kind === 'error') {
+      this.#reportTransitionRendererOutcome(record, outcome);
+      this.#emitTransitionFailed(record);
+      this.#controls.semanticControl.abandonTarget(record.toStepId);
+      this.#clearActiveTransition(record);
+      this.#stopPlayback(record.commandId, 'fault', record.source);
+      return;
+    }
+
+    this.#emitSettled(record);
+    const before = this.#session.read.snapshot();
+    const after = this.#controls.semanticControl.commitTarget(record.toStepId);
+    this.#clearActiveTransition(record);
+    this.#controls.statusControl.setStatus(SESSION_STATUS.PLAYING);
+    this.#emitStepChanged(record, before, after);
+
+    if (!this.#operational.playbackIntent) return;
+    const boundary = this.#boundaryData.get(after.currentStepId);
+    if (boundary.dwellMs > 0) {
+      this.#startDwell(record.commandId, record.source, after.currentStepId, boundary.dwellMs);
+    } else {
+      this.#continuePlayback(record.commandId, record.source, after.currentStepId);
+    }
+  }
+
+  #beginTransition({ mode, commandId, command, source, fromStepId, toStepId, animate }) {
+    const transitionId = this.#correlation.nextTransitionId();
+    const fromBoundary = this.#boundaryData.get(fromStepId);
+    const toBoundary = this.#boundaryData.get(toStepId);
+    const task = beginRuntimeRender({
+      renderer: this.#renderer,
+      scheduler: this.#scheduler,
+      rendererConfig: this.#rendererConfig,
+      reducedMotion: this.#reducedMotion,
+      transitionId,
+      stepId: toStepId,
+      state: toBoundary.state,
+      stepRendererConfig: toBoundary.stepRendererConfig,
+      animate,
+      fromStepId,
+      fromState: fromBoundary.state
+    });
+
+    const record = {
+      mode,
+      commandId,
+      command,
+      source,
+      transitionId,
+      fromStepId,
+      toStepId,
+      task,
+      cancelled: false,
+      cancelReason: null,
+      transitionCancelledReported: false,
+      rendererOutcomeReported: false
+    };
+    this.#activeTransition = record;
+    this.#setOperationalTransition(transitionId);
+    this.#controls.statusControl.setStatus(SESSION_STATUS.TRANSITIONING);
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.TRANSITION_STARTED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: commandId,
+      transition_id: transitionId,
+      from_step: fromStepId,
+      to_step: toStepId
+    });
+    return record;
   }
 
   async #cancelActiveTransition(reason) {
@@ -465,9 +517,8 @@ class CiMInstance {
 
     record.cancelled = true;
     record.cancelReason = reason;
-
     if (
-      this.#operational.activeAbortState !== null &&
+      this.#operational.activeAbortState &&
       this.#operational.activeAbortState.transitionId === record.transitionId
     ) {
       this.#operational.activeAbortState = Object.freeze({
@@ -477,9 +528,8 @@ class CiMInstance {
       });
     }
 
-    record.capabilities.abort.controller.abort(reason);
-    record.capabilities.clock.controller.revoke();
-
+    record.task.abort.controller.abort(reason);
+    record.task.clock.controller.revoke();
     const canonical = this.#session.read.snapshot();
     if (canonical.targetStepId === record.toStepId) {
       this.#controls.semanticControl.abandonTarget(record.toStepId);
@@ -499,10 +549,58 @@ class CiMInstance {
       });
     }
 
-    const outcome = await record.renderDone;
+    const outcome = await record.task.renderDone;
+    closeRuntimeRender(record.task);
     this.#reportTransitionRendererOutcome(record, outcome);
     this.#clearActiveTransition(record);
     return true;
+  }
+
+  #emitSettled(record) {
+    this.#operational.transitionProgress = 1;
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RENDERER,
+      event: EVENT_NAME.RENDERER_SETTLED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: record.commandId,
+      transition_id: record.transitionId,
+      step_id: record.toStepId
+    });
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.TRANSITION_SETTLED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: record.commandId,
+      transition_id: record.transitionId,
+      from_step: record.fromStepId,
+      to_step: record.toStepId
+    });
+  }
+
+  #emitTransitionFailed(record) {
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.TRANSITION_FAILED,
+      result: EVENT_RESULT.FAILED,
+      command_id: record.commandId,
+      transition_id: record.transitionId,
+      from_step: record.fromStepId,
+      to_step: record.toStepId
+    });
+  }
+
+  #emitStepChanged(record, before, after) {
+    if (before.currentStepId === after.currentStepId) return;
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.CORE,
+      event: EVENT_NAME.STEP_CHANGED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: record.commandId,
+      transition_id: record.transitionId,
+      from_step: before.currentStepId,
+      to_step: after.currentStepId,
+      step_id: after.currentStepId
+    });
   }
 
   #reportTransitionRendererOutcome(record, outcome) {
@@ -516,12 +614,7 @@ class CiMInstance {
     }, outcome);
   }
 
-  #emitRendererOutcome({
-    transitionId,
-    commandId,
-    fromStepId,
-    toStepId
-  }, outcome) {
+  #emitRendererOutcome({ transitionId, commandId, fromStepId, toStepId }, outcome) {
     if (outcome.kind === 'cancelled') {
       this.#eventControl.emit({
         component: EVENT_COMPONENT.RENDERER,
@@ -547,14 +640,116 @@ class CiMInstance {
     }
   }
 
-  #createRenderCapabilities(transitionId) {
-    return Object.freeze({
-      abort: createRendererAbortCapability(),
-      clock: createRendererClockCapability({
-        transitionId,
-        scheduler: this.#scheduler
-      })
+  #continuePlayback(commandId, source, fromStepId) {
+    if (!this.#operational.playbackIntent) return;
+    const nextStepId = this.#nextBoundaryId(fromStepId);
+    if (nextStepId === null) {
+      this.#stopPlayback(commandId, 'at_end', source);
+      return;
+    }
+    this.#launchPlayback(commandId, source, fromStepId, nextStepId);
+  }
+
+  #startDwell(commandId, source, stepId, dwellMs) {
+    if (!this.#operational.playbackIntent) return;
+    if (this.#activeDwell) throw new Error('Runtime cannot begin dwell while another dwell is active.');
+
+    const startedAt = this.#scheduler.now.call(this.#scheduler);
+    if (!Number.isFinite(startedAt) || startedAt < 0) {
+      throw new RangeError('CiMInstance scheduler.now() must return a finite non-negative number.');
+    }
+
+    this.#operational.dwellRemainingMs = dwellMs;
+    this.#controls.statusControl.setStatus(SESSION_STATUS.PLAYING);
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.DWELL_STARTED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: commandId,
+      step_id: stepId,
+      details: { dwell_ms: dwellMs }
     });
+
+    const record = { commandId, source, stepId, dwellMs, startedAt, handle: null };
+    this.#activeDwell = record;
+    record.handle = this.#scheduler.schedule.call(this.#scheduler, () => {
+      if (this.#activeDwell !== record) return;
+      this.#activeDwell = null;
+      this.#operational.dwellRemainingMs = 0;
+      this.#eventControl.emit({
+        component: EVENT_COMPONENT.RUNTIME,
+        event: EVENT_NAME.DWELL_COMPLETED,
+        result: EVENT_RESULT.SUCCESS,
+        command_id: commandId,
+        step_id: stepId,
+        details: { dwell_ms: dwellMs }
+      });
+      this.#continuePlayback(commandId, source, stepId);
+    }, dwellMs);
+  }
+
+  #cancelActiveDwell(reason, commandId) {
+    const record = this.#activeDwell;
+    if (!record) {
+      this.#operational.dwellRemainingMs = 0;
+      return false;
+    }
+
+    const now = this.#scheduler.now.call(this.#scheduler);
+    const elapsed = Number.isFinite(now) ? Math.max(0, now - record.startedAt) : 0;
+    const remaining = Math.max(0, record.dwellMs - elapsed);
+    this.#scheduler.cancel.call(this.#scheduler, record.handle);
+    this.#activeDwell = null;
+    this.#operational.dwellRemainingMs = 0;
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.DWELL_CANCELLED,
+      result: EVENT_RESULT.CANCELLED,
+      command_id: commandId,
+      step_id: record.stepId,
+      details: { reason, dwell_remaining_ms: remaining }
+    });
+    return true;
+  }
+
+  #stopPlaybackForNavigation(commandId, command, source) {
+    const reason = command === NAVIGATION_COMMAND.RESTART ? 'restart' : 'navigation';
+    this.#cancelActiveDwell(reason, commandId);
+    if (!this.#operational.playbackIntent) return;
+
+    this.#operational.playbackIntent = false;
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.PLAYBACK_STOPPED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: commandId,
+      details: { reason, source }
+    });
+  }
+
+  #stopPlayback(commandId, reason, source) {
+    this.#cancelActiveDwell(reason, commandId);
+    if (!this.#operational.playbackIntent) {
+      if (this.#session.read.snapshot().status === SESSION_STATUS.PLAYING) {
+        this.#controls.statusControl.setStatus(SESSION_STATUS.IDLE);
+      }
+      return false;
+    }
+
+    this.#operational.playbackIntent = false;
+    this.#operational.dwellRemainingMs = 0;
+    const canonical = this.#session.read.snapshot();
+    if (canonical.status !== SESSION_STATUS.FAULTED && canonical.status !== SESSION_STATUS.DISPOSED) {
+      this.#controls.statusControl.setStatus(SESSION_STATUS.IDLE);
+    }
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.PLAYBACK_STOPPED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: commandId,
+      details: { reason, source }
+    });
+    return true;
   }
 
   #setOperationalTransition(transitionId) {
@@ -579,20 +774,39 @@ class CiMInstance {
     this.#clearOperationalTransition(record.transitionId);
   }
 
-  #stopPlaybackForNavigation(commandId, command, source) {
-    this.#operational.dwellRemainingMs = 0;
-    if (!this.#operational.playbackIntent) return;
+  #refreshDwellRemaining() {
+    const record = this.#activeDwell;
+    if (!record) {
+      this.#operational.dwellRemainingMs = 0;
+      return;
+    }
+    const now = this.#scheduler.now.call(this.#scheduler);
+    if (!Number.isFinite(now) || now < 0) return;
+    this.#operational.dwellRemainingMs = Math.max(0, record.dwellMs - Math.max(0, now - record.startedAt));
+  }
 
-    this.#operational.playbackIntent = false;
+  #nextBoundaryId(stepId) {
+    const ids = this.#session.read.boundaryIds();
+    const index = ids.indexOf(stepId);
+    return index < 0 || index === ids.length - 1 ? null : ids[index + 1];
+  }
+
+  #rejectCommand(commandId, command, source, fromStepId, reason) {
     this.#eventControl.emit({
       component: EVENT_COMPONENT.RUNTIME,
-      event: EVENT_NAME.PLAYBACK_STOPPED,
-      result: EVENT_RESULT.SUCCESS,
+      event: EVENT_NAME.COMMAND_REJECTED,
+      result: EVENT_RESULT.REJECTED,
       command_id: commandId,
-      details: {
-        reason: command === NAVIGATION_COMMAND.RESTART ? 'restart' : 'navigation',
-        source
-      }
+      from_step: fromStepId,
+      details: detailsForCommand(command, source, reason)
+    });
+    return commandOutcome({
+      commandId,
+      command,
+      result: COMMAND_RESULT.REJECTED,
+      fromStepId,
+      toStepId: null,
+      reason
     });
   }
 }
@@ -601,14 +815,14 @@ export function createCiMInstance(options) {
   if (!isPlainObject(options)) fail('createCiMInstance options must be a plain object.');
 
   const descriptors = Object.getOwnPropertyDescriptors(options);
-  const readRequired = (key) => {
+  const required = (key) => {
     const descriptor = descriptors[key];
     if (!descriptor?.enumerable || !('value' in descriptor)) {
       fail(`createCiMInstance options.${key} must be an enumerable data property.`);
     }
     return descriptor.value;
   };
-  const readOptional = (key, fallback) => {
+  const optional = (key, fallback) => {
     const descriptor = descriptors[key];
     if (!descriptor) return fallback;
     if (!descriptor.enumerable || !('value' in descriptor)) {
@@ -618,11 +832,11 @@ export function createCiMInstance(options) {
   };
 
   return new CiMInstance({
-    instanceId: readRequired('instanceId'),
-    experience: readRequired('experience'),
-    clock: readRequired('clock'),
-    renderer: readOptional('renderer', null),
-    rendererRoot: readOptional('rendererRoot', null),
-    reducedMotion: readOptional('reducedMotion', false)
+    instanceId: required('instanceId'),
+    experience: required('experience'),
+    clock: required('clock'),
+    renderer: optional('renderer', null),
+    rendererRoot: optional('rendererRoot', null),
+    reducedMotion: optional('reducedMotion', false)
   });
 }

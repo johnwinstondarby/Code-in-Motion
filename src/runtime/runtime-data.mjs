@@ -66,7 +66,8 @@ export function readExperienceEnvelope(experience) {
   const boundaries = new Map();
   boundaries.set(INITIAL_BOUNDARY_ID, Object.freeze({
     state: initialState,
-    stepRendererConfig: null
+    stepRendererConfig: null,
+    dwellMs: 0
   }));
 
   for (let index = 0; index < steps.length; index += 1) {
@@ -83,14 +84,22 @@ export function readExperienceEnvelope(experience) {
     const stepId = readDataProperty(step, 'id', label);
     const state = readDataProperty(step, 'state', label);
     const stepRendererConfig = readOptionalDataProperty(step, 'renderer_config', label, null);
+    const dwellMs = readOptionalDataProperty(step, 'dwell_ms', label, 0);
 
     if (typeof stepId !== 'string' || stepId.length === 0) {
       fail(`${label}.id must be a non-empty string.`);
     }
     if (state === null) fail(`${label}.state must be non-null.`);
+    if (!Number.isSafeInteger(dwellMs) || dwellMs < 0) {
+      fail(`${label}.dwell_ms must be a non-negative safe integer when present.`);
+    }
 
     stepIds.push(stepId);
-    boundaries.set(stepId, Object.freeze({ state, stepRendererConfig }));
+    boundaries.set(stepId, Object.freeze({
+      state,
+      stepRendererConfig,
+      dwellMs
+    }));
   }
 
   return {

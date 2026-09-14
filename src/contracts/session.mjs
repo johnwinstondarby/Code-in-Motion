@@ -11,6 +11,13 @@ export const SESSION_STATUS = Object.freeze({
 
 export const SESSION_STATUS_VALUES = Object.freeze(Object.values(SESSION_STATUS));
 
+export const CONTINUITY_COMMAND = Object.freeze({
+  PLAY: 'play',
+  PAUSE: 'pause'
+});
+
+export const CONTINUITY_COMMAND_VALUES = Object.freeze(Object.values(CONTINUITY_COMMAND));
+
 export const NAVIGATION_COMMAND = Object.freeze({
   NEXT: 'next',
   PREVIOUS: 'previous',
