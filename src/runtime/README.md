@@ -48,6 +48,39 @@ The static authority gates verify import and identifier boundaries. They cannot 
 
 Runtime determines activity-status changes from Runtime-owned operational facts and requests canonical changes through the retained Core controls. Shared vocabulary from `src/contracts/` grants no mutation authority.
 
+## Runtime checkpoint 1: composition and evidence foundation
+
+`src/runtime/cim-instance.mjs` now establishes the public composition shell without claiming navigation settlement before renderer orchestration exists.
+
+`createCiMInstance()` accepts an instance ID, frozen validated `localis.cim/v1` experience data, and an injected clock. The instance retains the complete validated experience and all privileged Core controls privately. Its public surface exposes only:
+
+```text
+identity
+read
+  snapshot()
+  boundaryIds()
+events
+  subscribe(listener)
+```
+
+The initial Runtime-owned operational state is represented separately from Core canonical state:
+
+```text
+playbackIntent = false
+transitionId = null
+transitionProgress = 0
+dwellRemainingMs = 0
+activeAbortState = null
+```
+
+`read.snapshot()` returns frozen `canonical` and `operational` projections. It carries no mutation authority.
+
+`src/runtime/correlation.mjs` provides deterministic per-instance command and transition identities. Command IDs use `cmd-N`; transition IDs use `txn-N`. Counters are instance-local and never use randomness or wall-clock data.
+
+`src/runtime/event-stream.mjs` implements the ordered observational stream defined by `docs/EVENTS.md`. Sequence is positive and monotonic per instance, semantic timestamps come only from the injected clock, event records and structured details are frozen copies, and observer failures are isolated from production control flow.
+
+Checkpoint 1 intentionally does not expose `play`, `pause`, or semantic navigation methods. Checkpoint 2 adds the first command execution path together with absolute renderer settlement and Core commit ordering, so no command can be reported as successfully accepted before Runtime can fulfill its settlement contract.
+
 ## Does not own
 
 - Canonical semantic commit authority
@@ -68,3 +101,5 @@ Runtime does not import harness code or expose, delegate, re-export, wrap, or ot
 ## Verification
 
 Integration tests must prove command ordering, instance isolation, navigation cancellation, playback-intent clearing, pause/resume continuity, ordered status writes, deep-link dispatch, scrub-originated single-seek flow, clean disposal, Runtime-only Core-control retention, lifecycle command rejection, and the documented boundary of static authority analysis.
+
+Checkpoint 1 verification additionally proves frozen public projections, initial separation of canonical and operational state, inert validated-experience ingestion, deterministic correlation identities, virtual-clock event timestamps, monotonic per-instance event sequence, immutable event publication, descriptor-safe event input, and observer-failure isolation.
