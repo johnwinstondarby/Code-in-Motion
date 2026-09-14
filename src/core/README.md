@@ -42,7 +42,7 @@ statusControl
   setStatus(nextStatus)
 ```
 
-Only `read` and `navigation` are shareable beyond Runtime. The Runtime composition seam receives the complete Core object, publishes a projection containing only `read` and `navigation`, and retains a one-shot grant containing `semanticControl`, `faultControl`, and `statusControl`.
+Only `read` and `navigation` are shareable beyond Runtime. The Runtime composition seam receives the complete Core object and returns a frozen `{ session, controls }` split. `session` contains only `read` and `navigation`. `controls` contains `semanticControl`, `faultControl`, and `statusControl` and remains inside the Runtime composition root.
 
 ADR 0008 defines the privileged-control boundary. `tools/check-core-authority.mjs` enforces the production ownership rule in addition to the general architecture checker.
 
@@ -128,7 +128,20 @@ reason = disposed
 
 The lifecycle gate still performs exact request-shape validation first. It does not invoke accessors and does not permit malformed requests to hide behind a lifecycle rejection.
 
-`src/runtime/core-session.mjs` is the production composition seam for Core ownership. It creates Core, publishes only the frozen `read` and `navigation` projection, and stores the mutation controls in a private WeakMap. `acquireRuntimeCoreControls()` is a one-shot grant: after Runtime acquires the controls once, the projection cannot yield them again.
+`src/runtime/core-session.mjs` is the production composition seam for Core ownership. It creates Core and returns a frozen composition object with two branches:
+
+```text
+session
+  read
+  navigation
+
+controls
+  semanticControl
+  faultControl
+  statusControl
+```
+
+The Runtime composition root retains `controls`; peer components receive only appropriate Runtime projections. This construction removes the prior acquisition window and module-global grant map.
 
 The repository gate enforces three rules:
 
@@ -138,7 +151,7 @@ non-Runtime production code cannot import src/runtime/core-session.mjs
 privileged Core-control identifiers are reserved to src/core/ and src/runtime/
 ```
 
-Package aliases are resolved before the authority check.
+Package aliases are resolved before the authority check. Static scanners cannot prove that a Runtime helper has not renamed and delegated a privileged operation. Runtime therefore also carries a structural rule: mutation controls remain in the composition root and are never re-exported or wrapped into shareable authority. The authority test suite records this scanner boundary explicitly.
 
 ## Does not own
 
@@ -173,7 +186,8 @@ Core verification now covers:
 - exact canonical fault records and recovery lifecycle;
 - faulted/disposed command rejection reasons;
 - private Runtime Core-session composition;
-- one-shot mutation-control grant;
-- static rejection of non-Runtime Core imports and privileged capability references.
+- exact frozen `{ session, controls }` construction split;
+- static rejection of non-Runtime Core imports and privileged capability references;
+- an explicit near-miss documenting that static analysis does not detect renamed Runtime delegation.
 
-The next integration gate is the full branch `npm run verify` matrix before merge.
+The integration gate is the full branch `npm run verify` matrix before merge.

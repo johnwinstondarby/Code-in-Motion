@@ -4,6 +4,7 @@ import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 
+import { checkArchitectureBoundaries } from '../tools/check-architecture-boundaries.mjs';
 import { checkCoreAuthority } from '../tools/check-core-authority.mjs';
 
 async function withFixture(files, run) {
@@ -30,12 +31,15 @@ function expectRule(result, rule) {
 
 test('Runtime may import Core and retain privileged capability names', async () => {
   await withFixture({
-    'src/core/core-engine.mjs': `export function createCoreEngine(){return {semanticControl:{},faultControl:{},statusControl:{}};}`,
+    'src/core/core-engine.mjs': `export function createCoreEngine(){return {read:{},navigation:{},semanticControl:{},faultControl:{},statusControl:{}};}`,
     'src/runtime/core-session.mjs': `
       import { createCoreEngine } from '../core/core-engine.mjs';
-      export function acquireRuntimeCoreControls() {
+      export function createRuntimeCoreSession() {
         const core = createCoreEngine();
-        return { semanticControl: core.semanticControl, faultControl: core.faultControl, statusControl: core.statusControl };
+        return {
+          session: { read: core.read, navigation: core.navigation },
+          controls: { semanticControl: core.semanticControl, faultControl: core.faultControl, statusControl: core.statusControl }
+        };
       }
     `
   }, async (root) => {
@@ -81,4 +85,24 @@ test('package aliases cannot bypass the Runtime-only Core import rule', async ()
     'src/plugin/feature.mjs': `import { createCoreEngine } from '#core/core-engine.mjs'; export const x = createCoreEngine;`,
     'src/core/core-engine.mjs': `export function createCoreEngine(){}`
   }, async (root) => expectRule(await checkCoreAuthority(root), 'runtime-only-core-import'));
+});
+
+test('delegated Runtime wrapper is outside static gate proof and remains prohibited by the composition-root rule', async () => {
+  await withFixture({
+    'src/runtime/delegation.mjs': `
+      export function createStatusWriter(controls) {
+        return (status) => controls.statusControl.setStatus(status);
+      }
+    `,
+    'src/transport/controls.mjs': `
+      import { createStatusWriter } from '../runtime/delegation.mjs';
+      export function install(writerSource) {
+        const setAny = createStatusWriter(writerSource);
+        return () => setAny('playing');
+      }
+    `
+  }, async (root) => {
+    assert.deepEqual((await checkCoreAuthority(root)).violations, []);
+    assert.deepEqual((await checkArchitectureBoundaries(root)).violations, []);
+  });
 });

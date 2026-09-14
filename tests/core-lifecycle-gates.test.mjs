@@ -1,10 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import {
-  acquireRuntimeCoreControls,
-  createRuntimeCoreSession
-} from '../src/runtime/core-session.mjs';
+import { createRuntimeCoreSession } from '../src/runtime/core-session.mjs';
 import {
   COMMAND_RESULT,
   NAVIGATION_REASON,
@@ -25,30 +22,31 @@ const FALLBACK_FAULT = Object.freeze({
 });
 
 function makeSession() {
-  const session = createRuntimeCoreSession(OPTIONS);
-  const controls = acquireRuntimeCoreControls(session);
-  return { session, controls };
+  return createRuntimeCoreSession(OPTIONS);
 }
 
-test('Runtime Core session publishes only read and navigation capabilities', () => {
-  const session = createRuntimeCoreSession(OPTIONS);
+test('Runtime Core construction separates the shareable session from privileged controls', () => {
+  const composition = createRuntimeCoreSession(OPTIONS);
+  const { session, controls } = composition;
+
+  assert.deepEqual(Object.keys(composition), ['session', 'controls']);
   assert.deepEqual(Object.keys(session), ['read', 'navigation']);
+  assert.deepEqual(Object.keys(controls), ['semanticControl', 'faultControl', 'statusControl']);
   assert.equal('semanticControl' in session, false);
   assert.equal('faultControl' in session, false);
   assert.equal('statusControl' in session, false);
+  assert.equal(Object.isFrozen(composition), true);
   assert.equal(Object.isFrozen(session), true);
+  assert.equal(Object.isFrozen(controls), true);
 });
 
-test('Runtime Core control grant is exact, frozen, and one-shot', () => {
-  const session = createRuntimeCoreSession(OPTIONS);
-  const controls = acquireRuntimeCoreControls(session);
+test('Runtime Core controls are exact and frozen without an acquisition window', () => {
+  const { controls } = createRuntimeCoreSession(OPTIONS);
 
   assert.deepEqual(Object.keys(controls), ['semanticControl', 'faultControl', 'statusControl']);
-  assert.equal(Object.isFrozen(controls), true);
   assert.equal(Object.isFrozen(controls.semanticControl), true);
   assert.equal(Object.isFrozen(controls.faultControl), true);
   assert.equal(Object.isFrozen(controls.statusControl), true);
-  assert.throws(() => acquireRuntimeCoreControls(session), /already acquired/);
 });
 
 test('faulted Core rejects every valid navigation command with reason faulted', () => {
