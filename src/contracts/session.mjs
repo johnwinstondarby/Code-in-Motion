@@ -32,6 +32,7 @@ export const NAVIGATION_REASON = Object.freeze({
   AT_START: 'at_start',
   AT_END: 'at_end',
   UNKNOWN_STEP: 'unknown_step',
+  INVALID_STATE: 'invalid_state',
   FAULTED: 'faulted',
   DISPOSED: 'disposed'
 });
