@@ -4,69 +4,91 @@ Status: Accepted for CiM v1
 
 ## Context
 
-CiM intentionally prevents presentation and observation components from importing Core directly. Transport and Commentary still need stable shared vocabulary such as canonical status names, reserved boundary identifiers, result/reason codes, event names, and error-code constants.
+CiM prevents presentation and observation components from importing Core directly. Transport, Commentary, and other components still require dependency-free vocabulary such as canonical status names, boundary identifiers, result/reason codes, event names, and fault identifiers.
 
-Placing that vocabulary inside Core would force either duplication or exceptions to the Core dependency fence.
-
-The architecture also requires Runtime to be the only production component that can request activity-status mutation in Core. A text-only rule around `setStatus` is useful as a repository backstop, but ordinary JavaScript aliasing can make a public mutation method easy to reach accidentally if the object carrying that method is shared broadly.
+The architecture also requires Runtime to be the only production component that receives Core mutation authority. Static source checks are useful as a repository backstop, but a broadly shared object exposing mutation methods would still make accidental authority leakage easy.
 
 ## Decision
 
-CiM v1 adds `src/contracts/` as a dependency-free shared vocabulary layer.
+CiM v1 uses `src/contracts/` as the dependency-free shared vocabulary layer.
 
-Production components may import shared values from `src/contracts/` without importing one another. `src/contracts/` cannot import production components or contain mutable runtime behavior.
-
-Shared contract candidates include:
+Core owns canonical state and constructs separate capabilities for:
 
 ```text
-canonical status names
-reserved boundary identifiers such as initial
-command result and reason values
-event vocabulary
-stable fault/error identifiers
-cross-component immutable value shapes
+read
+navigation
+semantic mutation
+fault mutation
+status mutation
 ```
 
-Core retains canonical status storage and validation.
+Runtime is the sole production recipient of the complete Core capability set.
 
-Activity-status mutation through `setStatus(nextStatus)` is a **privileged Core control capability**. Runtime is the only production component that receives that capability. Other components receive Runtime projections or dependency-free shared contract values and must not receive a Core object/capability exposing status mutation.
+The concrete v1 composition seam is `src/runtime/core-session.mjs`:
 
-The Core implementation branch must make the privilege structural rather than relying only on naming convention. A factory may, for example, return separate read/semantic and privileged-control capabilities, but the exact JavaScript object names are left to `feat/core-engine` as long as only Runtime receives the status-mutation capability.
+1. Runtime creates Core.
+2. Runtime builds a frozen `session` projection containing only `read` and `navigation`.
+3. Runtime builds a frozen `controls` bundle containing `semanticControl`, `faultControl`, and `statusControl`.
+4. `createRuntimeCoreSession(options)` returns the frozen pair `{ session, controls }` directly to the Runtime composition root.
+5. The Runtime composition root retains `controls`; peer components receive only the projections appropriate to their role.
 
-The repository architecture checker retains a static `setStatus` rule as defense in depth and must catch ordinary aliasing forms such as destructuring, `.bind()`, and computed-property references outside Runtime.
+This construction has no acquisition window and no module-global grant map. Non-Runtime production code cannot obtain mutation authority by ordinary property lookup on the published `session` projection.
+
+Runtime must not delegate privileged Core authority outside the composition root. Re-exporting controls, returning them from helper APIs, or wrapping privileged methods in renamed callbacks still transfers mutation authority even when the downstream call site contains none of the privileged identifier names.
+
+Repository verification provides defense in depth:
+
+- `tools/check-architecture-boundaries.mjs` preserves the general component dependency graph and the existing `setStatus` checks.
+- `tools/check-core-authority.mjs` rejects non-Runtime Core imports, rejects non-Runtime imports of the private Runtime Core-session seam, and rejects privileged Core-control identifiers outside `src/core/` and `src/runtime/`.
+- Package subpath aliases are resolved before the authority decision.
+- The static gates do not claim to prove semantic non-delegation through a renamed Runtime wrapper; the authority tests record that boundary explicitly.
+
+Shared contracts cannot import production components and cannot contain mutable runtime behavior.
 
 ## Consequences
 
-- Transport can consume status vocabulary without importing Core.
-- Commentary and other components can share stable value names without lateral dependencies.
-- Core's dependency fence remains absolute rather than accumulating exceptions.
-- Status mutation authority is difficult to reach accidentally once Core is implemented.
-- Static analysis remains a backstop rather than the sole mechanism enforcing authority.
+- Transport and Commentary can consume shared vocabulary without importing Core.
+- Core retains one canonical semantic state owner.
+- Runtime owns the mutation capabilities needed for orchestration.
+- Other production components receive shareable projections rather than a mutable Core object.
+- A leaked `session` projection does not carry mutation controls.
+- Runtime composition does not depend on acquisition ordering.
+- Static checks remain a backstop around the structural capability split.
+- Composition-root retention is the controlling rule for renamed or wrapped delegation that static identifier scans cannot prove.
 
 ## Rejected Alternatives
 
 ### Put shared values in Core
 
-Rejected because Transport and Commentary would need Core imports solely for vocabulary, weakening the component boundary.
+Rejected because presentation components would require Core imports for vocabulary.
 
-### Duplicate status and result strings in each component
+### Duplicate shared strings across components
 
-Rejected because spelling and version drift would become likely and conformance evidence would become harder to compare.
+Rejected because spelling and version drift would weaken deterministic evidence.
 
-### Keep a broadly shared Core object with public `setStatus`
+### Share the complete Core object broadly
 
-Rejected because ordinary JavaScript aliasing can bypass caller-pattern checks. Authority should be represented by possession of a privileged capability.
+Rejected because mutation capabilities would remain reachable through ordinary object access and aliasing.
 
-### Rely only on the architecture checker
+### One-shot WeakMap acquisition
 
-Rejected because source-pattern enforcement is defense in depth, not the canonical runtime security/ownership model.
+Rejected after focused QA because caller identity was not represented. Whichever Runtime caller acquired first received the controls, and later Runtime composition could fail despite remaining inside the permitted package. Direct construction of `{ session, controls }` gives the composition root an explicit ownership boundary without acquisition order as state.
+
+### Rely only on static analysis
+
+Rejected because source-pattern checks are defense in depth rather than the canonical authority model.
 
 ## Verification
 
-The repository gate must prove:
+The repository gate proves:
 
 - production components may import `src/contracts/`;
 - `src/contracts/` cannot import production components;
-- direct, destructured, bound, and computed `setStatus` references outside Runtime are rejected;
-- Runtime use of the privileged status seam is accepted;
-- the Core implementation branch exposes status mutation only through a capability retained by Runtime.
+- Runtime may import Core;
+- non-Runtime production code cannot import Core;
+- non-Runtime production code cannot import `src/runtime/core-session.mjs`;
+- privileged Core-control identifiers are rejected outside Core and Runtime;
+- the Runtime-published `session` projection contains only `read` and `navigation`;
+- the Runtime `controls` bundle is exact and frozen;
+- faulted and disposed Core state return deterministic command rejection reasons;
+- one executable near-miss records that renamed Runtime delegation is outside the static scanners' proof and remains prohibited by the composition-root rule.
