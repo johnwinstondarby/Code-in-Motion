@@ -38,6 +38,7 @@ export const COMMAND_RESULT = Object.freeze({
 export const NAVIGATION_REASON = Object.freeze({
   AT_START: 'at_start',
   AT_END: 'at_end',
+  ALREADY_AT_BOUNDARY: 'already_at_boundary',
   UNKNOWN_STEP: 'unknown_step',
   INVALID_STATE: 'invalid_state',
   FAULTED: 'faulted',

@@ -258,7 +258,18 @@ details.reason = at_start
 
 `seek(stepId)` resolves directly to the named valid semantic boundary, including `initial`. It does not animate through intervening steps.
 
+At a stable boundary, if `stepId` equals the current committed boundary, the seek is accepted with no movement:
+
+```text
+result = no_change
+details.reason = already_at_boundary
+```
+
+Runtime records command acceptance for the stable no-change result but does not allocate a transition, call the renderer, emit transition settlement evidence, or emit `step.changed`.
+
 An unknown or reserved-invalid authored step ID is rejected without changing canonical state.
+
+During an active transition, navigation continues to follow §7.3. Runtime may cancel active work and restore the committed boundary absolutely even when the requested seek names that committed boundary.
 
 ### 6.6 `home()`
 
@@ -680,7 +691,7 @@ After event-stream closure, stale renderer completions, scheduler callbacks, dwe
 
 A genuinely invalid command does not change canonical state. It returns a stable rejection code and may emit a diagnostic event.
 
-Reaching `at_start` or `at_end` is not an invalid command; it is an accepted `no_change` result.
+Reaching `at_start`, `at_end`, or `already_at_boundary` is not an invalid command; each is an accepted `no_change` result.
 
 ### 18.5 Delayed or stale callback
 
@@ -705,7 +716,7 @@ The synthetic harness must prove at least:
 1. deterministic settlement at `initial`;
 2. next and previous accuracy;
 3. direct seek accuracy, including `seek("initial")`;
-4. accepted `no_change` at start and end boundaries;
+4. accepted `no_change` at start, end, and same-boundary seek, with stable same-boundary seek producing no renderer or transition work;
 5. observation-step position advance with unchanged state/render digests;
 6. pause at stable boundary;
 7. pause during animation freezes renderer-visible delayed and frame callbacks while preserving `transitionId`, `targetStepId`, and the last committed `currentStepId`, with no `step.changed`;
