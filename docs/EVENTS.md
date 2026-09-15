@@ -142,6 +142,7 @@ Runtime configuration is included when site policy changes effective semantic ti
 12. An honored in-flight renderer abort emits `renderer.cancelled`. If disposal-time abort acknowledgement exceeds the bounded injected-time window, `renderer.error` with `CIM-RND-002` is emitted instead and any later renderer completion is silent.
 13. Core reaches canonical `disposed` before Runtime awaits `renderer.dispose()`. Successful renderer teardown ends the semantic stream with `renderer.disposed`. A renderer teardown rejection ends it with `renderer.error` carrying `details.operation: "dispose"`. A teardown acknowledgement timeout ends it with `renderer.error`, `CIM-RND-003`, and `details.operation: "dispose_acknowledgement"`.
 14. Stale transition, dwell, initialization, recovery, render, or renderer-dispose callbacks cannot publish semantic events after terminal disposal closes the stream.
+15. Successful initialization emits exactly one `step.initial` for the resolved entry boundary. Initialization does not emit `step.changed`.
 
 ## 6. Command Events
 
@@ -319,16 +320,16 @@ Reports stable renderer settlement failure.
 
 Reports that instance initialization was intentionally abandoned by terminal disposal before initialization completed.
 
-When an initial renderer transition exists, include:
+When an entry renderer transition exists, include:
 
 ```text
 transition_id
-step_id = initial
+step_id = requested entry boundary
 result = cancelled
 details.reason = dispose
 ```
 
-If disposal arrives after renderer mount but before the initial render transition exists, `transition_id` may be omitted. `initialization.cancelled` closes the opened initialization lifecycle for replay and diagnostic reconstruction.
+If disposal arrives after renderer mount but before the entry render transition exists, `transition_id` may be omitted. `step_id` still identifies the requested entry boundary. `initialization.cancelled` closes the opened initialization lifecycle for replay and diagnostic reconstruction.
 
 ## 9. Step Events
 
@@ -361,14 +362,17 @@ A valid no-movement command does not emit `step.changed` because no canonical co
 
 ### `step.initial`
 
-Optional initialization evidence indicating stable settlement at the canonical `initial` boundary.
+Required exactly once after successful instance initialization. `step.initial` identifies the session entry boundary; the v1 event name is retained even when the entry boundary is an authored step rather than the literal `initial` boundary.
 
-When emitted:
+Required fields:
 
 ```text
-step_id = initial
+step_id = resolved entry boundary
 component = core
+details.source = host | deep_link | replay
 ```
+
+Initialization is a lifecycle operation rather than a learner command, so `step.initial` carries no `command_id`. Direct entry at an authored boundary does not emit `step.changed` and does not imply a predecessor semantic boundary.
 
 ## 10. Commentary Events
 
@@ -548,6 +552,7 @@ engine version
 renderer identifier/version
 experience version
 validated experience
+initialization boundary and source
 effective runtime configuration
 command sequence
 command source where semantically relevant
@@ -581,7 +586,7 @@ transition.settled
 transition.failed
 initialization.cancelled        required when disposal interrupts initialization
 step.changed
-step.initial                    optional
+step.initial                    required exactly once after successful initialization
 commentary.active.changed
 commentary.frontier.changed
 commentary.autofollow.changed   optional

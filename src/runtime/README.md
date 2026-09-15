@@ -202,6 +202,20 @@ Runtime stores canonical `disposed` status and marks the instance terminal befor
 
 Disposal is single-shot in both state and outcome. Repeated calls return the cached disposal promise, including the same teardown rejection when renderer disposal failed.
 
+## Runtime checkpoint 7: targeted initialization and session entry
+
+Checkpoint 7 allows Runtime initialization to settle directly at a Host- or replay-resolved semantic boundary. Runtime receives a boundary ID and provenance, never a URL fragment. URL and fragment parsing remain Host responsibilities.
+
+`initialize()` retains `initial` / `host` defaults. `initialize({ stepId, source })` accepts a valid semantic boundary with `host`, `deep_link`, or `replay` provenance. Runtime validates the target synchronously before renderer mount, so an invalid boundary creates no renderer lifecycle, transition identity, event evidence, or canonical mutation.
+
+A valid targeted entry mounts once and performs one non-animated absolute render of the requested boundary with null predecessor fields. Authored entry targets open a Core pending target before rendering and commit only after stable renderer settlement. Successful entry emits exactly one `step.initial` carrying the resolved `step_id` and `details.source`; it does not manufacture a command or `step.changed` predecessor.
+
+The entry commit initializes the reveal frontier to the entry boundary. `restart()` still resets position and frontier to `initial`, while `home()` retains the established reveal frontier. Entry never consumes authored dwell; `play()` begins the following transition immediately or returns `no_change` / `at_end` when the entry boundary is final.
+
+Targeted initialization preserves checkpoint 6 terminal authority. Disposal during entry closes the requested initialization lifecycle, and a reentrant disposal that begins after renderer settlement but before Core entry commit prevents that commit.
+
+Multiple instances may share the same frozen validated experience object. Runtime keeps entry state, transition identities, renderer calls, and semantic event streams instance-local.
+
 ## Does not own
 
 - Canonical semantic commit authority
@@ -234,3 +248,5 @@ Checkpoint 4 verification proves transition-clock freeze while source time advan
 Checkpoint 5 verification proves target abandonment before recoverable fault storage, absolute restoration to the last committed anchor, command rejection during active recovery, recoverable fault clearing after successful restoration, recover-to-fallback escalation when restoration fails, complete operational-state clearing before canonical fallback settlement, ordered `recovery.failed` then `instance.faulted` evidence, and continued command usability after successful recovery.
 
 Checkpoint 6 verification proves terminal disposal from idle, paused transition, active dwell, initialization, active recovery, and canonical faulted states; exact transition and dwell cancellation; explicit initialization and recovery lifecycle closure; conforming `renderer.cancelled` evidence; pending-target abandonment; bounded renderer-abort and renderer-dispose acknowledgement; late-completion suppression; recoverable-fault cleanup with fallback-fault preservation; renderer teardown ordering; closed-stream stale-work suppression; single-shot disposal outcome; and terminal Core settlement even when renderer teardown fails or does not acknowledge.
+
+Checkpoint 7 verification proves default and targeted entry, pre-mount target validation, exact one-render target state and context, entry provenance and reveal-frontier settlement, restart reset, dwell exclusion, final-entry `play()` behavior, targeted-render failure cleanup, disposal-time entry cancellation, reentrant-disposal commit prevention, and isolation when two instances share one frozen experience object.

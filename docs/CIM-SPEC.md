@@ -177,7 +177,28 @@ Every accepted command receives a command/correlation identity suitable for tele
 
 `dispose()` is a terminal instance-lifecycle operation rather than a learner navigation or continuity command. Its settlement rules are defined in §18.3.
 
-### 5.1 Command source
+### 5.1 Instance initialization
+
+Runtime accepts a resolved semantic entry boundary, never a URL or fragment. Host owns external URL and fragment parsing and resolves those forms to an experience identity and semantic boundary before Runtime initialization.
+
+The v1 initialization surface is:
+
+```text
+initialize()
+initialize({ stepId, source })
+```
+
+The defaults are `stepId: initial` and `source: host`. Initialization source is one of `host`, `deep_link`, or `replay`.
+
+Runtime validates the requested boundary and initialization options before `renderer.mount()` begins. An unknown entry boundary throws before renderer lifecycle work, transition allocation, event publication, or canonical mutation.
+
+A targeted initialization performs one non-animated absolute render of the requested boundary. It does not render `initial` and then seek to the requested target. The entry render uses `animate:false`, `fromState:null`, and `fromStepId:null`, with the complete state and step renderer configuration of the requested boundary.
+
+For an authored entry boundary, Runtime opens the requested boundary as the pending target before rendering and asks Core to commit it only after stable renderer settlement. Successful targeted entry initializes both `currentStepId` and `revealFrontier` to the requested boundary. Startup emits the exactly-once `step.initial` entry event defined by `EVENTS.md` and does not emit `step.changed`.
+
+Direct entry does not consume authored dwell. A subsequent `play()` begins the following transition immediately; from the final authored entry boundary, `play()` is accepted with `no_change` and `at_end`.
+
+### 5.2 Command source
 
 Observational command evidence should identify the initiating surface when useful, for example:
 
@@ -480,6 +501,8 @@ Runtime cancels outstanding instance work and allows at most 1000 ms of injected
 
 Runtime clears Runtime operational state and stores canonical `disposed` status before awaiting `renderer.dispose()`. `renderer.dispose()` then receives at most 1000 ms of injected CiM time to acknowledge teardown. If it does not settle within that window, Runtime records `CIM-RND-003`, closes the semantic event stream, and leaves Core in canonical `disposed` state. A renderer-dispose exception also leaves the instance terminal and is reported according to `EVENTS.md`.
 
+The Host must continue advancing the injected CiM clock through terminal teardown. Suspending that clock also suspends acknowledgement-timeout progress and can leave an instance in `disposing` until clock advancement resumes.
+
 A late render or renderer-dispose completion after terminal containment has no semantic authority and cannot publish new CiM evidence.
 
 ## 11. Absolute Render Equivalence
@@ -702,7 +725,7 @@ The synthetic harness must prove at least:
 21. renderer failure restoration;
 22. unrecoverable renderer failure fallback and ordered `faulted` status settlement;
 23. duplicate, reserved-ID, dwell, and schema validation failure;
-24. deep-link initialization, including `/initial`, and invalid-target fallback to `initial`;
+24. targeted initialization, including `/initial`, direct authored-boundary entry, entry provenance/frontier, and Host-owned invalid-target fallback to `initial`;
 25. scrub emits one seek only on commit;
 26. multiple-instance isolation;
 27. terminal disposal from idle, paused transition, dwell, initialization, active recovery, and faulted states, including explicit initialization/recovery cancellation evidence, honored renderer-cancellation evidence, bounded abort and renderer-dispose acknowledgement, stale-work prevention, final event-stream closure, recoverable-fault cleanup, fallback-fault preservation, and renderer-dispose failure containment;

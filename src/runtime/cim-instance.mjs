@@ -47,6 +47,11 @@ import {
 
 const RENDERER_TRANSITION_FAULT_CODE = 'CIM-RND-004';
 const RENDERER_RESTORATION_FAULT_CODE = 'CIM-RND-006';
+const INITIALIZATION_SOURCE_SET = new Set([
+  COMMAND_SOURCE.HOST,
+  COMMAND_SOURCE.DEEP_LINK,
+  COMMAND_SOURCE.REPLAY
+]);
 
 class CiMInstance {
   #controls;
@@ -130,7 +135,7 @@ class CiMInstance {
     Object.freeze(this);
   }
 
-  async initialize() {
+  initialize(options = undefined) {
     const canonical = this.#session.read.snapshot();
     if (canonical.status === SESSION_STATUS.DISPOSED || this.#disposed || this.#disposing) {
       throw new Error('disposed CiMInstance cannot initialize.');
@@ -138,6 +143,7 @@ class CiMInstance {
     if (this.#initialized) throw new Error('CiMInstance is already initialized.');
     if (this.#initializing) throw new Error('CiMInstance initialization is already in progress.');
 
+    const { stepId, source } = this.#readInitializationOptions(options);
     assertRenderer(this.#renderer);
     assertRendererRoot(this.#rendererRoot);
     assertScheduler(this.#scheduler);
@@ -147,6 +153,48 @@ class CiMInstance {
       resolveInitializationDone = resolve;
     });
     this.#initializing = true;
+    return this.#initializeEntry(stepId, source, resolveInitializationDone);
+  }
+
+  #readInitializationOptions(options) {
+    if (options === undefined) {
+      return Object.freeze({
+        stepId: INITIAL_BOUNDARY_ID,
+        source: COMMAND_SOURCE.HOST
+      });
+    }
+    if (!isPlainObject(options)) {
+      fail('CiMInstance initialize options must be a plain object when provided.');
+    }
+
+    const allowedKeys = new Set(['stepId', 'source']);
+    const descriptors = Object.getOwnPropertyDescriptors(options);
+    for (const key of Reflect.ownKeys(options)) {
+      if (typeof key !== 'string' || !allowedKeys.has(key)) {
+        fail('CiMInstance initialize options may contain only stepId and source.');
+      }
+      const descriptor = descriptors[key];
+      if (!descriptor?.enumerable || !('value' in descriptor)) {
+        fail(`CiMInstance initialize options.${key} must be an enumerable data property.`);
+      }
+    }
+
+    const stepId = descriptors.stepId ? descriptors.stepId.value : INITIAL_BOUNDARY_ID;
+    const source = descriptors.source ? descriptors.source.value : COMMAND_SOURCE.HOST;
+
+    if (typeof stepId !== 'string' || stepId.length === 0 || !this.#boundaryData.has(stepId)) {
+      fail(`CiMInstance initialization stepId must name a known semantic boundary; received ${String(stepId)}.`);
+    }
+
+    const normalizedSource = assertSource(source);
+    if (!INITIALIZATION_SOURCE_SET.has(normalizedSource)) {
+      fail('CiMInstance initialization source must be one of: host, deep_link, replay.');
+    }
+
+    return Object.freeze({ stepId, source: normalizedSource });
+  }
+
+  async #initializeEntry(stepId, source, resolveInitializationDone) {
     try {
       await this.#renderer.mount(Object.freeze({
         root: this.#rendererRoot,
@@ -159,14 +207,11 @@ class CiMInstance {
         result: EVENT_RESULT.SUCCESS
       });
       if (this.#disposing) {
-        this.#emitInitializationCancelled(null, 'dispose');
+        this.#emitInitializationCancelled(null, stepId, 'dispose');
         throw new Error('CiMInstance initialization cancelled by disposal.');
       }
-      await this.#settleInitial();
-      if (this.#disposing) {
-        this.#emitInitializationCancelled(null, 'dispose');
-        throw new Error('CiMInstance initialization cancelled by disposal.');
-      }
+
+      await this.#settleEntry(stepId, source);
       this.#initialized = true;
       return this.read.snapshot();
     } finally {
@@ -482,29 +527,44 @@ class CiMInstance {
     );
   }
 
-  async #settleInitial() {
+  async #settleEntry(stepId, source) {
     const transitionId = this.#correlation.nextTransitionId();
-    const boundary = this.#boundaryData.get(INITIAL_BOUNDARY_ID);
-    const task = beginRuntimeRender({
-      renderer: this.#renderer,
-      scheduler: this.#scheduler,
-      rendererConfig: this.#rendererConfig,
-      reducedMotion: this.#reducedMotion,
-      transitionId,
-      stepId: INITIAL_BOUNDARY_ID,
-      state: boundary.state,
-      stepRendererConfig: null,
-      animate: false
-    });
+    const boundary = this.#boundaryData.get(stepId);
+    const before = this.#session.read.snapshot();
+    const opensTarget = before.currentStepId !== stepId;
+
+    if (opensTarget) {
+      this.#controls.semanticControl.beginTarget(stepId);
+    }
+
+    let task;
+    try {
+      task = beginRuntimeRender({
+        renderer: this.#renderer,
+        scheduler: this.#scheduler,
+        rendererConfig: this.#rendererConfig,
+        reducedMotion: this.#reducedMotion,
+        transitionId,
+        stepId,
+        state: boundary.state,
+        stepRendererConfig: boundary.stepRendererConfig,
+        animate: false
+      });
+    } catch (error) {
+      if (opensTarget && this.#session.read.snapshot().targetStepId === stepId) {
+        this.#controls.semanticControl.abandonTarget(stepId);
+      }
+      throw error;
+    }
 
     let cancelResolve;
     const cancelPromise = new Promise((resolve) => {
       cancelResolve = resolve;
     });
     const lifecycleRecord = {
-      kind: 'initial',
+      kind: 'entry',
       transitionId,
-      stepId: INITIAL_BOUNDARY_ID,
+      stepId,
       commandId: null,
       task,
       cancelled: false,
@@ -524,7 +584,11 @@ class CiMInstance {
     if (lifecycleRecord.cancelled || settlement.type === 'cancel') {
       if (this.#activeLifecycleRender === lifecycleRecord) this.#activeLifecycleRender = null;
       this.#clearOperationalTransition(transitionId);
-      this.#emitInitializationCancelled(transitionId, lifecycleRecord.cancelReason ?? settlement.reason ?? 'dispose');
+      this.#emitInitializationCancelled(
+        transitionId,
+        stepId,
+        lifecycleRecord.cancelReason ?? settlement.reason ?? 'dispose'
+      );
       throw new Error('CiMInstance initialization cancelled by disposal.');
     }
 
@@ -539,8 +603,21 @@ class CiMInstance {
         event: EVENT_NAME.RENDERER_SETTLED,
         result: EVENT_RESULT.SUCCESS,
         transition_id: transitionId,
-        step_id: INITIAL_BOUNDARY_ID
+        step_id: stepId
       });
+
+      if (this.#disposing) {
+        if (opensTarget && this.#session.read.snapshot().targetStepId === stepId) {
+          this.#controls.semanticControl.abandonTarget(stepId);
+        }
+        this.#clearOperationalTransition(transitionId);
+        this.#emitInitializationCancelled(transitionId, stepId, 'dispose');
+        throw new Error('CiMInstance initialization cancelled by disposal.');
+      }
+
+      if (opensTarget) {
+        this.#controls.semanticControl.commitTarget(stepId);
+      }
       this.#clearOperationalTransition(transitionId);
       this.#controls.statusControl.setStatus(SESSION_STATUS.IDLE);
       this.#eventControl.emit({
@@ -548,29 +625,33 @@ class CiMInstance {
         event: EVENT_NAME.STEP_INITIAL,
         result: EVENT_RESULT.SUCCESS,
         transition_id: transitionId,
-        step_id: INITIAL_BOUNDARY_ID
+        step_id: stepId,
+        details: { source }
       });
       return;
     }
 
+    if (opensTarget && this.#session.read.snapshot().targetStepId === stepId) {
+      this.#controls.semanticControl.abandonTarget(stepId);
+    }
     this.#clearOperationalTransition(transitionId);
     this.#controls.statusControl.setStatus(SESSION_STATUS.IDLE);
     this.#emitRendererOutcome({
       transitionId,
       commandId: null,
-      fromStepId: INITIAL_BOUNDARY_ID,
-      toStepId: INITIAL_BOUNDARY_ID
+      fromStepId: stepId,
+      toStepId: stepId
     }, outcome);
     throw outcome.error ?? new Error('initial renderer settlement failed.');
   }
 
-  #emitInitializationCancelled(transitionId, reason) {
+  #emitInitializationCancelled(transitionId, stepId, reason) {
     this.#eventControl.emit({
       component: EVENT_COMPONENT.RUNTIME,
       event: EVENT_NAME.INITIALIZATION_CANCELLED,
       result: EVENT_RESULT.CANCELLED,
       ...(transitionId === null ? {} : { transition_id: transitionId }),
-      step_id: INITIAL_BOUNDARY_ID,
+      step_id: stepId,
       details: { reason }
     });
   }
