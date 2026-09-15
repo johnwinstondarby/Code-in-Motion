@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createCiMInstance } from '../src/runtime/cim-instance.mjs';
 import { EVENT_NAME } from '../src/contracts/events.mjs';
+import { RendererCancelledError } from '../src/renderers/interface.mjs';
 import { freezeValidatedExperience } from '../src/experience/freeze-validated-experience.mjs';
 
 function experience({ dwell = 0 } = {}) {
@@ -88,7 +89,7 @@ function pendingPlaybackRenderer() {
             settled = true;
             metrics.aborts += 1;
             off();
-            reject(new Error(`cancelled:${reason}`));
+            reject(new RendererCancelledError(reason));
           });
           pending = {
             resolve() { if (settled) return false; settled = true; off(); resolve(); return true; }
@@ -187,7 +188,7 @@ test('dispose cancels dwell with its exact remainder and no timer can publish af
   assert.equal(events.some((e) => e.event === EVENT_NAME.DWELL_COMPLETED), false);
 });
 
-test('dispose interrupts active renderer recovery without misclassifying disposal as restoration failure', async () => {
+test('dispose interrupts active renderer recovery with explicit cancellation evidence', async () => {
   const time = virtualScheduler();
   let renderCount = 0;
   let recoveryAbort = 0;
@@ -198,7 +199,10 @@ test('dispose interrupts active renderer recovery without misclassifying disposa
       if (renderCount === 1) return Promise.resolve();
       if (renderCount === 2) return Promise.reject(new Error('destination failed'));
       return new Promise((_resolve, reject) => {
-        context.abortSignal.onAbort((reason) => { recoveryAbort += 1; reject(new Error(`recovery:${reason}`)); });
+        context.abortSignal.onAbort((reason) => {
+          recoveryAbort += 1;
+          reject(new RendererCancelledError(reason));
+        });
       });
     },
     dispose() {}
@@ -222,6 +226,8 @@ test('dispose interrupts active renderer recovery without misclassifying disposa
   assert.equal(snapshot.canonical.targetStepId, null);
   assert.equal(snapshot.canonical.error, null);
   assert.equal(recoveryAbort, 1);
+  assert.ok(events.some((e) => e.event === EVENT_NAME.RECOVERY_CANCELLED && e.details.reason === 'dispose'));
+  assert.ok(events.some((e) => e.event === EVENT_NAME.RENDERER_CANCELLED));
   assert.equal(events.some((e) => e.event === EVENT_NAME.RECOVERY_FAILED), false);
   assert.equal(events.some((e) => e.event === EVENT_NAME.INSTANCE_FAULTED), false);
   assert.equal(events.at(-1).event, EVENT_NAME.RENDERER_DISPOSED);
@@ -253,7 +259,7 @@ test('dispose advances fallback-faulted Core only to disposed and preserves term
   assert.equal(snapshot.canonical.error.recoveryClass, 'fallback');
 });
 
-test('renderer dispose failure still leaves Core terminal and closes the event stream', async () => {
+test('renderer dispose failure still leaves Core terminal, closes the stream, and is outcome-idempotent', async () => {
   const time = virtualScheduler();
   const failure = new Error('dispose failed');
   const r = immediateRenderer({ disposeError: failure });
@@ -262,7 +268,7 @@ test('renderer dispose failure still leaves Core terminal and closes the event s
   instance.events.subscribe((e) => events.push(e));
   await instance.initialize();
 
-  await assert.rejects(instance.dispose(), /dispose failed/);
+  await assert.rejects(instance.dispose(), (error) => error === failure);
   assert.equal(instance.read.snapshot().canonical.status, 'disposed');
   assert.equal(events.at(-1).event, EVENT_NAME.RENDERER_ERROR);
   assert.equal(events.at(-1).details.operation, 'dispose');
@@ -270,9 +276,11 @@ test('renderer dispose failure still leaves Core terminal and closes the event s
   const outcome = await instance.pause();
   assert.equal(outcome.reason, 'disposed');
   assert.equal(events.length, count);
+  await assert.rejects(instance.dispose(), (error) => error === failure);
+  assert.equal(r.metrics.dispose, 1);
 });
 
-test('dispose during initial settlement aborts the lifecycle render and never publishes step.initial', async () => {
+test('dispose during initial settlement closes initialization and reports honored renderer cancellation', async () => {
   const time = virtualScheduler();
   let aborts = 0;
   let disposeCount = 0;
@@ -280,7 +288,10 @@ test('dispose during initial settlement aborts the lifecycle render and never pu
     mount() {},
     render(_state, context) {
       return new Promise((_resolve, reject) => {
-        context.abortSignal.onAbort((reason) => { aborts += 1; reject(new Error(`initial:${reason}`)); });
+        context.abortSignal.onAbort((reason) => {
+          aborts += 1;
+          reject(new RendererCancelledError(reason));
+        });
       });
     },
     dispose() { disposeCount += 1; }
@@ -292,13 +303,98 @@ test('dispose during initial settlement aborts the lifecycle render and never pu
   const initialization = instance.initialize();
   await flush();
   const disposal = instance.dispose();
-  await assert.rejects(initialization, /initial:dispose/);
+  await assert.rejects(initialization, /initialization cancelled by disposal/);
   await disposal;
 
   assert.equal(aborts, 1);
   assert.equal(disposeCount, 1);
   assert.equal(instance.read.snapshot().canonical.status, 'disposed');
   assert.equal(events.some((e) => e.event === EVENT_NAME.STEP_INITIAL), false);
+  assert.ok(events.some((e) => e.event === EVENT_NAME.INITIALIZATION_CANCELLED && e.details.reason === 'dispose'));
   assert.ok(events.some((e) => e.event === EVENT_NAME.RENDERER_CANCELLED));
   assert.equal(events.at(-1).event, EVENT_NAME.RENDERER_DISPOSED);
+});
+
+test('dispose reaches terminal state after bounded abort acknowledgement when renderer ignores abort', async () => {
+  const time = virtualScheduler();
+  let lateResolve;
+  let disposeCount = 0;
+  const renderer = Object.freeze({
+    mount() {},
+    render(_state, context) {
+      if (!context.animate) return Promise.resolve();
+      return new Promise((resolve) => { lateResolve = resolve; });
+    },
+    dispose() { disposeCount += 1; }
+  });
+  const instance = createCiMInstance({ instanceId: 'abort-timeout', experience: experience(), clock: time.scheduler, renderer, rendererRoot: root });
+  const events = [];
+  instance.events.subscribe((e) => events.push(e));
+  await instance.initialize();
+  await instance.play();
+  await flush();
+
+  let disposed = false;
+  const disposal = instance.dispose().then((value) => { disposed = true; return value; });
+  await flush();
+  assert.equal(disposed, false);
+  time.advance(999);
+  await flush();
+  assert.equal(disposed, false);
+  time.advance(1);
+  const snapshot = await disposal;
+
+  assert.equal(snapshot.canonical.status, 'disposed');
+  assert.equal(snapshot.canonical.targetStepId, null);
+  assert.equal(disposeCount, 1);
+  const timeout = events.find((e) => e.event === EVENT_NAME.RENDERER_ERROR && e.error_code === 'CIM-RND-002');
+  assert.ok(timeout);
+  assert.equal(timeout.details.operation, 'abort_acknowledgement');
+  assert.equal(timeout.details.timeout_ms, 1000);
+  assert.equal(events.some((e) => e.event === EVENT_NAME.STEP_CHANGED), false);
+  assert.equal(events.at(-1).event, EVENT_NAME.RENDERER_DISPOSED);
+
+  const count = events.length;
+  lateResolve();
+  await flush();
+  assert.equal(events.length, count);
+  assert.equal(instance.read.snapshot().canonical.status, 'disposed');
+});
+
+test('renderer.dispose acknowledgement is bounded after Core is already terminal', async () => {
+  const time = virtualScheduler();
+  let releaseDispose;
+  const renderer = Object.freeze({
+    mount() {},
+    render() { return Promise.resolve(); },
+    dispose() { return new Promise((resolve) => { releaseDispose = resolve; }); }
+  });
+  const instance = createCiMInstance({ instanceId: 'dispose-timeout', experience: experience(), clock: time.scheduler, renderer, rendererRoot: root });
+  const events = [];
+  instance.events.subscribe((e) => events.push(e));
+  await instance.initialize();
+
+  let completed = false;
+  const disposal = instance.dispose().then((value) => { completed = true; return value; });
+  await flush();
+  assert.equal(instance.read.snapshot().canonical.status, 'disposed');
+  assert.equal(completed, false);
+
+  time.advance(999);
+  await flush();
+  assert.equal(completed, false);
+  time.advance(1);
+  const snapshot = await disposal;
+  assert.equal(snapshot.canonical.status, 'disposed');
+
+  const timeout = events.find((e) => e.event === EVENT_NAME.RENDERER_ERROR && e.error_code === 'CIM-RND-003');
+  assert.ok(timeout);
+  assert.equal(timeout.details.operation, 'dispose_acknowledgement');
+  assert.equal(timeout.details.timeout_ms, 1000);
+  assert.equal(events.some((e) => e.event === EVENT_NAME.RENDERER_DISPOSED), false);
+
+  const count = events.length;
+  releaseDispose();
+  await flush();
+  assert.equal(events.length, count);
 });

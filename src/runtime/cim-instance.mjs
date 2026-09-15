@@ -37,6 +37,13 @@ import {
   beginRuntimeRender,
   closeRuntimeRender
 } from './render-transition.mjs';
+import {
+  RENDERER_ABORT_ACK_TIMEOUT_MS,
+  RENDERER_ABORT_TIMEOUT_FAULT_CODE,
+  RENDERER_DISPOSE_ACK_TIMEOUT_MS,
+  RENDERER_DISPOSE_TIMEOUT_FAULT_CODE,
+  waitForRuntimeAcknowledgement
+} from './disposal-ack.mjs';
 
 const RENDERER_TRANSITION_FAULT_CODE = 'CIM-RND-004';
 const RENDERER_RESTORATION_FAULT_CODE = 'CIM-RND-006';
@@ -152,10 +159,12 @@ class CiMInstance {
         result: EVENT_RESULT.SUCCESS
       });
       if (this.#disposing) {
+        this.#emitInitializationCancelled(null, 'dispose');
         throw new Error('CiMInstance initialization cancelled by disposal.');
       }
       await this.#settleInitial();
       if (this.#disposing) {
+        this.#emitInitializationCancelled(null, 'dispose');
         throw new Error('CiMInstance initialization cancelled by disposal.');
       }
       this.#initialized = true;
@@ -488,20 +497,42 @@ class CiMInstance {
       animate: false
     });
 
+    let cancelResolve;
+    const cancelPromise = new Promise((resolve) => {
+      cancelResolve = resolve;
+    });
     const lifecycleRecord = {
       kind: 'initial',
       transitionId,
+      stepId: INITIAL_BOUNDARY_ID,
+      commandId: null,
       task,
-      cancelled: false
+      cancelled: false,
+      cancelReason: null,
+      cancelPromise,
+      cancelResolve
     };
     this.#activeLifecycleRender = lifecycleRecord;
     this.#setOperationalTransition(transitionId);
     this.#controls.statusControl.setStatus(SESSION_STATUS.TRANSITIONING);
-    const outcome = await task.renderDone;
+
+    const settlement = await Promise.race([
+      task.renderDone.then((outcome) => ({ type: 'render', outcome })),
+      cancelPromise.then((reason) => ({ type: 'cancel', reason }))
+    ]);
+
+    if (lifecycleRecord.cancelled || settlement.type === 'cancel') {
+      if (this.#activeLifecycleRender === lifecycleRecord) this.#activeLifecycleRender = null;
+      this.#clearOperationalTransition(transitionId);
+      this.#emitInitializationCancelled(transitionId, lifecycleRecord.cancelReason ?? settlement.reason ?? 'dispose');
+      throw new Error('CiMInstance initialization cancelled by disposal.');
+    }
+
+    const outcome = settlement.outcome;
     closeRuntimeRender(task);
     if (this.#activeLifecycleRender === lifecycleRecord) this.#activeLifecycleRender = null;
 
-    if (outcome.kind === 'settled' && !lifecycleRecord.cancelled) {
+    if (outcome.kind === 'settled') {
       this.#operational.transitionPhase = TRANSITION_PHASE.SETTLED;
       this.#eventControl.emit({
         component: EVENT_COMPONENT.RENDERER,
@@ -531,6 +562,17 @@ class CiMInstance {
       toStepId: INITIAL_BOUNDARY_ID
     }, outcome);
     throw outcome.error ?? new Error('initial renderer settlement failed.');
+  }
+
+  #emitInitializationCancelled(transitionId, reason) {
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.INITIALIZATION_CANCELLED,
+      result: EVENT_RESULT.CANCELLED,
+      ...(transitionId === null ? {} : { transition_id: transitionId }),
+      step_id: INITIAL_BOUNDARY_ID,
+      details: { reason }
+    });
   }
 
   async #submitNavigation(request, sourceInput) {
@@ -596,7 +638,23 @@ class CiMInstance {
       animate: false
     });
 
-    const outcome = await record.task.renderDone;
+    const settlement = await Promise.race([
+      record.task.renderDone.then((outcome) => ({ type: 'render', outcome })),
+      record.cancelPromise.then((reason) => ({ type: 'cancel', reason }))
+    ]);
+    if (settlement.type === 'cancel') {
+      return commandOutcome({
+        commandId,
+        command: resolution.command,
+        result: EVENT_RESULT.CANCELLED,
+        fromStepId: resolution.fromStepId,
+        toStepId: targetStepId,
+        reason: record.cancelReason ?? settlement.reason ?? 'navigation',
+        transitionId: record.transitionId
+      });
+    }
+
+    const outcome = settlement.outcome;
     await this.#waitForTransitionResume(record);
     closeRuntimeRender(record.task);
 
@@ -677,7 +735,13 @@ class CiMInstance {
   }
 
   async #finishPlayback(record) {
-    const outcome = await record.task.renderDone;
+    const settlement = await Promise.race([
+      record.task.renderDone.then((outcome) => ({ type: 'render', outcome })),
+      record.cancelPromise.then((reason) => ({ type: 'cancel', reason }))
+    ]);
+    if (settlement.type === 'cancel') return;
+
+    const outcome = settlement.outcome;
     await this.#waitForTransitionResume(record);
     closeRuntimeRender(record.task);
 
@@ -730,6 +794,10 @@ class CiMInstance {
       fromState: fromBoundary.state
     });
 
+    let cancelResolve;
+    const cancelPromise = new Promise((resolve) => {
+      cancelResolve = resolve;
+    });
     const record = {
       mode,
       commandId,
@@ -741,6 +809,8 @@ class CiMInstance {
       task,
       cancelled: false,
       cancelReason: null,
+      cancelPromise,
+      cancelResolve,
       transitionCancelledReported: false,
       rendererOutcomeReported: false,
       paused: false,
@@ -796,6 +866,11 @@ class CiMInstance {
     record.task.abort.controller.abort(reason);
     record.task.clock.controller.revoke();
     this.#releaseTransitionPause(record);
+    if (record.cancelResolve) {
+      const resolve = record.cancelResolve;
+      record.cancelResolve = null;
+      resolve(reason);
+    }
     const canonical = this.#session.read.snapshot();
     if (canonical.targetStepId === record.toStepId) {
       this.#controls.semanticControl.abandonTarget(record.toStepId);
@@ -815,7 +890,32 @@ class CiMInstance {
       });
     }
 
-    const outcome = await record.task.renderDone;
+    let outcome;
+    if (reason === 'dispose') {
+      const acknowledgement = await waitForRuntimeAcknowledgement({
+        scheduler: this.#scheduler,
+        promise: record.task.renderDone,
+        timeoutMs: RENDERER_ABORT_ACK_TIMEOUT_MS
+      });
+      if (acknowledgement.status === 'timeout') {
+        closeRuntimeRender(record.task);
+        record.rendererOutcomeReported = true;
+        this.#emitRendererAbortTimeout({
+          transitionId: record.transitionId,
+          commandId: record.commandId,
+          fromStepId: record.fromStepId,
+          toStepId: record.toStepId
+        });
+        this.#clearActiveTransition(record);
+        return true;
+      }
+      outcome = acknowledgement.status === 'rejected'
+        ? Object.freeze({ kind: 'error', error: acknowledgement.error })
+        : acknowledgement.value;
+    } else {
+      outcome = await record.task.renderDone;
+    }
+
     closeRuntimeRender(record.task);
     this.#reportTransitionRendererOutcome(record, outcome);
     this.#clearActiveTransition(record);
@@ -908,6 +1008,24 @@ class CiMInstance {
     }
   }
 
+  #emitRendererAbortTimeout({ transitionId, commandId = null, fromStepId, toStepId }) {
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RENDERER,
+      event: EVENT_NAME.RENDERER_ERROR,
+      result: EVENT_RESULT.FAILED,
+      ...(commandId === null ? {} : { command_id: commandId }),
+      transition_id: transitionId,
+      from_step: fromStepId,
+      to_step: toStepId,
+      error_code: RENDERER_ABORT_TIMEOUT_FAULT_CODE,
+      details: {
+        operation: 'abort_acknowledgement',
+        reason: 'dispose',
+        timeout_ms: RENDERER_ABORT_ACK_TIMEOUT_MS
+      }
+    });
+  }
+
   async #recoverRendererFailure(record) {
     if (this.#recovering) {
       throw new Error('Runtime renderer recovery is already active.');
@@ -943,7 +1061,22 @@ class CiMInstance {
         }
       });
 
-      if (this.#disposing) return false;
+      if (this.#disposing) {
+        this.#eventControl.emit({
+          component: EVENT_COMPONENT.RUNTIME,
+          event: EVENT_NAME.RECOVERY_CANCELLED,
+          result: EVENT_RESULT.CANCELLED,
+          command_id: record.commandId,
+          transition_id: recoveryTransitionId,
+          step_id: anchor,
+          error_code: RENDERER_TRANSITION_FAULT_CODE,
+          details: {
+            reason: 'dispose',
+            failed_transition_id: record.transitionId
+          }
+        });
+        return false;
+      }
 
       const boundary = this.#boundaryData.get(anchor);
       const task = beginRuntimeRender({
@@ -958,22 +1091,55 @@ class CiMInstance {
         animate: false
       });
 
+      let cancelResolve;
+      const cancelPromise = new Promise((resolve) => {
+        cancelResolve = resolve;
+      });
       const lifecycleRecord = {
         kind: 'recovery',
         transitionId: recoveryTransitionId,
         commandId: record.commandId,
         stepId: anchor,
+        failedTransitionId: record.transitionId,
         task,
-        cancelled: false
+        cancelled: false,
+        cancelReason: null,
+        cancelPromise,
+        cancelResolve
       };
       this.#activeLifecycleRender = lifecycleRecord;
       this.#setOperationalTransition(recoveryTransitionId);
       this.#controls.statusControl.setStatus(SESSION_STATUS.TRANSITIONING);
-      const outcome = await task.renderDone;
+
+      const settlement = await Promise.race([
+        task.renderDone.then((outcome) => ({ type: 'render', outcome })),
+        cancelPromise.then((reason) => ({ type: 'cancel', reason }))
+      ]);
+
+      if (lifecycleRecord.cancelled || settlement.type === 'cancel') {
+        if (this.#activeLifecycleRender === lifecycleRecord) this.#activeLifecycleRender = null;
+        this.#clearOperationalTransition(recoveryTransitionId);
+        this.#eventControl.emit({
+          component: EVENT_COMPONENT.RUNTIME,
+          event: EVENT_NAME.RECOVERY_CANCELLED,
+          result: EVENT_RESULT.CANCELLED,
+          command_id: record.commandId,
+          transition_id: recoveryTransitionId,
+          step_id: anchor,
+          error_code: RENDERER_TRANSITION_FAULT_CODE,
+          details: {
+            reason: lifecycleRecord.cancelReason ?? settlement.reason ?? 'dispose',
+            failed_transition_id: record.transitionId
+          }
+        });
+        return false;
+      }
+
+      const outcome = settlement.outcome;
       closeRuntimeRender(task);
       if (this.#activeLifecycleRender === lifecycleRecord) this.#activeLifecycleRender = null;
 
-      if (this.#disposing || lifecycleRecord.cancelled || outcome.kind === 'cancelled') {
+      if (outcome.kind === 'cancelled') {
         this.#emitRendererOutcome({
           transitionId: recoveryTransitionId,
           commandId: record.commandId,
@@ -1058,13 +1224,23 @@ class CiMInstance {
   }
 
   async #performDispose() {
+    const lifecycleRecords = [];
+    const captureLifecycle = () => {
+      const record = this.#cancelActiveLifecycleRender('dispose');
+      if (record && !lifecycleRecords.includes(record)) lifecycleRecords.push(record);
+    };
+
     const initializationDone = this.#initializationDone;
-    this.#cancelActiveLifecycleRender('dispose');
+    captureLifecycle();
     if (initializationDone) await initializationDone;
 
-    this.#cancelActiveLifecycleRender('dispose');
+    captureLifecycle();
     const recoveryDone = this.#recoveryDone;
     if (recoveryDone) await recoveryDone;
+
+    for (const record of lifecycleRecords) {
+      await this.#settleCancelledLifecycleRender(record);
+    }
 
     this.#stopPlaybackForDispose();
     if (this.#activeTransition) await this.#cancelActiveTransition('dispose');
@@ -1085,20 +1261,36 @@ class CiMInstance {
 
     let disposeError = null;
     if (this.#mounted && this.#renderer && typeof this.#renderer.dispose === 'function') {
-      try {
-        await this.#renderer.dispose();
+      const acknowledgement = await waitForRuntimeAcknowledgement({
+        scheduler: this.#scheduler,
+        promise: Promise.resolve().then(() => this.#renderer.dispose()),
+        timeoutMs: RENDERER_DISPOSE_ACK_TIMEOUT_MS
+      });
+
+      if (acknowledgement.status === 'fulfilled') {
         this.#eventControl.emit({
           component: EVENT_COMPONENT.RENDERER,
           event: EVENT_NAME.RENDERER_DISPOSED,
           result: EVENT_RESULT.SUCCESS
         });
-      } catch (error) {
-        disposeError = error;
+      } else if (acknowledgement.status === 'rejected') {
+        disposeError = acknowledgement.error;
         this.#eventControl.emit({
           component: EVENT_COMPONENT.RENDERER,
           event: EVENT_NAME.RENDERER_ERROR,
           result: EVENT_RESULT.FAILED,
-          details: { operation: 'dispose', message: error?.message ?? String(error) }
+          details: { operation: 'dispose', message: disposeError?.message ?? String(disposeError) }
+        });
+      } else {
+        this.#eventControl.emit({
+          component: EVENT_COMPONENT.RENDERER,
+          event: EVENT_NAME.RENDERER_ERROR,
+          result: EVENT_RESULT.FAILED,
+          error_code: RENDERER_DISPOSE_TIMEOUT_FAULT_CODE,
+          details: {
+            operation: 'dispose_acknowledgement',
+            timeout_ms: RENDERER_DISPOSE_ACK_TIMEOUT_MS
+          }
         });
       }
     }
@@ -1113,8 +1305,9 @@ class CiMInstance {
 
   #cancelActiveLifecycleRender(reason) {
     const record = this.#activeLifecycleRender;
-    if (!record || record.cancelled) return false;
+    if (!record || record.cancelled) return null;
     record.cancelled = true;
+    record.cancelReason = reason;
     if (
       this.#operational.activeAbortState &&
       this.#operational.activeAbortState.transitionId === record.transitionId
@@ -1127,6 +1320,42 @@ class CiMInstance {
     }
     record.task.abort.controller.abort(reason);
     record.task.clock.controller.revoke();
+    if (record.cancelResolve) {
+      const resolve = record.cancelResolve;
+      record.cancelResolve = null;
+      resolve(reason);
+    }
+    return record;
+  }
+
+  async #settleCancelledLifecycleRender(record) {
+    const acknowledgement = await waitForRuntimeAcknowledgement({
+      scheduler: this.#scheduler,
+      promise: record.task.renderDone,
+      timeoutMs: RENDERER_ABORT_ACK_TIMEOUT_MS
+    });
+
+    if (acknowledgement.status === 'timeout') {
+      closeRuntimeRender(record.task);
+      this.#emitRendererAbortTimeout({
+        transitionId: record.transitionId,
+        commandId: record.commandId ?? null,
+        fromStepId: record.stepId,
+        toStepId: record.stepId
+      });
+      return false;
+    }
+
+    closeRuntimeRender(record.task);
+    const outcome = acknowledgement.status === 'rejected'
+      ? Object.freeze({ kind: 'error', error: acknowledgement.error })
+      : acknowledgement.value;
+    this.#emitRendererOutcome({
+      transitionId: record.transitionId,
+      commandId: record.commandId ?? null,
+      fromStepId: record.stepId,
+      toStepId: record.stepId
+    }, outcome);
     return true;
   }
 

@@ -449,7 +449,7 @@ onAbort
 
 The renderer may observe cancellation and register an abort callback. It cannot dispatch, trigger, clear, replace, or otherwise control cancellation state.
 
-An aborted render rejects with the distinguished renderer-cancellation outcome. Runtime reports an honored expected cancellation as `renderer.cancelled`, correlated by `transition_id`, and does not report it as `renderer.error`.
+An aborted render rejects with the distinguished renderer-cancellation outcome. Runtime reports an honored expected cancellation as `renderer.cancelled`, correlated by `transition_id`, and does not report it as `renderer.error`. The cancellation outcome must be `RendererCancelledError` carrying the same reason exposed by the aborted renderer signal; a plain renderer exception after abort remains an error rather than cancellation evidence.
 
 #### 10.2.2 Transition-scoped clock facade
 
@@ -476,7 +476,11 @@ A non-cancelled render resolves only when the destination has reached stable out
 
 Dispose revokes renderer timing capability, cancels renderer-owned scheduled work, removes instance-scoped listeners, releases resources, and prevents further output mutation from the disposed renderer.
 
-Runtime cancels and settles outstanding instance work, clears Runtime operational state, and stores canonical `disposed` status before awaiting renderer disposal. A renderer-dispose exception does not restore the instance to a non-terminal status. Runtime publishes terminal renderer teardown evidence according to `EVENTS.md`, closes the semantic event stream, and preserves canonical `disposed` state.
+Runtime cancels outstanding instance work and allows at most 1000 ms of injected CiM time for an in-flight renderer to acknowledge a disposal-time abort. If no acknowledgement arrives, Runtime records `CIM-RND-002`, closes the render capabilities, and continues terminal cleanup. Renderer cooperation is best-effort during teardown and is never a precondition for reaching canonical `disposed`.
+
+Runtime clears Runtime operational state and stores canonical `disposed` status before awaiting `renderer.dispose()`. `renderer.dispose()` then receives at most 1000 ms of injected CiM time to acknowledge teardown. If it does not settle within that window, Runtime records `CIM-RND-003`, closes the semantic event stream, and leaves Core in canonical `disposed` state. A renderer-dispose exception also leaves the instance terminal and is reported according to `EVENTS.md`.
+
+A late render or renderer-dispose completion after terminal containment has no semantic authority and cannot publish new CiM evidence.
 
 ## 11. Absolute Render Equivalence
 
@@ -623,11 +627,13 @@ This ordering prevents canonical faulted status from being stored while Runtime 
 
 ### 18.3 Terminal disposal
 
-`dispose()` is terminal and idempotent after successful completion.
+`dispose()` is terminal and single-shot. Repeated calls return the original disposal promise and therefore repeat the original disposal outcome, including the same renderer teardown rejection when `renderer.dispose()` failed.
 
-Runtime first marks disposal active so new learner commands cannot start semantic work. It cancels active initialization or recovery rendering, revokes the corresponding renderer clock and abort capabilities, and waits for lifecycle settlement. It then cancels active dwell and playback work, releases any paused transition gate, aborts and settles an active transition, and abandons any remaining pending semantic target.
+Runtime first marks disposal active so new learner commands cannot start semantic work. If initialization is active, Runtime emits `initialization.cancelled` with `details.reason: "dispose"`; if renderer recovery is active, Runtime emits `recovery.cancelled` with the same reason. These events close their respective lifecycles before the semantic event stream closes.
 
-Disposal clears Runtime operational state to:
+Runtime aborts active initialization, recovery, or semantic transition rendering, revokes renderer clock capability, releases paused transition gates, and abandons any pending semantic target. Runtime waits no more than 1000 ms of injected CiM time for an aborted render to acknowledge cancellation. An honored renderer cancellation produces `renderer.cancelled`. If the renderer does not acknowledge within the window, Runtime emits `renderer.error` with `CIM-RND-002` and continues terminal cleanup. A late renderer completion cannot commit or publish.
+
+Runtime then cancels dwell and continuous playback and clears Runtime operational state to:
 
 ```text
 playbackIntent = false
@@ -641,7 +647,7 @@ A transient `recover` fault is cleared during terminal cleanup. A stored `fallba
 
 Runtime stores canonical `disposed` status before awaiting `renderer.dispose()`. From that point onward, commands return the stable `disposed` rejection and cannot publish semantic command events. This ordering also prevents reentrant event subscribers from initiating semantic work during renderer teardown.
 
-If renderer teardown succeeds, Runtime emits `renderer.disposed` as the final semantic event and closes the instance event stream. If renderer teardown fails, Runtime emits terminal `renderer.error` evidence with `details.operation: "dispose"`, closes the event stream, rejects the disposal promise, and leaves Core in canonical `disposed` status.
+`renderer.dispose()` receives a 1000 ms injected-time acknowledgement window. If teardown succeeds inside the window, Runtime emits `renderer.disposed` and closes the stream. If renderer teardown throws or rejects, Runtime emits terminal `renderer.error` evidence with `details.operation: "dispose"`, closes the stream, rejects the cached disposal promise, and preserves canonical `disposed`. If teardown does not acknowledge within the window, Runtime emits `renderer.error` with `CIM-RND-003` and `details.operation: "dispose_acknowledgement"`, closes the stream, and resolves disposal with the terminal snapshot. A late teardown completion is silent.
 
 Disposal that interrupts active renderer recovery is classified as terminal lifecycle cancellation. It does not emit `recovery.failed`, create `CIM-RND-006`, or emit `instance.faulted` unless fallback fault settlement had already completed independently.
 
@@ -699,7 +705,7 @@ The synthetic harness must prove at least:
 24. deep-link initialization, including `/initial`, and invalid-target fallback to `initial`;
 25. scrub emits one seek only on commit;
 26. multiple-instance isolation;
-27. terminal disposal from idle, paused transition, dwell, initialization, active recovery, and faulted states, including stale-work prevention, final event-stream closure, recoverable-fault cleanup, fallback-fault preservation, and renderer-dispose failure containment;
+27. terminal disposal from idle, paused transition, dwell, initialization, active recovery, and faulted states, including explicit initialization/recovery cancellation evidence, honored renderer-cancellation evidence, bounded abort and renderer-dispose acknowledgement, stale-work prevention, final event-stream closure, recoverable-fault cleanup, fallback-fault preservation, and renderer-dispose failure containment;
 28. deterministic replay from scenario, seed, versions, validated experience, runtime configuration, commands, and virtual clock.
 
 ## 21. Non-Goals for v1

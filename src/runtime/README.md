@@ -188,15 +188,19 @@ The checkpoint deliberately uses Core's `faultControl.recordFault()` path rather
 
 ## Runtime checkpoint 6: terminal disposal and stale-work prevention
 
-Checkpoint 6 implements `dispose()` as the terminal Runtime lifecycle operation.
+Checkpoint 6 implements `dispose()` as the terminal Runtime lifecycle operation and closes the teardown paths identified during independent review.
 
 Disposal cancels active lifecycle rendering, playback transitions, and dwell work; releases pause gates; revokes transition-scoped renderer clock and abort capabilities; abandons any pending semantic target; clears transient recoverable fault context; and clears Runtime operational state. A fallback fault record remains preserved when a faulted instance advances to canonical `disposed`.
 
-Initialization and renderer-recovery work are tracked as lifecycle renders so disposal can abort them and wait for their settlement before final teardown. Disposal during active recovery does not convert cancellation into `recovery.failed` or fallback fault evidence.
+Initialization and renderer-recovery work are tracked as lifecycle renders. Disposal closes those opened lifecycles explicitly with `initialization.cancelled` or `recovery.cancelled` before stream closure. An honored renderer abort is reported as `renderer.cancelled` only when the renderer uses the distinguished `RendererCancelledError` with the matching abort reason.
+
+Renderer cooperation is best-effort during terminal teardown. `src/runtime/disposal-ack.mjs` gives an aborted in-flight render 1000 ms of injected CiM time to acknowledge cancellation. If that window expires, Runtime records `CIM-RND-002`, closes renderer capabilities, and continues terminal cleanup. A late render completion cannot commit semantic state or publish events.
 
 Runtime stores canonical `disposed` status and marks the instance terminal before awaiting `renderer.dispose()`. This ordering prevents event subscribers or reentrant command calls from creating new semantic work during renderer teardown. Commands submitted after terminalization return the stable `disposed` rejection without publishing to the closing event stream.
 
-Successful renderer teardown emits `renderer.disposed` as the final semantic event and then closes the event stream. If `renderer.dispose()` fails, Runtime emits `renderer.error` with `details.operation: "dispose"`, closes the event stream, rejects the disposal promise, and leaves Core in terminal `disposed` status. Repeated successful disposal is idempotent and does not call the renderer again.
+`renderer.dispose()` receives a separate 1000 ms injected-time acknowledgement window. Successful teardown emits `renderer.disposed` as the final semantic event. A teardown rejection emits `renderer.error` with `details.operation: "dispose"`, closes the stream, rejects the disposal promise, and leaves Core terminal. A timeout emits `renderer.error` with `CIM-RND-003` and `details.operation: "dispose_acknowledgement"`, closes the stream, and resolves disposal with the terminal snapshot. Late teardown completion is silent.
+
+Disposal is single-shot in both state and outcome. Repeated calls return the cached disposal promise, including the same teardown rejection when renderer disposal failed.
 
 ## Does not own
 
@@ -229,4 +233,4 @@ Checkpoint 4 verification proves transition-clock freeze while source time advan
 
 Checkpoint 5 verification proves target abandonment before recoverable fault storage, absolute restoration to the last committed anchor, command rejection during active recovery, recoverable fault clearing after successful restoration, recover-to-fallback escalation when restoration fails, complete operational-state clearing before canonical fallback settlement, ordered `recovery.failed` then `instance.faulted` evidence, and continued command usability after successful recovery.
 
-Checkpoint 6 verification proves terminal disposal from idle, paused transition, active dwell, initialization, active recovery, and canonical faulted states; exact transition and dwell cancellation; pending-target abandonment; recoverable-fault cleanup with fallback-fault preservation; renderer teardown ordering; closed-stream stale-work suppression; idempotent successful disposal; and terminal Core settlement even when renderer disposal fails.
+Checkpoint 6 verification proves terminal disposal from idle, paused transition, active dwell, initialization, active recovery, and canonical faulted states; exact transition and dwell cancellation; explicit initialization and recovery lifecycle closure; conforming `renderer.cancelled` evidence; pending-target abandonment; bounded renderer-abort and renderer-dispose acknowledgement; late-completion suppression; recoverable-fault cleanup with fallback-fault preservation; renderer teardown ordering; closed-stream stale-work suppression; single-shot disposal outcome; and terminal Core settlement even when renderer teardown fails or does not acknowledge.

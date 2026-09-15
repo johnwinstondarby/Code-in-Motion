@@ -138,8 +138,10 @@ Runtime configuration is included when site policy changes effective semantic ti
 8. Recovery events follow the fault that triggered them.
 9. Disposal is terminal for the instance event stream except sink-side archival metadata.
 10. When final-step dwell is non-zero during continuous playback, `dwell.completed` precedes `playback.stopped` with `details.reason: "at_end"`.
-11. Disposal cancels outstanding lifecycle, transition, and dwell work before the event stream closes. On successful renderer teardown, `renderer.disposed` is the final semantic event. If renderer teardown fails, `renderer.error` with `details.operation: "dispose"` is the final semantic event.
-12. Stale transition, dwell, initialization, or recovery callbacks cannot publish semantic events after terminal disposal closes the stream.
+11. Disposal cancels outstanding lifecycle, transition, and dwell work before the event stream closes. An initialization or recovery lifecycle opened before disposal closes with `initialization.cancelled` or `recovery.cancelled`.
+12. An honored in-flight renderer abort emits `renderer.cancelled`. If disposal-time abort acknowledgement exceeds the bounded injected-time window, `renderer.error` with `CIM-RND-002` is emitted instead and any later renderer completion is silent.
+13. Core reaches canonical `disposed` before Runtime awaits `renderer.dispose()`. Successful renderer teardown ends the semantic stream with `renderer.disposed`. A renderer teardown rejection ends it with `renderer.error` carrying `details.operation: "dispose"`. A teardown acknowledgement timeout ends it with `renderer.error`, `CIM-RND-003`, and `details.operation: "dispose_acknowledgement"`.
+14. Stale transition, dwell, initialization, recovery, render, or renderer-dispose callbacks cannot publish semantic events after terminal disposal closes the stream.
 
 ## 6. Command Events
 
@@ -284,7 +286,7 @@ Include the cancellation reason and remaining dwell when available in structured
 
 Dwell events are Runtime-owned. A v1 implementation with non-zero authored dwell cannot omit the applicable dwell events.
 
-## 8. Transition Events
+## 8. Transition and Initialization Events
 
 ### `transition.started`
 
@@ -312,6 +314,21 @@ It precedes the Core-owned `step.changed` event when semantic position moves.
 ### `transition.failed`
 
 Reports stable renderer settlement failure.
+
+### `initialization.cancelled`
+
+Reports that instance initialization was intentionally abandoned by terminal disposal before initialization completed.
+
+When an initial renderer transition exists, include:
+
+```text
+transition_id
+step_id = initial
+result = cancelled
+details.reason = dispose
+```
+
+If disposal arrives after renderer mount but before the initial render transition exists, `transition_id` may be omitted. `initialization.cancelled` closes the opened initialization lifecycle for replay and diagnostic reconstruction.
 
 ## 9. Step Events
 
@@ -389,7 +406,20 @@ Required whenever an in-flight render honors an expected abort/cancellation requ
 
 The event must carry the applicable `transition_id` and `result: "cancelled"`. Expected abort is not `renderer.error` and does not trigger fault recovery by itself.
 
+An honored abort is recognized only through the renderer cancellation contract. The renderer rejects with `RendererCancelledError` carrying the same reason exposed by the aborted renderer signal. A plain renderer exception after an abort request remains `renderer.error`.
+
 If cancellation is requested but the renderer has no in-flight work to abort, no `renderer.cancelled` event is required.
+
+If a renderer does not acknowledge a disposal-time abort within 1000 ms of injected CiM time, Runtime emits `renderer.error` with:
+
+```text
+error_code = CIM-RND-002
+details.operation = abort_acknowledgement
+details.reason = dispose
+details.timeout_ms = 1000
+```
+
+Runtime then completes disposal without waiting for later renderer cooperation. A late completion is silent.
 
 ### `renderer.error`
 
@@ -397,11 +427,23 @@ Reports a renderer-owned failure.
 
 A failure from terminal renderer teardown includes `details.operation: "dispose"`. Runtime still stores canonical `disposed` status and closes the semantic event stream after publishing the teardown error.
 
+A renderer-dispose acknowledgement timeout emits `renderer.error` with:
+
+```text
+error_code = CIM-RND-003
+details.operation = dispose_acknowledgement
+details.timeout_ms = 1000
+```
+
+The timeout is measured by injected CiM time. Runtime then closes the event stream and ignores any late teardown completion.
+
 ### `renderer.disposed`
 
 Reports completed renderer disposal.
 
-On successful terminal disposal, this is the final semantic event for the instance. Core is already in canonical `disposed` status when this event is published, so reentrant command attempts cannot create new semantic work after renderer teardown evidence.
+On successful terminal disposal acknowledged within the bounded teardown window, this is the final semantic event for the instance. Core is already in canonical `disposed` status when this event is published, so reentrant command attempts cannot create new semantic work after renderer teardown evidence.
+
+A renderer-dispose acknowledgement timeout does not emit `renderer.disposed`.
 
 ## 12. Recovery and Fault Events
 
@@ -412,6 +454,12 @@ Runtime began restoration to a known committed stable boundary.
 ### `recovery.succeeded`
 
 Restoration succeeded. Result is `recovered`.
+
+### `recovery.cancelled`
+
+Terminal disposal intentionally interrupted active recovery. Result is `cancelled`, `details.reason` is `dispose`, and the event uses the recovery transition identity and committed recovery anchor.
+
+`recovery.cancelled` closes an opened `recovery.started` lifecycle without misclassifying disposal as restoration failure. It does not create `CIM-RND-006` and does not imply `instance.faulted`.
 
 ### `recovery.failed`
 
@@ -512,6 +560,8 @@ The resulting semantic event stream and evidence are compared with expected or r
 
 Replay does not drive Runtime by feeding prior semantic events back into the engine.
 
+A replay stream cannot leave initialization or recovery logically open at disposal. `initialization.cancelled` and `recovery.cancelled` provide the terminal lifecycle evidence needed to close those sequences.
+
 ## 18. Initial Event Catalog
 
 ```text
@@ -529,6 +579,7 @@ transition.started
 transition.cancelled
 transition.settled
 transition.failed
+initialization.cancelled        required when disposal interrupts initialization
 step.changed
 step.initial                    optional
 commentary.active.changed
@@ -541,6 +592,7 @@ renderer.error
 renderer.disposed
 recovery.started
 recovery.succeeded
+recovery.cancelled              required when disposal interrupts active recovery
 recovery.failed
 instance.faulted
 host.fallback.shown
@@ -579,7 +631,10 @@ The harness must be able to assert that:
 - recovery outcome is explicit;
 - unrecoverable failures lead to ordered instance fault/fallback evidence;
 - disposal cancels transition, dwell, initialization, and recovery work before terminal stream closure;
-- successful disposal ends with `renderer.disposed`, while renderer teardown failure ends with `renderer.error` carrying `details.operation: "dispose"`;
-- no stale semantic event can publish after disposal closes the stream;
+- disposal closes interrupted initialization and recovery with explicit `initialization.cancelled` and `recovery.cancelled` evidence;
+- successful disposal acknowledged inside the teardown window ends with `renderer.disposed`, while renderer teardown rejection ends with `renderer.error` carrying `details.operation: "dispose"`;
+- a disposal-time render that does not acknowledge abort within the bounded window produces `CIM-RND-002` and cannot hold Core out of terminal `disposed`;
+- `renderer.dispose()` cannot hold terminal disposal open beyond its bounded acknowledgement window and timeout produces `CIM-RND-003`;
+- no stale semantic event can publish after disposal closes the stream, including late render and late renderer-dispose completions;
 - fallback fault evidence survives the canonical `faulted` to `disposed` lifecycle transition;
 - multiple instance streams remain independently ordered.
