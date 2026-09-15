@@ -15,6 +15,7 @@ const FORBIDDEN_IMPORTS = [
   ['core-to-host', 'src/core/', 'src/host/', 'Core cannot depend on a host adapter.'],
   ['core-to-telemetry', 'src/core/', 'src/telemetry/', 'Core cannot depend on telemetry sinks.'],
 
+  ['transport-to-runtime', 'src/transport/', 'src/runtime/', 'Transport receives Runtime command authority by injection and cannot import Runtime implementation modules.'],
   ['transport-to-core', 'src/transport/', 'src/core/', 'Transport consumes Runtime projections and cannot reach Core directly.'],
   ['transport-to-renderers', 'src/transport/', 'src/renderers/', 'Transport cannot call or import renderers.'],
   ['transport-to-commentary', 'src/transport/', 'src/commentary/', 'Transport cannot advance or import commentary.'],
