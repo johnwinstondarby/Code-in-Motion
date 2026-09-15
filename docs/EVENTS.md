@@ -221,13 +221,21 @@ Continuous playback intent begins.
 
 Learner-controlled time is paused.
 
-If pause occurs during an in-flight transition, include `transition_id` and `details.transition_progress`.
+If pause occurs during an in-flight transition, include `transition_id` and:
 
-If pause occurs during dwell, include `details.dwell_remaining_ms`.
+```text
+details.transition_phase = in_flight
+```
+
+V1 does not publish fractional transition progress because Runtime has no authoritative fractional transition-progress source. Pause conformance is demonstrated by frozen renderer clock work, preserved transition identity, preserved Core target, and absence of semantic commit while paused.
+
+If pause occurs during dwell, include `details.dwell_remaining_ms`. `dwell_remaining_ms` is the exact Runtime-owned resumable quantity.
 
 ### `playback.resumed`
 
 A paused transition or dwell resumes.
+
+When a transition resumes, include the preserved `transition_id` and `details.transition_phase: "in_flight"`. When dwell resumes, include `details.dwell_remaining_ms` for the preserved remainder.
 
 ### `playback.stopped`
 
@@ -465,7 +473,7 @@ The harness canonicalizer owns render-digest normalization. Renderer code does n
 
 ## 16. Frame-Level and Scrub-Preview Data
 
-Animation-frame events, per-frame transforms, high-frequency renderer ticks, and pointer-level scrub-preview changes are outside the semantic event stream.
+Animation-frame events, per-frame transforms, high-frequency renderer ticks, fractional renderer progress, and pointer-level scrub-preview changes are outside the semantic event stream.
 
 A specialized profiler may capture such data separately, but that data cannot redefine semantic ordering or replay authority.
 
@@ -552,7 +560,8 @@ The harness must be able to assert that:
 - valid start/end boundary commands are accepted `no_change` results rather than rejections;
 - navigation clears continuous playback intent;
 - non-zero dwell produces required start/completion/cancellation evidence as applicable;
-- pause and resume preserve transition or dwell timing semantics;
+- pause freezes renderer delayed/frame work while preserving transition identity and Core pending target, and no `step.changed` occurs while paused;
+- paused dwell preserves exact `dwell_remaining_ms`, and resume consumes only that remainder;
 - final-step dwell completes before `playback.stopped` with reason `at_end`;
 - scrub commit emits one seek and drag preview emits no semantic seek;
 - invalid deep links produce diagnostic evidence and deterministic fallback to `initial` when an experience is available;

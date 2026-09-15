@@ -97,7 +97,7 @@ test('CiMInstance initial snapshot separates Core canonical state from Runtime o
   assert.deepEqual(snapshot.operational, {
     playbackIntent: false,
     transitionId: null,
-    transitionProgress: 0,
+    transitionPhase: 'idle',
     dwellRemainingMs: 0,
     activeAbortState: null
   });

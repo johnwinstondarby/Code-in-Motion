@@ -5,10 +5,16 @@ import {
   COMMAND_SOURCE_VALUES
 } from '../contracts/events.mjs';
 
+export const TRANSITION_PHASE = Object.freeze({
+  IDLE: 'idle',
+  IN_FLIGHT: 'in_flight',
+  SETTLED: 'settled'
+});
+
 const RUNTIME_OPERATIONAL_KEYS = Object.freeze([
   'playbackIntent',
   'transitionId',
-  'transitionProgress',
+  'transitionPhase',
   'dwellRemainingMs',
   'activeAbortState'
 ]);
@@ -156,7 +162,7 @@ export function createOperationalState() {
   const state = {
     playbackIntent: false,
     transitionId: null,
-    transitionProgress: 0,
+    transitionPhase: TRANSITION_PHASE.IDLE,
     dwellRemainingMs: 0,
     activeAbortState: null
   };

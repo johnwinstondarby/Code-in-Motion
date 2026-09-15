@@ -90,18 +90,30 @@ Runtime must represent at least:
 ```text
 playbackIntent
 transitionId
-transitionProgress
+transitionPhase
 dwellRemainingMs
 activeAbortState
 ```
 
 `playbackIntent` distinguishes continuous playback from discrete navigation.
 
-`transitionProgress` is meaningful only while an animated transition exists and is normalized to `[0, 1]`.
+`transitionPhase` reports only lifecycle state that Runtime can prove:
+
+```text
+idle
+in_flight
+settled
+```
+
+V1 does not define a Runtime-owned fractional transition-progress value. Renderer implementations own transition duration and do not expose a shared normalized progress signal. Runtime therefore does not infer renderer progress from elapsed time.
+
+`dwellRemainingMs` is the Runtime-owned resumable timing quantity because authored dwell duration and injected-clock accounting are both owned by Runtime.
 
 Operational transition state does not independently define canonical semantic position.
 
 Runtime determines activity-status changes from these operational facts and requests the corresponding canonical status through `Core.setStatus(nextStatus)`.
+
+See ADR 0010.
 
 ### 3.3 Status values
 
@@ -191,7 +203,9 @@ At the final step, `play()` is accepted with `result: "no_change"` and `details.
 
 ### 6.2 `pause()`
 
-At a stable boundary, `pause()` freezes learner-controlled time and preserves any remaining dwell interval. Semantic position does not change.
+At a stable boundary with no active transition or dwell, `pause()` is accepted with `result: "no_change"`. Semantic position does not change.
+
+When transition or dwell work is active, pause semantics follow §7 and §8.
 
 ### 6.3 `next()`
 
@@ -263,26 +277,29 @@ Continuity commands and navigation commands behave differently while a transitio
 
 ### 7.1 Pause during transition
 
-`pause()` freezes the injected CiM clock and preserves the active transition.
+`pause()` freezes the transition-scoped injected CiM clock and preserves the active transition.
 
 While paused mid-transition:
 
 ```text
 Core.currentStepId = last committed boundary
 Core.targetStepId = pending destination
-Runtime.transitionProgress = frozen progress
+Runtime.transitionId = existing transition identity
+Runtime.transitionPhase = in_flight
 Runtime -> Core.setStatus("paused")
 ```
 
-Runtime freezes transition progress and the injected clock before requesting the canonical status change. Core stores `paused` but does not infer it from Runtime-owned state.
+Runtime freezes renderer-visible delayed and frame callbacks before requesting the canonical status change. Advancing the underlying scheduler while paused does not advance renderer-visible virtual time, alter the pending target, or permit semantic commit.
+
+No fractional transition-progress value is required or inferred.
 
 No semantic commit occurs.
 
 ### 7.2 Play after paused transition or dwell
 
-If `pause()` preserved an in-flight transition, `play()` resumes that same transition from the frozen progress position. The semantic destination remains unchanged. Runtime may replace a private scheduling token but must preserve semantic transition correlation and requests the appropriate canonical activity status through Core.
+If `pause()` preserved an in-flight transition, `play()` resumes that same transition on the same transition identity and from the same renderer-visible virtual-time position. The semantic destination remains unchanged. Runtime may replace private source-scheduler handles while preserving the transition-scoped clock facade and requests the appropriate canonical activity status through Core.
 
-If `pause()` preserved an authored dwell interval, `play()` resumes the remaining dwell. This is the only case where a `play()` call begins by consuming dwell rather than immediately starting the next transition.
+If `pause()` preserved an authored dwell interval, `play()` resumes the exact remaining dwell. This is the only case where a `play()` call begins by consuming dwell rather than immediately starting the next transition.
 
 ### 7.3 Navigation during transition
 
@@ -319,14 +336,15 @@ Rules:
 - direct navigation and deep-link initialization discard dwell for that arrival;
 - an explicit `play()` from an already-committed navigated-to boundary begins the following transition immediately;
 - reduced motion preserves authored dwell after continuous-playback commits even when renderer animation is suppressed or shortened;
-- `pause()` during dwell freezes the virtual clock and preserves the remaining dwell interval;
-- `play()` resumes a dwell interval only when that dwell was previously paused;
+- `pause()` during dwell freezes the exact `dwellRemainingMs` value and cancels its active source-scheduler handle;
+- source time may advance arbitrarily while paused without reducing `dwellRemainingMs`;
+- `play()` resumes a paused dwell by scheduling only the preserved remainder;
 - navigation during dwell cancels the remaining dwell and clears playback intent;
 - if site configuration clamps authored dwell, deterministic replay records the effective runtime configuration.
 
 If continuous playback commits the final semantic step and that step has non-zero `dwell_ms`, Runtime consumes the final dwell, emits `dwell.completed`, then clears playback intent and emits `playback.stopped` with `details.reason: "at_end"`. No following transition is scheduled. With zero final-step dwell, the `at_end` stop follows final-step settlement directly.
 
-See ADR 0006.
+See ADR 0006 and ADR 0010.
 
 ## 9. Commit Rule
 
@@ -446,7 +464,7 @@ onFrame
 
 `now()` returns virtual CiM time. `schedule(fn, ms)` schedules delayed work in virtual CiM time. `cancel(handle)` cancels a handle created by that facade. `onFrame(fn)` registers virtual frame work and returns a handle cancellable by `cancel(handle)`.
 
-Pause freezes both delayed callbacks and frame callbacks. A renderer must not use `requestAnimationFrame`, `setTimeout`, `setInterval`, or another wall-clock scheduling path for semantically significant transition progress.
+Pause freezes both delayed callbacks and frame callbacks. While paused, `now()` remains fixed even if the underlying scheduler advances. Work registered through the facade while paused remains dormant until resume. A renderer must not use `requestAnimationFrame`, `setTimeout`, `setInterval`, or another wall-clock scheduling path for semantically significant transition progress.
 
 The clock facade is revoked when the render settles, aborts, or the renderer is disposed. After revocation, new scheduling cannot create active work, queued callbacks perform no renderer-visible work, frame callbacks stop, and stale work cannot mutate renderer output or affect canonical settlement.
 
@@ -623,9 +641,9 @@ The synthetic harness must prove at least:
 4. accepted `no_change` at start and end boundaries;
 5. observation-step position advance with unchanged state/render digests;
 6. pause at stable boundary;
-7. pause during animation with frozen progress;
-8. pause during dwell with frozen remaining dwell and required dwell evidence;
-9. resume of paused transition and paused dwell;
+7. pause during animation freezes renderer-visible delayed and frame callbacks while preserving `transitionId`, `targetStepId`, and the last committed `currentStepId`, with no `step.changed`;
+8. pause during dwell preserves exact `dwellRemainingMs` while source time advances and produces required dwell evidence;
+9. resume of paused transition preserves transition identity, and paused dwell resumes for exactly its remaining interval;
 10. navigation cancellation of active transition or dwell with required cancellation evidence;
 11. navigation clears playback intent;
 12. Runtime is the sole production requester of activity-status changes through `Core.setStatus(nextStatus)`;

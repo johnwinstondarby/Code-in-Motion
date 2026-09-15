@@ -11,7 +11,7 @@ Runtime creates one isolated CiM instance and coordinates commands across produc
 - Command sequencing
 - Cross-component orchestration
 - Continuous playback intent
-- Transition correlation, normalized progress, cancellation, and abort coordination
+- Transition correlation, phase, cancellation, and abort coordination
 - Dwell scheduling
 - Multi-instance isolation
 - Initial deep-link dispatch
@@ -68,7 +68,7 @@ Runtime-owned operational state is represented separately from Core canonical st
 ```text
 playbackIntent = false
 transitionId = null
-transitionProgress = 0
+transitionPhase = idle
 dwellRemainingMs = 0
 activeAbortState = null
 ```
@@ -152,13 +152,25 @@ continue to the following boundary or stop at end
 
 Semantic movement remains independent from subject-state identity, so observation steps still commit and emit `step.changed` when adjacent states are equivalent.
 
-Continuous playback honors `steps[].dwell_ms` as required by ADR 0006. Runtime records the authored dwell on the boundary model, emits `dwell.started`, waits on the injected scheduler, emits `dwell.completed`, then begins the next transition. `read.snapshot()` reports the remaining dwell from virtual time. Discrete navigation during dwell cancels the scheduled work, emits `dwell.cancelled`, clears playback intent, and proceeds through the existing absolute-navigation path.
+Continuous playback honors `steps[].dwell_ms` as required by ADR 0006. Runtime records the authored dwell on the boundary model, emits `dwell.started`, waits on the injected scheduler, emits `dwell.completed`, then begins the next transition. `read.snapshot()` reports remaining dwell from virtual time. Discrete navigation during dwell cancels the scheduled work, emits `dwell.cancelled`, clears playback intent, and proceeds through the existing absolute-navigation path.
 
-At the final boundary, `play()` is accepted with `no_change` and reason `at_end`. When continuous playback reaches the final step, playback stops with reason `at_end` after any required final dwell. Repeated `play()` while playback is already active is rejected with `invalid_state`; pause/resume semantics arrive in checkpoint 4.
+At the final boundary, `play()` is accepted with `no_change` and reason `at_end`. When continuous playback reaches the final step, playback stops with reason `at_end` after any required final dwell. Repeated `play()` while playback is already active is rejected with `invalid_state`.
 
 Renderer failure during continuous playback abandons the pending Core target, preserves the last committed semantic boundary, and stops playback with fault evidence. Restoration and canonical recover/fallback fault handling remain a later Runtime checkpoint.
 
-Checkpoint 3 records deterministic transition progress endpoints: `0` when transition work begins and `1` after stable renderer settlement, before the operational transition record is cleared. The current renderer contract does not expose a normalized intermediate progress reporter, so Runtime does not infer fractional progress from renderer timing. Checkpoint 4 must preserve pause/resume correctness through the injected clock and settle any requirement for externally reported mid-transition progress without guessing from renderer internals.
+## Runtime checkpoint 4: pause/resume and provable time freeze
+
+Checkpoint 4 deliberately corrects the Runtime operational contract. `transitionProgress` is removed and replaced by `transitionPhase` with the values `idle`, `in_flight`, and `settled`. Runtime can prove transition lifecycle phase and transition identity, but the renderer contract supplies no authoritative fractional progress value. Runtime therefore does not infer fractional transition progress from elapsed time or renderer internals. ADR 0010 records this correction and supersedes the prior fractional-progress wording in the v1 specification, event contract, and ADR 0005.
+
+This contract change intentionally touches the operational key list in `runtime-data.mjs`, the snapshot key-set assertion, and this README. Those changes are one coordinated correction rather than incidental churn.
+
+`pause(source)` is a continuity command. During an in-flight transition Runtime pauses the transition-scoped renderer clock, preserves the same `transitionId` and Core `targetStepId`, requests canonical `paused`, and emits `playback.paused` with `details.transition_phase: "in_flight"`. While paused, renderer `schedule` and `onFrame` callbacks remain dormant even if the underlying scheduler advances. No semantic commit occurs.
+
+`play(source)` resumes a paused transition through the same renderer task and the same semantic transition identity. Runtime resumes the private clock controller, requests canonical `transitioning`, and emits `playback.resumed`. A renderer completion that arrives while paused cannot commit until the resume gate opens.
+
+During authored dwell, `pause()` computes and preserves exact `dwellRemainingMs`, cancels the active source timer, and requests canonical `paused`. Advancing source time while paused does not consume the remainder. `play()` resumes the preserved dwell and schedules only the remaining interval. Dwell completion therefore occurs after the exact remainder rather than restarting the authored duration.
+
+The renderer-facing clock facade remains exactly `now`, `schedule`, `cancel`, and `onFrame`. Pause and resume are Runtime-only controller operations and are not exposed to renderer code.
 
 ## Does not own
 
@@ -186,3 +198,5 @@ Checkpoint 1 verification proves frozen public projections, initial separation o
 Checkpoint 2 verification proves initial absolute settlement, reject-before-initialize behavior, absolute discrete navigation, command/transition/step event ordering, semantic movement across equal subject state, boundary `no_change`, unknown-seek rejection, Home versus Restart reveal policy, superseding cancellation without a navigation queue, and preservation of the last committed Core boundary when destination rendering fails.
 
 Checkpoint 3 verification proves animated forward continuity, one command ID across automatic transition IDs, semantic advancement across equal subject state, continuous-playback stop at end, stable-boundary `play()` no-change behavior, repeated-play rejection while active, authored dwell scheduling and virtual-time remaining-dwell reporting, navigation cancellation during dwell or animation, stale-transition commit prevention, and recovery-anchor preservation when playback rendering fails.
+
+Checkpoint 4 verification proves transition-clock freeze while source time advances, dormant renderer frame and delay callbacks while paused, stable transition identity and Core pending target, absence of semantic commit while paused, exact dwell-remainder preservation, same-transition resume, and completion after only the preserved dwell remainder.
