@@ -11,6 +11,13 @@ export const SESSION_STATUS = Object.freeze({
 
 export const SESSION_STATUS_VALUES = Object.freeze(Object.values(SESSION_STATUS));
 
+export const CONTINUITY_COMMAND = Object.freeze({
+  PLAY: 'play',
+  PAUSE: 'pause'
+});
+
+export const CONTINUITY_COMMAND_VALUES = Object.freeze(Object.values(CONTINUITY_COMMAND));
+
 export const NAVIGATION_COMMAND = Object.freeze({
   NEXT: 'next',
   PREVIOUS: 'previous',
@@ -32,6 +39,7 @@ export const NAVIGATION_REASON = Object.freeze({
   AT_START: 'at_start',
   AT_END: 'at_end',
   UNKNOWN_STEP: 'unknown_step',
+  INVALID_STATE: 'invalid_state',
   FAULTED: 'faulted',
   DISPOSED: 'disposed'
 });

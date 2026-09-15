@@ -14,6 +14,8 @@ This directory exists to preserve component fences. Shared status names, reserve
 - Shared event/fault identifiers that require one canonical spelling
 - Dependency-free interface value shapes where a common representation is required
 
+`events.mjs` carries the v1 event schema identifier, event result vocabulary, component names, command-source names, and the stable event-name catalog defined by `docs/EVENTS.md`. It contains names only; event sequencing and publication remain Runtime behavior.
+
 ## Does not own
 
 - Canonical session state

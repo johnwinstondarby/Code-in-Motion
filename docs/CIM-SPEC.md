@@ -4,7 +4,7 @@ Status: Normative v1 specification
 
 ## 1. Scope
 
-This specification defines the shared runtime behavior for Code in Motion. It covers semantic position, command handling, transition settlement, playback intent, dwell timing, renderer lifecycle, commentary reveal, deep links, semantic scrub, reduced motion, fault settlement, and multi-instance isolation.
+This specification defines the shared runtime behavior for Code in Motion. It covers semantic position, command handling, transition settlement, playback intent, dwell timing, renderer lifecycle, commentary reveal, deep links, semantic scrub, reduced motion, fault settlement, terminal disposal, and multi-instance isolation.
 
 Subject-specific visual meaning is outside this specification. Git-specific behavior belongs to Git experience data and Git renderer documentation.
 
@@ -90,18 +90,30 @@ Runtime must represent at least:
 ```text
 playbackIntent
 transitionId
-transitionProgress
+transitionPhase
 dwellRemainingMs
 activeAbortState
 ```
 
 `playbackIntent` distinguishes continuous playback from discrete navigation.
 
-`transitionProgress` is meaningful only while an animated transition exists and is normalized to `[0, 1]`.
+`transitionPhase` reports only lifecycle state that Runtime can prove:
+
+```text
+idle
+in_flight
+settled
+```
+
+V1 does not define a Runtime-owned fractional transition-progress value. Renderer implementations own transition duration and do not expose a shared normalized progress signal. Runtime therefore does not infer renderer progress from elapsed time.
+
+`dwellRemainingMs` is the Runtime-owned resumable timing quantity because authored dwell duration and injected-clock accounting are both owned by Runtime.
 
 Operational transition state does not independently define canonical semantic position.
 
 Runtime determines activity-status changes from these operational facts and requests the corresponding canonical status through `Core.setStatus(nextStatus)`.
+
+See ADR 0010.
 
 ### 3.3 Status values
 
@@ -163,7 +175,30 @@ Commands are submitted to `CiMInstance`. Peer modules do not call one another to
 
 Every accepted command receives a command/correlation identity suitable for telemetry and deterministic replay.
 
-### 5.1 Command source
+`dispose()` is a terminal instance-lifecycle operation rather than a learner navigation or continuity command. Its settlement rules are defined in §18.3.
+
+### 5.1 Instance initialization
+
+Runtime accepts a resolved semantic entry boundary, never a URL or fragment. Host owns external URL and fragment parsing and resolves those forms to an experience identity and semantic boundary before Runtime initialization.
+
+The v1 initialization surface is:
+
+```text
+initialize()
+initialize({ stepId, source })
+```
+
+The defaults are `stepId: initial` and `source: host`. Initialization source is one of `host`, `deep_link`, or `replay`.
+
+Runtime validates the requested boundary and initialization options before `renderer.mount()` begins. An unknown entry boundary throws before renderer lifecycle work, transition allocation, event publication, or canonical mutation.
+
+A targeted initialization performs one non-animated absolute render of the requested boundary. It does not render `initial` and then seek to the requested target. The entry render uses `animate:false`, `fromState:null`, and `fromStepId:null`, with the complete state and step renderer configuration of the requested boundary.
+
+For an authored entry boundary, Runtime opens the requested boundary as the pending target before rendering and asks Core to commit it only after stable renderer settlement. Successful targeted entry initializes both `currentStepId` and `revealFrontier` to the requested boundary. Startup emits the exactly-once `step.initial` entry event defined by `EVENTS.md` and does not emit `step.changed`.
+
+Direct entry does not consume authored dwell. A subsequent `play()` begins the following transition immediately; from the final authored entry boundary, `play()` is accepted with `no_change` and `at_end`.
+
+### 5.2 Command source
 
 Observational command evidence should identify the initiating surface when useful, for example:
 
@@ -191,7 +226,9 @@ At the final step, `play()` is accepted with `result: "no_change"` and `details.
 
 ### 6.2 `pause()`
 
-At a stable boundary, `pause()` freezes learner-controlled time and preserves any remaining dwell interval. Semantic position does not change.
+At a stable boundary with no active transition or dwell, `pause()` is accepted with `result: "no_change"`. Semantic position does not change.
+
+When transition or dwell work is active, pause semantics follow §7 and §8.
 
 ### 6.3 `next()`
 
@@ -263,26 +300,29 @@ Continuity commands and navigation commands behave differently while a transitio
 
 ### 7.1 Pause during transition
 
-`pause()` freezes the injected CiM clock and preserves the active transition.
+`pause()` freezes the transition-scoped injected CiM clock and preserves the active transition.
 
 While paused mid-transition:
 
 ```text
 Core.currentStepId = last committed boundary
 Core.targetStepId = pending destination
-Runtime.transitionProgress = frozen progress
+Runtime.transitionId = existing transition identity
+Runtime.transitionPhase = in_flight
 Runtime -> Core.setStatus("paused")
 ```
 
-Runtime freezes transition progress and the injected clock before requesting the canonical status change. Core stores `paused` but does not infer it from Runtime-owned state.
+Runtime freezes renderer-visible delayed and frame callbacks before requesting the canonical status change. Advancing the underlying scheduler while paused does not advance renderer-visible virtual time, alter the pending target, or permit semantic commit.
+
+No fractional transition-progress value is required or inferred.
 
 No semantic commit occurs.
 
 ### 7.2 Play after paused transition or dwell
 
-If `pause()` preserved an in-flight transition, `play()` resumes that same transition from the frozen progress position. The semantic destination remains unchanged. Runtime may replace a private scheduling token but must preserve semantic transition correlation and requests the appropriate canonical activity status through Core.
+If `pause()` preserved an in-flight transition, `play()` resumes that same transition on the same transition identity and from the same renderer-visible virtual-time position. The semantic destination remains unchanged. Runtime may replace private source-scheduler handles while preserving the transition-scoped clock facade and requests the appropriate canonical activity status through Core.
 
-If `pause()` preserved an authored dwell interval, `play()` resumes the remaining dwell. This is the only case where a `play()` call begins by consuming dwell rather than immediately starting the next transition.
+If `pause()` preserved an authored dwell interval, `play()` resumes the exact remaining dwell. This is the only case where a `play()` call begins by consuming dwell rather than immediately starting the next transition.
 
 ### 7.3 Navigation during transition
 
@@ -319,14 +359,15 @@ Rules:
 - direct navigation and deep-link initialization discard dwell for that arrival;
 - an explicit `play()` from an already-committed navigated-to boundary begins the following transition immediately;
 - reduced motion preserves authored dwell after continuous-playback commits even when renderer animation is suppressed or shortened;
-- `pause()` during dwell freezes the virtual clock and preserves the remaining dwell interval;
-- `play()` resumes a dwell interval only when that dwell was previously paused;
+- `pause()` during dwell freezes the exact `dwellRemainingMs` value and cancels its active source-scheduler handle;
+- source time may advance arbitrarily while paused without reducing `dwellRemainingMs`;
+- `play()` resumes a paused dwell by scheduling only the preserved remainder;
 - navigation during dwell cancels the remaining dwell and clears playback intent;
 - if site configuration clamps authored dwell, deterministic replay records the effective runtime configuration.
 
 If continuous playback commits the final semantic step and that step has non-zero `dwell_ms`, Runtime consumes the final dwell, emits `dwell.completed`, then clears playback intent and emits `playback.stopped` with `details.reason: "at_end"`. No following transition is scheduled. With zero final-step dwell, the `at_end` stop follows final-step settlement directly.
 
-See ADR 0006.
+See ADR 0006 and ADR 0010.
 
 ## 9. Commit Rule
 
@@ -429,7 +470,7 @@ onAbort
 
 The renderer may observe cancellation and register an abort callback. It cannot dispatch, trigger, clear, replace, or otherwise control cancellation state.
 
-An aborted render rejects with the distinguished renderer-cancellation outcome. Runtime reports an honored expected cancellation as `renderer.cancelled`, correlated by `transition_id`, and does not report it as `renderer.error`.
+An aborted render rejects with the distinguished renderer-cancellation outcome. Runtime reports an honored expected cancellation as `renderer.cancelled`, correlated by `transition_id`, and does not report it as `renderer.error`. The cancellation outcome must be `RendererCancelledError` carrying the same reason exposed by the aborted renderer signal; a plain renderer exception after abort remains an error rather than cancellation evidence.
 
 #### 10.2.2 Transition-scoped clock facade
 
@@ -446,7 +487,7 @@ onFrame
 
 `now()` returns virtual CiM time. `schedule(fn, ms)` schedules delayed work in virtual CiM time. `cancel(handle)` cancels a handle created by that facade. `onFrame(fn)` registers virtual frame work and returns a handle cancellable by `cancel(handle)`.
 
-Pause freezes both delayed callbacks and frame callbacks. A renderer must not use `requestAnimationFrame`, `setTimeout`, `setInterval`, or another wall-clock scheduling path for semantically significant transition progress.
+Pause freezes both delayed callbacks and frame callbacks. While paused, `now()` remains fixed even if the underlying scheduler advances. Work registered through the facade while paused remains dormant until resume. A renderer must not use `requestAnimationFrame`, `setTimeout`, `setInterval`, or another wall-clock scheduling path for semantically significant transition progress.
 
 The clock facade is revoked when the render settles, aborts, or the renderer is disposed. After revocation, new scheduling cannot create active work, queued callbacks perform no renderer-visible work, frame callbacks stop, and stale work cannot mutate renderer output or affect canonical settlement.
 
@@ -455,6 +496,14 @@ A non-cancelled render resolves only when the destination has reached stable out
 ### 10.3 `dispose()`
 
 Dispose revokes renderer timing capability, cancels renderer-owned scheduled work, removes instance-scoped listeners, releases resources, and prevents further output mutation from the disposed renderer.
+
+Runtime cancels outstanding instance work and allows at most 1000 ms of injected CiM time for an in-flight renderer to acknowledge a disposal-time abort. If no acknowledgement arrives, Runtime records `CIM-RND-002`, closes the render capabilities, and continues terminal cleanup. Renderer cooperation is best-effort during teardown and is never a precondition for reaching canonical `disposed`.
+
+Runtime clears Runtime operational state and stores canonical `disposed` status before awaiting `renderer.dispose()`. `renderer.dispose()` then receives at most 1000 ms of injected CiM time to acknowledge teardown. If it does not settle within that window, Runtime records `CIM-RND-003`, closes the semantic event stream, and leaves Core in canonical `disposed` state. A renderer-dispose exception also leaves the instance terminal and is reported according to `EVENTS.md`.
+
+The Host must continue advancing the injected CiM clock through terminal teardown. Suspending that clock also suspends acknowledgement-timeout progress and can leave an instance in `disposing` until clock advancement resumes.
+
+A late render or renderer-dispose completion after terminal containment has no semantic authority and cannot publish new CiM evidence.
 
 ## 11. Absolute Render Equivalence
 
@@ -583,25 +632,61 @@ Fault handling follows operation ownership.
 
 ### 18.1 Recoverable renderer failure
 
-If rendering the target fails and the last committed stable boundary remains available, Runtime attempts restoration of that boundary through non-animated absolute rendering.
+If destination rendering fails and the last committed stable boundary remains available, Runtime first abandons the pending semantic target and clears continuous playback intent and dwell work. Core therefore retains the last committed boundary with `targetStepId = null` before canonical recovery context is recorded.
 
-Successful restoration leaves the instance usable and records the failed transition and recovery outcome.
+For a renderer exception during destination settlement, Runtime records the recoverable canonical fault defined by `FAULTS.md` (`CIM-RND-004`, component `renderer`, recovery class `recover`), emits `recovery.started`, and requests one non-animated absolute render of the committed recovery anchor. Recovery rendering receives a new transition correlation identity but does not create or commit a new semantic target.
+
+Successful restoration clears the matching recoverable Core fault, returns canonical status to `idle`, emits `recovery.succeeded`, and leaves the instance usable at the same committed semantic boundary. The original failed transition and renderer fault evidence remain in the event stream.
+
+Commands submitted while restoration is active are rejected with `invalid_state`; recovery is not superseded by ordinary learner navigation.
 
 ### 18.2 Unrecoverable renderer failure
 
-If restoration fails, Runtime first clears `playbackIntent` and any active transition/dwell operational state. Runtime then calls `Core.setStatus("faulted")`. After Core stores the canonical `faulted` status, the runtime event stream reports `instance.faulted`, and the host exposes the standard static fallback or unavailable state while leaving the surrounding page usable.
+If restoration also fails, Runtime emits `recovery.failed`, clears active playback, transition, dwell, and abort operational state, then escalates the existing recoverable Core fault to the fallback fault defined by `FAULTS.md` (`CIM-RND-006`, component `renderer`, recovery class `fallback`). `Core.faultControl.recordFault(...)` atomically stores that fallback record and canonical `faulted` status. Direct `Core.setStatus("faulted")` is invalid.
 
-This ordering prevents canonical fault status from being stored while Runtime still advertises active playback intent.
+Only after Core stores the fallback fault does Runtime emit `instance.faulted`. The host then exposes the standard static fallback or unavailable state while leaving the surrounding page usable.
 
-### 18.3 Invalid command
+This ordering prevents canonical faulted status from being stored while Runtime still advertises active playback, transition, dwell, or abort state.
+
+### 18.3 Terminal disposal
+
+`dispose()` is terminal and single-shot. Repeated calls return the original disposal promise and therefore repeat the original disposal outcome, including the same renderer teardown rejection when `renderer.dispose()` failed.
+
+Runtime first marks disposal active so new learner commands cannot start semantic work. If initialization is active, Runtime emits `initialization.cancelled` with `details.reason: "dispose"`; if renderer recovery is active, Runtime emits `recovery.cancelled` with the same reason. These events close their respective lifecycles before the semantic event stream closes.
+
+Runtime aborts active initialization, recovery, or semantic transition rendering, revokes renderer clock capability, releases paused transition gates, and abandons any pending semantic target. Runtime waits no more than 1000 ms of injected CiM time for an aborted render to acknowledge cancellation. An honored renderer cancellation produces `renderer.cancelled`. If the renderer does not acknowledge within the window, Runtime emits `renderer.error` with `CIM-RND-002` and continues terminal cleanup. A late renderer completion cannot commit or publish.
+
+Runtime then cancels dwell and continuous playback and clears Runtime operational state to:
+
+```text
+playbackIntent = false
+transitionId = null
+transitionPhase = idle
+dwellRemainingMs = 0
+activeAbortState = null
+```
+
+A transient `recover` fault is cleared during terminal cleanup. A stored `fallback` fault is preserved as terminal evidence when canonical status advances from `faulted` to `disposed`.
+
+Runtime stores canonical `disposed` status before awaiting `renderer.dispose()`. From that point onward, commands return the stable `disposed` rejection and cannot publish semantic command events. This ordering also prevents reentrant event subscribers from initiating semantic work during renderer teardown.
+
+`renderer.dispose()` receives a 1000 ms injected-time acknowledgement window. If teardown succeeds inside the window, Runtime emits `renderer.disposed` and closes the stream. If renderer teardown throws or rejects, Runtime emits terminal `renderer.error` evidence with `details.operation: "dispose"`, closes the stream, rejects the cached disposal promise, and preserves canonical `disposed`. If teardown does not acknowledge within the window, Runtime emits `renderer.error` with `CIM-RND-003` and `details.operation: "dispose_acknowledgement"`, closes the stream, and resolves disposal with the terminal snapshot. A late teardown completion is silent.
+
+Disposal that interrupts active renderer recovery is classified as terminal lifecycle cancellation. It does not emit `recovery.failed`, create `CIM-RND-006`, or emit `instance.faulted` unless fallback fault settlement had already completed independently.
+
+After event-stream closure, stale renderer completions, scheduler callbacks, dwell callbacks, recovery callbacks, and transition continuations cannot mutate canonical state or publish new semantic evidence.
+
+### 18.4 Invalid command
 
 A genuinely invalid command does not change canonical state. It returns a stable rejection code and may emit a diagnostic event.
 
 Reaching `at_start` or `at_end` is not an invalid command; it is an accepted `no_change` result.
 
-### 18.4 Delayed or stale callback
+### 18.5 Delayed or stale callback
 
 A callback whose transition identity is no longer current cannot commit position or mutate the current destination.
+
+A callback that arrives after terminal disposal cannot publish semantic evidence or revive Runtime operational state.
 
 ## 19. Event and Telemetry Relationship
 
@@ -611,7 +696,7 @@ Semantic events report observable behavior after or during that control flow. Ev
 
 All semantic event timestamps use the injected CiM clock. Wall-clock time, if captured, is telemetry-sink metadata only.
 
-Event ordering, required fields, and event names are defined in `EVENTS.md`.
+Event ordering, required fields, terminal disposal closure, and event names are defined in `EVENTS.md`.
 
 ## 20. Harness Conformance Requirements
 
@@ -623,9 +708,9 @@ The synthetic harness must prove at least:
 4. accepted `no_change` at start and end boundaries;
 5. observation-step position advance with unchanged state/render digests;
 6. pause at stable boundary;
-7. pause during animation with frozen progress;
-8. pause during dwell with frozen remaining dwell and required dwell evidence;
-9. resume of paused transition and paused dwell;
+7. pause during animation freezes renderer-visible delayed and frame callbacks while preserving `transitionId`, `targetStepId`, and the last committed `currentStepId`, with no `step.changed`;
+8. pause during dwell preserves exact `dwellRemainingMs` while source time advances and produces required dwell evidence;
+9. resume of paused transition preserves transition identity, and paused dwell resumes for exactly its remaining interval;
 10. navigation cancellation of active transition or dwell with required cancellation evidence;
 11. navigation clears playback intent;
 12. Runtime is the sole production requester of activity-status changes through `Core.setStatus(nextStatus)`;
@@ -640,10 +725,11 @@ The synthetic harness must prove at least:
 21. renderer failure restoration;
 22. unrecoverable renderer failure fallback and ordered `faulted` status settlement;
 23. duplicate, reserved-ID, dwell, and schema validation failure;
-24. deep-link initialization, including `/initial`, and invalid-target fallback to `initial`;
+24. targeted initialization, including `/initial`, direct authored-boundary entry, entry provenance/frontier, and Host-owned invalid-target fallback to `initial`;
 25. scrub emits one seek only on commit;
 26. multiple-instance isolation;
-27. deterministic replay from scenario, seed, versions, validated experience, runtime configuration, commands, and virtual clock.
+27. terminal disposal from idle, paused transition, dwell, initialization, active recovery, and faulted states, including explicit initialization/recovery cancellation evidence, honored renderer-cancellation evidence, bounded abort and renderer-dispose acknowledgement, stale-work prevention, final event-stream closure, recoverable-fault cleanup, fallback-fault preservation, and renderer-dispose failure containment;
+28. deterministic replay from scenario, seed, versions, validated experience, runtime configuration, commands, and virtual clock.
 
 ## 21. Non-Goals for v1
 

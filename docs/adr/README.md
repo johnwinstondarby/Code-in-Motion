@@ -17,6 +17,8 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0007`](0007-semantic-scrub-contract.md) | Semantic Scrub Contract | 2026-09-12 | Accepted |
 | [`0008`](0008-shared-contracts-and-privileged-core-control.md) | Shared Contracts and Privileged Core Control | 2026-09-13 | Accepted |
 | [`0009`](0009-renderer-capability-boundary.md) | Renderer Capability Boundary | 2026-09-13 | Accepted |
+| [`0010`](0010-runtime-pause-observability.md) | Runtime Pause Observability and Clock Freeze | 2026-09-14 | Accepted |
+| [`0011`](0011-targeted-initialization-and-entry-evidence.md) | Targeted Initialization and Session-Entry Evidence | 2026-09-15 | Accepted |
 
 ## Owns
 

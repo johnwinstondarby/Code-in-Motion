@@ -27,7 +27,7 @@ Expected cancellation is not a fault. Renderer cancellation is reported as `rend
 
 `CIM-TRN-*` is reserved for transport input/mapping faults; the initial v1 matrix does not yet assign a transport fault code.
 
-Within the renderer subsystem, `CIM-RND-002` and `CIM-RND-003` are reserved for later v1 renderer-lifecycle assignments so existing published codes do not need renumbering. `CIM-RND-001` covers renderer resolution even though Runtime composition invokes the resolver.
+Within the renderer subsystem, `CIM-RND-002` identifies failure to acknowledge a disposal-time render abort within the bounded Runtime window, and `CIM-RND-003` identifies failure of `renderer.dispose()` to acknowledge teardown within its bounded Runtime window. Both are terminal-containment diagnostics and do not populate Core canonical fault state. `CIM-RND-001` covers renderer resolution even though Runtime composition invokes the resolver.
 
 ## 3. Recovery Classes
 
@@ -47,6 +47,10 @@ Normal CiM operation cannot continue. The instance enters `faulted` or fails ini
 
 A callback or completion belongs to a superseded transition. It is discarded without changing canonical state and without classifying the condition as a learner-facing fault.
 
+### Terminal containment
+
+A renderer fails to acknowledge teardown after disposal has begun. Runtime revokes renderer capabilities, records observational renderer fault evidence, completes canonical `disposed` settlement, and ignores any later completion. Terminal-containment diagnostics do not populate Core canonical `error` because disposal is already the terminal lifecycle outcome.
+
 ## 4. Canonical Core Fault State
 
 When a runtime session exists, Core's canonical `error` field is either `null` or one frozen record with exactly:
@@ -59,7 +63,7 @@ recoveryClass
 
 `code` uses one namespace from §2. `component` must correspond to that namespace. `recoveryClass` is either `recover` or `fallback`.
 
-`reject` and `ignore stale work` do not populate canonical `error`. Their evidence remains observational because they do not represent active recovery or terminal instance fault state.
+`reject`, `ignore stale work`, and `terminal containment` do not populate canonical `error`. Their evidence remains observational because they do not represent active recovery or terminal instance fault state.
 
 Core stores canonical fault state only after the active semantic target has been cancelled or abandoned. `currentStepId` therefore remains the last committed recovery anchor and `targetStepId` is `null` when canonical fault state is recorded.
 
@@ -82,6 +86,8 @@ A successfully settled restart may clear an active `recover` record while resett
 | Invalid `dwell_ms` | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus field diagnostic | `CIM-EXP-005` |
 | Malformed commentary link / disallowed scheme | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus link diagnostic | `CIM-EXP-006` |
 | Unknown renderer identifier | Runtime composition / renderer resolver | Fallback before normal playback | `initial` if Core session exists; otherwise none | Static fallback plus diagnostic | `CIM-RND-001` |
+| Renderer fails to acknowledge disposal-time render abort within the bounded Runtime window | Renderer + Runtime coordination | Terminal containment | Last committed boundary | Disposal completes; late renderer completion has no authority | `CIM-RND-002` |
+| `renderer.dispose()` fails to acknowledge teardown within the bounded Runtime window | Renderer + Runtime coordination | Terminal containment | Canonical `disposed` state | Event stream closes after timeout evidence; late teardown completion is ignored | `CIM-RND-003` |
 | Invalid semantic seek / unknown step | Core validation | Reject | Current committed boundary | No movement; controls remain usable | `CIM-CORE-001` |
 | Command received while faulted/disposed | Runtime/Core state gate | Reject | Current committed boundary | No movement; stable rejection evidence | `CIM-RT-001` |
 | Renderer throws during destination transition | Renderer | Recover when restoration succeeds | Last committed boundary | Restore previous stable view; remain usable | `CIM-RND-004` |
@@ -95,8 +101,8 @@ A successfully settled restart may clear an active `recover` record while resett
 ## 6. Ownership Rules
 
 - Core rejects invalid semantic destinations and owns canonical commit/fault status.
-- Runtime coordinates transition cancellation, stale-work rejection, restoration requests, status-write requests, and cross-component settlement.
-- Renderer owns visual settlement failures and restoration rendering; the renderer subsystem namespace also covers renderer resolution.
+- Runtime coordinates transition cancellation, stale-work rejection, restoration requests, status-write requests, terminal-containment timing, and cross-component settlement.
+- Renderer owns visual settlement failures and restoration rendering; the renderer subsystem namespace also covers renderer resolution and renderer teardown acknowledgement.
 - Experience validation failures occur before normal playback.
 - Host owns page-level fallback after initialization or loading failure and participates in deterministic deep-link fallback.
 - Telemetry failure cannot command or stop otherwise healthy runtime behavior unless required evidence is explicitly configured as a test gate in the harness.
@@ -119,6 +125,8 @@ recovery outcome
 
 A successful recovery does not erase the original fault event.
 
+Terminal-containment evidence must identify the teardown operation, applicable transition identity, stable error code, and bounded acknowledgement interval. A late renderer completion after terminal containment does not create new semantic evidence.
+
 ## 8. Harness Requirements
 
 The harness must inject and verify at least:
@@ -133,6 +141,8 @@ The harness must inject and verify at least:
 - renderer throw during transition;
 - incomplete renderer settlement;
 - failed renderer restoration;
+- renderer failure to acknowledge disposal-time abort;
+- renderer failure to acknowledge `dispose()` teardown;
 - delayed current scheduler callback;
 - stale cancelled callback;
 - experience loading failure.

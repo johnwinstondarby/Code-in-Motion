@@ -138,6 +138,11 @@ Runtime configuration is included when site policy changes effective semantic ti
 8. Recovery events follow the fault that triggered them.
 9. Disposal is terminal for the instance event stream except sink-side archival metadata.
 10. When final-step dwell is non-zero during continuous playback, `dwell.completed` precedes `playback.stopped` with `details.reason: "at_end"`.
+11. Disposal cancels outstanding lifecycle, transition, and dwell work before the event stream closes. An initialization or recovery lifecycle opened before disposal closes with `initialization.cancelled` or `recovery.cancelled`.
+12. An honored in-flight renderer abort emits `renderer.cancelled`. If disposal-time abort acknowledgement exceeds the bounded injected-time window, `renderer.error` with `CIM-RND-002` is emitted instead and any later renderer completion is silent.
+13. Core reaches canonical `disposed` before Runtime awaits `renderer.dispose()`. Successful renderer teardown ends the semantic stream with `renderer.disposed`. A renderer teardown rejection ends it with `renderer.error` carrying `details.operation: "dispose"`. A teardown acknowledgement timeout ends it with `renderer.error`, `CIM-RND-003`, and `details.operation: "dispose_acknowledgement"`.
+14. Stale transition, dwell, initialization, recovery, render, or renderer-dispose callbacks cannot publish semantic events after terminal disposal closes the stream.
+15. Successful initialization emits exactly one `step.initial` for the resolved entry boundary. Initialization does not emit `step.changed`.
 
 ## 6. Command Events
 
@@ -195,6 +200,8 @@ reserved_step_id
 
 `at_start` and `at_end` are not rejection reasons in v1.
 
+After terminal disposal, command APIs may return a stable `disposed` rejection without emitting `command.rejected` because the semantic event stream is already closed.
+
 ### Command source
 
 `details.source` should identify the initiating control surface when useful:
@@ -221,13 +228,21 @@ Continuous playback intent begins.
 
 Learner-controlled time is paused.
 
-If pause occurs during an in-flight transition, include `transition_id` and `details.transition_progress`.
+If pause occurs during an in-flight transition, include `transition_id` and:
 
-If pause occurs during dwell, include `details.dwell_remaining_ms`.
+```text
+details.transition_phase = in_flight
+```
+
+V1 does not publish fractional transition progress because Runtime has no authoritative fractional transition-progress source. Pause conformance is demonstrated by frozen renderer clock work, preserved transition identity, preserved Core target, and absence of semantic commit while paused.
+
+If pause occurs during dwell, include `details.dwell_remaining_ms`. `dwell_remaining_ms` is the exact Runtime-owned resumable quantity.
 
 ### `playback.resumed`
 
 A paused transition or dwell resumes.
+
+When a transition resumes, include the preserved `transition_id` and `details.transition_phase: "in_flight"`. When dwell resumes, include `details.dwell_remaining_ms` for the preserved remainder.
 
 ### `playback.stopped`
 
@@ -272,7 +287,7 @@ Include the cancellation reason and remaining dwell when available in structured
 
 Dwell events are Runtime-owned. A v1 implementation with non-zero authored dwell cannot omit the applicable dwell events.
 
-## 8. Transition Events
+## 8. Transition and Initialization Events
 
 ### `transition.started`
 
@@ -300,6 +315,21 @@ It precedes the Core-owned `step.changed` event when semantic position moves.
 ### `transition.failed`
 
 Reports stable renderer settlement failure.
+
+### `initialization.cancelled`
+
+Reports that instance initialization was intentionally abandoned by terminal disposal before initialization completed.
+
+When an entry renderer transition exists, include:
+
+```text
+transition_id
+step_id = requested entry boundary
+result = cancelled
+details.reason = dispose
+```
+
+If disposal arrives after renderer mount but before the entry render transition exists, `transition_id` may be omitted. `step_id` still identifies the requested entry boundary. `initialization.cancelled` closes the opened initialization lifecycle for replay and diagnostic reconstruction.
 
 ## 9. Step Events
 
@@ -332,14 +362,17 @@ A valid no-movement command does not emit `step.changed` because no canonical co
 
 ### `step.initial`
 
-Optional initialization evidence indicating stable settlement at the canonical `initial` boundary.
+Required exactly once after successful instance initialization. `step.initial` identifies the session entry boundary; the v1 event name is retained even when the entry boundary is an authored step rather than the literal `initial` boundary.
 
-When emitted:
+Required fields:
 
 ```text
-step_id = initial
+step_id = resolved entry boundary
 component = core
+details.source = host | deep_link | replay
 ```
+
+Initialization is a lifecycle operation rather than a learner command, so `step.initial` carries no `command_id`. Direct entry at an authored boundary does not emit `step.changed` and does not imply a predecessor semantic boundary.
 
 ## 10. Commentary Events
 
@@ -377,15 +410,44 @@ Required whenever an in-flight render honors an expected abort/cancellation requ
 
 The event must carry the applicable `transition_id` and `result: "cancelled"`. Expected abort is not `renderer.error` and does not trigger fault recovery by itself.
 
+An honored abort is recognized only through the renderer cancellation contract. The renderer rejects with `RendererCancelledError` carrying the same reason exposed by the aborted renderer signal. A plain renderer exception after an abort request remains `renderer.error`.
+
 If cancellation is requested but the renderer has no in-flight work to abort, no `renderer.cancelled` event is required.
+
+If a renderer does not acknowledge a disposal-time abort within 1000 ms of injected CiM time, Runtime emits `renderer.error` with:
+
+```text
+error_code = CIM-RND-002
+details.operation = abort_acknowledgement
+details.reason = dispose
+details.timeout_ms = 1000
+```
+
+Runtime then completes disposal without waiting for later renderer cooperation. A late completion is silent.
 
 ### `renderer.error`
 
 Reports a renderer-owned failure.
 
+A failure from terminal renderer teardown includes `details.operation: "dispose"`. Runtime still stores canonical `disposed` status and closes the semantic event stream after publishing the teardown error.
+
+A renderer-dispose acknowledgement timeout emits `renderer.error` with:
+
+```text
+error_code = CIM-RND-003
+details.operation = dispose_acknowledgement
+details.timeout_ms = 1000
+```
+
+The timeout is measured by injected CiM time. Runtime then closes the event stream and ignores any late teardown completion.
+
 ### `renderer.disposed`
 
 Reports completed renderer disposal.
+
+On successful terminal disposal acknowledged within the bounded teardown window, this is the final semantic event for the instance. Core is already in canonical `disposed` status when this event is published, so reentrant command attempts cannot create new semantic work after renderer teardown evidence.
+
+A renderer-dispose acknowledgement timeout does not emit `renderer.disposed`.
 
 ## 12. Recovery and Fault Events
 
@@ -397,9 +459,17 @@ Runtime began restoration to a known committed stable boundary.
 
 Restoration succeeded. Result is `recovered`.
 
+### `recovery.cancelled`
+
+Terminal disposal intentionally interrupted active recovery. Result is `cancelled`, `details.reason` is `dispose`, and the event uses the recovery transition identity and committed recovery anchor.
+
+`recovery.cancelled` closes an opened `recovery.started` lifecycle without misclassifying disposal as restoration failure. It does not create `CIM-RND-006` and does not imply `instance.faulted`.
+
 ### `recovery.failed`
 
 Restoration failed and normal playback cannot continue.
+
+Disposal that cancels an active recovery render does not emit `recovery.failed`; disposal cancellation is terminal lifecycle control rather than failed restoration.
 
 ### `instance.faulted`
 
@@ -465,7 +535,7 @@ The harness canonicalizer owns render-digest normalization. Renderer code does n
 
 ## 16. Frame-Level and Scrub-Preview Data
 
-Animation-frame events, per-frame transforms, high-frequency renderer ticks, and pointer-level scrub-preview changes are outside the semantic event stream.
+Animation-frame events, per-frame transforms, high-frequency renderer ticks, fractional renderer progress, and pointer-level scrub-preview changes are outside the semantic event stream.
 
 A specialized profiler may capture such data separately, but that data cannot redefine semantic ordering or replay authority.
 
@@ -482,6 +552,7 @@ engine version
 renderer identifier/version
 experience version
 validated experience
+initialization boundary and source
 effective runtime configuration
 command sequence
 command source where semantically relevant
@@ -493,6 +564,8 @@ Replay reissues commands through normal runtime interfaces.
 The resulting semantic event stream and evidence are compared with expected or recorded results.
 
 Replay does not drive Runtime by feeding prior semantic events back into the engine.
+
+A replay stream cannot leave initialization or recovery logically open at disposal. `initialization.cancelled` and `recovery.cancelled` provide the terminal lifecycle evidence needed to close those sequences.
 
 ## 18. Initial Event Catalog
 
@@ -511,8 +584,9 @@ transition.started
 transition.cancelled
 transition.settled
 transition.failed
+initialization.cancelled        required when disposal interrupts initialization
 step.changed
-step.initial                    optional
+step.initial                    required exactly once after successful initialization
 commentary.active.changed
 commentary.frontier.changed
 commentary.autofollow.changed   optional
@@ -523,6 +597,7 @@ renderer.error
 renderer.disposed
 recovery.started
 recovery.succeeded
+recovery.cancelled              required when disposal interrupts active recovery
 recovery.failed
 instance.faulted
 host.fallback.shown
@@ -552,11 +627,19 @@ The harness must be able to assert that:
 - valid start/end boundary commands are accepted `no_change` results rather than rejections;
 - navigation clears continuous playback intent;
 - non-zero dwell produces required start/completion/cancellation evidence as applicable;
-- pause and resume preserve transition or dwell timing semantics;
+- pause freezes renderer delayed/frame work while preserving transition identity and Core pending target, and no `step.changed` occurs while paused;
+- paused dwell preserves exact `dwell_remaining_ms`, and resume consumes only that remainder;
 - final-step dwell completes before `playback.stopped` with reason `at_end`;
 - scrub commit emits one seek and drag preview emits no semantic seek;
 - invalid deep links produce diagnostic evidence and deterministic fallback to `initial` when an experience is available;
 - faults precede recovery attempts;
 - recovery outcome is explicit;
 - unrecoverable failures lead to ordered instance fault/fallback evidence;
+- disposal cancels transition, dwell, initialization, and recovery work before terminal stream closure;
+- disposal closes interrupted initialization and recovery with explicit `initialization.cancelled` and `recovery.cancelled` evidence;
+- successful disposal acknowledged inside the teardown window ends with `renderer.disposed`, while renderer teardown rejection ends with `renderer.error` carrying `details.operation: "dispose"`;
+- a disposal-time render that does not acknowledge abort within the bounded window produces `CIM-RND-002` and cannot hold Core out of terminal `disposed`;
+- `renderer.dispose()` cannot hold terminal disposal open beyond its bounded acknowledgement window and timeout produces `CIM-RND-003`;
+- no stale semantic event can publish after disposal closes the stream, including late render and late renderer-dispose completions;
+- fallback fault evidence survives the canonical `faulted` to `disposed` lifecycle transition;
 - multiple instance streams remain independently ordered.
