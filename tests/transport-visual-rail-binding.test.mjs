@@ -20,11 +20,17 @@ class FakeButton {
     return this.attributes.has(name) ? this.attributes.get(name) : null;
   }
   setAttribute(name, value) {
-    if (this.failAttribute === name) throw new Error(`write failure: ${name}`);
+    if (this.failAttribute === name) {
+      this.failAttribute = null;
+      throw new Error(`write failure: ${name}`);
+    }
     this.attributes.set(name, String(value));
   }
   removeAttribute(name) {
-    if (this.failAttribute === name) throw new Error(`write failure: ${name}`);
+    if (this.failAttribute === name) {
+      this.failAttribute = null;
+      throw new Error(`write failure: ${name}`);
+    }
     this.attributes.delete(name);
   }
   addEventListener() {
