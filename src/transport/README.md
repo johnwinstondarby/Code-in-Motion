@@ -18,6 +18,7 @@ Transport converts committed learner intent into documented Runtime commands thr
 - Keyboard transport input while focus is within CiM
 - Transport-local scrub preview state
 - Playback action presentation projection
+- Native range presentation and semantic marker labels
 
 ## Does not own
 
@@ -407,9 +408,103 @@ This asymmetry prevents play/pause oscillation while preserving repeated semanti
 
 See ADR 0014.
 
+## Checkpoint 7: native range presentation and semantic labels
+
+Checkpoint 7 projects checkpoint 3 scrub display state into the exact headless state required by a native semantic range control. It adds no DOM listener, command authority, pointer policy, event-stream access, or Runtime implementation surface.
+
+Construction receives exactly four inputs:
+
+```text
+boundaryIds
+scrubObservation
+steps
+ariaLabel
+```
+
+`boundaryIds` is the frozen canonical semantic order beginning with `initial`. `scrubObservation` is the exact frozen checkpoint 3 observation surface containing only `read`. `steps` is frozen authored metadata aligned one-for-one with authored boundaries and contains exact records with `stepId`, required `label`, and nullable `marker`. `ariaLabel` is a non-empty learner-facing name for the rail.
+
+### Native range projection
+
+Each presentation `read()` returns one exact frozen state with:
+
+```text
+range
+initialAnchor
+markers
+```
+
+The `range` record contains exactly:
+
+```text
+min
+max
+step
+value
+ariaLabel
+ariaValueText
+```
+
+Range geometry uses the one canonical boundary ordinal:
+
+```text
+min   = 0
+max   = boundaryCount - 1
+step  = 1
+value = displayIndex
+```
+
+`value` follows the fresh checkpoint 3 display index. During an active scrub gesture it therefore reflects local preview; outside a gesture it follows the latest canonical position.
+
+The accessible value text is semantic rather than technical:
+
+```text
+<accessibleLabel>, position <displayIndex + 1> of <boundaryCount>
+```
+
+The rail name comes from the explicit `ariaLabel` input and is never derived from experience IDs or step IDs.
+
+### Initial anchor and authored markers
+
+The reserved `initial` boundary remains separate from authored markers and is projected as:
+
+```text
+stepId          = initial
+index           = 0
+visualLabel     = Start
+accessibleLabel = Start
+```
+
+Every authored marker contains exactly:
+
+```text
+stepId
+index
+visualLabel
+accessibleLabel
+```
+
+For authored steps:
+
+```text
+visualLabel     = marker when supplied, otherwise label
+accessibleLabel = label
+```
+
+Required authored `label` is the complete learner-facing semantic name. Optional authored `marker` is the concise visual form. A missing marker therefore changes no semantic identity or accessibility name.
+
+### Native semantics stay native
+
+Checkpoint 7 does not synthesize `role="slider"`, `tabindex`, `aria-valuemin`, `aria-valuemax`, or `aria-valuenow`. The later DOM binding will use a native `<input type="range">`, which supplies those native slider, focus, value, and limit semantics.
+
+The headless projection supplies only the values and semantic labeling that the native control cannot infer from numeric ordinal alone.
+
+Malformed boundary order, metadata count or order, mutable or widened capability surfaces, accessor-backed data, symbol extensions, unknown display identities, and invalid display ordinals fail closed.
+
+See ADR 0015.
+
 ## Later checkpoints
 
-Later checkpoints add ARIA behavior, marker labels, pointer/touch binding, and visual transport presentation without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, checkpoint 4 native-interaction yield rule, checkpoint 5 playback-action ownership rule, or checkpoint 6 Space repeat and native-ownership rules.
+Later checkpoints add the native range DOM binding, pointer/touch integration, and visual transport presentation without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, checkpoint 4 native-interaction yield rule, checkpoint 5 playback-action ownership rule, checkpoint 6 Space repeat and native-ownership rules, or checkpoint 7 native-range presentation and semantic-label contract.
 
 ## Verification
 
@@ -505,3 +600,18 @@ Checkpoint 6 tests prove:
 - disposal remains scoped and idempotent;
 - the checkpoint 4 constructor and all prior Transport tests remain green;
 - the repository architecture and full verification gates remain green.
+
+Checkpoint 7 tests prove:
+
+- the presentation surface, range record, initial anchor, marker array, and marker records are exact and frozen;
+- native range geometry uses the canonical semantic boundary ordinal with `min: 0`, `step: 1`, and `max` equal to the final ordinal;
+- `initial` remains a separate `Start` anchor and never appears as an authored marker;
+- authored `marker` text is used for concise visual labels while required authored `label` supplies the accessible semantic name;
+- missing authored marker text falls back to the required label;
+- range value and semantic value text follow fresh scrub display state, including local preview;
+- the headless output carries no custom slider role, tabindex, or redundant ARIA range-limit fields;
+- authored metadata count and order must align exactly with canonical boundary order;
+- step metadata and the scrub observation port reject mutable, widened, accessor-backed, or otherwise malformed authority shapes;
+- malformed display identity and ordinal state fail closed;
+- the learner-facing rail label is explicit and is not derived from technical IDs;
+- the repository schema, architecture, Core-authority, and full verification gates remain green.
