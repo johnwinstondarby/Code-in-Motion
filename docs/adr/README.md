@@ -24,6 +24,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0014`](0014-space-playback-keyboard-integration.md) | Space Playback Keyboard Integration | 2026-09-15 | Accepted |
 | [`0015`](0015-native-range-presentation-and-semantic-labels.md) | Native Range Presentation and Semantic Labels | 2026-09-15 | Accepted |
 | [`0016`](0016-native-range-dom-binding-and-refresh-ownership.md) | Native Range DOM Binding and Refresh Ownership | 2026-09-15 | Accepted |
+| [`0017`](0017-native-range-interaction-and-release-only-commit.md) | Native Range Interaction and Release-Only Commit | 2026-09-15 | Accepted |
 
 ## Owns
 

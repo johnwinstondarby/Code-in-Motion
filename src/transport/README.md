@@ -20,6 +20,7 @@ Transport converts committed learner intent into documented Runtime commands thr
 - Playback action presentation projection
 - Native range presentation and semantic marker labels
 - Native range DOM projection binding
+- Native range interaction binding
 
 ## Does not own
 
@@ -555,9 +556,82 @@ Before writing, the binding snapshots its six owned fields. If a DOM write throw
 
 See ADR 0016.
 
+## Checkpoint 9: native range interaction and release-only commit
+
+Checkpoint 9 couples browser-normalized native range activity to the checkpoint 3 scrub lifecycle and checkpoint 8 projection binding. The browser remains responsible for physical slider mechanics across pointer, touch, keyboard, and assistive-technology input.
+
+Construction receives exactly:
+
+```text
+control
+gesture
+binding
+```
+
+`control` must identify an `INPUT` whose `type` is exactly `range`. `gesture` must be the exact frozen checkpoint 3 surface containing `begin`, `update`, `commit`, `cancel`, and `read`. `binding` must be the exact frozen checkpoint 8 surface containing only `refresh`.
+
+Checkpoint 9 receives no Transport controller, raw `seek`, Runtime read surface, Runtime event stream, renderer, commentary surface, or `CiMInstance`.
+
+### Native event path
+
+Checkpoint 9 installs exactly four listeners on the injected range control:
+
+```text
+input
+change
+pointercancel
+touchcancel
+```
+
+Transport reads the browser-normalized range ordinal rather than pointer coordinates. The native range geometry must remain:
+
+```text
+min  = 0
+step = 1
+max  = final semantic boundary ordinal
+```
+
+The normalized semantic ratio is:
+
+```text
+ratio = value / max
+```
+
+Checkpoint 9 does not calculate track geometry, read pointer coordinates, install document-level drag listeners, or use pointer capture.
+
+### Preview and commit
+
+A native `input` event changes local preview only. If checkpoint 3 reports no active gesture, checkpoint 9 calls `begin(ratio)`; otherwise it calls `update(ratio)`. It then calls checkpoint 8 `refresh()` so the range value and `aria-valuetext` follow the fresh local preview. No semantic command is submitted by `input`.
+
+A native `change` event resolves the current ordinal through the same preview path and calls `gesture.commit()` exactly once. This also supports a valid `change` event with no preceding `input` event.
+
+Checkpoint 9 does not inspect, normalize, await, debounce, coalesce, or gate the command outcome returned by `gesture.commit()`. Post-command canonical synchronization remains composition-owned through checkpoint 8 `refresh()`.
+
+### Cancellation and rollback
+
+`pointercancel` and `touchcancel` cancel an active checkpoint 3 preview and then refresh checkpoint 8 from canonical presentation. Cancellation issues no semantic command. One trailing `change` associated with the cancelled native interaction is suppressed; the next `input` begins a new interaction normally.
+
+Before a pre-commit preview mutation, checkpoint 9 records the current scrub state. If preview mutation or checkpoint 8 refresh fails, it attempts to restore the prior scrub state and presentation. Incomplete rollback throws an `AggregateError` containing the original failure and rollback failures.
+
+A synchronous `gesture.commit()` failure occurs after checkpoint 3 has closed local preview. Checkpoint 9 refreshes canonical presentation and rethrows the commit failure. If canonical refresh also fails, both failures are surfaced through `AggregateError`.
+
+### Disposal
+
+The returned checkpoint 9 surface is exact and frozen:
+
+```text
+dispose
+```
+
+`dispose()` removes only the four checkpoint 9 listeners. Successful disposal is idempotent. Listener-removal failure leaves disposal retryable. After listener removal succeeds, any active local preview is cancelled and canonical presentation is refreshed before the interaction closes.
+
+Checkpoint 8 remains a separate projection capability and may continue to be refreshed by composition after checkpoint 9 disposal.
+
+See ADR 0017.
+
 ## Later checkpoints
 
-Later checkpoints add native range interaction and pointer/touch integration, followed by visual transport presentation, without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, checkpoint 4 native-interaction yield rule, checkpoint 5 playback-action ownership rule, checkpoint 6 Space repeat and native-ownership rules, checkpoint 7 native-range presentation and semantic-label contract, or checkpoint 8 projection-only DOM binding.
+Later checkpoints add visual transport presentation without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, checkpoint 4 native-interaction yield rule, checkpoint 5 playback-action ownership rule, checkpoint 6 Space repeat and native-ownership rules, checkpoint 7 native-range presentation and semantic-label contract, checkpoint 8 projection-only DOM binding, or checkpoint 9 native-range interaction contract.
 
 ## Verification
 
@@ -683,4 +757,22 @@ Checkpoint 8 tests prove:
 - presentation-read failure leaves the native control unchanged;
 - a transient DOM write failure restores all checkpoint-owned fields before surfacing the error;
 - binding option validation is descriptor-safe and does not invoke accessor-backed capabilities;
+- the repository schema, architecture, Core-authority, and full verification gates remain green.
+
+Checkpoint 9 tests prove:
+
+- the exact frozen `dispose`-only interaction surface;
+- exactly four listeners are installed on the injected native range control: `input`, `change`, `pointercancel`, and `touchcancel`;
+- native `input` begins or updates local scrub preview without issuing a semantic command;
+- native `change` issues exactly one scrub commit from the final preview;
+- a valid `change` with no preceding `input` still resolves one activation to one commit;
+- native ordinal-to-ratio conversion uses browser-normalized range state and no pointer geometry;
+- pointer and touch cancellation issue no semantic command and restore canonical presentation;
+- one trailing `change` is suppressed after cancellation;
+- invalid native range ordinal state fails before preview mutation or command submission;
+- synchronous commit failure closes preview, refreshes canonical presentation, and propagates the failure;
+- canonical settlement synchronization remains composition-owned through checkpoint 8 `refresh()`;
+- disposal cancels active preview, removes only checkpoint 9 listeners, is idempotent after success, and remains retryable after listener-removal failure;
+- partial listener installation is rolled back if construction fails;
+- control, checkpoint 3 gesture, and checkpoint 8 binding capabilities are validated exactly and fail closed when widened or malformed;
 - the repository schema, architecture, Core-authority, and full verification gates remain green.
