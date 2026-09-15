@@ -190,8 +190,8 @@ export function createTransportKeyboardBinding(optionsInput) {
   const binding = {
     dispose() {
       if (!active) return null;
-      active = false;
       root.removeEventListener('keydown', onKeydown);
+      active = false;
       return null;
     }
   };
