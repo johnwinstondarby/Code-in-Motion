@@ -239,9 +239,65 @@ When no transition is active, Runtime emits command acceptance evidence and perf
 
 See ADR 0012.
 
+## Checkpoint 4: scoped DOM keyboard binding
+
+Checkpoint 4 adds the first DOM-facing Transport seam without widening command authority or canonical-state observation. It binds the checkpoint 1 timeline keyboard mapping to one injected CiM keyboard scope.
+
+Construction receives exactly two capabilities:
+
+```text
+root
+timelineKey
+```
+
+`root` is the EventTarget-like interaction scope supplied by composition. `timelineKey` is the existing narrow Transport capability that accepts a key and applies the checkpoint 1 semantic mapping. The binding does not receive the complete controller, command port, Runtime read surface, event stream, renderer, commentary surface, or `CiMInstance`.
+
+The binding installs exactly one `keydown` listener on `root`. It does not install document- or window-level keyboard listeners. The returned surface is frozen and contains exactly one method:
+
+```text
+dispose
+```
+
+`dispose()` removes only the listener installed by the binding. Successful disposal is idempotent. If the injected EventTarget throws during listener removal, disposal remains retryable because the binding marks itself inactive only after removal succeeds.
+
+### Eligible timeline keys
+
+Checkpoint 4 DOM dispatch accepts only the unmodified timeline navigation keys already defined by checkpoint 1:
+
+```text
+ArrowLeft
+ArrowRight
+Home
+End
+```
+
+An eligible event calls `preventDefault()` once and forwards the key once through `timelineKey(key)`. No local debounce, coalescing, queue, or command-result interpretation is added.
+
+Space remains outside checkpoint 4 DOM dispatch. The headless checkpoint 1 mapping requires an explicit `play` or `pause` action, and checkpoint 4 has no playback presentation-state authority from which to select that action. A later playback-presentation checkpoint may bind Space after that state is available through a documented presentation seam.
+
+### Native interaction wins
+
+Timeline shortcuts yield without calling `preventDefault()` or `timelineKey()` when any of the following is true:
+
+- the event was already default-prevented;
+- IME composition is active;
+- Alt, Ctrl, Meta, or Shift is pressed;
+- the composed event path does not include the injected keyboard root;
+- a descendant in the path is a native form, link, media, or other protected interactive element;
+- a descendant is contenteditable;
+- a descendant declares `tabindex`;
+- a descendant exposes a protected interactive ARIA role, including a protected fallback token within a role token list;
+- a descendant carries `data-cim-keyboard-native` as an explicit ownership opt-out;
+- the owning document reports a non-collapsed text selection;
+- selection inspection or protected-interaction inspection cannot be completed safely.
+
+The event path is evaluated through `composedPath()` so keyboard ownership remains scoped across composed DOM boundaries. Noninteractive descendants do not block timeline navigation.
+
+This checkpoint does not mutate focus, assign `tabindex`, create ARIA attributes, infer playback state, or bind pointer/touch interaction. It establishes only the keyboard ownership boundary required before those later presentation layers are added.
+
 ## Later checkpoints
 
-Later checkpoints add DOM focus scope, selectable-text safeguards, ARIA behavior, playback presentation state, marker labels, pointer/touch binding, and visual transport presentation without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, or checkpoint 3 release-only scrub contract.
+Later checkpoints add ARIA behavior, playback presentation state, marker labels, pointer/touch binding, and visual transport presentation without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, or checkpoint 4 native-interaction yield rule.
 
 ## Verification
 
@@ -290,4 +346,19 @@ Checkpoint 3 and correction tests prove:
 - unresolved Runtime outcomes do not gate or coalesce later scrub gestures;
 - overlapping gestures and non-finite ratio input fail closed;
 - malformed rail order and unknown canonical display position fail closed;
+- the repository architecture and full verification gates remain green.
+
+Checkpoint 4 tests prove:
+
+- the exact frozen one-method keyboard binding surface;
+- exactly one `keydown` listener is installed on the injected scope and no document listener is installed;
+- unmodified ArrowLeft, ArrowRight, Home, and End dispatch exactly once and prevent native page movement;
+- Space and unrelated keys remain outside checkpoint 4 DOM dispatch;
+- modifier chords, prior default prevention, and IME composition yield to native behavior;
+- composed-path scope is enforced;
+- native controls, editing regions, tabindex descendants, protected ARIA roles, fallback role token lists, and explicit native opt-outs retain keyboard ownership;
+- noninteractive descendants remain eligible for scoped timeline navigation;
+- active text selection wins and selection-inspection failure fails closed;
+- disposal removes only the installed listener, is idempotent after success, and remains retryable after removal failure;
+- malformed or widened construction authority fails closed;
 - the repository architecture and full verification gates remain green.
