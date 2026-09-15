@@ -57,7 +57,14 @@ class CiMInstance {
   #initializing = false;
   #activeTransition = null;
   #activeDwell = null;
+  #activeLifecycleRender = null;
   #recovering = false;
+  #recoveryDone = null;
+  #initializationDone = null;
+  #mounted = false;
+  #disposing = false;
+  #disposed = false;
+  #disposePromise = null;
 
   constructor({
     instanceId,
@@ -117,6 +124,10 @@ class CiMInstance {
   }
 
   async initialize() {
+    const canonical = this.#session.read.snapshot();
+    if (canonical.status === SESSION_STATUS.DISPOSED || this.#disposed || this.#disposing) {
+      throw new Error('disposed CiMInstance cannot initialize.');
+    }
     if (this.#initialized) throw new Error('CiMInstance is already initialized.');
     if (this.#initializing) throw new Error('CiMInstance initialization is already in progress.');
 
@@ -124,22 +135,35 @@ class CiMInstance {
     assertRendererRoot(this.#rendererRoot);
     assertScheduler(this.#scheduler);
 
+    let resolveInitializationDone;
+    this.#initializationDone = new Promise((resolve) => {
+      resolveInitializationDone = resolve;
+    });
     this.#initializing = true;
     try {
       await this.#renderer.mount(Object.freeze({
         root: this.#rendererRoot,
         instanceId: this.identity.instanceId
       }));
+      this.#mounted = true;
       this.#eventControl.emit({
         component: EVENT_COMPONENT.RENDERER,
         event: EVENT_NAME.RENDERER_MOUNTED,
         result: EVENT_RESULT.SUCCESS
       });
+      if (this.#disposing) {
+        throw new Error('CiMInstance initialization cancelled by disposal.');
+      }
       await this.#settleInitial();
+      if (this.#disposing) {
+        throw new Error('CiMInstance initialization cancelled by disposal.');
+      }
       this.#initialized = true;
       return this.read.snapshot();
     } finally {
       this.#initializing = false;
+      resolveInitializationDone();
+      this.#initializationDone = null;
     }
   }
 
@@ -167,13 +191,31 @@ class CiMInstance {
     return this.#submitNavigation({ command: NAVIGATION_COMMAND.RESTART }, source);
   }
 
+  dispose() {
+    if (this.#disposePromise) return this.#disposePromise;
+    if (this.#disposed || this.#session.read.snapshot().status === SESSION_STATUS.DISPOSED) {
+      return Promise.resolve(this.read.snapshot());
+    }
+
+    this.#disposing = true;
+    const disposePromise = this.#performDispose();
+    this.#disposePromise = disposePromise.finally(() => {
+      this.#disposing = false;
+      this.#disposed = true;
+    });
+    return this.#disposePromise;
+  }
+
   pause(sourceInput = COMMAND_SOURCE.HOST) {
     const source = assertSource(sourceInput);
     const commandId = this.#correlation.nextCommandId();
     const command = CONTINUITY_COMMAND.PAUSE;
     const canonical = this.#session.read.snapshot();
 
-    if (!this.#initialized || this.#initializing) {
+    if (canonical.status === SESSION_STATUS.DISPOSED || this.#disposed) {
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.DISPOSED);
+    }
+    if (!this.#initialized || this.#initializing || this.#disposing) {
       return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
     }
     if (this.#recovering) {
@@ -181,9 +223,6 @@ class CiMInstance {
     }
     if (canonical.status === SESSION_STATUS.FAULTED) {
       return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.FAULTED);
-    }
-    if (canonical.status === SESSION_STATUS.DISPOSED) {
-      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.DISPOSED);
     }
     if (canonical.status === SESSION_STATUS.PAUSED) {
       return this.#acceptNoChange(commandId, command, source, canonical.currentStepId);
@@ -268,7 +307,10 @@ class CiMInstance {
     const command = CONTINUITY_COMMAND.PLAY;
     const canonical = this.#session.read.snapshot();
 
-    if (!this.#initialized || this.#initializing) {
+    if (canonical.status === SESSION_STATUS.DISPOSED || this.#disposed) {
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.DISPOSED);
+    }
+    if (!this.#initialized || this.#initializing || this.#disposing) {
       return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
     }
     if (this.#recovering) {
@@ -276,9 +318,6 @@ class CiMInstance {
     }
     if (canonical.status === SESSION_STATUS.FAULTED) {
       return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.FAULTED);
-    }
-    if (canonical.status === SESSION_STATUS.DISPOSED) {
-      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.DISPOSED);
     }
     if (canonical.status === SESSION_STATUS.PAUSED) {
       return this.#resumePaused(commandId, source, canonical);
@@ -449,12 +488,20 @@ class CiMInstance {
       animate: false
     });
 
+    const lifecycleRecord = {
+      kind: 'initial',
+      transitionId,
+      task,
+      cancelled: false
+    };
+    this.#activeLifecycleRender = lifecycleRecord;
     this.#setOperationalTransition(transitionId);
     this.#controls.statusControl.setStatus(SESSION_STATUS.TRANSITIONING);
     const outcome = await task.renderDone;
     closeRuntimeRender(task);
+    if (this.#activeLifecycleRender === lifecycleRecord) this.#activeLifecycleRender = null;
 
-    if (outcome.kind === 'settled') {
+    if (outcome.kind === 'settled' && !lifecycleRecord.cancelled) {
       this.#operational.transitionPhase = TRANSITION_PHASE.SETTLED;
       this.#eventControl.emit({
         component: EVENT_COMPONENT.RENDERER,
@@ -492,7 +539,10 @@ class CiMInstance {
     const command = request.command;
     const canonical = this.#session.read.snapshot();
 
-    if (!this.#initialized || this.#initializing) {
+    if (canonical.status === SESSION_STATUS.DISPOSED || this.#disposed) {
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.DISPOSED);
+    }
+    if (!this.#initialized || this.#initializing || this.#disposing) {
       return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
     }
     if (this.#recovering) {
@@ -863,6 +913,10 @@ class CiMInstance {
       throw new Error('Runtime renderer recovery is already active.');
     }
 
+    let resolveRecoveryDone;
+    this.#recoveryDone = new Promise((resolve) => {
+      resolveRecoveryDone = resolve;
+    });
     this.#recovering = true;
     try {
       this.#stopPlaybackForFault(record.commandId, record.source);
@@ -889,6 +943,8 @@ class CiMInstance {
         }
       });
 
+      if (this.#disposing) return false;
+
       const boundary = this.#boundaryData.get(anchor);
       const task = beginRuntimeRender({
         renderer: this.#renderer,
@@ -902,10 +958,31 @@ class CiMInstance {
         animate: false
       });
 
+      const lifecycleRecord = {
+        kind: 'recovery',
+        transitionId: recoveryTransitionId,
+        commandId: record.commandId,
+        stepId: anchor,
+        task,
+        cancelled: false
+      };
+      this.#activeLifecycleRender = lifecycleRecord;
       this.#setOperationalTransition(recoveryTransitionId);
       this.#controls.statusControl.setStatus(SESSION_STATUS.TRANSITIONING);
       const outcome = await task.renderDone;
       closeRuntimeRender(task);
+      if (this.#activeLifecycleRender === lifecycleRecord) this.#activeLifecycleRender = null;
+
+      if (this.#disposing || lifecycleRecord.cancelled || outcome.kind === 'cancelled') {
+        this.#emitRendererOutcome({
+          transitionId: recoveryTransitionId,
+          commandId: record.commandId,
+          fromStepId: anchor,
+          toStepId: anchor
+        }, outcome);
+        this.#clearOperationalTransition(recoveryTransitionId);
+        return false;
+      }
 
       if (outcome.kind === 'settled') {
         this.#operational.transitionPhase = TRANSITION_PHASE.SETTLED;
@@ -975,7 +1052,105 @@ class CiMInstance {
       return false;
     } finally {
       this.#recovering = false;
+      resolveRecoveryDone();
+      this.#recoveryDone = null;
     }
+  }
+
+  async #performDispose() {
+    const initializationDone = this.#initializationDone;
+    this.#cancelActiveLifecycleRender('dispose');
+    if (initializationDone) await initializationDone;
+
+    this.#cancelActiveLifecycleRender('dispose');
+    const recoveryDone = this.#recoveryDone;
+    if (recoveryDone) await recoveryDone;
+
+    this.#stopPlaybackForDispose();
+    if (this.#activeTransition) await this.#cancelActiveTransition('dispose');
+
+    const beforeDispose = this.#session.read.snapshot();
+    if (beforeDispose.targetStepId !== null && beforeDispose.status !== SESSION_STATUS.FAULTED) {
+      this.#controls.semanticControl.abandonTarget(beforeDispose.targetStepId);
+    }
+    if (beforeDispose.error?.recoveryClass === FAULT_RECOVERY_CLASS.RECOVER) {
+      this.#controls.faultControl.clearRecoverableFault(beforeDispose.error.code);
+    }
+
+    this.#clearOperationalForDispose();
+    if (this.#session.read.snapshot().status !== SESSION_STATUS.DISPOSED) {
+      this.#controls.statusControl.setStatus(SESSION_STATUS.DISPOSED);
+    }
+    this.#disposed = true;
+
+    let disposeError = null;
+    if (this.#mounted && this.#renderer && typeof this.#renderer.dispose === 'function') {
+      try {
+        await this.#renderer.dispose();
+        this.#eventControl.emit({
+          component: EVENT_COMPONENT.RENDERER,
+          event: EVENT_NAME.RENDERER_DISPOSED,
+          result: EVENT_RESULT.SUCCESS
+        });
+      } catch (error) {
+        disposeError = error;
+        this.#eventControl.emit({
+          component: EVENT_COMPONENT.RENDERER,
+          event: EVENT_NAME.RENDERER_ERROR,
+          result: EVENT_RESULT.FAILED,
+          details: { operation: 'dispose', message: error?.message ?? String(error) }
+        });
+      }
+    }
+
+    this.#mounted = false;
+    this.#initialized = false;
+    this.#eventControl.close();
+    const finalSnapshot = this.read.snapshot();
+    if (disposeError) throw disposeError;
+    return finalSnapshot;
+  }
+
+  #cancelActiveLifecycleRender(reason) {
+    const record = this.#activeLifecycleRender;
+    if (!record || record.cancelled) return false;
+    record.cancelled = true;
+    if (
+      this.#operational.activeAbortState &&
+      this.#operational.activeAbortState.transitionId === record.transitionId
+    ) {
+      this.#operational.activeAbortState = Object.freeze({
+        transitionId: record.transitionId,
+        aborted: true,
+        reason
+      });
+    }
+    record.task.abort.controller.abort(reason);
+    record.task.clock.controller.revoke();
+    return true;
+  }
+
+  #clearOperationalForDispose() {
+    this.#operational.playbackIntent = false;
+    this.#operational.transitionId = null;
+    this.#operational.transitionPhase = TRANSITION_PHASE.IDLE;
+    this.#operational.dwellRemainingMs = 0;
+    this.#operational.activeAbortState = null;
+  }
+
+  #stopPlaybackForDispose() {
+    this.#cancelActiveDwell('dispose', null);
+    this.#operational.dwellRemainingMs = 0;
+    if (!this.#operational.playbackIntent) return false;
+
+    this.#operational.playbackIntent = false;
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.PLAYBACK_STOPPED,
+      result: EVENT_RESULT.SUCCESS,
+      details: { reason: 'dispose' }
+    });
+    return true;
   }
 
   #stopPlaybackForFault(commandId, source) {
@@ -1089,7 +1264,7 @@ class CiMInstance {
       component: EVENT_COMPONENT.RUNTIME,
       event: EVENT_NAME.DWELL_CANCELLED,
       result: EVENT_RESULT.CANCELLED,
-      command_id: commandId,
+      ...(commandId === null ? {} : { command_id: commandId }),
       step_id: record.stepId,
       details: { reason, dwell_remaining_ms: remaining }
     });
@@ -1208,14 +1383,16 @@ class CiMInstance {
   }
 
   #rejectCommand(commandId, command, source, fromStepId, reason) {
-    this.#eventControl.emit({
-      component: EVENT_COMPONENT.RUNTIME,
-      event: EVENT_NAME.COMMAND_REJECTED,
-      result: EVENT_RESULT.REJECTED,
-      command_id: commandId,
-      from_step: fromStepId,
-      details: detailsForCommand(command, source, reason)
-    });
+    if (!this.#disposed) {
+      this.#eventControl.emit({
+        component: EVENT_COMPONENT.RUNTIME,
+        event: EVENT_NAME.COMMAND_REJECTED,
+        result: EVENT_RESULT.REJECTED,
+        command_id: commandId,
+        from_step: fromStepId,
+        details: detailsForCommand(command, source, reason)
+      });
+    }
     return commandOutcome({
       commandId,
       command,

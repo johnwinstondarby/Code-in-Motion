@@ -4,7 +4,7 @@ Status: Normative v1 specification
 
 ## 1. Scope
 
-This specification defines the shared runtime behavior for Code in Motion. It covers semantic position, command handling, transition settlement, playback intent, dwell timing, renderer lifecycle, commentary reveal, deep links, semantic scrub, reduced motion, fault settlement, and multi-instance isolation.
+This specification defines the shared runtime behavior for Code in Motion. It covers semantic position, command handling, transition settlement, playback intent, dwell timing, renderer lifecycle, commentary reveal, deep links, semantic scrub, reduced motion, fault settlement, terminal disposal, and multi-instance isolation.
 
 Subject-specific visual meaning is outside this specification. Git-specific behavior belongs to Git experience data and Git renderer documentation.
 
@@ -174,6 +174,8 @@ Marker selection, commentary-entry selection, deep-link resolution, and committe
 Commands are submitted to `CiMInstance`. Peer modules do not call one another to implement navigation.
 
 Every accepted command receives a command/correlation identity suitable for telemetry and deterministic replay.
+
+`dispose()` is a terminal instance-lifecycle operation rather than a learner navigation or continuity command. Its settlement rules are defined in §18.3.
 
 ### 5.1 Command source
 
@@ -474,6 +476,8 @@ A non-cancelled render resolves only when the destination has reached stable out
 
 Dispose revokes renderer timing capability, cancels renderer-owned scheduled work, removes instance-scoped listeners, releases resources, and prevents further output mutation from the disposed renderer.
 
+Runtime cancels and settles outstanding instance work, clears Runtime operational state, and stores canonical `disposed` status before awaiting renderer disposal. A renderer-dispose exception does not restore the instance to a non-terminal status. Runtime publishes terminal renderer teardown evidence according to `EVENTS.md`, closes the semantic event stream, and preserves canonical `disposed` state.
+
 ## 11. Absolute Render Equivalence
 
 The following paths to a step must settle to equivalent canonical output:
@@ -617,15 +621,43 @@ Only after Core stores the fallback fault does Runtime emit `instance.faulted`. 
 
 This ordering prevents canonical faulted status from being stored while Runtime still advertises active playback, transition, dwell, or abort state.
 
-### 18.3 Invalid command
+### 18.3 Terminal disposal
+
+`dispose()` is terminal and idempotent after successful completion.
+
+Runtime first marks disposal active so new learner commands cannot start semantic work. It cancels active initialization or recovery rendering, revokes the corresponding renderer clock and abort capabilities, and waits for lifecycle settlement. It then cancels active dwell and playback work, releases any paused transition gate, aborts and settles an active transition, and abandons any remaining pending semantic target.
+
+Disposal clears Runtime operational state to:
+
+```text
+playbackIntent = false
+transitionId = null
+transitionPhase = idle
+dwellRemainingMs = 0
+activeAbortState = null
+```
+
+A transient `recover` fault is cleared during terminal cleanup. A stored `fallback` fault is preserved as terminal evidence when canonical status advances from `faulted` to `disposed`.
+
+Runtime stores canonical `disposed` status before awaiting `renderer.dispose()`. From that point onward, commands return the stable `disposed` rejection and cannot publish semantic command events. This ordering also prevents reentrant event subscribers from initiating semantic work during renderer teardown.
+
+If renderer teardown succeeds, Runtime emits `renderer.disposed` as the final semantic event and closes the instance event stream. If renderer teardown fails, Runtime emits terminal `renderer.error` evidence with `details.operation: "dispose"`, closes the event stream, rejects the disposal promise, and leaves Core in canonical `disposed` status.
+
+Disposal that interrupts active renderer recovery is classified as terminal lifecycle cancellation. It does not emit `recovery.failed`, create `CIM-RND-006`, or emit `instance.faulted` unless fallback fault settlement had already completed independently.
+
+After event-stream closure, stale renderer completions, scheduler callbacks, dwell callbacks, recovery callbacks, and transition continuations cannot mutate canonical state or publish new semantic evidence.
+
+### 18.4 Invalid command
 
 A genuinely invalid command does not change canonical state. It returns a stable rejection code and may emit a diagnostic event.
 
 Reaching `at_start` or `at_end` is not an invalid command; it is an accepted `no_change` result.
 
-### 18.4 Delayed or stale callback
+### 18.5 Delayed or stale callback
 
 A callback whose transition identity is no longer current cannot commit position or mutate the current destination.
+
+A callback that arrives after terminal disposal cannot publish semantic evidence or revive Runtime operational state.
 
 ## 19. Event and Telemetry Relationship
 
@@ -635,7 +667,7 @@ Semantic events report observable behavior after or during that control flow. Ev
 
 All semantic event timestamps use the injected CiM clock. Wall-clock time, if captured, is telemetry-sink metadata only.
 
-Event ordering, required fields, and event names are defined in `EVENTS.md`.
+Event ordering, required fields, terminal disposal closure, and event names are defined in `EVENTS.md`.
 
 ## 20. Harness Conformance Requirements
 
@@ -667,7 +699,8 @@ The synthetic harness must prove at least:
 24. deep-link initialization, including `/initial`, and invalid-target fallback to `initial`;
 25. scrub emits one seek only on commit;
 26. multiple-instance isolation;
-27. deterministic replay from scenario, seed, versions, validated experience, runtime configuration, commands, and virtual clock.
+27. terminal disposal from idle, paused transition, dwell, initialization, active recovery, and faulted states, including stale-work prevention, final event-stream closure, recoverable-fault cleanup, fallback-fault preservation, and renderer-dispose failure containment;
+28. deterministic replay from scenario, seed, versions, validated experience, runtime configuration, commands, and virtual clock.
 
 ## 21. Non-Goals for v1
 

@@ -138,6 +138,8 @@ Runtime configuration is included when site policy changes effective semantic ti
 8. Recovery events follow the fault that triggered them.
 9. Disposal is terminal for the instance event stream except sink-side archival metadata.
 10. When final-step dwell is non-zero during continuous playback, `dwell.completed` precedes `playback.stopped` with `details.reason: "at_end"`.
+11. Disposal cancels outstanding lifecycle, transition, and dwell work before the event stream closes. On successful renderer teardown, `renderer.disposed` is the final semantic event. If renderer teardown fails, `renderer.error` with `details.operation: "dispose"` is the final semantic event.
+12. Stale transition, dwell, initialization, or recovery callbacks cannot publish semantic events after terminal disposal closes the stream.
 
 ## 6. Command Events
 
@@ -194,6 +196,8 @@ reserved_step_id
 ```
 
 `at_start` and `at_end` are not rejection reasons in v1.
+
+After terminal disposal, command APIs may return a stable `disposed` rejection without emitting `command.rejected` because the semantic event stream is already closed.
 
 ### Command source
 
@@ -391,9 +395,13 @@ If cancellation is requested but the renderer has no in-flight work to abort, no
 
 Reports a renderer-owned failure.
 
+A failure from terminal renderer teardown includes `details.operation: "dispose"`. Runtime still stores canonical `disposed` status and closes the semantic event stream after publishing the teardown error.
+
 ### `renderer.disposed`
 
 Reports completed renderer disposal.
+
+On successful terminal disposal, this is the final semantic event for the instance. Core is already in canonical `disposed` status when this event is published, so reentrant command attempts cannot create new semantic work after renderer teardown evidence.
 
 ## 12. Recovery and Fault Events
 
@@ -408,6 +416,8 @@ Restoration succeeded. Result is `recovered`.
 ### `recovery.failed`
 
 Restoration failed and normal playback cannot continue.
+
+Disposal that cancels an active recovery render does not emit `recovery.failed`; disposal cancellation is terminal lifecycle control rather than failed restoration.
 
 ### `instance.faulted`
 
@@ -568,4 +578,8 @@ The harness must be able to assert that:
 - faults precede recovery attempts;
 - recovery outcome is explicit;
 - unrecoverable failures lead to ordered instance fault/fallback evidence;
+- disposal cancels transition, dwell, initialization, and recovery work before terminal stream closure;
+- successful disposal ends with `renderer.disposed`, while renderer teardown failure ends with `renderer.error` carrying `details.operation: "dispose"`;
+- no stale semantic event can publish after disposal closes the stream;
+- fallback fault evidence survives the canonical `faulted` to `disposed` lifecycle transition;
 - multiple instance streams remain independently ordered.

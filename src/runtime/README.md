@@ -186,6 +186,18 @@ If restoration fails, Runtime emits renderer and `recovery.failed` evidence with
 
 The checkpoint deliberately uses Core's `faultControl.recordFault()` path rather than direct status mutation. Canonical `faulted` status cannot exist without the corresponding fallback fault record.
 
+## Runtime checkpoint 6: terminal disposal and stale-work prevention
+
+Checkpoint 6 implements `dispose()` as the terminal Runtime lifecycle operation.
+
+Disposal cancels active lifecycle rendering, playback transitions, and dwell work; releases pause gates; revokes transition-scoped renderer clock and abort capabilities; abandons any pending semantic target; clears transient recoverable fault context; and clears Runtime operational state. A fallback fault record remains preserved when a faulted instance advances to canonical `disposed`.
+
+Initialization and renderer-recovery work are tracked as lifecycle renders so disposal can abort them and wait for their settlement before final teardown. Disposal during active recovery does not convert cancellation into `recovery.failed` or fallback fault evidence.
+
+Runtime stores canonical `disposed` status and marks the instance terminal before awaiting `renderer.dispose()`. This ordering prevents event subscribers or reentrant command calls from creating new semantic work during renderer teardown. Commands submitted after terminalization return the stable `disposed` rejection without publishing to the closing event stream.
+
+Successful renderer teardown emits `renderer.disposed` as the final semantic event and then closes the event stream. If `renderer.dispose()` fails, Runtime emits `renderer.error` with `details.operation: "dispose"`, closes the event stream, rejects the disposal promise, and leaves Core in terminal `disposed` status. Repeated successful disposal is idempotent and does not call the renderer again.
+
 ## Does not own
 
 - Canonical semantic commit authority
@@ -216,3 +228,5 @@ Checkpoint 3 verification proves animated forward continuity, one command ID acr
 Checkpoint 4 verification proves transition-clock freeze while source time advances, dormant renderer frame and delay callbacks while paused, stable transition identity and Core pending target, absence of semantic commit while paused, exact dwell-remainder preservation, same-transition resume, and completion after only the preserved dwell remainder.
 
 Checkpoint 5 verification proves target abandonment before recoverable fault storage, absolute restoration to the last committed anchor, command rejection during active recovery, recoverable fault clearing after successful restoration, recover-to-fallback escalation when restoration fails, complete operational-state clearing before canonical fallback settlement, ordered `recovery.failed` then `instance.faulted` evidence, and continued command usability after successful recovery.
+
+Checkpoint 6 verification proves terminal disposal from idle, paused transition, active dwell, initialization, active recovery, and canonical faulted states; exact transition and dwell cancellation; pending-target abandonment; recoverable-fault cleanup with fallback-fault preservation; renderer teardown ordering; closed-stream stale-work suppression; idempotent successful disposal; and terminal Core settlement even when renderer disposal fails.
