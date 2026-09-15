@@ -148,6 +148,15 @@ export function createBoundaryModel(stepIds) {
         if (!indexById.has(request.stepId)) {
           return resolution(request.command, COMMAND_RESULT.REJECTED, fromStepId, null, NAVIGATION_REASON.UNKNOWN_STEP);
         }
+        if (request.stepId === fromStepId) {
+          return resolution(
+            request.command,
+            COMMAND_RESULT.NO_CHANGE,
+            fromStepId,
+            fromStepId,
+            NAVIGATION_REASON.ALREADY_AT_BOUNDARY
+          );
+        }
         return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, request.stepId);
 
       case NAVIGATION_COMMAND.HOME:
