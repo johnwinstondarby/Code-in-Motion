@@ -38,13 +38,13 @@ function makeTimelineState({ current = 'step-02', target = 'step-03', frontier =
   });
 }
 
-function makeRangeState(value = 2, overrides = {}) {
+function makeRangeState(value = 2) {
   const labels = [
     ['step-01', 'One', 'Step one'],
     ['step-02', 'Two', 'Step two'],
     ['step-03', 'Three', 'Step three']
   ];
-  const base = {
+  return Object.freeze({
     range: Object.freeze({
       min: 0,
       max: 3,
@@ -65,8 +65,7 @@ function makeRangeState(value = 2, overrides = {}) {
       visualLabel,
       accessibleLabel
     })))
-  };
-  return Object.freeze({ ...base, ...overrides });
+  });
 }
 
 function makeDependencies() {
@@ -103,9 +102,16 @@ function makeDependencies() {
   };
 }
 
+function optionsFor(deps) {
+  return {
+    timeline: deps.timeline,
+    rangePresentation: deps.rangePresentation
+  };
+}
+
 test('visual rail presentation and returned records are exact and frozen', () => {
   const deps = makeDependencies();
-  const presentation = createTransportVisualRailPresentation(deps);
+  const presentation = createTransportVisualRailPresentation(optionsFor(deps));
   assert.deepEqual(Object.keys(presentation), TRANSPORT_VISUAL_RAIL_PRESENTATION_KEYS);
   assert.ok(Object.isFrozen(presentation));
 
@@ -123,7 +129,7 @@ test('visual rail presentation and returned records are exact and frozen', () =>
 
 test('visual rail keeps current target reveal and preview as separate presentation facts', () => {
   const deps = makeDependencies();
-  const state = createTransportVisualRailPresentation(deps).read();
+  const state = createTransportVisualRailPresentation(optionsFor(deps)).read();
 
   assert.deepEqual(state.initialAnchor, {
     stepId: 'initial', index: 0, visualLabel: 'Start', accessibleLabel: 'Start',
@@ -142,7 +148,7 @@ test('local scrub preview may move without claiming canonical current state', ()
   const deps = makeDependencies();
   deps.setRangeValue(3);
   deps.setTimelineState(makeTimelineState({ current: 'step-02', target: null, frontier: 'step-02' }));
-  const state = createTransportVisualRailPresentation(deps).read();
+  const state = createTransportVisualRailPresentation(optionsFor(deps)).read();
 
   assert.equal(state.markers[1].current, true);
   assert.equal(state.markers[1].preview, false);
@@ -154,14 +160,14 @@ test('local scrub preview may move without claiming canonical current state', ()
 test('initial remains a separate visual anchor and may carry scrub preview', () => {
   const deps = makeDependencies();
   deps.setRangeValue(0);
-  const state = createTransportVisualRailPresentation(deps).read();
+  const state = createTransportVisualRailPresentation(optionsFor(deps)).read();
   assert.equal(state.initialAnchor.preview, true);
   assert.equal(state.markers.some((marker) => marker.preview), false);
 });
 
 test('each visual read follows fresh semantic and scrub presentation state', () => {
   const deps = makeDependencies();
-  const presentation = createTransportVisualRailPresentation(deps);
+  const presentation = createTransportVisualRailPresentation(optionsFor(deps));
   const first = presentation.read();
   assert.equal(first.markers[1].current, true);
   assert.equal(first.markers[1].preview, true);
@@ -185,7 +191,7 @@ test('range labels and ordinals must align with canonical timeline order', () =>
     ]);
     return Object.freeze({ ...state, markers: badMarkers });
   });
-  const presentation = createTransportVisualRailPresentation(deps);
+  const presentation = createTransportVisualRailPresentation(optionsFor(deps));
   assert.throws(() => presentation.read(), /canonical boundary order/);
 });
 
@@ -230,7 +236,7 @@ test('malformed timeline flags and native range geometry fail closed', () => {
     ...badTimeline,
     markers: Object.freeze([badMarker, ...badTimeline.markers.slice(1)])
   }));
-  const presentation = createTransportVisualRailPresentation(deps);
+  const presentation = createTransportVisualRailPresentation(optionsFor(deps));
   assert.throws(() => presentation.read(), /must be a boolean/);
 
   deps.setTimelineState(makeTimelineState());
@@ -243,7 +249,7 @@ test('malformed timeline flags and native range geometry fail closed', () => {
 
 test('visual rail projection exposes presentation only and no command or Runtime authority', () => {
   const deps = makeDependencies();
-  const presentation = createTransportVisualRailPresentation(deps);
+  const presentation = createTransportVisualRailPresentation(optionsFor(deps));
   assert.equal('seek' in presentation, false);
   assert.equal('marker' in presentation, false);
   assert.equal('events' in presentation, false);
