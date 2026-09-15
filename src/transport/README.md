@@ -100,11 +100,61 @@ During v1 scrub drag, Transport may update only local thumb or preview presentat
 
 This preserves ADR 0007: scrub preview remains local and semantic movement occurs only on commit.
 
+## Checkpoint 2: read-only semantic timeline projection
+
+Checkpoint 2 adds observation without widening command authority. The composition root grants `CiMInstance.read` separately from the checkpoint 1 command port.
+
+The Transport observation port is one frozen plain object with exactly two own enumerable function properties:
+
+```text
+snapshot
+boundaryIds
+```
+
+This is the complete Runtime read projection already exposed by `CiMInstance.read`. Passing a complete `CiMInstance`, an event surface, a command surface, an accessor-backed object, a symbol-extended object, a mutable object, or a non-plain object is invalid.
+
+Transport captures the frozen semantic boundary order once from `boundaryIds()`. The order begins with the reserved `initial` boundary and then follows authored semantic step order. Checkpoint 2 assigns only ordinal marker indices. It does not define pixel coordinates, normalized rail ratios, nearest-marker geometry, or pointer snapping policy.
+
+Each `project()` call reads a fresh Runtime snapshot and selects only three canonical identities:
+
+```text
+currentStepId
+targetStepId
+revealFrontier
+```
+
+Transport does not retain the raw Runtime snapshot and does not expose Runtime operational state. Each identity must refer to the captured semantic boundary order, except `targetStepId`, which may be `null` when no semantic target is pending.
+
+The frozen timeline projection contains:
+
+```text
+currentStepId
+targetStepId
+revealFrontier
+markers
+```
+
+Each frozen marker contains exactly:
+
+```text
+stepId
+index
+current
+target
+revealed
+```
+
+`current` identifies the last committed stable semantic boundary. `target` identifies the pending semantic destination, when one exists. `revealed` is derived solely from canonical `revealFrontier`: every marker at or before the frontier in semantic order is revealed. A backward navigation therefore moves `current` without reducing the high-water reveal state. Restart observation returns both the current boundary and reveal frontier to `initial` after Runtime commits restart.
+
+The timeline surface exposes only `boundaryIds()` and `project()`. It carries no command methods, event subscription, disposal capability, raw `snapshot()` function, renderer access, or Core control.
+
+Checkpoint 2 remains headless. Marker labels, rail geometry, DOM, focus behavior, ARIA state, and scrub gesture coordinates stay outside this checkpoint.
+
 ## Later checkpoints
 
-Checkpoint 2 adds read-only semantic timeline projection and marker state through an explicitly separate observation surface. Checkpoint 1 has no observation capability to retrofit around.
+Checkpoint 3 adds scrub gesture state and semantic snap resolution over the checkpoint 2 marker order while preserving ADR 0007's preview-only drag contract.
 
-Later checkpoints add scrub gesture state, DOM focus scope, selectable-text safeguards, ARIA behavior, and visual transport presentation without changing the checkpoint 1 command authority boundary.
+Later checkpoints add DOM focus scope, selectable-text safeguards, ARIA behavior, playback presentation state, marker labels, and visual transport presentation without changing the checkpoint 1 command authority boundary or checkpoint 2 observation boundary.
 
 ## Verification
 
@@ -121,4 +171,17 @@ Checkpoint 1 tests prove:
 - discrete keyboard mapping and explicit Space play/pause activation;
 - scrub cancellation issuing no semantic command;
 - a frozen controller surface with no observation, disposal, raw seek, or event-emission capability;
+- the repository architecture and full verification gates remain green.
+
+Checkpoint 2 tests prove:
+
+- `CiMInstance.read` satisfies the exact frozen two-function observation port;
+- complete-instance and extra or hidden observation authority shapes fail closed;
+- semantic boundary order is captured as frozen ordinal data with `initial` first;
+- projections and marker records are exact and frozen;
+- current, pending target, and high-water reveal state are derived from fresh canonical snapshots;
+- backward position preserves reveal-frontier marker state;
+- restart-shaped observation resets the marker frontier to `initial` without changing semantic order;
+- malformed boundary order and unknown canonical boundary identities fail closed;
+- no pixel, ratio, label, command, event, disposal, raw snapshot, or Runtime implementation authority enters the timeline surface;
 - the repository architecture and full verification gates remain green.
