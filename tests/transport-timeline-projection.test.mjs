@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { freezeValidatedExperience } from '../src/experience/freeze-validated-experience.mjs';
 import { createCiMInstance } from '../src/runtime/cim-instance.mjs';
 import {
+  TRANSPORT_INITIAL_ANCHOR_KEYS,
   TRANSPORT_MARKER_KEYS,
   TRANSPORT_OBSERVATION_PORT_KEYS,
   TRANSPORT_TIMELINE_KEYS,
@@ -65,6 +66,13 @@ function assertMarker(marker, expected) {
   assert.deepEqual(marker, expected);
 }
 
+function assertInitialAnchor(anchor, expected) {
+  assert.deepEqual(Object.keys(anchor), TRANSPORT_INITIAL_ANCHOR_KEYS);
+  assert.equal(Object.isFrozen(anchor), true);
+  assert.deepEqual(anchor, expected);
+  assert.equal('revealed' in anchor, false);
+}
+
 test('Transport observation port is the exact frozen Runtime read capability surface', () => {
   const instance = createCiMInstance({
     instanceId: 'transport-timeline-instance',
@@ -122,7 +130,7 @@ test('observation port rejects extra, symbol, accessor, mutable, non-function, a
   });
 });
 
-test('initial semantic projection is frozen, exact, ordinal, and geometry-free', () => {
+test('initial projection uses a separate rail anchor and no authored marker is current or revealed', () => {
   const { port } = makeObservationPort();
   const timeline = createTransportTimeline(port);
   const projection = timeline.project();
@@ -134,18 +142,21 @@ test('initial semantic projection is frozen, exact, ordinal, and geometry-free',
   assert.equal(projection.targetStepId, null);
   assert.equal(projection.revealFrontier, 'initial');
 
-  assertMarker(projection.markers[0], {
-    stepId: 'initial', index: 0, current: true, target: false, revealed: true
+  assertInitialAnchor(projection.initialAnchor, {
+    stepId: 'initial', index: 0, current: true, target: false
   });
-  assertMarker(projection.markers[1], {
+  assert.equal(projection.markers.length, 3);
+  assertMarker(projection.markers[0], {
     stepId: 'step-01', index: 1, current: false, target: false, revealed: false
   });
+  assert.deepEqual(projection.markers.map((marker) => marker.current), [false, false, false]);
+  assert.deepEqual(projection.markers.map((marker) => marker.revealed), [false, false, false]);
   assert.equal('position' in projection.markers[0], false);
   assert.equal('ratio' in projection.markers[0], false);
   assert.equal('label' in projection.markers[0], false);
 });
 
-test('projection reflects current target and reveal frontier without caching canonical state', () => {
+test('projection reflects authored current target and reveal frontier without caching canonical state', () => {
   const observation = makeObservationPort();
   const timeline = createTransportTimeline(observation.port);
 
@@ -153,29 +164,42 @@ test('projection reflects current target and reveal frontier without caching can
   let projection = timeline.project();
   assert.equal(projection.currentStepId, 'step-01');
   assert.equal(projection.targetStepId, 'step-02');
-  assert.equal(projection.markers[1].current, true);
-  assert.equal(projection.markers[2].target, true);
-  assert.equal(projection.markers[2].revealed, false);
+  assert.equal(projection.initialAnchor.current, false);
+  assert.equal(projection.initialAnchor.target, false);
+  assert.equal(projection.markers[0].current, true);
+  assert.equal(projection.markers[1].target, true);
+  assert.equal(projection.markers[1].revealed, false);
 
   observation.setSnapshot(frozenSnapshot('step-02', null, 'step-02'));
   projection = timeline.project();
-  assert.equal(projection.markers[1].current, false);
-  assert.equal(projection.markers[2].current, true);
-  assert.equal(projection.markers[2].target, false);
-  assert.equal(projection.markers[2].revealed, true);
+  assert.equal(projection.markers[0].current, false);
+  assert.equal(projection.markers[1].current, true);
+  assert.equal(projection.markers[1].target, false);
+  assert.equal(projection.markers[1].revealed, true);
 });
 
-test('backward position preserves high-water reveal state in the timeline projection', () => {
+test('initial target is represented by the anchor and never by an authored marker flag', () => {
+  const { port } = makeObservationPort({ snapshot: frozenSnapshot('step-03', 'initial', 'step-03') });
+  const projection = createTransportTimeline(port).project();
+
+  assertInitialAnchor(projection.initialAnchor, {
+    stepId: 'initial', index: 0, current: false, target: true
+  });
+  assert.deepEqual(projection.markers.map((marker) => marker.target), [false, false, false]);
+  assert.deepEqual(projection.markers.map((marker) => marker.current), [false, false, true]);
+});
+
+test('backward position preserves high-water reveal state in authored markers only', () => {
   const { port } = makeObservationPort({ snapshot: frozenSnapshot('step-01', null, 'step-03') });
   const projection = createTransportTimeline(port).project();
 
   assert.equal(projection.currentStepId, 'step-01');
   assert.equal(projection.revealFrontier, 'step-03');
-  assert.deepEqual(projection.markers.map((marker) => marker.revealed), [true, true, true, true]);
-  assert.deepEqual(projection.markers.map((marker) => marker.current), [false, true, false, false]);
+  assert.deepEqual(projection.markers.map((marker) => marker.revealed), [true, true, true]);
+  assert.deepEqual(projection.markers.map((marker) => marker.current), [true, false, false]);
 });
 
-test('restart-shaped observation returns the projection to initial frontier without changing boundary order', () => {
+test('restart-shaped observation returns to the initial anchor with no authored marker revealed', () => {
   const observation = makeObservationPort({ snapshot: frozenSnapshot('step-03', null, 'step-03') });
   const timeline = createTransportTimeline(observation.port);
   const boundaryIds = timeline.boundaryIds();
@@ -184,7 +208,9 @@ test('restart-shaped observation returns the projection to initial frontier with
   const projection = timeline.project();
   assert.equal(timeline.boundaryIds(), boundaryIds);
   assert.deepEqual(boundaryIds, ['initial', 'step-01', 'step-02', 'step-03']);
-  assert.deepEqual(projection.markers.map((marker) => marker.revealed), [true, false, false, false]);
+  assert.equal(projection.initialAnchor.current, true);
+  assert.deepEqual(projection.markers.map((marker) => marker.revealed), [false, false, false]);
+  assert.deepEqual(projection.markers.map((marker) => marker.current), [false, false, false]);
 });
 
 test('timeline fails closed on malformed boundary order and unknown canonical boundary identities', async (t) => {
@@ -211,7 +237,7 @@ test('timeline fails closed on malformed boundary order and unknown canonical bo
   }
 });
 
-test('timeline exposes observation only and carries no command, event, disposal, or raw Runtime surface', () => {
+test('timeline exposes observation only and carries no command event disposal or raw Runtime surface', () => {
   const { port } = makeObservationPort();
   const timeline = createTransportTimeline(port);
 
