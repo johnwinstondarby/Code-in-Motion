@@ -1,7 +1,8 @@
 # ADR 0015: Native Range Presentation and Semantic Labels
 
-- Status: Accepted
-- Date: 2026-09-15
+Status: Accepted
+
+Date: 2026-09-15
 
 ## Context
 
