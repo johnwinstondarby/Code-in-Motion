@@ -274,7 +274,7 @@ End
 
 An eligible event calls `preventDefault()` once and forwards the key once through `timelineKey(key)`. No local debounce, coalescing, queue, or command-result interpretation is added.
 
-Space remains outside checkpoint 4 DOM dispatch. The headless checkpoint 1 mapping requires an explicit `play` or `pause` action, and checkpoint 4 has no playback presentation-state authority from which to select that action. Checkpoint 5 supplies that action through a separate read-only projection; later DOM integration may consume it without widening checkpoint 4 keyboard authority.
+Space remains outside checkpoint 4 DOM dispatch. The headless checkpoint 1 mapping requires an explicit `play` or `pause` action, and checkpoint 4 has no playback presentation-state authority from which to select that action. Checkpoint 5 supplies that action through a separate read-only projection; checkpoint 6 consumes it without widening checkpoint 4 keyboard authority.
 
 ### Native interaction wins
 
@@ -356,9 +356,60 @@ Checkpoint 5 does not expose the raw snapshot, boundary order, Runtime event str
 
 See ADR 0013.
 
+## Checkpoint 6: Space playback keyboard integration
+
+Checkpoint 6 joins the checkpoint 4 keyboard ownership rules with the checkpoint 5 playback action projection while preserving both earlier contracts.
+
+The checkpoint 4 constructor remains available unchanged:
+
+```text
+createTransportKeyboardBinding({ root, timelineKey })
+```
+
+Checkpoint 6 adds a separate integration constructor:
+
+```text
+createTransportPlaybackKeyboardBinding({
+  root,
+  timelineKey,
+  playbackKey,
+  playbackPresentation
+})
+```
+
+The integrated binding still installs exactly one `keydown` listener on the injected root. It exposes the same exact frozen `dispose()` surface and receives no complete Transport controller, command port, Runtime read surface, event stream, renderer, commentary surface, or `CiMInstance`.
+
+`playbackPresentation` must be the exact frozen checkpoint 5 surface containing only `read`. `playbackKey` is the narrow checkpoint 1 playback command mapper.
+
+### Space dispatch
+
+The exact v1 Space key is `KeyboardEvent.key === " "`. The legacy `Spacebar` spelling is outside the contract.
+
+For an eligible Space keydown, Transport applies this order:
+
+1. apply the checkpoint 4 native-interaction yield rules;
+2. obtain a fresh `playbackPresentation.read()` result;
+3. validate the exact frozen `{ action }` record;
+4. call `preventDefault()` once;
+5. call `playbackKey(" ", action)` once.
+
+If presentation read throws or returns malformed state, Transport fails closed without calling `preventDefault()` and without submitting a playback command.
+
+Native controls retain ownership. Space on a focused native play/pause button therefore follows the browser button-activation path and is not duplicated by the root binding.
+
+### Repeat rule
+
+Space auto-repeat is ignored. A Space event with `event.repeat === true` performs no presentation read, no prevention, and no command submission.
+
+Timeline keys retain normal repeat behavior. Repeated ArrowLeft, ArrowRight, Home, and End events continue through the checkpoint 4 timeline path without reading playback presentation.
+
+This asymmetry prevents play/pause oscillation while preserving repeated semantic navigation.
+
+See ADR 0014.
+
 ## Later checkpoints
 
-Later checkpoints add Space/playback DOM integration, ARIA behavior, marker labels, pointer/touch binding, and visual transport presentation without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, checkpoint 4 native-interaction yield rule, or checkpoint 5 playback-action ownership rule.
+Later checkpoints add ARIA behavior, marker labels, pointer/touch binding, and visual transport presentation without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, checkpoint 4 native-interaction yield rule, checkpoint 5 playback-action ownership rule, or checkpoint 6 Space repeat and native-ownership rules.
 
 ## Verification
 
@@ -437,4 +488,20 @@ Checkpoint 5 tests prove:
 - presentation reads a fresh Runtime snapshot rather than caching an action;
 - malformed status, playback intent, descriptors, and mutable nested snapshots fail closed;
 - no command, event, boundary-order, disposal, or raw Runtime authority enters the presentation surface;
+- the repository architecture and full verification gates remain green.
+
+Checkpoint 6 tests prove:
+
+- the integrated binding installs exactly one scoped listener and exposes only the frozen `dispose` surface;
+- each eligible Space press reads a fresh projected action and submits `play` or `pause` exactly once;
+- Space auto-repeat performs no read, prevention, or command submission;
+- timeline key repeat remains eligible and does not read playback presentation;
+- legacy `Spacebar` is ignored;
+- Space on native descendants does not duplicate browser activation;
+- checkpoint 4 native-yield rules execute before playback presentation is read;
+- active text selection yields Space;
+- presentation exceptions, mutable records, extra keys, accessor-backed action, and unknown actions fail closed before prevention or command submission;
+- widened or malformed integration authority fails closed;
+- disposal remains scoped and idempotent;
+- the checkpoint 4 constructor and all prior Transport tests remain green;
 - the repository architecture and full verification gates remain green.
