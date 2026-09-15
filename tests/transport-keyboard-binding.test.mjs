@@ -245,6 +245,23 @@ test('dispose removes only the installed scoped listener and is idempotent', () 
   assert.deepEqual(keys, []);
 });
 
+test('dispose remains retryable when listener removal throws', () => {
+  const { root, binding } = makeHarness();
+  const originalRemove = root.removeEventListener.bind(root);
+  let attempts = 0;
+
+  root.removeEventListener = (type, listener) => {
+    attempts += 1;
+    if (attempts === 1) throw new Error('remove failed');
+    originalRemove(type, listener);
+  };
+
+  assert.throws(() => binding.dispose(), /remove failed/);
+  assert.equal(binding.dispose(), null);
+  assert.equal(attempts, 2);
+  assert.equal(root.listeners.has('keydown'), false);
+});
+
 test('construction rejects widened or malformed option authority', () => {
   const ownerDocument = new FakeDocument();
   const root = new FakeRoot(ownerDocument);
