@@ -21,6 +21,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0011`](0011-targeted-initialization-and-entry-evidence.md) | Targeted Initialization and Session-Entry Evidence | 2026-09-15 | Accepted |
 | [`0012`](0012-initial-anchor-and-same-boundary-seek.md) | Initial Rail Anchor and Same-Boundary Seek Settlement | 2026-09-15 | Accepted |
 | [`0013`](0013-playback-presentation-projection.md) | Playback Presentation Projection | 2026-09-15 | Accepted |
+| [`0014`](0014-space-playback-keyboard-integration.md) | Space Playback Keyboard Integration | 2026-09-15 | Accepted |
 
 ## Owns
 
