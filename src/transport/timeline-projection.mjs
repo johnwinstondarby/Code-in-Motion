@@ -12,7 +12,15 @@ export const TRANSPORT_TIMELINE_PROJECTION_KEYS = Object.freeze([
   'currentStepId',
   'targetStepId',
   'revealFrontier',
+  'initialAnchor',
   'markers'
+]);
+
+export const TRANSPORT_INITIAL_ANCHOR_KEYS = Object.freeze([
+  'stepId',
+  'index',
+  'current',
+  'target'
 ]);
 
 export const TRANSPORT_MARKER_KEYS = Object.freeze([
@@ -133,18 +141,29 @@ export function createTransportTimeline(observationPortInput) {
     project() {
       const canonical = readCanonicalSnapshot(observationPort, boundaryIndex);
       const revealIndex = boundaryIndex.get(canonical.revealFrontier);
-      const markers = Object.freeze(boundaryIds.map((stepId, index) => Object.freeze({
-        stepId,
-        index,
-        current: stepId === canonical.currentStepId,
-        target: stepId === canonical.targetStepId,
-        revealed: index <= revealIndex
-      })));
+      const initialAnchor = Object.freeze({
+        stepId: 'initial',
+        index: 0,
+        current: canonical.currentStepId === 'initial',
+        target: canonical.targetStepId === 'initial'
+      });
+      const markers = Object.freeze(boundaryIds.slice(1).map((stepId, markerOffset) => {
+        const index = markerOffset + 1;
+        return Object.freeze({
+          stepId,
+          index,
+          current: stepId === canonical.currentStepId,
+          target: stepId === canonical.targetStepId,
+          revealed: index <= revealIndex
+        });
+      }));
 
+      assertExactOwnKeys(initialAnchor, TRANSPORT_INITIAL_ANCHOR_KEYS, 'Transport initial anchor');
       const projection = {
         currentStepId: canonical.currentStepId,
         targetStepId: canonical.targetStepId,
         revealFrontier: canonical.revealFrontier,
+        initialAnchor,
         markers
       };
       assertExactOwnKeys(projection, TRANSPORT_TIMELINE_PROJECTION_KEYS, 'Transport timeline projection');
