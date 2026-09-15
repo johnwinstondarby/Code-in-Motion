@@ -60,11 +60,31 @@ test('boundary exhaustion is accepted no_change rather than rejection', () => {
   );
 });
 
-test('seek resolves initial and authored boundaries and rejects unknown steps', () => {
+test('seek resolves movement, rejects unknown steps, and reports a same-boundary no_change', () => {
   const boundaries = model();
 
   assert.equal(resolve(boundaries, 'step-03', { command: 'seek', stepId: INITIAL_BOUNDARY_ID }).toStepId, INITIAL_BOUNDARY_ID);
   assert.equal(resolve(boundaries, INITIAL_BOUNDARY_ID, { command: 'seek', stepId: 'step-03' }).toStepId, 'step-03');
+  assert.deepEqual(
+    resolve(boundaries, INITIAL_BOUNDARY_ID, { command: 'seek', stepId: INITIAL_BOUNDARY_ID }),
+    {
+      command: 'seek',
+      result: COMMAND_RESULT.NO_CHANGE,
+      fromStepId: INITIAL_BOUNDARY_ID,
+      toStepId: INITIAL_BOUNDARY_ID,
+      reason: NAVIGATION_REASON.ALREADY_AT_BOUNDARY
+    }
+  );
+  assert.deepEqual(
+    resolve(boundaries, 'step-02', { command: 'seek', stepId: 'step-02' }),
+    {
+      command: 'seek',
+      result: COMMAND_RESULT.NO_CHANGE,
+      fromStepId: 'step-02',
+      toStepId: 'step-02',
+      reason: NAVIGATION_REASON.ALREADY_AT_BOUNDARY
+    }
+  );
   assert.deepEqual(
     resolve(boundaries, 'step-02', { command: 'seek', stepId: 'missing' }),
     { command: 'seek', result: COMMAND_RESULT.REJECTED, fromStepId: 'step-02', toStepId: null, reason: NAVIGATION_REASON.UNKNOWN_STEP }
