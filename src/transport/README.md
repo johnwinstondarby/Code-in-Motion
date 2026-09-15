@@ -19,6 +19,7 @@ Transport converts committed learner intent into documented Runtime commands thr
 - Transport-local scrub preview state
 - Playback action presentation projection
 - Native range presentation and semantic marker labels
+- Native range DOM projection binding
 
 ## Does not own
 
@@ -502,9 +503,61 @@ Malformed boundary order, metadata count or order, mutable or widened capability
 
 See ADR 0015.
 
+## Checkpoint 8: native range DOM binding
+
+Checkpoint 8 applies the checkpoint 7 range projection to one injected native `<input type="range">`. It remains one-way presentation wiring and acquires no semantic movement authority.
+
+Construction receives exactly:
+
+```text
+control
+presentation
+```
+
+`control` must identify an `INPUT` whose `type` is exactly `range` and expose the native property and attribute operations used by the binding. `presentation` must be the exact frozen checkpoint 7 surface containing only `read`.
+
+The returned binding surface is exact and frozen:
+
+```text
+refresh
+```
+
+Construction performs one `refresh()` so the native control starts from the current presentation state. Every later `refresh()` obtains a fresh checkpoint 7 projection rather than caching prior state.
+
+### Owned DOM fields
+
+Checkpoint 8 writes exactly six presentation fields:
+
+```text
+min
+max
+step
+value
+aria-label
+aria-valuetext
+```
+
+The numeric range values are assigned through native properties. Semantic naming is assigned through `aria-label` and `aria-valuetext`.
+
+The binding does not create or mutate `role`, `tabindex`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, or unrelated host attributes. Native range role, focus, keyboard behavior, numeric value, and numeric limits remain native control behavior.
+
+### No interaction authority
+
+Checkpoint 8 installs no DOM interaction listener and receives no checkpoint 3 scrub gesture, Transport command port, Runtime observation surface, event stream, renderer, commentary surface, disposal authority, or raw `CiMInstance`.
+
+`input`, `change`, pointer, touch, focus, and native range keyboard integration remain outside checkpoint 8. A later interaction checkpoint will translate native range activity into the existing checkpoint 3 scrub lifecycle without widening this projection binding.
+
+### Validation and write settlement
+
+Each refresh validates the exact frozen checkpoint 7 state and range record before the first DOM write. The range must preserve checkpoint 7 geometry: `min` is 0, `max` is a positive safe integer, `step` is 1, and `value` is a safe integer within the range. Semantic labels must remain non-empty strings.
+
+Before writing, the binding snapshots its six owned fields. If a DOM write throws, it attempts to restore those six fields. Successful rollback rethrows the original DOM error. Incomplete rollback throws an `AggregateError` containing the original write failure and rollback failures. A partial write is never reported as successful synchronization.
+
+See ADR 0016.
+
 ## Later checkpoints
 
-Later checkpoints add the native range DOM binding, pointer/touch integration, and visual transport presentation without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, checkpoint 4 native-interaction yield rule, checkpoint 5 playback-action ownership rule, checkpoint 6 Space repeat and native-ownership rules, or checkpoint 7 native-range presentation and semantic-label contract.
+Later checkpoints add native range interaction and pointer/touch integration, followed by visual transport presentation, without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, checkpoint 4 native-interaction yield rule, checkpoint 5 playback-action ownership rule, checkpoint 6 Space repeat and native-ownership rules, checkpoint 7 native-range presentation and semantic-label contract, or checkpoint 8 projection-only DOM binding.
 
 ## Verification
 
@@ -614,4 +667,20 @@ Checkpoint 7 tests prove:
 - step metadata and the scrub observation port reject mutable, widened, accessor-backed, or otherwise malformed authority shapes;
 - malformed display identity and ordinal state fail closed;
 - the learner-facing rail label is explicit and is not derived from technical IDs;
+- the repository schema, architecture, Core-authority, and full verification gates remain green.
+
+Checkpoint 8 tests prove:
+
+- the exact frozen `refresh`-only binding surface;
+- construction applies the current checkpoint 7 projection once;
+- later refreshes read fresh presentation state rather than cached state;
+- only a native `INPUT` with `type="range"` is accepted;
+- the presentation dependency remains the exact frozen checkpoint 7 `{ read }` surface;
+- only `min`, `max`, `step`, `value`, `aria-label`, and `aria-valuetext` are mutated;
+- role, tabindex, native range-limit ARIA, and unrelated host attributes remain untouched;
+- no interaction listener is installed and no scrub or command authority enters the binding;
+- malformed or widened presentation state fails before any DOM write;
+- presentation-read failure leaves the native control unchanged;
+- a transient DOM write failure restores all checkpoint-owned fields before surfacing the error;
+- binding option validation is descriptor-safe and does not invoke accessor-backed capabilities;
 - the repository schema, architecture, Core-authority, and full verification gates remain green.
