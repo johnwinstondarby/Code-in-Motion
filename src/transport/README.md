@@ -71,7 +71,7 @@ marker(stepId)       -> seek(stepId, "marker")
 scrubCommit(stepId)  -> seek(stepId, "scrub")
 ```
 
-Transport does not pre-screen semantic boundary IDs. It forwards the supplied ID unchanged and returns the exact Runtime outcome reference. Runtime owns unknown-step rejection and every other semantic command result.
+Transport does not pre-screen semantic boundary IDs. It forwards the supplied ID unchanged and returns the exact Runtime outcome reference. Runtime owns unknown-step rejection, same-boundary `no_change`, and every other semantic command result.
 
 Transport submits every committed learner action exactly once. It does not debounce, coalesce, serialize, suppress, or wait for a previous command outcome before forwarding a later action. Runtime owns supersession, rejection, transition cancellation, and command correlation. A later presentation layer may disable a control while work is active, but Transport command mapping does not create an independent acceptance policy.
 
@@ -113,7 +113,7 @@ boundaryIds
 
 This is the complete Runtime read projection already exposed by `CiMInstance.read`. Passing a complete `CiMInstance`, an event surface, a command surface, an accessor-backed object, a symbol-extended object, a mutable object, or a non-plain object is invalid.
 
-Transport captures the frozen semantic boundary order once from `boundaryIds()`. The order begins with the reserved `initial` boundary and then follows authored semantic step order. Checkpoint 2 assigns only ordinal indices. It does not define pixel coordinates, normalized rail ratios, nearest-marker geometry, or pointer snapping policy.
+Transport captures the frozen semantic boundary order once from `boundaryIds()`. The order begins with the reserved `initial` boundary and then follows authored semantic step order. Boundary position in this array is the only ordinal used for timeline projection, snapping, and semantic seek resolution. A second authored-only ordinal is prohibited.
 
 Each `project()` call reads a fresh Runtime snapshot and selects only three canonical identities:
 
@@ -131,10 +131,22 @@ The frozen timeline projection contains:
 currentStepId
 targetStepId
 revealFrontier
+initialAnchor
 markers
 ```
 
-Each frozen record contains exactly:
+The reserved `initial` boundary is represented separately by one frozen rail anchor:
+
+```text
+stepId
+index
+current
+target
+```
+
+Its values are `stepId: initial` and `index: 0`. It has no `revealed` field because `initial` has no authored commentary entry to reveal.
+
+The `markers` array contains authored `step-*` boundaries only. Every marker keeps its canonical `boundaryIds()` ordinal, so the first authored marker has index 1. Each frozen marker contains exactly:
 
 ```text
 stepId
@@ -144,13 +156,13 @@ target
 revealed
 ```
 
-Record zero represents the reserved `initial` rail anchor. It participates in canonical boundary indexing and may carry `current`, `target`, and `revealed` boundary-state flags, but it is not an authored semantic marker. Therefore a canonical position of `initial` still satisfies the specification rule that no authored semantic marker is active. Records for authored `step-*` boundaries are the semantic markers presented to the learner.
+The flag rule is symmetric: the anchor represents canonical identity `initial`; markers represent canonical identities for authored steps. If `currentStepId` or `targetStepId` is `initial`, the corresponding anchor flag is true and no authored marker carries that flag. If `revealFrontier` is `initial`, no authored marker is revealed. A backward navigation moves `current` without lowering authored reveal state.
 
-`current` identifies the last committed stable semantic boundary. `target` identifies the pending semantic destination, when one exists. `revealed` is derived solely from canonical `revealFrontier`: every record at or before the frontier in semantic order is revealed. A backward navigation therefore moves `current` without reducing the high-water reveal state. Restart observation returns both the current boundary and reveal frontier to `initial` after Runtime commits restart.
+This distinction implements the normative rule that at `initial` no authored semantic marker is active and no authored commentary entry is revealed while preserving `initial` as a valid semantic boundary, seek destination, deep-link destination, and scrub rail anchor.
 
 The timeline surface exposes only `boundaryIds()` and `project()`. It carries no command methods, event subscription, disposal capability, raw `snapshot()` function, renderer access, or Core control.
 
-Checkpoint 2 remains headless. Marker labels, rail geometry, DOM, focus behavior, ARIA state, and scrub gesture coordinates stay outside this checkpoint.
+Checkpoint 2 remains headless. Marker labels, DOM, focus behavior, and ARIA state stay outside this checkpoint.
 
 ## Checkpoint 3: headless scrub gesture and semantic snap
 
@@ -165,13 +177,17 @@ The gesture does not receive the complete Transport controller, command port, Ru
 
 ### Semantic rail geometry
 
-The snap set contains the reserved `initial` rail anchor followed by every authored semantic step in canonical boundary order. Snap points are equally spaced by semantic ordinal, independent from renderer transition duration and authored dwell:
+The snap set contains the reserved `initial` rail anchor followed by every authored semantic step in canonical `boundaryIds()` order. Snap points are equally spaced by semantic ordinal, independent from renderer transition duration and authored dwell:
 
 ```text
 ratio(index) = index / (boundaryCount - 1)
 ```
 
-Input ratios are normalized headless rail coordinates. Finite values below zero clamp to zero; values above one clamp to one. The nearest snap point wins. An exact midpoint tie resolves toward the lower semantic ordinal. The rule is deterministic and does not inspect wall-clock time, transition progress, subject state, or renderer output.
+Input ratios are normalized headless rail coordinates. Finite values below zero clamp to zero; values above one clamp to one. The nearest snap point wins. An exact midpoint tie resolves toward the lower semantic ordinal. Tests pin the midpoint and subpixel values on both sides of it.
+
+The lower-ordinal tie is intentional because a forward semantic seek may advance the monotonic reveal frontier, while resolving backward at an exact tie carries no irreversible reveal consequence.
+
+The rail is therefore a semantic step indicator rather than a time-progress meter. Visual treatment should use discrete ticks or equivalent step cues rather than implying elapsed-time weighting.
 
 The `initial` anchor is a valid scrub destination even though it is not an authored semantic marker.
 
@@ -200,11 +216,28 @@ displayRatio
 
 While a gesture is active, display state is the local preview. While inactive, display state is derived fresh from the canonical timeline projection. This prevents local preview from claiming canonical movement.
 
-`commit()` closes local gesture state before forwarding exactly one `scrubCommit(previewStepId)` call and returns that call's exact result reference. A duplicate commit after the same gesture is closed emits no second command. A new scrub gesture may begin immediately even while the prior Runtime outcome remains pending; Transport does not add an in-flight acceptance gate.
+`commit()` closes local gesture state before forwarding exactly one `scrubCommit(previewStepId)` call and returns that call's exact result reference. Transport forwards a same-boundary commit exactly like any other commit; it does not suppress the command. Core resolves a stable seek to the current boundary as `no_change` with reason `already_at_boundary`, and Runtime skips transition and renderer work for that stable no-change outcome.
+
+A duplicate commit after the same gesture is closed emits no second command. A new scrub gesture may begin immediately even while the prior Runtime outcome remains pending; Transport does not add an in-flight acceptance gate.
 
 `cancel()` closes local gesture state, emits no command, and restores display from a fresh canonical timeline projection. If canonical position changed through another control while the scrub preview was active, cancellation follows that latest canonical position.
 
 Only one local scrub gesture may be active at once. A second `begin()` before commit or cancellation fails closed. Non-finite rail ratios fail closed before changing local gesture state.
+
+## Contract correction after checkpoints 2 and 3
+
+Independent QA after checkpoint 3 identified that the original checkpoint 2 projection incorrectly gave the `initial` record `current` and `revealed` marker semantics. The correction separates the initial rail anchor structurally from authored markers and preserves the single canonical boundary ordinal.
+
+The same review identified redundant stable rendering for `seek(currentStepId)`. Core now resolves a valid same-boundary seek as:
+
+```text
+result = no_change
+details.reason = already_at_boundary
+```
+
+When no transition is active, Runtime emits command acceptance evidence and performs no transition allocation, renderer work, or semantic settlement event. Transport continues to forward the learner action unchanged and therefore does not acquire command-acceptance policy.
+
+See ADR 0012.
 
 ## Later checkpoints
 
@@ -215,7 +248,7 @@ Later checkpoints add DOM focus scope, selectable-text safeguards, ARIA behavior
 Checkpoint 1 tests prove:
 
 - the exact frozen eight-function command port;
-- rejection of a complete `CiMInstance` and every extra/hidden authority shape;
+- rejection of a complete `CiMInstance` and every extra or hidden authority shape;
 - the static Transport-to-Runtime import fence and a permitted shared-contract import near miss;
 - ordinary command mapping including restart and exact source provenance;
 - marker and scrub source provenance;
@@ -227,28 +260,31 @@ Checkpoint 1 tests prove:
 - a frozen controller surface with no observation, disposal, raw seek, or event-emission capability;
 - the repository architecture and full verification gates remain green.
 
-Checkpoint 2 tests prove:
+Checkpoint 2 and correction tests prove:
 
 - `CiMInstance.read` satisfies the exact frozen two-function observation port;
 - complete-instance and extra or hidden observation authority shapes fail closed;
 - semantic boundary order is captured as frozen ordinal data with `initial` first;
-- projections and boundary records are exact and frozen;
+- `initial` is represented by a separate exact frozen anchor with canonical ordinal 0;
+- authored markers retain their canonical ordinals beginning at 1;
+- no authored marker is current, targeted, or revealed solely because canonical identity is `initial`;
 - current, pending target, and high-water reveal state are derived from fresh canonical snapshots;
-- backward position preserves reveal-frontier state;
+- backward position preserves authored reveal-frontier state;
 - restart-shaped observation resets the frontier to `initial` without changing semantic order;
 - malformed boundary order and unknown canonical boundary identities fail closed;
 - no pixel, ratio, label, command, event, disposal, raw snapshot, or Runtime implementation authority enters the timeline surface;
 - the repository architecture and full verification gates remain green.
 
-Checkpoint 3 tests prove:
+Checkpoint 3 and correction tests prove:
 
 - equally spaced semantic ordinal snap points and clamped normalized input;
-- deterministic lower-ordinal resolution for exact midpoint ties;
+- deterministic lower-ordinal resolution for exact midpoint ties, including subpixel values on both sides;
 - `initial` remains a valid rail anchor and scrub destination without being an authored marker;
 - the scrub surface is exact and frozen with no broader command or observation authority;
 - inactive display follows fresh canonical semantic position;
-- drag begin/update emit no semantic command;
+- drag begin and update emit no semantic command;
 - commit emits exactly one seek through `scrubCommit` with `source: scrub` and returns the exact command result reference;
+- same-boundary commit remains forwarded by Transport but resolves quietly in Core and Runtime;
 - duplicate commit after gesture closure emits no second command;
 - cancellation emits no command and restores the latest canonical position;
 - unresolved Runtime outcomes do not gate or coalesce later scrub gestures;
