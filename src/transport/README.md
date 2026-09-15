@@ -17,6 +17,7 @@ Transport converts committed learner intent into documented Runtime commands thr
 - Scrub interaction and snap-to-step behavior
 - Keyboard transport input while focus is within CiM
 - Transport-local scrub preview state
+- Playback action presentation projection
 
 ## Does not own
 
@@ -273,7 +274,7 @@ End
 
 An eligible event calls `preventDefault()` once and forwards the key once through `timelineKey(key)`. No local debounce, coalescing, queue, or command-result interpretation is added.
 
-Space remains outside checkpoint 4 DOM dispatch. The headless checkpoint 1 mapping requires an explicit `play` or `pause` action, and checkpoint 4 has no playback presentation-state authority from which to select that action. A later playback-presentation checkpoint may bind Space after that state is available through a documented presentation seam.
+Space remains outside checkpoint 4 DOM dispatch. The headless checkpoint 1 mapping requires an explicit `play` or `pause` action, and checkpoint 4 has no playback presentation-state authority from which to select that action. Checkpoint 5 supplies that action through a separate read-only projection; later DOM integration may consume it without widening checkpoint 4 keyboard authority.
 
 ### Native interaction wins
 
@@ -295,9 +296,69 @@ The event path is evaluated through `composedPath()` so keyboard ownership remai
 
 This checkpoint does not mutate focus, assign `tabindex`, create ARIA attributes, infer playback state, or bind pointer/touch interaction. It establishes only the keyboard ownership boundary required before those later presentation layers are added.
 
+## Checkpoint 5: playback action presentation projection
+
+Checkpoint 5 supplies the smallest read-only state needed to select the learner-facing play/pause action. It does not add command authority or command-acceptance policy.
+
+Composition supplies a frozen plain playback observation port with exactly one function:
+
+```text
+snapshot
+```
+
+The complete `CiMInstance.read` surface is rejected because `boundaryIds()` is unnecessary for playback action selection. Composition may expose only `CiMInstance.read.snapshot` through the exact one-function wrapper.
+
+Each presentation read obtains a fresh Runtime snapshot and selects only:
+
+```text
+canonical.status
+operational.playbackIntent
+```
+
+The public playback presentation surface is frozen and exposes exactly:
+
+```text
+read
+```
+
+`read()` returns one frozen record with exactly:
+
+```text
+action
+```
+
+where `action` is `play` or `pause`.
+
+### Action rule
+
+The projection rule is:
+
+```text
+if status == paused:
+    action = play
+else if playbackIntent == true:
+    action = pause
+else:
+    action = play
+```
+
+Paused state takes precedence because Runtime `play()` resumes preserved transition or dwell work. Outside paused state, `playbackIntent` determines whether the learner-facing action is pause.
+
+Canonical `status` alone cannot make this decision. Continuous playback and unrelated discrete navigation may both report `transitioning`; `playbackIntent` distinguishes continuous playback from those other transitions.
+
+### Acceptance remains Runtime-owned
+
+Checkpoint 5 deliberately exposes no `enabled`, `disabled`, `available`, `blocked`, or equivalent field. Initialization, recovery, fault, disposal, in-flight discrete navigation, and every other command gate remain Runtime-owned.
+
+A projected `play` action therefore means only that the next playback control activation maps to `play`; it does not promise Runtime acceptance. The checkpoint 1 command path still forwards the learner action and returns Runtime's exact outcome.
+
+Checkpoint 5 does not expose the raw snapshot, boundary order, Runtime event stream, command methods, renderer, commentary surface, or disposal authority.
+
+See ADR 0013.
+
 ## Later checkpoints
 
-Later checkpoints add ARIA behavior, playback presentation state, marker labels, pointer/touch binding, and visual transport presentation without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, or checkpoint 4 native-interaction yield rule.
+Later checkpoints add Space/playback DOM integration, ARIA behavior, marker labels, pointer/touch binding, and visual transport presentation without changing the checkpoint 1 command authority boundary, checkpoint 2 observation boundary, checkpoint 3 release-only scrub contract, checkpoint 4 native-interaction yield rule, or checkpoint 5 playback-action ownership rule.
 
 ## Verification
 
@@ -361,4 +422,19 @@ Checkpoint 4 tests prove:
 - active text selection wins and selection-inspection failure fails closed;
 - disposal removes only the installed listener, is idempotent after success, and remains retryable after removal failure;
 - malformed or widened construction authority fails closed;
+- the repository architecture and full verification gates remain green.
+
+Checkpoint 5 tests prove:
+
+- the exact frozen one-function playback observation port;
+- the complete Runtime read surface is rejected rather than widening playback observation authority;
+- the exact frozen one-method playback presentation surface;
+- the returned playback state is exact, frozen, and contains only `action`;
+- idle state without playback intent projects `play`;
+- active continuous playback projects `pause`, including while canonical status is `transitioning`;
+- discrete `transitioning` state without playback intent projects `play`;
+- paused state projects `play` regardless of playback intent;
+- presentation reads a fresh Runtime snapshot rather than caching an action;
+- malformed status, playback intent, descriptors, and mutable nested snapshots fail closed;
+- no command, event, boundary-order, disposal, or raw Runtime authority enters the presentation surface;
 - the repository architecture and full verification gates remain green.
