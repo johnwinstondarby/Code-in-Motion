@@ -87,7 +87,7 @@ test('package aliases cannot bypass the Runtime-only Core import rule', async ()
   }, async (root) => expectRule(await checkCoreAuthority(root), 'runtime-only-core-import'));
 });
 
-test('delegated Runtime wrapper is outside static gate proof and remains prohibited by the composition-root rule', async () => {
+test('delegated Runtime wrapper is rejected at the Transport import fence before authority can leak laterally', async () => {
   await withFixture({
     'src/runtime/delegation.mjs': `
       export function createStatusWriter(controls) {
@@ -103,6 +103,6 @@ test('delegated Runtime wrapper is outside static gate proof and remains prohibi
     `
   }, async (root) => {
     assert.deepEqual((await checkCoreAuthority(root)).violations, []);
-    assert.deepEqual((await checkArchitectureBoundaries(root)).violations, []);
+    expectRule(await checkArchitectureBoundaries(root), 'transport-to-runtime');
   });
 });
