@@ -172,6 +172,20 @@ During authored dwell, `pause()` computes and preserves exact `dwellRemainingMs`
 
 The renderer-facing clock facade remains exactly `now`, `schedule`, `cancel`, and `onFrame`. Pause and resume are Runtime-only controller operations and are not exposed to renderer code.
 
+## Runtime checkpoint 5: renderer recovery and canonical fault settlement
+
+Checkpoint 5 connects destination-renderer failure handling to Core's canonical fault lifecycle and the recovery evidence defined by `FAULTS.md` and `EVENTS.md`.
+
+When destination rendering fails, Runtime emits renderer and transition failure evidence with `CIM-RND-004`, abandons the pending Core target, clears playback and dwell activity, records the recoverable renderer fault in Core, and begins one absolute non-animated restoration render of the last committed semantic boundary. The restoration render receives a new transition correlation identity but does not create a semantic target or emit `step.changed`.
+
+While restoration is active, `pause()`, `play()`, and discrete navigation reject with `invalid_state`. Recovery therefore remains a single deterministic settlement path rather than another supersedable learner transition.
+
+If restoration succeeds, Runtime clears the matching recoverable Core fault, returns canonical status to `idle`, emits `recovery.succeeded`, and leaves the instance usable at the unchanged committed boundary. A discrete command whose destination render failed still rejects with the original renderer error after recovery completes; continuous playback stops with reason `fault` and remains stopped.
+
+If restoration fails, Runtime emits renderer and `recovery.failed` evidence with `CIM-RND-006`, clears operational transition state, escalates the Core fault from `recover` to `fallback`, and only then emits `instance.faulted`. Core atomically stores the fallback record and canonical `faulted` status. The host owns subsequent static-fallback presentation.
+
+The checkpoint deliberately uses Core's `faultControl.recordFault()` path rather than direct status mutation. Canonical `faulted` status cannot exist without the corresponding fallback fault record.
+
 ## Does not own
 
 - Canonical semantic commit authority
@@ -200,3 +214,5 @@ Checkpoint 2 verification proves initial absolute settlement, reject-before-init
 Checkpoint 3 verification proves animated forward continuity, one command ID across automatic transition IDs, semantic advancement across equal subject state, continuous-playback stop at end, stable-boundary `play()` no-change behavior, repeated-play rejection while active, authored dwell scheduling and virtual-time remaining-dwell reporting, navigation cancellation during dwell or animation, stale-transition commit prevention, and recovery-anchor preservation when playback rendering fails.
 
 Checkpoint 4 verification proves transition-clock freeze while source time advances, dormant renderer frame and delay callbacks while paused, stable transition identity and Core pending target, absence of semantic commit while paused, exact dwell-remainder preservation, same-transition resume, and completion after only the preserved dwell remainder.
+
+Checkpoint 5 verification proves target abandonment before recoverable fault storage, absolute restoration to the last committed anchor, command rejection during active recovery, recoverable fault clearing after successful restoration, recover-to-fallback escalation when restoration fails, complete operational-state clearing before canonical fallback settlement, ordered `recovery.failed` then `instance.faulted` evidence, and continued command usability after successful recovery.

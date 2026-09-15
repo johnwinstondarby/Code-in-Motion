@@ -601,15 +601,21 @@ Fault handling follows operation ownership.
 
 ### 18.1 Recoverable renderer failure
 
-If rendering the target fails and the last committed stable boundary remains available, Runtime attempts restoration of that boundary through non-animated absolute rendering.
+If destination rendering fails and the last committed stable boundary remains available, Runtime first abandons the pending semantic target and clears continuous playback intent and dwell work. Core therefore retains the last committed boundary with `targetStepId = null` before canonical recovery context is recorded.
 
-Successful restoration leaves the instance usable and records the failed transition and recovery outcome.
+For a renderer exception during destination settlement, Runtime records the recoverable canonical fault defined by `FAULTS.md` (`CIM-RND-004`, component `renderer`, recovery class `recover`), emits `recovery.started`, and requests one non-animated absolute render of the committed recovery anchor. Recovery rendering receives a new transition correlation identity but does not create or commit a new semantic target.
+
+Successful restoration clears the matching recoverable Core fault, returns canonical status to `idle`, emits `recovery.succeeded`, and leaves the instance usable at the same committed semantic boundary. The original failed transition and renderer fault evidence remain in the event stream.
+
+Commands submitted while restoration is active are rejected with `invalid_state`; recovery is not superseded by ordinary learner navigation.
 
 ### 18.2 Unrecoverable renderer failure
 
-If restoration fails, Runtime first clears `playbackIntent` and any active transition/dwell operational state. Runtime then calls `Core.setStatus("faulted")`. After Core stores the canonical `faulted` status, the runtime event stream reports `instance.faulted`, and the host exposes the standard static fallback or unavailable state while leaving the surrounding page usable.
+If restoration also fails, Runtime emits `recovery.failed`, clears active playback, transition, dwell, and abort operational state, then escalates the existing recoverable Core fault to the fallback fault defined by `FAULTS.md` (`CIM-RND-006`, component `renderer`, recovery class `fallback`). `Core.faultControl.recordFault(...)` atomically stores that fallback record and canonical `faulted` status. Direct `Core.setStatus("faulted")` is invalid.
 
-This ordering prevents canonical fault status from being stored while Runtime still advertises active playback intent.
+Only after Core stores the fallback fault does Runtime emit `instance.faulted`. The host then exposes the standard static fallback or unavailable state while leaving the surrounding page usable.
+
+This ordering prevents canonical faulted status from being stored while Runtime still advertises active playback, transition, dwell, or abort state.
 
 ### 18.3 Invalid command
 

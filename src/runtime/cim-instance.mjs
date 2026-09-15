@@ -13,6 +13,10 @@ import {
   EVENT_RESULT
 } from '../contracts/events.mjs';
 import {
+  FAULT_COMPONENT,
+  FAULT_RECOVERY_CLASS
+} from '../contracts/faults.mjs';
+import {
   TRANSITION_PHASE,
   assertClock,
   assertRenderer,
@@ -34,6 +38,9 @@ import {
   closeRuntimeRender
 } from './render-transition.mjs';
 
+const RENDERER_TRANSITION_FAULT_CODE = 'CIM-RND-004';
+const RENDERER_RESTORATION_FAULT_CODE = 'CIM-RND-006';
+
 class CiMInstance {
   #controls;
   #session;
@@ -50,6 +57,7 @@ class CiMInstance {
   #initializing = false;
   #activeTransition = null;
   #activeDwell = null;
+  #recovering = false;
 
   constructor({
     instanceId,
@@ -168,6 +176,9 @@ class CiMInstance {
     if (!this.#initialized || this.#initializing) {
       return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
     }
+    if (this.#recovering) {
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
+    }
     if (canonical.status === SESSION_STATUS.FAULTED) {
       return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.FAULTED);
     }
@@ -258,6 +269,9 @@ class CiMInstance {
     const canonical = this.#session.read.snapshot();
 
     if (!this.#initialized || this.#initializing) {
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
+    }
+    if (this.#recovering) {
       return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
     }
     if (canonical.status === SESSION_STATUS.FAULTED) {
@@ -481,6 +495,9 @@ class CiMInstance {
     if (!this.#initialized || this.#initializing) {
       return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
     }
+    if (this.#recovering) {
+      return this.#rejectCommand(commandId, command, source, canonical.currentStepId, NAVIGATION_REASON.INVALID_STATE);
+    }
 
     const resolution = this.#session.navigation.resolve(request);
     if (resolution.result === COMMAND_RESULT.REJECTED) {
@@ -548,11 +565,11 @@ class CiMInstance {
     }
 
     if (outcome.kind === 'error') {
-      this.#reportTransitionRendererOutcome(record, outcome);
-      this.#emitTransitionFailed(record);
+      this.#reportTransitionRendererOutcome(record, outcome, RENDERER_TRANSITION_FAULT_CODE);
+      this.#emitTransitionFailed(record, RENDERER_TRANSITION_FAULT_CODE);
       this.#controls.semanticControl.abandonTarget(targetStepId);
       this.#clearActiveTransition(record);
-      this.#controls.statusControl.setStatus(SESSION_STATUS.IDLE);
+      await this.#recoverRendererFailure(record);
       throw outcome.error;
     }
 
@@ -621,11 +638,11 @@ class CiMInstance {
     }
 
     if (outcome.kind === 'error') {
-      this.#reportTransitionRendererOutcome(record, outcome);
-      this.#emitTransitionFailed(record);
+      this.#reportTransitionRendererOutcome(record, outcome, RENDERER_TRANSITION_FAULT_CODE);
+      this.#emitTransitionFailed(record, RENDERER_TRANSITION_FAULT_CODE);
       this.#controls.semanticControl.abandonTarget(record.toStepId);
       this.#clearActiveTransition(record);
-      this.#stopPlayback(record.commandId, 'fault', record.source);
+      await this.#recoverRendererFailure(record);
       return;
     }
 
@@ -776,7 +793,7 @@ class CiMInstance {
     });
   }
 
-  #emitTransitionFailed(record) {
+  #emitTransitionFailed(record, errorCode = null) {
     this.#eventControl.emit({
       component: EVENT_COMPONENT.RUNTIME,
       event: EVENT_NAME.TRANSITION_FAILED,
@@ -784,7 +801,8 @@ class CiMInstance {
       command_id: record.commandId,
       transition_id: record.transitionId,
       from_step: record.fromStepId,
-      to_step: record.toStepId
+      to_step: record.toStepId,
+      ...(errorCode === null ? {} : { error_code: errorCode })
     });
   }
 
@@ -802,7 +820,7 @@ class CiMInstance {
     });
   }
 
-  #reportTransitionRendererOutcome(record, outcome) {
+  #reportTransitionRendererOutcome(record, outcome, errorCode = null) {
     if (record.rendererOutcomeReported) return;
     record.rendererOutcomeReported = true;
     this.#emitRendererOutcome({
@@ -810,10 +828,10 @@ class CiMInstance {
       commandId: record.commandId,
       fromStepId: record.fromStepId,
       toStepId: record.toStepId
-    }, outcome);
+    }, outcome, errorCode);
   }
 
-  #emitRendererOutcome({ transitionId, commandId, fromStepId, toStepId }, outcome) {
+  #emitRendererOutcome({ transitionId, commandId, fromStepId, toStepId }, outcome, errorCode = null) {
     if (outcome.kind === 'cancelled') {
       this.#eventControl.emit({
         component: EVENT_COMPONENT.RENDERER,
@@ -834,9 +852,146 @@ class CiMInstance {
         transition_id: transitionId,
         from_step: fromStepId,
         to_step: toStepId,
+        ...(errorCode === null ? {} : { error_code: errorCode }),
         details: { message: outcome.error?.message ?? String(outcome.error) }
       });
     }
+  }
+
+  async #recoverRendererFailure(record) {
+    if (this.#recovering) {
+      throw new Error('Runtime renderer recovery is already active.');
+    }
+
+    this.#recovering = true;
+    try {
+      this.#stopPlaybackForFault(record.commandId, record.source);
+      const anchor = this.#session.read.snapshot().currentStepId;
+      const recoverFault = Object.freeze({
+        code: RENDERER_TRANSITION_FAULT_CODE,
+        component: FAULT_COMPONENT.RENDERER,
+        recoveryClass: FAULT_RECOVERY_CLASS.RECOVER
+      });
+      this.#controls.faultControl.recordFault(recoverFault);
+
+      const recoveryTransitionId = this.#correlation.nextTransitionId();
+      this.#eventControl.emit({
+        component: EVENT_COMPONENT.RUNTIME,
+        event: EVENT_NAME.RECOVERY_STARTED,
+        result: EVENT_RESULT.SUCCESS,
+        command_id: record.commandId,
+        transition_id: recoveryTransitionId,
+        step_id: anchor,
+        error_code: RENDERER_TRANSITION_FAULT_CODE,
+        details: {
+          failed_transition_id: record.transitionId,
+          failed_step: record.toStepId
+        }
+      });
+
+      const boundary = this.#boundaryData.get(anchor);
+      const task = beginRuntimeRender({
+        renderer: this.#renderer,
+        scheduler: this.#scheduler,
+        rendererConfig: this.#rendererConfig,
+        reducedMotion: this.#reducedMotion,
+        transitionId: recoveryTransitionId,
+        stepId: anchor,
+        state: boundary.state,
+        stepRendererConfig: boundary.stepRendererConfig,
+        animate: false
+      });
+
+      this.#setOperationalTransition(recoveryTransitionId);
+      this.#controls.statusControl.setStatus(SESSION_STATUS.TRANSITIONING);
+      const outcome = await task.renderDone;
+      closeRuntimeRender(task);
+
+      if (outcome.kind === 'settled') {
+        this.#operational.transitionPhase = TRANSITION_PHASE.SETTLED;
+        this.#eventControl.emit({
+          component: EVENT_COMPONENT.RENDERER,
+          event: EVENT_NAME.RENDERER_SETTLED,
+          result: EVENT_RESULT.SUCCESS,
+          command_id: record.commandId,
+          transition_id: recoveryTransitionId,
+          step_id: anchor
+        });
+        this.#clearOperationalTransition(recoveryTransitionId);
+        this.#controls.faultControl.clearRecoverableFault(RENDERER_TRANSITION_FAULT_CODE);
+        this.#controls.statusControl.setStatus(SESSION_STATUS.IDLE);
+        this.#eventControl.emit({
+          component: EVENT_COMPONENT.RUNTIME,
+          event: EVENT_NAME.RECOVERY_SUCCEEDED,
+          result: EVENT_RESULT.RECOVERED,
+          command_id: record.commandId,
+          transition_id: recoveryTransitionId,
+          step_id: anchor,
+          error_code: RENDERER_TRANSITION_FAULT_CODE,
+          recovered: true,
+          details: { failed_transition_id: record.transitionId }
+        });
+        return true;
+      }
+
+      this.#emitRendererOutcome({
+        transitionId: recoveryTransitionId,
+        commandId: record.commandId,
+        fromStepId: anchor,
+        toStepId: anchor
+      }, outcome, RENDERER_RESTORATION_FAULT_CODE);
+      this.#clearOperationalTransition(recoveryTransitionId);
+      this.#eventControl.emit({
+        component: EVENT_COMPONENT.RUNTIME,
+        event: EVENT_NAME.RECOVERY_FAILED,
+        result: EVENT_RESULT.FAILED,
+        command_id: record.commandId,
+        transition_id: recoveryTransitionId,
+        step_id: anchor,
+        error_code: RENDERER_RESTORATION_FAULT_CODE,
+        recovered: false,
+        details: {
+          failed_transition_id: record.transitionId,
+          message: outcome.error?.message ?? String(outcome.error)
+        }
+      });
+
+      this.#controls.faultControl.recordFault(Object.freeze({
+        code: RENDERER_RESTORATION_FAULT_CODE,
+        component: FAULT_COMPONENT.RENDERER,
+        recoveryClass: FAULT_RECOVERY_CLASS.FALLBACK
+      }));
+      this.#eventControl.emit({
+        component: EVENT_COMPONENT.RUNTIME,
+        event: EVENT_NAME.INSTANCE_FAULTED,
+        result: EVENT_RESULT.FAILED,
+        command_id: record.commandId,
+        transition_id: recoveryTransitionId,
+        step_id: anchor,
+        error_code: RENDERER_RESTORATION_FAULT_CODE,
+        recovered: false,
+        details: { failed_transition_id: record.transitionId }
+      });
+      return false;
+    } finally {
+      this.#recovering = false;
+    }
+  }
+
+  #stopPlaybackForFault(commandId, source) {
+    this.#cancelActiveDwell('fault', commandId);
+    this.#operational.dwellRemainingMs = 0;
+    if (!this.#operational.playbackIntent) return false;
+
+    this.#operational.playbackIntent = false;
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.PLAYBACK_STOPPED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: commandId,
+      details: { reason: 'fault', source }
+    });
+    return true;
   }
 
   #continuePlayback(commandId, source, fromStepId) {

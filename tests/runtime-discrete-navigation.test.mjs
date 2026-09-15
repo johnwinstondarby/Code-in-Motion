@@ -341,8 +341,8 @@ test('renderer failure clears the pending target and leaves the last committed b
     mount() {},
     render() {
       renderCount += 1;
-      if (renderCount === 1) return Promise.resolve();
-      return Promise.reject(new Error('synthetic failure'));
+      if (renderCount === 2) return Promise.reject(new Error('synthetic failure'));
+      return Promise.resolve();
     },
     dispose() {}
   });
@@ -367,8 +367,18 @@ test('renderer failure clears the pending target and leaves the last committed b
   assert.equal(snapshot.canonical.currentStepId, 'initial');
   assert.equal(snapshot.canonical.targetStepId, null);
   assert.equal(snapshot.canonical.status, 'idle');
+  assert.equal(snapshot.canonical.error, null);
+  assert.equal(renderCount, 3, 'failed destination is followed by one absolute restoration render');
   assert.equal(
     events.some((event) => event.event === EVENT_NAME.TRANSITION_FAILED),
+    true
+  );
+  assert.equal(
+    events.some((event) => event.event === EVENT_NAME.RECOVERY_STARTED),
+    true
+  );
+  assert.equal(
+    events.some((event) => event.event === EVENT_NAME.RECOVERY_SUCCEEDED),
     true
   );
   assert.equal(
