@@ -116,7 +116,10 @@ function isProtectedInteractionNode(node) {
 
   const role = readAttribute(node, 'role');
   if (role === '__cim_unreadable__') return true;
-  if (typeof role === 'string' && PROTECTED_ROLES.has(role.trim().toLowerCase())) return true;
+  if (typeof role === 'string') {
+    const roleTokens = role.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    if (roleTokens.some((token) => PROTECTED_ROLES.has(token))) return true;
+  }
 
   return false;
 }
