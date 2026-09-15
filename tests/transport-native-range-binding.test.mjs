@@ -70,7 +70,10 @@ function makeControl({
     },
     setAttribute(name, nextValue) {
       attributeWrites.push(['set', name, String(nextValue)]);
-      if (name === failAttribute) throw new Error(`blocked attribute ${name}`);
+      if (name === failAttribute) {
+        failAttribute = null;
+        throw new Error(`blocked attribute ${name}`);
+      }
       attrs.set(name, String(nextValue));
     },
     removeAttribute(name) {
