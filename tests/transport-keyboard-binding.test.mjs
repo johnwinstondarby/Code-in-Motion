@@ -175,6 +175,7 @@ test('native and editing descendants keep keyboard ownership', async (t) => {
     ['contenteditable attribute', fakeNode({ attrs: { contenteditable: '' } })],
     ['tabindex descendant', fakeNode({ attrs: { tabindex: '0' } })],
     ['interactive role', fakeNode({ attrs: { role: 'slider' } })],
+    ['fallback role token list', fakeNode({ attrs: { role: 'future-widget slider' } })],
     ['explicit native opt-out', fakeNode({ attrs: { 'data-cim-keyboard-native': '' } })]
   ];
 
