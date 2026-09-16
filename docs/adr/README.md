@@ -41,6 +41,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0031`](0031-reduced-motion-preference-capability.md) | Reduced-Motion Preference Capability | 2026-09-16 | Accepted |
 | [`0032`](0032-host-reduced-motion-runtime-composition.md) | Host Reduced-Motion Runtime Composition | 2026-09-16 | Accepted |
 | [`0033`](0033-reduced-motion-preference-change-observation.md) | Reduced-Motion Preference Change Observation | 2026-09-16 | Accepted |
+| [`0034`](0034-runtime-reduced-motion-adoption.md) | Runtime Reduced-Motion Adoption | 2026-09-16 | Accepted |
 
 ## Owns
 
