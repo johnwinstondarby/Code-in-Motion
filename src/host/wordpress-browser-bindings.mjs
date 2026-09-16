@@ -180,9 +180,15 @@ export function createWordPressClockFactory(optionsInput) {
 
   function create() {
     const handles = new Map();
+    let lastNow = null;
 
     function now() {
-      return readNow(nowSource);
+      const value = readNow(nowSource);
+      if (lastNow !== null && value < lastNow) {
+        throw new RangeError('WordPress browser clock now() source must be monotonic.');
+      }
+      lastNow = value;
+      return value;
     }
 
     function schedule(fn, ms) {
