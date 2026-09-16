@@ -327,7 +327,7 @@ test('duplicate explicit instance identity fails only the duplicate invocation',
   assert.equal(first.state(), 'ready');
   assert.equal(second.state(), 'fallback');
   assert.equal(diagnostics.records.length, 1);
-  assert.equal(diagnostics.records[0].code, 'CIM-HST-004');
+  assert.equal(diagnostics.records[0].code, 'CIM-HST-002');
   assert.equal(diagnostics.records[0].operation, 'invocation');
   assert.match(diagnostics.records[0].message, /must be unique/);
 
@@ -351,7 +351,7 @@ test('blank experience identity remains static fallback and never reaches the lo
   assert.deepEqual(await host.mount(), { mounted: 0, fallback: 1 });
   assert.equal(loadCalls, 0);
   assert.equal(root.state(), 'fallback');
-  assert.equal(diagnostics.records[0].code, 'CIM-HST-004');
+  assert.equal(diagnostics.records[0].code, 'CIM-HST-002');
   assert.equal(diagnostics.records[0].operation, 'invocation');
 
   await host.dispose();
@@ -371,7 +371,7 @@ test('renderer resolution failure preserves fallback without affecting page-host
 
   assert.deepEqual(await host.mount(), { mounted: 0, fallback: 1 });
   assert.equal(root.state(), 'fallback');
-  assert.equal(diagnostics.records[0].code, 'CIM-HST-004');
+  assert.equal(diagnostics.records[0].code, 'CIM-HST-002');
   assert.equal(diagnostics.records[0].operation, 'renderer_resolve');
   assert.equal(await host.dispose(), true);
 });
