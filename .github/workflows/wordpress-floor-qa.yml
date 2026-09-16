@@ -93,6 +93,13 @@ jobs:
           (root / 'provenance.json').write_text(json.dumps(provenance, indent=2) + '\n', encoding='utf-8')
           PY
 
+      - name: Compare regenerated WordPress output with authoritative fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          diff -u tests/fixtures/wordpress/basic.html .ci/wordpress-fixtures/basic.html
+          diff -u tests/fixtures/wordpress/instance.html .ci/wordpress-fixtures/instance.html
+
       - name: Upload authoritative WordPress fixtures
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
