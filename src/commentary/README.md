@@ -10,7 +10,7 @@ Commentary consumes semantic facts. It does not own canonical semantic movement 
 
 - Commentary entry presentation
 - Previously revealed history presentation
-- Later Commentary-local selection state
+- Commentary-local selection state
 - Later native commentary DOM and interaction
 - Later autoscroll and learner scroll suspension
 - Later newer-steps indication
@@ -102,6 +102,56 @@ Backward navigation and Home do not re-hide entries while Core preserves the hig
 
 Checkpoint 1 deliberately has no local `selected` state and no canonical `active` presentation. Visibility and learner selection are separate concerns.
 
+## Checkpoint 2: Commentary-local selection
+
+Checkpoint 2 layers local learner selection over the exact checkpoint 1 reveal capability without changing canonical visibility or issuing semantic commands.
+
+Construction receives exactly one frozen capability:
+
+```text
+reveal
+```
+
+`reveal` is the exact checkpoint 1 surface containing only:
+
+```text
+read
+```
+
+The exact frozen checkpoint 2 public surface is:
+
+```text
+read
+select
+clear
+```
+
+Local state contains only `selectedStepId`, initially `null`.
+
+Every operation validates a fresh checkpoint 1 reveal state before returning projected state. The projected state contains exactly:
+
+```text
+revealFrontier
+selectedStepId
+entries
+```
+
+Every visible entry preserves checkpoint 1 data and adds exactly:
+
+```text
+selected
+```
+
+`select(stepId)` accepts only a currently visible Commentary entry. Selecting an unrevealed or unknown semantic identity fails closed without changing local state. Selecting the already selected entry is idempotent local state and produces no command-style outcome envelope or semantic event.
+
+Backward navigation and Home preserve selection while the selected entry remains visible under the high-water reveal frontier. When a valid fresh reveal projection no longer contains the selected entry, including after Restart resets the frontier to `initial`, Commentary reconciles local selection to `null`.
+
+Malformed fresh reveal state cannot silently erase valid local selection. Reconciliation occurs only after the checkpoint 1 state validates successfully.
+
+`clear()` changes only Commentary-local selection and returns the latest valid visibility projection. Checkpoint 2 receives no Runtime, Transport, command, event, renderer, DOM, disposal, or Core authority.
+
+A future feature that intentionally navigates the semantic timeline from Commentary activation requires a separate narrow command capability and decision. Local selection does not imply navigation.
+
 ## Interaction ownership
 
 ADR 0024 applies to Commentary text. Pointer drag-selection over learner-facing text remains browser-owned and cannot enter Transport scrub interaction. Commentary implementation must preserve selectable text rather than installing broad pointer ownership that competes with native selection.
@@ -112,7 +162,7 @@ Commentary text is rendered as text data, never executable HTML. Structured link
 
 ## Later checkpoints
 
-Later checkpoints add Commentary-local selection, canonical active presentation, native DOM projection and activation, link presentation, scroll policy, and complete learner-path composition without changing checkpoint 1 reveal ownership.
+Later checkpoints add native DOM projection and activation, link presentation, scroll policy, canonical active presentation where required, and complete learner-path composition without changing checkpoint 1 reveal ownership or checkpoint 2 local-selection ownership.
 
 ## Verification
 
@@ -128,4 +178,18 @@ Checkpoint 1 tests prove:
 - metadata alignment with canonical semantic order;
 - malformed, mutable, widened, accessor-backed, and unknown-frontier inputs fail closed;
 - no selection, command, event, DOM, Transport, renderer, or complete Runtime authority enters the projection;
+- repository schema, architecture, Core-authority, and full test gates remain green.
+
+Checkpoint 2 tests prove:
+
+- exact frozen controller, projected state, and selected-entry records;
+- visibility and local selection remain independent facts;
+- selection accepts only currently visible entries;
+- repeated selection is idempotent local state without command-style outcome data;
+- backward navigation and Home preserve selection while visibility remains;
+- Restart-shaped visibility reset clears a now-hidden selection;
+- malformed reveal data cannot corrupt existing local selection;
+- `clear()` changes only local selection;
+- the injected checkpoint 1 capability remains exact and frozen;
+- no Runtime, Transport, command, event, renderer, DOM, disposal, or Core authority enters checkpoint 2;
 - repository schema, architecture, Core-authority, and full test gates remain green.
