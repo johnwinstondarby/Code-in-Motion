@@ -1,0 +1,58 @@
+name: WordPress Browser E2E
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-mount:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '20'
+          package-manager-cache: false
+
+      - name: Install repository verification dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Install pinned Playwright test runner for R8
+        run: npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Start authoritative Docker wp-env
+        run: npm run --silent wp-env -- start --update
+
+      - name: Create CiM browser diagnostic page
+        shell: bash
+        run: |
+          set -euo pipefail
+          existing_id="$(npm run --silent wp-env -- run cli wp post list --post_type=page --name=cim-e2e --field=ID | tail -n 1)"
+          if [[ -n "$existing_id" ]]; then
+            npm run --silent wp-env -- run cli wp post delete "$existing_id" --force
+          fi
+          npm run --silent wp-env -- run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM Browser E2E' \
+            --post_name='cim-e2e' \
+            --post_content='[cim experience="synthetic-wordpress"]CiM E2E fallback.[/cim]'
+
+      - name: Run R8a production-path mount proof
+        env:
+          CIM_WP_BASE_URL: http://127.0.0.1:8888
+        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs --project=chromium --reporter=line
+
+      - name: Stop wp-env
+        if: always()
+        run: npm run --silent wp-env -- stop
