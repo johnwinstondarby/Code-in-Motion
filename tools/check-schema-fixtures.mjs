@@ -4,6 +4,8 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 
+import { validateExperience as validateProductionExperience } from '../src/experience/validate-experience.mjs';
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SCHEMA_PATH = join(ROOT, 'schemas', 'localis.cim.v1.schema.json');
 const VALID_DIR = join(ROOT, 'schemas', 'fixtures', 'valid');
@@ -27,9 +29,6 @@ const INVALID_EXPECTATIONS = new Map([
   ['invalid-link-text.json', 'CIM-EXP-006']
 ]);
 
-const ASCII_SPACE_OR_CONTROL = /[\u0000-\u0020\u007f]/g;
-const ALLOWED_LINK_PREFIX = /^(?:https?:\/\/|mailto:|\/|#)/i;
-
 function readJsonSync(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
 }
@@ -37,10 +36,6 @@ function readJsonSync(path) {
 const PUBLISHED_SCHEMA = readJsonSync(SCHEMA_PATH);
 const AJV = new Ajv2020({ allErrors: true, strict: true });
 const VALIDATE_SCHEMA = AJV.compile(PUBLISHED_SCHEMA);
-
-function addError(errors, code, path, message, source = 'semantic') {
-  errors.push({ code, path, message, source });
-}
 
 function schemaErrorCode(error) {
   const path = error.instancePath ?? '';
@@ -65,68 +60,12 @@ function schemaErrorsFor(experience) {
   }));
 }
 
-function normalizedHref(value) {
-  return value.replace(ASCII_SPACE_OR_CONTROL, '');
-}
-
-function semanticErrorsFor(experience) {
-  const errors = [];
-  if (!experience || typeof experience !== 'object' || Array.isArray(experience)) return errors;
-  if (!Array.isArray(experience.steps)) return errors;
-
-  const seenStepIds = new Set();
-
-  experience.steps.forEach((step, stepIndex) => {
-    if (!step || typeof step !== 'object' || Array.isArray(step)) return;
-    const stepPath = `$.steps[${stepIndex}]`;
-
-    if (typeof step.id === 'string') {
-      if (seenStepIds.has(step.id)) {
-        addError(errors, 'CIM-EXP-003', `${stepPath}.id`, `Duplicate step id: ${step.id}`);
-      } else {
-        seenStepIds.add(step.id);
-      }
-    }
-
-    const links = step.commentary?.links;
-    if (!Array.isArray(links)) return;
-
-    const seenLinkIds = new Set();
-    links.forEach((link, linkIndex) => {
-      if (!link || typeof link !== 'object' || Array.isArray(link)) return;
-      const linkPath = `${stepPath}.commentary.links[${linkIndex}]`;
-
-      if (typeof link.id === 'string') {
-        if (seenLinkIds.has(link.id)) {
-          addError(errors, 'CIM-EXP-006', `${linkPath}.id`, 'Link ids must be unique within one commentary entry.');
-        } else {
-          seenLinkIds.add(link.id);
-        }
-      }
-
-      if (typeof link.href === 'string') {
-        const normalized = normalizedHref(link.href);
-        if (!ALLOWED_LINK_PREFIX.test(normalized)) {
-          addError(
-            errors,
-            'CIM-EXP-006',
-            `${linkPath}.href`,
-            'Link href must resolve to http, https, mailto, root-relative, or fragment navigation.'
-          );
-        }
-      }
-    });
-  });
-
-  return errors;
-}
-
 export function validateAgainstPublishedSchema(experience) {
   return schemaErrorsFor(experience);
 }
 
 export function validateExperience(experience) {
-  return [...schemaErrorsFor(experience), ...semanticErrorsFor(experience)];
+  return validateProductionExperience(experience);
 }
 
 async function readJson(path) {
@@ -145,9 +84,13 @@ async function run() {
 
   for (const name of validFiles) {
     const value = await readJson(join(VALID_DIR, name));
-    const errors = validateExperience(value);
-    if (errors.length > 0) {
-      throw new Error(`Valid fixture ${name} failed:\n${JSON.stringify(errors, null, 2)}`);
+    const publishedErrors = validateAgainstPublishedSchema(value);
+    const productionErrors = validateProductionExperience(value);
+    if (publishedErrors.length > 0 || productionErrors.length > 0) {
+      throw new Error(
+        `Valid fixture ${name} failed:\n` +
+        JSON.stringify({ publishedErrors, productionErrors }, null, 2)
+      );
     }
   }
 
@@ -156,7 +99,7 @@ async function run() {
     if (!expectedCode) throw new Error(`Invalid fixture ${name} has no expected error-code mapping.`);
 
     const value = await readJson(join(INVALID_DIR, name));
-    const errors = validateExperience(value);
+    const errors = validateProductionExperience(value);
     const codes = distinctCodes(errors);
 
     if (codes.length !== 1 || codes[0] !== expectedCode) {
@@ -165,13 +108,20 @@ async function run() {
         JSON.stringify(errors, null, 2)
       );
     }
+
+    const publishedCodes = distinctCodes(validateAgainstPublishedSchema(value));
+    if (expectedCode !== 'CIM-EXP-003' && publishedCodes.length > 0 && !publishedCodes.includes(expectedCode)) {
+      throw new Error(
+        `Published schema disagrees with production validation for ${name}: expected ${expectedCode}, got ${publishedCodes.join(', ')}.`
+      );
+    }
   }
 
   for (const expectedName of INVALID_EXPECTATIONS.keys()) {
     if (!invalidFiles.includes(expectedName)) throw new Error(`Expected invalid fixture is missing: ${expectedName}`);
   }
 
-  console.log(`PASS: published schema + semantic contract (${validFiles.length} valid fixtures, ${invalidFiles.length} invalid fixtures)`);
+  console.log(`PASS: published schema + production validation contract (${validFiles.length} valid fixtures, ${invalidFiles.length} invalid fixtures)`);
 }
 
 const invokedAsScript = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
