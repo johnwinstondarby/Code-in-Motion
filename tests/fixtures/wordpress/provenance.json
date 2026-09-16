@@ -1,0 +1,15 @@
+{
+  "authority": "docker-wp-env",
+  "wordpress": "6.5.10",
+  "php": "7.4.33",
+  "plugin_version": "0.1.0",
+  "wp_env": "11.15.0",
+  "pr_head_sha": "c175820d89f5338ddf92fbd2346c1c5eaab6cbe0",
+  "github_merge_sha": "fe72c46d1d7c1d38beb6c76c630bd7ac6e53e160",
+  "generated_at_utc": "2026-09-16T23:16:22+00:00",
+  "fixtures": [
+    "basic.html",
+    "instance.html"
+  ],
+  "source": "WordPress do_shortcode() inside Docker-backed wp-env"
+}
