@@ -83,9 +83,75 @@ Dynamic adoption of preference changes by an already-running Runtime remains a s
 
 See ADR 0032 and the Host component contract.
 
+## Checkpoint 3: reduced-motion preference change observation
+
+Checkpoint 3 adds a live browser preference-change observation seam without changing a running Runtime.
+
+Construction receives exactly:
+
+```text
+matchMedia
+```
+
+`createReducedMotionPreferenceSource()` calls the injected function exactly once with the canonical reduced-motion query. The returned media-query object must provide a boolean `matches` value and modern `addEventListener` and `removeEventListener` methods.
+
+The exact frozen source surface is:
+
+```text
+preference
+changes
+```
+
+`preference` is the checkpoint 1-compatible exact frozen capability:
+
+```text
+read
+```
+
+This projection can be supplied directly to Host checkpoint 2. Host therefore retains its exact `{ read }` authority and does not receive the change-subscription surface.
+
+`changes` is the exact frozen capability:
+
+```text
+subscribe
+dispose
+```
+
+The source installs exactly one native `change` listener. It does not use legacy `addListener` or `removeListener` fallback methods.
+
+A native change notification causes Accessibility to read the current live `matches` value. The browser event payload is not forwarded or used as preference state. A successful observation publishes an exact frozen record:
+
+```text
+reducedMotion
+```
+
+with shape:
+
+```text
+{ reducedMotion: boolean }
+```
+
+Subscribers receive only that record. The retained media-query object, raw browser event, injected `matchMedia`, `window`, and `document` remain private.
+
+Each `subscribe(listener)` returns a frozen scoped unsubscribe function. Unsubscribe is idempotent. A subscriber failure is isolated and does not prevent notification of remaining subscribers.
+
+`dispose()` removes only the source-owned native `change` listener and clears subscribers after successful native removal. Successful disposal is idempotent. If native removal throws, the source remains open and disposal can be retried.
+
+Disposing the change-observation surface does not invalidate `preference.read()`. The synchronous preference projection continues to read the retained media-query object's live state.
+
+Listener-installation failure attempts scoped rollback with the same listener identity and preserves the original installation failure. Malformed live `matches` values fail closed before subscriber notification.
+
+Checkpoint 3 does not update Runtime, cancel or replace transitions, alter dwell, change renderer context, emit semantic Runtime events, or decide when a changed preference takes effect for an active CiM session. Those adoption semantics require a separate lifecycle decision.
+
+Checkpoint 3 contains no Runtime, Core, renderer, Transport, Commentary, semantic-navigation, event-emission, or browser-global authority.
+
+See ADR 0033.
+
 ## Later checkpoints
 
-Later Accessibility work may define dynamic preference-change policy, shared focus behavior, or component-agnostic ARIA helpers. Each addition must remain a narrow capability and may not take over another component's semantic or accessible output authority.
+Later Accessibility work may define dynamic Runtime adoption of observed reduced-motion changes, shared focus behavior, or component-agnostic ARIA helpers. Dynamic adoption must define behavior at stable boundaries and during active transition, pause, dwell, recovery, and disposal before changing the Runtime motion value.
+
+Each addition must remain a narrow capability and may not take over another component's semantic or accessible output authority.
 
 ## Verification
 
@@ -111,6 +177,24 @@ Checkpoint 2 tests prove:
 - malformed or widened capability shapes and invalid read results fail closed;
 - Runtime remains free of Accessibility imports and Accessibility remains free of Runtime imports.
 
-Repository schema, architecture, Core-authority, and full Node 20/22 verification gates cover both checkpoints.
+Checkpoint 3 tests prove:
+
+- exact frozen `{ preference, changes }` source surface;
+- exact frozen checkpoint 1-compatible `{ read }` preference projection;
+- exact frozen `{ subscribe, dispose }` change capability;
+- one canonical media query and one modern native `change` listener per source;
+- no legacy media-query listener fallback is used;
+- preference reads remain fresh without issuing another media query;
+- subscribers receive exact frozen `{ reducedMotion }` records sourced from live `matches` state rather than raw browser events;
+- unsubscribe is scoped, frozen, and idempotent;
+- subscriber failures are isolated;
+- disposal removes only the owned native listener, closes notifications, and remains retryable after native removal failure;
+- preference reads remain usable after change observation is disposed;
+- listener-installation failure attempts scoped rollback;
+- malformed live preference state fails closed before subscriber notification;
+- widened, symbol-extended, accessor-backed, and non-function construction authority fails closed;
+- no Runtime, Core, renderer, Transport, Commentary, semantic-command, event-emission, or browser-global authority enters the source.
+
+Repository schema, architecture, Core-authority, and full Node 20/22 verification gates cover all three checkpoints.
 
 Each visual component remains responsible for its own accessible output. Automated conformance tests cover keyboard operation, focus behavior, reduced motion, active-state communication, and fallback presentation.
