@@ -1,3 +1,4 @@
+import { COMMENTARY_LINK_KEYS } from './reveal-projection.mjs';
 import {
   COMMENTARY_SELECTION_CONTROLLER_KEYS,
   COMMENTARY_SELECTION_ENTRY_KEYS,
@@ -86,6 +87,15 @@ function validateEntryCount(entryCount) {
   return entryCount;
 }
 
+function validateLink(link, entryOffset, linkOffset) {
+  const label = `Commentary selection entries[${entryOffset}].links[${linkOffset}]`;
+  assertFrozenPlainObject(link, label);
+  assertExactKeys(link, COMMENTARY_LINK_KEYS, label);
+  requireNonEmptyString(dataValue(link, 'id', label), `${label}.id`);
+  requireNonEmptyString(dataValue(link, 'label', label), `${label}.label`);
+  requireNonEmptyString(dataValue(link, 'href', label), `${label}.href`);
+}
+
 function validateSelectionState(state, entryCount) {
   assertFrozenPlainObject(state, 'Commentary selection state');
   assertExactKeys(state, COMMENTARY_SELECTION_STATE_KEYS, 'Commentary selection state');
@@ -116,6 +126,7 @@ function validateSelectionState(state, entryCount) {
     if (typeof dataValue(entry, 'text', label) !== 'string') fail(`${label}.text must be a string.`);
     const links = dataValue(entry, 'links', label);
     if (!Array.isArray(links) || !Object.isFrozen(links)) fail(`${label}.links must be a frozen array.`);
+    links.forEach((link, linkOffset) => validateLink(link, offset, linkOffset));
     const selected = dataValue(entry, 'selected', label);
     if (typeof selected !== 'boolean') fail(`${label}.selected must be a boolean.`);
     if (selected) {
