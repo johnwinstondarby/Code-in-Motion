@@ -39,6 +39,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0029`](0029-commentary-follow-suspension-and-newer-steps.md) | Commentary Follow Suspension and Newer-Steps Policy | 2026-09-16 | Accepted |
 | [`0030`](0030-commentary-scroll-follow-binding.md) | Commentary Scroll Follow Binding | 2026-09-16 | Accepted |
 | [`0031`](0031-reduced-motion-preference-capability.md) | Reduced-Motion Preference Capability | 2026-09-16 | Accepted |
+| [`0032`](0032-host-reduced-motion-runtime-composition.md) | Host Reduced-Motion Runtime Composition | 2026-09-16 | Accepted |
 
 ## Owns
 
