@@ -11,6 +11,7 @@ This directory holds shared accessibility contracts, helpers, and automated supp
 - Shared ARIA utilities where appropriate
 - Accessibility test helpers used by production components
 - Cross-component accessibility requirements documented by the platform
+- Reduced-motion browser observation source lifetime
 
 ## Does not own
 
@@ -19,6 +20,7 @@ This directory holds shared accessibility contracts, helpers, and automated supp
 - Canonical semantic state
 - Runtime or Core command authority
 - Renderer control
+- Host subscription composition or Runtime disposal ordering
 - Feature-specific business logic
 
 ## Allowed dependencies
@@ -106,7 +108,7 @@ changes
 read
 ```
 
-This projection can be supplied directly to Host checkpoint 2. Host therefore retains its exact `{ read }` authority and does not receive the change-subscription surface.
+This projection can be supplied directly to Host checkpoint 2 or checkpoint 5.
 
 `changes` is the exact frozen capability:
 
@@ -169,15 +171,31 @@ During an active or paused transition, the existing renderer task completes unde
 
 A disposing or disposed instance rejects adoption. Runtime receives only the boolean value and still does not import Accessibility or receive browser-observation authority.
 
-Checkpoint 4 defines Runtime application semantics only. Connecting checkpoint 3 `changes.subscribe()` to this Runtime seam, including unsubscribe and disposal ordering, remains a Host composition checkpoint.
+Checkpoint 4 defines Runtime application semantics only. Connecting checkpoint 3 `changes.subscribe()` to this Runtime seam, including unsubscribe and disposal ordering, belongs to Host checkpoint 5.
 
 See ADR 0034 and the Runtime component contract.
 
+## Checkpoint 5: Host live reduced-motion lifecycle composition
+
+Checkpoint 5 connects the checkpoint 3 source to checkpoint 4 Runtime adoption without transferring source ownership into Host or browser observation into Runtime.
+
+Host live composition receives `source.preference` as the exact frozen `{ read }` capability and `source.changes` as the exact frozen `{ subscribe, dispose }` capability. Host validates the complete change capability but owns only the scoped unsubscribe returned by `subscribe()`.
+
+Host does not call `changes.dispose()`. The Accessibility source may serve multiple Host compositions, so source-level disposal remains with the source owner. Disposing one Host composition removes only that composition's subscriber and leaves the source's native media-query listener and other subscribers active.
+
+Live construction reads the preference, constructs Runtime, subscribes to changes, then reads the preference again. That post-subscription read closes the window where the browser preference could change between initial sampling and listener installation. If the second value differs, Host adopts it before returning the live composition.
+
+Later change records remain exact frozen `{ reducedMotion: boolean }` data. Host forwards only the boolean to Runtime adoption. Accessibility never receives the Runtime instance, Runtime adoption capability, Host diagnostics, or Runtime disposal authority.
+
+Host owns synchronous per-instance unsubscribe ordering before Runtime disposal. Accessibility continues to own native listener installation/removal and source-level disposal semantics.
+
+A Host adoption callback failure does not escape through the Accessibility publisher. Host reports the failure through its own `CIM-HST-003` diagnostic surface. Accessibility observer isolation still ensures one failing Host subscriber cannot prevent notification of other subscribers.
+
+See ADR 0035 and the Host component contract.
+
 ## Later checkpoints
 
-Later Accessibility work may define Host live composition of reduced-motion changes, shared focus behavior, or component-agnostic ARIA helpers. Host live composition must define subscription ownership and disposal ordering without transferring browser observation authority into Runtime.
-
-Each addition must remain a narrow capability and may not take over another component's semantic or accessible output authority.
+Later Accessibility work may define shared focus behavior or component-agnostic ARIA helpers. Each addition must remain a narrow capability and may not take over another component's semantic or accessible output authority.
 
 ## Verification
 
@@ -235,6 +253,18 @@ Checkpoint 4 tests prove:
 - disposing or disposed Runtime rejects adoption;
 - Runtime remains free of Accessibility and browser-observation dependencies.
 
-Repository schema, architecture, Core-authority, and full Node 20/22 verification gates cover all four checkpoints.
+Checkpoint 5 tests prove:
+
+- live Host composition consumes exact frozen checkpoint 1 and checkpoint 3 capabilities;
+- the post-subscription read closes the initial sampling race;
+- live changes are routed to future Runtime renderer contexts without stable rerender;
+- Host exposes no Runtime adoption authority to consumers;
+- one source can serve multiple Host compositions independently;
+- disposing one Host composition does not remove another subscriber or dispose the source;
+- Host unsubscribe occurs synchronously before Runtime disposal settlement;
+- callback failures remain isolated and produce Host diagnostics;
+- source-level native listener ownership remains in Accessibility.
+
+Repository schema, architecture, Core-authority, and full Node 20/22 verification gates cover all five checkpoints.
 
 Each visual component remains responsible for its own accessible output. Automated conformance tests cover keyboard operation, focus behavior, reduced motion, active-state communication, and fallback presentation.
