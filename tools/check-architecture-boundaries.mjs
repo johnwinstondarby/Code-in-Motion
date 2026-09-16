@@ -20,6 +20,7 @@ const FORBIDDEN_IMPORTS = [
   ['transport-to-renderers', 'src/transport/', 'src/renderers/', 'Transport cannot call or import renderers.'],
   ['transport-to-commentary', 'src/transport/', 'src/commentary/', 'Transport cannot advance or import commentary.'],
 
+  ['commentary-to-runtime', 'src/commentary/', 'src/runtime/', 'Commentary receives Runtime observation by injection and cannot import Runtime implementation modules.'],
   ['commentary-to-core', 'src/commentary/', 'src/core/', 'Commentary cannot reach Core directly.'],
   ['commentary-to-transport', 'src/commentary/', 'src/transport/', 'Commentary cannot move transport laterally.'],
   ['commentary-to-renderers', 'src/commentary/', 'src/renderers/', 'Commentary cannot depend on renderer internals.'],
