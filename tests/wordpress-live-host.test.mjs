@@ -357,7 +357,7 @@ test('blank experience identity remains static fallback and never reaches the lo
   await host.dispose();
 });
 
-test('renderer resolution failure preserves fallback without affecting page-host disposal', async () => {
+test('renderer resolution failure preserves renderer ownership and page fallback', async () => {
   const root = rootHarness({ instanceId: 'renderer-failure' });
   const diagnostics = diagnosticsHarness();
   const source = hostOptions({
@@ -371,7 +371,8 @@ test('renderer resolution failure preserves fallback without affecting page-host
 
   assert.deepEqual(await host.mount(), { mounted: 0, fallback: 1 });
   assert.equal(root.state(), 'fallback');
-  assert.equal(diagnostics.records[0].code, 'CIM-HST-004');
+  assert.equal(diagnostics.records[0].code, 'CIM-RND-001');
+  assert.equal(diagnostics.records[0].component, 'renderer');
   assert.equal(diagnostics.records[0].operation, 'renderer_resolve');
   assert.equal(await host.dispose(), true);
 });
