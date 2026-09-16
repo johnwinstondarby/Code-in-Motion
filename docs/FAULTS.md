@@ -13,7 +13,7 @@ Fault injection belongs to the synthetic harness. Fault handling belongs to the 
 V1 uses stable component or subsystem namespaces:
 
 ```text
-CIM-HST-*   host / loading / fallback / deep-link resolution
+CIM-HST-*   host / loading / fallback / deep-link resolution / live composition
 CIM-EXP-*   experience validation and resolution
 CIM-CORE-*  canonical semantic-state operations
 CIM-RT-*    runtime orchestration and scheduling
@@ -26,6 +26,8 @@ CIM-TEL-*   telemetry/evidence sinks
 Expected cancellation is not a fault. Renderer cancellation is reported as `renderer.cancelled` rather than `renderer.error`.
 
 `CIM-TRN-*` is reserved for transport input/mapping faults; the initial v1 matrix does not yet assign a transport fault code.
+
+Within the Host subsystem, `CIM-HST-003` identifies failure of the live reduced-motion composition bridge. Exact Host diagnostic records distinguish `reduced_motion_adoption` from `reduced_motion_unsubscribe` through their `operation` field. These diagnostics do not populate Core canonical fault state. A reduced-motion adoption failure leaves the existing Runtime state unchanged. A Host-scoped unsubscribe failure is diagnosed but does not prevent Runtime disposal from being initiated.
 
 Within the renderer subsystem, `CIM-RND-002` identifies failure to acknowledge a disposal-time render abort within the bounded Runtime window, and `CIM-RND-003` identifies failure of `renderer.dispose()` to acknowledge teardown within its bounded Runtime window. Both are terminal-containment diagnostics and do not populate Core canonical fault state. `CIM-RND-001` covers renderer resolution even though Runtime composition invokes the resolver.
 
@@ -47,6 +49,10 @@ Normal CiM operation cannot continue. The instance enters `faulted` or fails ini
 
 A callback or completion belongs to a superseded transition. It is discarded without changing canonical state and without classifying the condition as a learner-facing fault.
 
+### Local diagnostic
+
+A composition or observation operation fails outside canonical semantic mutation. The owning component records diagnostic evidence and contains the failure locally. Core canonical `error` remains unchanged. Any separately owned terminal operation still proceeds according to its own lifecycle contract.
+
 ### Terminal containment
 
 A renderer fails to acknowledge teardown after disposal has begun. Runtime revokes renderer capabilities, records observational renderer fault evidence, completes canonical `disposed` settlement, and ignores any later completion. Terminal-containment diagnostics do not populate Core canonical `error` because disposal is already the terminal lifecycle outcome.
@@ -63,7 +69,7 @@ recoveryClass
 
 `code` uses one namespace from §2. `component` must correspond to that namespace. `recoveryClass` is either `recover` or `fallback`.
 
-`reject`, `ignore stale work`, and `terminal containment` do not populate canonical `error`. Their evidence remains observational because they do not represent active recovery or terminal instance fault state.
+`reject`, `ignore stale work`, `local diagnostic`, and `terminal containment` do not populate canonical `error`. Their evidence remains observational because they do not represent active Runtime recovery or terminal instance fault state.
 
 Core stores canonical fault state only after the active semantic target has been cancelled or abandoned. `currentStepId` therefore remains the last committed recovery anchor and `targetStepId` is `null` when canonical fault state is recorded.
 
@@ -79,6 +85,7 @@ A successfully settled restart may clear an active `recover` record while resett
 |---|---|---|---|---|---|
 | Experience load fails | Host / experience loader | Fallback | No runtime session required | Static fallback; page remains usable | `CIM-HST-001` |
 | Invalid or unresolvable CiM deep-link target | Host / Runtime deep-link resolver | Reject | `initial` when an experience can be initialized | Diagnostic recorded; experience opens at `initial`; page remains usable | `CIM-HST-002` |
+| Live reduced-motion adoption callback or Host-scoped unsubscribe fails | Host live composition | Local diagnostic | Current committed boundary; canonical `disposed` remains authoritative during teardown | Adoption failure leaves current state unchanged; unsubscribe failure cannot block Runtime terminal disposal | `CIM-HST-003` |
 | Unsupported schema | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus diagnostic | `CIM-EXP-001` |
 | Invalid/incomplete experience | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus validation diagnostic | `CIM-EXP-002` |
 | Duplicate step ID | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus duplicate-ID diagnostic | `CIM-EXP-003` |
@@ -104,7 +111,8 @@ A successfully settled restart may clear an active `recover` record while resett
 - Runtime coordinates transition cancellation, stale-work rejection, restoration requests, status-write requests, terminal-containment timing, and cross-component settlement.
 - Renderer owns visual settlement failures and restoration rendering; the renderer subsystem namespace also covers renderer resolution and renderer teardown acknowledgement.
 - Experience validation failures occur before normal playback.
-- Host owns page-level fallback after initialization or loading failure and participates in deterministic deep-link fallback.
+- Host owns page-level fallback after initialization or loading failure, participates in deterministic deep-link fallback, and owns diagnostic containment for its live reduced-motion subscription bridge.
+- A Host-scoped unsubscribe failure cannot prevent Runtime terminal disposal, and Host does not dispose a shared Accessibility source as part of per-instance cleanup.
 - Telemetry failure cannot command or stop otherwise healthy runtime behavior unless required evidence is explicitly configured as a test gate in the harness.
 
 ## 7. Recovery Evidence
@@ -125,6 +133,8 @@ recovery outcome
 
 A successful recovery does not erase the original fault event.
 
+Local Host live-composition diagnostics must identify the stable Host code, instance identity, failed operation, and message without manufacturing Runtime command, transition, or Core fault evidence.
+
 Terminal-containment evidence must identify the teardown operation, applicable transition identity, stable error code, and bounded acknowledgement interval. A late renderer completion after terminal containment does not create new semantic evidence.
 
 ## 8. Harness Requirements
@@ -138,6 +148,8 @@ The harness must inject and verify at least:
 - unknown renderer identifier;
 - invalid seek;
 - invalid or unresolvable deep-link target;
+- live reduced-motion adoption callback failure;
+- Host-scoped reduced-motion unsubscribe failure;
 - renderer throw during transition;
 - incomplete renderer settlement;
 - failed renderer restoration;
@@ -147,4 +159,4 @@ The harness must inject and verify at least:
 - stale cancelled callback;
 - experience loading failure.
 
-For each injected fault, expected owner, recovery class, canonical anchor, event ordering, error code, and learner-facing outcome must be asserted independently from production recovery logic.
+For each injected fault, expected owner, recovery class, canonical anchor, evidence ordering, error code, and learner-facing outcome must be asserted independently from production recovery logic.
