@@ -13,13 +13,16 @@ The host layer connects a page to the canonical CiM runtime without embedding pl
 - Initialization boundary
 - Cross-component construction inputs required by Runtime
 - Host-level static fallback when CiM cannot initialize
+- Live reduced-motion subscription composition and per-instance unsubscribe ordering
+- Host diagnostics for live reduced-motion bridge failures
 
 ## Does not own
 
 - Engine semantics
 - Subject renderer logic
 - Accessibility preference detection
-- Dynamic reduced-motion preference-change policy
+- Accessibility source-level disposal
+- Runtime reduced-motion application semantics
 - Inline authored JavaScript in publication pages
 
 ## Allowed dependencies
@@ -28,9 +31,13 @@ May create and configure `CiMInstance` through its public construction and initi
 
 May consume narrow Accessibility capabilities needed to configure Runtime without transferring browser-observation authority into Runtime.
 
+May retain a scoped Accessibility unsubscribe function when Host composition owns the corresponding Runtime lifecycle façade.
+
 ## Prohibited dependencies
 
 Host must not reach Core directly or command Transport, Commentary, or renderers outside Runtime's public seams.
+
+Host instance disposal must not call Accessibility source-level `changes.dispose()` because that source may be shared by multiple compositions.
 
 Publication pages must not contain substantial CiM runtime JavaScript. The WordPress adapter uses enqueued external assets rather than runtime code embedded in Custom HTML content.
 
@@ -82,11 +89,128 @@ Host checkpoint 2 consumes only the source's `preference` projection, whose exac
 read
 ```
 
-The checkpoint 3 `changes` capability is not part of `createHostCiMInstance()` construction options. Host does not subscribe to reduced-motion changes, receive raw browser media-query objects, or change an existing Runtime's sampled `reducedMotion` value.
+The checkpoint 3 `changes` capability is not part of `createHostCiMInstance()` construction options. Host checkpoint 2 does not subscribe to reduced-motion changes, receive raw browser media-query objects, or change an existing Runtime's sampled `reducedMotion` value.
 
-This preserves the checkpoint 2 construction boundary while Accessibility owns the independent browser preference-change observation lifecycle. A later dynamic-adoption checkpoint must define any Host or Runtime subscription policy explicitly before that authority can enter composition.
+This preserves the checkpoint 2 construction boundary while Accessibility owns the independent browser preference-change observation lifecycle.
 
 See ADR 0033.
+
+## Accessibility checkpoint 5: Host live reduced-motion lifecycle composition
+
+`createLiveHostCiMInstance()` composes Accessibility checkpoint 3 change observation with Runtime checkpoint 8 adoption through a Host-owned lifecycle façade.
+
+The live factory is asynchronous because any failure after Runtime construction may require Host to unsubscribe, initiate Runtime disposal, and await compensating terminal cleanup before rejecting construction.
+
+The exact live construction options are:
+
+```text
+instanceId
+experience
+clock
+renderer
+rendererRoot
+reducedMotionPreference
+reducedMotionChanges
+diagnostics
+```
+
+`reducedMotionPreference` remains the exact frozen capability:
+
+```text
+read
+```
+
+`reducedMotionChanges` must be the exact frozen checkpoint 3 capability:
+
+```text
+subscribe
+dispose
+```
+
+Host validates the complete change capability but owns only the scoped frozen unsubscribe function returned by `subscribe()`. Host never calls source-level `dispose()`.
+
+`diagnostics` must be the exact frozen Host capability:
+
+```text
+report
+```
+
+Live-composition failures use exact frozen Host diagnostic records:
+
+```text
+code
+component
+instanceId
+operation
+message
+```
+
+with `code: CIM-HST-003` and `component: host`. `operation` distinguishes `reduced_motion_adoption` from `reduced_motion_unsubscribe`. Diagnostic-sink failure is isolated from Host and Runtime control flow.
+
+### Construction ordering
+
+Host closes the preference race with this order:
+
+```text
+read preference
+construct Runtime
+validate Runtime public surface
+subscribe to changes
+validate scoped unsubscribe
+re-read preference
+adopt the re-read value when it differs from the construction sample
+return Host façade
+```
+
+The post-subscription read closes the window where the browser preference could change between initial sampling and listener installation. Runtime same-value adoption is inert, so duplicate observation does not create semantic work.
+
+Each later Accessibility change record is validated as exact frozen `{ reducedMotion: boolean }` data and forwarded only to Runtime `adoptReducedMotion(boolean)`. Host does not inspect the adoption result. A callback failure is isolated from the Accessibility source and reported through `CIM-HST-003`.
+
+### Host façade and surface drift
+
+The exact frozen live Host façade is:
+
+```text
+identity
+read
+events
+initialize
+next
+previous
+seek
+home
+end
+restart
+dispose
+pause
+play
+```
+
+Runtime `adoptReducedMotion` is retained privately by Host composition and is absent from the returned façade and its reachable capability graph.
+
+`src/contracts/runtime-instance.mjs` defines `CIM_INSTANCE_PUBLIC_KEYS`, the exact Runtime public surface contract. The live Host contract asserts that its exposed keys plus its explicitly retained Runtime keys partition that surface exactly. Each constructed Runtime instance is also checked against the shared contract. A later Runtime public-surface change therefore requires an explicit Host exposure decision before the live composition gate can pass.
+
+### Shared source ownership
+
+One Accessibility source may serve multiple live Host compositions. Each composition owns its own returned unsubscribe function. Disposing one composition removes only that subscription. The Accessibility source retains ownership of its native media-query listener and source-level `dispose()`.
+
+### Disposal ordering
+
+The first Host façade `dispose()` call creates and caches its Host disposal promise before teardown begins. It then synchronously invokes the scoped unsubscribe before calling Runtime `dispose()`. No `await` occurs between the disposal decision and the unsubscribe attempt.
+
+Repeated Host `dispose()` calls return the identical cached promise, including the identical rejection outcome.
+
+An unsubscribe failure is diagnosed but cannot prevent Runtime terminal disposal from being initiated. If Runtime disposal succeeds, Host disposal rejects with the unsubscribe error. If Runtime disposal also rejects, Host returns one `AggregateError` containing both failures with the Runtime failure as the cause.
+
+### Construction rollback and error precedence
+
+If a post-Runtime construction step fails, Host synchronously invokes any acquired unsubscribe, initiates Runtime disposal, and awaits terminal cleanup.
+
+When cleanup succeeds, the original construction error is rethrown by identity. If cleanup also fails, Host throws one `AggregateError` whose first error and `cause` preserve the original construction failure, followed by cleanup failures. Cleanup cannot replace the construction failure as the primary cause.
+
+Runtime receives no Accessibility source, browser media-query object, Host diagnostic capability, or subscription lifetime authority. Accessibility receives no Runtime instance or adoption capability.
+
+See ADR 0035.
 
 ## Verification
 
@@ -103,6 +227,24 @@ Checkpoint 2 tests prove:
 - non-boolean and throwing preference reads fail closed;
 - architecture and Core-authority boundaries remain intact.
 
-Checkpoint 3 compatibility preserves those same Host tests unchanged: `source.preference` satisfies the exact checkpoint 2 `{ read }` seam, while `source.changes` remains outside Host construction authority.
+Checkpoint 3 compatibility preserves those same Host tests unchanged: `source.preference` satisfies the exact checkpoint 2 `{ read }` seam, while `source.changes` remains outside static Host construction authority.
+
+Checkpoint 5 tests prove:
+
+- exact live Host option, façade, Runtime public-surface, retained-key, and diagnostic key sets;
+- the Host façade is frozen and exposes no reachable `adoptReducedMotion` authority;
+- the post-subscription re-read closes the construction race;
+- live change adoption affects future renderer contexts without rerendering the stable boundary;
+- one Accessibility source can serve two Host compositions and disposing one does not affect the other;
+- Host unsubscribe runs synchronously before Runtime disposal settlement;
+- source-level Accessibility disposal remains outside Host instance ownership;
+- repeated Host disposal returns the identical promise on success and rejection;
+- callback failures produce exact frozen `CIM-HST-003` diagnostics and cannot escape through the Accessibility publisher;
+- diagnostic-sink failure cannot alter production flow;
+- subscription-installation failure triggers compensating Runtime disposal while preserving the original construction failure;
+- malformed unsubscribe results are cleaned up when possible;
+- unsubscribe failure cannot prevent Runtime terminal settlement;
+- live capabilities remain exact, frozen, and least-authority;
+- schema, architecture, Core-authority, and Node 20/22 repository gates remain green.
 
 Broader Host verification also covers multiple-instance initialization, failed-load isolation, static-page survival, asset-version handling, and clean fallback behavior.
