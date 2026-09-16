@@ -28,6 +28,7 @@ const STATE_ATTRIBUTE = 'data-cim-state';
 const PAGE_DIAGNOSTIC_INSTANCE_ID = 'wordpress-host';
 const HOST_LOAD_DIAGNOSTIC_CODE = 'CIM-HST-001';
 const HOST_MOUNT_DIAGNOSTIC_CODE = 'CIM-HST-004';
+const RENDERER_RESOLUTION_DIAGNOSTIC_CODE = 'CIM-RND-001';
 
 function fail(message) {
   throw new TypeError(message);
@@ -127,10 +128,10 @@ function errorMessage(error) {
   }
 }
 
-function reportDiagnostic(report, { code, instanceId, operation, error }) {
+function reportDiagnostic(report, { code, component = 'host', instanceId, operation, error }) {
   const record = Object.freeze({
     code,
-    component: 'host',
+    component,
     instanceId,
     operation,
     message: errorMessage(error)
@@ -351,7 +352,12 @@ export function createWordPressLiveHost(optionsInput) {
       await cleanupInstance(instance, report, instanceId, 'failed_mount_cleanup');
       projectFallback(root, report, instanceId);
       reportDiagnostic(report, {
-        code: stage === 'experience_load' ? HOST_LOAD_DIAGNOSTIC_CODE : HOST_MOUNT_DIAGNOSTIC_CODE,
+        code: stage === 'experience_load'
+          ? HOST_LOAD_DIAGNOSTIC_CODE
+          : stage === 'renderer_resolve'
+            ? RENDERER_RESOLUTION_DIAGNOSTIC_CODE
+            : HOST_MOUNT_DIAGNOSTIC_CODE,
+        component: stage === 'renderer_resolve' ? 'renderer' : 'host',
         instanceId,
         operation: stage,
         error
