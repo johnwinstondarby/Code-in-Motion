@@ -245,6 +245,23 @@ class CiMInstance {
     return this.#submitNavigation({ command: NAVIGATION_COMMAND.RESTART }, source);
   }
 
+  adoptReducedMotion(reducedMotion) {
+    if (typeof reducedMotion !== 'boolean') {
+      fail('CiMInstance reducedMotion must be boolean.');
+    }
+    if (
+      this.#disposed ||
+      this.#disposing ||
+      this.#session.read.snapshot().status === SESSION_STATUS.DISPOSED
+    ) {
+      throw new Error('disposed CiMInstance cannot adopt reduced motion.');
+    }
+
+    const changed = this.#reducedMotion !== reducedMotion;
+    this.#reducedMotion = reducedMotion;
+    return Object.freeze({ changed, reducedMotion });
+  }
+
   dispose() {
     if (this.#disposePromise) return this.#disposePromise;
     if (this.#disposed || this.#session.read.snapshot().status === SESSION_STATUS.DISPOSED) {

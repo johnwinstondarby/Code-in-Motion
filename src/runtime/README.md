@@ -216,6 +216,33 @@ Targeted initialization preserves checkpoint 6 terminal authority. Disposal duri
 
 Multiple instances may share the same frozen validated experience object. Runtime keeps entry state, transition identities, renderer calls, and semantic event streams instance-local.
 
+## Runtime checkpoint 8: live reduced-motion adoption
+
+Checkpoint 8 adds a narrow presentation-policy adoption seam for an already-running instance:
+
+```text
+adoptReducedMotion(reducedMotion)
+```
+
+The input must be boolean. Runtime retains the accepted value only in its private reduced-motion configuration and returns exact frozen data:
+
+```text
+changed
+reducedMotion
+```
+
+with shape `{ changed: boolean, reducedMotion: boolean }`.
+
+Every new renderer context samples the current private value when that render begins. A renderer context already supplied to a renderer remains immutable and keeps the value captured at handoff.
+
+Adoption by itself does not rerender the current stable boundary, allocate command or transition identity, mutate Core canonical state or Runtime operational snapshot state, emit semantic or playback events, cancel or replace renderer work, alter playback intent, or change dwell timing.
+
+For an active transition, including one paused through checkpoint 4, the existing renderer task and transition identity continue under their captured reduced-motion value. A later renderer context receives the adopted value. During authored dwell, the exact remaining dwell is preserved and the following playback render samples the adopted value. During active renderer recovery, the already-started restoration render retains its captured value and later renderer work samples the adoption.
+
+Adoption is valid before initialization and during the usable stable, transitioning, paused, dwell, and recovery lifecycle. A disposing or disposed instance rejects adoption.
+
+Runtime does not receive the live Accessibility source or browser media-query authority. Accessibility owns browser observation, Runtime owns application to future renderer contexts, and a later Host checkpoint owns subscription composition and teardown. See ADR 0034.
+
 ## Does not own
 
 - Canonical semantic commit authority
@@ -250,3 +277,5 @@ Checkpoint 5 verification proves target abandonment before recoverable fault sto
 Checkpoint 6 verification proves terminal disposal from idle, paused transition, active dwell, initialization, active recovery, and canonical faulted states; exact transition and dwell cancellation; explicit initialization and recovery lifecycle closure; conforming `renderer.cancelled` evidence; pending-target abandonment; bounded renderer-abort and renderer-dispose acknowledgement; late-completion suppression; recoverable-fault cleanup with fallback-fault preservation; renderer teardown ordering; closed-stream stale-work suppression; single-shot disposal outcome; and terminal Core settlement even when renderer teardown fails or does not acknowledge.
 
 Checkpoint 7 verification proves default and targeted entry, pre-mount target validation, exact one-render target state and context, entry provenance and reveal-frontier settlement, restart reset, dwell exclusion, final-entry `play()` behavior, targeted-render failure cleanup, disposal-time entry cancellation, reentrant-disposal commit prevention, and isolation when two instances share one frozen experience object.
+
+Checkpoint 8 verification proves exact frozen adoption results, boolean-only validation, pre-initialization adoption, no stable rerender or observational mutation, future-context sampling, captured active and paused contexts, dwell preservation, recovery preservation, terminal rejection, and absence of Accessibility or browser-observation authority.
