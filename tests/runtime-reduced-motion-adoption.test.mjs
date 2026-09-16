@@ -172,7 +172,7 @@ test('stable Runtime adoption changes the next renderer context without rerender
 
   const before = instance.read.snapshot();
   const events = [];
-  const subscription = instance.events.subscribe((event) => events.push(event));
+  const unsubscribe = instance.events.subscribe((event) => events.push(event));
   instance.adoptReducedMotion(true);
   const after = instance.read.snapshot();
 
@@ -183,7 +183,7 @@ test('stable Runtime adoption changes the next renderer context without rerender
   await instance.next('transport');
   assert.equal(recording.contexts.length, 2);
   assert.equal(recording.contexts[1].reducedMotion, true);
-  subscription.unsubscribe();
+  unsubscribe();
 });
 
 test('active and paused renderer work keeps its captured preference while the following render sees the adopted value', async () => {
