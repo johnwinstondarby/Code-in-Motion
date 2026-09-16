@@ -43,7 +43,7 @@ Host must not reach Core directly or command Transport, Commentary, or renderers
 
 Individual Host instance disposal must not call Accessibility source-level `changes.dispose()` because that source may be shared by multiple compositions.
 
-Publication pages must not contain substantial CiM runtime JavaScript. The WordPress adapter uses enqueued external assets rather than runtime code embedded in Custom HTML content.
+Executable CiM JavaScript must remain in plugin-owned external assets enqueued through WordPress rather than inline page, shortcode, block, template, or Custom HTML content. The production packaging contract is defined in [`WORDPRESS.md`](WORDPRESS.md).
 
 ## Accessibility checkpoint 2: reduced-motion Runtime composition
 
@@ -267,17 +267,17 @@ WordPress page-host fault ownership is:
 
 ```text
 CIM-HST-001  Experience load
-CIM-HST-002  deep-link target rejection, reserved for the later URL/fragment resolver
+CIM-HST-002  invalid or unresolvable deep-link target
 CIM-HST-003  live per-instance reduced-motion bridge
 CIM-HST-004  WordPress page-host mount and page-owned lifecycle
 CIM-RND-001  renderer resolution
 ```
 
-The adapter currently enters through default `initialize()`. ADR 0011 defines targeted entry, but the repository does not yet define WordPress URL or fragment syntax. The mount adapter therefore does not infer deep-link syntax.
+The adapter currently enters through default `initialize()`. ADR 0011 defines targeted entry, and `CIM-ARCHITECTURE.md` defines the external grammar `#cim/{experience-id}/{step-id}` plus the `initial` form. The current page-host adapter does not parse browser location. The packaging/deep-link resolver consumes that existing grammar and passes only a resolved boundary to Runtime through `initialize({ stepId, source: 'deep_link' })`.
 
-Concrete Experience loading, renderer registry contents, browser clock construction, URL/fragment parsing, PHP shortcode/block packaging, and asset enqueue remain deployment bindings around this exact page-host contract.
+Concrete Experience loading, renderer registry contents, browser clock construction, deep-link parsing/resolution, PHP shortcode/block packaging, and external asset enqueue remain deployment bindings around this exact page-host contract. Canonical markup, `wp_enqueue_script()` delivery, and real WordPress-rendered fixture requirements are pinned in [`WORDPRESS.md`](WORDPRESS.md).
 
-See [`WORDPRESS.md`](WORDPRESS.md) and ADR 0036.
+See ADR 0036.
 
 ## Verification
 
