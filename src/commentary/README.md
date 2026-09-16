@@ -15,8 +15,9 @@ Commentary consumes semantic facts. It does not own canonical semantic movement 
 - Native Commentary DOM projection and entry activation
 - Commentary-entry seek requests through a narrow fixed-provenance navigation capability
 - Safe structured commentary-link presentation
-- Later autoscroll and learner scroll suspension
-- Later newer-steps indication
+- Commentary-local follow and suspension policy
+- Newer-steps availability projection
+- Later DOM autoscroll mechanics and learner scroll-position detection
 
 ## Does not own
 
@@ -242,6 +243,54 @@ Refresh owns only Commentary presentation fields and is transactional. Failed DO
 
 Checkpoint 3 receives no complete `CiMInstance`, Transport surface, renderer authority, Core control, or semantic event-emission capability.
 
+## Checkpoint 4: follow suspension and newer-steps policy
+
+Checkpoint 4 adds headless Commentary-local follow policy without browser scroll geometry or DOM authority.
+
+Construction receives exactly one frozen checkpoint 3 capability:
+
+```text
+presentation
+```
+
+`presentation` contains only:
+
+```text
+read
+```
+
+The exact frozen checkpoint 4 public surface is:
+
+```text
+read
+suspend
+resume
+```
+
+Each operation validates a fresh checkpoint 3 presentation before changing local follow state. The projected state contains exactly:
+
+```text
+following
+newerStepsAvailable
+latestVisibleStepId
+```
+
+`following` begins `true`. `latestVisibleStepId` is the final currently visible Commentary entry, or `null` when no authored Commentary is visible.
+
+While following, every valid fresh projection acknowledges the current reveal frontier and `newerStepsAvailable` remains false.
+
+The first `suspend()` transition records the current visible frontier as the local suspension baseline. Later reveal advancement while suspended sets `newerStepsAvailable` to true. Calling `suspend()` again while already suspended does not acknowledge those newer entries and therefore does not clear the indication.
+
+`resume()` re-enables following, acknowledges the current visible frontier, and clears `newerStepsAvailable`.
+
+Backward canonical navigation does not create a newer-step indication because checkpoint 1 high-water reveal history remains unchanged.
+
+A Restart-shaped reveal contraction rebases the suspended acknowledgement frontier to the contracted visible prefix without forcing follow mode back on. New commentary revealed after that reset can therefore raise `newerStepsAvailable` again while the learner remains suspended.
+
+Malformed fresh presentation state fails closed before local follow state changes.
+
+Checkpoint 4 does not read scroll offsets, infer scroll-away geometry, install scroll listeners, issue `scrollIntoView`, choose smooth scrolling, perform semantic navigation, emit semantic events, or normalize Runtime command outcomes.
+
 ## Interaction ownership
 
 ADR 0024 applies to Commentary text. Pointer drag-selection over learner-facing text remains browser-owned and cannot enter Transport scrub interaction. Commentary preserves selectable prose by keeping text separate from the native entry-activation button.
@@ -252,7 +301,7 @@ Commentary text is rendered as text data, never executable HTML. Structured link
 
 ## Later checkpoints
 
-Later Commentary work may add autoscroll, learner scroll suspension, and newer-steps indication without changing checkpoints 1 through 3. Complete learner-path composition is verified by the synthetic harness rather than by granting Commentary broader production authority.
+Later Commentary work may bind browser scroll geometry to checkpoint 4 through narrow `suspend()` and `resume()` calls, perform DOM autoscroll while following, and present the newer-steps indication without changing checkpoints 1 through 4. Complete learner-path composition remains verified by the synthetic harness rather than by granting Commentary broader production authority.
 
 ## Verification
 
@@ -296,4 +345,20 @@ Checkpoint 3 tests prove:
 - navigation uses the exact one-function seek adapter with fixed `source: commentary` provenance;
 - same-boundary and other Runtime outcomes remain Runtime-owned and are returned without normalization;
 - DOM refresh, listener installation, and disposal preserve their rollback and ownership boundaries;
+- repository schema, architecture, Core-authority, and full test gates remain green.
+
+Checkpoint 4 tests prove:
+
+- exact frozen follow controller and state surfaces;
+- following is enabled by default and newest visible identity follows fresh checkpoint 3 presentation;
+- first suspension establishes the current reveal frontier as the acknowledgement baseline;
+- later reveal advancement raises newer-step indication while suspended;
+- repeated suspension does not acknowledge waiting newer entries;
+- resume acknowledges the current frontier and clears newer-step indication;
+- backward canonical movement does not create a false newer-step indication;
+- Restart-shaped reveal contraction rebases acknowledgement without forcing follow mode;
+- suspension before an initial read establishes the current frontier as its baseline;
+- malformed fresh presentation fails closed without acknowledging new reveal state;
+- checkpoint 3 presentation identity and active/selected consistency are revalidated at the follow boundary;
+- no DOM, scrolling, navigation, Runtime, Transport, event, disposal, or renderer authority enters checkpoint 4;
 - repository schema, architecture, Core-authority, and full test gates remain green.
