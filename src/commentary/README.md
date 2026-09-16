@@ -17,7 +17,8 @@ Commentary consumes semantic facts. It does not own canonical semantic movement 
 - Safe structured commentary-link presentation
 - Commentary-local follow and suspension policy
 - Newer-steps availability projection
-- Later DOM autoscroll mechanics and learner scroll-position detection
+- Native Commentary autoscroll mechanics and learner scroll-position detection
+- Native newer-steps indicator presentation and activation
 
 ## Does not own
 
@@ -291,6 +292,78 @@ Malformed fresh presentation state fails closed before local follow state change
 
 Checkpoint 4 does not read scroll offsets, infer scroll-away geometry, install scroll listeners, issue `scrollIntoView`, choose smooth scrolling, perform semantic navigation, emit semantic events, or normalize Runtime command outcomes.
 
+## Checkpoint 5: native scroll follow binding
+
+Checkpoint 5 connects checkpoint 4 follow policy to native Commentary viewport geometry and a native newer-steps button. It adds DOM mechanics without widening semantic authority.
+
+Construction receives exactly:
+
+```text
+viewport
+indicator
+follow
+newerStepsLabel
+```
+
+`follow` is the exact frozen checkpoint 4 capability:
+
+```text
+read
+suspend
+resume
+```
+
+`viewport` supplies the scroll listener, `scrollTo()`, and native `scrollTop`, `scrollHeight`, and `clientHeight` geometry. `indicator` must identify a native `button[type="button"]`.
+
+The exact frozen public surface is:
+
+```text
+refresh
+dispose
+```
+
+The binding installs exactly one viewport `scroll` listener and one indicator `click` listener. It installs no pointer-drag or synthetic keyboard listener.
+
+### Follow geometry
+
+The bottom position is:
+
+```text
+maxScrollTop = max(0, scrollHeight - clientHeight)
+```
+
+The viewport counts as returned to the newest position when:
+
+```text
+scrollTop >= maxScrollTop - 1 CSS pixel
+```
+
+The fixed one-CSS-pixel tolerance accommodates fractional browser layout values without creating a larger heuristic follow zone.
+
+When the learner scrolls away from the bottom while follow is active, the binding calls checkpoint 4 `suspend()`. Merely revealing newer Commentary while suspended never changes the viewport.
+
+When the learner manually returns to the bottom, the binding calls `resume()`. Manual return is therefore sufficient to restore follow mode and clear the newer-steps indication.
+
+### Autoscroll and newer-steps activation
+
+While follow is active, `refresh()` scrolls to the current bottom once for each new `latestVisibleStepId`. Repeated refresh of the same semantic frontier does not issue another scroll.
+
+While follow is suspended, a later reveal is represented only by checkpoint 4 `newerStepsAvailable`. The native indicator is shown and the viewport stays where the learner left it.
+
+Indicator activation first scrolls the viewport to the current bottom and only then calls `resume()`. A scroll failure therefore leaves follow suspended rather than acknowledging Commentary that the learner did not reach.
+
+Checkpoint 5 uses immediate native scrolling:
+
+```text
+behavior = auto
+```
+
+It introduces no smooth-scroll or reduced-motion policy. The native button receives its learner-facing name through `textContent`; browser keyboard activation remains native.
+
+Malformed follow state or invalid viewport geometry fails closed before follow-policy mutation. Indicator writes are transactional. Partial listener installation is rolled back. Disposal removes only the two checkpoint-owned listeners, is idempotent after success, and remains retryable after listener-removal failure.
+
+Checkpoint 5 receives no semantic navigation, Runtime, Transport, renderer, Commentary presentation, or semantic event-emission authority.
+
 ## Interaction ownership
 
 ADR 0024 applies to Commentary text. Pointer drag-selection over learner-facing text remains browser-owned and cannot enter Transport scrub interaction. Commentary preserves selectable prose by keeping text separate from the native entry-activation button.
@@ -301,7 +374,7 @@ Commentary text is rendered as text data, never executable HTML. Structured link
 
 ## Later checkpoints
 
-Later Commentary work may bind browser scroll geometry to checkpoint 4 through narrow `suspend()` and `resume()` calls, perform DOM autoscroll while following, and present the newer-steps indication without changing checkpoints 1 through 4. Complete learner-path composition remains verified by the synthetic harness rather than by granting Commentary broader production authority.
+Later Commentary work may add shared accessibility presentation or other explicitly scoped behavior without changing checkpoints 1 through 5. Complete learner-path composition remains verified by the synthetic harness rather than by granting Commentary broader production authority.
 
 ## Verification
 
@@ -361,4 +434,25 @@ Checkpoint 4 tests prove:
 - malformed fresh presentation fails closed without acknowledging new reveal state;
 - checkpoint 3 presentation identity and active/selected consistency are revalidated at the follow boundary;
 - no DOM, scrolling, navigation, Runtime, Transport, event, disposal, or renderer authority enters checkpoint 4;
+- repository schema, architecture, Core-authority, and full test gates remain green.
+
+Checkpoint 5 tests prove:
+
+- exact frozen scroll binding and exactly one viewport scroll plus one native indicator click listener;
+- fresh reveal autoscrolls to the bottom only while follow is active;
+- repeated refresh of the same latest semantic entry does not repeat autoscroll;
+- learner scroll-away suspends follow without fabricating newer Commentary;
+- newer reveal while suspended shows the indicator without moving the viewport;
+- manual return to the bottom resumes follow and clears the indication;
+- the one-CSS-pixel bottom tolerance is deterministic;
+- indicator activation scrolls first, then resumes follow;
+- native default-prevented indicator activation yields without local action;
+- immediate `behavior: auto` scrolling is used;
+- failed autoscroll restores indicator projection and does not change follow policy;
+- invalid viewport geometry fails before follow mutation;
+- checkpoint 4 authority remains exact and frozen and the indicator label is required;
+- malformed follow state fails before DOM or listener mutation;
+- partial listener installation is rolled back;
+- disposal is scoped, idempotent after success, and retryable after failure;
+- no semantic navigation, Runtime, Transport, renderer, or semantic event authority enters checkpoint 5;
 - repository schema, architecture, Core-authority, and full test gates remain green.
