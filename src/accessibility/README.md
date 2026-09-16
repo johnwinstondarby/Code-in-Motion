@@ -67,13 +67,25 @@ The options surface is exact. Widened, symbol-extended, accessor-backed, or non-
 
 Checkpoint 1 contains no Runtime, Core, renderer, Transport, Commentary, semantic-navigation, event-emission, DOM-listener, browser-global, or disposal authority.
 
-The existing Renderer Interface Contract already carries a `reducedMotion` boolean. A later composition checkpoint may sample this Accessibility capability and supply that boolean through the existing Runtime construction seam without changing renderer authority.
-
 See ADR 0031.
+
+## Checkpoint 2: Host reduced-motion composition
+
+Checkpoint 2 connects the checkpoint 1 observation capability to Runtime without widening Accessibility authority.
+
+Host receives the exact frozen `{ read }` capability and samples it exactly once while constructing a `CiMInstance`. Host passes the resulting boolean through Runtime's existing `reducedMotion` construction option. Runtime receives the boolean rather than the live Accessibility capability.
+
+The sampled value is fixed for the lifetime of that Runtime instance. Although checkpoint 1 `read()` can observe a changed live media-query value, checkpoint 2 does not resample an existing Runtime. A later Host composition performs a fresh read and may therefore create a new Runtime with the changed value.
+
+Accessibility installs no additional listener and gains no Runtime construction, initialization, command, renderer, event, or disposal authority from this composition. Runtime does not import Accessibility.
+
+Dynamic adoption of preference changes by an already-running Runtime remains a separate lifecycle decision.
+
+See ADR 0032 and the Host component contract.
 
 ## Later checkpoints
 
-Later Accessibility work may define composition of reduced-motion observation into Runtime construction, dynamic preference-change policy, shared focus behavior, or component-agnostic ARIA helpers. Each addition must remain a narrow capability and may not take over another component's semantic or accessible output authority.
+Later Accessibility work may define dynamic preference-change policy, shared focus behavior, or component-agnostic ARIA helpers. Each addition must remain a narrow capability and may not take over another component's semantic or accessible output authority.
 
 ## Verification
 
@@ -88,7 +100,17 @@ Checkpoint 1 tests prove:
 - native `matches` getter failures propagate without fallback policy;
 - widened, symbol-extended, accessor-backed, and non-function options fail closed;
 - no media-query event subscription is installed;
-- no Runtime, Core, renderer, Transport, Commentary, browser-global, listener, or disposal authority enters the capability;
-- repository schema, architecture, Core-authority, and full Node 20/22 verification gates remain green.
+- no Runtime, Core, renderer, Transport, Commentary, browser-global, listener, or disposal authority enters the capability.
+
+Checkpoint 2 tests prove:
+
+- Host samples the capability exactly once per Runtime construction;
+- Runtime renderer context receives the sampled false or true value;
+- existing Runtime instances do not resample after a live preference change;
+- later Runtime construction observes the changed value through a fresh Host sample;
+- malformed or widened capability shapes and invalid read results fail closed;
+- Runtime remains free of Accessibility imports and Accessibility remains free of Runtime imports.
+
+Repository schema, architecture, Core-authority, and full Node 20/22 verification gates cover both checkpoints.
 
 Each visual component remains responsible for its own accessible output. Automated conformance tests cover keyboard operation, focus behavior, reduced motion, active-state communication, and fallback presentation.
