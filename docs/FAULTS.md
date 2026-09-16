@@ -29,7 +29,9 @@ Expected cancellation is not a fault. Renderer cancellation is reported as `rend
 
 Within the Host subsystem, `CIM-HST-003` identifies failure of the live reduced-motion composition bridge. Exact Host diagnostic records distinguish `reduced_motion_adoption` from `reduced_motion_unsubscribe` through their `operation` field. These diagnostics do not populate Core canonical fault state. A reduced-motion adoption failure leaves the existing Runtime state unchanged. A Host-scoped unsubscribe failure is diagnosed but does not prevent Runtime disposal from being initiated.
 
-Within the renderer subsystem, `CIM-RND-002` identifies failure to acknowledge a disposal-time render abort within the bounded Runtime window, and `CIM-RND-003` identifies failure of `renderer.dispose()` to acknowledge teardown within its bounded Runtime window. Both are terminal-containment diagnostics and do not populate Core canonical fault state. `CIM-RND-001` covers renderer resolution even though Runtime composition invokes the resolver.
+`CIM-HST-004` identifies WordPress page-host discovery, invocation, composition, readiness projection, cleanup, and page-owned lifecycle failures. Its exact diagnostic records use the existing Host diagnostic shape and distinguish the failed stage through `operation`. Mount-stage failures leave the affected invocation on static fallback and do not populate Core canonical fault state. Page-host teardown failures are local diagnostics and cannot reverse already-started per-instance Runtime disposal. Renderer resolution remains `CIM-RND-001` even when the WordPress Host invokes the resolver.
+
+Within the renderer subsystem, `CIM-RND-002` identifies failure to acknowledge a disposal-time render abort within the bounded Runtime window, and `CIM-RND-003` identifies failure of `renderer.dispose()` to acknowledge teardown within its bounded Runtime window. Both are terminal-containment diagnostics and do not populate Core canonical fault state. `CIM-RND-001` covers renderer resolution even though Runtime or Host composition invokes the resolver.
 
 ## 3. Recovery Classes
 
@@ -86,13 +88,15 @@ A successfully settled restart may clear an active `recover` record while resett
 | Experience load fails | Host / experience loader | Fallback | No runtime session required | Static fallback; page remains usable | `CIM-HST-001` |
 | Invalid or unresolvable CiM deep-link target | Host / Runtime deep-link resolver | Reject | `initial` when an experience can be initialized | Diagnostic recorded; experience opens at `initial`; page remains usable | `CIM-HST-002` |
 | Live reduced-motion adoption callback or Host-scoped unsubscribe fails | Host live composition | Local diagnostic | Current committed boundary; canonical `disposed` remains authoritative during teardown | Adoption failure leaves current state unchanged; unsubscribe failure cannot block Runtime terminal disposal | `CIM-HST-003` |
+| WordPress invocation discovery, invocation shape, composition, initialization, readiness projection, or cleanup fails | Host / WordPress adapter | Fallback | No surviving Runtime session required; any created instance is cleaned before fallback settlement when possible | Affected invocation remains on static fallback; later invocations continue mounting | `CIM-HST-004` |
+| WordPress page-owned reduced-motion source or page-host teardown fails | Host / WordPress adapter | Local diagnostic | Per-instance Runtime disposal remains authoritative | Page teardown continues; page-host disposal may reject after already-started instance disposal | `CIM-HST-004` |
 | Unsupported schema | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus diagnostic | `CIM-EXP-001` |
 | Invalid/incomplete experience | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus validation diagnostic | `CIM-EXP-002` |
 | Duplicate step ID | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus duplicate-ID diagnostic | `CIM-EXP-003` |
 | Reserved step ID `initial` used by author | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus reserved-ID diagnostic | `CIM-EXP-004` |
 | Invalid `dwell_ms` | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus field diagnostic | `CIM-EXP-005` |
 | Malformed commentary link / disallowed scheme | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus link diagnostic | `CIM-EXP-006` |
-| Unknown renderer identifier | Runtime composition / renderer resolver | Fallback before normal playback | `initial` if Core session exists; otherwise none | Static fallback plus diagnostic | `CIM-RND-001` |
+| Unknown renderer identifier | Runtime or Host composition / renderer resolver | Fallback before normal playback | `initial` if Core session exists; otherwise none | Static fallback plus diagnostic | `CIM-RND-001` |
 | Renderer fails to acknowledge disposal-time render abort within the bounded Runtime window | Renderer + Runtime coordination | Terminal containment | Last committed boundary | Disposal completes; late renderer completion has no authority | `CIM-RND-002` |
 | `renderer.dispose()` fails to acknowledge teardown within the bounded Runtime window | Renderer + Runtime coordination | Terminal containment | Canonical `disposed` state | Event stream closes after timeout evidence; late teardown completion is ignored | `CIM-RND-003` |
 | Invalid semantic seek / unknown step | Core validation | Reject | Current committed boundary | No movement; controls remain usable | `CIM-CORE-001` |
@@ -109,10 +113,12 @@ A successfully settled restart may clear an active `recover` record while resett
 
 - Core rejects invalid semantic destinations and owns canonical commit/fault status.
 - Runtime coordinates transition cancellation, stale-work rejection, restoration requests, status-write requests, terminal-containment timing, and cross-component settlement.
-- Renderer owns visual settlement failures and restoration rendering; the renderer subsystem namespace also covers renderer resolution and renderer teardown acknowledgement.
+- Renderer owns visual settlement failures and restoration rendering; the renderer subsystem namespace also covers renderer resolution and renderer teardown acknowledgement regardless of which composition layer invokes the resolver.
 - Experience validation failures occur before normal playback.
 - Host owns page-level fallback after initialization or loading failure, participates in deterministic deep-link fallback, and owns diagnostic containment for its live reduced-motion subscription bridge.
-- A Host-scoped unsubscribe failure cannot prevent Runtime terminal disposal, and Host does not dispose a shared Accessibility source as part of per-instance cleanup.
+- The WordPress page host owns discovery of stable CiM invocation markup, per-root failure isolation, the page-shared Accessibility source, page-level fallback projection, and page-host lifecycle cleanup.
+- A Host-scoped unsubscribe failure cannot prevent Runtime terminal disposal, and an individual live Host composition does not dispose a shared Accessibility source. The WordPress page host may dispose that source because it created and owns the page-scoped source.
+- WordPress Host invocation of renderer resolution does not transfer renderer fault ownership to Host; resolution failure remains `CIM-RND-001`.
 - Telemetry failure cannot command or stop otherwise healthy runtime behavior unless required evidence is explicitly configured as a test gate in the harness.
 
 ## 7. Recovery Evidence
@@ -135,6 +141,8 @@ A successful recovery does not erase the original fault event.
 
 Local Host live-composition diagnostics must identify the stable Host code, instance identity, failed operation, and message without manufacturing Runtime command, transition, or Core fault evidence.
 
+WordPress page-host `CIM-HST-004` diagnostics must identify the affected instance or page-host identity, failed operation, and message. They do not manufacture Runtime command, transition, or Core fault evidence. Renderer-resolution diagnostics retain `CIM-RND-001` and `component: renderer`.
+
 Terminal-containment evidence must identify the teardown operation, applicable transition identity, stable error code, and bounded acknowledgement interval. A late renderer completion after terminal containment does not create new semantic evidence.
 
 ## 8. Harness Requirements
@@ -150,6 +158,12 @@ The harness must inject and verify at least:
 - invalid or unresolvable deep-link target;
 - live reduced-motion adoption callback failure;
 - Host-scoped reduced-motion unsubscribe failure;
+- WordPress duplicate invocation identity;
+- WordPress page-shared reduced-motion source construction failure;
+- one failed WordPress invocation leaving later invocations mountable;
+- WordPress page disposal during pending Experience load;
+- WordPress page-shared source teardown failure;
+- renderer resolution through the WordPress Host retaining `CIM-RND-001` ownership;
 - renderer throw during transition;
 - incomplete renderer settlement;
 - failed renderer restoration;

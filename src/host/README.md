@@ -15,13 +15,15 @@ The host layer connects a page to the canonical CiM runtime without embedding pl
 - Host-level static fallback when CiM cannot initialize
 - Live reduced-motion subscription composition and per-instance unsubscribe ordering
 - Host diagnostics for live reduced-motion bridge failures
+- WordPress page-scoped reduced-motion source lifetime when the page host creates that shared source
+- WordPress per-invocation mount isolation, readiness projection, and page-host teardown ordering
 
 ## Does not own
 
 - Engine semantics
 - Subject renderer logic
-- Accessibility preference detection
-- Accessibility source-level disposal
+- Accessibility preference-detection semantics
+- Accessibility source-level disposal from an individual live Host instance
 - Runtime reduced-motion application semantics
 - Inline authored JavaScript in publication pages
 
@@ -33,13 +35,15 @@ May consume narrow Accessibility capabilities needed to configure Runtime withou
 
 May retain a scoped Accessibility unsubscribe function when Host composition owns the corresponding Runtime lifecycle façade.
 
+A WordPress page host may create one shared Accessibility preference source and therefore owns that source's page-level disposal after per-instance Host disposal has begun.
+
 ## Prohibited dependencies
 
 Host must not reach Core directly or command Transport, Commentary, or renderers outside Runtime's public seams.
 
-Host instance disposal must not call Accessibility source-level `changes.dispose()` because that source may be shared by multiple compositions.
+Individual Host instance disposal must not call Accessibility source-level `changes.dispose()` because that source may be shared by multiple compositions.
 
-Publication pages must not contain substantial CiM runtime JavaScript. The WordPress adapter uses enqueued external assets rather than runtime code embedded in Custom HTML content.
+Executable CiM JavaScript must remain in plugin-owned external assets enqueued through WordPress rather than inline page, shortcode, block, template, or Custom HTML content. The production packaging contract is defined in [`WORDPRESS.md`](WORDPRESS.md).
 
 ## Accessibility checkpoint 2: reduced-motion Runtime composition
 
@@ -192,7 +196,7 @@ Runtime `adoptReducedMotion` is retained privately by Host composition and is ab
 
 ### Shared source ownership
 
-One Accessibility source may serve multiple live Host compositions. Each composition owns its own returned unsubscribe function. Disposing one composition removes only that subscription. The Accessibility source retains ownership of its native media-query listener and source-level `dispose()`.
+One Accessibility source may serve multiple live Host compositions. Each composition owns its own returned unsubscribe function. Disposing one composition removes only that subscription. The Accessibility source retains ownership of its native media-query listener and source-level `dispose()` unless a higher-level owner, such as the WordPress page host, created that source and owns its lifetime.
 
 ### Disposal ordering
 
@@ -211,6 +215,69 @@ When cleanup succeeds, the original construction error is rethrown by identity. 
 Runtime receives no Accessibility source, browser media-query object, Host diagnostic capability, or subscription lifetime authority. Accessibility receives no Runtime instance or adoption capability.
 
 See ADR 0035.
+
+## WordPress production checkpoint: live page-host adoption
+
+`createWordPressLiveHost()` connects stable WordPress invocation markup to `createLiveHostCiMInstance()`.
+
+Its exact options are:
+
+```text
+document
+matchMedia
+experienceLoader
+rendererResolver
+clockFactory
+diagnostics
+```
+
+Its exact frozen public surface is:
+
+```text
+mount
+dispose
+```
+
+The page host discovers `[data-cim-experience]` roots. `data-cim-experience` is required and non-empty. `data-cim-instance` may supply a unique explicit instance identity; otherwise Host derives a deterministic page-order identity. A descendant `[data-cim-renderer-root]` is used when present; otherwise the invocation root is the renderer root.
+
+The page host creates at most one reduced-motion preference source and shares its narrow capabilities with every live Host instance on that page. Each live instance retains only its scoped subscription cleanup; the page host owns the shared source-level listener because it created the source.
+
+For each invocation the production order is:
+
+```text
+load Experience
+resolve renderer
+create clock
+createLiveHostCiMInstance(...)
+initialize()
+project data-cim-state="ready"
+```
+
+Failure projects `data-cim-state="fallback"` and does not stop later roots from attempting to mount. DOM state reports Host availability only; Runtime remains canonical for semantic state.
+
+The exact mount result is frozen data:
+
+```text
+{ mounted, fallback }
+```
+
+A page with no CiM roots returns `{ mounted: 0, fallback: 0 }` without constructing the reduced-motion source.
+
+WordPress page-host fault ownership is:
+
+```text
+CIM-HST-001  Experience load
+CIM-HST-002  invalid or unresolvable deep-link target
+CIM-HST-003  live per-instance reduced-motion bridge
+CIM-HST-004  WordPress page-host mount and page-owned lifecycle
+CIM-RND-001  renderer resolution
+```
+
+The adapter currently enters through default `initialize()`. ADR 0011 defines targeted entry, and `CIM-ARCHITECTURE.md` defines the external grammar `#cim/{experience-id}/{step-id}` plus the `initial` form. The current page-host adapter does not parse browser location. The packaging/deep-link resolver consumes that existing grammar and passes only a resolved boundary to Runtime through `initialize({ stepId, source: 'deep_link' })`.
+
+Concrete Experience loading, renderer registry contents, browser clock construction, deep-link parsing/resolution, PHP shortcode/block packaging, and external asset enqueue remain deployment bindings around this exact page-host contract. Canonical markup, `wp_enqueue_script()` delivery, and real WordPress-rendered fixture requirements are pinned in [`WORDPRESS.md`](WORDPRESS.md).
+
+See ADR 0036.
 
 ## Verification
 
@@ -247,4 +314,17 @@ Checkpoint 5 tests prove:
 - live capabilities remain exact, frozen, and least-authority;
 - schema, architecture, Core-authority, and Node 20/22 repository gates remain green.
 
-Broader Host verification also covers multiple-instance initialization, failed-load isolation, static-page survival, asset-version handling, and clean fallback behavior.
+The WordPress production checkpoint adds verification for:
+
+- exact page-host and injected capability surfaces;
+- stable markup discovery and deterministic instance identity;
+- one shared reduced-motion source across multiple live instances;
+- per-root failure isolation and static fallback;
+- Experience, Host, and renderer fault namespace ownership;
+- initialization and readiness cleanup;
+- disposal while Experience loading is pending;
+- diagnostic-sink isolation;
+- page-shared source teardown failure;
+- no-root quiet operation;
+- exact cached mount and disposal promises;
+- full repository verification on Node 20 and Node 22.
