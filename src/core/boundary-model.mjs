@@ -93,6 +93,16 @@ function resolution(command, result, fromStepId, toStepId, reason = null) {
   return Object.freeze({ command, result, fromStepId, toStepId, reason });
 }
 
+function sameBoundaryResolution(command, stepId) {
+  return resolution(
+    command,
+    COMMAND_RESULT.NO_CHANGE,
+    stepId,
+    stepId,
+    NAVIGATION_REASON.ALREADY_AT_BOUNDARY
+  );
+}
+
 export function createBoundaryModel(stepIds) {
   const authoredStepIds = requireStepIds(stepIds);
   const boundaryIds = Object.freeze([INITIAL_BOUNDARY_ID, ...authoredStepIds]);
@@ -149,21 +159,23 @@ export function createBoundaryModel(stepIds) {
           return resolution(request.command, COMMAND_RESULT.REJECTED, fromStepId, null, NAVIGATION_REASON.UNKNOWN_STEP);
         }
         if (request.stepId === fromStepId) {
-          return resolution(
-            request.command,
-            COMMAND_RESULT.NO_CHANGE,
-            fromStepId,
-            fromStepId,
-            NAVIGATION_REASON.ALREADY_AT_BOUNDARY
-          );
+          return sameBoundaryResolution(request.command, fromStepId);
         }
         return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, request.stepId);
 
       case NAVIGATION_COMMAND.HOME:
+        if (fromStepId === INITIAL_BOUNDARY_ID) {
+          return sameBoundaryResolution(request.command, fromStepId);
+        }
+        return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, INITIAL_BOUNDARY_ID);
+
       case NAVIGATION_COMMAND.RESTART:
         return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, INITIAL_BOUNDARY_ID);
 
       case NAVIGATION_COMMAND.END:
+        if (fromStepId === finalStepId) {
+          return sameBoundaryResolution(request.command, fromStepId);
+        }
         return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, finalStepId);
 
       default:
