@@ -29,6 +29,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0019`](0019-native-visual-rail-dom-projection.md) | Native Visual Rail DOM Projection | 2026-09-15 | Accepted |
 | [`0020`](0020-native-marker-activation.md) | Native Marker Activation | 2026-09-15 | Accepted |
 | [`0021`](0021-transport-button-presentation-and-labels.md) | Transport Button Presentation and Labels | 2026-09-15 | Accepted |
+| [`0022`](0022-native-transport-button-binding-and-activation.md) | Native Transport Button Binding and Activation | 2026-09-15 | Accepted |
 
 ## Owns
 
