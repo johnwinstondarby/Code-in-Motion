@@ -8,6 +8,18 @@ WordPress Playground is a POC, reviewer-preview, exploratory-QA, and MCP-agent e
 
 Docker-backed `wp-env` is the authoritative WordPress integration environment for shortcode rendering, sanitizer fixtures, compatibility testing, upgrade testing, and Release Candidate installation.
 
+## R1/R2 browser-clock gates
+
+The production WordPress browser clock uses separate source families for delayed work and frame work:
+
+- `schedule()` uses the injected timer source;
+- `onFrame()` uses the injected animation-frame source;
+- `cancel()` dispatches to the source family that owns the handle;
+- each created clock owns an isolated handle namespace;
+- `now()` rejects a regressing source value.
+
+Release tests prove that Runtime render-abort acknowledgement and renderer-dispose acknowledgement both reach bounded terminal settlement while animation-frame progress is frozen. Disposal acknowledgement therefore does not depend exclusively on `requestAnimationFrame()` progress.
+
 ## R6 baseline
 
 The initial supported WordPress floor is **WordPress 6.5**. The floor environment uses the current 6.5 security/maintenance patch, **WordPress 6.5.10**, with **PHP 7.4**.
@@ -65,3 +77,33 @@ Authoritative shortcode/sanitizer fixtures are generated only from Docker-backed
 - generation date.
 
 A hand-authored equivalent and Playground-rendered output do not qualify as the Release fixture.
+
+## R8 browser E2E split
+
+R8 is intentionally split into two evidence gates rather than introducing a test-only browser authority surface.
+
+### R8a — production-path mount
+
+Chromium loads a real `wp-env` WordPress page containing the diagnostic shortcode and proves the shipped path:
+
+```text
+WordPress shortcode
+→ canonical invocation root
+→ external bootstrap.js
+→ bootstrap-module.mjs
+→ Experience fetch
+→ validation / ingestion
+→ production WordPress Host
+→ Runtime
+→ synthetic renderer
+```
+
+The browser assertion requires `data-cim-state="ready"`, the expected synthetic initial rendering, the expected production module requests, and no browser console or page errors.
+
+The Playwright version used by this gate is pinned in CI. Browser E2E remains downstream of the authoritative `wp-env` environment.
+
+### R8b — semantic navigation
+
+The current WordPress page Host exposes only `mount()` and `dispose()`. It does not expose a learner/browser navigation authority surface. R8b therefore remains open until a production transport/control surface exists.
+
+A test-only global, direct Runtime import, or alternate Host composition does not qualify as R8b evidence.
