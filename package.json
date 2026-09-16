@@ -10,8 +10,9 @@
     "check:schema": "node tools/check-schema-fixtures.mjs",
     "check:architecture": "node tools/check-architecture-boundaries.mjs",
     "check:core-authority": "node tools/check-core-authority.mjs",
+    "check:wordpress-packaging": "node tools/check-wordpress-packaging.mjs",
     "test": "node --test",
-    "verify": "npm run check:schema && npm run check:architecture && npm run check:core-authority && npm test"
+    "verify": "npm run check:schema && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm test"
   },
   "devDependencies": {
     "ajv": "8.20.0"

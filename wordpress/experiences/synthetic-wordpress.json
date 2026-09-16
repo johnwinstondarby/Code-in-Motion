@@ -1,0 +1,40 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "0.1.0",
+  "experience_version": "1.0.0",
+  "id": "synthetic-wordpress",
+  "renderer": "synthetic/v1",
+  "renderer_config": {
+    "prefix": "Node "
+  },
+  "initial_state": {
+    "node": "A",
+    "detail": "Initial WordPress packaging state"
+  },
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "Advance to B",
+      "commentary": {
+        "text": "The synthetic WordPress experience advances to node B.",
+        "links": []
+      },
+      "state": {
+        "node": "B",
+        "detail": "First mounted transition"
+      }
+    },
+    {
+      "id": "step-02",
+      "label": "Advance to C",
+      "commentary": {
+        "text": "The synthetic WordPress experience advances to node C.",
+        "links": []
+      },
+      "state": {
+        "node": "C",
+        "detail": "Second mounted transition"
+      }
+    }
+  ]
+}
