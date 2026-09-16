@@ -31,6 +31,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0021`](0021-transport-button-presentation-and-labels.md) | Transport Button Presentation and Labels | 2026-09-15 | Accepted |
 | [`0022`](0022-native-transport-button-binding-and-activation.md) | Native Transport Button Binding and Activation | 2026-09-15 | Accepted |
 | [`0023`](0023-same-boundary-navigation-consistency.md) | Same-Boundary Navigation Consistency | 2026-09-16 | Accepted |
+| [`0024`](0024-selectable-text-and-native-range-pointer-ownership.md) | Selectable Text and Native Range Pointer Ownership | 2026-09-16 | Accepted |
 
 ## Owns
 
