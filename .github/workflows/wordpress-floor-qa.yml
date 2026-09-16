@@ -1,0 +1,56 @@
+name: WordPress Floor QA
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  wordpress-floor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '20'
+          package-manager-cache: false
+
+      - name: Install verification dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Start authoritative Docker wp-env
+        run: npm run --silent wp-env -- start --update
+
+      - name: Verify WordPress floor, PHP floor, plugin activation, and shortcode rendering
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wp_version="$(npm run --silent wp-env -- run cli wp core version)"
+          printf '%s\n' "$wp_version"
+          grep -q '6.5.10' <<<"$wp_version"
+
+          php_version="$(npm run --silent wp-env -- run cli wp eval 'echo PHP_VERSION;')"
+          printf '%s\n' "$php_version"
+          grep -q '7.4.' <<<"$php_version"
+
+          plugin_version="$(npm run --silent wp-env -- run cli wp eval 'echo defined("LOCALIS_CIM_PLUGIN_VERSION") ? LOCALIS_CIM_PLUGIN_VERSION : "MISSING";')"
+          printf '%s\n' "$plugin_version"
+          grep -q '0.1.0' <<<"$plugin_version"
+
+          rendered="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]CiM floor fallback.[/cim]");')"
+          printf '%s\n' "$rendered"
+          grep -q 'class="cim"' <<<"$rendered"
+          grep -q 'data-cim-experience="synthetic-wordpress"' <<<"$rendered"
+          grep -q 'data-cim-renderer-root' <<<"$rendered"
+          grep -q 'CiM floor fallback.' <<<"$rendered"
+
+      - name: Stop wp-env
+        if: always()
+        run: npm run --silent wp-env -- stop
