@@ -12,7 +12,8 @@
     "check:core-authority": "node tools/check-core-authority.mjs",
     "check:wordpress-packaging": "node tools/check-wordpress-packaging.mjs",
     "test": "node --test",
-    "verify": "npm run check:schema && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm test"
+    "verify": "npm run check:schema && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm test",
+    "wp-env": "npx --yes @wordpress/env@11.15.0"
   },
   "devDependencies": {
     "ajv": "8.20.0"
