@@ -32,24 +32,86 @@ jobs:
         run: |
           set -euo pipefail
 
-          wp_version="$(npm run --silent wp-env -- run cli wp core version)"
+          wp_version="$(npm run --silent wp-env -- run cli wp core version | tail -n 1)"
           printf '%s\n' "$wp_version"
-          grep -q '6.5.10' <<<"$wp_version"
+          test "$wp_version" = '6.5.10'
 
-          php_version="$(npm run --silent wp-env -- run cli wp eval 'echo PHP_VERSION;')"
+          php_version="$(npm run --silent wp-env -- run cli wp eval 'echo PHP_VERSION;' | tail -n 1)"
           printf '%s\n' "$php_version"
-          grep -q '7.4.' <<<"$php_version"
+          [[ "$php_version" == 7.4.* ]]
 
-          plugin_version="$(npm run --silent wp-env -- run cli wp eval 'echo defined("LOCALIS_CIM_PLUGIN_VERSION") ? LOCALIS_CIM_PLUGIN_VERSION : "MISSING";')"
+          plugin_version="$(npm run --silent wp-env -- run cli wp eval 'echo defined("LOCALIS_CIM_PLUGIN_VERSION") ? LOCALIS_CIM_PLUGIN_VERSION : "MISSING";' | tail -n 1)"
           printf '%s\n' "$plugin_version"
-          grep -q '0.1.0' <<<"$plugin_version"
+          test "$plugin_version" = '0.1.0'
 
-          rendered="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]CiM floor fallback.[/cim]");')"
+          rendered="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]CiM floor fallback.[/cim]");' | tail -n 1)"
           printf '%s\n' "$rendered"
           grep -q 'class="cim"' <<<"$rendered"
           grep -q 'data-cim-experience="synthetic-wordpress"' <<<"$rendered"
           grep -q 'data-cim-renderer-root' <<<"$rendered"
           grep -q 'CiM floor fallback.' <<<"$rendered"
+
+      - name: Capture authoritative WordPress rendering fixtures
+        shell: bash
+        env:
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p .ci/wordpress-fixtures
+
+          basic="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]CiM authoritative fallback.[/cim]");' | tail -n 1)"
+          instance="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\" instance=\"qa-instance\"]CiM authoritative instance fallback.[/cim]");' | tail -n 1)"
+          wp_version="$(npm run --silent wp-env -- run cli wp core version | tail -n 1)"
+          php_version="$(npm run --silent wp-env -- run cli wp eval 'echo PHP_VERSION;' | tail -n 1)"
+          plugin_version="$(npm run --silent wp-env -- run cli wp eval 'echo LOCALIS_CIM_PLUGIN_VERSION;' | tail -n 1)"
+
+          printf '%s\n' "$basic" > .ci/wordpress-fixtures/basic.html
+          printf '%s\n' "$instance" > .ci/wordpress-fixtures/instance.html
+
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          root = Path('.ci/wordpress-fixtures')
+          provenance = {
+              'authority': 'docker-wp-env',
+              'wordpress': os.environ['WP_VERSION'],
+              'php': os.environ['PHP_VERSION'],
+              'plugin_version': os.environ['PLUGIN_VERSION'],
+              'wp_env': '11.15.0',
+              'pr_head_sha': os.environ['PR_HEAD_SHA'],
+              'github_merge_sha': os.environ['GITHUB_SHA'],
+              'generated_at_utc': datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+              'fixtures': ['basic.html', 'instance.html'],
+              'source': 'WordPress do_shortcode() inside Docker-backed wp-env'
+          }
+          (root / 'provenance.json').write_text(json.dumps(provenance, indent=2) + '\n', encoding='utf-8')
+          PY
+        env:
+          WP_VERSION: ${{ env.WP_VERSION }}
+          PHP_VERSION: ${{ env.PHP_VERSION }}
+          PLUGIN_VERSION: ${{ env.PLUGIN_VERSION }}
+
+      - name: Re-read fixture provenance inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          wp_version="$(npm run --silent wp-env -- run cli wp core version | tail -n 1)"
+          php_version="$(npm run --silent wp-env -- run cli wp eval 'echo PHP_VERSION;' | tail -n 1)"
+          plugin_version="$(npm run --silent wp-env -- run cli wp eval 'echo LOCALIS_CIM_PLUGIN_VERSION;' | tail -n 1)"
+          echo "WP_VERSION=$wp_version" >> "$GITHUB_ENV"
+          echo "PHP_VERSION=$php_version" >> "$GITHUB_ENV"
+          echo "PLUGIN_VERSION=$plugin_version" >> "$GITHUB_ENV"
+
+      - name: Upload authoritative WordPress fixtures
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: wordpress-authoritative-fixtures
+          path: .ci/wordpress-fixtures
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Stop wp-env
         if: always()
