@@ -245,6 +245,31 @@ class CiMInstance {
     return this.#submitNavigation({ command: NAVIGATION_COMMAND.RESTART }, source);
   }
 
+  applyReducedMotion(reducedMotion) {
+    if (typeof reducedMotion !== 'boolean') {
+      fail('CiMInstance reduced-motion adoption value must be boolean.');
+    }
+    const canonical = this.#session.read.snapshot();
+    if (this.#disposing || this.#disposed || canonical.status === SESSION_STATUS.DISPOSED) {
+      return false;
+    }
+    if (this.#reducedMotion === reducedMotion) return false;
+
+    const previousReducedMotion = this.#reducedMotion;
+    this.#reducedMotion = reducedMotion;
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.ACCESSIBILITY,
+      event: EVENT_NAME.ACCESSIBILITY_REDUCED_MOTION_APPLIED,
+      result: EVENT_RESULT.SUCCESS,
+      details: {
+        reduced_motion: reducedMotion,
+        previous_reduced_motion: previousReducedMotion,
+        effective_from: 'next_render'
+      }
+    });
+    return true;
+  }
+
   dispose() {
     if (this.#disposePromise) return this.#disposePromise;
     if (this.#disposed || this.#session.read.snapshot().status === SESSION_STATUS.DISPOSED) {
