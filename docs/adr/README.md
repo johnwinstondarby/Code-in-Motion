@@ -34,6 +34,8 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0024`](0024-selectable-text-and-native-range-pointer-ownership.md) | Selectable Text and Native Range Pointer Ownership | 2026-09-16 | Accepted |
 | [`0025`](0025-commentary-reveal-projection.md) | Commentary Reveal Projection | 2026-09-16 | Accepted |
 | [`0026`](0026-commentary-local-selection.md) | Commentary-Local Selection | 2026-09-16 | Accepted |
+| [`0027`](0027-commentary-native-presentation-and-entry-navigation.md) | Commentary Native Presentation and Entry Navigation | 2026-09-16 | Accepted |
+| [`0028`](0028-complete-learner-path-harness-composition.md) | Complete Learner Path Harness Composition | 2026-09-16 | Accepted |
 
 ## Owns
 

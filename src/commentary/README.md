@@ -9,12 +9,14 @@ Commentary consumes semantic facts. It does not own canonical semantic movement 
 ## Owns
 
 - Commentary entry presentation
+- Canonical active-entry presentation
 - Previously revealed history presentation
 - Commentary-local selection state
-- Later native commentary DOM and interaction
+- Native Commentary DOM projection and entry activation
+- Commentary-entry seek requests through a narrow fixed-provenance navigation capability
+- Safe structured commentary-link presentation
 - Later autoscroll and learner scroll suspension
 - Later newer-steps indication
-- Safe structured commentary-link presentation
 
 ## Does not own
 
@@ -25,6 +27,7 @@ Commentary consumes semantic facts. It does not own canonical semantic movement 
 - Subject rendering
 - Renderer control
 - Raw HTML execution from experience content
+- Semantic event emission
 
 ## Checkpoint 1: reveal projection
 
@@ -150,11 +153,98 @@ Malformed fresh reveal state cannot silently erase valid local selection. Reconc
 
 `clear()` changes only Commentary-local selection and returns the latest valid visibility projection. Checkpoint 2 receives no Runtime, Transport, command, event, renderer, DOM, disposal, or Core authority.
 
-A future feature that intentionally navigates the semantic timeline from Commentary activation requires a separate narrow command capability and decision. Local selection does not imply navigation.
+Checkpoint 3 adds semantic movement through a separate narrow command capability. Local selection itself remains Commentary-local state and does not imply navigation.
+
+## Checkpoint 3: native presentation and entry navigation
+
+Checkpoint 3 adds canonical active-entry presentation, native Commentary DOM projection, entry activation, structured-link projection, and a separate fixed-provenance semantic navigation seam.
+
+### Presentation
+
+Construction receives exactly:
+
+```text
+selection
+observation
+entryCount
+```
+
+`selection` is the exact checkpoint 2 `{ read, select, clear }` surface. `observation` is a separate exact frozen `{ snapshot }` capability used only to read canonical `currentStepId`.
+
+The exact frozen presentation surface contains only:
+
+```text
+read
+```
+
+Each read returns:
+
+```text
+revealFrontier
+currentStepId
+selectedStepId
+entryCount
+entries
+```
+
+Every visible entry preserves checkpoint 2 state and adds one canonical presentation flag:
+
+```text
+active
+```
+
+`active` follows canonical `currentStepId`. `selected` follows Commentary-local `selectedStepId`. These are independent facts. At `initial`, no authored Commentary entry is active even if high-water reveal history remains visible after Home.
+
+### Navigation
+
+Commentary navigation receives one exact frozen command capability containing only:
+
+```text
+seek
+```
+
+The navigation adapter exposes only:
+
+```text
+seek
+```
+
+It always forwards semantic movement as:
+
+```text
+seek(stepId, "commentary")
+```
+
+The adapter fixes provenance and returns the Runtime command outcome by reference. It does not normalize results, suppress same-boundary commands, or interpret command acceptance.
+
+### Native binding
+
+The native binding receives exact Commentary controls, checkpoint 3 presentation, local `select`, and the narrowed navigation capability.
+
+Each Commentary control separates:
+
+```text
+root
+text
+select
+links
+```
+
+`text` is the selectable authored prose surface. It receives text through `textContent` and no click, pointer-drag, or synthetic keyboard listener.
+
+`select` is a native `button[type="button"]`. Browser Enter/Space activation remains native. The binding listens only for native click activation.
+
+`links` is a frozen array of native anchors aligned with validated structured link records. Commentary projects link label, `href`, and stable link ID. It does not install link-activation listeners; browser link behavior remains native.
+
+Semantic step identity is captured from validated presentation when an entry first becomes visible. Mutable DOM attributes never define a seek target. Every activation revalidates fresh presentation before local selection and semantic navigation occur.
+
+Refresh owns only Commentary presentation fields and is transactional. Failed DOM projection or listener installation restores prior owned state where possible. Disposal removes only listeners installed by the binding and remains retryable after removal failure.
+
+Checkpoint 3 receives no complete `CiMInstance`, Transport surface, renderer authority, Core control, or semantic event-emission capability.
 
 ## Interaction ownership
 
-ADR 0024 applies to Commentary text. Pointer drag-selection over learner-facing text remains browser-owned and cannot enter Transport scrub interaction. Commentary implementation must preserve selectable text rather than installing broad pointer ownership that competes with native selection.
+ADR 0024 applies to Commentary text. Pointer drag-selection over learner-facing text remains browser-owned and cannot enter Transport scrub interaction. Commentary preserves selectable prose by keeping text separate from the native entry-activation button.
 
 ## Safe authored content
 
@@ -162,7 +252,7 @@ Commentary text is rendered as text data, never executable HTML. Structured link
 
 ## Later checkpoints
 
-Later checkpoints add native DOM projection and activation, link presentation, scroll policy, canonical active presentation where required, and complete learner-path composition without changing checkpoint 1 reveal ownership or checkpoint 2 local-selection ownership.
+Later Commentary work may add autoscroll, learner scroll suspension, and newer-steps indication without changing checkpoints 1 through 3. Complete learner-path composition is verified by the synthetic harness rather than by granting Commentary broader production authority.
 
 ## Verification
 
@@ -192,4 +282,18 @@ Checkpoint 2 tests prove:
 - `clear()` changes only local selection;
 - the injected checkpoint 1 capability remains exact and frozen;
 - no Runtime, Transport, command, event, renderer, DOM, disposal, or Core authority enters checkpoint 2;
+- repository schema, architecture, Core-authority, and full test gates remain green.
+
+Checkpoint 3 tests prove:
+
+- canonical active state and Commentary-local selected state remain independent;
+- current semantic identity must align with visible Commentary state;
+- native binding projects selectable text, validated structured links, local selection, and canonical active state;
+- step identity is captured from validated presentation rather than mutable DOM attributes;
+- newly revealed controls acquire identity only after validated presentation reveals them;
+- stale hidden controls cannot navigate after Restart;
+- selectable text and structured links acquire no pointer or synthetic keyboard listeners;
+- navigation uses the exact one-function seek adapter with fixed `source: commentary` provenance;
+- same-boundary and other Runtime outcomes remain Runtime-owned and are returned without normalization;
+- DOM refresh, listener installation, and disposal preserve their rollback and ownership boundaries;
 - repository schema, architecture, Core-authority, and full test gates remain green.
