@@ -297,9 +297,10 @@ test('complete learner path composes Transport, Commentary, Runtime, restart, an
   assert.equal(disposed.canonical.status, 'disposed');
   assert.equal(c.renderer.disposeCount(), 1);
 
+  const eventCountAfterDispose = c.events.length;
   const afterDispose = await c.transport.next();
   assert.equal(afterDispose.result, 'rejected');
-  assertSource(c.events, afterDispose, COMMAND_SOURCE.TRANSPORT);
+  assert.equal(c.events.length, eventCountAfterDispose);
   assert.equal(c.instance.read.snapshot().canonical.status, 'disposed');
 });
 
