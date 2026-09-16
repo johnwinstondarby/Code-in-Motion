@@ -16,15 +16,79 @@ This directory holds shared accessibility contracts, helpers, and automated supp
 
 - Another component's accessible output
 - A separate accessibility DOM layered over inaccessible components
+- Canonical semantic state
+- Runtime or Core command authority
+- Renderer control
+- Feature-specific business logic
 
 ## Allowed dependencies
 
 Production components may consume shared accessibility helpers through documented interfaces.
 
+Accessibility helpers may receive browser or platform capabilities by injection. They do not acquire browser-global ownership by reaching through `window` or `document` when a narrower capability suffices.
+
 ## Prohibited dependencies
 
 Accessibility code must not reach into private DOM owned by another module to repair semantics after rendering.
 
+Production Accessibility modules must not import Runtime or Core implementation modules.
+
+## Checkpoint 1: reduced-motion preference capability
+
+Checkpoint 1 establishes read-only observation of the learner's browser reduced-motion preference without granting Accessibility lifecycle, Runtime, renderer, or browser-global authority.
+
+Construction receives exactly:
+
+```text
+matchMedia
+```
+
+`matchMedia` is injected by composition. Checkpoint 1 calls it exactly once with:
+
+```text
+(prefers-reduced-motion: reduce)
+```
+
+The media-query result must expose a boolean `matches` value.
+
+The exact frozen public surface is:
+
+```text
+read
+```
+
+Each `read()` obtains the current `matches` value from the retained media-query object. A platform update to a live media-query object can therefore be observed by a later read without reconstructing the capability.
+
+Checkpoint 1 installs no media-query listener, polling loop, timer, or disposal surface. It does not decide when an already-running CiM instance should adopt a changed preference. Dynamic preference-change orchestration remains outside this checkpoint.
+
+Malformed media-query results and non-boolean `matches` values fail closed. Native getter failures propagate rather than silently selecting either reduced or full motion.
+
+The options surface is exact. Widened, symbol-extended, accessor-backed, or non-function `matchMedia` authority is rejected.
+
+Checkpoint 1 contains no Runtime, Core, renderer, Transport, Commentary, semantic-navigation, event-emission, DOM-listener, browser-global, or disposal authority.
+
+The existing Renderer Interface Contract already carries a `reducedMotion` boolean. A later composition checkpoint may sample this Accessibility capability and supply that boolean through the existing Runtime construction seam without changing renderer authority.
+
+See ADR 0031.
+
+## Later checkpoints
+
+Later Accessibility work may define composition of reduced-motion observation into Runtime construction, dynamic preference-change policy, shared focus behavior, or component-agnostic ARIA helpers. Each addition must remain a narrow capability and may not take over another component's semantic or accessible output authority.
+
 ## Verification
+
+Checkpoint 1 tests prove:
+
+- exact frozen `{ read }` public surface;
+- exact injected `{ matchMedia }` construction authority;
+- the canonical reduced-motion media query is issued exactly once;
+- true and false reduced-motion preference observations;
+- fresh reads from the retained live media-query object;
+- malformed media-query results and non-boolean `matches` values fail closed;
+- native `matches` getter failures propagate without fallback policy;
+- widened, symbol-extended, accessor-backed, and non-function options fail closed;
+- no media-query event subscription is installed;
+- no Runtime, Core, renderer, Transport, Commentary, browser-global, listener, or disposal authority enters the capability;
+- repository schema, architecture, Core-authority, and full Node 20/22 verification gates remain green.
 
 Each visual component remains responsible for its own accessible output. Automated conformance tests cover keyboard operation, focus behavior, reduced motion, active-state communication, and fallback presentation.
