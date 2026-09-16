@@ -67,6 +67,27 @@ Malformed, widened, mutable, symbol-extended, accessor-backed, non-function, thr
 
 See ADR 0032.
 
+## Accessibility checkpoint 3 compatibility
+
+Accessibility checkpoint 3 may construct a split reduced-motion source with:
+
+```text
+preference
+changes
+```
+
+Host checkpoint 2 consumes only the source's `preference` projection, whose exact frozen surface remains:
+
+```text
+read
+```
+
+The checkpoint 3 `changes` capability is not part of `createHostCiMInstance()` construction options. Host does not subscribe to reduced-motion changes, receive raw browser media-query objects, or change an existing Runtime's sampled `reducedMotion` value.
+
+This preserves the checkpoint 2 construction boundary while Accessibility owns the independent browser preference-change observation lifecycle. A later dynamic-adoption checkpoint must define any Host or Runtime subscription policy explicitly before that authority can enter composition.
+
+See ADR 0033.
+
 ## Verification
 
 Checkpoint 2 tests prove:
@@ -81,5 +102,7 @@ Checkpoint 2 tests prove:
 - malformed capability and Host option shapes fail closed;
 - non-boolean and throwing preference reads fail closed;
 - architecture and Core-authority boundaries remain intact.
+
+Checkpoint 3 compatibility preserves those same Host tests unchanged: `source.preference` satisfies the exact checkpoint 2 `{ read }` seam, while `source.changes` remains outside Host construction authority.
 
 Broader Host verification also covers multiple-instance initialization, failed-load isolation, static-page survival, asset-version handling, and clean fallback behavior.
