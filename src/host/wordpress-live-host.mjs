@@ -27,7 +27,7 @@ const INSTANCE_ATTRIBUTE = 'data-cim-instance';
 const STATE_ATTRIBUTE = 'data-cim-state';
 const PAGE_DIAGNOSTIC_INSTANCE_ID = 'wordpress-host';
 const HOST_LOAD_DIAGNOSTIC_CODE = 'CIM-HST-001';
-const HOST_MOUNT_DIAGNOSTIC_CODE = 'CIM-HST-004';
+const HOST_MOUNT_DIAGNOSTIC_CODE = 'CIM-HST-002';
 
 function fail(message) {
   throw new TypeError(message);
