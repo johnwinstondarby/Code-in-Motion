@@ -127,6 +127,8 @@ message
 
 23. This adapter remains composition code. Experience retrieval policy, renderer registry contents, browser-clock implementation, asset enqueueing, shortcode generation, and WordPress PHP packaging remain separately owned deployment capabilities.
 
+24. This checkpoint initializes each invocation through default Host entry with `initialize()`. ADR 0011 remains authoritative for targeted entry through `initialize({ stepId, source: 'deep_link' })`, but the repository does not yet define a WordPress URL or fragment syntax that resolves an external target to that semantic boundary. URL/fragment parsing and the `CIM-HST-002` rejection path therefore remain a separate Host deployment checkpoint. This adapter does not infer external navigation syntax.
+
 ## Consequences
 
 WordPress now has a production JavaScript composition seam from stable page markup to `createLiveHostCiMInstance()` without widening Runtime or Accessibility authority.
@@ -137,7 +139,7 @@ Static fallback remains the page's safe default. Live state is projected only af
 
 Fault ownership stays aligned with the existing matrix: Host loading uses `CIM-HST-001`, deep-link rejection keeps `CIM-HST-002`, live instance preference bridging uses `CIM-HST-003`, page-host mounting/lifecycle uses `CIM-HST-004`, and renderer resolution keeps `CIM-RND-001`.
 
-The remaining WordPress work is packaging and deployment: concrete Experience loading, renderer resolution, clock construction, enqueued assets, and shortcode/block markup can bind to this exact adapter without changing its ownership rules.
+The remaining WordPress work is packaging and deployment: concrete Experience loading, renderer resolution, clock construction, URL/fragment parsing, enqueued assets, and shortcode/block markup can bind to this exact adapter without changing its ownership rules.
 
 ## Rejected alternatives
 
@@ -165,6 +167,10 @@ WordPress pages may contain independent CiM experiences. Per-root isolation pres
 
 The fault matrix already assigns renderer resolution to `CIM-RND-001`. Invocation location does not transfer subsystem ownership.
 
+### Infer a WordPress deep-link syntax in the mount adapter
+
+ADR 0011 separates Host URL parsing from Runtime semantic entry. A URL grammar must be specified independently before the adapter can resolve external syntax to a semantic boundary. Inventing one inside the mount adapter would hide Host policy in composition code.
+
 ## Verification
 
 Checkpoint verification pins:
@@ -176,10 +182,11 @@ Checkpoint verification pins:
 - optional `[data-cim-renderer-root]` selection;
 - one shared reduced-motion source and native listener across multiple live instances;
 - live instance creation through `createLiveHostCiMInstance()`;
+- default Host initialization only, without inferred URL/fragment parsing;
 - `ready` only after successful initialization;
 - static fallback on invocation, load, resolution, composition, initialization, or projection failure;
 - one failed root cannot block a later root;
-- `CIM-HST-001`, `CIM-HST-004`, and `CIM-RND-001` ownership at their respective boundaries;
+- `CIM-HST-001`, `CIM-HST-004`, and `CIM-RND-001` ownership at their respective boundaries while `CIM-HST-002` remains reserved for targeted-entry rejection;
 - diagnostic sink isolation;
 - cleanup after initialization or readiness-projection failure;
 - disposal during pending load prevents late Runtime construction;
