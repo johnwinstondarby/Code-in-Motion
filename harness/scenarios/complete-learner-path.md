@@ -77,7 +77,9 @@ Prove deterministic composition of Runtime, Transport, and Commentary through th
 11. Dispose Runtime.
     - canonical status: `disposed`
     - renderer disposal occurs once
-    - later Transport command is rejected and canonical status remains `disposed`
+    - semantic event publication is terminally closed
+    - a later Transport command returns a rejection without publishing new command evidence
+    - canonical status remains `disposed`
 
 ## Playback companion path
 
