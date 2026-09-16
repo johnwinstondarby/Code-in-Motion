@@ -68,6 +68,9 @@ jobs:
           printf '%s\n' "$basic" > .ci/wordpress-fixtures/basic.html
           printf '%s\n' "$instance" > .ci/wordpress-fixtures/instance.html
 
+          WP_VERSION="$wp_version" \
+          PHP_VERSION="$php_version" \
+          PLUGIN_VERSION="$plugin_version" \
           python - <<'PY'
           import json
           import os
@@ -89,21 +92,6 @@ jobs:
           }
           (root / 'provenance.json').write_text(json.dumps(provenance, indent=2) + '\n', encoding='utf-8')
           PY
-        env:
-          WP_VERSION: ${{ env.WP_VERSION }}
-          PHP_VERSION: ${{ env.PHP_VERSION }}
-          PLUGIN_VERSION: ${{ env.PLUGIN_VERSION }}
-
-      - name: Re-read fixture provenance inputs
-        shell: bash
-        run: |
-          set -euo pipefail
-          wp_version="$(npm run --silent wp-env -- run cli wp core version | tail -n 1)"
-          php_version="$(npm run --silent wp-env -- run cli wp eval 'echo PHP_VERSION;' | tail -n 1)"
-          plugin_version="$(npm run --silent wp-env -- run cli wp eval 'echo LOCALIS_CIM_PLUGIN_VERSION;' | tail -n 1)"
-          echo "WP_VERSION=$wp_version" >> "$GITHUB_ENV"
-          echo "PHP_VERSION=$php_version" >> "$GITHUB_ENV"
-          echo "PLUGIN_VERSION=$plugin_version" >> "$GITHUB_ENV"
 
       - name: Upload authoritative WordPress fixtures
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
