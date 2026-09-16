@@ -89,6 +89,8 @@ Browser scroll geometry remains a presentation input only. It cannot choose sema
 
 Immediate scrolling keeps motion policy outside this checkpoint and avoids hiding an accessibility decision inside a DOM binding.
 
+The normative component contract is recorded in `src/commentary/README.md`, checkpoint 5.
+
 ## Verification
 
 Checkpoint 5 verification pins:
