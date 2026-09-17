@@ -109,7 +109,7 @@ jobs:
       - name: Set R15 workspace paths
         shell: bash
         run: |
-          echo "CIM_R15_CONFIG=${RUNNER_TEMP}/cim-r15.wp-env.json" >> "${GITHUB_ENV}"
+          echo "CIM_R15_CONFIG=r15-wp-env.json" >> "${GITHUB_ENV}"
           echo "CIM_R15_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r15-artifact" >> "${GITHUB_ENV}"
 
       - name: Set up pinned release Node.js
@@ -264,4 +264,5 @@ jobs:
 
       - name: Stop isolated R15 environment
         if: always()
+        continue-on-error: true
         run: npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" stop
