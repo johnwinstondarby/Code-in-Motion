@@ -417,3 +417,157 @@ jobs:
         if: always()
         continue-on-error: true
         run: npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" stop
+
+  compatibility-matrix:
+    name: WordPress ${{ matrix.wordpress }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        wordpress:
+          - '6.5.10'
+          - '6.6.7'
+          - '6.7.7'
+          - '6.8.8'
+          - '6.9.7'
+          - '7.0.4'
+          - '7.1.1'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set R18 workspace paths
+        shell: bash
+        run: |
+          echo "CIM_R18_CONFIG=r18-wp-env.json" >> "${GITHUB_ENV}"
+          echo "CIM_R18_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r18-artifact" >> "${GITHUB_ENV}"
+          echo "CIM_R18_WORDPRESS=${{ matrix.wordpress }}" >> "${GITHUB_ENV}"
+
+      - name: Set up pinned release Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Install repository dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Build exact WordPress release ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run build:wordpress
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          echo "CIM_PLUGIN_VERSION=${VERSION}" >> "${GITHUB_ENV}"
+
+      - name: Prepare isolated R18 environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"
+
+          mkdir -p "${CIM_R18_ARTIFACT_DIR}"
+          cp "dist/${ZIP_NAME}" "${CIM_R18_ARTIFACT_DIR}/${ZIP_NAME}"
+          cp "dist/${ZIP_NAME}.sha256" "${CIM_R18_ARTIFACT_DIR}/${ZIP_NAME}.sha256"
+          (cd "${CIM_R18_ARTIFACT_DIR}" && sha256sum --check "${ZIP_NAME}.sha256")
+
+          node --input-type=module <<'NODE'
+          import { writeFile } from 'node:fs/promises';
+
+          const config = {
+            $schema: 'https://schemas.wp.org/trunk/wp-env.json',
+            core: `WordPress/WordPress#${process.env.CIM_R18_WORDPRESS}`,
+            phpVersion: '7.4',
+            plugins: [],
+            port: 8892,
+            testsEnvironment: false,
+            config: {
+              WP_DEBUG: true,
+              SCRIPT_DEBUG: true
+            },
+            mappings: {
+              'wp-content/r18-artifact': process.env.CIM_R18_ARTIFACT_DIR
+            }
+          };
+
+          await writeFile(process.env.CIM_R18_CONFIG, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
+          NODE
+
+      - name: Install pinned Playwright test runner
+        run: npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Start matrix WordPress environment
+        run: npm run --silent wp-env -- --config="${CIM_R18_CONFIG}" start --update
+
+      - name: Install release ZIP and verify matrix version
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"
+
+          wp_env() {
+            npm run --silent wp-env -- --config="${CIM_R18_CONFIG}" "$@"
+          }
+
+          CORE_VERSION="$(wp_env run cli wp core version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"
+          test "${CORE_VERSION}" = "${CIM_R18_WORDPRESS}"
+
+          if wp_env run cli wp plugin is-installed code-in-motion >/dev/null 2>&1; then
+            echo "R18 expected Code in Motion to be absent before ZIP installation." >&2
+            exit 1
+          fi
+
+          wp_env run cli wp plugin install "wp-content/r18-artifact/${ZIP_NAME}" --activate
+
+          STATUS="$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active$' | tail -n 1)"
+          VERSION="$(wp_env run cli wp plugin get code-in-motion --field=version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"
+          test "${STATUS}" = "active"
+          test "${VERSION}" = "${CIM_PLUGIN_VERSION}"
+          echo "PASS: R18 WordPress ${CORE_VERSION} installed CiM ${VERSION} active."
+
+      - name: Create matrix diagnostic pages
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wp_env() {
+            npm run --silent wp-env -- --config="${CIM_R18_CONFIG}" "$@"
+          }
+
+          wp_env run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM Browser E2E' \
+            --post_name='cim-e2e' \
+            --post_content='[cim experience="synthetic-wordpress"]CiM E2E fallback.[/cim]'
+
+          r9_content='[cim experience="synthetic-wordpress" instance="r9-one"]R9 one fallback.[/cim]
+          [cim experience="synthetic-wordpress" instance="r9-two"]R9 two fallback.[/cim]
+          [cim experience="synthetic-wordpress" instance="r9-three"]R9 three fallback.[/cim]'
+
+          wp_env run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM R9 Isolation E2E' \
+            --post_name='cim-e2e-r9' \
+            --post_content="${r9_content}"
+
+      - name: Run R18 compatibility integration suite
+        env:
+          CIM_WP_BASE_URL: http://localhost:8892
+        run: >-
+          npx playwright test
+          tests/e2e/wordpress-synthetic-mount.spec.mjs
+          tests/e2e/wordpress-detached-root.spec.mjs
+          tests/e2e/wordpress-zip-install.spec.mjs
+          --reporter=line
+
+      - name: Stop R18 matrix environment
+        if: always()
+        continue-on-error: true
+        run: npm run --silent wp-env -- --config="${CIM_R18_CONFIG}" stop
+
