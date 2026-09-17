@@ -6,9 +6,9 @@ Status: Production Host composition contract
 
 `wordpress-live-host.mjs` is the production JavaScript composition boundary between stable WordPress page markup and `createLiveHostCiMInstance()`.
 
-It owns page discovery, page-scoped reduced-motion observation, per-root live Host construction, initialization, readiness projection, root-scoped command-capability projection, static fallback preservation, and page teardown ordering.
+It owns page discovery, page-scoped reduced-motion observation, per-root live Host construction, initialization, readiness projection, root-scoped command-capability projection, root-scoped Runtime disposal, static fallback preservation, and page teardown ordering.
 
-It does not own Experience storage policy, renderer registry contents, browser-clock implementation, Transport implementation, WordPress PHP packaging, asset enqueueing, shortcode/block generation, or external URL/fragment parsing.
+It does not own Experience storage policy, renderer registry contents, browser-clock implementation, Transport implementation, WordPress PHP packaging, asset enqueueing, shortcode/block generation, DOM mutation observation, or external URL/fragment parsing.
 
 ## Required Markup, Verbatim
 
@@ -98,17 +98,18 @@ clockFactory = { create }
 diagnostics = { report }
 ```
 
-The page host does not acquire broader loader, renderer-registry, scheduler, logging, WordPress, or browser-global authority through these objects.
+The page host does not acquire broader loader, renderer-registry, scheduler, logging, WordPress, mutation-observer, or browser-global authority through these objects.
 
 The returned Host surface is exact and frozen:
 
 ```text
 mount
 commands
+disposeRoot
 dispose
 ```
 
-`commands(root)` is a capability projection, not a Runtime instance reference. Before successful mount, for a failed or unknown root, and after disposal begins, it returns `null`.
+`commands(root)` is a capability projection, not a Runtime instance reference. Before successful mount, for a failed or unknown root, after `disposeRoot(root)` starts for that root, and after page disposal begins, it returns `null`.
 
 For a successfully mounted root it returns one frozen command-only port with exactly:
 
@@ -124,6 +125,8 @@ restart
 ```
 
 The port exposes no `identity`, `read`, `events`, `initialize`, `adoptReducedMotion`, or `dispose` authority. Host imports no Transport implementation module. The outer composition layer may grant this command-only port to Transport.
+
+`disposeRoot(root)` is the root-scoped terminal disposal capability. For a successfully mounted root it synchronously removes the command projection, projects fallback, and starts disposal of that root's live Host façade. Repeated calls for that root return the identical disposal promise. An unknown or failed root resolves `false` and changes no mounted instance. Root-scoped disposal leaves sibling roots and the page-owned reduced-motion source active. Later page-wide `dispose()` reuses already-started root disposal work and does not dispose the same live façade twice.
 
 ## Mount Lifecycle
 
@@ -165,14 +168,17 @@ One WordPress page host creates at most one Accessibility reduced-motion source.
 
 All live instances receive the same source capabilities, but each `createLiveHostCiMInstance()` façade owns only its scoped unsubscribe function. The page host owns source-level `changes.dispose()`.
 
+Root-scoped disposal removes only that façade's reduced-motion subscription. The shared source remains active for sibling instances.
+
 On page-host disposal:
 
-1. command projections are removed synchronously for already-mounted roots;
-2. already-mounted live Host façades are told to dispose;
+1. command projections are removed synchronously for already-mounted roots that have not already entered root-scoped disposal;
+2. all remaining mounted live Host façades are told to dispose;
 3. each façade synchronously removes its own reduced-motion subscription before Runtime disposal settlement;
 4. the page host disposes the shared source-level listener;
 5. in-progress mount work is prevented from advancing into a lasting Runtime after the disposal decision;
-6. late-created instances are cleaned before they can remain mounted.
+6. late-created instances are cleaned before they can remain mounted;
+7. any root-scoped disposal already in progress is joined rather than repeated.
 
 `dispose()` is single-shot and returns the identical promise on success or rejection.
 
@@ -211,13 +217,24 @@ initialize({ stepId, source: 'deep_link' })
 
 The current page-host adapter does not read browser location and therefore does not parse that grammar. The WordPress packaging/deep-link resolver must consume the existing grammar, resolve the Experience and semantic boundary, and pass only the resolved boundary into Runtime through ADR 0011. Invalid or unresolvable targets remain `CIM-HST-002`. WordPress packaging must not create a second platform-specific deep-link grammar.
 
-## WordPress Transport Composition
+## WordPress Transport and Root-Lifecycle Composition
 
-The WordPress browser bootstrap is the outer composition root for Host and Transport. After `mount()` settles, it discovers the same canonical invocation roots, requests each root's command-only capability with `commands(root)`, and grants that port to the existing Transport controller.
+The WordPress browser bootstrap is the outer composition root for Host, Transport, and invocation-root lifecycle observation. After `mount()` settles, it discovers the same canonical invocation roots, requests each root's command-only capability with `commands(root)`, and grants that port to the existing Transport controller.
 
 `wordpress/assets/transport-binding.mjs` installs the existing scoped keyboard binding on that invocation root. It temporarily establishes `tabindex="0"` so the root can receive learner keyboard focus, and restores the previous `tabindex` on disposal.
 
-The binding owns no Runtime state and receives no Runtime instance. Arrow keys, Home, and End flow through the existing Transport controller and therefore use Transport command-source evidence rather than Host command-source defaults.
+`wordpress/assets/root-lifecycle-binding.mjs` installs one page-level `MutationObserver` on the connected document tree with `childList` and `subtree` observation. Mutation records alone do not authorize disposal. At each observer delivery checkpoint, the binding reads `root.isConnected` for every still-tracked mounted invocation root:
+
+- a root that remains connected is preserved with its existing Host instance, Runtime state, renderer, clock, and Transport binding;
+- a disconnected root is untracked, its Transport binding is disposed, and the bootstrap invokes `disposeRoot(root)` exactly once;
+- sibling roots remain active;
+- reinserting a root after terminal root-scoped disposal does not remount or rebind it during this checkpoint.
+
+A genuine direct move of the live invocation node between two connected parents therefore remains live. The move may produce removal and insertion mutation records, but observer delivery occurs after the synchronous DOM operation and `root.isConnected` remains true. A remove-then-append sequence separated across tasks is a disconnection lifecycle and may dispose before the later append.
+
+The lifecycle binding owns no Runtime or Transport command authority. Its detached-root callback is supplied by the outer bootstrap, which coordinates disposal of the components it already owns.
+
+The Transport binding owns no Runtime state and receives no Runtime instance. Arrow keys, Home, and End flow through the existing Transport controller and therefore use Transport command-source evidence rather than Host command-source defaults.
 
 This composition preserves the architecture rule that `src/host/` cannot import `src/transport/`. The WordPress packaging layer may import both because it is the composition boundary that grants capabilities between them.
 
@@ -239,6 +256,6 @@ A hand-written HTML fixture may test the JavaScript adapter in isolation, but it
 
 ## Deployment Boundary
 
-A WordPress PHP plugin or browser bootstrap binds concrete implementations of the injected capabilities, emits the required invocation markup, resolves the existing deep-link grammar, composes Host with command-only Transport controls, and enqueues the CiM JavaScript/CSS assets. That packaging layer must preserve this module's exact capability and markup contracts rather than embedding Runtime policy in shortcode, block, or template code.
+A WordPress PHP plugin or browser bootstrap binds concrete implementations of the injected capabilities, emits the required invocation markup, resolves the existing deep-link grammar, composes Host with command-only Transport controls and root-lifecycle observation, and enqueues the CiM JavaScript/CSS assets. That packaging layer must preserve this module's exact capability and markup contracts rather than embedding Runtime policy in shortcode, block, or template code.
 
 See ADR 0036 for the accepted architecture decision.
