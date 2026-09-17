@@ -140,3 +140,52 @@ step-01 / node B
 ```
 
 The test also requires the browser to fetch the shipped Transport controller and keyboard-binding modules through the production module graph. No test-only global, direct Runtime import, alternate Host composition, or direct renderer mutation qualifies as R8 evidence.
+
+## R9 same-Experience three-instance isolation
+
+R9 proves that sharing one immutable Experience does not imply shared mutable execution state.
+
+The production browser-binding tests establish the component contracts used by the page proof:
+
+- the WordPress Experience loader validates and ingests one frozen object, shares the same post-ingestion object for repeated and concurrent requests, and performs only one fetch for the shared Experience;
+- the renderer resolver performs exact lookup and creates a fresh renderer instance for every resolve;
+- the browser clock factory creates independent scheduler instances with isolated handle ownership.
+
+The WordPress page-host integration test composes three invocation roots over one shared frozen Experience reference and requires:
+
+- three successful mounts;
+- three distinct renderer instances;
+- three distinct clock instances;
+- three distinct root-scoped command ports;
+- independent semantic navigation, where commands addressed to one instance do not change the renderer state of either sibling;
+- page-host disposal to dispose all three renderers exactly once and remove all command projections.
+
+A separate production live-Host-facade test disposes one of three live instances directly, then proves the two sibling façades remain operational and independently navigable before their own disposal. This is the R9 proof of instance-local disposal without widening the WordPress page Host with a per-root disposal API. Root-removal ownership remains R10 scope.
+
+The authoritative Chromium + Docker `wp-env` test renders one real WordPress page containing three shortcodes with explicit instance identities:
+
+```text
+r9-one
+r9-two
+r9-three
+```
+
+All three reference `synthetic-wordpress`. Browser evidence requires exactly one network request for `synthetic-wordpress.json`, all three roots to reach `data-cim-state="ready"`, and all three to settle initially at node A.
+
+The learner then navigates only `r9-two` with `ArrowRight`, producing:
+
+```text
+r9-one   initial / A
+r9-two   step-01 / B
+r9-three initial / A
+```
+
+The learner then focuses `r9-one` and sends `End`, producing:
+
+```text
+r9-one   step-02 / C
+r9-two   step-01 / B
+r9-three initial / A
+```
+
+No browser request failure, console error, or page error is permitted. R9 therefore establishes shared immutable Experience data with independent Runtime, renderer, clock, command, navigation, and disposal state.
