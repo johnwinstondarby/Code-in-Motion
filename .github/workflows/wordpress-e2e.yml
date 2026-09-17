@@ -266,3 +266,154 @@ jobs:
         if: always()
         continue-on-error: true
         run: npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" stop
+
+  upgrade-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set R16 workspace paths
+        shell: bash
+        run: |
+          echo "CIM_R16_CONFIG=r16-wp-env.json" >> "${GITHUB_ENV}"
+          echo "CIM_R16_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r16-artifact" >> "${GITHUB_ENV}"
+          echo "CIM_R16_PRIOR_VERSION=0.0.9" >> "${GITHUB_ENV}"
+
+      - name: Set up pinned release Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Install repository dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Build N and N+1 artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run build:wordpress
+          node tools/build-wordpress-upgrade-fixture.mjs
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          test "${VERSION}" = "0.1.0"
+          echo "CIM_R16_CURRENT_VERSION=${VERSION}" >> "${GITHUB_ENV}"
+
+      - name: Prepare isolated upgrade source and wp-env config
+        shell: bash
+        run: |
+          set -euo pipefail
+          CURRENT_ZIP="code-in-motion-${CIM_R16_CURRENT_VERSION}.zip"
+          PRIOR_ZIP="code-in-motion-${CIM_R16_PRIOR_VERSION}-r16-fixture.zip"
+
+          mkdir -p "${CIM_R16_ARTIFACT_DIR}"
+          cp "dist/${CURRENT_ZIP}" "${CIM_R16_ARTIFACT_DIR}/${CURRENT_ZIP}"
+          cp "dist/${CURRENT_ZIP}.sha256" "${CIM_R16_ARTIFACT_DIR}/${CURRENT_ZIP}.sha256"
+          cp "dist/${PRIOR_ZIP}" "${CIM_R16_ARTIFACT_DIR}/${PRIOR_ZIP}"
+          (cd "${CIM_R16_ARTIFACT_DIR}" && sha256sum --check "${CURRENT_ZIP}.sha256")
+
+          node --input-type=module <<'NODE'
+          import { writeFile } from 'node:fs/promises';
+
+          const config = {
+            $schema: 'https://schemas.wp.org/trunk/wp-env.json',
+            core: 'WordPress/WordPress#6.5.10',
+            phpVersion: '7.4',
+            plugins: [],
+            port: 8891,
+            testsEnvironment: false,
+            config: {
+              WP_DEBUG: true,
+              SCRIPT_DEBUG: true
+            },
+            mappings: {
+              'wp-content/r16-artifact': process.env.CIM_R16_ARTIFACT_DIR
+            }
+          };
+
+          await writeFile(process.env.CIM_R16_CONFIG, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
+          NODE
+
+      - name: Install pinned Playwright test runner
+        run: npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Start clean authoritative WordPress environment
+        run: npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" start --update
+
+      - name: Install and verify N active state
+        shell: bash
+        run: |
+          set -euo pipefail
+          PRIOR_ZIP="code-in-motion-${CIM_R16_PRIOR_VERSION}-r16-fixture.zip"
+
+          wp_env() {
+            npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" "$@"
+          }
+
+          if wp_env run cli wp plugin is-installed code-in-motion >/dev/null 2>&1; then
+            echo "R16 expected Code in Motion to be absent before N installation." >&2
+            exit 1
+          fi
+
+          wp_env run cli wp plugin install "wp-content/r16-artifact/${PRIOR_ZIP}" --activate
+
+          STATUS="$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active$' | tail -n 1)"
+          VERSION="$(wp_env run cli wp plugin get code-in-motion --field=version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"
+          test "${STATUS}" = "active"
+          test "${VERSION}" = "${CIM_R16_PRIOR_VERSION}"
+
+          wp_env run cli bash -lc 'test -f wp-content/plugins/code-in-motion/wordpress/assets/r16-obsolete.txt'
+          wp_env run cli bash -lc 'test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/0.0.9'
+          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.0'
+
+          INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
+          test "${INSTALLED_COUNT}" = "56"
+          echo "PASS: R16 N installed active (${VERSION}, ${INSTALLED_COUNT} files)."
+
+      - name: Create upgrade diagnostic page
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM R16 Upgrade E2E' \
+            --post_name='cim-e2e-r16' \
+            --post_content='[cim experience="synthetic-wordpress"]CiM R16 fallback.[/cim]'
+
+      - name: Run warm-cache N to N+1 browser upgrade proof
+        env:
+          CIM_WP_BASE_URL: http://localhost:8891
+          CIM_R16_CURRENT_ZIP: wp-content/r16-artifact/code-in-motion-0.1.0.zip
+        run: npx playwright test tests/e2e/wordpress-upgrade.spec.mjs --reporter=line
+
+      - name: Verify N+1 replacement postconditions
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wp_env() {
+            npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" "$@"
+          }
+
+          STATUS="$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active$' | tail -n 1)"
+          VERSION="$(wp_env run cli wp plugin get code-in-motion --field=version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"
+          test "${STATUS}" = "active"
+          test "${VERSION}" = "${CIM_R16_CURRENT_VERSION}"
+
+          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/r16-obsolete.txt'
+          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/modules/0.0.9'
+          wp_env run cli bash -lc 'test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.0'
+
+          INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
+          test "${INSTALLED_COUNT}" = "55"
+          echo "PASS: R16 N -> N+1 replacement preserved activation (${VERSION}, ${INSTALLED_COUNT} files)."
+
+      - name: Stop isolated R16 environment
+        if: always()
+        continue-on-error: true
+        run: npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" stop
