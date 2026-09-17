@@ -104,7 +104,7 @@ The Playwright version used by this gate is pinned in CI. Browser E2E remains do
 
 ### R8b — semantic navigation
 
-The production WordPress Host now exposes a root-scoped command projection in addition to `mount()` and `dispose()`:
+The production WordPress Host exposes a root-scoped command projection through:
 
 ```text
 commands(root)
@@ -160,7 +160,7 @@ The WordPress page-host integration test composes three invocation roots over on
 - independent semantic navigation, where commands addressed to one instance do not change the renderer state of either sibling;
 - page-host disposal to dispose all three renderers exactly once and remove all command projections.
 
-A separate production live-Host-facade test disposes one of three live instances directly, then proves the two sibling façades remain operational and independently navigable before their own disposal. This is the R9 proof of instance-local disposal without widening the WordPress page Host with a per-root disposal API. Root-removal ownership remains R10 scope.
+A separate production live-Host-facade test disposes one of three live instances directly, then proves the two sibling façades remain operational and independently navigable before their own disposal. R9 therefore established the Runtime-level isolation needed before WordPress root-scoped disposal authority was added in R10.
 
 The authoritative Chromium + Docker `wp-env` test renders one real WordPress page containing three shortcodes with explicit instance identities:
 
@@ -189,3 +189,54 @@ r9-three initial / A
 ```
 
 No browser request failure, console error, or page error is permitted. R9 therefore establishes shared immutable Experience data with independent Runtime, renderer, clock, command, navigation, and disposal state.
+
+## R10 detached-root lifecycle
+
+R10 adds terminal disposal for an invocation root that leaves the connected document while preserving a genuine connected-node reparent.
+
+The production WordPress Host surface now includes:
+
+```text
+disposeRoot(root)
+```
+
+For a successfully mounted root, `disposeRoot(root)` synchronously revokes that root's command projection, projects fallback, and starts disposal of its live Host façade. Repeated calls return the identical per-root disposal promise. Unknown roots resolve `false`. A later page-wide `dispose()` joins any already-started root disposal and never disposes the same live façade twice.
+
+Unit evidence proves:
+
+- one root can enter terminal disposal while its sibling remains `ready` and navigable;
+- the disposed root's command port is removed immediately;
+- sibling renderer and command state remain unchanged;
+- root-scoped disposal and later page disposal share one terminal disposal operation;
+- the page-owned reduced-motion source remains active until page disposal.
+
+The outer WordPress bootstrap owns lifecycle observation because it already owns the Host/Transport composition. `wordpress/assets/root-lifecycle-binding.mjs` installs one `MutationObserver` over the connected document tree using `childList` + `subtree`. The binding does not infer disposal from mutation-record shape. At observer delivery it evaluates each tracked root's native `isConnected` state.
+
+The authoritative connected-reparent case performs a direct `appendChild()` move of `r9-two` between two connected parents. Before the move the instance is navigated to `step-01 / B`. After mutation delivery it must still be:
+
+```text
+state: ready
+step: step-01
+node: B
+tabindex: 0
+```
+
+The same moved node is then focused and navigated again to `step-02 / C`. This proves that reparenting preserved the original live instance and Transport binding rather than constructing a replacement.
+
+The authoritative permanent-removal case removes `r9-one` from the connected document and waits for lifecycle observation. The detached node must reach:
+
+```text
+state: fallback
+tabindex: absent
+```
+
+while the connected siblings remain:
+
+```text
+r9-two   ready / step-02 / C
+r9-three ready / initial / A
+```
+
+Reinserting the already-disposed `r9-one` node leaves it in fallback and does not recreate its Transport binding during this checkpoint. Dynamic remount is outside R10 scope.
+
+The browser proof also requires the shipped `root-lifecycle-binding.mjs` asset to load through the production module graph and permits no request failures, browser console errors, or page errors. The WordPress packaging gate now requires this external asset, preventing release packaging from silently omitting the R10 lifecycle path.
