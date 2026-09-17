@@ -1,4 +1,5 @@
 import { createReducedMotionPreferenceSource } from '../accessibility/reduced-motion-preference-source.mjs';
+import { FAULT_COMPONENT, FAULT_RECOVERY_CLASS } from '../contracts/faults.mjs';
 import {
   HOST_DIAGNOSTIC_KEYS,
   HOST_DIAGNOSTIC_RECORD_KEYS,
@@ -39,6 +40,7 @@ const PAGE_DIAGNOSTIC_INSTANCE_ID = 'wordpress-host';
 const HOST_LOAD_DIAGNOSTIC_CODE = 'CIM-HST-001';
 const HOST_MOUNT_DIAGNOSTIC_CODE = 'CIM-HST-004';
 const RENDERER_RESOLUTION_DIAGNOSTIC_CODE = 'CIM-RND-001';
+const EXPERIENCE_FAULT_CODE_PATTERN = /^CIM-EXP-\d{3}$/;
 
 function fail(message) {
   throw new TypeError(message);
@@ -136,6 +138,50 @@ function errorMessage(error) {
   } catch {
     return 'Unknown WordPress Host failure.';
   }
+}
+
+function readStructuredExperienceFault(error) {
+  if (error === null || typeof error !== 'object') return null;
+  const descriptor = Object.getOwnPropertyDescriptor(error, 'fault');
+  if (!descriptor?.enumerable || !('value' in descriptor)) return null;
+  const fault = descriptor.value;
+  if (
+    fault === null ||
+    typeof fault !== 'object' ||
+    Array.isArray(fault) ||
+    !Object.isFrozen(fault)
+  ) {
+    return null;
+  }
+
+  const expectedKeys = ['code', 'component', 'recoveryClass'];
+  const keys = Reflect.ownKeys(fault);
+  if (
+    keys.some((key) => typeof key !== 'string') ||
+    keys.length !== expectedKeys.length ||
+    expectedKeys.some((key) => !keys.includes(key))
+  ) {
+    return null;
+  }
+
+  const descriptors = Object.getOwnPropertyDescriptors(fault);
+  if (expectedKeys.some((key) => !descriptors[key]?.enumerable || !('value' in descriptors[key]))) {
+    return null;
+  }
+
+  const code = descriptors.code.value;
+  const component = descriptors.component.value;
+  const recoveryClass = descriptors.recoveryClass.value;
+  if (
+    typeof code !== 'string' ||
+    !EXPERIENCE_FAULT_CODE_PATTERN.test(code) ||
+    component !== FAULT_COMPONENT.EXPERIENCE ||
+    recoveryClass !== FAULT_RECOVERY_CLASS.FALLBACK
+  ) {
+    return null;
+  }
+
+  return fault;
 }
 
 function reportDiagnostic(report, { code, component = 'host', instanceId, operation, error }) {
@@ -379,13 +425,16 @@ export function createWordPressLiveHost(optionsInput) {
       commandPorts.delete(root);
       await cleanupInstance(instance, report, instanceId, 'failed_mount_cleanup');
       projectFallback(root, report, instanceId);
+      const structuredExperienceFault = stage === 'experience_load'
+        ? readStructuredExperienceFault(error)
+        : null;
       reportDiagnostic(report, {
-        code: stage === 'experience_load'
+        code: structuredExperienceFault?.code ?? (stage === 'experience_load'
           ? HOST_LOAD_DIAGNOSTIC_CODE
           : stage === 'renderer_resolve'
             ? RENDERER_RESOLUTION_DIAGNOSTIC_CODE
-            : HOST_MOUNT_DIAGNOSTIC_CODE,
-        component: stage === 'renderer_resolve' ? 'renderer' : 'host',
+            : HOST_MOUNT_DIAGNOSTIC_CODE),
+        component: structuredExperienceFault?.component ?? (stage === 'renderer_resolve' ? 'renderer' : 'host'),
         instanceId,
         operation: stage,
         error
