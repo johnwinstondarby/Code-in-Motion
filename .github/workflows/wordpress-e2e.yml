@@ -24,7 +24,7 @@ jobs:
       - name: Install repository verification dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
 
-      - name: Install pinned Playwright test runner for R8
+      - name: Install pinned Playwright test runner for WordPress E2E
         run: npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
 
       - name: Install Chromium for Playwright
@@ -33,14 +33,23 @@ jobs:
       - name: Start authoritative Docker wp-env
         run: npm run --silent wp-env -- start --update
 
-      - name: Create CiM browser diagnostic page
+      - name: Create CiM browser diagnostic pages
         shell: bash
         run: |
           set -euo pipefail
-          existing_id="$(npm run --silent wp-env -- run cli wp post list --post_type=page --name=cim-e2e --field=ID | tail -n 1)"
-          if [[ -n "$existing_id" ]]; then
-            npm run --silent wp-env -- run cli wp post delete "$existing_id" --force
-          fi
+
+          delete_page() {
+            local slug="$1"
+            local existing_id
+            existing_id="$(npm run --silent wp-env -- run cli wp post list --post_type=page --name="$slug" --field=ID | tail -n 1)"
+            if [[ -n "$existing_id" ]]; then
+              npm run --silent wp-env -- run cli wp post delete "$existing_id" --force
+            fi
+          }
+
+          delete_page cim-e2e
+          delete_page cim-e2e-r9
+
           npm run --silent wp-env -- run cli wp post create \
             --post_type=page \
             --post_status=publish \
@@ -48,7 +57,18 @@ jobs:
             --post_name='cim-e2e' \
             --post_content='[cim experience="synthetic-wordpress"]CiM E2E fallback.[/cim]'
 
-      - name: Run R8 production mount and Transport navigation proof
+          r9_content='[cim experience="synthetic-wordpress" instance="r9-one"]R9 one fallback.[/cim]
+          [cim experience="synthetic-wordpress" instance="r9-two"]R9 two fallback.[/cim]
+          [cim experience="synthetic-wordpress" instance="r9-three"]R9 three fallback.[/cim]'
+
+          npm run --silent wp-env -- run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM R9 Isolation E2E' \
+            --post_name='cim-e2e-r9' \
+            --post_content="$r9_content"
+
+      - name: Run R8/R9 production browser proofs
         env:
           CIM_WP_BASE_URL: http://localhost:8888
         run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs --reporter=line
