@@ -1,5 +1,5 @@
 import { readFile, stat } from 'node:fs/promises';
-import { dirname, extname, relative, resolve, sep } from 'node:path';
+import { dirname, extname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -23,9 +23,7 @@ function repoPath(path) {
 
 function assertInside(parent, child, label) {
   const rel = relative(parent, child);
-  if (rel === '' || (!rel.startsWith(`..${sep}`) && rel !== '..' && !resolve(child).startsWith(`${resolve(parent)}${sep}..${sep}`))) {
-    return;
-  }
+  if (rel === '' || (!rel.startsWith(`..${sep}`) && rel !== '..' && !isAbsolute(rel))) return;
   fail(`${label} escapes ${repoPath(parent)}: ${repoPath(child)}`);
 }
 
@@ -36,14 +34,79 @@ function assertAllowedModuleSource(path) {
   }
 }
 
+function stripComments(source) {
+  let result = '';
+  let mode = 'code';
+  let quote = null;
+
+  for (let i = 0; i < source.length; i += 1) {
+    const char = source[i];
+    const next = source[i + 1];
+
+    if (mode === 'line-comment') {
+      if (char === '\n') {
+        result += '\n';
+        mode = 'code';
+      } else {
+        result += ' ';
+      }
+      continue;
+    }
+
+    if (mode === 'block-comment') {
+      if (char === '*' && next === '/') {
+        result += '  ';
+        i += 1;
+        mode = 'code';
+      } else {
+        result += char === '\n' ? '\n' : ' ';
+      }
+      continue;
+    }
+
+    if (mode === 'string') {
+      result += char;
+      if (char === '\\') {
+        if (next !== undefined) {
+          result += next;
+          i += 1;
+        }
+      } else if (char === quote) {
+        mode = 'code';
+        quote = null;
+      }
+      continue;
+    }
+
+    if (char === '/' && next === '/') {
+      result += '  ';
+      i += 1;
+      mode = 'line-comment';
+    } else if (char === '/' && next === '*') {
+      result += '  ';
+      i += 1;
+      mode = 'block-comment';
+    } else if (char === '\'' || char === '"' || char === '`') {
+      result += char;
+      mode = 'string';
+      quote = char;
+    } else {
+      result += char;
+    }
+  }
+
+  return result;
+}
+
 function moduleSpecifiers(source) {
   const specifiers = new Set();
+  const uncommented = stripComments(source);
   const patterns = [
     /\b(?:import|export)\s+(?:[^'";]*?\s+from\s+)?['"]([^'"]+)['"]/g,
     /\bimport\s*\(\s*['"]([^'"]+)['"]\s*\)/g
   ];
   for (const pattern of patterns) {
-    for (const match of source.matchAll(pattern)) specifiers.add(match[1]);
+    for (const match of uncommented.matchAll(pattern)) specifiers.add(match[1]);
   }
   return [...specifiers];
 }
