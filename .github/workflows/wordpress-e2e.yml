@@ -49,6 +49,8 @@ jobs:
 
           delete_page cim-e2e
           delete_page cim-e2e-r9
+          delete_page cim-e2e-r11-missing
+          delete_page cim-e2e-r11-duplicate
 
           npm run --silent wp-env -- run cli wp post create \
             --post_type=page \
@@ -68,10 +70,30 @@ jobs:
             --post_name='cim-e2e-r9' \
             --post_content="$r9_content"
 
-      - name: Run R8/R9/R10 production browser proofs
+          r11_missing='[cim experience="missing-experience" instance="r11-missing"]R11 missing fallback.[/cim]
+          [cim experience="synthetic-wordpress" instance="r11-good"]R11 healthy sibling fallback.[/cim]'
+
+          npm run --silent wp-env -- run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM R11 Missing Experience' \
+            --post_name='cim-e2e-r11-missing' \
+            --post_content="$r11_missing"
+
+          r11_duplicate='[cim experience="synthetic-wordpress" instance="r11-duplicate"]R11 duplicate first fallback.[/cim]
+          [cim experience="synthetic-wordpress" instance="r11-duplicate"]R11 duplicate second fallback.[/cim]'
+
+          npm run --silent wp-env -- run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM R11 Duplicate Instance' \
+            --post_name='cim-e2e-r11-duplicate' \
+            --post_content="$r11_duplicate"
+
+      - name: Run R8/R9/R10/R11 production browser proofs
         env:
           CIM_WP_BASE_URL: http://localhost:8888
-        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs --reporter=line
+        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs tests/e2e/wordpress-fault-matrix.spec.mjs --reporter=line
 
       - name: Stop wp-env
         if: always()
