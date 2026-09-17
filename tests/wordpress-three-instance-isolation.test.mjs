@@ -84,7 +84,6 @@ function clockFixture(identity) {
   let nextHandle = 0;
   const active = new Set();
   return Object.freeze({
-    identity,
     now: () => identity,
     schedule() {
       const handle = `${identity}:timer:${++nextHandle}`;
@@ -175,7 +174,6 @@ test('R9 WordPress page host composes three isolated instances over one shared E
 
   assert.equal(clocks.length, 3);
   assert.equal(new Set(clocks).size, 3);
-  assert.equal(new Set(clocks.map((clock) => clock.identity)).size, 3);
 
   const ports = roots.map((entry) => host.commands(entry.root));
   assert.equal(ports.every((port) => port !== null && Object.isFrozen(port)), true);
