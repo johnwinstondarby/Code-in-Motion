@@ -265,3 +265,27 @@ Node 22.23.2
 ```
 
 R14 therefore establishes repeatable archive construction for one source commit and one declared build environment. Cross-platform reproducibility and install-from-ZIP behavior are separate concerns; fresh install from the ZIP is R15.
+
+## R15 fresh install from release ZIP
+
+R15 proves the release artifact itself, independently of the repository-mounted development plugin.
+
+The authoritative `zip-install-e2e` job starts a separate Docker-backed `wp-env` configuration with WordPress 6.5.10, PHP 7.4, `plugins: []`, and a dedicated port. Before installation, WP-CLI must confirm that `code-in-motion` is absent.
+
+The job then builds the R14 release artifact and installs `code-in-motion-0.1.0.zip` through the normal WP-CLI plugin ZIP path with activation enabled. Acceptance requires:
+
+- the installed plugin reports version `0.1.0` and status `active`;
+- `wp-content/plugins/code-in-motion/` is a real extracted directory rather than a symlink to the repository;
+- the installed plugin contains exactly 55 files;
+- repository-only `tests/`, `tools/`, and `package.json` are absent from the installed plugin tree;
+- the browser executes the production path from `/wp-content/plugins/code-in-motion/`;
+- the ES-module graph resolves through the version-bearing `/wordpress/assets/modules/0.1.0/` subtree produced by the release builder;
+- the existing R8, R9, R10, and R11 browser proofs pass unchanged against the installed ZIP.
+
+The authoritative R15 browser run executed 10 tests and passed all 10. The release ZIP used the reproducible R14 SHA-256:
+
+```text
+b91244038f827098e928139067695640f460afcf4a8f1a047a59e374fdf322b8
+```
+
+R15 therefore closes the repo-tree-versus-artifact evidence gap: the production mount, navigation, isolation, lifecycle, and fault-containment paths work from a normal fresh WordPress installation of the release ZIP. Upgrade-over-install behavior remains R16.
