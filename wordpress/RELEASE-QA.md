@@ -78,9 +78,9 @@ Authoritative shortcode/sanitizer fixtures are generated only from Docker-backed
 
 A hand-authored equivalent and Playground-rendered output do not qualify as the Release fixture.
 
-## R8 browser E2E split
+## R8 browser E2E
 
-R8 is intentionally split into two evidence gates rather than introducing a test-only browser authority surface.
+R8 is complete as two evidence gates. Both use a real Chromium browser against Docker-backed `wp-env` and the production WordPress plugin path.
 
 ### R8a — production-path mount
 
@@ -104,6 +104,39 @@ The Playwright version used by this gate is pinned in CI. Browser E2E remains do
 
 ### R8b — semantic navigation
 
-The current WordPress page Host exposes only `mount()` and `dispose()`. It does not expose a learner/browser navigation authority surface. R8b therefore remains open until a production transport/control surface exists.
+The production WordPress Host now exposes a root-scoped command projection in addition to `mount()` and `dispose()`:
 
-A test-only global, direct Runtime import, or alternate Host composition does not qualify as R8b evidence.
+```text
+commands(root)
+```
+
+A command port exists only for a successfully mounted invocation root. It is frozen and contains exactly:
+
+```text
+play
+pause
+next
+previous
+seek
+home
+end
+restart
+```
+
+It exposes no Runtime read surface, event surface, identity object, reduced-motion authority, or disposal authority. The projection is removed synchronously when page-host disposal starts.
+
+The Host does not import Transport. `bootstrap-module.mjs` remains the outer composition root: it retrieves the command-only port, creates the existing Transport controller, and installs the existing scoped keyboard binding through `wordpress/assets/transport-binding.mjs`. That binding gives the invocation root a temporary `tabindex="0"` while active and restores the previous value on disposal.
+
+The authoritative browser proof focuses the real CiM invocation root and sends `ArrowRight`. The production Transport path must advance the synthetic Experience from:
+
+```text
+initial / node A
+```
+
+to:
+
+```text
+step-01 / node B
+```
+
+The test also requires the browser to fetch the shipped Transport controller and keyboard-binding modules through the production module graph. No test-only global, direct Runtime import, alternate Host composition, or direct renderer mutation qualifies as R8 evidence.
