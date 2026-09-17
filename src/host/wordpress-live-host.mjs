@@ -14,7 +14,7 @@ export const WORDPRESS_LIVE_HOST_OPTIONS_KEYS = Object.freeze([
   'diagnostics'
 ]);
 
-export const WORDPRESS_LIVE_HOST_KEYS = Object.freeze(['mount', 'commands', 'dispose']);
+export const WORDPRESS_LIVE_HOST_KEYS = Object.freeze(['mount', 'commands', 'disposeRoot', 'dispose']);
 export const WORDPRESS_EXPERIENCE_LOADER_KEYS = Object.freeze(['load']);
 export const WORDPRESS_RENDERER_RESOLVER_KEYS = Object.freeze(['resolve']);
 export const WORDPRESS_CLOCK_FACTORY_KEYS = Object.freeze(['create']);
@@ -294,7 +294,7 @@ export function createWordPressLiveHost(optionsInput) {
   let reducedMotionSource = null;
   const mountedRecords = [];
   const commandPorts = new Map();
-  const disposeStarted = new Set();
+  const rootDisposePromises = new Map();
 
   function isDisposing() {
     return lifecycle === 'disposing' || lifecycle === 'disposed';
@@ -471,17 +471,33 @@ export function createWordPressLiveHost(optionsInput) {
     return commandPorts.get(root) ?? null;
   }
 
-  function startMountedDisposals(pending, errors) {
+  function startRecordDisposal(record) {
+    const existing = rootDisposePromises.get(record.root);
+    if (existing !== undefined) return existing;
+
+    commandPorts.delete(record.root);
+    projectFallback(record.root, report, record.instanceId);
+
+    let pending;
+    try {
+      pending = Promise.resolve(record.instance.dispose()).then(() => true);
+    } catch (error) {
+      pending = Promise.reject(error);
+    }
+    rootDisposePromises.set(record.root, pending);
+    return pending;
+  }
+
+  function disposeRoot(root) {
+    const record = mountedRecords.find((candidate) => candidate.root === root);
+    if (record === undefined) return Promise.resolve(false);
+    return startRecordDisposal(record);
+  }
+
+  function startMountedDisposals(pending) {
     for (const record of mountedRecords) {
-      if (disposeStarted.has(record)) continue;
-      disposeStarted.add(record);
-      commandPorts.delete(record.root);
-      projectFallback(record.root, report, record.instanceId);
-      try {
-        pending.push(Promise.resolve(record.instance.dispose()));
-      } catch (error) {
-        errors.push(error);
-      }
+      const rootDisposal = startRecordDisposal(record);
+      if (!pending.includes(rootDisposal)) pending.push(rootDisposal);
     }
   }
 
@@ -499,7 +515,7 @@ export function createWordPressLiveHost(optionsInput) {
     const pending = [];
     const errors = [];
 
-    startMountedDisposals(pending, errors);
+    startMountedDisposals(pending);
 
     if (reducedMotionSource !== null) {
       try {
@@ -516,7 +532,7 @@ export function createWordPressLiveHost(optionsInput) {
     }
 
     Promise.resolve(mountPromise).catch(() => undefined).then(() => {
-      startMountedDisposals(pending, errors);
+      startMountedDisposals(pending);
       return Promise.allSettled(pending);
     }).then((settlements) => {
       for (const settlement of settlements) {
@@ -535,7 +551,7 @@ export function createWordPressLiveHost(optionsInput) {
     return disposePromise;
   }
 
-  const host = { mount, commands, dispose };
+  const host = { mount, commands, disposeRoot, dispose };
   assertExactKeys(host, WORDPRESS_LIVE_HOST_KEYS, 'WordPress live Host');
   return Object.freeze(host);
 }
