@@ -1,3 +1,4 @@
+import { FAULT_COMPONENT, FAULT_RECOVERY_CLASS } from '../contracts/faults.mjs';
 import { freezeValidatedExperience } from './freeze-validated-experience.mjs';
 import { validateExperience } from './validate-experience.mjs';
 
@@ -13,6 +14,11 @@ export class ExperienceValidationError extends TypeError {
     this.name = 'ExperienceValidationError';
     this.code = first?.code ?? 'CIM-EXP-002';
     this.errors = frozenErrors;
+    this.fault = Object.freeze({
+      code: this.code,
+      component: FAULT_COMPONENT.EXPERIENCE,
+      recoveryClass: FAULT_RECOVERY_CLASS.FALLBACK
+    });
   }
 }
 
