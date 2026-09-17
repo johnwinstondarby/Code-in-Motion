@@ -1,10 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 const BASE_URL = process.env.CIM_WP_BASE_URL ?? 'http://127.0.0.1:8894';
+const BROWSER_NAME = process.env.CIM_R20_BROWSER ?? 'chromium';
 const PLUGIN_VERSION = process.env.CIM_PLUGIN_VERSION ?? '0.1.0';
 const PLUGIN_PREFIX = '/wp-content/plugins/code-in-motion/';
 const MODULE_PREFIX = `${PLUGIN_PREFIX}wordpress/assets/modules/${PLUGIN_VERSION}/`;
 const EXPERIENCE_ROUTE = '**/wordpress/experiences/synthetic-wordpress.json*';
+
+test.use({ browserName: BROWSER_NAME });
 
 function renderedWithin(root) {
   return root
