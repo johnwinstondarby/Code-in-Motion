@@ -13,6 +13,7 @@ const PLAYGROUND_PREVIEW_WORKFLOW_PATH = resolve(ROOT, '.github', 'workflows', '
 const REQUIRED_EXTERNAL_ASSETS = Object.freeze([
   resolve(WORDPRESS_DIR, 'assets', 'bootstrap.js'),
   resolve(WORDPRESS_DIR, 'assets', 'bootstrap-module.mjs'),
+  resolve(WORDPRESS_DIR, 'assets', 'root-lifecycle-binding.mjs'),
   resolve(WORDPRESS_DIR, 'assets', 'cim.css')
 ]);
 
