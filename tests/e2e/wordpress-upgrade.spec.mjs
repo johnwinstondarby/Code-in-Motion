@@ -22,7 +22,7 @@ function renderedWithin(root) {
     .locator('section[data-cim-renderer="synthetic/v1"]');
 }
 
-test('R16 upgrades N to N+1 while a warm browser session rejects stale module URLs', async ({ page, context }) => {
+test('R16 upgrade and R17 post-upgrade diagnostic page smoke proof', async ({ page, context }) => {
   const client = await context.newCDPSession(page);
   await client.send('Network.enable');
   await client.send('Network.setCacheDisabled', { cacheDisabled: false });
@@ -83,6 +83,26 @@ test('R16 upgrades N to N+1 while a warm browser session rejects stale module UR
   expect(requests.some((url) => url.includes(`/wordpress/assets/modules/${CURRENT_VERSION}/wordpress/assets/bootstrap-module.mjs`))).toBe(true);
   expect(requests.some((url) => url.includes(`/wordpress/assets/modules/${CURRENT_VERSION}/wordpress/experiences/synthetic-wordpress.json`))).toBe(true);
   expect(requests.some((url) => url.includes(`/wordpress/assets/modules/${PRIOR_VERSION}/`))).toBe(false);
+
+  // R17: the page existed before the upgrade. Prove N+1 can mount it, navigate it, and dispose its root.
+  await root.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(renderedWithin(root)).toHaveAttribute('data-step', 'step-01');
+  await expect(renderedWithin(root)).toHaveAttribute('data-node', 'B');
+  await expect(renderedWithin(root).locator('[data-role="label"]')).toHaveText('Node B');
+
+  const rootHandle = await root.elementHandle();
+  if (rootHandle === null) throw new Error('R17 post-upgrade root handle missing.');
+  await rootHandle.evaluate((element) => element.remove());
+
+  await expect.poll(
+    () => rootHandle.evaluate((element) => element.getAttribute('data-cim-state')),
+    { timeout: 10000 }
+  ).toBe('fallback');
+  await expect.poll(
+    () => rootHandle.evaluate((element) => element.getAttribute('tabindex')),
+    { timeout: 10000 }
+  ).toBe(null);
 
   await client.detach();
 });
