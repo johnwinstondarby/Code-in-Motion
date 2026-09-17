@@ -733,3 +733,159 @@ jobs:
         continue-on-error: true
         run: npm run --silent wp-env -- --config="${CIM_R19_CONFIG}" stop
 
+  browser-family-matrix:
+    name: Browser ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        browser:
+          - chromium
+          - firefox
+          - webkit
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set R20 workspace paths
+        shell: bash
+        run: |
+          echo "CIM_R20_CONFIG=r20-wp-env.json" >> "${GITHUB_ENV}"
+          echo "CIM_R20_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r20-artifact" >> "${GITHUB_ENV}"
+          echo "CIM_R20_BROWSER=${{ matrix.browser }}" >> "${GITHUB_ENV}"
+          echo "CIM_R20_WORDPRESS=7.1.1" >> "${GITHUB_ENV}"
+          echo "CIM_R20_PHP=8.5" >> "${GITHUB_ENV}"
+
+      - name: Set up pinned release Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Install repository dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Build exact WordPress release ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run build:wordpress
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          echo "CIM_PLUGIN_VERSION=${VERSION}" >> "${GITHUB_ENV}"
+
+      - name: Prepare isolated R20 environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"
+
+          mkdir -p "${CIM_R20_ARTIFACT_DIR}"
+          cp "dist/${ZIP_NAME}" "${CIM_R20_ARTIFACT_DIR}/${ZIP_NAME}"
+          cp "dist/${ZIP_NAME}.sha256" "${CIM_R20_ARTIFACT_DIR}/${ZIP_NAME}.sha256"
+          (cd "${CIM_R20_ARTIFACT_DIR}" && sha256sum --check "${ZIP_NAME}.sha256")
+
+          node --input-type=module <<'NODE'
+          import { writeFile } from 'node:fs/promises';
+
+          const config = {
+            $schema: 'https://schemas.wp.org/trunk/wp-env.json',
+            core: `WordPress/WordPress#${process.env.CIM_R20_WORDPRESS}`,
+            phpVersion: process.env.CIM_R20_PHP,
+            plugins: [],
+            port: 8894,
+            testsEnvironment: false,
+            config: {
+              WP_DEBUG: true,
+              SCRIPT_DEBUG: true
+            },
+            mappings: {
+              'wp-content/r20-artifact': process.env.CIM_R20_ARTIFACT_DIR
+            }
+          };
+
+          await writeFile(process.env.CIM_R20_CONFIG, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
+          NODE
+
+      - name: Install pinned Playwright test runner
+        run: npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
+
+      - name: Install selected browser for Playwright
+        run: npx playwright install --with-deps "${CIM_R20_BROWSER}"
+
+      - name: Start R20 WordPress environment
+        run: npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" start --update
+
+      - name: Install release ZIP and verify fixed environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"
+
+          wp_env() {
+            npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" "$@"
+          }
+
+          CORE_VERSION="$(wp_env run cli wp core version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"
+          test "${CORE_VERSION}" = "${CIM_R20_WORDPRESS}"
+
+          PHP_RUNTIME="$(wp_env run cli wp eval 'echo PHP_VERSION . PHP_EOL;' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+' | tail -n 1)"
+          case "${PHP_RUNTIME}" in
+            "${CIM_R20_PHP}".*) ;;
+            *)
+              echo "R20 expected PHP ${CIM_R20_PHP}.x but found ${PHP_RUNTIME}." >&2
+              exit 1
+              ;;
+          esac
+
+          if wp_env run cli wp plugin is-installed code-in-motion >/dev/null 2>&1; then
+            echo "R20 expected Code in Motion to be absent before ZIP installation." >&2
+            exit 1
+          fi
+
+          wp_env run cli wp plugin install "wp-content/r20-artifact/${ZIP_NAME}" --activate
+
+          STATUS="$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active$' | tail -n 1)"
+          VERSION="$(wp_env run cli wp plugin get code-in-motion --field=version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"
+          test "${STATUS}" = "active"
+          test "${VERSION}" = "${CIM_PLUGIN_VERSION}"
+
+          echo "PASS: R20 fixed environment WordPress ${CORE_VERSION}, PHP ${PHP_RUNTIME}, CiM ${VERSION}, browser ${CIM_R20_BROWSER}."
+
+      - name: Create R20 browser diagnostic pages
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wp_env() {
+            npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" "$@"
+          }
+
+          wp_env run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM Browser E2E' \
+            --post_name='cim-e2e' \
+            --post_content='[cim experience="synthetic-wordpress"]CiM E2E fallback.[/cim]'
+
+          r9_content='[cim experience="synthetic-wordpress" instance="r9-one"]R9 one fallback.[/cim]
+          [cim experience="synthetic-wordpress" instance="r9-two"]R9 two fallback.[/cim]
+          [cim experience="synthetic-wordpress" instance="r9-three"]R9 three fallback.[/cim]'
+
+          wp_env run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM R9 Isolation E2E' \
+            --post_name='cim-e2e-r9' \
+            --post_content="${r9_content}"
+
+      - name: Run R20 browser-family smoke suite
+        env:
+          CIM_WP_BASE_URL: http://localhost:8894
+        run: npx playwright test tests/e2e/wordpress-browser-smoke.spec.mjs --reporter=line
+
+      - name: Stop R20 browser environment
+        if: always()
+        continue-on-error: true
+        run: npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop
+
