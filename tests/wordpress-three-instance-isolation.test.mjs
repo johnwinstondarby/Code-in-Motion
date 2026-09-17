@@ -123,7 +123,8 @@ function reducedMotionCapabilities() {
     subscribe() {
       const unsubscribe = () => undefined;
       return Object.freeze(unsubscribe);
-    }
+    },
+    dispose() {}
   });
   return { preference, changes };
 }
