@@ -8,6 +8,7 @@ import {
   createSyntheticRenderer,
   SYNTHETIC_RENDERER_ID
 } from '../../src/renderers/subjects/synthetic/renderer.mjs';
+import { createWordPressRootLifecycleBinding } from './root-lifecycle-binding.mjs';
 import { createWordPressTransportBinding } from './transport-binding.mjs';
 
 const SYNTHETIC_EXPERIENCE_ID = 'synthetic-wordpress';
@@ -62,6 +63,8 @@ const host = createWordPressLiveHost({
 });
 
 const transportBindings = new Map();
+let rootLifecycleBinding = null;
+let disposalStarted = false;
 
 function diagnosticInstanceId(root) {
   const explicit = root.getAttribute('data-cim-instance');
@@ -72,25 +75,62 @@ function diagnosticInstanceId(root) {
     : 'wordpress-host';
 }
 
+function reportBootstrapError(root, operation, error) {
+  diagnostics.report(Object.freeze({
+    code: 'CIM-HST-004',
+    component: 'host',
+    instanceId: root === null ? 'wordpress-host' : diagnosticInstanceId(root),
+    operation,
+    message: error instanceof Error ? error.message : String(error)
+  }));
+}
+
+function disposeTransportBinding(root, operation) {
+  const binding = transportBindings.get(root);
+  if (binding === undefined) return;
+  transportBindings.delete(root);
+  try {
+    binding.dispose();
+  } catch (error) {
+    reportBootstrapError(root, operation, error);
+  }
+}
+
+function disposeDetachedRoot(root) {
+  disposeTransportBinding(root, 'detached_transport_dispose');
+  Promise.resolve(host.disposeRoot(root)).catch((error) => {
+    reportBootstrapError(root, 'detached_root_dispose', error);
+  });
+}
+
 async function mountPageHost() {
   const result = await host.mount();
   const roots = Array.from(document.querySelectorAll(ROOT_SELECTOR));
+  const mountedRoots = [];
 
   for (const root of roots) {
     const commandPort = host.commands(root);
     if (commandPort === null) continue;
+    mountedRoots.push(root);
 
     try {
       const binding = createWordPressTransportBinding({ root, commandPort });
       transportBindings.set(root, binding);
     } catch (error) {
-      diagnostics.report(Object.freeze({
-        code: 'CIM-HST-004',
-        component: 'host',
-        instanceId: diagnosticInstanceId(root),
-        operation: 'transport_bind',
-        message: error instanceof Error ? error.message : String(error)
-      }));
+      reportBootstrapError(root, 'transport_bind', error);
+    }
+  }
+
+  if (mountedRoots.length > 0) {
+    try {
+      rootLifecycleBinding = createWordPressRootLifecycleBinding({
+        MutationObserver: window.MutationObserver,
+        observeTarget: document.documentElement,
+        roots: Object.freeze([...mountedRoots]),
+        onDetached: disposeDetachedRoot
+      });
+    } catch (error) {
+      reportBootstrapError(null, 'root_lifecycle_bind', error);
     }
   }
 
@@ -98,43 +138,28 @@ async function mountPageHost() {
 }
 
 mountPageHost().catch((error) => {
-  diagnostics.report(Object.freeze({
-    code: 'CIM-HST-004',
-    component: 'host',
-    instanceId: 'wordpress-host',
-    operation: 'bootstrap_mount',
-    message: error instanceof Error ? error.message : String(error)
-  }));
+  reportBootstrapError(null, 'bootstrap_mount', error);
 });
 
-let disposalStarted = false;
 function disposePageHost() {
   if (disposalStarted) return;
   disposalStarted = true;
 
-  for (const [root, binding] of transportBindings) {
+  if (rootLifecycleBinding !== null) {
     try {
-      binding.dispose();
+      rootLifecycleBinding.dispose();
     } catch (error) {
-      diagnostics.report(Object.freeze({
-        code: 'CIM-HST-004',
-        component: 'host',
-        instanceId: diagnosticInstanceId(root),
-        operation: 'transport_dispose',
-        message: error instanceof Error ? error.message : String(error)
-      }));
+      reportBootstrapError(null, 'root_lifecycle_dispose', error);
     }
+    rootLifecycleBinding = null;
   }
-  transportBindings.clear();
+
+  for (const root of [...transportBindings.keys()]) {
+    disposeTransportBinding(root, 'transport_dispose');
+  }
 
   Promise.resolve(host.dispose()).catch((error) => {
-    diagnostics.report(Object.freeze({
-      code: 'CIM-HST-004',
-      component: 'host',
-      instanceId: 'wordpress-host',
-      operation: 'bootstrap_dispose',
-      message: error instanceof Error ? error.message : String(error)
-    }));
+    reportBootstrapError(null, 'bootstrap_dispose', error);
   });
 }
 
