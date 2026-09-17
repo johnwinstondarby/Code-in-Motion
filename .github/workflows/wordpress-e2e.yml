@@ -68,10 +68,10 @@ jobs:
             --post_name='cim-e2e-r9' \
             --post_content="$r9_content"
 
-      - name: Run R8/R9 production browser proofs
+      - name: Run R8/R9/R10 production browser proofs
         env:
           CIM_WP_BASE_URL: http://localhost:8888
-        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs --reporter=line
+        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs --reporter=line
 
       - name: Stop wp-env
         if: always()
