@@ -240,3 +240,28 @@ r9-three ready / initial / A
 Reinserting the already-disposed `r9-one` node leaves it in fallback and does not recreate its Transport binding during this checkpoint. Dynamic remount is outside R10 scope.
 
 The browser proof also requires the shipped `root-lifecycle-binding.mjs` asset to load through the production module graph and permits no request failures, browser console errors, or page errors. The WordPress packaging gate now requires this external asset, preventing release packaging from silently omitting the R10 lifecycle path.
+
+## R14 reproducible release build
+
+R14 proves that the R13 release builder reproduces the exact same archive bytes from the same source commit and declared build environment.
+
+The `release-reproducibility` CI job uses the release Node version pinned by `.nvmrc`. It performs this sequence:
+
+1. install dependencies from the lockfile with `npm ci`;
+2. run `npm run build:wordpress` and preserve the ZIP, checksum sidecar, checked-out commit SHA, Node version, and computed ZIP SHA-256 outside the repository workspace;
+3. restore the repository with `git reset --hard HEAD` and `git clean -ffdx`, which removes the first `dist/` tree and `node_modules/`;
+4. verify the repository is clean;
+5. reinstall from the same lockfile and run the same release build command a second time;
+6. require the commit SHA and Node version to match the first build;
+7. require the two ZIP SHA-256 values to match;
+8. require `cmp` byte equality for both ZIP files and both checksum sidecars;
+9. validate the second checksum sidecar with `sha256sum --check`.
+
+The current `code-in-motion-0.1.0.zip` reproducibility proof produces:
+
+```text
+SHA-256 b91244038f827098e928139067695640f460afcf4a8f1a047a59e374fdf322b8
+Node 22.23.2
+```
+
+R14 therefore establishes repeatable archive construction for one source commit and one declared build environment. Cross-platform reproducibility and install-from-ZIP behavior are separate concerns; fresh install from the ZIP is R15.
