@@ -125,6 +125,83 @@ code-in-motion/wordpress/assets/modules/<plugin-version>/wordpress/experiences/s
 
 The final distributable tree also requires release metadata, `readme.txt`, and `LICENSE`. Their content is completed under R22. R12 reserves those root-level paths but does not select a software license.
 
+## R13 deterministic builder
+
+R13 implements the contract above with one command:
+
+```text
+npm run build:wordpress
+```
+
+The exact release-build Node runtime is pinned in `.nvmrc`. The builder fails before staging when the active Node runtime does not match that version exactly. General CiM verification retains the broader supported Node matrix; the exact pin applies to release artifact construction.
+
+The command creates:
+
+```text
+dist/code-in-motion/
+dist/code-in-motion-<plugin-version>.zip
+dist/code-in-motion-<plugin-version>.zip.sha256
+```
+
+`dist/` is generated output and is excluded from Git.
+
+### Staging manifest
+
+The builder stages only these inputs:
+
+```text
+code-in-motion.php
+wordpress/code-in-motion.php
+wordpress/assets/bootstrap.js
+wordpress/assets/cim.css
+src/**/*.mjs
+wordpress/assets/**/*.mjs
+wordpress/experiences/synthetic-wordpress.json
+```
+
+The `src/**/*.mjs` and `wordpress/assets/**/*.mjs` production modules are relocated beneath the version-bearing module root while preserving repository-relative topology. The synthetic Experience follows the same mapping. The stable PHP, classic bootstrap, and stylesheet remain at their R12 paths.
+
+The classic bootstrap must contain exactly one repository-tree module handoff. During staging, that one target changes from:
+
+```text
+./bootstrap-module.mjs
+```
+
+to:
+
+```text
+./modules/<plugin-version>/wordpress/assets/bootstrap-module.mjs
+```
+
+No other classic-bootstrap source is rewritten.
+
+The staged file list is compared against the manifest generated from those inputs. Duplicate destinations or unexpected staged files fail the build.
+
+### Archive policy
+
+The ZIP writer is part of the repository build code and uses fixed archive policy:
+
+- lexicographic POSIX entry ordering;
+- one `code-in-motion/` top-level prefix;
+- DEFLATE method with level 9, memory level 8, and the default zlib strategy;
+- fixed DOS timestamp of 1980-01-01 00:00:00;
+- Unix regular-file mode `0644` in central-directory attributes;
+- UTF-8 filename flag;
+- zero ZIP extra fields;
+- zero file comments and archive comment;
+- no duplicate entries;
+- no ZIP64 output in v1.
+
+Staged regular files are normalized to mode `0644`; staged directories are normalized to `0755`; staged file and directory timestamps use the same fixed epoch. The generated ZIP and SHA-256 sidecar also receive normalized file mode and timestamp metadata.
+
+The build prints the staged file count, exact Node version, archive name, and SHA-256. CI independently verifies the checksum, ZIP integrity, single top-level prefix, duplicate-entry absence, and equality between staged-file count and ZIP-entry count.
+
+R13 establishes deterministic build mechanics. R14 performs the independent repeated-clean-build proof that identical declared inputs produce the identical ZIP SHA-256.
+
 ## R12 exit rule
 
 R12 is complete when the release-tree contract and transitive import-containment gate are green on the branch. R13 must consume this contract rather than defining a second staging layout.
+
+## R13 exit rule
+
+R13 is complete when the pinned-runtime build command creates the R12-conforming staged tree and ZIP, unit tests prove the release-node rejection and fixed ZIP metadata contract, and CI verifies the generated archive structure and checksum. Repeated-build hash equality remains R14 scope.
