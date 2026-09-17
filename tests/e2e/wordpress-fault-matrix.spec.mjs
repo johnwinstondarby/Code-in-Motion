@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const BASE_URL = process.env.CIM_WP_BASE_URL ?? 'http://127.0.0.1:8888';
 const EXPERIENCE_ROUTE = '**/wordpress/experiences/synthetic-wordpress.json*';
+const BOOTSTRAP_MODULE_ROUTE = '**/wordpress/assets/bootstrap-module.mjs*';
 
 function cimConsoleRecords(page) {
   const records = [];
@@ -20,6 +21,14 @@ function cimConsoleRecords(page) {
   return records;
 }
 
+function cimConsoleTexts(page) {
+  const entries = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error' && message.text().startsWith('[CiM]')) entries.push(message.text());
+  });
+  return entries;
+}
+
 async function waitForDiagnostic(records, predicate, timeoutMs = 10000) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
@@ -28,6 +37,16 @@ async function waitForDiagnostic(records, predicate, timeoutMs = 10000) {
     await new Promise((resolve) => setTimeout(resolve, 25));
   }
   throw new Error(`Timed out waiting for CiM diagnostic. Records: ${JSON.stringify(records)}`);
+}
+
+async function waitForText(entries, predicate, timeoutMs = 10000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const match = entries.find(predicate);
+    if (match) return match;
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  }
+  throw new Error(`Timed out waiting for CiM console evidence. Entries: ${JSON.stringify(entries)}`);
 }
 
 function renderedWithin(root) {
@@ -135,4 +154,19 @@ test('R11 contains a duplicate explicit instance identity to the duplicate root'
     (record) => record.operation === 'invocation' && record.code === 'CIM-HST-004'
   );
   expect(diagnostic).toMatchObject({ component: 'host' });
+});
+
+test('R11 leaves static fallback visible when the bootstrap module cannot load', async ({ page }) => {
+  const texts = cimConsoleTexts(page);
+  await page.route(BOOTSTRAP_MODULE_ROUTE, async (route) => route.abort('failed'));
+
+  await page.goto(`${BASE_URL}/?pagename=cim-e2e`, { waitUntil: 'domcontentloaded' });
+  const root = page.locator('.cim[data-cim-experience="synthetic-wordpress"]');
+  await expect(root).toHaveCount(1);
+  await expect(root).not.toHaveAttribute('data-cim-state', 'ready');
+  await expect(root.locator('.cim-fallback')).toBeVisible();
+  await expect(renderedWithin(root)).toHaveCount(0);
+
+  const entry = await waitForText(texts, (text) => text.includes('WordPress bootstrap failed'));
+  expect(entry).toContain('[CiM]');
 });
