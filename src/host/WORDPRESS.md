@@ -6,9 +6,9 @@ Status: Production Host composition contract
 
 `wordpress-live-host.mjs` is the production JavaScript composition boundary between stable WordPress page markup and `createLiveHostCiMInstance()`.
 
-It owns page discovery, page-scoped reduced-motion observation, per-root live Host construction, initialization, readiness projection, static fallback preservation, and page teardown ordering.
+It owns page discovery, page-scoped reduced-motion observation, per-root live Host construction, initialization, readiness projection, root-scoped command-capability projection, static fallback preservation, and page teardown ordering.
 
-It does not own Experience storage policy, renderer registry contents, browser-clock implementation, WordPress PHP packaging, asset enqueueing, shortcode/block generation, or external URL/fragment parsing.
+It does not own Experience storage policy, renderer registry contents, browser-clock implementation, Transport implementation, WordPress PHP packaging, asset enqueueing, shortcode/block generation, or external URL/fragment parsing.
 
 ## Required Markup, Verbatim
 
@@ -100,6 +100,31 @@ diagnostics = { report }
 
 The page host does not acquire broader loader, renderer-registry, scheduler, logging, WordPress, or browser-global authority through these objects.
 
+The returned Host surface is exact and frozen:
+
+```text
+mount
+commands
+dispose
+```
+
+`commands(root)` is a capability projection, not a Runtime instance reference. Before successful mount, for a failed or unknown root, and after disposal begins, it returns `null`.
+
+For a successfully mounted root it returns one frozen command-only port with exactly:
+
+```text
+play
+pause
+next
+previous
+seek
+home
+end
+restart
+```
+
+The port exposes no `identity`, `read`, `events`, `initialize`, `adoptReducedMotion`, or `dispose` authority. Host imports no Transport implementation module. The outer composition layer may grant this command-only port to Transport.
+
 ## Mount Lifecycle
 
 For each discovered root, Host performs:
@@ -111,6 +136,7 @@ create clock
 createLiveHostCiMInstance(...)
 initialize()
 project ready
+project command-only capability
 ```
 
 One failed root projects fallback and does not prevent later roots from mounting.
@@ -131,6 +157,8 @@ A page with no CiM roots returns:
 
 without creating a reduced-motion source.
 
+A root never receives a command capability before successful initialization and readiness projection. If a later construction-stage failure occurs, any provisional command projection is removed before the root settles to fallback.
+
 ## Reduced-Motion Ownership
 
 One WordPress page host creates at most one Accessibility reduced-motion source.
@@ -139,11 +167,12 @@ All live instances receive the same source capabilities, but each `createLiveHos
 
 On page-host disposal:
 
-1. already-mounted live Host façades are told to dispose;
-2. each façade synchronously removes its own reduced-motion subscription before Runtime disposal settlement;
-3. the page host disposes the shared source-level listener;
-4. in-progress mount work is prevented from advancing into a lasting Runtime after the disposal decision;
-5. late-created instances are cleaned before they can remain mounted.
+1. command projections are removed synchronously for already-mounted roots;
+2. already-mounted live Host façades are told to dispose;
+3. each façade synchronously removes its own reduced-motion subscription before Runtime disposal settlement;
+4. the page host disposes the shared source-level listener;
+5. in-progress mount work is prevented from advancing into a lasting Runtime after the disposal decision;
+6. late-created instances are cleaned before they can remain mounted.
 
 `dispose()` is single-shot and returns the identical promise on success or rejection.
 
@@ -182,6 +211,16 @@ initialize({ stepId, source: 'deep_link' })
 
 The current page-host adapter does not read browser location and therefore does not parse that grammar. The WordPress packaging/deep-link resolver must consume the existing grammar, resolve the Experience and semantic boundary, and pass only the resolved boundary into Runtime through ADR 0011. Invalid or unresolvable targets remain `CIM-HST-002`. WordPress packaging must not create a second platform-specific deep-link grammar.
 
+## WordPress Transport Composition
+
+The WordPress browser bootstrap is the outer composition root for Host and Transport. After `mount()` settles, it discovers the same canonical invocation roots, requests each root's command-only capability with `commands(root)`, and grants that port to the existing Transport controller.
+
+`wordpress/assets/transport-binding.mjs` installs the existing scoped keyboard binding on that invocation root. It temporarily establishes `tabindex="0"` so the root can receive learner keyboard focus, and restores the previous `tabindex` on disposal.
+
+The binding owns no Runtime state and receives no Runtime instance. Arrow keys, Home, and End flow through the existing Transport controller and therefore use Transport command-source evidence rather than Host command-source defaults.
+
+This composition preserves the architecture rule that `src/host/` cannot import `src/transport/`. The WordPress packaging layer may import both because it is the composition boundary that grants capabilities between them.
+
 ## Packaging Output Verification
 
 The WordPress packaging checkpoint must verify the output produced by the production shortcode or block implementation after it has passed through the real WordPress rendering and sanitization path.
@@ -200,6 +239,6 @@ A hand-written HTML fixture may test the JavaScript adapter in isolation, but it
 
 ## Deployment Boundary
 
-A WordPress PHP plugin or browser bootstrap binds concrete implementations of the injected capabilities, emits the required invocation markup, resolves the existing deep-link grammar, and enqueues the CiM JavaScript/CSS assets. That packaging layer must preserve this module's exact capability and markup contracts rather than embedding Runtime policy in shortcode, block, or template code.
+A WordPress PHP plugin or browser bootstrap binds concrete implementations of the injected capabilities, emits the required invocation markup, resolves the existing deep-link grammar, composes Host with command-only Transport controls, and enqueues the CiM JavaScript/CSS assets. That packaging layer must preserve this module's exact capability and markup contracts rather than embedding Runtime policy in shortcode, block, or template code.
 
 See ADR 0036 for the accepted architecture decision.
