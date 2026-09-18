@@ -90,3 +90,41 @@ test('R27 Git basic cycle mounts through the production WordPress path and advan
   expect(requestFailures).toEqual([]);
   expect(consoleErrors).toEqual([]);
 });
+
+
+test('R27 Git deep link enters directly and hashchange seeks the mounted instance', async ({ page }) => {
+  const consoleErrors = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') consoleErrors.push(message.text());
+  });
+  page.on('pageerror', (error) => consoleErrors.push(error.message));
+
+  await page.goto(
+    `${BASE_URL}/?pagename=cim-e2e-git#cim/git-basic-cycle/step-05`,
+    { waitUntil: 'domcontentloaded' }
+  );
+
+  const root = page.locator('.cim[data-cim-experience="git-basic-cycle"]');
+  await expect(root).toHaveAttribute('data-cim-state', 'ready', { timeout: 10000 });
+
+  const rendered = root
+    .locator('[data-cim-renderer-root]')
+    .locator('section[data-cim-renderer="git/v1"]');
+
+  await expect(rendered).toHaveAttribute('data-step', 'step-05');
+  await expect(rendered).toHaveAttribute('data-git-focus', 'head');
+
+  await page.evaluate(() => {
+    window.location.hash = '#cim/git-basic-cycle/step-08';
+  });
+
+  await expect(rendered).toHaveAttribute('data-step', 'step-08');
+  await expect(rendered).toHaveAttribute('data-git-focus', 'reflog');
+
+  await page.evaluate(() => {
+    window.location.hash = '#reference';
+  });
+
+  await expect(rendered).toHaveAttribute('data-step', 'step-08');
+  expect(consoleErrors).toEqual([]);
+});
