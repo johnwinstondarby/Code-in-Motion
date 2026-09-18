@@ -48,6 +48,7 @@ jobs:
           }
 
           delete_page cim-e2e
+          delete_page cim-e2e-git
           delete_page cim-e2e-r9
           delete_page cim-e2e-r11-missing
           delete_page cim-e2e-r11-duplicate
@@ -58,6 +59,13 @@ jobs:
             --post_title='CiM Browser E2E' \
             --post_name='cim-e2e' \
             --post_content='[cim experience="synthetic-wordpress"]CiM E2E fallback.[/cim]'
+
+          npm run --silent wp-env -- run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM Git Basic Cycle E2E' \
+            --post_name='cim-e2e-git' \
+            --post_content='[cim experience="git-basic-cycle"]CiM Git fallback.[/cim]'
 
           r9_content='[cim experience="synthetic-wordpress" instance="r9-one"]R9 one fallback.[/cim]
           [cim experience="synthetic-wordpress" instance="r9-two"]R9 two fallback.[/cim]
@@ -93,7 +101,7 @@ jobs:
       - name: Run R8/R9/R10/R11 production browser proofs
         env:
           CIM_WP_BASE_URL: http://localhost:8888
-        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs tests/e2e/wordpress-fault-matrix.spec.mjs --reporter=line
+        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-git-basic-cycle.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs tests/e2e/wordpress-fault-matrix.spec.mjs --reporter=line
 
       - name: Stop wp-env
         if: always()
@@ -201,7 +209,7 @@ jobs:
           wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/tests && test ! -e wp-content/plugins/code-in-motion/tools && test ! -e wp-content/plugins/code-in-motion/package.json'
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
-          test "${INSTALLED_COUNT}" = "57"
+          test "${INSTALLED_COUNT}" = "59"
           echo "PASS: R15 fresh ZIP install (WordPress ${CORE_VERSION}, plugin ${VERSION}, ${INSTALLED_COUNT} installed files)."
 
       - name: Create artifact-backed browser diagnostic pages
@@ -219,6 +227,13 @@ jobs:
             --post_title='CiM Browser E2E' \
             --post_name='cim-e2e' \
             --post_content='[cim experience="synthetic-wordpress"]CiM E2E fallback.[/cim]'
+
+          wp_env run cli wp post create \
+            --post_type=page \
+            --post_status=publish \
+            --post_title='CiM Git Basic Cycle E2E' \
+            --post_name='cim-e2e-git' \
+            --post_content='[cim experience="git-basic-cycle"]CiM Git fallback.[/cim]'
 
           r9_content='[cim experience="synthetic-wordpress" instance="r9-one"]R9 one fallback.[/cim]
           [cim experience="synthetic-wordpress" instance="r9-two"]R9 two fallback.[/cim]
@@ -257,6 +272,7 @@ jobs:
         run: >-
           npx playwright test
           tests/e2e/wordpress-synthetic-mount.spec.mjs
+          tests/e2e/wordpress-git-basic-cycle.spec.mjs
           tests/e2e/wordpress-detached-root.spec.mjs
           tests/e2e/wordpress-fault-matrix.spec.mjs
           tests/e2e/wordpress-zip-install.spec.mjs
@@ -410,7 +426,7 @@ jobs:
           wp_env run cli bash -lc 'test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.0'
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
-          test "${INSTALLED_COUNT}" = "57"
+          test "${INSTALLED_COUNT}" = "59"
           echo "PASS: R16 N -> N+1 replacement preserved activation (${VERSION}, ${INSTALLED_COUNT} files)."
 
       - name: Stop isolated R16 environment
