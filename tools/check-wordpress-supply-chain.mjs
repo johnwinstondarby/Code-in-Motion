@@ -109,7 +109,10 @@ export function classifyReleasePath(path, version = '0.1.0') {
   const nested = path.slice(moduleRoot.length);
   if (/^src\/.+\.mjs$/.test(nested)) return 'approved-module';
   if (/^wordpress\/assets\/.+\.mjs$/.test(nested)) return 'approved-wordpress-module';
-  if (nested === 'wordpress/experiences/synthetic-wordpress.json') return 'approved-experience';
+  if (
+    nested === 'wordpress/experiences/synthetic-wordpress.json' ||
+    nested === 'wordpress/experiences/git-basic-cycle.json'
+  ) return 'approved-experience';
 
   fail('path is not an approved release input: ' + path);
 }
