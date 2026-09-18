@@ -43,6 +43,8 @@ test('R15 runs the production path from the freshly installed release ZIP', asyn
   expect(paths).toContain(`${PLUGIN_PREFIX}wordpress/assets/bootstrap.js`);
   expect(paths.some((path) => path.startsWith(MODULE_PREFIX) && path.endsWith('/wordpress/assets/bootstrap-module.mjs'))).toBe(true);
   expect(paths.some((path) => path.startsWith(MODULE_PREFIX) && path.endsWith('/wordpress/experiences/synthetic-wordpress.json'))).toBe(true);
+  expect(paths.some((path) => path.startsWith(MODULE_PREFIX) && path.endsWith('/wordpress/experiences/git-basic-cycle.json'))).toBe(true);
+  expect(paths.some((path) => path.startsWith(MODULE_PREFIX) && path.endsWith('/src/renderers/subjects/git/renderer.mjs'))).toBe(true);
   expect(paths.some((path) => path.startsWith(MODULE_PREFIX) && path.endsWith('/src/host/wordpress-live-host.mjs'))).toBe(true);
   expect(paths.some((path) => path.startsWith(MODULE_PREFIX) && path.endsWith('/src/runtime/cim-instance.mjs'))).toBe(true);
   expect(paths.some((path) => path.startsWith(MODULE_PREFIX) && path.endsWith('/src/transport/transport-controller.mjs'))).toBe(true);
