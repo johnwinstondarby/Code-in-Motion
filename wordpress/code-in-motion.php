@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LOCALIS_CIM_PLUGIN_VERSION', '0.1.0' );
+define( 'LOCALIS_CIM_PLUGIN_VERSION', '0.1.1' );
 define( 'LOCALIS_CIM_SCRIPT_HANDLE', 'localis-cim-wordpress' );
 define( 'LOCALIS_CIM_STYLE_HANDLE', 'localis-cim-wordpress' );
 
