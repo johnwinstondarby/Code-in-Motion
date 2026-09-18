@@ -85,9 +85,7 @@ Independent INSPIRE verification reproduced the same ZIP digest and 57-file coun
 
 ## Evidence-chain identity
 
-R24 evidence run #7 used candidate commit:
-
-`162d4b8c2e6f5ac12625261eaed1570f5a8701be`
+Each R24 evidence run checks out the exact pull-request head selected for that run. The generated package records that immutable commit in both `candidate-commit.txt` and `EVIDENCE-INDEX.txt`.
 
 Locked toolchain:
 
@@ -202,21 +200,25 @@ These records retain the upgrade, compatibility-matrix, browser, Plugin Check, m
 
 The package contains `SHA256SUMS`, covering every retained evidence file except the checksum index itself.
 
-The first successful R24 package was uploaded by workflow run #7 as:
+The package is uploaded as:
 
 `r24-release-evidence`
 
-GitHub artifact digest:
-
-`sha256:19a7025d1b471573dfd52d3160493d6bf98d3047112246eabaca85f391b45670`
-
 The workflow retains the package for 90 days.
+
+The outer GitHub artifact digest is recorded in the PR closure and R25 disposition after upload. It is intentionally excluded from this document because this document is itself retained inside the evidence artifact; embedding the outer artifact digest here would create a self-referential identity that changes when the document changes.
+
+The retained `SHA256SUMS` file is the package's self-contained integrity proof. The externally recorded GitHub artifact digest identifies the uploaded evidence archive.
 
 ## Independent verification
 
 INSPIRE independently verified the R24 preflight on head:
 
 `82889bba80f631f25432ed2b93662edd57eab70c`
+
+INSPIRE then independently rebuilt the release artifact from R24 candidate head:
+
+`741528bbd924b32b2480d922e1dc981b2ecf5048`
 
 Results:
 
@@ -225,9 +227,10 @@ Results:
 - locked `wp-env` executable used;
 - WordPress 6.5.10;
 - PHP 7.4.33;
-- npm audit: 3 moderate, 0 high.
+- npm audit: 3 moderate, 0 high;
+- complete verification suite: 638/638 PASS with the R21 synthetic diagnostics marked `[fixture]`.
 
-R24 CI then rebuilt the exact artifact on implementation head `162d4b8c2e6f5ac12625261eaed1570f5a8701be` and produced the same release digest.
+The R24 workflow independently rebuilds the release artifact from the exact pull-request head used for each evidence run. The generated `candidate-commit.txt` and `EVIDENCE-INDEX.txt` identify that checkout, avoiding reliance on an earlier implementation-head reference.
 
 ## Boundary
 
