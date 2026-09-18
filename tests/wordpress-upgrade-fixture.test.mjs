@@ -16,23 +16,38 @@ test('R16 fixture remaps only the version-bearing production module subtree', ()
   assert.equal(priorReleasePath('wordpress/assets/bootstrap.js'), 'wordpress/assets/bootstrap.js');
 });
 
-test('R16 fixture rewrites plugin identity and bootstrap handoff to N', () => {
+test('R16 fixture rewrites plugin identity, readme metadata, and bootstrap handoff to N', () => {
   const root = priorReleaseData(
     'code-in-motion.php',
     Buffer.from(`<?php\n/**\n * Version: ${R16_CURRENT_VERSION}\n */\n`, 'utf8')
   ).toString('utf8');
-  assert.match(root, new RegExp(`Version: ${R16_PRIOR_VERSION.replace(/\./g, '\\.')}`));
-  assert.doesNotMatch(root, new RegExp(`Version: ${R16_CURRENT_VERSION.replace(/\./g, '\\.')}`));
+  assert.match(root, new RegExp(`Version: ${R16_PRIOR_VERSION.replace(/\./g, '\\\.')}`));
+  assert.doesNotMatch(root, new RegExp(`Version: ${R16_CURRENT_VERSION.replace(/\./g, '\\\.')}`));
 
   const wordpress = priorReleaseData(
     'wordpress/code-in-motion.php',
     Buffer.from(
-      `<?php\n/**\n * Version: ${R16_CURRENT_VERSION}\n */\ndefine( 'LOCALIS_CIM_PLUGIN_VERSION', '${R16_CURRENT_VERSION}' );\n`,
+      `<?php\n/**\n * WordPress implementation for Code in Motion.\n */\ndefine( 'LOCALIS_CIM_PLUGIN_VERSION', '${R16_CURRENT_VERSION}' );\n`,
       'utf8'
     )
   ).toString('utf8');
-  assert.match(wordpress, new RegExp(`Version: ${R16_PRIOR_VERSION.replace(/\./g, '\\.')}`));
-  assert.match(wordpress, new RegExp(`LOCALIS_CIM_PLUGIN_VERSION', '${R16_PRIOR_VERSION.replace(/\./g, '\\.')}'`));
+  assert.doesNotMatch(wordpress, /Plugin Name:/);
+  assert.doesNotMatch(wordpress, /^\s*\* Version:/m);
+  assert.match(
+    wordpress,
+    new RegExp(`LOCALIS_CIM_PLUGIN_VERSION', '${R16_PRIOR_VERSION.replace(/\./g, '\\\.')}'`)
+  );
+
+  const readme = priorReleaseData(
+    'readme.txt',
+    Buffer.from(
+      `=== Code in Motion ===\nStable tag: ${R16_CURRENT_VERSION}\n\n== Changelog ==\n= ${R16_CURRENT_VERSION} =\n* Current release.\n`,
+      'utf8'
+    )
+  ).toString('utf8');
+  assert.match(readme, new RegExp(`Stable tag: ${R16_PRIOR_VERSION.replace(/\./g, '\\\.')}`));
+  assert.match(readme, new RegExp(`= ${R16_PRIOR_VERSION.replace(/\./g, '\\\.')} =`));
+  assert.doesNotMatch(readme, new RegExp(`Stable tag: ${R16_CURRENT_VERSION.replace(/\./g, '\\\.')}`));
 
   const bootstrap = priorReleaseData(
     'wordpress/assets/bootstrap.js',
