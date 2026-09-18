@@ -99,6 +99,7 @@ test('WordPress Host exposes only a frozen root-scoped command port after succes
     experienceLoader: Object.freeze({ load: async () => experienceFixture() }),
     rendererResolver: Object.freeze({ resolve: async () => renderer }),
     clockFactory: Object.freeze({ create: () => clockFixture() }),
+    entryResolver: Object.freeze({ resolve: () => null }),
     diagnostics: Object.freeze({ report() {} })
   });
 
