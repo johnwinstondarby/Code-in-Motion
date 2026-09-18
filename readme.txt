@@ -7,7 +7,7 @@ Stable tag: 0.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Code in Motion provides the WordPress host packaging for CiM experiences.
+WordPress host, runtime bindings, and controls for Code in Motion experiences.
 
 == Description ==
 
@@ -21,7 +21,11 @@ Version 0.1.0 includes the synthetic diagnostic Experience used by the release v
 2. Activate Code in Motion.
 3. Add a supported `[cim]` shortcode to WordPress content.
 
+== Support ==
+
+Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
+
 == Changelog ==
 
 = 0.1.0 =
-* Initial WordPress release candidate packaging.
+* Initial WordPress release with deterministic packaging, upgrade-safe versioned assets, and the synthetic diagnostic Experience.
