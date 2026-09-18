@@ -110,7 +110,7 @@ test('R22 rejects a second WordPress plugin header', () => {
     ' * Plugin Name: Code in Motion'
   );
   assert.throws(
-    () => validateReleaseMetadataTexts({ packageJson, rootPlugin, implementationPlugin: duplicate, readme, license }),
+    () => validateReleaseMetadataTexts({ packageJson, packageLock, rootPlugin, implementationPlugin: duplicate, readme, license }),
     /exactly one Plugin Name header/
   );
 });
@@ -119,6 +119,7 @@ test('R22 rejects version drift between package and readme stable tag', () => {
   assert.throws(
     () => validateReleaseMetadataTexts({
       packageJson,
+      packageLock,
       rootPlugin,
       implementationPlugin,
       readme: readme.replace('Stable tag: 0.1.0', 'Stable tag: 0.1.1'),
@@ -132,6 +133,7 @@ test('R22 rejects a missing current changelog entry', () => {
   assert.throws(
     () => validateReleaseMetadataTexts({
       packageJson,
+      packageLock,
       rootPlugin,
       implementationPlugin,
       readme: readme.replace('= 0.1.0 =', '= 0.0.9 ='),
