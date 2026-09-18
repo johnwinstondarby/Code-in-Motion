@@ -31,7 +31,7 @@ test('R21 accepts only the approved global-enqueue warning codes', () => {
       }
     ]),
     ''
-  ].join('\\n');
+  ].join('\n');
 
   const findings = parsePluginCheckReport(source);
   assert.equal(findings.length, 2);
@@ -56,7 +56,7 @@ test('R21 rejects every Plugin Check error', () => {
         message: 'Missing License in Plugin Header.'
       }
     ])
-  ].join('\\n');
+  ].join('\n');
 
   assert.throws(
     () => assertPluginCheckReleaseGate(source),
@@ -76,7 +76,7 @@ test('R21 leaves an unclassified warning in REVIEW and fails the gate', () => {
         message: 'A future warning needs an explicit decision.'
       }
     ])
-  ].join('\\n');
+  ].join('\n');
 
   assert.throws(
     () => assertPluginCheckReleaseGate(source),
