@@ -546,6 +546,7 @@ test('WordPress live Host rejects widened or mutable injected production capabil
     experienceLoader: { load: valid.experienceLoader.load },
     rendererResolver: valid.rendererResolver,
     clockFactory: valid.clockFactory,
+    entryResolver: valid.entryResolver,
     diagnostics: diagnostics.diagnostics
   }), /experience loader must be frozen/);
 
@@ -555,6 +556,7 @@ test('WordPress live Host rejects widened or mutable injected production capabil
     experienceLoader: valid.experienceLoader,
     rendererResolver: Object.freeze({ resolve: valid.rendererResolver.resolve, extra() {} }),
     clockFactory: valid.clockFactory,
+    entryResolver: valid.entryResolver,
     diagnostics: diagnostics.diagnostics
   }), /renderer resolver must contain exactly/);
 
@@ -564,6 +566,7 @@ test('WordPress live Host rejects widened or mutable injected production capabil
     experienceLoader: valid.experienceLoader,
     rendererResolver: valid.rendererResolver,
     clockFactory: valid.clockFactory,
+    entryResolver: valid.entryResolver,
     diagnostics: diagnostics.diagnostics,
     extra: true
   }), /live Host options must contain exactly/);
