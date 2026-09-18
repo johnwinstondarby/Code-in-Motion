@@ -51,7 +51,7 @@ jobs:
           grep -q 'data-cim-renderer-root' <<<"$rendered"
           grep -q 'CiM floor fallback.' <<<"$rendered"
 
-          git_rendered="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\\\"git-basic-cycle\\\"]CiM Git floor fallback.[/cim]");' | tail -n 1)"
+          git_rendered="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"git-basic-cycle\"]CiM Git floor fallback.[/cim]");' | tail -n 1)"
           printf '%s\n' "$git_rendered"
           grep -q 'class="cim"' <<<"$git_rendered"
           grep -q 'data-cim-experience="git-basic-cycle"' <<<"$git_rendered"
