@@ -1,0 +1,162 @@
+/* @cim-shared-source page-3227 v1 */
+const CIM_GIT = {
+  "source_schema": "localis.page-3227-git-reference/v1",
+  "source_version": "1.0.0",
+  "page_id": 3227,
+  "experience_id": "git-basic-cycle",
+  "anchors": [
+    {
+      "id": "status",
+      "command": "git status",
+      "verb": "inspect",
+      "displayVerb": "Inspect",
+      "description": "Report the working tree and index state without changing repository content or references.",
+      "stateEffect": "observe",
+      "references": [
+        {
+          "id": "git-status",
+          "label": "Git status documentation",
+          "href": "https://git-scm.com/docs/git-status"
+        }
+      ],
+      "cim_step_id": "step-01",
+      "cim_fragment": "#cim/git-basic-cycle/step-01"
+    },
+    {
+      "id": "diff",
+      "command": "git diff",
+      "verb": "compare",
+      "displayVerb": "Compare",
+      "description": "Compare selected Git states so the exact content difference can be inspected before recording a change.",
+      "stateEffect": "observe",
+      "references": [
+        {
+          "id": "git-diff",
+          "label": "Git diff documentation",
+          "href": "https://git-scm.com/docs/git-diff"
+        }
+      ],
+      "cim_step_id": "step-02",
+      "cim_fragment": "#cim/git-basic-cycle/step-02"
+    },
+    {
+      "id": "add",
+      "command": "git add",
+      "verb": "stage",
+      "displayVerb": "Stage",
+      "description": "Copy selected working-tree content into the index for the next commit. Use git add -p to stage selected hunks; for an untracked path, git add -N <path> can expose its content to diff before staging.",
+      "stateEffect": "mutate-index",
+      "references": [
+        {
+          "id": "git-add",
+          "label": "Git add documentation",
+          "href": "https://git-scm.com/docs/git-add"
+        }
+      ],
+      "cim_step_id": "step-03",
+      "cim_fragment": "#cim/git-basic-cycle/step-03"
+    },
+    {
+      "id": "commit",
+      "command": "git commit",
+      "verb": "record",
+      "displayVerb": "Record",
+      "description": "Create a commit from the staged index snapshot and advance the current branch to the new commit.",
+      "stateEffect": "mutate-local",
+      "references": [
+        {
+          "id": "git-commit",
+          "label": "Git commit documentation",
+          "href": "https://git-scm.com/docs/git-commit"
+        }
+      ],
+      "cim_step_id": "step-04",
+      "cim_fragment": "#cim/git-basic-cycle/step-04"
+    },
+    {
+      "id": "rev-parse-head",
+      "command": "git rev-parse HEAD",
+      "verb": "identify",
+      "displayVerb": "Identify",
+      "description": "Resolve HEAD to the object name of the currently checked-out commit so the exact recorded state can be identified.",
+      "stateEffect": "observe",
+      "references": [
+        {
+          "id": "git-rev-parse",
+          "label": "Git rev-parse documentation",
+          "href": "https://git-scm.com/docs/git-rev-parse"
+        }
+      ],
+      "cim_step_id": "step-05",
+      "cim_fragment": "#cim/git-basic-cycle/step-05"
+    },
+    {
+      "id": "tag",
+      "command": "git tag v1.2",
+      "verb": "name",
+      "displayVerb": "Name",
+      "description": "Create the name v1.2 for the selected commit so that recorded state can be referenced by a durable human-readable label.",
+      "stateEffect": "mutate-refs",
+      "references": [
+        {
+          "id": "git-tag",
+          "label": "Git tag documentation",
+          "href": "https://git-scm.com/docs/git-tag"
+        }
+      ],
+      "cim_step_id": "step-06",
+      "cim_fragment": "#cim/git-basic-cycle/step-06"
+    },
+    {
+      "id": "push",
+      "command": "git push",
+      "verb": "publish",
+      "displayVerb": "Publish",
+      "description": "Update configured remote references and transfer the objects required for the remote to reach the published commit.",
+      "stateEffect": "mutate-remote",
+      "references": [
+        {
+          "id": "git-push",
+          "label": "Git push documentation",
+          "href": "https://git-scm.com/docs/git-push"
+        }
+      ],
+      "cim_step_id": "step-07",
+      "cim_fragment": "#cim/git-basic-cycle/step-07"
+    },
+    {
+      "id": "reflog",
+      "command": "git reflog",
+      "verb": "recover",
+      "displayVerb": "Recover",
+      "description": "Inspect the local history of reference updates to locate earlier commit positions that may still be recoverable.",
+      "stateEffect": "observe",
+      "references": [
+        {
+          "id": "git-reflog",
+          "label": "Git reflog documentation",
+          "href": "https://git-scm.com/docs/git-reflog"
+        }
+      ],
+      "cim_step_id": "step-08",
+      "cim_fragment": "#cim/git-basic-cycle/step-08"
+    }
+  ]
+};
+if (AF.mode === "git") {
+  const cimByCommand = new Map(CIM_GIT.anchors.map(function(anchor){ return [anchor.command, anchor]; }));
+  C.bands.forEach(function(band){
+    band.rows.forEach(function(row){
+      const anchor = cimByCommand.get(row.from);
+      if (!anchor) return;
+      row.from = anchor.command;
+      row.chip = anchor.displayVerb;
+      row.to = anchor.description;
+      row.cim_step_id = anchor.cim_step_id;
+      row.cim_fragment = anchor.cim_fragment;
+      row.stateEffect = anchor.stateEffect;
+      row.references = anchor.references;
+    });
+  });
+}
+/* /@cim-shared-source page-3227 v1 */
