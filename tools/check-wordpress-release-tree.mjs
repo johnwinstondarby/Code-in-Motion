@@ -13,7 +13,7 @@ const EXPERIENCE_PATHS = Object.freeze([
   }),
   Object.freeze({
     source: resolve(ROOT, 'experiences', 'git', 'git-basic-cycle.json'),
-    destination: 'wordpress/experiences/git-basic-cycle.json'
+    destination: 'experiences/git/git-basic-cycle.json'
   })
 ]);
 
