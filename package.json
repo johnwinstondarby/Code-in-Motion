@@ -1,8 +1,18 @@
 {
   "name": "code-in-motion",
   "version": "0.1.0",
+  "description": "Reusable Localis platform for learner-controlled technical process experiences.",
   "private": true,
   "type": "module",
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/johnwinstondarby/Code-in-Motion",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnwinstondarby/Code-in-Motion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/johnwinstondarby/Code-in-Motion/issues"
+  },
   "engines": {
     "node": ">=20"
   },
