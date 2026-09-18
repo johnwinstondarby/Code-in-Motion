@@ -315,7 +315,7 @@ jobs:
           npm run build:wordpress
           node tools/build-wordpress-upgrade-fixture.mjs
           VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
-          test "${VERSION}" = "0.1.0"
+          test "${VERSION}" = "0.1.1"
           echo "CIM_R16_CURRENT_VERSION=${VERSION}" >> "${GITHUB_ENV}"
 
       - name: Prepare isolated upgrade source and wp-env config
@@ -386,7 +386,7 @@ jobs:
 
           wp_env run cli bash -lc 'test -f wp-content/plugins/code-in-motion/wordpress/assets/r16-obsolete.txt'
           wp_env run cli bash -lc 'test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/0.0.9'
-          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.0'
+          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.1'
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
           test "${INSTALLED_COUNT}" = "61"
@@ -406,7 +406,7 @@ jobs:
       - name: Run warm-cache N to N+1 browser upgrade proof
         env:
           CIM_WP_BASE_URL: http://localhost:8891
-          CIM_R16_CURRENT_ZIP: wp-content/r16-artifact/code-in-motion-0.1.0.zip
+          CIM_R16_CURRENT_ZIP: wp-content/r16-artifact/code-in-motion-0.1.1.zip
         run: npx playwright test tests/e2e/wordpress-upgrade.spec.mjs --reporter=line
 
       - name: Verify N+1 replacement postconditions
@@ -425,7 +425,7 @@ jobs:
 
           wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/r16-obsolete.txt'
           wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/modules/0.0.9'
-          wp_env run cli bash -lc 'test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.0'
+          wp_env run cli bash -lc 'test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.1'
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
           test "${INSTALLED_COUNT}" = "60"
