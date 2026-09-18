@@ -23,7 +23,7 @@ test('R23 accepts only approved v1 release locations', () => {
     'approved-experience'
   );
   assert.equal(
-    classifyReleasePath('wordpress/assets/modules/0.1.0/wordpress/experiences/git-basic-cycle.json'),
+    classifyReleasePath('wordpress/assets/modules/0.1.0/experiences/git/git-basic-cycle.json'),
     'approved-experience'
   );
 });
