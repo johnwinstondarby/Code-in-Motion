@@ -42,7 +42,7 @@ const EXPERIENCE_SOURCES = Object.freeze([
   }),
   Object.freeze({
     source: 'experiences/git/git-basic-cycle.json',
-    destination: 'wordpress/experiences/git-basic-cycle.json'
+    destination: 'experiences/git/git-basic-cycle.json'
   })
 ]);
 
