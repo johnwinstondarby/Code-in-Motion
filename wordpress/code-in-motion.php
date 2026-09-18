@@ -27,7 +27,10 @@ function localis_cim_enqueue_assets() {
 		plugin_dir_url( __FILE__ ) . 'assets/bootstrap.js',
 		array(),
 		LOCALIS_CIM_PLUGIN_VERSION,
-		true
+		array(
+			'strategy'  => 'defer',
+			'in_footer' => true,
+		)
 	);
 
 	wp_enqueue_style(
