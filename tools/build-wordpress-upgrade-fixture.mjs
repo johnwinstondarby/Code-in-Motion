@@ -69,18 +69,31 @@ export function priorReleaseData(path, data, currentVersion = R16_CURRENT_VERSIO
   }
 
   if (path === 'wordpress/code-in-motion.php') {
+    const source = data.toString('utf8');
+    return Buffer.from(
+      replaceExactlyOnce(
+        source,
+        `define( 'LOCALIS_CIM_PLUGIN_VERSION', '${currentVersion}' );`,
+        `define( 'LOCALIS_CIM_PLUGIN_VERSION', '${priorVersion}' );`,
+        'WordPress plugin version constant'
+      ),
+      'utf8'
+    );
+  }
+
+  if (path === 'readme.txt') {
     let source = data.toString('utf8');
     source = replaceExactlyOnce(
       source,
-      ` * Version: ${currentVersion}`,
-      ` * Version: ${priorVersion}`,
-      'WordPress plugin version header'
+      `Stable tag: ${currentVersion}`,
+      `Stable tag: ${priorVersion}`,
+      'WordPress readme stable tag'
     );
     source = replaceExactlyOnce(
       source,
-      `define( 'LOCALIS_CIM_PLUGIN_VERSION', '${currentVersion}' );`,
-      `define( 'LOCALIS_CIM_PLUGIN_VERSION', '${priorVersion}' );`,
-      'WordPress plugin version constant'
+      `= ${currentVersion} =`,
+      `= ${priorVersion} =`,
+      'WordPress readme changelog version'
     );
     return Buffer.from(source, 'utf8');
   }
