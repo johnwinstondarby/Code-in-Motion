@@ -70,7 +70,7 @@ test('R27 Git basic cycle mounts through the production WordPress path and advan
 
   const paths = requested.map(pathOf);
   expect(paths.some((path) =>
-    path.startsWith(MODULE_PREFIX) && path.endsWith('/wordpress/experiences/git-basic-cycle.json')
+    path.startsWith(MODULE_PREFIX) && path.endsWith('/experiences/git/git-basic-cycle.json')
   )).toBe(true);
   expect(paths.some((path) =>
     path.startsWith(MODULE_PREFIX) && path.endsWith('/src/renderers/subjects/git/renderer.mjs')
