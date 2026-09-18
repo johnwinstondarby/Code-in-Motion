@@ -8,7 +8,7 @@ Status: Production Host composition contract
 
 It owns page discovery, page-scoped reduced-motion observation, per-root live Host construction, initialization, readiness projection, root-scoped command-capability projection, root-scoped Runtime disposal, static fallback preservation, and page teardown ordering.
 
-It does not own Experience storage policy, renderer registry contents, browser-clock implementation, Transport implementation, WordPress PHP packaging, asset enqueueing, shortcode/block generation, DOM mutation observation, or external URL/fragment parsing.
+It does not own Experience storage policy, renderer registry contents, browser-clock implementation, Transport implementation, WordPress PHP packaging, asset enqueueing, shortcode/block generation, DOM mutation observation, or the external URL/fragment grammar implementation. Deep-link resolution is injected as a Host capability.
 
 ## Required Markup, Verbatim
 
@@ -196,13 +196,13 @@ Diagnostic sink failure cannot alter mount, cleanup, fallback, or later-root con
 
 ## Entry Target Scope
 
-This checkpoint initializes each WordPress invocation through default Host entry:
+Each WordPress invocation resolves an optional entry target before Runtime initialization. With no applicable CiM fragment, Host uses default entry:
 
 ```text
 initialize()
 ```
 
-ADR 0011 remains the targeted-entry contract:
+A matching valid deep link uses the ADR 0011 targeted-entry contract:
 
 ```text
 initialize({ stepId, source: 'deep_link' })
@@ -215,7 +215,7 @@ initialize({ stepId, source: 'deep_link' })
 #cim/{experience-id}/initial
 ```
 
-The current page-host adapter does not read browser location and therefore does not parse that grammar. The WordPress packaging/deep-link resolver must consume the existing grammar, resolve the Experience and semantic boundary, and pass only the resolved boundary into Runtime through ADR 0011. Invalid or unresolvable targets remain `CIM-HST-002`. WordPress packaging must not create a second platform-specific deep-link grammar.
+The WordPress browser bootstrap reads browser location and supplies an injected deep-link resolver to the page Host. The resolver consumes this grammar, matches the loaded Experience, validates the semantic boundary, and returns only `{ stepId, source: 'deep_link' }` to Host. Foreign experience fragments are ignored. Invalid or unresolvable CiM targets record `CIM-HST-002` and the affected experience opens at `initial`; they do not force static fallback. Post-mount `hashchange` navigation submits one `seek(stepId, 'deep_link')` to the matching mounted instance.
 
 ## WordPress Transport and Root-Lifecycle Composition
 
