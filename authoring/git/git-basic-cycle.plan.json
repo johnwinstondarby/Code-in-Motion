@@ -1,0 +1,327 @@
+{
+  "plan_schema": "localis.git-basic-cycle-plan/v1",
+  "experience_id": "git-basic-cycle",
+  "experience_version": "1.0.0",
+  "engine_min": "0.1.0",
+  "renderer": "git/v1",
+  "renderer_config": {
+    "lanes": [
+      "working-tree",
+      "index",
+      "local",
+      "remote"
+    ],
+    "file": "README.md"
+  },
+  "initial_state": {
+    "working_tree": {
+      "content": "v2",
+      "unstaged": true
+    },
+    "index": {
+      "content": "v1",
+      "staged": false
+    },
+    "local": {
+      "head": "c100",
+      "commits": [
+        "c100"
+      ],
+      "tags": []
+    },
+    "remote": {
+      "head": "c100",
+      "commits": [
+        "c100"
+      ]
+    },
+    "reflog": [
+      "c100"
+    ]
+  },
+  "steps": [
+    {
+      "factId": "status",
+      "stepId": "step-01",
+      "commentary": "Start by reading the repository state. Git status reports what differs among the working tree, index, and current commit without changing any of them.",
+      "focus": "overview",
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": true
+        },
+        "index": {
+          "content": "v1",
+          "staged": false
+        },
+        "local": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ],
+          "tags": []
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c100"
+        ]
+      }
+    },
+    {
+      "factId": "diff",
+      "stepId": "step-02",
+      "commentary": "Inspect the exact content difference before staging. The repository state is unchanged; only the evidence under examination changes.",
+      "focus": "working-tree",
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": true
+        },
+        "index": {
+          "content": "v1",
+          "staged": false
+        },
+        "local": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ],
+          "tags": []
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c100"
+        ]
+      }
+    },
+    {
+      "factId": "add",
+      "stepId": "step-03",
+      "commentary": "Stage the selected change into the index. The index now contains the content intended for the next commit.",
+      "focus": "index",
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": true
+        },
+        "local": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ],
+          "tags": []
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c100"
+        ]
+      }
+    },
+    {
+      "factId": "commit",
+      "stepId": "step-04",
+      "commentary": "Record the staged snapshot. The local branch advances to a new commit and the index returns to an unstaged state.",
+      "focus": "local",
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": false
+        },
+        "local": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ],
+          "tags": []
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c101",
+          "c100"
+        ]
+      }
+    },
+    {
+      "factId": "rev-parse-head",
+      "stepId": "step-05",
+      "commentary": "Resolve HEAD after the commit to identify the exact object now selected by the local branch.",
+      "focus": "head",
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": false
+        },
+        "local": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ],
+          "tags": []
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c101",
+          "c100"
+        ]
+      }
+    },
+    {
+      "factId": "tag",
+      "stepId": "step-06",
+      "commentary": "Attach a human-readable name to the recorded commit. The tag points at c101 while the commit identity itself remains unchanged.",
+      "focus": "refs",
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": false
+        },
+        "local": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ],
+          "tags": [
+            {
+              "name": "v1.2",
+              "target": "c101"
+            }
+          ]
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c101",
+          "c100"
+        ]
+      }
+    },
+    {
+      "factId": "push",
+      "stepId": "step-07",
+      "commentary": "Publish the local history. The remote reference advances to the same commit as the local branch.",
+      "focus": "remote",
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": false
+        },
+        "local": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ],
+          "tags": [
+            {
+              "name": "v1.2",
+              "target": "c101"
+            }
+          ]
+        },
+        "remote": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ]
+        },
+        "reflog": [
+          "c101",
+          "c100"
+        ]
+      }
+    },
+    {
+      "factId": "reflog",
+      "stepId": "step-08",
+      "commentary": "Inspect the local reference-update history. Reflog provides recovery evidence without changing the repository state.",
+      "focus": "reflog",
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": false
+        },
+        "local": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ],
+          "tags": [
+            {
+              "name": "v1.2",
+              "target": "c101"
+            }
+          ]
+        },
+        "remote": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ]
+        },
+        "reflog": [
+          "c101",
+          "c100"
+        ]
+      }
+    }
+  ]
+}
