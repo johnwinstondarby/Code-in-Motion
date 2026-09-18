@@ -113,6 +113,7 @@ jobs:
           cp wordpress/R21-PLUGIN-CHECK.md .ci/r24/evidence/
           cp wordpress/R22-RELEASE-METADATA-QA.md .ci/r24/evidence/
           cp wordpress/R23-SUPPLY-CHAIN-QA.md .ci/r24/evidence/
+          cp wordpress/R24-RELEASE-EVIDENCE.md .ci/r24/evidence/
           cp wordpress/RELEASE-QA.md .ci/r24/evidence/
           cp wordpress/RELEASE-TREE.md .ci/r24/evidence/
           cp package.json .ci/r24/toolchain/
