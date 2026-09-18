@@ -19,7 +19,7 @@ const SYNTHETIC_EXPERIENCE_ID = 'synthetic-wordpress';
 const GIT_BASIC_CYCLE_EXPERIENCE_ID = 'git-basic-cycle';
 const EXPERIENCE_PATHS = new Map([
   [SYNTHETIC_EXPERIENCE_ID, '../experiences/synthetic-wordpress.json'],
-  [GIT_BASIC_CYCLE_EXPERIENCE_ID, '../experiences/git-basic-cycle.json']
+  [GIT_BASIC_CYCLE_EXPERIENCE_ID, '../../experiences/git/git-basic-cycle.json']
 ]);
 const ROOT_SELECTOR = '[data-cim-experience]';
 const moduleUrl = new URL(import.meta.url);
