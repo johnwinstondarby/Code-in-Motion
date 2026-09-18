@@ -49,26 +49,26 @@ All unbundled ES modules and module-relative Experience data ship below:
 code-in-motion/wordpress/assets/modules/<plugin-version>/
 ```
 
-For version `0.1.0`, the module entry is:
+For version `0.1.1`, the module entry is:
 
 ```text
-code-in-motion/wordpress/assets/modules/0.1.0/wordpress/assets/bootstrap-module.mjs
+code-in-motion/wordpress/assets/modules/0.1.1/wordpress/assets/bootstrap-module.mjs
 ```
 
 The release builder preserves repository-relative topology beneath that version directory. Examples:
 
 ```text
 wordpress/assets/bootstrap-module.mjs
-→ wordpress/assets/modules/0.1.0/wordpress/assets/bootstrap-module.mjs
+→ wordpress/assets/modules/0.1.1/wordpress/assets/bootstrap-module.mjs
 
 wordpress/assets/transport-binding.mjs
-→ wordpress/assets/modules/0.1.0/wordpress/assets/transport-binding.mjs
+→ wordpress/assets/modules/0.1.1/wordpress/assets/transport-binding.mjs
 
 src/host/wordpress-live-host.mjs
-→ wordpress/assets/modules/0.1.0/src/host/wordpress-live-host.mjs
+→ wordpress/assets/modules/0.1.1/src/host/wordpress-live-host.mjs
 
 wordpress/experiences/synthetic-wordpress.json
-→ wordpress/assets/modules/0.1.0/wordpress/experiences/synthetic-wordpress.json
+→ wordpress/assets/modules/0.1.1/wordpress/experiences/synthetic-wordpress.json
 ```
 
 Because the topology is preserved, existing relative imports such as `../../src/...` retain the same meaning inside the version-bearing module root. Static imports do not depend on query-string propagation for cache invalidation.
