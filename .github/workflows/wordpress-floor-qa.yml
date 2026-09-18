@@ -251,6 +251,13 @@ jobs:
           echo "--- Plugin Check stderr ---"
           cat "${CIM_R21_ARTIFACT_DIR}/plugin-check.stderr" || true
 
+      - name: Classify Plugin Check findings
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "${CIM_R21_ARTIFACT_DIR}/plugin-check.json"
+          node tools/check-wordpress-plugin-check.mjs "${CIM_R21_ARTIFACT_DIR}/plugin-check.json"
+
       - name: Upload R21 diagnostic evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
