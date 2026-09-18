@@ -323,5 +323,12 @@
         ]
       }
     }
-  ]
+  ],
+  "scope": {
+    "staging_demonstration": "plain-git-add",
+    "reference_only_guidance": [
+      "git add -p",
+      "git add -N <path>"
+    ]
+  }
 }
