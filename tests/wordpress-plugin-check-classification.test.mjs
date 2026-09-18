@@ -7,6 +7,8 @@ import {
   parsePluginCheckReport
 } from '../tools/check-wordpress-plugin-check.mjs';
 
+const FIXTURE_LOG_PREFIX = '[fixture] ';
+
 test('R21 accepts only the approved global-enqueue warning codes', () => {
   const source = [
     'FILE: wordpress/assets/cim.css',
@@ -41,7 +43,7 @@ test('R21 accepts only the approved global-enqueue warning codes', () => {
   assert.equal(classified.review.length, 0);
   assert.equal(classified.accepted.length, 2);
 
-  assert.doesNotThrow(() => assertPluginCheckReleaseGate(source));
+  assert.doesNotThrow(() => assertPluginCheckReleaseGate(source, FIXTURE_LOG_PREFIX));
 });
 
 test('R21 rejects every Plugin Check error', () => {
@@ -59,7 +61,7 @@ test('R21 rejects every Plugin Check error', () => {
   ].join('\n');
 
   assert.throws(
-    () => assertPluginCheckReleaseGate(source),
+    () => assertPluginCheckReleaseGate(source, FIXTURE_LOG_PREFIX),
     /1 FAIL, 0 REVIEW, 0 ACCEPTED EXCEPTION/
   );
 });
@@ -79,7 +81,7 @@ test('R21 leaves an unclassified warning in REVIEW and fails the gate', () => {
   ].join('\n');
 
   assert.throws(
-    () => assertPluginCheckReleaseGate(source),
+    () => assertPluginCheckReleaseGate(source, FIXTURE_LOG_PREFIX),
     /0 FAIL, 1 REVIEW, 0 ACCEPTED EXCEPTION/
   );
 });
