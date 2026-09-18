@@ -1,24 +1,24 @@
-name: R24 evidence-chain prep
+name: R24 evidence-chain audit
 
 on:
   pull_request:
+  push:
+    branches:
+      - main
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: cim-r24-prep-${{ github.ref }}
+  group: cim-r24-evidence-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  prepare-lockfile:
-    if: github.event.pull_request.head.ref == 'feat/wordpress-packaging-checkpoint-1'
+  evidence-chain:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Set up pinned release Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
@@ -26,58 +26,50 @@ jobs:
           node-version-file: .nvmrc
           package-manager-cache: false
 
-      - name: Generate R24 package and lockfile candidate
-        shell: bash
-        run: |
-          set -euo pipefail
-          npm pkg set 'devDependencies.@wordpress/env=11.15.0'
-          npm pkg set 'scripts.wp-env=wp-env'
-          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-          npm update fast-uri --package-lock-only --ignore-scripts --no-audit --no-fund
-
-      - name: Install locked R24 candidate dependencies
+      - name: Install locked evidence-chain dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
 
-      - name: Capture dependency and audit evidence
+      - name: Verify locked evidence-chain identities
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p .ci/r24
-          npm ls --all --json > .ci/r24/npm-ls.json
-          npm ls @wordpress/env ajv fast-uri qs --all > .ci/r24/npm-focus.txt
-          npm audit --json > .ci/r24/npm-audit.json || true
-          npm audit > .ci/r24/npm-audit.txt 2>&1 || true
+          test "$(node -p "require('./node_modules/@wordpress/env/package.json').version")" = "11.15.0"
+          test "$(node -p "require('./node_modules/ajv/package.json').version")" = "8.20.0"
+          test "$(node -p "require('./node_modules/fast-uri/package.json').version")" = "3.1.8"
           node --version > .ci/r24/node-version.txt
           npm --version > .ci/r24/npm-version.txt
+          node -p "require('./node_modules/@wordpress/env/package.json').version" > .ci/r24/wp-env-version.txt
+          node -p "require('./node_modules/ajv/package.json').version" > .ci/r24/ajv-version.txt
+          node -p "require('./node_modules/fast-uri/package.json').version" > .ci/r24/fast-uri-version.txt
+          sha256sum package-lock.json > .ci/r24/package-lock.sha256
 
-      - name: Upload R24 lockfile candidate
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: r24-lockfile-candidate
-          path: |
-            package.json
-            package-lock.json
-            .ci/r24/npm-ls.json
-            .ci/r24/npm-focus.txt
-            .ci/r24/npm-audit.json
-            .ci/r24/npm-audit.txt
-            .ci/r24/node-version.txt
-            .ci/r24/npm-version.txt
-          if-no-files-found: error
-          retention-days: 7
-
-      - name: Commit locked R24 dependency inventory
-        if: github.event.pull_request.head.repo.full_name == github.repository
+      - name: Capture dependency inventory
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- package.json package-lock.json; then
-            echo "R24 package and lockfile already match the generated candidate."
-            exit 0
-          fi
+          npm ls --all --json > .ci/r24/npm-ls.json
+          npm ls @wordpress/env ajv fast-uri qs --all > .ci/r24/npm-focus.txt
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json package-lock.json
-          git commit -m "R24 lock evidence-chain dependencies"
-          git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
+      - name: Capture non-blocking npm audit evidence
+        shell: bash
+        run: |
+          set +e
+          npm audit --json > .ci/r24/npm-audit.json
+          JSON_STATUS=$?
+          npm audit > .ci/r24/npm-audit.txt 2>&1
+          TEXT_STATUS=$?
+          set -e
+          printf 'npm audit --json exit status: %s\n' "${JSON_STATUS}" > .ci/r24/npm-audit-status.txt
+          printf 'npm audit exit status: %s\n' "${TEXT_STATUS}" >> .ci/r24/npm-audit-status.txt
+
+      - name: Upload R24 evidence-chain inventory
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: r24-evidence-chain
+          path: |
+            package.json
+            package-lock.json
+            .ci/r24
+          if-no-files-found: error
+          retention-days: 30
