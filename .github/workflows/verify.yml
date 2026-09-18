@@ -57,6 +57,50 @@ jobs:
       - name: Verify R22 staged release metadata
         run: node tools/check-wordpress-release-metadata.mjs --release-root dist/code-in-motion
 
+      - name: Verify R23 supply-chain manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          ZIP_NAME="code-in-motion-${VERSION}.zip"
+          EVIDENCE_DIR="${RUNNER_TEMP}/cim-r23"
+          UNPACK_ROOT="${EVIDENCE_DIR}/unpacked"
+
+          rm -rf "${EVIDENCE_DIR}"
+          mkdir -p "${UNPACK_ROOT}"
+
+          node tools/check-wordpress-supply-chain.mjs \
+            --release-root dist/code-in-motion \
+            --version "${VERSION}" \
+            --write-manifest "${EVIDENCE_DIR}/code-in-motion-${VERSION}.manifest.sha256"
+
+          unzip -q "dist/${ZIP_NAME}" -d "${UNPACK_ROOT}"
+
+          node tools/check-wordpress-supply-chain.mjs \
+            --release-root "${UNPACK_ROOT}/code-in-motion" \
+            --version "${VERSION}" \
+            --write-manifest "${EVIDENCE_DIR}/code-in-motion-${VERSION}.zip.manifest.sha256"
+
+          diff -qr dist/code-in-motion "${UNPACK_ROOT}/code-in-motion"
+          cmp --silent \
+            "${EVIDENCE_DIR}/code-in-motion-${VERSION}.manifest.sha256" \
+            "${EVIDENCE_DIR}/code-in-motion-${VERSION}.zip.manifest.sha256"
+
+          STAGED_COUNT="$(find dist/code-in-motion -type f | wc -l | tr -d ' ')"
+          ZIP_COUNT="$(unzip -Z1 "dist/${ZIP_NAME}" | grep -E '^code-in-motion/.+' | wc -l | tr -d ' ')"
+          test "${STAGED_COUNT}" = "${ZIP_COUNT}"
+
+          echo "PASS: R23 staged tree and extracted ZIP are byte-identical (${STAGED_COUNT} file(s))."
+
+      - name: Upload R23 supply-chain manifest
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: r23-supply-chain-manifest
+          path: |
+            ${{ runner.temp }}/cim-r23/code-in-motion-*.manifest.sha256
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Verify staged tree and ZIP structure
         shell: bash
         run: |
