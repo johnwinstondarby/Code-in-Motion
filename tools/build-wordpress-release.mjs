@@ -28,6 +28,8 @@ const ZIP_VERSION_MADE_BY_UNIX = (3 << 8) | ZIP_VERSION_NEEDED;
 const ZIP_EXTERNAL_FILE_ATTRIBUTES = (0o100644 << 16) >>> 0;
 
 const STATIC_STAGE_FILES = Object.freeze([
+  Object.freeze({ source: 'LICENSE', destination: 'LICENSE' }),
+  Object.freeze({ source: 'readme.txt', destination: 'readme.txt' }),
   Object.freeze({ source: 'code-in-motion.php', destination: 'code-in-motion.php' }),
   Object.freeze({ source: 'wordpress/code-in-motion.php', destination: 'wordpress/code-in-motion.php' }),
   Object.freeze({ source: 'wordpress/assets/cim.css', destination: 'wordpress/assets/cim.css' })
