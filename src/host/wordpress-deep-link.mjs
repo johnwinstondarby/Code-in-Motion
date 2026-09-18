@@ -25,12 +25,6 @@ export function parseCiMDeepLinkFragment(fragment) {
   }
   if (fragment.length === 0 || !fragment.startsWith('#cim/')) return null;
 
-  const parts = fragment.split('/');
-  if (parts.length !== 4 || parts[0] !== '#cim' || parts[1].length === 0 || parts[2].length === 0 || parts[3].length !== 0) {
-    // The canonical grammar has exactly two segments after #cim. split('/') on
-    // "#cim/experience/step" yields three entries, so handle that form below.
-  }
-
   const match = /^#cim\/([^/]+)\/([^/]+)$/.exec(fragment);
   if (match === null) {
     fail('CiM deep-link must use #cim/{experience-id}/{step-id}.');
