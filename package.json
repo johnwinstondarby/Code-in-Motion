@@ -26,9 +26,10 @@
     "check:wordpress-metadata": "node tools/check-wordpress-release-metadata.mjs",
     "test": "node --test",
     "verify": "npm run check:schema && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm test",
-    "wp-env": "npx --yes @wordpress/env@11.15.0"
+    "wp-env": "wp-env"
   },
   "devDependencies": {
+    "@wordpress/env": "11.15.0",
     "ajv": "8.20.0"
   }
 }
