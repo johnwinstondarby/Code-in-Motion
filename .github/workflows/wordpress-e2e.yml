@@ -201,7 +201,7 @@ jobs:
           wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/tests && test ! -e wp-content/plugins/code-in-motion/tools && test ! -e wp-content/plugins/code-in-motion/package.json'
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
-          test "${INSTALLED_COUNT}" = "55"
+          test "${INSTALLED_COUNT}" = "57"
           echo "PASS: R15 fresh ZIP install (WordPress ${CORE_VERSION}, plugin ${VERSION}, ${INSTALLED_COUNT} installed files)."
 
       - name: Create artifact-backed browser diagnostic pages
@@ -371,7 +371,7 @@ jobs:
           wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.0'
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
-          test "${INSTALLED_COUNT}" = "56"
+          test "${INSTALLED_COUNT}" = "58"
           echo "PASS: R16 N installed active (${VERSION}, ${INSTALLED_COUNT} files)."
 
       - name: Create upgrade diagnostic page
@@ -410,7 +410,7 @@ jobs:
           wp_env run cli bash -lc 'test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.0'
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
-          test "${INSTALLED_COUNT}" = "55"
+          test "${INSTALLED_COUNT}" = "57"
           echo "PASS: R16 N -> N+1 replacement preserved activation (${VERSION}, ${INSTALLED_COUNT} files)."
 
       - name: Stop isolated R16 environment
