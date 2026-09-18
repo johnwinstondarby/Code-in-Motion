@@ -71,6 +71,18 @@ function validatePlan(plan, byId) {
   requireNonEmptyString(plan.engine_min, 'engine_min');
   requireNonEmptyString(plan.experience_version, 'experience_version');
   if (!isObject(plan.renderer_config)) fail('renderer_config must be an object.');
+  if (!isObject(plan.scope)) fail('scope must be an object.');
+  if (plan.scope.staging_demonstration !== 'plain-git-add') {
+    fail('scope.staging_demonstration must be plain-git-add for R27.');
+  }
+  if (
+    !Array.isArray(plan.scope.reference_only_guidance) ||
+    plan.scope.reference_only_guidance.length !== 2 ||
+    plan.scope.reference_only_guidance[0] !== 'git add -p' ||
+    plan.scope.reference_only_guidance[1] !== 'git add -N <path>'
+  ) {
+    fail('scope.reference_only_guidance must identify git add -p and git add -N <path>.');
+  }
   if (!isObject(plan.initial_state)) fail('initial_state must be an object.');
   if (!Array.isArray(plan.steps) || plan.steps.length === 0) fail('steps must be a non-empty array.');
 
