@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const BASE_URL = process.env.CIM_WP_BASE_URL ?? 'http://127.0.0.1:8888';
-const PLUGIN_VERSION = process.env.CIM_PLUGIN_VERSION ?? '0.1.0';
+const PLUGIN_VERSION = process.env.CIM_PLUGIN_VERSION ?? '0.1.1';
 const PLUGIN_PREFIX = '/wp-content/plugins/code-in-motion/';
 const MODULE_PREFIX = `${PLUGIN_PREFIX}wordpress/assets/modules/${PLUGIN_VERSION}/`;
 const WORDPRESS_LAYOUT = process.env.CIM_WP_LAYOUT ?? 'source';
