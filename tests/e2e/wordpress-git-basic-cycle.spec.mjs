@@ -4,6 +4,7 @@ const BASE_URL = process.env.CIM_WP_BASE_URL ?? 'http://127.0.0.1:8888';
 const PLUGIN_VERSION = process.env.CIM_PLUGIN_VERSION ?? '0.1.0';
 const PLUGIN_PREFIX = '/wp-content/plugins/code-in-motion/';
 const MODULE_PREFIX = `${PLUGIN_PREFIX}wordpress/assets/modules/${PLUGIN_VERSION}/`;
+const WORDPRESS_LAYOUT = process.env.CIM_WP_LAYOUT ?? 'source';
 
 function pathOf(url) {
   try {
@@ -69,12 +70,15 @@ test('R27 Git basic cycle mounts through the production WordPress path and advan
   await expect(lanes.nth(1).locator('[data-role="status"]')).toHaveText('staged for next commit');
 
   const paths = requested.map(pathOf);
-  expect(paths.some((path) =>
-    path.startsWith(MODULE_PREFIX) && path.endsWith('/experiences/git/git-basic-cycle.json')
-  )).toBe(true);
-  expect(paths.some((path) =>
-    path.startsWith(MODULE_PREFIX) && path.endsWith('/src/renderers/subjects/git/renderer.mjs')
-  )).toBe(true);
+  const expectedGitExperiencePath = WORDPRESS_LAYOUT === 'release'
+    ? `${MODULE_PREFIX}experiences/git/git-basic-cycle.json`
+    : `${PLUGIN_PREFIX}experiences/git/git-basic-cycle.json`;
+  const expectedGitRendererPath = WORDPRESS_LAYOUT === 'release'
+    ? `${MODULE_PREFIX}src/renderers/subjects/git/renderer.mjs`
+    : `${PLUGIN_PREFIX}src/renderers/subjects/git/renderer.mjs`;
+
+  expect(paths).toContain(expectedGitExperiencePath);
+  expect(paths).toContain(expectedGitRendererPath);
 
   expect(requestFailures).toEqual([]);
   expect(consoleErrors).toEqual([]);
