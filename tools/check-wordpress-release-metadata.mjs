@@ -79,6 +79,7 @@ function exactFields(fields, expected, label) {
 
 export function validateReleaseMetadataTexts({
   packageJson,
+  packageLock,
   rootPlugin,
   implementationPlugin,
   readme,
@@ -89,6 +90,11 @@ export function validateReleaseMetadataTexts({
   assert(typeof version === 'string' && /^\d+\.\d+\.\d+$/.test(version), 'package version must be SemVer core form.');
 
   assert(packageJson.name === 'code-in-motion', 'package name must be code-in-motion.');
+  assert(packageLock?.name === packageJson.name, 'package-lock root name must match package name.');
+  assert(packageLock?.version === version, 'package-lock root version must match package version.');
+  assert(packageLock?.packages?.['']?.name === packageJson.name, 'package-lock packages root name must match package name.');
+  assert(packageLock?.packages?.['']?.version === version, 'package-lock packages root version must match package version.');
+  assert(packageLock?.packages?.['']?.license === R22_METADATA.packageLicense, 'package-lock packages root license must match package license.');
   assert(packageJson.description === 'Reusable Localis platform for learner-controlled technical process experiences.', 'package description must match the R22 release value.');
   assert(packageJson.license === R22_METADATA.packageLicense, 'package license must be GPL-3.0-only.');
   assert(packageJson.homepage === R22_METADATA.pluginUri, 'package homepage must match Plugin URI.');
@@ -152,8 +158,10 @@ async function readText(root, path) {
 
 async function validateRoot(root) {
   const packageJson = JSON.parse(await readText(ROOT, 'package.json'));
+  const packageLock = JSON.parse(await readText(ROOT, 'package-lock.json'));
   const texts = {
     packageJson,
+    packageLock,
     rootPlugin: await readText(root, 'code-in-motion.php'),
     implementationPlugin: await readText(root, 'wordpress/code-in-motion.php'),
     readme: await readText(root, 'readme.txt'),
