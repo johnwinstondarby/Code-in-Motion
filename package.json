@@ -25,8 +25,10 @@
     "check:wordpress-release-tree": "node tools/check-wordpress-release-tree.mjs",
     "check:wordpress-metadata": "node tools/check-wordpress-release-metadata.mjs",
     "test": "node --test",
-    "verify": "npm run check:schema && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm test",
-    "wp-env": "wp-env"
+    "verify": "npm run check:schema && npm run check:git-content && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm test",
+    "wp-env": "wp-env",
+    "generate:git-basic-cycle": "node tools/generate-git-basic-cycle.mjs",
+    "check:git-content": "node tools/generate-git-basic-cycle.mjs --check"
   },
   "devDependencies": {
     "@wordpress/env": "11.15.0",
