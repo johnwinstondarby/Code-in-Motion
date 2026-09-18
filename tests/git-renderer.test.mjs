@@ -164,6 +164,11 @@ test('R27 Git renderer exposes the four-place model and step focus', async () =>
     ['working-tree', 'index', 'local', 'remote']
   );
 
+  const reflog = section.childNodes.find((node) => attribute(node, 'data-git-evidence') === 'reflog');
+  assert.ok(reflog);
+  assert.equal(attribute(reflog, 'data-git-grammar'), 'evidence-timeline');
+  assert.equal(lanes.childNodes.includes(reflog), false);
+
   renderer.dispose();
 });
 
