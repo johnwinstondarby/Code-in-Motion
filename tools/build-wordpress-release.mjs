@@ -321,7 +321,9 @@ async function buildRelease() {
   const rootPlugin = await readFile(resolve(ROOT, 'code-in-motion.php'), 'utf8');
   const wordpressPlugin = await readFile(resolve(ROOT, 'wordpress', 'code-in-motion.php'), 'utf8');
   assertPluginVersion(rootPlugin, version, 'root plugin entry');
-  assertPluginVersion(wordpressPlugin, version, 'WordPress implementation entry');
+  if (/^\\s*\\* Plugin Name:/m.test(wordpressPlugin)) {
+    fail('WordPress implementation entry must not declare a second plugin header.');
+  }
   if (!wordpressPlugin.includes(`define( 'LOCALIS_CIM_PLUGIN_VERSION', '${version}' );`)) {
     fail(`WordPress implementation constant does not match package version ${version}.`);
   }
