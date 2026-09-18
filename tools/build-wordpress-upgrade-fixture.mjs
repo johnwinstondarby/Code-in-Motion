@@ -9,7 +9,7 @@ const DIST_ROOT = resolve(ROOT, 'dist');
 const STAGE_ROOT = resolve(DIST_ROOT, 'code-in-motion');
 
 export const R16_PRIOR_VERSION = '0.0.9';
-export const R16_CURRENT_VERSION = '0.1.0';
+export const R16_CURRENT_VERSION = '0.1.1';
 export const R16_OBSOLETE_PATH = 'wordpress/assets/r16-obsolete.txt';
 
 function compareText(a, b) {
