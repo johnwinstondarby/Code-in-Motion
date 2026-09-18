@@ -198,9 +198,11 @@ function buildStableOutput(root, stateInput, context) {
 
   const evidence = document.createElement('aside');
   evidence.setAttribute('data-git-evidence', 'reflog');
+  evidence.setAttribute('data-git-grammar', 'evidence-timeline');
   evidence.setAttribute('data-focus', focus === 'reflog' ? 'true' : 'false');
-  addTextElement(document, evidence, 'h4', 'Reflog', 'lane-title');
-  addList(document, evidence, state.reflog, 'reflog');
+  evidence.setAttribute('aria-label', 'Reflog evidence timeline');
+  addTextElement(document, evidence, 'h4', 'Reflog evidence', 'evidence-title');
+  addList(document, evidence, state.reflog, 'evidence-timeline');
   section.appendChild(evidence);
 
   return section;
