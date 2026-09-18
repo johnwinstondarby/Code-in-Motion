@@ -70,12 +70,19 @@ test('R27 Git basic cycle mounts through the production WordPress path and advan
   await expect(lanes.nth(1).locator('[data-role="status"]')).toHaveText('staged for next commit');
 
   const paths = requested.map(pathOf);
-  const expectedGitExperiencePath = WORDPRESS_LAYOUT === 'release'
-    ? `${MODULE_PREFIX}experiences/git/git-basic-cycle.json`
-    : `${PLUGIN_PREFIX}experiences/git/git-basic-cycle.json`;
-  const expectedGitRendererPath = WORDPRESS_LAYOUT === 'release'
-    ? `${MODULE_PREFIX}src/renderers/subjects/git/renderer.mjs`
-    : `${PLUGIN_PREFIX}src/renderers/subjects/git/renderer.mjs`;
+  let expectedGitExperiencePath;
+  let expectedGitRendererPath;
+
+  if (WORDPRESS_LAYOUT === 'release') {
+    expectedGitExperiencePath = `${MODULE_PREFIX}experiences/git/git-basic-cycle.json`;
+    expectedGitRendererPath = `${MODULE_PREFIX}src/renderers/subjects/git/renderer.mjs`;
+  } else {
+    const bootstrapPath = paths.find((path) => path.endsWith('/wordpress/assets/bootstrap.js'));
+    expect(bootstrapPath).toBeDefined();
+    const pluginRoot = bootstrapPath.slice(0, -'wordpress/assets/bootstrap.js'.length);
+    expectedGitExperiencePath = `${pluginRoot}experiences/git/git-basic-cycle.json`;
+    expectedGitRendererPath = `${pluginRoot}src/renderers/subjects/git/renderer.mjs`;
+  }
 
   expect(paths).toContain(expectedGitExperiencePath);
   expect(paths).toContain(expectedGitRendererPath);
