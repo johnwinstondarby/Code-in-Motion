@@ -119,6 +119,7 @@ test('R10 disposeRoot revokes only one mounted root and is single-shot', async (
     experienceLoader: Object.freeze({ load: async () => experience }),
     rendererResolver: Object.freeze({ resolve: async () => renderers[rendererIndex++].renderer }),
     clockFactory: Object.freeze({ create: () => clockFixture() }),
+    entryResolver: Object.freeze({ resolve: () => null }),
     diagnostics
   });
 
@@ -164,6 +165,7 @@ test('R10 page disposal and root disposal share the same per-root terminal promi
     experienceLoader: Object.freeze({ load: async () => experience }),
     rendererResolver: Object.freeze({ resolve: async () => renderer.renderer }),
     clockFactory: Object.freeze({ create: () => clockFixture() }),
+    entryResolver: Object.freeze({ resolve: () => null }),
     diagnostics
   });
 
