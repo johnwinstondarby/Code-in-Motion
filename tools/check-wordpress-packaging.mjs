@@ -19,7 +19,7 @@ const REQUIRED_EXTERNAL_ASSETS = Object.freeze([
 
 const WORDPRESS_FLOOR_CORE = 'WordPress/WordPress#6.5.10';
 const WORDPRESS_FLOOR_PHP = '7.4';
-const WP_ENV_TOOL_VERSION = '@wordpress/env@11.15.0';
+const WP_ENV_TOOL_VERSION = '11.15.0';
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -55,11 +55,12 @@ async function verifyEnvironmentBaseline() {
   assertArrayEqual(wpEnv.plugins, ['.'], 'wp-env plugin mount');
 
   const packageJson = JSON.parse(await readFile(PACKAGE_PATH, 'utf8'));
-  const wpEnvScript = packageJson.scripts?.['wp-env'];
-  if (typeof wpEnvScript !== 'string') {
-    throw new Error('WordPress packaging gate: package.json must define the pinned wp-env script.');
-  }
-  assertContains(wpEnvScript, WP_ENV_TOOL_VERSION, 'pinned @wordpress/env version');
+  assertEqual(
+    packageJson.devDependencies?.['@wordpress/env'],
+    WP_ENV_TOOL_VERSION,
+    'pinned @wordpress/env devDependency'
+  );
+  assertEqual(packageJson.scripts?.['wp-env'], 'wp-env', 'locked wp-env script');
 }
 
 async function verifyPlaygroundBaseline() {
