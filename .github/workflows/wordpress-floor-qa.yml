@@ -42,7 +42,7 @@ jobs:
 
           plugin_version="$(npm run --silent wp-env -- run cli wp eval 'echo defined("LOCALIS_CIM_PLUGIN_VERSION") ? LOCALIS_CIM_PLUGIN_VERSION : "MISSING";' | tail -n 1)"
           printf '%s\n' "$plugin_version"
-          test "$plugin_version" = '0.1.0'
+          test "$plugin_version" = '0.1.1'
 
           rendered="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]CiM floor fallback.[/cim]");' | tail -n 1)"
           printf '%s\n' "$rendered"
