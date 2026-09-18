@@ -130,7 +130,7 @@ code-in-motion/LICENSE
 code-in-motion/readme.txt
 ```
 
-The root and WordPress implementation plugin headers declare GPLv3 and the GNU GPLv3 license URI. The shipped `LICENSE` is the GNU General Public License version 3 text supplied for the project.
+The root plugin header declares GPLv3 and the GNU GPLv3 license URI. `wordpress/code-in-motion.php` carries implementation code and the internal plugin-version constant, but no second WordPress plugin header. The shipped `LICENSE` is the GNU General Public License version 3 text supplied for the project.
 
 R22 retains ownership of broader release-metadata QA and publication-facing metadata consistency.
 
@@ -208,6 +208,29 @@ Staged regular files are normalized to mode `0644`; staged directories are norma
 The build prints the staged file count, exact Node version, archive name, and SHA-256. CI independently verifies the checksum, ZIP integrity, single top-level prefix, duplicate-entry absence, and equality between staged-file count and ZIP-entry count.
 
 R13 establishes deterministic build mechanics. R14 performs the independent repeated-clean-build proof that identical declared inputs produce the identical ZIP SHA-256.
+
+## R23 supply-chain and manifest audit
+
+R23 independently audits the artifact produced by R13 rather than reusing the builder manifest as its approval source.
+
+The audit runs against both:
+
+- `dist/code-in-motion/`;
+- a fresh extraction of `dist/code-in-motion-<plugin-version>.zip`.
+
+The v1 release policy is text-only. Approved content is limited to the release metadata and WordPress entry/assets plus the version-bearing `.mjs` module graph and the synthetic diagnostic Experience.
+
+R23 fails closed on:
+
+- development and repository paths such as `.git/`, `.github/`, `node_modules/`, `tests/`, `harness/`, `tools/`, `docs/`, `examples/`, schemas, fixtures, mocks, and authoring material;
+- development files such as `package.json`, `package-lock.json`, `.nvmrc`, `.wp-env.json`, Composer metadata, PHPUnit configuration, and environment files;
+- key, certificate, archive, native-binary, WebAssembly, database, and source-map extensions;
+- non-UTF-8 or binary content at an approved text path;
+- private-key blocks and high-confidence cloud/API credential indicators.
+
+The audit produces a lexicographically sorted SHA-256 manifest for every shipped file. CI creates one manifest from the staged tree and one from the extracted ZIP, requires the two manifests to be identical, and performs a recursive byte comparison between staged and extracted trees.
+
+The R23 manifest is uploaded as CI evidence for later release-governance assembly under R24.
 
 ## R12 exit rule
 
