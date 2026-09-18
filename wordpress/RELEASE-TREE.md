@@ -75,7 +75,7 @@ Because the topology is preserved, existing relative imports such as `../../src/
 
 ## Production source content
 
-For v1, the release builder may include the full verified `src/` production tree beneath the version-bearing module root. Test, harness, tooling, documentation, Git metadata, local environment state, and dependency-installation directories remain outside the plugin artifact.
+For v1, the release builder may include the full verified `src/` production tree beneath the version-bearing module root. Test, harness, tooling, general project documentation, Git metadata, local environment state, and dependency-installation directories remain outside the plugin artifact. The release-specific `readme.txt` and `LICENSE` are explicit distribution inputs.
 
 The approved non-production runtime inputs are limited to the WordPress production assets and the synthetic diagnostic Experience required by the shipped checkpoint.
 
@@ -123,7 +123,16 @@ code-in-motion/wordpress/assets/modules/<plugin-version>/wordpress/experiences/s
 
 ## Metadata and license
 
-The final distributable tree also requires release metadata, `readme.txt`, and `LICENSE`. Their content is completed under R22. R12 reserves those root-level paths but does not select a software license.
+R21 pulled the minimum non-waivable distribution metadata forward after WordPress Plugin Check identified two release-blocking findings. The distributable tree now includes:
+
+```text
+code-in-motion/LICENSE
+code-in-motion/readme.txt
+```
+
+The root and WordPress implementation plugin headers declare GPLv3 and the GNU GPLv3 license URI. The shipped `LICENSE` is the GNU General Public License version 3 text supplied for the project.
+
+R22 retains ownership of broader release-metadata QA and publication-facing metadata consistency.
 
 ## R13 deterministic builder
 
@@ -150,6 +159,8 @@ dist/code-in-motion-<plugin-version>.zip.sha256
 The builder stages only these inputs:
 
 ```text
+LICENSE
+readme.txt
 code-in-motion.php
 wordpress/code-in-motion.php
 wordpress/assets/bootstrap.js
