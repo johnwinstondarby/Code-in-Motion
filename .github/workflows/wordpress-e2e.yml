@@ -101,6 +101,7 @@ jobs:
       - name: Run R8/R9/R10/R11 production browser proofs
         env:
           CIM_WP_BASE_URL: http://localhost:8888
+          CIM_WP_LAYOUT: source
         run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-git-basic-cycle.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs tests/e2e/wordpress-fault-matrix.spec.mjs --reporter=line
 
       - name: Stop wp-env
@@ -269,6 +270,7 @@ jobs:
       - name: Run integration and browser proofs against installed ZIP
         env:
           CIM_WP_BASE_URL: http://localhost:8890
+          CIM_WP_LAYOUT: release
         run: >-
           npx playwright test
           tests/e2e/wordpress-synthetic-mount.spec.mjs
