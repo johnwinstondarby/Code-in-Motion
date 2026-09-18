@@ -18,6 +18,18 @@ const packageJson = {
   bugs: { url: R22_METADATA.supportUri }
 };
 
+const packageLock = {
+  name: 'code-in-motion',
+  version: '0.1.0',
+  packages: {
+    '': {
+      name: 'code-in-motion',
+      version: '0.1.0',
+      license: 'GPL-3.0-only'
+    }
+  }
+};
+
 const rootPlugin = `<?php
 /**
  * Plugin Name: Code in Motion
@@ -84,6 +96,7 @@ test('R22 parses WordPress readme metadata and short description', () => {
 test('R22 accepts one consistent release metadata set', () => {
   assert.doesNotThrow(() => validateReleaseMetadataTexts({
     packageJson,
+    packageLock,
     rootPlugin,
     implementationPlugin,
     readme,
@@ -128,10 +141,26 @@ test('R22 rejects a missing current changelog entry', () => {
   );
 });
 
+
+test('R22 rejects package-lock version drift', () => {
+  assert.throws(
+    () => validateReleaseMetadataTexts({
+      packageJson,
+      packageLock: { ...packageLock, version: '0.1.1' },
+      rootPlugin,
+      implementationPlugin,
+      readme,
+      license
+    }),
+    /package-lock root version must match package version/
+  );
+});
+
 test('R22 rejects support-route drift', () => {
   assert.throws(
     () => validateReleaseMetadataTexts({
       packageJson: { ...packageJson, bugs: { url: 'https://example.invalid/issues' } },
+      packageLock,
       rootPlugin,
       implementationPlugin,
       readme,
