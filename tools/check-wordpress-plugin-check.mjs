@@ -112,18 +112,20 @@ export function classifyPluginCheckFindings(findings) {
   });
 }
 
-export function assertPluginCheckReleaseGate(source) {
+export function assertPluginCheckReleaseGate(source, logPrefix = '') {
+  if (typeof logPrefix !== 'string') fail('log prefix must be a string.');
+
   const findings = parsePluginCheckReport(source);
   const classified = classifyPluginCheckFindings(findings);
 
   for (const finding of [...classified.failures, ...classified.review]) {
     console.error(
-      finding.classification + ': ' + finding.code + ' (' + finding.file + ') — ' + finding.message
+      logPrefix + finding.classification + ': ' + finding.code + ' (' + finding.file + ') — ' + finding.message
     );
   }
   for (const finding of classified.accepted) {
     console.log(
-      'ACCEPTED EXCEPTION: ' + finding.code + ' (' + finding.file + ') — ' + finding.rationale
+      logPrefix + 'ACCEPTED EXCEPTION: ' + finding.code + ' (' + finding.file + ') — ' + finding.rationale
     );
   }
 
@@ -136,7 +138,7 @@ export function assertPluginCheckReleaseGate(source) {
   }
 
   console.log(
-    'PASS: R21 Plugin Check classification (' + findings.length + ' finding(s), 0 FAIL, 0 REVIEW, ' +
+    logPrefix + 'PASS: R21 Plugin Check classification (' + findings.length + ' finding(s), 0 FAIL, 0 REVIEW, ' +
     classified.accepted.length + ' ACCEPTED EXCEPTION).'
   );
   return classified;
