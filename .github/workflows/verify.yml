@@ -54,6 +54,9 @@ jobs:
       - name: Build WordPress release artifact
         run: npm run build:wordpress
 
+      - name: Verify R22 staged release metadata
+        run: node tools/check-wordpress-release-metadata.mjs --release-root dist/code-in-motion
+
       - name: Verify staged tree and ZIP structure
         shell: bash
         run: |
