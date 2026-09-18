@@ -8,10 +8,19 @@ import {
   createSyntheticRenderer,
   SYNTHETIC_RENDERER_ID
 } from '../../src/renderers/subjects/synthetic/renderer.mjs';
+import {
+  createGitRenderer,
+  GIT_RENDERER_ID
+} from '../../src/renderers/subjects/git/renderer.mjs';
 import { createWordPressRootLifecycleBinding } from './root-lifecycle-binding.mjs';
 import { createWordPressTransportBinding } from './transport-binding.mjs';
 
 const SYNTHETIC_EXPERIENCE_ID = 'synthetic-wordpress';
+const GIT_BASIC_CYCLE_EXPERIENCE_ID = 'git-basic-cycle';
+const EXPERIENCE_PATHS = new Map([
+  [SYNTHETIC_EXPERIENCE_ID, '../experiences/synthetic-wordpress.json'],
+  [GIT_BASIC_CYCLE_EXPERIENCE_ID, '../experiences/git-basic-cycle.json']
+]);
 const ROOT_SELECTOR = '[data-cim-experience]';
 const moduleUrl = new URL(import.meta.url);
 
@@ -24,14 +33,15 @@ function versionedUrl(relativePath) {
 const experienceLoader = createWordPressExperienceLoader({
   fetch: (url) => window.fetch(url, { credentials: 'same-origin' }),
   experienceUrlFor(experienceId) {
-    if (experienceId !== SYNTHETIC_EXPERIENCE_ID) return '';
-    return versionedUrl('../experiences/synthetic-wordpress.json');
+    const path = EXPERIENCE_PATHS.get(experienceId);
+    return path === undefined ? '' : versionedUrl(path);
   }
 });
 
 const rendererResolver = createWordPressRendererResolver({
   registry: new Map([
-    [SYNTHETIC_RENDERER_ID, () => createSyntheticRenderer()]
+    [SYNTHETIC_RENDERER_ID, () => createSyntheticRenderer()],
+    [GIT_RENDERER_ID, () => createGitRenderer()]
   ])
 });
 
