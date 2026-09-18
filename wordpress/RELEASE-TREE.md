@@ -232,6 +232,32 @@ The audit produces a lexicographically sorted SHA-256 manifest for every shipped
 
 The R23 manifest is uploaded as CI evidence for later release-governance assembly under R24.
 
+## R24 release evidence package
+
+R24 assembles one reviewable evidence package against the exact candidate commit.
+
+The R24 workflow checks out the pull-request head SHA rather than GitHub's synthetic merge commit, then rebuilds and verifies the release artifact from that exact tree.
+
+The package retains:
+
+- candidate commit identity;
+- exact release ZIP and SHA-256 sidecar;
+- fresh R23 per-file SHA-256 manifest;
+- release file count and staged-byte count;
+- R16 through R24 release QA records;
+- complete verification and build logs;
+- locked Node/npm/wp-env/AJV/fast-uri identities;
+- package-lock SHA-256;
+- complete npm dependency inventory;
+- focused dependency paths for the audited toolchain;
+- verbatim npm audit JSON and text;
+- known development-tool deprecation warnings;
+- a SHA-256 index over the retained evidence files.
+
+R24 keeps artifact security separate from evidence-chain security. R23 proves that development tooling does not enter the 57-file plugin artifact. R24 identifies and audits the locked toolchain used to produce and verify that artifact.
+
+The evidence package is uploaded as `r24-release-evidence` with 90-day retention.
+
 ## R12 exit rule
 
 R12 is complete when the release-tree contract and transitive import-containment gate are green on the branch. R13 must consume this contract rather than defining a second staging layout.
