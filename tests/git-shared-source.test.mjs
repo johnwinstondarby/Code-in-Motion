@@ -90,3 +90,9 @@ test('R27 page anchors carry deterministic CiM deep-link step identities', async
   );
   assert.equal(new Set(experience.steps.map((step) => step.id)).size, experience.steps.length);
 });
+
+test('R27 partial and intent-to-add staging remain reference-only guidance', async () => {
+  const { plan } = await loadInputs();
+  assert.equal(plan.scope.staging_demonstration, 'plain-git-add');
+  assert.deepEqual(plan.scope.reference_only_guidance, ['git add -p', 'git add -N <path>']);
+});
