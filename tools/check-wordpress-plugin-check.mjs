@@ -20,7 +20,7 @@ function fail(message) {
 export function parsePluginCheckReport(source) {
   if (typeof source !== 'string') fail('report source must be a string.');
 
-  const lines = source.split(/\\r?\\n/);
+  const lines = source.split(/\r?\n/);
   const findings = [];
   let currentFile = null;
 
