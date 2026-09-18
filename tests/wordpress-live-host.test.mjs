@@ -4,6 +4,7 @@ import test from 'node:test';
 import { freezeValidatedExperience } from '../src/experience/freeze-validated-experience.mjs';
 import {
   WORDPRESS_CLOCK_FACTORY_KEYS,
+  WORDPRESS_ENTRY_RESOLVER_KEYS,
   WORDPRESS_EXPERIENCE_LOADER_KEYS,
   WORDPRESS_LIVE_HOST_KEYS,
   WORDPRESS_LIVE_HOST_OPTIONS_KEYS,
@@ -192,12 +193,14 @@ function diagnosticsHarness({ throwOnReport = false } = {}) {
 function capabilityHarness({
   load,
   resolve,
-  create = () => clockFixture()
+  create = () => clockFixture(),
+  resolveEntry = () => null
 }) {
   return {
     experienceLoader: Object.freeze({ load }),
     rendererResolver: Object.freeze({ resolve }),
-    clockFactory: Object.freeze({ create })
+    clockFactory: Object.freeze({ create }),
+    entryResolver: Object.freeze({ resolve: resolveEntry })
   };
 }
 
@@ -208,9 +211,10 @@ function hostOptions({
   load = async (id) => experienceFixture(id),
   resolve = async () => rendererFixture().renderer,
   create = () => clockFixture(),
+  resolveEntry = () => null,
   document = documentHarness(roots).document
 } = {}) {
-  const capabilities = capabilityHarness({ load, resolve, create });
+  const capabilities = capabilityHarness({ load, resolve, create, resolveEntry });
   return {
     options: {
       document,
@@ -218,6 +222,7 @@ function hostOptions({
       experienceLoader: capabilities.experienceLoader,
       rendererResolver: capabilities.rendererResolver,
       clockFactory: capabilities.clockFactory,
+      entryResolver: capabilities.entryResolver,
       diagnostics: diagnostics.diagnostics
     },
     media,
@@ -248,6 +253,7 @@ test('WordPress live Host surface and dependency capability contracts are exact 
   assert.deepEqual(Object.keys(source.experienceLoader), WORDPRESS_EXPERIENCE_LOADER_KEYS);
   assert.deepEqual(Object.keys(source.rendererResolver), WORDPRESS_RENDERER_RESOLVER_KEYS);
   assert.deepEqual(Object.keys(source.clockFactory), WORDPRESS_CLOCK_FACTORY_KEYS);
+  assert.deepEqual(Object.keys(source.entryResolver), WORDPRESS_ENTRY_RESOLVER_KEYS);
 
   const host = createWordPressLiveHost(source.options);
   assert.equal(Object.isFrozen(host), true);
@@ -561,4 +567,46 @@ test('WordPress live Host rejects widened or mutable injected production capabil
     diagnostics: diagnostics.diagnostics,
     extra: true
   }), /live Host options must contain exactly/);
+});
+
+
+test('WordPress live Host initializes directly at a resolved deep-link boundary', async () => {
+  const root = rootHarness({ instanceId: 'deep-link-instance' });
+  const recording = rendererFixture();
+  const source = hostOptions({
+    roots: [root.root],
+    resolve: async () => recording.renderer,
+    resolveEntry: () => Object.freeze({ stepId: 'step-01', source: 'deep_link' })
+  });
+  const host = createWordPressLiveHost(source.options);
+
+  assert.deepEqual(await host.mount(), { mounted: 1, fallback: 0 });
+  assert.equal(root.state(), 'ready');
+  assert.equal(recording.contexts.length, 1);
+  assert.equal(recording.contexts[0].stepId, 'step-01');
+  assert.equal(recording.contexts[0].fromStepId, null);
+
+  await host.dispose();
+});
+
+test('invalid WordPress deep-link resolution records CIM-HST-002 and opens at initial', async () => {
+  const root = rootHarness({ instanceId: 'invalid-deep-link' });
+  const recording = rendererFixture();
+  const diagnostics = diagnosticsHarness();
+  const source = hostOptions({
+    roots: [root.root],
+    diagnostics,
+    resolve: async () => recording.renderer,
+    resolveEntry: () => { throw new TypeError('unknown deep-link boundary'); }
+  });
+  const host = createWordPressLiveHost(source.options);
+
+  assert.deepEqual(await host.mount(), { mounted: 1, fallback: 0 });
+  assert.equal(root.state(), 'ready');
+  assert.equal(recording.contexts[0].stepId, 'initial');
+  assert.equal(diagnostics.records.length, 1);
+  assert.equal(diagnostics.records[0].code, 'CIM-HST-002');
+  assert.equal(diagnostics.records[0].operation, 'deep_link_resolve');
+
+  await host.dispose();
 });
