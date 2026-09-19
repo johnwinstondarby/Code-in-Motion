@@ -47,3 +47,19 @@ jobs:
 
             **Branch:** `{{PR_HEAD_REF}}` · **Plugin:** `{{PLUGIN_SLUG}}`
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  required-playground-gate:
+    name: CiM / Playground
+    if: always()
+    needs:
+      - preview
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require Playground preview
+        shell: bash
+        env:
+          PREVIEW_RESULT: ${{ needs.preview.result }}
+        run: |
+          set -euo pipefail
+          printf 'preview=%s\n' "${PREVIEW_RESULT}"
+          test "${PREVIEW_RESULT}" = "success"
