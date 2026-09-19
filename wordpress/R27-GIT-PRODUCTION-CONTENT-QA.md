@@ -295,22 +295,14 @@ R23 independently audits both staged tree and extracted ZIP and reports them byt
 
 R14 rebuilds the artifact twice from the same candidate source and reproduces the same ZIP digest.
 
-The retained Verify #357 development artifact is:
+Verify retains two external CI artifacts:
 
-`r27-localis-development-artifact`
+- `r27-localis-development-artifact`;
+- `r23-supply-chain-manifest`.
 
-GitHub artifact ID:
+Their GitHub artifact IDs and outer archive digests are intentionally excluded from this repository document. Each new CI run creates new outer archives even when the retained inner release bytes are identical. The final PR closure comment records the outer identities for the selected saturated closure run.
 
-`10576257085`
-
-Outer GitHub artifact SHA-256:
-
-`5722abc2ae84e51d91b3e859db345cd22114c0360fe4d592231c7c62188405b7`
-
-The retained R23 manifest artifact is:
-
-- artifact ID: `10576207023`;
-- outer GitHub artifact SHA-256: `e5007bd7d629fabd5fe57b702e3c7e79dc9f32305c790f4218421e2735c8eb3f`.
+The stable identities retained here are the inner release ZIP SHA-256 and the R23 per-file manifest SHA-256.
 
 ## Release-version boundary
 
