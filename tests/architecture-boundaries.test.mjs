@@ -180,3 +180,15 @@ test('Transport may import dependency-free shared contracts', async () => {
     assert.deepEqual((await checkArchitectureBoundaries(root)).violations, []);
   });
 });
+
+test('production src cannot import the .cim authoring compiler', async () => {
+  await withFixture({
+    'src/runtime/runtime.mjs': `import { compileCimSource } from '../../authoring/cim/compiler.mjs'; export const x = compileCimSource;`,
+    'authoring/cim/compiler.mjs': `export function compileCimSource() {}`
+  }, async (root) =>
+    expectRule(
+      await checkArchitectureBoundaries(root),
+      'production-to-cim-authoring'
+    )
+  );
+});
