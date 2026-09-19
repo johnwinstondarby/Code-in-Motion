@@ -367,18 +367,6 @@ export function compileCimSource(
   }
 
   const lineCounter = new LineCounter();
-  const directive = directiveOffset(source);
-  if (directive >= 0) {
-    throwDiagnostic({
-      lineCounter,
-      offset: directive,
-      sourceId,
-      code: 'CIM-AUTH-002',
-      path: '$',
-      message: 'YAML directives are not allowed in .cim source.',
-      phase: 'authoring'
-    });
-  }
 
   let documents;
   try {
@@ -395,6 +383,127 @@ export function compileCimSource(
     throw new CimAuthoringError([
       parseErrorDiagnostic(error, lineCounter, sourceId)
     ]);
+  }
+
+  const directive = directiveOffset(source);
+  if (directive >= 0) {
+    throwDiagnostic({
+      lineCounter,
+      offset: directive,
+      sourceId,
+      code: 'CIM-AUTH-002',
+      path: '
+    const second = documents[1];
+    throwDiagnostic({
+      lineCounter,
+      node: second?.contents,
+      offset: second?.range?.[0],
+      sourceId,
+      code: 'CIM-AUTH-002',
+      path: '$',
+      message: 'A .cim source must contain exactly one YAML document.',
+      phase: 'authoring'
+    });
+  }
+
+  const document = documents[0];
+  if (document.errors.length > 0) {
+    throw new CimAuthoringError(
+      document.errors.map((error) =>
+        parseErrorDiagnostic(error, lineCounter, sourceId)
+      )
+    );
+  }
+
+  const locations = new Map();
+  const authored = rebuildNode(
+    document.contents,
+    '$',
+    { lineCounter, locations, sourceId }
+  );
+
+  if (
+    authored === null ||
+    typeof authored !== 'object' ||
+    Array.isArray(authored)
+  ) {
+    throwDiagnostic({
+      lineCounter,
+      node: document.contents,
+      sourceId,
+      code: 'CIM-AUTH-003',
+      path: '$',
+      message: 'A .cim source must be a top-level mapping.',
+      phase: 'authoring'
+    });
+  }
+
+  if (!own(authored, 'cim') || authored.cim !== AUTHORING_VERSION) {
+    const location = locations.get('$.cim') ?? locations.get('$');
+    throw new CimAuthoringError([
+      freezeDiagnostic({
+        code: 'CIM-AUTH-003',
+        path: '$.cim',
+        line: location?.line ?? 1,
+        column: location?.column ?? 1,
+        endLine: location?.endLine ?? location?.line ?? 1,
+        endColumn: location?.endColumn ?? location?.column ?? 1,
+        message: 'cim must equal supported authoring version 1.',
+        phase: 'authoring',
+        sourceId
+      })
+    ]);
+  }
+
+  if (own(authored, 'schema')) {
+    const location = locations.get('$.schema') ?? locations.get('$');
+    throw new CimAuthoringError([
+      freezeDiagnostic({
+        code: 'CIM-AUTH-002',
+        path: '$.schema',
+        line: location?.line ?? 1,
+        column: location?.column ?? 1,
+        endLine: location?.endLine ?? location?.line ?? 1,
+        endColumn: location?.endColumn ?? location?.column ?? 1,
+        message: 'schema is compiler-owned; authoring uses cim: 1.',
+        phase: 'authoring',
+        sourceId
+      })
+    ]);
+  }
+
+  const candidate = { schema: RUNTIME_SCHEMA };
+  for (const key of Object.keys(authored)) {
+    if (key === 'cim') continue;
+    candidate[key] = authored[key];
+  }
+
+  if (locations.has('$.cim')) {
+    locations.set('$.schema', locations.get('$.cim'));
+  }
+
+  let experience;
+  try {
+    experience = ingestExperience(candidate);
+  } catch (error) {
+    if (error instanceof ExperienceValidationError) {
+      throw new CimAuthoringError(
+        validationDiagnostics(error, locations, sourceId)
+      );
+    }
+    throw error;
+  }
+
+  return Object.freeze({
+    experience,
+    locations: frozenLocationRecord(locations),
+    sourceId
+  });
+}
+,
+      message: 'YAML directives are not allowed in .cim source.',
+      phase: 'authoring'
+    });
   }
 
   if (documents.length !== 1) {
