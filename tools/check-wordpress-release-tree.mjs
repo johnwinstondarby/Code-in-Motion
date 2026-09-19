@@ -6,7 +6,16 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PACKAGE_PATH = resolve(ROOT, 'package.json');
 const BOOTSTRAP_PATH = resolve(ROOT, 'wordpress', 'assets', 'bootstrap.js');
 const MODULE_ENTRY_PATH = resolve(ROOT, 'wordpress', 'assets', 'bootstrap-module.mjs');
-const EXPERIENCE_PATH = resolve(ROOT, 'wordpress', 'experiences', 'synthetic-wordpress.json');
+const EXPERIENCE_PATHS = Object.freeze([
+  Object.freeze({
+    source: resolve(ROOT, 'wordpress', 'experiences', 'synthetic-wordpress.json'),
+    destination: 'wordpress/experiences/synthetic-wordpress.json'
+  }),
+  Object.freeze({
+    source: resolve(ROOT, 'experiences', 'git', 'git-basic-cycle.json'),
+    destination: 'experiences/git/git-basic-cycle.json'
+  })
+]);
 
 const ALLOWED_MODULE_SOURCE_PREFIXES = Object.freeze([
   'src/',
@@ -178,7 +187,9 @@ async function run() {
 
   await assertFile(BOOTSTRAP_PATH, 'classic WordPress bootstrap');
   await assertFile(MODULE_ENTRY_PATH, 'WordPress module entry');
-  await assertFile(EXPERIENCE_PATH, 'synthetic WordPress Experience');
+  for (const experience of EXPERIENCE_PATHS) {
+    await assertFile(experience.source, 'WordPress release Experience');
+  }
 
   const bootstrap = await readFile(BOOTSTRAP_PATH, 'utf8');
   if (!bootstrap.includes('./bootstrap-module.mjs')) {
@@ -189,12 +200,14 @@ async function run() {
   for (const edge of closure.edges) assertReleaseEdge(version, edge);
 
   const releaseModuleRoot = `wordpress/assets/modules/${version}`;
-  const experienceDestination = `${releaseModuleRoot}/wordpress/experiences/synthetic-wordpress.json`;
+  const experienceDestinations = EXPERIENCE_PATHS
+    .map((experience) => `${releaseModuleRoot}/${experience.destination}`)
+    .join(', ');
   const moduleEntryDestination = `${releaseModuleRoot}/wordpress/assets/bootstrap-module.mjs`;
 
   console.log(
     `PASS: R12 WordPress release-tree contract (${closure.modules.length} module(s), ${closure.edges.length} import edge(s), ` +
-    `module root ${releaseModuleRoot}, entry ${moduleEntryDestination}, experience ${experienceDestination})`
+    `module root ${releaseModuleRoot}, entry ${moduleEntryDestination}, experiences ${experienceDestinations})`
   );
 }
 

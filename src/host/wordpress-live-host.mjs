@@ -12,6 +12,7 @@ export const WORDPRESS_LIVE_HOST_OPTIONS_KEYS = Object.freeze([
   'experienceLoader',
   'rendererResolver',
   'clockFactory',
+  'entryResolver',
   'diagnostics'
 ]);
 
@@ -19,6 +20,7 @@ export const WORDPRESS_LIVE_HOST_KEYS = Object.freeze(['mount', 'commands', 'dis
 export const WORDPRESS_EXPERIENCE_LOADER_KEYS = Object.freeze(['load']);
 export const WORDPRESS_RENDERER_RESOLVER_KEYS = Object.freeze(['resolve']);
 export const WORDPRESS_CLOCK_FACTORY_KEYS = Object.freeze(['create']);
+export const WORDPRESS_ENTRY_RESOLVER_KEYS = Object.freeze(['resolve']);
 export const WORDPRESS_MOUNT_RESULT_KEYS = Object.freeze(['mounted', 'fallback']);
 export const WORDPRESS_COMMAND_PORT_KEYS = Object.freeze([
   'play',
@@ -38,6 +40,7 @@ const INSTANCE_ATTRIBUTE = 'data-cim-instance';
 const STATE_ATTRIBUTE = 'data-cim-state';
 const PAGE_DIAGNOSTIC_INSTANCE_ID = 'wordpress-host';
 const HOST_LOAD_DIAGNOSTIC_CODE = 'CIM-HST-001';
+const HOST_DEEP_LINK_DIAGNOSTIC_CODE = 'CIM-HST-002';
 const HOST_MOUNT_DIAGNOSTIC_CODE = 'CIM-HST-004';
 const RENDERER_RESOLUTION_DIAGNOSTIC_CODE = 'CIM-RND-001';
 const EXPERIENCE_FAULT_CODE_PATTERN = /^CIM-EXP-\d{3}$/;
@@ -206,6 +209,21 @@ function createMountResult(mounted, fallback) {
   return result;
 }
 
+function normalizeEntryResolution(value) {
+  if (value === null) return undefined;
+  assertPlainObject(value, 'WordPress deep-link resolution');
+  assertExactKeys(value, ['stepId', 'source'], 'WordPress deep-link resolution');
+  const stepId = dataValue(value, 'stepId', 'WordPress deep-link resolution');
+  const source = dataValue(value, 'source', 'WordPress deep-link resolution');
+  if (typeof stepId !== 'string' || stepId.length === 0) {
+    fail('WordPress deep-link resolution.stepId must be a non-empty string.');
+  }
+  if (source !== 'deep_link') {
+    fail('WordPress deep-link resolution.source must be deep_link.');
+  }
+  return Object.freeze({ stepId, source });
+}
+
 function createCommandPort(instance) {
   const port = {
     play: (source) => instance.play(source),
@@ -309,6 +327,7 @@ export function createWordPressLiveHost(optionsInput) {
   const experienceLoader = dataValue(optionsInput, 'experienceLoader', 'WordPress live Host options');
   const rendererResolver = dataValue(optionsInput, 'rendererResolver', 'WordPress live Host options');
   const clockFactory = dataValue(optionsInput, 'clockFactory', 'WordPress live Host options');
+  const entryResolver = dataValue(optionsInput, 'entryResolver', 'WordPress live Host options');
   const diagnostics = dataValue(optionsInput, 'diagnostics', 'WordPress live Host options');
 
   assertDocument(document);
@@ -327,6 +346,11 @@ export function createWordPressLiveHost(optionsInput) {
     clockFactory,
     WORDPRESS_CLOCK_FACTORY_KEYS,
     'WordPress clock factory'
+  );
+  const { resolve: resolveEntry } = readFrozenFunctionCapability(
+    entryResolver,
+    WORDPRESS_ENTRY_RESOLVER_KEYS,
+    'WordPress entry resolver'
   );
   const { report } = readFrozenFunctionCapability(
     diagnostics,
@@ -369,6 +393,20 @@ export function createWordPressLiveHost(optionsInput) {
         return false;
       }
 
+      let initializationOptions;
+      stage = 'deep_link_resolve';
+      try {
+        initializationOptions = normalizeEntryResolution(resolveEntry(experienceId, experience));
+      } catch (error) {
+        reportDiagnostic(report, {
+          code: HOST_DEEP_LINK_DIAGNOSTIC_CODE,
+          instanceId,
+          operation: 'deep_link_resolve',
+          error
+        });
+        initializationOptions = undefined;
+      }
+
       stage = 'renderer_resolve';
       const renderer = await resolve(readRendererId(experience));
       if (isDisposing()) {
@@ -402,7 +440,7 @@ export function createWordPressLiveHost(optionsInput) {
       }
 
       stage = 'initialize';
-      await instance.initialize();
+      await instance.initialize(initializationOptions);
 
       if (isDisposing()) {
         await cleanupInstance(instance, report, instanceId, 'late_instance_cleanup');

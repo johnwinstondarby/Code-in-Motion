@@ -90,6 +90,7 @@ function createHost({ roots, load, diagnostics }) {
     experienceLoader: Object.freeze({ load }),
     rendererResolver: Object.freeze({ resolve: () => rendererFixture() }),
     clockFactory: Object.freeze({ create: () => clockFixture() }),
+    entryResolver: Object.freeze({ resolve: () => null }),
     diagnostics
   });
 }

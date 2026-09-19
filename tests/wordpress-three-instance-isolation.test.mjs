@@ -161,6 +161,7 @@ test('R9 WordPress page host composes three isolated instances over one shared E
         return clock;
       }
     }),
+    entryResolver: Object.freeze({ resolve: () => null }),
     diagnostics
   });
 

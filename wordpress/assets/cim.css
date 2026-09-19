@@ -5,3 +5,39 @@
 .cim[data-cim-state="ready"] .cim-fallback {
   display: none;
 }
+
+.cim [data-cim-renderer="git/v1"] [data-role="git-lanes"] {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.cim [data-cim-renderer="git/v1"] [data-git-lane] {
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+}
+
+.cim [data-cim-renderer="git/v1"] [data-git-lane][data-focus="true"] {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.cim [data-cim-renderer="git/v1"] [data-git-evidence="reflog"] {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid currentColor;
+}
+
+.cim [data-cim-renderer="git/v1"] [data-git-evidence="reflog"] [data-role="evidence-timeline"] {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+@media (max-width: 720px) {
+  .cim [data-cim-renderer="git/v1"] [data-role="git-lanes"] {
+    grid-template-columns: 1fr;
+  }
+}
+

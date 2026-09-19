@@ -228,6 +228,7 @@ matchMedia
 experienceLoader
 rendererResolver
 clockFactory
+entryResolver
 diagnostics
 ```
 
@@ -246,10 +247,11 @@ For each invocation the production order is:
 
 ```text
 load Experience
+resolve optional deep-link entry
 resolve renderer
 create clock
 createLiveHostCiMInstance(...)
-initialize()
+initialize() or initialize({ stepId, source: 'deep_link' })
 project data-cim-state="ready"
 ```
 
@@ -273,7 +275,7 @@ CIM-HST-004  WordPress page-host mount and page-owned lifecycle
 CIM-RND-001  renderer resolution
 ```
 
-The adapter currently enters through default `initialize()`. ADR 0011 defines targeted entry, and `CIM-ARCHITECTURE.md` defines the external grammar `#cim/{experience-id}/{step-id}` plus the `initial` form. The current page-host adapter does not parse browser location. The packaging/deep-link resolver consumes that existing grammar and passes only a resolved boundary to Runtime through `initialize({ stepId, source: 'deep_link' })`.
+The page Host accepts an injected deep-link resolver. The WordPress browser bootstrap consumes the architecture grammar `#cim/{experience-id}/{step-id}` plus the `initial` form and passes only a resolved boundary to Runtime through `initialize({ stepId, source: 'deep_link' })`. Foreign experience fragments are ignored. Invalid or unresolvable CiM targets record `CIM-HST-002` and recover to `initial` rather than static fallback. Later `hashchange` events seek the matching mounted instance with `source: 'deep_link'`.
 
 Concrete Experience loading, renderer registry contents, browser clock construction, deep-link parsing/resolution, PHP shortcode/block packaging, and external asset enqueue remain deployment bindings around this exact page-host contract. Canonical markup, `wp_enqueue_script()` delivery, and real WordPress-rendered fixture requirements are pinned in [`WORDPRESS.md`](WORDPRESS.md).
 

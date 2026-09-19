@@ -3,9 +3,9 @@ import { test, expect } from '@playwright/test';
 
 const BASE_URL = process.env.CIM_WP_BASE_URL ?? 'http://localhost:8891';
 const WP_ENV_CONFIG = process.env.CIM_R16_CONFIG ?? 'r16-wp-env.json';
-const CURRENT_ZIP = process.env.CIM_R16_CURRENT_ZIP ?? 'wp-content/r16-artifact/code-in-motion-0.1.0.zip';
+const CURRENT_ZIP = process.env.CIM_R16_CURRENT_ZIP ?? 'wp-content/r16-artifact/code-in-motion-0.1.1.zip';
 const PRIOR_VERSION = '0.0.9';
-const CURRENT_VERSION = '0.1.0';
+const CURRENT_VERSION = '0.1.1';
 
 function wpEnv(...args) {
   const executable = process.platform === 'win32' ? 'npm.cmd' : 'npm';

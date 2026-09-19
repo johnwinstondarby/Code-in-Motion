@@ -22,6 +22,10 @@ test('R23 accepts only approved v1 release locations', () => {
     classifyReleasePath('wordpress/assets/modules/0.1.0/wordpress/experiences/synthetic-wordpress.json'),
     'approved-experience'
   );
+  assert.equal(
+    classifyReleasePath('wordpress/assets/modules/0.1.0/experiences/git/git-basic-cycle.json'),
+    'approved-experience'
+  );
 });
 
 test('R23 rejects test, harness, tooling, and development paths', () => {

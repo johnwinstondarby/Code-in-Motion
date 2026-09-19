@@ -1,0 +1,423 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "0.1.0",
+  "experience_version": "1.0.0",
+  "id": "git-basic-cycle",
+  "renderer": "git/v1",
+  "renderer_config": {
+    "lanes": [
+      "working-tree",
+      "index",
+      "local",
+      "remote"
+    ],
+    "file": "README.md"
+  },
+  "initial_state": {
+    "working_tree": {
+      "content": "v2",
+      "unstaged": true
+    },
+    "index": {
+      "content": "v1",
+      "staged": false
+    },
+    "local": {
+      "head": "c100",
+      "commits": [
+        "c100"
+      ],
+      "tags": []
+    },
+    "remote": {
+      "head": "c100",
+      "commits": [
+        "c100"
+      ]
+    },
+    "reflog": [
+      "c100"
+    ]
+  },
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "git status",
+      "marker": "inspect",
+      "commentary": {
+        "text": "Start by reading the repository state. Git status reports what differs among the working tree, index, and current commit without changing any of them.",
+        "links": [
+          {
+            "id": "git-status",
+            "label": "Git status documentation",
+            "href": "https://git-scm.com/docs/git-status"
+          }
+        ]
+      },
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": true
+        },
+        "index": {
+          "content": "v1",
+          "staged": false
+        },
+        "local": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ],
+          "tags": []
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c100"
+        ]
+      },
+      "renderer_config": {
+        "focus": "overview"
+      }
+    },
+    {
+      "id": "step-02",
+      "label": "git diff",
+      "marker": "compare",
+      "commentary": {
+        "text": "Inspect the exact content difference before staging. The repository state is unchanged; only the evidence under examination changes.",
+        "links": [
+          {
+            "id": "git-diff",
+            "label": "Git diff documentation",
+            "href": "https://git-scm.com/docs/git-diff"
+          }
+        ]
+      },
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": true
+        },
+        "index": {
+          "content": "v1",
+          "staged": false
+        },
+        "local": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ],
+          "tags": []
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c100"
+        ]
+      },
+      "renderer_config": {
+        "focus": "working-tree"
+      }
+    },
+    {
+      "id": "step-03",
+      "label": "git add",
+      "marker": "stage",
+      "commentary": {
+        "text": "Stage the selected change into the index. The index now contains the content intended for the next commit.",
+        "links": [
+          {
+            "id": "git-add",
+            "label": "Git add documentation",
+            "href": "https://git-scm.com/docs/git-add"
+          }
+        ]
+      },
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": true
+        },
+        "local": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ],
+          "tags": []
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c100"
+        ]
+      },
+      "renderer_config": {
+        "focus": "index"
+      }
+    },
+    {
+      "id": "step-04",
+      "label": "git commit",
+      "marker": "record",
+      "commentary": {
+        "text": "Record the staged snapshot. The local branch advances to a new commit and the index returns to an unstaged state.",
+        "links": [
+          {
+            "id": "git-commit",
+            "label": "Git commit documentation",
+            "href": "https://git-scm.com/docs/git-commit"
+          }
+        ]
+      },
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": false
+        },
+        "local": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ],
+          "tags": []
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c101",
+          "c100"
+        ]
+      },
+      "renderer_config": {
+        "focus": "local"
+      }
+    },
+    {
+      "id": "step-05",
+      "label": "git rev-parse HEAD",
+      "marker": "identify",
+      "commentary": {
+        "text": "Resolve HEAD after the commit to identify the exact object now selected by the local branch.",
+        "links": [
+          {
+            "id": "git-rev-parse",
+            "label": "Git rev-parse documentation",
+            "href": "https://git-scm.com/docs/git-rev-parse"
+          }
+        ]
+      },
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": false
+        },
+        "local": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ],
+          "tags": []
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c101",
+          "c100"
+        ]
+      },
+      "renderer_config": {
+        "focus": "head"
+      }
+    },
+    {
+      "id": "step-06",
+      "label": "git tag v1.2",
+      "marker": "name",
+      "commentary": {
+        "text": "Attach a human-readable name to the recorded commit. The tag points at c101 while the commit identity itself remains unchanged.",
+        "links": [
+          {
+            "id": "git-tag",
+            "label": "Git tag documentation",
+            "href": "https://git-scm.com/docs/git-tag"
+          }
+        ]
+      },
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": false
+        },
+        "local": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ],
+          "tags": [
+            {
+              "name": "v1.2",
+              "target": "c101"
+            }
+          ]
+        },
+        "remote": {
+          "head": "c100",
+          "commits": [
+            "c100"
+          ]
+        },
+        "reflog": [
+          "c101",
+          "c100"
+        ]
+      },
+      "renderer_config": {
+        "focus": "refs"
+      }
+    },
+    {
+      "id": "step-07",
+      "label": "git push",
+      "marker": "publish",
+      "commentary": {
+        "text": "Publish the local history. The remote reference advances to the same commit as the local branch.",
+        "links": [
+          {
+            "id": "git-push",
+            "label": "Git push documentation",
+            "href": "https://git-scm.com/docs/git-push"
+          }
+        ]
+      },
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": false
+        },
+        "local": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ],
+          "tags": [
+            {
+              "name": "v1.2",
+              "target": "c101"
+            }
+          ]
+        },
+        "remote": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ]
+        },
+        "reflog": [
+          "c101",
+          "c100"
+        ]
+      },
+      "renderer_config": {
+        "focus": "remote"
+      }
+    },
+    {
+      "id": "step-08",
+      "label": "git reflog",
+      "marker": "recover",
+      "commentary": {
+        "text": "Inspect the local reference-update history. Reflog provides recovery evidence without changing the repository state.",
+        "links": [
+          {
+            "id": "git-reflog",
+            "label": "Git reflog documentation",
+            "href": "https://git-scm.com/docs/git-reflog"
+          }
+        ]
+      },
+      "state": {
+        "working_tree": {
+          "content": "v2",
+          "unstaged": false
+        },
+        "index": {
+          "content": "v2",
+          "staged": false
+        },
+        "local": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ],
+          "tags": [
+            {
+              "name": "v1.2",
+              "target": "c101"
+            }
+          ]
+        },
+        "remote": {
+          "head": "c101",
+          "commits": [
+            "c100",
+            "c101"
+          ]
+        },
+        "reflog": [
+          "c101",
+          "c100"
+        ]
+      },
+      "renderer_config": {
+        "focus": "reflog"
+      }
+    }
+  ]
+}

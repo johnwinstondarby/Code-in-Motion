@@ -35,7 +35,16 @@ const STATIC_STAGE_FILES = Object.freeze([
   Object.freeze({ source: 'wordpress/assets/cim.css', destination: 'wordpress/assets/cim.css' })
 ]);
 
-const EXPERIENCE_SOURCE = 'wordpress/experiences/synthetic-wordpress.json';
+const EXPERIENCE_SOURCES = Object.freeze([
+  Object.freeze({
+    source: 'wordpress/experiences/synthetic-wordpress.json',
+    destination: 'wordpress/experiences/synthetic-wordpress.json'
+  }),
+  Object.freeze({
+    source: 'experiences/git/git-basic-cycle.json',
+    destination: 'experiences/git/git-basic-cycle.json'
+  })
+]);
 
 function fail(message) {
   throw new Error(`WordPress release build: ${message}`);
@@ -304,7 +313,12 @@ async function releaseInputs(version) {
     expected.push(await stageSourceFile(source, `${moduleRoot}/${source}`));
   }
 
-  expected.push(await stageSourceFile(EXPERIENCE_SOURCE, `${moduleRoot}/${EXPERIENCE_SOURCE}`));
+  for (const experience of EXPERIENCE_SOURCES) {
+    expected.push(await stageSourceFile(
+      experience.source,
+      `${moduleRoot}/${experience.destination}`
+    ));
+  }
   return expected;
 }
 

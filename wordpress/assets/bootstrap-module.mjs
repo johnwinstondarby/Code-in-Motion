@@ -1,3 +1,8 @@
+import { COMMAND_SOURCE } from '../../src/contracts/events.mjs';
+import {
+  createWordPressDeepLinkResolver,
+  parseCiMDeepLinkFragment
+} from '../../src/host/wordpress-deep-link.mjs';
 import { createWordPressLiveHost } from '../../src/host/wordpress-live-host.mjs';
 import {
   createWordPressClockFactory,
@@ -8,10 +13,19 @@ import {
   createSyntheticRenderer,
   SYNTHETIC_RENDERER_ID
 } from '../../src/renderers/subjects/synthetic/renderer.mjs';
+import {
+  createGitRenderer,
+  GIT_RENDERER_ID
+} from '../../src/renderers/subjects/git/renderer.mjs';
 import { createWordPressRootLifecycleBinding } from './root-lifecycle-binding.mjs';
 import { createWordPressTransportBinding } from './transport-binding.mjs';
 
 const SYNTHETIC_EXPERIENCE_ID = 'synthetic-wordpress';
+const GIT_BASIC_CYCLE_EXPERIENCE_ID = 'git-basic-cycle';
+const EXPERIENCE_PATHS = new Map([
+  [SYNTHETIC_EXPERIENCE_ID, '../experiences/synthetic-wordpress.json'],
+  [GIT_BASIC_CYCLE_EXPERIENCE_ID, '../../experiences/git/git-basic-cycle.json']
+]);
 const ROOT_SELECTOR = '[data-cim-experience]';
 const moduleUrl = new URL(import.meta.url);
 
@@ -24,14 +38,15 @@ function versionedUrl(relativePath) {
 const experienceLoader = createWordPressExperienceLoader({
   fetch: (url) => window.fetch(url, { credentials: 'same-origin' }),
   experienceUrlFor(experienceId) {
-    if (experienceId !== SYNTHETIC_EXPERIENCE_ID) return '';
-    return versionedUrl('../experiences/synthetic-wordpress.json');
+    const path = EXPERIENCE_PATHS.get(experienceId);
+    return path === undefined ? '' : versionedUrl(path);
   }
 });
 
 const rendererResolver = createWordPressRendererResolver({
   registry: new Map([
-    [SYNTHETIC_RENDERER_ID, () => createSyntheticRenderer()]
+    [SYNTHETIC_RENDERER_ID, () => createSyntheticRenderer()],
+    [GIT_RENDERER_ID, () => createGitRenderer()]
   ])
 });
 
@@ -41,6 +56,10 @@ const clockFactory = createWordPressClockFactory({
   clearTimeout: (handle) => window.clearTimeout(handle),
   requestAnimationFrame: (fn) => window.requestAnimationFrame(fn),
   cancelAnimationFrame: (handle) => window.cancelAnimationFrame(handle)
+});
+
+const entryResolver = createWordPressDeepLinkResolver({
+  readFragment: () => window.location.hash
 });
 
 const diagnostics = Object.freeze({
@@ -59,11 +78,13 @@ const host = createWordPressLiveHost({
   experienceLoader,
   rendererResolver,
   clockFactory,
+  entryResolver,
   diagnostics
 });
 
 const transportBindings = new Map();
 let rootLifecycleBinding = null;
+let deepLinkHandler = null;
 let disposalStarted = false;
 
 function diagnosticInstanceId(root) {
@@ -75,14 +96,52 @@ function diagnosticInstanceId(root) {
     : 'wordpress-host';
 }
 
-function reportBootstrapError(root, operation, error) {
+function reportHostDiagnostic(code, root, operation, error) {
   diagnostics.report(Object.freeze({
-    code: 'CIM-HST-004',
+    code,
     component: 'host',
     instanceId: root === null ? 'wordpress-host' : diagnosticInstanceId(root),
     operation,
     message: error instanceof Error ? error.message : String(error)
   }));
+}
+
+function reportBootstrapError(root, operation, error) {
+  reportHostDiagnostic('CIM-HST-004', root, operation, error);
+}
+
+function reportDeepLinkError(root, operation, error) {
+  reportHostDiagnostic('CIM-HST-002', root, operation, error);
+}
+
+async function applyLocationDeepLink() {
+  let target;
+  try {
+    target = parseCiMDeepLinkFragment(window.location.hash);
+  } catch (error) {
+    reportDeepLinkError(null, 'deep_link_hashchange', error);
+    return;
+  }
+  if (target === null) return;
+
+  const roots = Array.from(document.querySelectorAll(ROOT_SELECTOR));
+  for (const root of roots) {
+    const experienceId = root.getAttribute('data-cim-experience');
+    if (typeof experienceId !== 'string' || experienceId.trim() !== target.experienceId) continue;
+    const commandPort = host.commands(root);
+    if (commandPort === null) continue;
+
+    try {
+      const outcome = await commandPort.seek(target.stepId, COMMAND_SOURCE.DEEP_LINK);
+      if (outcome && outcome.result === 'rejected') {
+        reportDeepLinkError(root, 'deep_link_hashchange', new Error(
+          'CiM deep-link target was rejected: ' + target.stepId
+        ));
+      }
+    } catch (error) {
+      reportDeepLinkError(root, 'deep_link_hashchange', error);
+    }
+  }
 }
 
 function disposeTransportBinding(root, operation) {
@@ -132,6 +191,11 @@ async function mountPageHost() {
     } catch (error) {
       reportBootstrapError(null, 'root_lifecycle_bind', error);
     }
+
+    deepLinkHandler = () => {
+      void applyLocationDeepLink();
+    };
+    window.addEventListener('hashchange', deepLinkHandler);
   }
 
   return result;
@@ -144,6 +208,11 @@ mountPageHost().catch((error) => {
 function disposePageHost() {
   if (disposalStarted) return;
   disposalStarted = true;
+
+  if (deepLinkHandler !== null) {
+    window.removeEventListener('hashchange', deepLinkHandler);
+    deepLinkHandler = null;
+  }
 
   if (rootLifecycleBinding !== null) {
     try {
