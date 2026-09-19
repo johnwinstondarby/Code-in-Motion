@@ -1,0 +1,111 @@
+{
+  "schema": "localis.cim/v1",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "synthetic-authored",
+  "renderer": "synthetic/v1",
+  "renderer_config": {
+    "layout": "linear",
+    "labels": {
+      "prefix": "Node"
+    }
+  },
+  "initial_state": {
+    "node": "A",
+    "detail": {
+      "count": 0,
+      "flags": [
+        "initial"
+      ]
+    }
+  },
+  "steps": [
+    {
+      "id": "step-01",
+      "label": "Change to B",
+      "marker": "B",
+      "commentary": {
+        "text": "State changes to B.\nThis second line proves multiline commentary.",
+        "links": []
+      },
+      "state": {
+        "node": "B",
+        "detail": {
+          "count": 1,
+          "flags": [
+            "changed"
+          ]
+        }
+      },
+      "renderer_config": {
+        "emphasis": "high"
+      },
+      "dwell_ms": 500
+    },
+    {
+      "id": "step-02",
+      "label": "Observe B",
+      "marker": "OBSERVE",
+      "commentary": {
+        "text": "State B is observed without mutation.",
+        "links": [
+          {
+            "id": "reference",
+            "label": "Reference",
+            "href": "/reference/"
+          }
+        ]
+      },
+      "state": {
+        "node": "B",
+        "detail": {
+          "count": 1,
+          "flags": [
+            "changed"
+          ]
+        }
+      },
+      "renderer_config": {
+        "emphasis": "observe"
+      },
+      "dwell_ms": 1200
+    },
+    {
+      "id": "step-03",
+      "label": "Change to C",
+      "marker": "C",
+      "commentary": {
+        "text": "Change to C.",
+        "links": []
+      },
+      "state": {
+        "node": "C",
+        "detail": {
+          "count": 2,
+          "flags": [
+            "changed",
+            "committed"
+          ]
+        }
+      }
+    },
+    {
+      "id": "step-04",
+      "label": "Change to D",
+      "marker": "D",
+      "commentary": {
+        "text": "Change to D.",
+        "links": []
+      },
+      "state": {
+        "node": "D",
+        "detail": {
+          "count": 3,
+          "flags": [
+            "final"
+          ]
+        }
+      }
+    }
+  ]
+}
