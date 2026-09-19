@@ -5,13 +5,15 @@ import { pathToFileURL } from 'node:url';
 const ACCEPTED_EXCEPTIONS = new Map([
   [
     'EnqueuedStylesScope',
-    'CiM 0.1.0 keeps the stable stylesheet available across frontend contexts so Host rendering does not depend on shortcode-presence prediction.'
+    'CiM keeps the stable stylesheet available across frontend contexts so Host rendering does not depend on shortcode-presence prediction.'
   ],
   [
     'EnqueuedScriptsScope',
-    'CiM 0.1.0 keeps the stable bootstrap available across frontend contexts so Host startup does not depend on shortcode-presence prediction.'
+    'CiM keeps the stable bootstrap available across frontend contexts so Host startup does not depend on shortcode-presence prediction.'
   ]
 ]);
+
+const SEMVER_LITERAL_PATTERN = /\b\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?\b/;
 
 function fail(message) {
   throw new Error('R21 Plugin Check classification: ' + message);
@@ -96,6 +98,13 @@ export function classifyPluginCheckFindings(findings) {
         rationale: 'Warning code has no R21-approved classification.'
       }));
       continue;
+    }
+
+    if (SEMVER_LITERAL_PATTERN.test(rationale)) {
+      fail(
+        'accepted-exception rationale for ' + finding.code +
+        ' must be version-neutral; release identity belongs to artifact evidence.'
+      );
     }
 
     accepted.push(Object.freeze({
