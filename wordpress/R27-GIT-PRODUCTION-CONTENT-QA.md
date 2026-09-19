@@ -357,6 +357,32 @@ The exact JavaScript behavior is independently proven by Browser E2E #172 agains
 
 A human live-site click smoke remains useful as an observational confirmation of the deployed page composition, but it is not being substituted for CI evidence and does not alter artifact identity.
 
+## Integration reachability
+
+PR #38 was integrated into `main` with a true merge commit:
+
+`f081fb33315eb2e2d08073e0a1e61228e4b7bbb3`
+
+Its parents are:
+
+- prior `main`: `e55fc66bdd0ce527cabc7b329237340a117806ec`;
+- frozen R26 candidate: `0c3aedb8732a50af645fc427bc17230e70018efc`.
+
+Post-merge ancestry verification compared the frozen R26 candidate against `main` and returned:
+
+- merge base: `0c3aedb8732a50af645fc427bc17230e70018efc`;
+- behind by: 0.
+
+This is the repository-level equivalent of:
+
+`git merge-base --is-ancestor 0c3aedb8732a50af645fc427bc17230e70018efc origin/main`
+
+Result:
+
+`RC commit reachable from main`
+
+The R26 identity therefore remains reachable in `main` history without rewriting the designated commit.
+
 ## Workflow saturation
 
 At evidence head `6574c8cc9ef268ab9f8777a7fa81025121257a0b`:
