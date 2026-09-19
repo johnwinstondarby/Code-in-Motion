@@ -1,19 +1,35 @@
 {
   "name": "code-in-motion",
   "version": "0.1.0",
+  "description": "Reusable Localis platform for learner-controlled technical process experiences.",
   "private": true,
   "type": "module",
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/johnwinstondarby/Code-in-Motion",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnwinstondarby/Code-in-Motion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/johnwinstondarby/Code-in-Motion/issues"
+  },
   "engines": {
     "node": ">=20"
   },
   "scripts": {
+    "build:wordpress": "node tools/build-wordpress-release.mjs",
     "check:schema": "node tools/check-schema-fixtures.mjs",
     "check:architecture": "node tools/check-architecture-boundaries.mjs",
     "check:core-authority": "node tools/check-core-authority.mjs",
+    "check:wordpress-packaging": "node tools/check-wordpress-packaging.mjs",
+    "check:wordpress-release-tree": "node tools/check-wordpress-release-tree.mjs",
+    "check:wordpress-metadata": "node tools/check-wordpress-release-metadata.mjs",
     "test": "node --test",
-    "verify": "npm run check:schema && npm run check:architecture && npm run check:core-authority && npm test"
+    "verify": "npm run check:schema && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm test",
+    "wp-env": "wp-env"
   },
   "devDependencies": {
+    "@wordpress/env": "11.15.0",
     "ajv": "8.20.0"
   }
 }

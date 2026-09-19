@@ -35,3 +35,170 @@ jobs:
 
       - name: Verify schema and architecture contracts
         run: npm run verify
+
+  release-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up pinned release Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Install build verification dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Build WordPress release artifact
+        run: npm run build:wordpress
+
+      - name: Verify R22 staged release metadata
+        run: node tools/check-wordpress-release-metadata.mjs --release-root dist/code-in-motion
+
+      - name: Verify R23 supply-chain manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          ZIP_NAME="code-in-motion-${VERSION}.zip"
+          EVIDENCE_DIR="${RUNNER_TEMP}/cim-r23"
+          UNPACK_ROOT="${EVIDENCE_DIR}/unpacked"
+
+          rm -rf "${EVIDENCE_DIR}"
+          mkdir -p "${UNPACK_ROOT}"
+
+          node tools/check-wordpress-supply-chain.mjs \
+            --release-root dist/code-in-motion \
+            --version "${VERSION}" \
+            --write-manifest "${EVIDENCE_DIR}/code-in-motion-${VERSION}.manifest.sha256"
+
+          unzip -q "dist/${ZIP_NAME}" -d "${UNPACK_ROOT}"
+
+          node tools/check-wordpress-supply-chain.mjs \
+            --release-root "${UNPACK_ROOT}/code-in-motion" \
+            --version "${VERSION}" \
+            --write-manifest "${EVIDENCE_DIR}/code-in-motion-${VERSION}.zip.manifest.sha256"
+
+          diff -qr dist/code-in-motion "${UNPACK_ROOT}/code-in-motion"
+          cmp --silent \
+            "${EVIDENCE_DIR}/code-in-motion-${VERSION}.manifest.sha256" \
+            "${EVIDENCE_DIR}/code-in-motion-${VERSION}.zip.manifest.sha256"
+
+          STAGED_COUNT="$(find dist/code-in-motion -type f | wc -l | tr -d ' ')"
+          ZIP_COUNT="$(unzip -Z1 "dist/${ZIP_NAME}" | grep -E '^code-in-motion/.+' | wc -l | tr -d ' ')"
+          test "${STAGED_COUNT}" = "${ZIP_COUNT}"
+
+          echo "PASS: R23 staged tree and extracted ZIP are byte-identical (${STAGED_COUNT} file(s))."
+
+      - name: Upload R23 supply-chain manifest
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: r23-supply-chain-manifest
+          path: |
+            ${{ runner.temp }}/cim-r23/code-in-motion-*.manifest.sha256
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Verify staged tree and ZIP structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          ZIP_NAME="code-in-motion-${VERSION}.zip"
+          ZIP_PATH="dist/${ZIP_NAME}"
+
+          test -d dist/code-in-motion
+          test -f "${ZIP_PATH}"
+          test -f "${ZIP_PATH}.sha256"
+
+          (cd dist && sha256sum --check "${ZIP_NAME}.sha256")
+          unzip -t "${ZIP_PATH}"
+
+          if unzip -Z1 "${ZIP_PATH}" | grep -Ev '^code-in-motion/'; then
+            echo "R13 ZIP contains an entry outside code-in-motion/." >&2
+            exit 1
+          fi
+
+          DUPLICATES="$(unzip -Z1 "${ZIP_PATH}" | sort | uniq -d)"
+          if [[ -n "${DUPLICATES}" ]]; then
+            echo "R13 ZIP contains duplicate entries:" >&2
+            printf '%s\n' "${DUPLICATES}" >&2
+            exit 1
+          fi
+
+          ENTRY_COUNT="$(unzip -Z1 "${ZIP_PATH}" | wc -l | tr -d ' ')"
+          STAGED_COUNT="$(find dist/code-in-motion -type f | wc -l | tr -d ' ')"
+          test "${ENTRY_COUNT}" = "${STAGED_COUNT}"
+          echo "PASS: R13 archive structure (${ENTRY_COUNT} file entries)."
+
+  release-reproducibility:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up pinned release Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: First clean release build
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run build:wordpress
+
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          ZIP_NAME="code-in-motion-${VERSION}.zip"
+          EVIDENCE_DIR="${RUNNER_TEMP}/cim-r14-first"
+          mkdir -p "${EVIDENCE_DIR}"
+
+          cp "dist/${ZIP_NAME}" "${EVIDENCE_DIR}/${ZIP_NAME}"
+          cp "dist/${ZIP_NAME}.sha256" "${EVIDENCE_DIR}/${ZIP_NAME}.sha256"
+          git rev-parse HEAD > "${EVIDENCE_DIR}/commit.txt"
+          node -p "process.versions.node" > "${EVIDENCE_DIR}/node.txt"
+          sha256sum "dist/${ZIP_NAME}" | awk '{print $1}' > "${EVIDENCE_DIR}/zip.sha256"
+
+          git diff --exit-code
+
+      - name: Restore exact commit tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git reset --hard HEAD
+          git clean -ffdx
+          test -z "$(git status --porcelain)"
+
+      - name: Second clean release build
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run build:wordpress
+
+      - name: Prove byte-for-byte reproducibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          ZIP_NAME="code-in-motion-${VERSION}.zip"
+          EVIDENCE_DIR="${RUNNER_TEMP}/cim-r14-first"
+          FIRST_ZIP="${EVIDENCE_DIR}/${ZIP_NAME}"
+          SECOND_ZIP="dist/${ZIP_NAME}"
+
+          test "$(cat "${EVIDENCE_DIR}/commit.txt")" = "$(git rev-parse HEAD)"
+          test "$(cat "${EVIDENCE_DIR}/node.txt")" = "$(node -p "process.versions.node")"
+
+          FIRST_SHA="$(cat "${EVIDENCE_DIR}/zip.sha256")"
+          SECOND_SHA="$(sha256sum "${SECOND_ZIP}" | awk '{print $1}')"
+          test "${FIRST_SHA}" = "${SECOND_SHA}"
+
+          cmp --silent "${FIRST_ZIP}" "${SECOND_ZIP}"
+          cmp --silent "${EVIDENCE_DIR}/${ZIP_NAME}.sha256" "dist/${ZIP_NAME}.sha256"
+          (cd dist && sha256sum --check "${ZIP_NAME}.sha256")
+
+          echo "PASS: R14 reproducible release build (commit $(git rev-parse HEAD), Node $(node -p "process.versions.node"), SHA-256 ${SECOND_SHA})."

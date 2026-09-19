@@ -1,4 +1,5 @@
 import { createReducedMotionPreferenceSource } from '../accessibility/reduced-motion-preference-source.mjs';
+import { FAULT_COMPONENT, FAULT_RECOVERY_CLASS } from '../contracts/faults.mjs';
 import {
   HOST_DIAGNOSTIC_KEYS,
   HOST_DIAGNOSTIC_RECORD_KEYS,
@@ -14,11 +15,21 @@ export const WORDPRESS_LIVE_HOST_OPTIONS_KEYS = Object.freeze([
   'diagnostics'
 ]);
 
-export const WORDPRESS_LIVE_HOST_KEYS = Object.freeze(['mount', 'dispose']);
+export const WORDPRESS_LIVE_HOST_KEYS = Object.freeze(['mount', 'commands', 'disposeRoot', 'dispose']);
 export const WORDPRESS_EXPERIENCE_LOADER_KEYS = Object.freeze(['load']);
 export const WORDPRESS_RENDERER_RESOLVER_KEYS = Object.freeze(['resolve']);
 export const WORDPRESS_CLOCK_FACTORY_KEYS = Object.freeze(['create']);
 export const WORDPRESS_MOUNT_RESULT_KEYS = Object.freeze(['mounted', 'fallback']);
+export const WORDPRESS_COMMAND_PORT_KEYS = Object.freeze([
+  'play',
+  'pause',
+  'next',
+  'previous',
+  'seek',
+  'home',
+  'end',
+  'restart'
+]);
 
 const ROOT_SELECTOR = '[data-cim-experience]';
 const RENDERER_ROOT_SELECTOR = '[data-cim-renderer-root]';
@@ -29,6 +40,7 @@ const PAGE_DIAGNOSTIC_INSTANCE_ID = 'wordpress-host';
 const HOST_LOAD_DIAGNOSTIC_CODE = 'CIM-HST-001';
 const HOST_MOUNT_DIAGNOSTIC_CODE = 'CIM-HST-004';
 const RENDERER_RESOLUTION_DIAGNOSTIC_CODE = 'CIM-RND-001';
+const EXPERIENCE_FAULT_CODE_PATTERN = /^CIM-EXP-\d{3}$/;
 
 function fail(message) {
   throw new TypeError(message);
@@ -128,6 +140,50 @@ function errorMessage(error) {
   }
 }
 
+function readStructuredExperienceFault(error) {
+  if (error === null || typeof error !== 'object') return null;
+  const descriptor = Object.getOwnPropertyDescriptor(error, 'fault');
+  if (!descriptor?.enumerable || !('value' in descriptor)) return null;
+  const fault = descriptor.value;
+  if (
+    fault === null ||
+    typeof fault !== 'object' ||
+    Array.isArray(fault) ||
+    !Object.isFrozen(fault)
+  ) {
+    return null;
+  }
+
+  const expectedKeys = ['code', 'component', 'recoveryClass'];
+  const keys = Reflect.ownKeys(fault);
+  if (
+    keys.some((key) => typeof key !== 'string') ||
+    keys.length !== expectedKeys.length ||
+    expectedKeys.some((key) => !keys.includes(key))
+  ) {
+    return null;
+  }
+
+  const descriptors = Object.getOwnPropertyDescriptors(fault);
+  if (expectedKeys.some((key) => !descriptors[key]?.enumerable || !('value' in descriptors[key]))) {
+    return null;
+  }
+
+  const code = descriptors.code.value;
+  const component = descriptors.component.value;
+  const recoveryClass = descriptors.recoveryClass.value;
+  if (
+    typeof code !== 'string' ||
+    !EXPERIENCE_FAULT_CODE_PATTERN.test(code) ||
+    component !== FAULT_COMPONENT.EXPERIENCE ||
+    recoveryClass !== FAULT_RECOVERY_CLASS.FALLBACK
+  ) {
+    return null;
+  }
+
+  return fault;
+}
+
 function reportDiagnostic(report, { code, component = 'host', instanceId, operation, error }) {
   const record = Object.freeze({
     code,
@@ -148,6 +204,21 @@ function createMountResult(mounted, fallback) {
   const result = Object.freeze({ mounted, fallback });
   assertExactKeys(result, WORDPRESS_MOUNT_RESULT_KEYS, 'WordPress Host mount result');
   return result;
+}
+
+function createCommandPort(instance) {
+  const port = {
+    play: (source) => instance.play(source),
+    pause: (source) => instance.pause(source),
+    next: (source) => instance.next(source),
+    previous: (source) => instance.previous(source),
+    seek: (stepId, source) => instance.seek(stepId, source),
+    home: (source) => instance.home(source),
+    end: (source) => instance.end(source),
+    restart: (source) => instance.restart(source)
+  };
+  assertExactKeys(port, WORDPRESS_COMMAND_PORT_KEYS, 'WordPress Host command port');
+  return Object.freeze(port);
 }
 
 function deriveDescriptor(root, ordinal, seenInstanceIds) {
@@ -268,7 +339,8 @@ export function createWordPressLiveHost(optionsInput) {
   let disposePromise = null;
   let reducedMotionSource = null;
   const mountedRecords = [];
-  const disposeStarted = new Set();
+  const commandPorts = new Map();
+  const rootDisposePromises = new Map();
 
   function isDisposing() {
     return lifecycle === 'disposing' || lifecycle === 'disposed';
@@ -346,18 +418,23 @@ export function createWordPressLiveHost(optionsInput) {
         return false;
       }
 
+      commandPorts.set(root, createCommandPort(instance));
       mountedRecords.push({ root, instanceId, experienceId, instance });
       return true;
     } catch (error) {
+      commandPorts.delete(root);
       await cleanupInstance(instance, report, instanceId, 'failed_mount_cleanup');
       projectFallback(root, report, instanceId);
+      const structuredExperienceFault = stage === 'experience_load'
+        ? readStructuredExperienceFault(error)
+        : null;
       reportDiagnostic(report, {
-        code: stage === 'experience_load'
+        code: structuredExperienceFault?.code ?? (stage === 'experience_load'
           ? HOST_LOAD_DIAGNOSTIC_CODE
           : stage === 'renderer_resolve'
             ? RENDERER_RESOLUTION_DIAGNOSTIC_CODE
-            : HOST_MOUNT_DIAGNOSTIC_CODE,
-        component: stage === 'renderer_resolve' ? 'renderer' : 'host',
+            : HOST_MOUNT_DIAGNOSTIC_CODE),
+        component: structuredExperienceFault?.component ?? (stage === 'renderer_resolve' ? 'renderer' : 'host'),
         instanceId,
         operation: stage,
         error
@@ -439,16 +516,37 @@ export function createWordPressLiveHost(optionsInput) {
     return mountPromise;
   }
 
-  function startMountedDisposals(pending, errors) {
+  function commands(root) {
+    return commandPorts.get(root) ?? null;
+  }
+
+  function startRecordDisposal(record) {
+    const existing = rootDisposePromises.get(record.root);
+    if (existing !== undefined) return existing;
+
+    commandPorts.delete(record.root);
+    projectFallback(record.root, report, record.instanceId);
+
+    let pending;
+    try {
+      pending = Promise.resolve(record.instance.dispose()).then(() => true);
+    } catch (error) {
+      pending = Promise.reject(error);
+    }
+    rootDisposePromises.set(record.root, pending);
+    return pending;
+  }
+
+  function disposeRoot(root) {
+    const record = mountedRecords.find((candidate) => candidate.root === root);
+    if (record === undefined) return Promise.resolve(false);
+    return startRecordDisposal(record);
+  }
+
+  function startMountedDisposals(pending) {
     for (const record of mountedRecords) {
-      if (disposeStarted.has(record)) continue;
-      disposeStarted.add(record);
-      projectFallback(record.root, report, record.instanceId);
-      try {
-        pending.push(Promise.resolve(record.instance.dispose()));
-      } catch (error) {
-        errors.push(error);
-      }
+      const rootDisposal = startRecordDisposal(record);
+      if (!pending.includes(rootDisposal)) pending.push(rootDisposal);
     }
   }
 
@@ -466,7 +564,7 @@ export function createWordPressLiveHost(optionsInput) {
     const pending = [];
     const errors = [];
 
-    startMountedDisposals(pending, errors);
+    startMountedDisposals(pending);
 
     if (reducedMotionSource !== null) {
       try {
@@ -483,7 +581,7 @@ export function createWordPressLiveHost(optionsInput) {
     }
 
     Promise.resolve(mountPromise).catch(() => undefined).then(() => {
-      startMountedDisposals(pending, errors);
+      startMountedDisposals(pending);
       return Promise.allSettled(pending);
     }).then((settlements) => {
       for (const settlement of settlements) {
@@ -502,7 +600,7 @@ export function createWordPressLiveHost(optionsInput) {
     return disposePromise;
   }
 
-  const host = { mount, dispose };
+  const host = { mount, commands, disposeRoot, dispose };
   assertExactKeys(host, WORDPRESS_LIVE_HOST_KEYS, 'WordPress live Host');
   return Object.freeze(host);
 }

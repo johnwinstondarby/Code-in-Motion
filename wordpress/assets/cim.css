@@ -1,0 +1,7 @@
+.cim [data-cim-renderer-root] {
+  min-height: 1px;
+}
+
+.cim[data-cim-state="ready"] .cim-fallback {
+  display: none;
+}

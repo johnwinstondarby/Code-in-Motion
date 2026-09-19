@@ -1,0 +1,277 @@
+name: WordPress Floor QA
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  wordpress-floor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '20'
+          package-manager-cache: false
+
+      - name: Install verification dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Start authoritative Docker wp-env
+        run: npm run --silent wp-env -- start --update
+
+      - name: Verify WordPress floor, PHP floor, plugin activation, and shortcode rendering
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wp_version="$(npm run --silent wp-env -- run cli wp core version | tail -n 1)"
+          printf '%s\n' "$wp_version"
+          test "$wp_version" = '6.5.10'
+
+          php_version="$(npm run --silent wp-env -- run cli wp eval 'echo PHP_VERSION;' | tail -n 1)"
+          printf '%s\n' "$php_version"
+          [[ "$php_version" == 7.4.* ]]
+
+          plugin_version="$(npm run --silent wp-env -- run cli wp eval 'echo defined("LOCALIS_CIM_PLUGIN_VERSION") ? LOCALIS_CIM_PLUGIN_VERSION : "MISSING";' | tail -n 1)"
+          printf '%s\n' "$plugin_version"
+          test "$plugin_version" = '0.1.0'
+
+          rendered="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]CiM floor fallback.[/cim]");' | tail -n 1)"
+          printf '%s\n' "$rendered"
+          grep -q 'class="cim"' <<<"$rendered"
+          grep -q 'data-cim-experience="synthetic-wordpress"' <<<"$rendered"
+          grep -q 'data-cim-renderer-root' <<<"$rendered"
+          grep -q 'CiM floor fallback.' <<<"$rendered"
+
+      - name: Verify R11 shortcode-edge rejection
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          invalid_experience="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"INVALID ID\"]fallback[/cim]");' | tail -n 1)"
+          invalid_instance="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\" instance=\"INVALID ID\"]fallback[/cim]");' | tail -n 1)"
+          missing_experience="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim]fallback[/cim]");' | tail -n 1)"
+
+          test -z "$invalid_experience"
+          test -z "$invalid_instance"
+          test -z "$missing_experience"
+
+      - name: Capture authoritative WordPress rendering fixtures
+        shell: bash
+        env:
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p .ci/wordpress-fixtures
+
+          basic="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]CiM authoritative fallback.[/cim]");' | tail -n 1)"
+          instance="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\" instance=\"qa-instance\"]CiM authoritative instance fallback.[/cim]");' | tail -n 1)"
+          wp_version="$(npm run --silent wp-env -- run cli wp core version | tail -n 1)"
+          php_version="$(npm run --silent wp-env -- run cli wp eval 'echo PHP_VERSION;' | tail -n 1)"
+          plugin_version="$(npm run --silent wp-env -- run cli wp eval 'echo LOCALIS_CIM_PLUGIN_VERSION;' | tail -n 1)"
+
+          printf '%s\n' "$basic" > .ci/wordpress-fixtures/basic.html
+          printf '%s\n' "$instance" > .ci/wordpress-fixtures/instance.html
+
+          WP_VERSION="$wp_version" \
+          PHP_VERSION="$php_version" \
+          PLUGIN_VERSION="$plugin_version" \
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          root = Path('.ci/wordpress-fixtures')
+          provenance = {
+              'authority': 'docker-wp-env-repo-tree',
+              'artifact_authority': False,
+              'wordpress': os.environ['WP_VERSION'],
+              'php': os.environ['PHP_VERSION'],
+              'plugin_version': os.environ['PLUGIN_VERSION'],
+              'wp_env': '11.15.0',
+              'pr_head_sha': os.environ['PR_HEAD_SHA'],
+              'github_merge_sha': os.environ['GITHUB_SHA'],
+              'generated_at_utc': datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+              'fixtures': ['basic.html', 'instance.html'],
+              'source': 'WordPress do_shortcode() inside Docker-backed wp-env mounting repository root via plugins:[\".\"]',
+              'scope_note': 'Pre-artifact evidence only. R12 defines the release tree and R15 proves the installable ZIP.'
+          }
+          (root / 'provenance.json').write_text(json.dumps(provenance, indent=2) + '\n', encoding='utf-8')
+          PY
+
+      - name: Compare regenerated WordPress output with authoritative fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          diff -u tests/fixtures/wordpress/basic.html .ci/wordpress-fixtures/basic.html
+          diff -u tests/fixtures/wordpress/instance.html .ci/wordpress-fixtures/instance.html
+
+      - name: Upload authoritative WordPress fixtures
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: wordpress-authoritative-fixtures
+          path: .ci/wordpress-fixtures
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Stop wp-env
+        if: always()
+        run: npm run --silent wp-env -- stop
+
+  plugin-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set R21 workspace paths
+        shell: bash
+        run: |
+          echo "CIM_R21_CONFIG=r21-wp-env.json" >> "${GITHUB_ENV}"
+          echo "CIM_R21_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r21-artifact" >> "${GITHUB_ENV}"
+          echo "CIM_R21_WORDPRESS=7.1.1" >> "${GITHUB_ENV}"
+          echo "CIM_R21_PHP=8.5" >> "${GITHUB_ENV}"
+          echo "CIM_R21_PLUGIN_CHECK=2.1.0" >> "${GITHUB_ENV}"
+
+      - name: Set up pinned release Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Install repository dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Build exact WordPress release ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run build:wordpress
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          echo "CIM_PLUGIN_VERSION=${VERSION}" >> "${GITHUB_ENV}"
+
+      - name: Prepare isolated R21 environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"
+
+          mkdir -p "${CIM_R21_ARTIFACT_DIR}"
+          cp "dist/${ZIP_NAME}" "${CIM_R21_ARTIFACT_DIR}/${ZIP_NAME}"
+          cp "dist/${ZIP_NAME}.sha256" "${CIM_R21_ARTIFACT_DIR}/${ZIP_NAME}.sha256"
+          (cd "${CIM_R21_ARTIFACT_DIR}" && sha256sum --check "${ZIP_NAME}.sha256")
+
+          node --input-type=module <<'NODE'
+          import { writeFile } from 'node:fs/promises';
+
+          const config = {
+            $schema: 'https://schemas.wp.org/trunk/wp-env.json',
+            core: `WordPress/WordPress#${process.env.CIM_R21_WORDPRESS}`,
+            phpVersion: process.env.CIM_R21_PHP,
+            plugins: [],
+            port: 8895,
+            testsEnvironment: false,
+            config: {
+              WP_DEBUG: true,
+              SCRIPT_DEBUG: true
+            },
+            mappings: {
+              'wp-content/r21-artifact': process.env.CIM_R21_ARTIFACT_DIR
+            }
+          };
+
+          await writeFile(process.env.CIM_R21_CONFIG, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
+          NODE
+
+      - name: Start R21 WordPress environment
+        run: npm run --silent wp-env -- --config="${CIM_R21_CONFIG}" start --update
+
+      - name: Install CiM artifact and pinned Plugin Check
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"
+
+          wp_env() {
+            npm run --silent wp-env -- --config="${CIM_R21_CONFIG}" "$@"
+          }
+
+          CORE_VERSION="$(wp_env run cli wp core version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"
+          test "${CORE_VERSION}" = "${CIM_R21_WORDPRESS}"
+
+          PHP_RUNTIME="$(wp_env run cli wp eval 'echo PHP_VERSION . PHP_EOL;' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+' | tail -n 1)"
+          case "${PHP_RUNTIME}" in
+            "${CIM_R21_PHP}".*) ;;
+            *)
+              echo "R21 expected PHP ${CIM_R21_PHP}.x but found ${PHP_RUNTIME}." >&2
+              exit 1
+              ;;
+          esac
+
+          wp_env run cli wp plugin install "wp-content/r21-artifact/${ZIP_NAME}" --activate
+          wp_env run cli wp plugin install plugin-check --version="${CIM_R21_PLUGIN_CHECK}" --activate
+
+          CIM_STATUS="$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active$' | tail -n 1)"
+          CIM_VERSION="$(wp_env run cli wp plugin get code-in-motion --field=version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"
+          PCP_STATUS="$(wp_env run cli wp plugin get plugin-check --field=status | grep -E '^active$' | tail -n 1)"
+          PCP_VERSION="$(wp_env run cli wp plugin get plugin-check --field=version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"
+
+          test "${CIM_STATUS}" = "active"
+          test "${CIM_VERSION}" = "${CIM_PLUGIN_VERSION}"
+          test "${PCP_STATUS}" = "active"
+          test "${PCP_VERSION}" = "${CIM_R21_PLUGIN_CHECK}"
+
+          echo "PASS: R21 environment WordPress ${CORE_VERSION}, PHP ${PHP_RUNTIME}, CiM ${CIM_VERSION}, Plugin Check ${PCP_VERSION}."
+
+      - name: Run unfiltered Plugin Check diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          set +e
+          npm run --silent wp-env -- --config="${CIM_R21_CONFIG}" run cli bash -lc \
+            'wp plugin check code-in-motion --format=json --require=./wp-content/plugins/plugin-check/cli.php > wp-content/r21-artifact/plugin-check.json 2> wp-content/r21-artifact/plugin-check.stderr'
+          STATUS=$?
+          set -e
+
+          printf '%s\n' "${STATUS}" > "${CIM_R21_ARTIFACT_DIR}/plugin-check.exit"
+          echo "Plugin Check exit status: ${STATUS}"
+          echo "--- Plugin Check JSON ---"
+          cat "${CIM_R21_ARTIFACT_DIR}/plugin-check.json" || true
+          echo "--- Plugin Check stderr ---"
+          cat "${CIM_R21_ARTIFACT_DIR}/plugin-check.stderr" || true
+
+      - name: Classify Plugin Check findings
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "${CIM_R21_ARTIFACT_DIR}/plugin-check.json"
+          node tools/check-wordpress-plugin-check.mjs "${CIM_R21_ARTIFACT_DIR}/plugin-check.json"
+
+      - name: Upload R21 diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: r21-plugin-check-diagnostic
+          path: |
+            ${{ env.CIM_R21_ARTIFACT_DIR }}/plugin-check.json
+            ${{ env.CIM_R21_ARTIFACT_DIR }}/plugin-check.stderr
+            ${{ env.CIM_R21_ARTIFACT_DIR }}/plugin-check.exit
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Stop R21 WordPress environment
+        if: always()
+        continue-on-error: true
+        run: npm run --silent wp-env -- --config="${CIM_R21_CONFIG}" stop
+
