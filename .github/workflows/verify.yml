@@ -212,3 +212,26 @@ jobs:
           (cd dist && sha256sum --check "${ZIP_NAME}.sha256")
 
           echo "PASS: R14 reproducible release build (commit $(git rev-parse HEAD), Node $(node -p "process.versions.node"), SHA-256 ${SECOND_SHA})."
+
+  required-verify-gate:
+    name: CiM / Verify
+    if: always()
+    needs:
+      - verify
+      - release-build
+      - release-reproducibility
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require complete Verify family
+        shell: bash
+        env:
+          VERIFY_RESULT: ${{ needs.verify.result }}
+          RELEASE_BUILD_RESULT: ${{ needs.release-build.result }}
+          REPRODUCIBILITY_RESULT: ${{ needs.release-reproducibility.result }}
+        run: |
+          set -euo pipefail
+          printf 'verify=%s\nrelease-build=%s\nrelease-reproducibility=%s\n' \
+            "${VERIFY_RESULT}" "${RELEASE_BUILD_RESULT}" "${REPRODUCIBILITY_RESULT}"
+          test "${VERIFY_RESULT}" = "success"
+          test "${RELEASE_BUILD_RESULT}" = "success"
+          test "${REPRODUCIBILITY_RESULT}" = "success"

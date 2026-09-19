@@ -282,3 +282,22 @@ jobs:
         continue-on-error: true
         run: npm run --silent wp-env -- --config="${CIM_R21_CONFIG}" stop
 
+  required-floor-qa-gate:
+    name: CiM / Floor QA
+    if: always()
+    needs:
+      - wordpress-floor
+      - plugin-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require complete Floor QA family
+        shell: bash
+        env:
+          FLOOR_RESULT: ${{ needs.wordpress-floor.result }}
+          PLUGIN_CHECK_RESULT: ${{ needs.plugin-check.result }}
+        run: |
+          set -euo pipefail
+          printf 'wordpress-floor=%s\nplugin-check=%s\n' \
+            "${FLOOR_RESULT}" "${PLUGIN_CHECK_RESULT}"
+          test "${FLOOR_RESULT}" = "success"
+          test "${PLUGIN_CHECK_RESULT}" = "success"

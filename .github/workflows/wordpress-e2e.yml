@@ -907,3 +907,35 @@ jobs:
         continue-on-error: true
         run: npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop
 
+  required-browser-e2e-gate:
+    name: CiM / Browser E2E
+    if: always()
+    needs:
+      - synthetic-mount
+      - zip-install-e2e
+      - upgrade-e2e
+      - compatibility-matrix
+      - php-matrix
+      - browser-family-matrix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require complete Browser E2E family
+        shell: bash
+        env:
+          SYNTHETIC_RESULT: ${{ needs.synthetic-mount.result }}
+          ZIP_RESULT: ${{ needs.zip-install-e2e.result }}
+          UPGRADE_RESULT: ${{ needs.upgrade-e2e.result }}
+          WORDPRESS_RESULT: ${{ needs.compatibility-matrix.result }}
+          PHP_RESULT: ${{ needs.php-matrix.result }}
+          BROWSER_RESULT: ${{ needs.browser-family-matrix.result }}
+        run: |
+          set -euo pipefail
+          printf 'synthetic=%s\nzip=%s\nupgrade=%s\nwordpress=%s\nphp=%s\nbrowser=%s\n' \
+            "${SYNTHETIC_RESULT}" "${ZIP_RESULT}" "${UPGRADE_RESULT}" \
+            "${WORDPRESS_RESULT}" "${PHP_RESULT}" "${BROWSER_RESULT}"
+          test "${SYNTHETIC_RESULT}" = "success"
+          test "${ZIP_RESULT}" = "success"
+          test "${UPGRADE_RESULT}" = "success"
+          test "${WORDPRESS_RESULT}" = "success"
+          test "${PHP_RESULT}" = "success"
+          test "${BROWSER_RESULT}" = "success"
