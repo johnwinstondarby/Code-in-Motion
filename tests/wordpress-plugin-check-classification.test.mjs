@@ -42,6 +42,12 @@ test('R21 accepts only the approved global-enqueue warning codes', () => {
   assert.equal(classified.failures.length, 0);
   assert.equal(classified.review.length, 0);
   assert.equal(classified.accepted.length, 2);
+  assert.equal(
+    classified.accepted.every((finding) =>
+      !/\b\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?\b/.test(finding.rationale)
+    ),
+    true
+  );
 
   assert.doesNotThrow(() => assertPluginCheckReleaseGate(source, FIXTURE_LOG_PREFIX));
 });
