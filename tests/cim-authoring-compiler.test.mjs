@@ -148,10 +148,12 @@ test('R29 rejects explicit tags, merge keys, and directives', () => {
   assert.match(merged.diagnostics[0].message, /merge keys/);
 
   const directed = capture(
-    '%YAML 1.2\n---\ncim: 1\n',
+    '# preamble comment\n%YAML 1.2\n---\ncim: 1\n',
     'directive.cim'
   );
   assert.equal(directed.code, 'CIM-AUTH-002');
+  assert.equal(directed.diagnostics[0].line, 2);
+  assert.equal(directed.diagnostics[0].column, 1);
   assert.match(directed.diagnostics[0].message, /directives/);
 });
 
