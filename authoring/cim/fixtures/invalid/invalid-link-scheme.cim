@@ -1,0 +1,16 @@
+cim: 1
+engine_min: 1.0.0
+experience_version: 1.0.0
+id: invalid-link
+renderer: synthetic/v1
+initial_state: { value: A }
+steps:
+  - id: step-01
+    label: Step
+    commentary:
+      text: Step
+      links:
+        - id: bad
+          label: Bad
+          href: javascript:alert(1)
+    state: { value: B }
