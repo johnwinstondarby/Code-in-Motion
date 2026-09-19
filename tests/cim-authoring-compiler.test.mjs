@@ -261,3 +261,28 @@ test('R29 executable-looking markup remains inert authored text', () => {
     '<script>globalThis.pwned = true</script>'
   );
 });
+
+test('R29 committed invalid fixture corpus fails with owned source-located diagnostics', async () => {
+  const manifestPath = resolve(
+    ROOT,
+    'authoring/cim/fixtures/invalid/manifest.json'
+  );
+  const fixtureDir = resolve(
+    ROOT,
+    'authoring/cim/fixtures/invalid'
+  );
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+
+  for (const [name, expected] of Object.entries(manifest)) {
+    const sourcePath = resolve(fixtureDir, name);
+    const source = await readFile(sourcePath, 'utf8');
+    const error = capture(source, sourcePath);
+    const diagnostic = error.diagnostics[0];
+
+    assert.equal(diagnostic.code, expected.code, name);
+    assert.equal(diagnostic.phase, expected.phase, name);
+    assert.equal(diagnostic.sourceId, sourcePath, name);
+    assert.equal(Number.isInteger(diagnostic.line) && diagnostic.line >= 1, true, name);
+    assert.equal(Number.isInteger(diagnostic.column) && diagnostic.column >= 1, true, name);
+  }
+});
