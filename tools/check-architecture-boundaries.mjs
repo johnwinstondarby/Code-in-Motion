@@ -202,6 +202,13 @@ function importViolation(sourceRel, targetRel) {
     };
   }
 
+  if (sourceRel.startsWith('src/') && targetRel.startsWith('authoring/cim/')) {
+    return {
+      id: 'production-to-cim-authoring',
+      message: 'Production code under src/ cannot import the .cim authoring parser/compiler.'
+    };
+  }
+
   if (sourceRel.startsWith('src/contracts/') && targetRel.startsWith('src/') && !targetRel.startsWith('src/contracts/')) {
     return {
       id: 'contracts-to-component',
