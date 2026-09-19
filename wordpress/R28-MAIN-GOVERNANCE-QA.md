@@ -208,6 +208,47 @@ Sequence:
 
 The connected GitHub App can read repository and ruleset state but does not have administration write permission. Steps 6 through 9 therefore require a maintainer action in GitHub settings.
 
+## Active GitHub governance state
+
+The repository settings were re-read after maintainer configuration.
+
+Repository merge methods:
+
+- merge commits: enabled;
+- squash merging: disabled;
+- rebase merging: disabled;
+- automatic branch deletion after merge: disabled.
+
+Active repository ruleset:
+
+- ruleset ID: `23708979`;
+- name: `main`;
+- enforcement: active;
+- target: `refs/heads/main`;
+- bypass list: empty;
+- current user can bypass: never.
+
+Active branch rules for `main`:
+
+- deletion restricted;
+- non-fast-forward updates blocked;
+- pull request required before merge;
+- required approving reviews: 0;
+- review-thread/conversation resolution required;
+- extra approval for unattributed Copilot changes: disabled;
+- allowed merge methods: `merge` only;
+- strict required-status-check policy enabled;
+- status checks enforced on branch creation.
+
+Required status checks:
+
+- `CiM / Verify`;
+- `CiM / Floor QA`;
+- `CiM / Browser E2E`;
+- `CiM / Playground`.
+
+The ruleset does not require linear history, preserving the evidence-bearing true merge-commit policy.
+
 ## R28 acceptance
 
 R28 closes when:
