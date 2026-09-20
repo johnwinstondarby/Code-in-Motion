@@ -1,6 +1,6 @@
 # ADR 0037: Human-Authored .cim Source and Compilation
 
-Status: Proposed for R29
+Status: Accepted for R29
 
 ## Context
 
