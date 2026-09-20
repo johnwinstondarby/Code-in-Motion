@@ -1,0 +1,4 @@
+cim: 1
+renderer_config:
+  <<:
+    layout: linear

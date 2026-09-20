@@ -27,7 +27,7 @@ No adapter may create a second unvalidated runtime path. Raw HTML and executable
 
 ## Verification
 
-Both hand-authored and generated paths must converge on the same validated runtime representation before engine initialization. Exact `.cim` grammar remains a separate documented decision.
+Both hand-authored and generated paths must converge on the same validated runtime representation before engine initialization. ADR 0037 defines the restricted `.cim` grammar and `authoring/cim/compiler.mjs` implements the source-located compilation path.
 
 ## R27 Git shared-source path
 
@@ -45,3 +45,14 @@ Shared command text, verbs, descriptions, state-effect classification, and autho
 
 `npm run check:git-content` fails when either generated projection drifts from its authored inputs.
 
+
+
+## R29 human-authored .cim path
+
+R29 implements the human-authored path reserved by ADR 0004.
+
+`authoring/cim/compiler.mjs` parses restricted `.cim` YAML, rebuilds inert JSON-safe data, records authoring source locations, and routes the Runtime candidate through the existing `ingestExperience()` production validator.
+
+The compiler remains outside `src/` and outside the WordPress release tree.
+
+`npm run check:cim-authoring` freshness-checks the neutral generated Runtime fixture.

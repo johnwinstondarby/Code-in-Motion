@@ -1,0 +1,12 @@
+cim: 1
+engine_min: 1.0.0
+experience_version: 1.0.0
+id: non-finite
+renderer: synthetic/v1
+initial_state: { value: A }
+steps:
+  - id: step-01
+    label: Step
+    commentary: { text: Step, links: [] }
+    state: { value: B }
+    dwell_ms: .inf

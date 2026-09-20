@@ -1,0 +1,62 @@
+{
+  "syntax-error.cim": {
+    "code": "CIM-AUTH-001",
+    "phase": "parse"
+  },
+  "duplicate-key.cim": {
+    "code": "CIM-AUTH-002",
+    "phase": "authoring"
+  },
+  "unsupported-version.cim": {
+    "code": "CIM-AUTH-003",
+    "phase": "authoring"
+  },
+  "anchor-alias.cim": {
+    "code": "CIM-AUTH-002",
+    "phase": "authoring"
+  },
+  "custom-tag.cim": {
+    "code": "CIM-AUTH-002",
+    "phase": "authoring"
+  },
+  "merge-key.cim": {
+    "code": "CIM-AUTH-002",
+    "phase": "authoring"
+  },
+  "multiple-documents.cim": {
+    "code": "CIM-AUTH-002",
+    "phase": "authoring"
+  },
+  "non-string-key.cim": {
+    "code": "CIM-AUTH-002",
+    "phase": "authoring"
+  },
+  "non-finite-number.cim": {
+    "code": "CIM-AUTH-002",
+    "phase": "authoring"
+  },
+  "missing-required-field.cim": {
+    "code": "CIM-EXP-002",
+    "phase": "validation"
+  },
+  "duplicate-step-id.cim": {
+    "code": "CIM-EXP-003",
+    "phase": "validation"
+  },
+  "reserved-step-id.cim": {
+    "code": "CIM-EXP-004",
+    "phase": "validation"
+  },
+  "negative-dwell.cim": {
+    "code": "CIM-EXP-005",
+    "phase": "validation"
+  },
+  "invalid-link-scheme.cim": {
+    "code": "CIM-EXP-006",
+    "phase": "validation"
+  },
+  "reserved-directive.cim": {
+    "code": "CIM-AUTH-002",
+    "phase": "authoring"
+  }
+}

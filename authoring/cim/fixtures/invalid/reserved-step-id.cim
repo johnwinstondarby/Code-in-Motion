@@ -1,0 +1,11 @@
+cim: 1
+engine_min: 1.0.0
+experience_version: 1.0.0
+id: reserved-step
+renderer: synthetic/v1
+initial_state: { value: A }
+steps:
+  - id: initial
+    label: Initial
+    commentary: { text: Initial, links: [] }
+    state: { value: B }
