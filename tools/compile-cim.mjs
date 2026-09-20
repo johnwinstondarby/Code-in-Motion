@@ -24,40 +24,47 @@ export const DEFAULT_CIM_OUTPUT = resolve(
 );
 
 function parseArgs(argv) {
-  let sourcePath = null;
+  const sourcePaths = [];
   let outputPath = null;
   let check = false;
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
+
     if (arg === '--check') {
       check = true;
       continue;
     }
+
     if (arg === '--out') {
       outputPath = argv[index + 1];
       if (!outputPath) throw new TypeError('--out requires a path.');
       index += 1;
       continue;
     }
+
     if (arg.startsWith('--')) {
       throw new TypeError('Unknown compile-cim option: ' + arg);
     }
-    if (sourcePath !== null) {
-      throw new TypeError('compile-cim accepts at most one source path.');
-    }
-    sourcePath = arg;
+
+    sourcePaths.push(resolve(process.cwd(), arg));
   }
 
-  return {
-    sourcePath: sourcePath ? resolve(process.cwd(), sourcePath) : DEFAULT_CIM_SOURCE,
-    outputPath: outputPath
-      ? resolve(process.cwd(), outputPath)
-      : sourcePath
-        ? null
-        : DEFAULT_CIM_OUTPUT,
-    check
-  };
+  if (!check && sourcePaths.length > 1) {
+    throw new TypeError(
+      'compile mode accepts one source path; use --check for multiple sources.'
+    );
+  }
+
+  if (check && outputPath !== null) {
+    throw new TypeError('--out cannot be used with --check.');
+  }
+
+  return Object.freeze({
+    check,
+    outputPath: outputPath ? resolve(process.cwd(), outputPath) : null,
+    sourcePaths: Object.freeze(sourcePaths)
+  });
 }
 
 export function formatCimDiagnostics(error) {
@@ -70,46 +77,91 @@ export function formatCimDiagnostics(error) {
   ).join('\n');
 }
 
+export async function compileCimPath(sourcePath) {
+  const source = await readFile(sourcePath, 'utf8');
+  const compiled = compileCimSource(source, { sourceId: sourcePath });
+  const output = JSON.stringify(compiled.experience, null, 2) + '\n';
+  return Object.freeze({ sourcePath, output, compiled });
+}
+
 export async function compileCimFile({
   sourcePath = DEFAULT_CIM_SOURCE,
   outputPath = DEFAULT_CIM_OUTPUT,
   check = false
 } = {}) {
-  const source = await readFile(sourcePath, 'utf8');
-  const compiled = compileCimSource(source, { sourceId: sourcePath });
-  const output = JSON.stringify(compiled.experience, null, 2) + '\n';
+  const result = await compileCimPath(sourcePath);
 
   if (check) {
     if (!outputPath) {
-      throw new TypeError('check mode requires an output path.');
+      throw new TypeError('freshness check requires an output path.');
     }
+
     const current = await readFile(outputPath, 'utf8');
-    if (current !== output) {
+    if (current !== result.output) {
       throw new Error(
         'R29 .cim generated output is stale: ' + outputPath +
         '. Run npm run generate:cim-fixture.'
       );
     }
+
     console.log('PASS: R29 .cim authored fixture is current.');
-    return Object.freeze({ output, compiled });
+    return result;
   }
 
   if (outputPath) {
-    await writeFile(outputPath, output, 'utf8');
+    await writeFile(outputPath, result.output, 'utf8');
     console.log('Generated ' + outputPath + '.');
   } else {
-    process.stdout.write(output);
+    process.stdout.write(result.output);
   }
 
-  return Object.freeze({ output, compiled });
+  return result;
+}
+
+export async function checkCimFiles(sourcePaths) {
+  if (!Array.isArray(sourcePaths) || sourcePaths.length === 0) {
+    throw new TypeError('checkCimFiles requires at least one source path.');
+  }
+
+  const results = [];
+  for (const sourcePath of sourcePaths) {
+    const result = await compileCimPath(sourcePath);
+    results.push(result);
+    console.log('PASS: valid .cim source ' + sourcePath + '.');
+  }
+
+  return Object.freeze(results);
+}
+
+async function runCli(argv) {
+  const args = parseArgs(argv);
+
+  if (args.check) {
+    if (args.sourcePaths.length === 0) {
+      await compileCimFile({
+        sourcePath: DEFAULT_CIM_SOURCE,
+        outputPath: DEFAULT_CIM_OUTPUT,
+        check: true
+      });
+      return;
+    }
+
+    await checkCimFiles(args.sourcePaths);
+    return;
+  }
+
+  const sourcePath = args.sourcePaths[0] ?? DEFAULT_CIM_SOURCE;
+  const outputPath = args.outputPath ??
+    (args.sourcePaths.length === 0 ? DEFAULT_CIM_OUTPUT : null);
+
+  await compileCimFile({ sourcePath, outputPath });
 }
 
 const invokedAsScript =
   process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
 if (invokedAsScript) {
-  const args = parseArgs(process.argv.slice(2));
-  compileCimFile(args).catch((error) => {
+  runCli(process.argv.slice(2)).catch((error) => {
     console.error(formatCimDiagnostics(error));
     process.exitCode = 1;
   });
