@@ -84,6 +84,12 @@ Check fixture freshness:
 npm run check:cim-authoring
 ```
 
+Validate one or more authored sources without writing output:
+
+```bash
+node tools/compile-cim.mjs --check first.cim second.cim
+```
+
 Compile another source to stdout:
 
 ```bash
