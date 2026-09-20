@@ -54,5 +54,9 @@
   "invalid-link-scheme.cim": {
     "code": "CIM-EXP-006",
     "phase": "validation"
+  },
+  "reserved-directive.cim": {
+    "code": "CIM-AUTH-002",
+    "phase": "authoring"
   }
 }
