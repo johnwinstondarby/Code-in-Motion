@@ -392,7 +392,13 @@ export function compileCimSource(
       offset: directive,
       sourceId,
       code: 'CIM-AUTH-002',
-      path: '
+      path: '$',
+      message: 'YAML directives are not allowed in .cim source.',
+      phase: 'authoring'
+    });
+  }
+
+  if (documents.length !== 1) {
     const second = documents[1];
     throwDiagnostic({
       lineCounter,
