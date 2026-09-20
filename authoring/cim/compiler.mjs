@@ -14,8 +14,29 @@ import {
 
 const AUTHORING_VERSION = 1;
 const RUNTIME_SCHEMA = 'localis.cim/v1';
-const DIRECTIVE_PATTERN = /^(?:\uFEFF)?%(?:YAML|TAG)\b/m;
+const DIRECTIVE_PATTERN = /^(?:\uFEFF)?%[^\r\n]*/m;
 const SIMPLE_PATH_KEY = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
+
+const TOP_LEVEL_RUNTIME_KEYS = Object.freeze([
+  'engine_min',
+  'experience_version',
+  'id',
+  'renderer',
+  'renderer_config',
+  'initial_state',
+  'steps'
+]);
+const STEP_RUNTIME_KEYS = Object.freeze([
+  'id',
+  'label',
+  'marker',
+  'commentary',
+  'state',
+  'renderer_config',
+  'dwell_ms'
+]);
+const COMMENTARY_RUNTIME_KEYS = Object.freeze(['text', 'links']);
+const LINK_RUNTIME_KEYS = Object.freeze(['id', 'label', 'href']);
 
 function fail(message) {
   throw new TypeError(message);
@@ -280,6 +301,75 @@ function rebuildNode(node, path, context, fallbackNode = null) {
   });
 }
 
+function orderedCopy(value, orderedKeys, transforms = {}) {
+  const result = {};
+  const known = new Set(orderedKeys);
+
+  for (const key of orderedKeys) {
+    if (!own(value, key)) continue;
+    result[key] = own(transforms, key)
+      ? transforms[key](value[key])
+      : value[key];
+  }
+
+  for (const key of Object.keys(value)) {
+    if (!known.has(key)) result[key] = value[key];
+  }
+
+  return result;
+}
+
+function canonicalizeLink(link) {
+  if (link === null || typeof link !== 'object' || Array.isArray(link)) {
+    return link;
+  }
+  return orderedCopy(link, LINK_RUNTIME_KEYS);
+}
+
+function canonicalizeCommentary(commentary) {
+  if (
+    commentary === null ||
+    typeof commentary !== 'object' ||
+    Array.isArray(commentary)
+  ) {
+    return commentary;
+  }
+
+  return orderedCopy(commentary, COMMENTARY_RUNTIME_KEYS, {
+    links: (links) =>
+      Array.isArray(links) ? links.map(canonicalizeLink) : links
+  });
+}
+
+function canonicalizeStep(step) {
+  if (step === null || typeof step !== 'object' || Array.isArray(step)) {
+    return step;
+  }
+
+  return orderedCopy(step, STEP_RUNTIME_KEYS, {
+    commentary: canonicalizeCommentary
+  });
+}
+
+function canonicalizeRuntimeCandidate(authored) {
+  const candidate = { schema: RUNTIME_SCHEMA };
+  const known = new Set(TOP_LEVEL_RUNTIME_KEYS);
+
+  for (const key of TOP_LEVEL_RUNTIME_KEYS) {
+    if (!own(authored, key)) continue;
+    candidate[key] = key === 'steps' && Array.isArray(authored.steps)
+      ? authored.steps.map(canonicalizeStep)
+      : authored[key];
+  }
+
+  for (const key of Object.keys(authored)) {
+    if (key === 'cim' || key === 'schema' || known.has(key)) continue;
+    candidate[key] = authored[key];
+  }
+
+  return candidate;
+}
+
 function parseErrorDiagnostic(error, lineCounter, sourceId) {
   const offset = Array.isArray(error?.pos) && Number.isInteger(error.pos[0])
     ? error.pos[0]
@@ -478,11 +568,7 @@ export function compileCimSource(
     ]);
   }
 
-  const candidate = { schema: RUNTIME_SCHEMA };
-  for (const key of Object.keys(authored)) {
-    if (key === 'cim') continue;
-    candidate[key] = authored[key];
-  }
+  const candidate = canonicalizeRuntimeCandidate(authored);
 
   if (locations.has('$.cim')) {
     locations.set('$.schema', locations.get('$.cim'));
