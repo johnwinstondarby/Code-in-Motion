@@ -187,6 +187,59 @@ Squash and rebase are prohibited by repository settings and the active `main` ru
 
 The final R29 head must remain reachable from `main` after integration.
 
+## Implementation acceptance audit
+
+ADR 0037 implementation was audited on frozen implementation head:
+
+`293c5c7f9016768e1af54f517ada905ea6e960d9`
+
+The audit found and closed three specification mismatches before acceptance:
+
+- directive rejection now covers every YAML directive rather than only `%YAML` and `%TAG`;
+- CLI check mode validates one or more arbitrary `.cim` sources without writing output;
+- known Runtime structural properties are emitted in documented canonical order while opaque `state` and `renderer_config` mapping order remains authored.
+
+Evidence on that head:
+
+- Verify CiM contracts run: `35485178558`;
+- WordPress Floor QA run: `35485178553`;
+- WordPress Browser E2E run: `35485178552`;
+- WordPress Playground PR Preview run: `35485178568`;
+- Node 20: 679/679 PASS;
+- Node 22: 679/679 PASS;
+- `CiM / Verify`: PASS;
+- `CiM / Floor QA`: PASS;
+- `CiM / Browser E2E`: PASS;
+- `CiM / Playground`: PASS;
+- architecture boundary: 49 production source files checked, PASS;
+- WordPress release tree: 34 modules / 52 import edges, PASS;
+- release ZIP: 60 files / 433,183 bytes;
+- ZIP SHA-256: `55caaa141214dd5fb36960a210d42d28278739777e0d7468abeb3f1cf967a533`;
+- R23 manifest SHA-256: `f7e91414c169c90fe55c32e43215db224b18454e6fbb410a89b30525975303b7`.
+
+### Gate-by-gate disposition
+
+1. **PASS** — ADR 0037 is accepted and matches the implemented compiler boundary.
+2. **PASS** — the neutral human-authored `.cim` fixture compiles successfully.
+3. **PASS** — successful compilation routes through production `ingestExperience()`.
+4. **PASS** — compiled output is deep-equal to the committed canonical Runtime JSON fixture.
+5. **PASS** — parse diagnostics carry deterministic one-based source line and column.
+6. **PASS** — Runtime validation retains `CIM-EXP-*` identity and gains source location.
+7. **PASS** — restricted YAML probes fail closed, including anchors, aliases, tags, merge keys, duplicate keys, directives, multiple documents, non-string keys, and non-finite numbers.
+8. **PASS** — multiline block-scalar commentary survives exactly under the documented chomping form.
+9. **PASS** — opaque state and renderer configuration survive without semantic interpretation; authored mapping order is preserved inside those opaque values.
+10. **PASS** — distinct B-to-B observation steps preserve equivalent destination state and distinct semantic identities.
+11. **PASS** — executable-looking commentary remains inert text and disallowed link schemes fail existing Experience validation.
+12. **PASS** — architecture checks prohibit production `src/` imports of `authoring/cim/`; the authoring compiler remains outside Runtime, Host, and renderer ownership.
+13. **PASS** — `npm run check:cim-authoring` freshness-checks the committed generated Runtime fixture.
+14. **PASS** — Node 20 and Node 22 verification are green at 679/679 tests each and converge on the same committed generated output.
+15. **PASS** — all four protected terminal checks are green on the audited implementation head.
+16. **PASS** — WordPress 0.1.1 remains byte-identical at the R27/R28 release identity.
+17. **PENDING INTEGRATION** — R29 has not yet merged into protected `main`.
+18. **PENDING INTEGRATION** — post-merge ancestry proof requires the final frozen R29 head and merge commit.
+
+ADR acceptance closes the implementation decision. R29 remains open until gates 17 and 18 complete.
+
 ## Acceptance gates
 
 R29 closes only when all of the following are proven:
