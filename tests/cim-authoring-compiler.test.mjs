@@ -288,3 +288,74 @@ test('R29 committed invalid fixture corpus fails with owned source-located diagn
     assert.equal(Number.isInteger(diagnostic.column) && diagnostic.column >= 1, true, name);
   }
 });
+
+test('R29 canonicalizes Runtime structural key order while preserving opaque authored order', () => {
+  const source = `cim: 1
+steps:
+  - dwell_ms: 5
+    renderer_config:
+      zeta: 1
+      alpha: 2
+    state:
+      zeta: Z
+      alpha: A
+    commentary:
+      links:
+        - href: /reference/
+          label: Reference
+          id: ref
+      text: Ordered commentary.
+    label: Ordered step
+    id: step-01
+initial_state:
+  zeta: I
+  alpha: A
+renderer_config:
+  zeta: 1
+  alpha: 2
+renderer: synthetic/v1
+id: ordered-authored
+experience_version: 1.0.0
+engine_min: 1.0.0
+`;
+
+  const { experience } = compileCimSource(source, {
+    sourceId: 'ordered.cim'
+  });
+
+  assert.deepEqual(Object.keys(experience), [
+    'schema',
+    'engine_min',
+    'experience_version',
+    'id',
+    'renderer',
+    'renderer_config',
+    'initial_state',
+    'steps'
+  ]);
+  assert.deepEqual(Object.keys(experience.steps[0]), [
+    'id',
+    'label',
+    'commentary',
+    'state',
+    'renderer_config',
+    'dwell_ms'
+  ]);
+  assert.deepEqual(Object.keys(experience.steps[0].commentary), [
+    'text',
+    'links'
+  ]);
+  assert.deepEqual(Object.keys(experience.steps[0].commentary.links[0]), [
+    'id',
+    'label',
+    'href'
+  ]);
+
+  assert.deepEqual(Object.keys(experience.renderer_config), ['zeta', 'alpha']);
+  assert.deepEqual(Object.keys(experience.initial_state), ['zeta', 'alpha']);
+  assert.deepEqual(Object.keys(experience.steps[0].state), ['zeta', 'alpha']);
+  assert.deepEqual(
+    Object.keys(experience.steps[0].renderer_config),
+    ['zeta', 'alpha']
+  );
+});
