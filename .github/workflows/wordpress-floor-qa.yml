@@ -149,6 +149,25 @@ jobs:
           version_mismatch="$(npm run --silent wp-env -- run cli wp eval 'echo localis_cim_admin_version_consistency("9.9.9", LOCALIS_CIM_PLUGIN_VERSION);' | tail -n 1)"
           test "$version_mismatch" = 'mismatch'
 
+          release_info_json="$(npm run --silent wp-env -- run cli wp eval 'echo wp_json_encode(localis_cim_read_admin_release_info());' | tail -n 1)"
+          RELEASE_INFO_JSON="$release_info_json" EXPECTED_PLUGIN_VERSION="$expected_plugin_version" node --input-type=module <<'NODE'
+          const info = JSON.parse(process.env.RELEASE_INFO_JSON);
+          if (info.status !== 'available') throw new Error('R33 source release info unavailable.');
+          if (info.stable_tag !== process.env.EXPECTED_PLUGIN_VERSION) {
+            throw new Error('R33 source stable tag mismatch.');
+          }
+          if (info.tested_up_to !== '7.1') throw new Error('R33 source Tested up to mismatch.');
+          if (info.current_release?.version !== process.env.EXPECTED_PLUGIN_VERSION) {
+            throw new Error('R33 source current release mismatch.');
+          }
+          if (!Array.isArray(info.current_release?.notes) || info.current_release.notes.length !== 2) {
+            throw new Error('R33 source current release notes mismatch.');
+          }
+          if (info.support_uri !== 'https://github.com/johnwinstondarby/Code-in-Motion/issues') {
+            throw new Error('R33 source support URI mismatch.');
+          }
+          NODE
+
           admin_html_b64="$(npm run --silent wp-env -- run cli wp eval 'wp_set_current_user(1); ob_start(); localis_cim_render_admin_console(); echo base64_encode(ob_get_clean());' | tail -n 1)"
           printf '%s' "$admin_html_b64" | base64 -d > .ci-r31-admin.html
           grep -q '<h1>Code in Motion</h1>' .ci-r31-admin.html
@@ -169,6 +188,11 @@ jobs:
           grep -q 'git/v1' .ci-r31-admin.html
           grep -q 'synthetic/v1' .ci-r31-admin.html
           grep -q '>Registered<' .ci-r31-admin.html
+          grep -q '<h2>Release information</h2>' .ci-r31-admin.html
+          grep -q 'Stable tag' .ci-r31-admin.html
+          grep -q 'Tested up to' .ci-r31-admin.html
+          grep -q 'Current release notes' .ci-r31-admin.html
+          grep -q 'Support and issue reporting' .ci-r31-admin.html
 
       - name: Verify R11 shortcode-edge rejection
         shell: bash

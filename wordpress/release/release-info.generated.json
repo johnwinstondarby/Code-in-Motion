@@ -1,0 +1,13 @@
+{
+  "schema": "localis.cim/wordpress-release-info/v1",
+  "stable_tag": "0.1.5",
+  "tested_up_to": "7.1",
+  "current_release": {
+    "version": "0.1.5",
+    "notes": [
+      "Adds state-free lifecycle residue verification across install, activation, deactivation, and uninstall.",
+      "Adds canonical release metadata to the read-only WordPress Admin Console."
+    ]
+  },
+  "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"
+}

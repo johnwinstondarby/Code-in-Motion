@@ -198,6 +198,44 @@ jobs:
             exit 1
           fi
 
+          RESIDUE_BEFORE="$(wp_env run cli wp eval '
+            global $wpdb;
+            $needles = array("cim", "code-in-motion", "code_in_motion", "localis_cim");
+            $sources = array(
+              "options" => array($wpdb->options, "option_name"),
+              "postmeta" => array($wpdb->postmeta, "meta_key"),
+              "usermeta" => array($wpdb->usermeta, "meta_key"),
+              "termmeta" => array($wpdb->termmeta, "meta_key"),
+              "commentmeta" => array($wpdb->commentmeta, "meta_key")
+            );
+            $result = array("keys" => array(), "tables" => array());
+            foreach ($sources as $label => $definition) {
+              list($table, $column) = $definition;
+              $conditions = array();
+              foreach ($needles as $needle) {
+                $conditions[] = $wpdb->prepare("LOWER(" . $column . ") LIKE %s", "%" . $wpdb->esc_like($needle) . "%");
+              }
+              $values = $wpdb->get_col("SELECT " . $column . " FROM " . $table . " WHERE " . implode(" OR ", $conditions));
+              sort($values, SORT_STRING);
+              foreach ($values as $value) {
+                $result["keys"][] = $label . ":" . $value;
+              }
+            }
+            foreach ($wpdb->get_col("SHOW TABLES") as $table) {
+              $lower = strtolower($table);
+              foreach ($needles as $needle) {
+                if (false !== strpos($lower, $needle)) {
+                  $result["tables"][] = $table;
+                  break;
+                }
+              }
+            }
+            sort($result["keys"], SORT_STRING);
+            sort($result["tables"], SORT_STRING);
+            echo wp_json_encode($result);
+          ' | tail -n 1)"
+          printf '%s\n' "${RESIDUE_BEFORE}" > "${CIM_R15_ARTIFACT_DIR}/r33-residue-before.json"
+
           wp_env run cli wp plugin install "wp-content/r15-artifact/${ZIP_NAME}" --activate
 
           STATUS="$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active$' | tail -n 1)"
@@ -257,6 +295,20 @@ jobs:
             if (health[key] !== value) {
               throw new Error(`R32 installed health mismatch for ${key}: ${health[key]}`);
             }
+          }
+          NODE
+
+          RELEASE_INFO="$(wp_env run cli wp eval 'echo wp_json_encode(localis_cim_read_admin_release_info());' | tail -n 1)"
+          RELEASE_INFO="$RELEASE_INFO" EXPECTED_VERSION="$CIM_PLUGIN_VERSION" node --input-type=module <<'NODE'
+          const info = JSON.parse(process.env.RELEASE_INFO);
+          if (info.status !== 'available') throw new Error('R33 installed release info unavailable.');
+          if (info.stable_tag !== process.env.EXPECTED_VERSION) throw new Error('R33 installed stable tag mismatch.');
+          if (info.tested_up_to !== '7.1') throw new Error('R33 installed Tested up to mismatch.');
+          if (info.current_release?.version !== process.env.EXPECTED_VERSION) {
+            throw new Error('R33 installed current release mismatch.');
+          }
+          if (!Array.isArray(info.current_release?.notes) || info.current_release.notes.length !== 2) {
+            throw new Error('R33 installed current release notes mismatch.');
           }
           NODE
 
@@ -331,6 +383,67 @@ jobs:
           tests/e2e/wordpress-fault-matrix.spec.mjs
           tests/e2e/wordpress-zip-install.spec.mjs
           --reporter=line
+
+      - name: Prove R33 state-free deactivate and uninstall lifecycle
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wp_env() {
+            npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" "$@"
+          }
+
+          wp_env run cli wp plugin deactivate code-in-motion
+          STATUS="$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^inactive$' | tail -n 1)"
+          test "${STATUS}" = "inactive"
+
+          wp_env run cli wp plugin delete code-in-motion
+          if wp_env run cli wp plugin is-installed code-in-motion >/dev/null 2>&1; then
+            echo "R33 expected Code in Motion to be absent after uninstall/delete." >&2
+            exit 1
+          fi
+          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion'
+
+          RESIDUE_AFTER="$(wp_env run cli wp eval '
+            global $wpdb;
+            $needles = array("cim", "code-in-motion", "code_in_motion", "localis_cim");
+            $sources = array(
+              "options" => array($wpdb->options, "option_name"),
+              "postmeta" => array($wpdb->postmeta, "meta_key"),
+              "usermeta" => array($wpdb->usermeta, "meta_key"),
+              "termmeta" => array($wpdb->termmeta, "meta_key"),
+              "commentmeta" => array($wpdb->commentmeta, "meta_key")
+            );
+            $result = array("keys" => array(), "tables" => array());
+            foreach ($sources as $label => $definition) {
+              list($table, $column) = $definition;
+              $conditions = array();
+              foreach ($needles as $needle) {
+                $conditions[] = $wpdb->prepare("LOWER(" . $column . ") LIKE %s", "%" . $wpdb->esc_like($needle) . "%");
+              }
+              $values = $wpdb->get_col("SELECT " . $column . " FROM " . $table . " WHERE " . implode(" OR ", $conditions));
+              sort($values, SORT_STRING);
+              foreach ($values as $value) {
+                $result["keys"][] = $label . ":" . $value;
+              }
+            }
+            foreach ($wpdb->get_col("SHOW TABLES") as $table) {
+              $lower = strtolower($table);
+              foreach ($needles as $needle) {
+                if (false !== strpos($lower, $needle)) {
+                  $result["tables"][] = $table;
+                  break;
+                }
+              }
+            }
+            sort($result["keys"], SORT_STRING);
+            sort($result["tables"], SORT_STRING);
+            echo wp_json_encode($result);
+          ' | tail -n 1)"
+          printf '%s\n' "${RESIDUE_AFTER}" > "${CIM_R15_ARTIFACT_DIR}/r33-residue-after.json"
+          diff -u "${CIM_R15_ARTIFACT_DIR}/r33-residue-before.json" "${CIM_R15_ARTIFACT_DIR}/r33-residue-after.json"
+
+          echo "PASS: R33 state-free lifecycle leaves no CiM-attributable persistence residue."
 
       - name: Stop isolated R15 environment
         if: always()

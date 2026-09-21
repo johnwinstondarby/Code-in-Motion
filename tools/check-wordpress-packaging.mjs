@@ -114,6 +114,12 @@ async function run() {
   assertContains(adminConsole, 'localis_cim_admin_deployment_context', 'shared deployment-mode resolver');
   assertContains(adminConsole, 'localis_cim_admin_static_health', 'R32 static health');
   assertContains(adminConsole, 'localis_cim_admin_version_consistency', 'R32 version consistency');
+  assertContains(adminConsole, 'release/release-info.generated.json', 'R33 inert release information');
+  assertContains(adminConsole, 'localis_cim_read_admin_release_info', 'R33 release-info reader');
+  assertContains(adminConsole, "esc_url( $release_info['support_uri'] )", 'R33 escaped support URI');
+  if (adminConsole.includes('readme.txt')) {
+    throw new Error('WordPress packaging gate: Admin Console must not parse readme.txt.');
+  }
   for (const token of [
     'wp_remote_get(',
     'wp_remote_post(',
@@ -142,6 +148,40 @@ async function run() {
     ['<script', 'literal <script> emission']
   ];
 
+  const statefulTokens = [
+    'register_activation_hook(',
+    'register_deactivation_hook(',
+    'register_uninstall_hook(',
+    'register_setting(',
+    'add_option(',
+    'update_option(',
+    'delete_option(',
+    'add_site_option(',
+    'update_site_option(',
+    'delete_site_option(',
+    'set_transient(',
+    'delete_transient(',
+    'set_site_transient(',
+    'delete_site_transient(',
+    'dbDelta(',
+    '$wpdb->insert(',
+    '$wpdb->replace(',
+    '$wpdb->update(',
+    '$wpdb->delete(',
+    'CREATE TABLE',
+    'ALTER TABLE',
+    'DROP TABLE'
+  ];
+  const updateTokens = [
+    'pre_set_site_transient_update_plugins',
+    'site_transient_update_plugins',
+    'plugins_api',
+    'upgrader_process_complete',
+    'wp_remote_get(',
+    'wp_remote_post(',
+    'wp_remote_request('
+  ];
+
   for (const path of phpFiles) {
     const source = await readFile(path, 'utf8');
     const lower = source.toLowerCase();
@@ -151,6 +191,21 @@ async function run() {
         throw new Error(`WordPress packaging gate: ${label} is forbidden in ${path}.`);
       }
     }
+    for (const token of statefulTokens) {
+      if (source.includes(token)) {
+        throw new Error(`WordPress packaging gate: R33 state-free lifecycle forbids ${token} in ${path}.`);
+      }
+    }
+    for (const token of updateTokens) {
+      if (source.includes(token)) {
+        throw new Error(`WordPress packaging gate: R33 custom update/network behavior forbids ${token} in ${path}.`);
+      }
+    }
+  }
+
+  const rootEntries = await readdir(ROOT);
+  if (rootEntries.includes('uninstall.php') || files.some((path) => path.endsWith('/uninstall.php'))) {
+    throw new Error('WordPress packaging gate: R33 state-free lifecycle forbids uninstall.php.');
   }
 
   console.log(
