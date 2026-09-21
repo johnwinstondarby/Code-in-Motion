@@ -34,6 +34,19 @@ test('R31 Admin Console derives inventory and support metadata from canonical so
   assert.match(adminSource, /LOCALIS_CIM_PLUGIN_VERSION/);
   assert.match(adminSource, /assets\/modules\//);
   assert.match(adminSource, /wordpress\/experiences\//);
+  assert.match(adminSource, /function localis_cim_admin_resolve_asset_status/);
+  assert.match(adminSource, /if \( is_dir\( \$release_root \) \) \{/);
+});
+
+test('R31 selects release or source deployment mode once, not per asset', () => {
+  const resolver = adminSource.match(
+    /function localis_cim_admin_resolve_asset_status[\s\S]*?\n}\n\n\/\*\*/
+  )?.[0] ?? '';
+
+  assert.match(resolver, /\$release_root =/);
+  assert.match(resolver, /if \( is_dir\( \$release_root \) \) \{/);
+  assert.match(resolver, /return array\([\s\S]*?'source'\s*=>\s*is_readable\( \$release_path \) \? 'release' : 'missing'/);
+  assert.match(resolver, /\$source_path =/);
 });
 
 test('R31 Admin Console contains no management mutation or Runtime semantic authority', () => {

@@ -59,43 +59,60 @@ function localis_cim_admin_unavailable_inventory() {
 }
 
 /**
- * Resolve one registry asset against the installed release tree or source tree.
+ * Resolve one registry asset against one deployment mode.
  *
- * @param string $asset Safe registry asset file name.
+ * A version-bearing module root selects installed-release mode for the whole
+ * inventory. Source-tree fallback is available only when that root is absent.
+ *
+ * @param string $asset         Safe registry asset file name.
+ * @param string $wordpress_dir WordPress implementation directory.
+ * @param string $version       Plugin version.
  * @return array
  */
-function localis_cim_admin_asset_status( $asset ) {
-	if ( ! localis_cim_admin_is_safe_asset_name( $asset ) ) {
+function localis_cim_admin_resolve_asset_status( $asset, $wordpress_dir, $version ) {
+	if (
+		! localis_cim_admin_is_safe_asset_name( $asset )
+		|| ! is_string( $wordpress_dir )
+		|| '' === $wordpress_dir
+		|| ! is_string( $version )
+		|| '' === $version
+	) {
 		return array(
 			'present' => false,
 			'source'  => 'unavailable',
 		);
 	}
 
-	$release_path = __DIR__
-		. '/assets/modules/'
-		. LOCALIS_CIM_PLUGIN_VERSION
-		. '/wordpress/experiences/'
-		. $asset;
+	$release_root = $wordpress_dir . '/assets/modules/' . $version;
 
-	if ( is_readable( $release_path ) ) {
+	if ( is_dir( $release_root ) ) {
+		$release_path = $release_root . '/wordpress/experiences/' . $asset;
+
 		return array(
-			'present' => true,
-			'source'  => 'release',
+			'present' => is_readable( $release_path ),
+			'source'  => is_readable( $release_path ) ? 'release' : 'missing',
 		);
 	}
 
-	$source_path = __DIR__ . '/experiences/' . $asset;
-	if ( is_readable( $source_path ) ) {
-		return array(
-			'present' => true,
-			'source'  => 'source',
-		);
-	}
+	$source_path = $wordpress_dir . '/experiences/' . $asset;
 
 	return array(
-		'present' => false,
-		'source'  => 'missing',
+		'present' => is_readable( $source_path ),
+		'source'  => is_readable( $source_path ) ? 'source' : 'missing',
+	);
+}
+
+/**
+ * Resolve one registry asset against the active plugin deployment mode.
+ *
+ * @param string $asset Safe registry asset file name.
+ * @return array
+ */
+function localis_cim_admin_asset_status( $asset ) {
+	return localis_cim_admin_resolve_asset_status(
+		$asset,
+		__DIR__,
+		LOCALIS_CIM_PLUGIN_VERSION
 	);
 }
 

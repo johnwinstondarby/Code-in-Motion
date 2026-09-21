@@ -84,6 +84,29 @@ jobs:
           }
           NODE
 
+          mode_guard="$(npm run --silent wp-env -- run cli wp eval '
+            $root = WP_CONTENT_DIR . "/r31-mode-guard";
+            wp_mkdir_p( $root . "/assets/modules/" . LOCALIS_CIM_PLUGIN_VERSION . "/wordpress/experiences" );
+            wp_mkdir_p( $root . "/experiences" );
+            file_put_contents( $root . "/experiences/stray.json", "{}" );
+            $status = localis_cim_admin_resolve_asset_status( "stray.json", $root, LOCALIS_CIM_PLUGIN_VERSION );
+            echo wp_json_encode( $status );
+            unlink( $root . "/experiences/stray.json" );
+            rmdir( $root . "/experiences" );
+            rmdir( $root . "/assets/modules/" . LOCALIS_CIM_PLUGIN_VERSION . "/wordpress/experiences" );
+            rmdir( $root . "/assets/modules/" . LOCALIS_CIM_PLUGIN_VERSION . "/wordpress" );
+            rmdir( $root . "/assets/modules/" . LOCALIS_CIM_PLUGIN_VERSION );
+            rmdir( $root . "/assets/modules" );
+            rmdir( $root . "/assets" );
+            rmdir( $root );
+          ' | tail -n 1)"
+          MODE_GUARD="$mode_guard" node --input-type=module <<'NODE'
+          const status = JSON.parse(process.env.MODE_GUARD);
+          if (status.present !== false || status.source !== 'missing') {
+            throw new Error('R31 installed-mode resolver was masked by a stray source Experience.');
+          }
+          NODE
+
           admin_html_b64="$(npm run --silent wp-env -- run cli wp eval 'wp_set_current_user(1); ob_start(); localis_cim_render_admin_console(); echo base64_encode(ob_get_clean());' | tail -n 1)"
           printf '%s' "$admin_html_b64" | base64 -d > .ci-r31-admin.html
           grep -q '<h1>Code in Motion</h1>' .ci-r31-admin.html
