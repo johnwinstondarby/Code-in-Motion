@@ -99,7 +99,11 @@ It must not perform Runtime semantic validation or parse Experience state.
 
 ### 6. Deployment-presence status
 
-Resolve each safe asset name beneath the version-bearing installed Experience directory.
+Resolve each safe asset name according to one deployment mode selected for the whole inventory.
+
+If the active version-bearing module root exists, installed-release mode is active and only the version-bearing Experience directory counts. A stray repository-source Experience must not mask a missing release asset.
+
+If the version-bearing module root is absent, repository-source mode may resolve the source-tree Experience directory.
 
 Presence means file existence/readability only.
 
@@ -190,7 +194,7 @@ R31 closes only when all of the following are proven:
 15. PHP does not add a Runtime Experience semantic validator.
 16. PHP does not parse or interpret Runtime Experience state or renderer configuration.
 17. Each safe inventory row displays ID, asset name, deployment-presence status, and inert shortcode reference.
-18. The installed 0.1.3 release ZIP reports both current registered Experience assets present.
+18. The installed 0.1.3 release ZIP reports both current registered Experience assets present from the release tree, and an installed-mode fixture proves a stray source Experience cannot mask a missing release asset.
 19. Admin Console markup contains no executable CiM engine/Host/Runtime/renderer/Transport/Commentary/bootstrap source.
 20. Existing front-end shortcode and browser behavior remain unchanged.
 21. `wordpress/admin-console.php` is staged by the deterministic release builder and approved by the independent supply-chain gate.
@@ -243,7 +247,7 @@ Those management capabilities remain later checkpoints.
 
 Accepted implementation head:
 
-`ca0ed5511058875c80fddacf8034d3366c539f49`
+`25fad0b6b567346f09371882be5580e7faed409d`
 
 The implementation audit confirms:
 
@@ -259,35 +263,35 @@ The implementation audit confirms:
 - unsafe asset names fail closed before deployment-path resolution;
 - registry failure returns an unavailable inventory rather than partial rows;
 - PHP performs no Runtime Experience semantic validation and does not interpret Runtime state or renderer configuration;
-- release deployment status checks the version-bearing Experience directory before the repository source-tree development fallback;
+- deployment mode is selected once: an existing version-bearing module root forces installed-release mode, while repository-source mode is available only when that root is absent;
 - deterministic release staging includes exactly `wordpress/admin-console.php` as the new stable production PHP file;
 - the independent R23 supply-chain gate approves that exact path without introducing a PHP wildcard;
 - static R31 boundary tests pass;
-- repository-mounted WordPress Floor QA proves admin hook registration, denied unauthorized access, support-floor display, registry membership, and source-tree deployment status;
+- repository-mounted WordPress Floor QA proves admin hook registration, denied unauthorized access, support-floor display, registry membership, source-tree deployment status, and the installed-mode stray-source regression;
 - installed-ZIP E2E proves both registered Experience assets resolve from the version-bearing release tree;
 - the real prior-release upgrade proof resolves 0.1.2 as N and 0.1.3 as current.
 
-No ADR 0039 correction is required after implementation audit.
+ADR 0039 was clarified after review to state the one-mode deployment invariant explicitly. The implementation and ADR now agree that repository-source fallback is unavailable whenever the active version-bearing module root exists.
 
 ## Accepted 0.1.3 artifact identity
 
 The accepted implementation build establishes:
 
 - 63 staged files;
-- 440,306 staged bytes;
+- 441,067 staged bytes;
 - 35 modules;
 - 53 import edges;
-- ZIP SHA-256 `47cea044ecfef050b9b09a33ea1b442a7a74ee981c45d50a62011b047dbcbf6c`;
-- R23 manifest SHA-256 `79c6a71bc95b3d4a436c175ea60b260e8299e847f95e9b12099370a17c2770fe`.
+- ZIP SHA-256 `bd164a828fe506e533e31f30a940c5a54154ca5edf31bdcbc38ae53295458426`;
+- R23 manifest SHA-256 `aeec0ce5538630c6f56920066a182ac77339f26282b0ca1caef8fa54c975e9b8`.
 
 Relative to 0.1.2, release-tree growth is exactly one staged file: `wordpress/admin-console.php`. The JavaScript module and import-edge counts remain unchanged.
 
 ## Implementation-head verification
 
-On `ca0ed5511058875c80fddacf8034d3366c539f49`:
+On `25fad0b6b567346f09371882be5580e7faed409d`:
 
-- Node 20: 687/687 PASS;
-- Node 22: 687/687 PASS;
+- Node 20: 688/688 PASS;
+- Node 22: 688/688 PASS;
 - release build: PASS;
 - release reproducibility: PASS;
 - fresh 0.1.3 ZIP install: PASS;
@@ -301,4 +305,4 @@ On `ca0ed5511058875c80fddacf8034d3366c539f49`:
 - `CiM / Browser E2E`: PASS;
 - `CiM / Playground`: PASS.
 
-The ADR/QA acceptance update that records this audit is documentation-only and does not alter the 0.1.3 release artifact identity.
+The deployment-mode correction changes `wordpress/admin-console.php` and therefore establishes the revised 0.1.3 artifact identity recorded above. This ADR/QA update is documentation-only and does not alter those release bytes.

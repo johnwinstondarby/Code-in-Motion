@@ -108,7 +108,9 @@ For an installed release, a registered Experience asset resolves beneath:
 
 `wordpress/assets/modules/<plugin-version>/wordpress/experiences/`
 
-The Admin Console may recognize the repository source-tree location during development, but release deployment status must be based on the version-bearing installed asset.
+Deployment mode is decided once for the inventory. If the version-bearing module root for the active plugin version exists, the Admin Console is in installed-release mode and only the version-bearing Experience path counts. Repository-source files must not satisfy or mask release deployment status in that mode.
+
+If the version-bearing module root is absent, the Admin Console is in repository-source mode and may resolve the registered asset beneath the source-tree Experience directory.
 
 Path resolution must remain inside the plugin directory and must fail closed for unsafe asset names.
 
