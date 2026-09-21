@@ -38,7 +38,7 @@ R30 is governed by:
 - `docs/adr/0038-wordpress-experience-deployment-registry.md`;
 - this QA record.
 
-ADR 0038 remains `Proposed for R30` until the implementation audit is complete.
+ADR 0038 is `Accepted for R30` after implementation audit and exact-head verification.
 
 ## Branch and base
 
@@ -239,3 +239,52 @@ R30 does not establish:
 `WordPress editor/upload → .cim compiler`
 
 That administration seam remains available for a later checkpoint after the deployment registry is stable.
+
+
+## Closure evidence
+
+Final R30 implementation head:
+
+`0d602e2c71331dfbab2b79381d3d98497fac1eba`
+
+Protected-main merge commit:
+
+`8b427bd96b48a6cc3d02e6358d4997ef74b53ef5`
+
+Merge parents:
+
+1. `26f094a5da23a66d4b6e94990a15bb30e62710f6`
+2. `0d602e2c71331dfbab2b79381d3d98497fac1eba`
+
+Exact-head closure gates:
+
+- Node 20 verification: PASS
+- Node 22 verification: PASS
+- `CiM / Verify`: PASS
+- `CiM / Floor QA`: PASS
+- `CiM / Browser E2E`: PASS
+- `CiM / Playground`: PASS
+- fresh install from the 0.1.2 ZIP: PASS
+- real warm-cache 0.1.1 to 0.1.2 upgrade: PASS
+- release reproducibility: PASS
+- Plugin Check: PASS
+- Chromium, Firefox, and WebKit: PASS
+- WordPress 6.5.10 through 7.1.1: PASS
+- PHP 7.4 and PHP 8.5: PASS
+
+Final 0.1.2 artifact identity:
+
+- 62 staged files;
+- 433,707 staged bytes;
+- 35 modules;
+- 53 import edges;
+- ZIP SHA-256 `8988e2e4195456640bcf87f72a127a0db06aaef8cd772e950d2b462351938b19`;
+- R23 manifest SHA-256 `3cfcaf018d4b9f642b72974c19b7b02ad31f582df0900f01a204ca35c02e7055`.
+
+The historical 0.1.1 artifact was rebuilt during the upgrade proof with ZIP SHA-256:
+
+`55caaa141214dd5fb36960a210d42d28278739777e0d7468abeb3f1cf967a533`
+
+The protected-main merge is a true two-parent merge, and the frozen R30 implementation head is reachable from `main`.
+
+This closure-record update changes documentation only. It does not change the 0.1.2 release artifact or its recorded identity.
