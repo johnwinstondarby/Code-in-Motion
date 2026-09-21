@@ -34,6 +34,7 @@ const STATIC_STAGE_FILES = Object.freeze([
   Object.freeze({ source: 'readme.txt', destination: 'readme.txt' }),
   Object.freeze({ source: 'code-in-motion.php', destination: 'code-in-motion.php' }),
   Object.freeze({ source: 'wordpress/code-in-motion.php', destination: 'wordpress/code-in-motion.php' }),
+  Object.freeze({ source: 'wordpress/admin-console.php', destination: 'wordpress/admin-console.php' }),
   Object.freeze({ source: 'wordpress/assets/cim.css', destination: 'wordpress/assets/cim.css' })
 ]);
 

@@ -59,6 +59,43 @@ jobs:
           grep -q 'data-cim-renderer-root' <<<"$git_rendered"
           grep -q 'CiM Git floor fallback.' <<<"$git_rendered"
 
+          admin_hook="$(npm run --silent wp-env -- run cli wp eval 'echo has_action("admin_menu", "localis_cim_register_admin_menu") ? "registered" : "missing";' | tail -n 1)"
+          test "$admin_hook" = 'registered'
+
+          unauthorized="$(npm run --silent wp-env -- run cli wp eval 'wp_set_current_user(0); echo localis_cim_admin_can_view() ? "allowed" : "denied";' | tail -n 1)"
+          test "$unauthorized" = 'denied'
+
+          inventory_json="$(npm run --silent wp-env -- run cli wp eval 'echo wp_json_encode(localis_cim_read_admin_inventory());' | tail -n 1)"
+          INVENTORY_JSON="$inventory_json" node --input-type=module <<'NODE'
+          const inventory = JSON.parse(process.env.INVENTORY_JSON);
+          if (inventory.status !== 'available') throw new Error('R31 source inventory unavailable.');
+          if (inventory.schema !== 'localis.cim/wordpress-experience-registry/v1') {
+            throw new Error('R31 source registry schema mismatch.');
+          }
+          if (!Array.isArray(inventory.experiences) || inventory.experiences.length !== 2) {
+            throw new Error('R31 source inventory count mismatch.');
+          }
+          const ids = inventory.experiences.map((entry) => entry.id).sort();
+          if (ids.join(',') !== 'git-basic-cycle,synthetic-wordpress') {
+            throw new Error('R31 source inventory membership mismatch.');
+          }
+          if (inventory.experiences.some((entry) => entry.present !== true || entry.source !== 'source')) {
+            throw new Error('R31 source inventory deployment status mismatch.');
+          }
+          NODE
+
+          admin_html_b64="$(npm run --silent wp-env -- run cli wp eval 'wp_set_current_user(1); ob_start(); localis_cim_render_admin_console(); echo base64_encode(ob_get_clean());' | tail -n 1)"
+          printf '%s' "$admin_html_b64" | base64 -d > .ci-r31-admin.html
+          grep -q '<h1>Code in Motion</h1>' .ci-r31-admin.html
+          grep -q 'Plugin version' .ci-r31-admin.html
+          grep -q 'WordPress support floor' .ci-r31-admin.html
+          grep -q '>6.5<' .ci-r31-admin.html
+          grep -q 'PHP support floor' .ci-r31-admin.html
+          grep -q '>7.4<' .ci-r31-admin.html
+          grep -q 'git-basic-cycle' .ci-r31-admin.html
+          grep -q 'synthetic-wordpress' .ci-r31-admin.html
+          grep -q 'Present (source)' .ci-r31-admin.html
+
       - name: Verify R11 shortcode-edge rejection
         shell: bash
         run: |

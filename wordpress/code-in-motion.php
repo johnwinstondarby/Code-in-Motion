@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LOCALIS_CIM_PLUGIN_VERSION', '0.1.2' );
+define( 'LOCALIS_CIM_PLUGIN_VERSION', '0.1.3' );
 define( 'LOCALIS_CIM_SCRIPT_HANDLE', 'localis-cim-wordpress' );
 define( 'LOCALIS_CIM_STYLE_HANDLE', 'localis-cim-wordpress' );
 
@@ -104,3 +104,5 @@ function localis_cim_shortcode( $atts, $content = null ) {
 	return wp_kses( $markup, $allowed_html );
 }
 add_shortcode( 'cim', 'localis_cim_shortcode' );
+
+require_once __DIR__ . '/admin-console.php';

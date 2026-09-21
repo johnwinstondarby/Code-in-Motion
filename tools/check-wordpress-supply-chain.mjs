@@ -100,6 +100,7 @@ export function classifyReleasePath(path, version = '0.1.0', registeredAssets = 
     'readme.txt',
     'code-in-motion.php',
     'wordpress/code-in-motion.php',
+    'wordpress/admin-console.php',
     'wordpress/assets/bootstrap.js',
     'wordpress/assets/cim.css',
     'wordpress/experiences/registry.json'

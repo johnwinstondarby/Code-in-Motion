@@ -6,6 +6,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ROOT_ENTRY_PATH = resolve(ROOT, 'code-in-motion.php');
 const WORDPRESS_DIR = resolve(ROOT, 'wordpress');
 const IMPLEMENTATION_ENTRY_PATH = resolve(WORDPRESS_DIR, 'code-in-motion.php');
+const ADMIN_CONSOLE_PATH = resolve(WORDPRESS_DIR, 'admin-console.php');
 const WP_ENV_PATH = resolve(ROOT, '.wp-env.json');
 const PACKAGE_PATH = resolve(ROOT, 'package.json');
 const PLAYGROUND_BLUEPRINT_PATH = resolve(WORDPRESS_DIR, 'playground', 'blueprint.json');
@@ -100,6 +101,15 @@ async function run() {
   assertContains(entry, "add_shortcode( 'cim'", 'cim shortcode registration');
   assertContains(entry, 'data-cim-experience', 'canonical Experience attribute');
   assertContains(entry, 'data-cim-renderer-root', 'canonical renderer-root attribute');
+  assertContains(entry, "require_once __DIR__ . '/admin-console.php';", 'Admin Console module delegation');
+
+  const adminConsole = await readFile(ADMIN_CONSOLE_PATH, 'utf8');
+  assertContains(adminConsole, "add_action( 'admin_menu', 'localis_cim_register_admin_menu' );", 'Admin Console menu hook');
+  assertContains(adminConsole, "'manage_options'", 'Admin Console capability');
+  assertContains(adminConsole, "'code-in-motion'", 'Admin Console page slug');
+  assertContains(adminConsole, 'localis_cim_read_admin_inventory()', 'registry-backed Admin Console inventory');
+  assertContains(adminConsole, 'wp_json_file_decode(', 'WordPress JSON registry reader');
+  assertContains(adminConsole, 'get_file_data(', 'root plugin support metadata reader');
 
   for (const assetPath of REQUIRED_EXTERNAL_ASSETS) await readFile(assetPath, 'utf8');
 
