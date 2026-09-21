@@ -4,6 +4,8 @@ import { basename, dirname, extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { TextDecoder } from 'node:util';
 
+import { validateWordPressExperienceRegistry } from './check-wordpress-experience-registry.mjs';
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const UTF8 = new TextDecoder('utf-8', { fatal: true });
 
@@ -73,7 +75,7 @@ function isEnvFile(name) {
   return name === '.env' || name.startsWith('.env.');
 }
 
-export function classifyReleasePath(path, version = '0.1.0') {
+export function classifyReleasePath(path, version = '0.1.0', registeredAssets = new Set()) {
   if (typeof path !== 'string' || path.length === 0) fail('release path must be a non-empty string.');
   if (path.startsWith('/') || path.includes('\\')) fail('release path must be relative POSIX: ' + path);
 
@@ -99,7 +101,8 @@ export function classifyReleasePath(path, version = '0.1.0') {
     'code-in-motion.php',
     'wordpress/code-in-motion.php',
     'wordpress/assets/bootstrap.js',
-    'wordpress/assets/cim.css'
+    'wordpress/assets/cim.css',
+    'wordpress/experiences/registry.json'
   ]);
   if (exact.has(path)) return 'approved-static';
 
@@ -109,10 +112,11 @@ export function classifyReleasePath(path, version = '0.1.0') {
   const nested = path.slice(moduleRoot.length);
   if (/^src\/.+\.mjs$/.test(nested)) return 'approved-module';
   if (/^wordpress\/assets\/.+\.mjs$/.test(nested)) return 'approved-wordpress-module';
-  if (
-    nested === 'wordpress/experiences/synthetic-wordpress.json' ||
-    nested === 'experiences/git/git-basic-cycle.json'
-  ) return 'approved-experience';
+  const experiencePrefix = 'wordpress/experiences/';
+  if (nested.startsWith(experiencePrefix)) {
+    const asset = nested.slice(experiencePrefix.length);
+    if (registeredAssets.has(asset)) return 'approved-experience';
+  }
 
   fail('path is not an approved release input: ' + path);
 }
@@ -167,12 +171,14 @@ export async function auditReleaseRoot(releaseRoot, version, manifestPath = null
   const files = await collectFiles(root);
   if (files.length === 0) fail('release root is empty.');
 
+  const registry = await validateWordPressExperienceRegistry(ROOT);
+  const registeredAssets = new Set(registry.experiences.map((experience) => experience.asset));
   const manifestLines = [];
   let totalBytes = 0;
 
   for (const full of files) {
     const path = portablePath(relative(root, full));
-    classifyReleasePath(path, version);
+    classifyReleasePath(path, version, registeredAssets);
     const data = await readFile(full);
     scanReleaseBytes(path, data);
     totalBytes += data.length;

@@ -1,7 +1,11 @@
+import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 
+const PACKAGE_VERSION = JSON.parse(
+  readFileSync(new URL('../../package.json', import.meta.url), 'utf8')
+).version;
 const BASE_URL = process.env.CIM_WP_BASE_URL ?? 'http://127.0.0.1:8888';
-const PLUGIN_VERSION = process.env.CIM_PLUGIN_VERSION ?? '0.1.1';
+const PLUGIN_VERSION = process.env.CIM_PLUGIN_VERSION ?? PACKAGE_VERSION;
 const PLUGIN_PREFIX = '/wp-content/plugins/code-in-motion/';
 const MODULE_PREFIX = `${PLUGIN_PREFIX}wordpress/assets/modules/${PLUGIN_VERSION}/`;
 const WORDPRESS_LAYOUT = process.env.CIM_WP_LAYOUT ?? 'source';
@@ -74,13 +78,13 @@ test('R27 Git basic cycle mounts through the production WordPress path and advan
   let expectedGitRendererPath;
 
   if (WORDPRESS_LAYOUT === 'release') {
-    expectedGitExperiencePath = `${MODULE_PREFIX}experiences/git/git-basic-cycle.json`;
+    expectedGitExperiencePath = `${MODULE_PREFIX}wordpress/experiences/git-basic-cycle.json`;
     expectedGitRendererPath = `${MODULE_PREFIX}src/renderers/subjects/git/renderer.mjs`;
   } else {
     const bootstrapPath = paths.find((path) => path.endsWith('/wordpress/assets/bootstrap.js'));
     expect(bootstrapPath).toBeDefined();
     const pluginRoot = bootstrapPath.slice(0, -'wordpress/assets/bootstrap.js'.length);
-    expectedGitExperiencePath = `${pluginRoot}experiences/git/git-basic-cycle.json`;
+    expectedGitExperiencePath = `${pluginRoot}wordpress/experiences/git-basic-cycle.json`;
     expectedGitRendererPath = `${pluginRoot}src/renderers/subjects/git/renderer.mjs`;
   }
 

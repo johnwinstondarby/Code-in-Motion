@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,7 +13,7 @@ WordPress host, runtime bindings, and controls for Code in Motion experiences.
 
 Code in Motion supplies the WordPress host, runtime bindings, transport controls, and release packaging required to mount CiM experiences from WordPress content.
 
-Version 0.1.1 adds the Git Basic Cycle experience, shared page-3227 source integration, and WordPress deep-link entry.
+Version 0.1.2 adds the canonical WordPress Experience deployment registry and registry-driven browser/release resolution.
 
 == Installation ==
 
@@ -26,6 +26,9 @@ Version 0.1.1 adds the Git Basic Cycle experience, shared page-3227 source integ
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.1.2 =
+* Adds the canonical Experience deployment registry, generated browser projection, and registry-driven release staging.
 
 = 0.1.1 =
 * Adds the Git Basic Cycle experience, shared page-3227 projection, and #cim deep-link entry/navigation.

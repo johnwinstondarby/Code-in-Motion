@@ -1,0 +1,13 @@
+{
+  "schema": "localis.cim/wordpress-experience-registry/v1",
+  "experiences": [
+    {
+      "id": "git-basic-cycle",
+      "asset": "git-basic-cycle.json"
+    },
+    {
+      "id": "synthetic-wordpress",
+      "asset": "synthetic-wordpress.json"
+    }
+  ]
+}

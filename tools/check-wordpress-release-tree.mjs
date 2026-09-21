@@ -2,21 +2,12 @@ import { readFile, stat } from 'node:fs/promises';
 import { dirname, extname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { validateWordPressExperienceRegistry } from './check-wordpress-experience-registry.mjs';
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PACKAGE_PATH = resolve(ROOT, 'package.json');
 const BOOTSTRAP_PATH = resolve(ROOT, 'wordpress', 'assets', 'bootstrap.js');
 const MODULE_ENTRY_PATH = resolve(ROOT, 'wordpress', 'assets', 'bootstrap-module.mjs');
-const EXPERIENCE_PATHS = Object.freeze([
-  Object.freeze({
-    source: resolve(ROOT, 'wordpress', 'experiences', 'synthetic-wordpress.json'),
-    destination: 'wordpress/experiences/synthetic-wordpress.json'
-  }),
-  Object.freeze({
-    source: resolve(ROOT, 'experiences', 'git', 'git-basic-cycle.json'),
-    destination: 'experiences/git/git-basic-cycle.json'
-  })
-]);
-
 const ALLOWED_MODULE_SOURCE_PREFIXES = Object.freeze([
   'src/',
   'wordpress/assets/'
@@ -185,11 +176,9 @@ async function run() {
     fail(`package version is not a usable release-directory token: ${JSON.stringify(version)}`);
   }
 
+  const registry = await validateWordPressExperienceRegistry(ROOT);
   await assertFile(BOOTSTRAP_PATH, 'classic WordPress bootstrap');
   await assertFile(MODULE_ENTRY_PATH, 'WordPress module entry');
-  for (const experience of EXPERIENCE_PATHS) {
-    await assertFile(experience.source, 'WordPress release Experience');
-  }
 
   const bootstrap = await readFile(BOOTSTRAP_PATH, 'utf8');
   if (!bootstrap.includes('./bootstrap-module.mjs')) {
@@ -200,8 +189,8 @@ async function run() {
   for (const edge of closure.edges) assertReleaseEdge(version, edge);
 
   const releaseModuleRoot = `wordpress/assets/modules/${version}`;
-  const experienceDestinations = EXPERIENCE_PATHS
-    .map((experience) => `${releaseModuleRoot}/${experience.destination}`)
+  const experienceDestinations = registry.experiences
+    .map((experience) => `${releaseModuleRoot}/wordpress/experiences/${experience.asset}`)
     .join(', ');
   const moduleEntryDestination = `${releaseModuleRoot}/wordpress/assets/bootstrap-module.mjs`;
 
