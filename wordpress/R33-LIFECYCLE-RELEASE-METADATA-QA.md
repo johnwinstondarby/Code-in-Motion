@@ -17,7 +17,7 @@ R33 is governed by:
 - `docs/adr/0041-wordpress-lifecycle-hygiene-and-release-metadata.md`;
 - this QA record.
 
-ADR 0041 remains `Proposed for R33` until implementation audit is complete.
+ADR 0041 is `Accepted for R33` after implementation audit.
 
 ## Branch and base
 
@@ -268,3 +268,81 @@ R33 establishes:
 R33 does not establish:
 
 `WordPress administration → persistent configuration or external update authority`
+
+
+## Implementation audit
+
+Accepted implementation head:
+
+`ca8a1fa9eee2e82832d704ca2dbe1d56c0def6a1`
+
+The implementation audit confirms:
+
+- R33 production PHP remains state-free;
+- no activation, deactivation, or uninstall hook was introduced;
+- no `uninstall.php` was introduced;
+- no Settings API registration, option/transient persistence write, or direct `$wpdb` persistence mutation was introduced;
+- no custom update-transient hook or outbound latest-version/update request was introduced;
+- `wordpress/release/release-info.generated.json` is the sole installed management projection for R33 release metadata;
+- the projection is generated from canonical readme/R22 metadata and freshness-gated;
+- a direct release build validates release-info freshness before staging;
+- the projection key sets are exact and the current release notes derive only from the current changelog entry;
+- the support URI derives from `R22_METADATA.supportUri`;
+- PHP does not parse `readme.txt`;
+- the Admin Console defensively reads the projection and fails closed when unusable;
+- dynamic release metadata is HTML escaped and the support URI is emitted through `esc_url()`;
+- R23 approves exactly `wordpress/release/release-info.generated.json` with no release-directory wildcard;
+- repository-source Floor QA proves the release information is available and matches 0.1.5 / Tested up to 7.1;
+- the exact 0.1.5 ZIP install proves the installed release-info projection is available and current;
+- the exact-ZIP lifecycle proof captures CiM-attributable persistence before install, activates CiM, exercises the production browser mount path, deactivates and deletes the plugin, then requires the post-uninstall snapshot to match the pre-install snapshot;
+- the lifecycle proof also requires the installed plugin directory to be absent after deletion;
+- the state-free lifecycle residue proof passes;
+- the real prior-release upgrade proof resolves 0.1.4 as N and 0.1.5 as current;
+- R31 Experience inventory, R32 renderer inventory, and R32 static-health behavior remain green.
+
+No ADR 0041 correction is required after implementation audit.
+
+## Accepted 0.1.5 artifact identity
+
+The accepted implementation build establishes:
+
+- 66 staged files;
+- 452,940 staged bytes;
+- 36 modules;
+- 54 import edges;
+- ZIP SHA-256 `8bf7ed73e39789754ae029bc2c19dcd9eb9ba28c3a47ebe4232d54ebe6446e23`;
+- R23 manifest SHA-256 `aba3ae9636b427533729a34dc8ada7600735c7ed435c01bb3fdfeba25d1c79d8`.
+
+Relative to the frozen 0.1.4 baseline, the final R33 release adds exactly one staged file:
+
+- `wordpress/release/release-info.generated.json`.
+
+The JavaScript module graph remains unchanged at 36 modules / 54 import edges.
+
+## Implementation-head verification
+
+On `ca8a1fa9eee2e82832d704ca2dbe1d56c0def6a1`:
+
+- Node 20: 699/699 PASS;
+- Node 22: 699/699 PASS;
+- R33 release-info generation/freshness: PASS;
+- WordPress packaging state-free/update guards: PASS;
+- release-tree contract: 36 modules / 54 import edges under `modules/0.1.5`;
+- release build: PASS;
+- release reproducibility: PASS;
+- fresh 0.1.5 ZIP install: PASS;
+- installed release-info projection: PASS;
+- production browser mount against exact ZIP: PASS;
+- R33 deactivate/delete lifecycle: PASS;
+- R33 zero CiM-attributable persistence residue: PASS;
+- real warm-cache 0.1.4 to 0.1.5 upgrade: PASS;
+- Plugin Check: PASS;
+- WordPress 6.5.10 through 7.1.1: PASS;
+- PHP 7.4 and PHP 8.5: PASS;
+- Chromium, Firefox, and WebKit: PASS;
+- `CiM / Verify`: PASS;
+- `CiM / Floor QA`: PASS;
+- `CiM / Browser E2E`: PASS;
+- `CiM / Playground`: PASS.
+
+The ADR/QA acceptance update that records this audit is documentation-only and does not alter the 0.1.5 release artifact identity.

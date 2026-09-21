@@ -1,6 +1,6 @@
 # ADR 0041: WordPress Lifecycle Hygiene and Release Metadata
 
-Status: Proposed for R33
+Status: Accepted for R33
 
 ## Context
 
