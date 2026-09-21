@@ -110,6 +110,23 @@ async function run() {
   assertContains(adminConsole, 'localis_cim_read_admin_inventory()', 'registry-backed Admin Console inventory');
   assertContains(adminConsole, 'wp_json_file_decode(', 'WordPress JSON registry reader');
   assertContains(adminConsole, 'get_file_data(', 'root plugin support metadata reader');
+  assertContains(adminConsole, 'renderers/inventory.generated.json', 'R32 inert renderer inventory');
+  assertContains(adminConsole, 'localis_cim_admin_deployment_context', 'shared deployment-mode resolver');
+  assertContains(adminConsole, 'localis_cim_admin_static_health', 'R32 static health');
+  assertContains(adminConsole, 'localis_cim_admin_version_consistency', 'R32 version consistency');
+  for (const token of [
+    'wp_remote_get(',
+    'wp_remote_post(',
+    'wp_remote_request(',
+    'curl_',
+    'fsockopen(',
+    'pfsockopen(',
+    'stream_socket_client('
+  ]) {
+    if (adminConsole.includes(token)) {
+      throw new Error(`WordPress packaging gate: network health token ${token} is forbidden in Admin Console.`);
+    }
+  }
 
   for (const assetPath of REQUIRED_EXTERNAL_ASSETS) await readFile(assetPath, 'utf8');
 

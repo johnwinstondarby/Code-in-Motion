@@ -12,7 +12,7 @@ The root plugin entry delegates to `wordpress/code-in-motion.php`. That implemen
 
 WordPress administrators with `manage_options` receive a top-level **Code in Motion** administration page at slug `code-in-motion`.
 
-R31 keeps this surface read-only. It reports plugin/environment identity and the canonical R30 registry-backed Experience deployment inventory. It does not store settings, mutate the registry, validate Runtime semantics, install renderers, compile `.cim` source, or expose management REST/AJAX actions.
+R32 keeps this surface read-only. It reports plugin/environment identity, the canonical R30 registry-backed Experience deployment inventory, the generated renderer registration inventory, and static local artifact health. Health is based only on deployment mode, local file presence, registry/inventory readability, and plugin-version consistency. It does not store settings, mutate registries, validate Runtime semantics in PHP, execute renderers, perform network health probes, compile `.cim` source, or expose management REST/AJAX actions.
 
 ## Shortcode
 
@@ -40,6 +40,6 @@ The shortcode emits one canonical `.cim[data-cim-experience]` invocation root, a
 
 ## Verification boundary
 
-`npm run check:wordpress-packaging` enforces the external-asset rule, the R31 administration boundary, and the required WordPress packaging baseline.
+`npm run check:wordpress-packaging` enforces the external-asset rule, the R31/R32 administration boundaries, the no-network health rule, and the required WordPress packaging baseline.
 
-Floor QA exercises the repository-mounted administration inventory. Browser E2E exercises the installed release ZIP and confirms registered Experience deployment status from the version-bearing release tree.
+Floor QA exercises repository-source deployment mode, Experience and renderer inventories, static health, and mismatch visibility. Browser E2E exercises the installed release ZIP and confirms release-mode Experience inventory, renderer inventory, bootstrap presence, and version consistency.

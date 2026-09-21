@@ -34,22 +34,32 @@ test('R31 Admin Console derives inventory and support metadata from canonical so
   assert.match(adminSource, /LOCALIS_CIM_PLUGIN_VERSION/);
   assert.match(adminSource, /assets\/modules\//);
   assert.match(adminSource, /wordpress\/experiences\//);
-  assert.match(adminSource, /function localis_cim_admin_resolve_asset_status/);
-  assert.match(adminSource, /if \( is_dir\( \$release_root \) \) \{/);
 });
 
 test('R31 selects release or source deployment mode once, not per asset', () => {
+  assert.match(adminSource, /function localis_cim_admin_deployment_context/);
+  assert.match(adminSource, /if \( is_dir\( \$release_root \) \) \{/);
+
   const resolver = adminSource.match(
     /function localis_cim_admin_resolve_asset_status[\s\S]*?\n}\n\n\/\*\*/
   )?.[0] ?? '';
-
-  assert.match(resolver, /\$release_root =/);
-  assert.match(resolver, /if \( is_dir\( \$release_root \) \) \{/);
-  assert.match(resolver, /return array\([\s\S]*?'source'\s*=>\s*is_readable\( \$release_path \) \? 'release' : 'missing'/);
-  assert.match(resolver, /\$source_path =/);
+  assert.match(resolver, /localis_cim_admin_deployment_context/);
+  assert.doesNotMatch(resolver, /is_dir\(/);
 });
 
-test('R31 Admin Console contains no management mutation or Runtime semantic authority', () => {
+test('R32 Admin Console reads inert renderer inventory and static local health', () => {
+  assert.match(adminSource, /renderers\/inventory\.generated\.json/);
+  assert.match(adminSource, /localis\.cim\/wordpress-renderer-inventory\/v1/);
+  assert.match(adminSource, /function localis_cim_read_admin_renderer_inventory/);
+  assert.match(adminSource, /function localis_cim_admin_static_health/);
+  assert.match(adminSource, /function localis_cim_admin_bootstrap_present/);
+  assert.match(adminSource, /function localis_cim_admin_version_consistency/);
+  assert.match(adminSource, /Renderer inventory/);
+  assert.match(adminSource, /Registration status/);
+  assert.match(adminSource, /Plugin version consistency/);
+});
+
+test('R32 PHP management surface has no renderer execution, Runtime semantics, or network health probing', () => {
   const forbidden = [
     'update_option(',
     'add_option(',
@@ -65,13 +75,24 @@ test('R31 Admin Console contains no management mutation or Runtime semantic auth
     'initial_state',
     'renderer_config',
     'ingestExperience',
-    'localis.cim/v1'
+    'localis.cim/v1',
+    'createGitRenderer',
+    'createSyntheticRenderer',
+    'renderer-registry.mjs',
+    'wp_remote_get(',
+    'wp_remote_post(',
+    'wp_remote_request(',
+    'curl_',
+    'fsockopen(',
+    'pfsockopen(',
+    'stream_socket_client('
   ];
 
   for (const token of forbidden) {
     assert.equal(adminSource.includes(token), false, token);
   }
 
+  assert.doesNotMatch(adminSource, /https?:\/\//i);
   assert.match(
     adminSource,
     /if \( ! localis_cim_admin_can_view\(\) \) \{[\s\S]*?wp_die\(/
