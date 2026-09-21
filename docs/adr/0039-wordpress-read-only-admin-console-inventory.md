@@ -1,6 +1,6 @@
 # ADR 0039: WordPress Read-Only Admin Console Inventory
 
-Status: Proposed for R31
+Status: Accepted for R31
 
 ## Context
 

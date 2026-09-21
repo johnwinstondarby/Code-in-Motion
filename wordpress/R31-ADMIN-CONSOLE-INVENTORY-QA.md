@@ -29,7 +29,7 @@ R31 is governed by:
 - `docs/adr/0039-wordpress-read-only-admin-console-inventory.md`;
 - this QA record.
 
-ADR 0039 remains `Proposed for R31` until implementation audit is complete.
+ADR 0039 is `Accepted for R31` after implementation audit.
 
 ## Branch and base
 
@@ -237,3 +237,68 @@ R31 does not establish:
 `WordPress administration → configuration/update/authoring mutation`
 
 Those management capabilities remain later checkpoints.
+
+
+## Implementation audit
+
+Accepted implementation head:
+
+`ca0ed5511058875c80fddacf8034d3366c539f49`
+
+The implementation audit confirms:
+
+- `wordpress/admin-console.php` is the dedicated administration module;
+- the WordPress implementation loads that module without changing front-end Host/Runtime ownership;
+- the top-level page uses title/label `Code in Motion`, slug `code-in-motion`, and capability `manage_options`;
+- the render callback repeats the authorization check and fails closed;
+- the management surface contains no settings form, option write, REST/AJAX mutation, registry mutation, upload, or authoring action;
+- plugin version derives from `LOCALIS_CIM_PLUGIN_VERSION`;
+- WordPress and PHP runtime versions come from WordPress/PHP runtime authorities;
+- WordPress/PHP support floors come from the root plugin header through `get_file_data()`;
+- registry inventory comes only from `wordpress/experiences/registry.json`;
+- unsafe asset names fail closed before deployment-path resolution;
+- registry failure returns an unavailable inventory rather than partial rows;
+- PHP performs no Runtime Experience semantic validation and does not interpret Runtime state or renderer configuration;
+- release deployment status checks the version-bearing Experience directory before the repository source-tree development fallback;
+- deterministic release staging includes exactly `wordpress/admin-console.php` as the new stable production PHP file;
+- the independent R23 supply-chain gate approves that exact path without introducing a PHP wildcard;
+- static R31 boundary tests pass;
+- repository-mounted WordPress Floor QA proves admin hook registration, denied unauthorized access, support-floor display, registry membership, and source-tree deployment status;
+- installed-ZIP E2E proves both registered Experience assets resolve from the version-bearing release tree;
+- the real prior-release upgrade proof resolves 0.1.2 as N and 0.1.3 as current.
+
+No ADR 0039 correction is required after implementation audit.
+
+## Accepted 0.1.3 artifact identity
+
+The accepted implementation build establishes:
+
+- 63 staged files;
+- 440,306 staged bytes;
+- 35 modules;
+- 53 import edges;
+- ZIP SHA-256 `47cea044ecfef050b9b09a33ea1b442a7a74ee981c45d50a62011b047dbcbf6c`;
+- R23 manifest SHA-256 `79c6a71bc95b3d4a436c175ea60b260e8299e847f95e9b12099370a17c2770fe`.
+
+Relative to 0.1.2, release-tree growth is exactly one staged file: `wordpress/admin-console.php`. The JavaScript module and import-edge counts remain unchanged.
+
+## Implementation-head verification
+
+On `ca0ed5511058875c80fddacf8034d3366c539f49`:
+
+- Node 20: 687/687 PASS;
+- Node 22: 687/687 PASS;
+- release build: PASS;
+- release reproducibility: PASS;
+- fresh 0.1.3 ZIP install: PASS;
+- real warm-cache 0.1.2 to 0.1.3 upgrade: PASS;
+- Plugin Check: PASS;
+- WordPress 6.5.10 through 7.1.1: PASS;
+- PHP 7.4 and PHP 8.5: PASS;
+- Chromium, Firefox, and WebKit: PASS;
+- `CiM / Verify`: PASS;
+- `CiM / Floor QA`: PASS;
+- `CiM / Browser E2E`: PASS;
+- `CiM / Playground`: PASS.
+
+The ADR/QA acceptance update that records this audit is documentation-only and does not alter the 0.1.3 release artifact identity.
