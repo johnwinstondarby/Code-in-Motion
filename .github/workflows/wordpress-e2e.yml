@@ -206,8 +206,24 @@ jobs:
           test "${VERSION}" = "${CIM_PLUGIN_VERSION}"
 
           wp_env run cli bash -lc 'test -f wp-content/plugins/code-in-motion/code-in-motion.php'
+          wp_env run cli bash -lc 'test -f wp-content/plugins/code-in-motion/wordpress/admin-console.php'
           wp_env run cli bash -lc 'test ! -L wp-content/plugins/code-in-motion'
           wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/tests && test ! -e wp-content/plugins/code-in-motion/tools && test ! -e wp-content/plugins/code-in-motion/package.json'
+
+          ADMIN_HOOK="$(wp_env run cli wp eval 'echo has_action("admin_menu", "localis_cim_register_admin_menu") ? "registered" : "missing";' | tail -n 1)"
+          test "$ADMIN_HOOK" = 'registered'
+
+          ADMIN_INVENTORY="$(wp_env run cli wp eval 'echo wp_json_encode(localis_cim_read_admin_inventory());' | tail -n 1)"
+          ADMIN_INVENTORY="$ADMIN_INVENTORY" node --input-type=module <<'NODE'
+          const inventory = JSON.parse(process.env.ADMIN_INVENTORY);
+          if (inventory.status !== 'available') throw new Error('R31 installed inventory unavailable.');
+          if (!Array.isArray(inventory.experiences) || inventory.experiences.length !== 2) {
+            throw new Error('R31 installed inventory count mismatch.');
+          }
+          if (inventory.experiences.some((entry) => entry.present !== true || entry.source !== 'release')) {
+            throw new Error('R31 installed Experience asset did not resolve from the version-bearing release tree.');
+          }
+          NODE
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
           EXPECTED_COUNT="$(unzip -Z1 "${CIM_R15_ARTIFACT_DIR}/${ZIP_NAME}" | grep -v '/$' | wc -l | tr -d ' ')"

@@ -28,7 +28,13 @@ The entry delegates to the WordPress implementation under:
 code-in-motion/wordpress/code-in-motion.php
 ```
 
-This preserves the established PHP implementation boundary while giving WordPress one canonical root plugin file.
+The implementation loads the read-only administration module at:
+
+```text
+code-in-motion/wordpress/admin-console.php
+```
+
+This preserves one canonical root plugin file while keeping administration inventory/status in a dedicated PHP module.
 
 ## Stable top-level assets
 
@@ -49,26 +55,26 @@ All unbundled ES modules and module-relative Experience data ship below:
 code-in-motion/wordpress/assets/modules/<plugin-version>/
 ```
 
-For version `0.1.2`, the module entry is:
+For version `0.1.3`, the module entry is:
 
 ```text
-code-in-motion/wordpress/assets/modules/0.1.2/wordpress/assets/bootstrap-module.mjs
+code-in-motion/wordpress/assets/modules/0.1.3/wordpress/assets/bootstrap-module.mjs
 ```
 
 The release builder preserves repository-relative topology beneath that version directory. Examples:
 
 ```text
 wordpress/assets/bootstrap-module.mjs
-→ wordpress/assets/modules/0.1.2/wordpress/assets/bootstrap-module.mjs
+→ wordpress/assets/modules/0.1.3/wordpress/assets/bootstrap-module.mjs
 
 wordpress/assets/transport-binding.mjs
-→ wordpress/assets/modules/0.1.2/wordpress/assets/transport-binding.mjs
+→ wordpress/assets/modules/0.1.3/wordpress/assets/transport-binding.mjs
 
 src/host/wordpress-live-host.mjs
-→ wordpress/assets/modules/0.1.2/src/host/wordpress-live-host.mjs
+→ wordpress/assets/modules/0.1.3/src/host/wordpress-live-host.mjs
 
 wordpress/experiences/synthetic-wordpress.json
-→ wordpress/assets/modules/0.1.2/wordpress/experiences/synthetic-wordpress.json
+→ wordpress/assets/modules/0.1.3/wordpress/experiences/synthetic-wordpress.json
 ```
 
 Because the topology is preserved, existing relative imports such as `../../src/...` retain the same meaning inside the version-bearing module root. Static imports do not depend on query-string propagation for cache invalidation.
@@ -169,6 +175,7 @@ LICENSE
 readme.txt
 code-in-motion.php
 wordpress/code-in-motion.php
+wordpress/admin-console.php
 wordpress/assets/bootstrap.js
 wordpress/assets/cim.css
 src/**/*.mjs
@@ -225,7 +232,7 @@ The audit runs against both:
 - `dist/code-in-motion/`;
 - a fresh extraction of `dist/code-in-motion-<plugin-version>.zip`.
 
-The v1 release policy is text-only. Approved content is limited to the release metadata and WordPress entry/assets plus the version-bearing `.mjs` module graph and the synthetic diagnostic Experience.
+The v1 release policy is text-only. Approved content is limited to release metadata, the WordPress entry and read-only administration PHP, stable WordPress assets, the version-bearing `.mjs` module graph, the canonical registry, and registered Experience assets.
 
 R23 fails closed on:
 

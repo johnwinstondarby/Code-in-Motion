@@ -40,7 +40,7 @@ Approved version-bearing paths:
 - `wordpress/assets/modules/0.1.0/wordpress/assets/**/*.mjs`
 - `wordpress/assets/modules/0.1.0/wordpress/experiences/synthetic-wordpress.json`
 
-R30 extends the current machine gate so `wordpress/experiences/registry.json` is an approved static path and version-bearing Experience JSON is approved only when its asset name appears in the canonical registry. The historical v0.1.0 evidence below remains unchanged.
+R30 extends the current machine gate so `wordpress/experiences/registry.json` is an approved static path and version-bearing Experience JSON is approved only when its asset name appears in the canonical registry. R31 additionally approves the exact production path `wordpress/admin-console.php`; no general PHP-directory wildcard is introduced. The historical v0.1.0 evidence below remains unchanged.
 
 Any path outside the applicable approved surface fails the R23 audit.
 
