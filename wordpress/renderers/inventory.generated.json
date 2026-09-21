@@ -1,0 +1,11 @@
+{
+  "schema": "localis.cim/wordpress-renderer-inventory/v1",
+  "renderers": [
+    {
+      "id": "git/v1"
+    },
+    {
+      "id": "synthetic/v1"
+    }
+  ]
+}

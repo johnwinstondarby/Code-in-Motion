@@ -55,26 +55,26 @@ All unbundled ES modules and module-relative Experience data ship below:
 code-in-motion/wordpress/assets/modules/<plugin-version>/
 ```
 
-For version `0.1.3`, the module entry is:
+For version `0.1.4`, the module entry is:
 
 ```text
-code-in-motion/wordpress/assets/modules/0.1.3/wordpress/assets/bootstrap-module.mjs
+code-in-motion/wordpress/assets/modules/0.1.4/wordpress/assets/bootstrap-module.mjs
 ```
 
 The release builder preserves repository-relative topology beneath that version directory. Examples:
 
 ```text
 wordpress/assets/bootstrap-module.mjs
-→ wordpress/assets/modules/0.1.3/wordpress/assets/bootstrap-module.mjs
+→ wordpress/assets/modules/0.1.4/wordpress/assets/bootstrap-module.mjs
 
 wordpress/assets/transport-binding.mjs
-→ wordpress/assets/modules/0.1.3/wordpress/assets/transport-binding.mjs
+→ wordpress/assets/modules/0.1.4/wordpress/assets/transport-binding.mjs
 
 src/host/wordpress-live-host.mjs
-→ wordpress/assets/modules/0.1.3/src/host/wordpress-live-host.mjs
+→ wordpress/assets/modules/0.1.4/src/host/wordpress-live-host.mjs
 
 wordpress/experiences/synthetic-wordpress.json
-→ wordpress/assets/modules/0.1.3/wordpress/experiences/synthetic-wordpress.json
+→ wordpress/assets/modules/0.1.4/wordpress/experiences/synthetic-wordpress.json
 ```
 
 Because the topology is preserved, existing relative imports such as `../../src/...` retain the same meaning inside the version-bearing module root. Static imports do not depend on query-string propagation for cache invalidation.
@@ -83,7 +83,7 @@ Because the topology is preserved, existing relative imports such as `../../src/
 
 For v1, the release builder may include the full verified `src/` production tree beneath the version-bearing module root. Test, harness, tooling, general project documentation, Git metadata, local environment state, and dependency-installation directories remain outside the plugin artifact. The release-specific `readme.txt` and `LICENSE` are explicit distribution inputs.
 
-The approved non-production runtime inputs are limited to WordPress production assets, the canonical deployment registry, and the Experience JSON assets named by that registry.
+The approved non-production runtime inputs are limited to WordPress production assets, the canonical deployment registry, the Experience JSON assets named by that registry, and the generated inert renderer inventory.
 
 The release artifact excludes at least:
 
@@ -132,6 +132,24 @@ code-in-motion/wordpress/assets/modules/<plugin-version>/wordpress/experiences/<
 ```
 
 The generated browser projection is part of the version-bearing module graph. `bootstrap-module.mjs` owns the relative path rule from an inert registry asset name to the colocated Experience directory.
+
+## Renderer registration and management inventory
+
+WordPress renderer-factory registration is owned by:
+
+```text
+wordpress/assets/renderer-registry.mjs
+```
+
+Because `bootstrap-module.mjs` imports that module, it ships within the version-bearing module graph.
+
+The inert renderer-ID management projection ships at the stable plugin path:
+
+```text
+code-in-motion/wordpress/renderers/inventory.generated.json
+```
+
+The release builder freshness-gates that generated JSON against the production renderer registry before staging. The projection contains renderer IDs only and does not carry module paths or factory authority.
 
 ## Metadata and license
 
@@ -182,6 +200,7 @@ src/**/*.mjs
 wordpress/assets/**/*.mjs
 wordpress/experiences/registry.json
 wordpress/experiences/<registered-asset>.json
+wordpress/renderers/inventory.generated.json
 ```
 
 The `src/**/*.mjs` and `wordpress/assets/**/*.mjs` production modules are relocated beneath the version-bearing module root while preserving repository-relative topology. The synthetic Experience follows the same mapping. The stable PHP, classic bootstrap, and stylesheet remain at their R12 paths.
@@ -232,7 +251,7 @@ The audit runs against both:
 - `dist/code-in-motion/`;
 - a fresh extraction of `dist/code-in-motion-<plugin-version>.zip`.
 
-The v1 release policy is text-only. Approved content is limited to release metadata, the WordPress entry and read-only administration PHP, stable WordPress assets, the version-bearing `.mjs` module graph, the canonical registry, and registered Experience assets.
+The v1 release policy is text-only. Approved content is limited to release metadata, the WordPress entry and read-only administration PHP, stable WordPress assets, the version-bearing `.mjs` module graph, the canonical Experience registry, registered Experience assets, and the exact generated renderer inventory path.
 
 R23 fails closed on:
 
