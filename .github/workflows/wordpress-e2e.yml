@@ -1088,6 +1088,265 @@ jobs:
         continue-on-error: true
         run: npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop
 
+
+  lifecycle-differential:
+    name: R34 lifecycle differential
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set R34 workspace paths
+        shell: bash
+        run: |
+          echo "CIM_R34_CONTROL_CONFIG=r34-control-wp-env.json" >> "${GITHUB_ENV}"
+          echo "CIM_R34_CIM_CONFIG=r34-cim-wp-env.json" >> "${GITHUB_ENV}"
+          echo "CIM_R34_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r34-artifact" >> "${GITHUB_ENV}"
+          echo "CIM_R34_EVIDENCE_DIR=${RUNNER_TEMP}/cim-r34-evidence" >> "${GITHUB_ENV}"
+
+      - name: Set up pinned release Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Install repository dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Build exact release and inert control
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run build:wordpress
+          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          echo "CIM_PLUGIN_VERSION=${VERSION}" >> "${GITHUB_ENV}"
+
+          ZIP_NAME="code-in-motion-${VERSION}.zip"
+          mkdir -p "${CIM_R34_ARTIFACT_DIR}" "${CIM_R34_EVIDENCE_DIR}"
+          cp "dist/${ZIP_NAME}" "${CIM_R34_ARTIFACT_DIR}/${ZIP_NAME}"
+          cp "dist/${ZIP_NAME}.sha256" "${CIM_R34_ARTIFACT_DIR}/${ZIP_NAME}.sha256"
+          cp tools/r34-wordpress-lifecycle-snapshot.php "${CIM_R34_ARTIFACT_DIR}/r34-wordpress-lifecycle-snapshot.php"
+          (cd "${CIM_R34_ARTIFACT_DIR}" && sha256sum --check "${ZIP_NAME}.sha256")
+
+          CONTROL_ROOT="${RUNNER_TEMP}/r34-control-plugin"
+          mkdir -p "${CONTROL_ROOT}/code-in-motion"
+          cat > "${CONTROL_ROOT}/code-in-motion/code-in-motion.php" <<PHP
+          <?php
+          /**
+           * Plugin Name: Code in Motion
+           * Plugin URI: https://github.com/johnwinstondarby/Code-in-Motion
+           * Description: WordPress host, runtime bindings, and controls for Code in Motion experiences.
+           * Version: ${VERSION}
+           * Requires at least: 6.5
+           * Requires PHP: 7.4
+           * Author: Localis
+           * Author URI: https://localis.services/
+           * License: GPLv3
+           * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+           */
+          PHP
+          (cd "${CONTROL_ROOT}" && zip -qr "${CIM_R34_ARTIFACT_DIR}/code-in-motion-control.zip" code-in-motion)
+
+          node --input-type=module <<'NODE'
+          import { writeFile } from 'node:fs/promises';
+
+          const common = {
+            $schema: 'https://schemas.wp.org/trunk/wp-env.json',
+            core: 'WordPress/WordPress#6.5.10',
+            phpVersion: '7.4',
+            plugins: [],
+            testsEnvironment: false,
+            config: {
+              WP_DEBUG: false,
+              SCRIPT_DEBUG: false
+            },
+            mappings: {
+              'wp-content/r34-artifact': process.env.CIM_R34_ARTIFACT_DIR
+            }
+          };
+
+          await writeFile(
+            process.env.CIM_R34_CONTROL_CONFIG,
+            JSON.stringify({ ...common, port: 8895 }, null, 2) + '\n',
+            'utf8'
+          );
+          await writeFile(
+            process.env.CIM_R34_CIM_CONFIG,
+            JSON.stringify({ ...common, port: 8896 }, null, 2) + '\n',
+            'utf8'
+          );
+          NODE
+
+      - name: Run inert-control lifecycle
+        shell: bash
+        run: |
+          set -euo pipefail
+          wp_env() {
+            npm run --silent wp-env -- --config="${CIM_R34_CONTROL_CONFIG}" "$@"
+          }
+          cleanup() {
+            wp_env stop >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+
+          wp_env start --update
+          wp_env run cli wp eval-file wp-content/r34-artifact/r34-wordpress-lifecycle-snapshot.php | tail -n 1 > "${CIM_R34_EVIDENCE_DIR}/control-before.json"
+
+          wp_env run cli wp plugin install wp-content/r34-artifact/code-in-motion-control.zip --activate
+          test "$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active    name: CiM / Browser E2E
+    if: always()
+    needs:
+      - synthetic-mount
+      - zip-install-e2e
+      - upgrade-e2e
+      - compatibility-matrix
+      - php-matrix
+      - browser-family-matrix
+      - lifecycle-differential
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require complete Browser E2E family
+        shell: bash
+        env:
+          SYNTHETIC_RESULT: ${{ needs.synthetic-mount.result }}
+          ZIP_RESULT: ${{ needs.zip-install-e2e.result }}
+          UPGRADE_RESULT: ${{ needs.upgrade-e2e.result }}
+          WORDPRESS_RESULT: ${{ needs.compatibility-matrix.result }}
+          PHP_RESULT: ${{ needs.php-matrix.result }}
+          BROWSER_RESULT: ${{ needs.browser-family-matrix.result }}
+          LIFECYCLE_RESULT: ${{ needs.lifecycle-differential.result }}
+        run: |
+          set -euo pipefail
+          printf 'synthetic=%s\nzip=%s\nupgrade=%s\nwordpress=%s\nphp=%s\nbrowser=%s\nlifecycle=%s\n' \
+            "${SYNTHETIC_RESULT}" "${ZIP_RESULT}" "${UPGRADE_RESULT}" \
+            "${WORDPRESS_RESULT}" "${PHP_RESULT}" "${BROWSER_RESULT}" "${LIFECYCLE_RESULT}"
+          test "${SYNTHETIC_RESULT}" = "success"
+          test "${ZIP_RESULT}" = "success"
+          test "${UPGRADE_RESULT}" = "success"
+          test "${WORDPRESS_RESULT}" = "success"
+          test "${PHP_RESULT}" = "success"
+          test "${BROWSER_RESULT}" = "success"
+          test "${LIFECYCLE_RESULT}" = "success"
+ | tail -n 1)" = "active"
+          wp_env run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]R34 differential exercise.[/cim]");' >/dev/null
+          wp_env run cli wp plugin deactivate code-in-motion
+          wp_env run cli wp plugin delete code-in-motion
+          if wp_env run cli wp plugin is-installed code-in-motion >/dev/null 2>&1; then
+            echo "R34 inert control remained installed after delete." >&2
+            exit 1
+          fi
+          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion'
+
+          wp_env run cli wp eval-file wp-content/r34-artifact/r34-wordpress-lifecycle-snapshot.php | tail -n 1 > "${CIM_R34_EVIDENCE_DIR}/control-after.json"
+
+      - name: Run CiM exact-ZIP lifecycle
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"
+          wp_env() {
+            npm run --silent wp-env -- --config="${CIM_R34_CIM_CONFIG}" "$@"
+          }
+          cleanup() {
+            wp_env stop >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+
+          wp_env start --update
+          wp_env run cli wp eval-file wp-content/r34-artifact/r34-wordpress-lifecycle-snapshot.php | tail -n 1 > "${CIM_R34_EVIDENCE_DIR}/cim-before.json"
+
+          wp_env run cli wp plugin install "wp-content/r34-artifact/${ZIP_NAME}" --activate
+          test "$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active    name: CiM / Browser E2E
+    if: always()
+    needs:
+      - synthetic-mount
+      - zip-install-e2e
+      - upgrade-e2e
+      - compatibility-matrix
+      - php-matrix
+      - browser-family-matrix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require complete Browser E2E family
+        shell: bash
+        env:
+          SYNTHETIC_RESULT: ${{ needs.synthetic-mount.result }}
+          ZIP_RESULT: ${{ needs.zip-install-e2e.result }}
+          UPGRADE_RESULT: ${{ needs.upgrade-e2e.result }}
+          WORDPRESS_RESULT: ${{ needs.compatibility-matrix.result }}
+          PHP_RESULT: ${{ needs.php-matrix.result }}
+          BROWSER_RESULT: ${{ needs.browser-family-matrix.result }}
+        run: |
+          set -euo pipefail
+          printf 'synthetic=%s\nzip=%s\nupgrade=%s\nwordpress=%s\nphp=%s\nbrowser=%s\n' \
+            "${SYNTHETIC_RESULT}" "${ZIP_RESULT}" "${UPGRADE_RESULT}" \
+            "${WORDPRESS_RESULT}" "${PHP_RESULT}" "${BROWSER_RESULT}"
+          test "${SYNTHETIC_RESULT}" = "success"
+          test "${ZIP_RESULT}" = "success"
+          test "${UPGRADE_RESULT}" = "success"
+          test "${WORDPRESS_RESULT}" = "success"
+          test "${PHP_RESULT}" = "success"
+          test "${BROWSER_RESULT}" = "success"
+ | tail -n 1)" = "active"
+          test "$(wp_env run cli wp plugin get code-in-motion --field=version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+    name: CiM / Browser E2E
+    if: always()
+    needs:
+      - synthetic-mount
+      - zip-install-e2e
+      - upgrade-e2e
+      - compatibility-matrix
+      - php-matrix
+      - browser-family-matrix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require complete Browser E2E family
+        shell: bash
+        env:
+          SYNTHETIC_RESULT: ${{ needs.synthetic-mount.result }}
+          ZIP_RESULT: ${{ needs.zip-install-e2e.result }}
+          UPGRADE_RESULT: ${{ needs.upgrade-e2e.result }}
+          WORDPRESS_RESULT: ${{ needs.compatibility-matrix.result }}
+          PHP_RESULT: ${{ needs.php-matrix.result }}
+          BROWSER_RESULT: ${{ needs.browser-family-matrix.result }}
+        run: |
+          set -euo pipefail
+          printf 'synthetic=%s\nzip=%s\nupgrade=%s\nwordpress=%s\nphp=%s\nbrowser=%s\n' \
+            "${SYNTHETIC_RESULT}" "${ZIP_RESULT}" "${UPGRADE_RESULT}" \
+            "${WORDPRESS_RESULT}" "${PHP_RESULT}" "${BROWSER_RESULT}"
+          test "${SYNTHETIC_RESULT}" = "success"
+          test "${ZIP_RESULT}" = "success"
+          test "${UPGRADE_RESULT}" = "success"
+          test "${WORDPRESS_RESULT}" = "success"
+          test "${PHP_RESULT}" = "success"
+          test "${BROWSER_RESULT}" = "success"
+ | tail -n 1)" = "${CIM_PLUGIN_VERSION}"
+          wp_env run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]R34 differential exercise.[/cim]");' >/dev/null
+          wp_env run cli wp plugin deactivate code-in-motion
+          wp_env run cli wp plugin delete code-in-motion
+          if wp_env run cli wp plugin is-installed code-in-motion >/dev/null 2>&1; then
+            echo "R34 CiM remained installed after delete." >&2
+            exit 1
+          fi
+          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion'
+
+          wp_env run cli wp eval-file wp-content/r34-artifact/r34-wordpress-lifecycle-snapshot.php | tail -n 1 > "${CIM_R34_EVIDENCE_DIR}/cim-after.json"
+
+      - name: Compare control and CiM lifecycle differentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/check-wordpress-lifecycle-differential.mjs             --control-before "${CIM_R34_EVIDENCE_DIR}/control-before.json"             --control-after "${CIM_R34_EVIDENCE_DIR}/control-after.json"             --cim-before "${CIM_R34_EVIDENCE_DIR}/cim-before.json"             --cim-after "${CIM_R34_EVIDENCE_DIR}/cim-after.json"             --evidence "${CIM_R34_EVIDENCE_DIR}/differential.json"
+
+      - name: Upload R34 lifecycle differential evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: r34-lifecycle-differential
+          path: ${{ env.CIM_R34_EVIDENCE_DIR }}
+          if-no-files-found: warn
+          retention-days: 30
+
   required-browser-e2e-gate:
     name: CiM / Browser E2E
     if: always()
