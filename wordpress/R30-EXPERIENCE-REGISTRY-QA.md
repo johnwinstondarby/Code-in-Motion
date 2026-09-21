@@ -26,7 +26,7 @@ The missing deployment seam is the authoritative mapping between an Experience i
 
 Before R30, that mapping is duplicated:
 
-- `wordpress/assets/bootstrap-module.mjs` owns a handwritten Experience-path `Map`;
+- `wordpress/assets/bootstrap-module.mjs` owns a handwritten Experience-path map;
 - `tools/build-wordpress-release.mjs` owns a separate handwritten Experience staging list.
 
 R30 replaces those duplicate deployment facts with one canonical registry.
@@ -95,9 +95,9 @@ The R27 Git Runtime Experience gains a deterministic WordPress deployment projec
 
 ### 4. Browser registry projection
 
-Replace the handwritten `EXPERIENCE_PATHS` table in `wordpress/assets/bootstrap-module.mjs`.
+Replace the handwritten browser Experience-path table in `wordpress/assets/bootstrap-module.mjs`.
 
-The browser projection must derive entirely from the canonical registry and remain inert data.
+Generate `wordpress/assets/experience-registry.generated.mjs` from the canonical registry. The generated projection must contain inert ID/asset data only, carry no path policy, ship inside the version-bearing module graph, and remain freshness-gated against `registry.json`.
 
 The existing `createWordPressExperienceLoader()` API remains unchanged.
 
@@ -192,7 +192,7 @@ R30 closes only when all of the following are proven:
 7. Every registered asset parses as JSON and passes production `ingestExperience()`.
 8. Every registry ID equals the validated Runtime Experience ID.
 9. The R27 Git WordPress deployment copy is freshness-gated against its canonical generated Runtime JSON.
-10. Browser Experience-path resolution derives from the canonical registry and no handwritten Experience-path table remains.
+10. Browser Experience-path resolution derives from the canonical registry, no handwritten Experience-path table remains, and a repository scan proves the two retired deployment-list identifiers are absent.
 11. The existing WordPress Experience loader contract remains unchanged and all loader/cache/identity tests remain green.
 12. Release Experience staging derives from the canonical registry and no second handwritten Experience staging list remains.
 13. Every staged registered Experience corresponds one-to-one with a registry entry.
@@ -200,7 +200,7 @@ R30 closes only when all of the following are proven:
 15. Plugin/release metadata is internally consistent at version 0.1.2.
 16. The 0.1.2 release ZIP is deterministic and reproducible under the pinned release Node version.
 17. Fresh install from the 0.1.2 ZIP passes the existing authoritative WordPress artifact path.
-18. Upgrade testing from 0.1.1 to 0.1.2 remains green.
+18. Upgrade testing uses the real prior release tree discovered from first-parent version history and proves 0.1.1 to 0.1.2 warm-cache replacement.
 19. Node 20 verification passes.
 20. Node 22 verification passes.
 21. `CiM / Verify` passes on the final frozen R30 head.

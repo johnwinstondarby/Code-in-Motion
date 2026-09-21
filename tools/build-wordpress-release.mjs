@@ -13,6 +13,8 @@ import { dirname, extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { constants as zlibConstants, deflateRawSync } from 'node:zlib';
 
+import { validateWordPressExperienceRegistry } from './check-wordpress-experience-registry.mjs';
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST_ROOT = resolve(ROOT, 'dist');
 const STAGE_ROOT = resolve(DIST_ROOT, 'code-in-motion');
@@ -33,17 +35,6 @@ const STATIC_STAGE_FILES = Object.freeze([
   Object.freeze({ source: 'code-in-motion.php', destination: 'code-in-motion.php' }),
   Object.freeze({ source: 'wordpress/code-in-motion.php', destination: 'wordpress/code-in-motion.php' }),
   Object.freeze({ source: 'wordpress/assets/cim.css', destination: 'wordpress/assets/cim.css' })
-]);
-
-const EXPERIENCE_SOURCES = Object.freeze([
-  Object.freeze({
-    source: 'wordpress/experiences/synthetic-wordpress.json',
-    destination: 'wordpress/experiences/synthetic-wordpress.json'
-  }),
-  Object.freeze({
-    source: 'experiences/git/git-basic-cycle.json',
-    destination: 'experiences/git/git-basic-cycle.json'
-  })
 ]);
 
 function fail(message) {
@@ -290,10 +281,16 @@ function assertPluginVersion(source, version, label) {
 }
 
 async function releaseInputs(version) {
+  const registry = await validateWordPressExperienceRegistry(ROOT);
   const expected = [];
   for (const file of STATIC_STAGE_FILES) {
     expected.push(await stageSourceFile(file.source, file.destination));
   }
+
+  expected.push(await stageSourceFile(
+    'wordpress/experiences/registry.json',
+    'wordpress/experiences/registry.json'
+  ));
 
   const bootstrapSource = await readFile(resolve(ROOT, 'wordpress', 'assets', 'bootstrap.js'), 'utf8');
   expected.push(await writeStagedFile(
@@ -313,10 +310,11 @@ async function releaseInputs(version) {
     expected.push(await stageSourceFile(source, `${moduleRoot}/${source}`));
   }
 
-  for (const experience of EXPERIENCE_SOURCES) {
+  for (const experience of registry.experiences) {
+    const source = `wordpress/experiences/${experience.asset}`;
     expected.push(await stageSourceFile(
-      experience.source,
-      `${moduleRoot}/${experience.destination}`
+      source,
+      `${moduleRoot}/wordpress/experiences/${experience.asset}`
     ));
   }
   return expected;

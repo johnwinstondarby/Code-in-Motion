@@ -49,26 +49,26 @@ All unbundled ES modules and module-relative Experience data ship below:
 code-in-motion/wordpress/assets/modules/<plugin-version>/
 ```
 
-For version `0.1.1`, the module entry is:
+For version `0.1.2`, the module entry is:
 
 ```text
-code-in-motion/wordpress/assets/modules/0.1.1/wordpress/assets/bootstrap-module.mjs
+code-in-motion/wordpress/assets/modules/0.1.2/wordpress/assets/bootstrap-module.mjs
 ```
 
 The release builder preserves repository-relative topology beneath that version directory. Examples:
 
 ```text
 wordpress/assets/bootstrap-module.mjs
-→ wordpress/assets/modules/0.1.1/wordpress/assets/bootstrap-module.mjs
+→ wordpress/assets/modules/0.1.2/wordpress/assets/bootstrap-module.mjs
 
 wordpress/assets/transport-binding.mjs
-→ wordpress/assets/modules/0.1.1/wordpress/assets/transport-binding.mjs
+→ wordpress/assets/modules/0.1.2/wordpress/assets/transport-binding.mjs
 
 src/host/wordpress-live-host.mjs
-→ wordpress/assets/modules/0.1.1/src/host/wordpress-live-host.mjs
+→ wordpress/assets/modules/0.1.2/src/host/wordpress-live-host.mjs
 
 wordpress/experiences/synthetic-wordpress.json
-→ wordpress/assets/modules/0.1.1/wordpress/experiences/synthetic-wordpress.json
+→ wordpress/assets/modules/0.1.2/wordpress/experiences/synthetic-wordpress.json
 ```
 
 Because the topology is preserved, existing relative imports such as `../../src/...` retain the same meaning inside the version-bearing module root. Static imports do not depend on query-string propagation for cache invalidation.
@@ -77,7 +77,7 @@ Because the topology is preserved, existing relative imports such as `../../src/
 
 For v1, the release builder may include the full verified `src/` production tree beneath the version-bearing module root. Test, harness, tooling, general project documentation, Git metadata, local environment state, and dependency-installation directories remain outside the plugin artifact. The release-specific `readme.txt` and `LICENSE` are explicit distribution inputs.
 
-The approved non-production runtime inputs are limited to the WordPress production assets and the synthetic diagnostic Experience required by the shipped checkpoint.
+The approved non-production runtime inputs are limited to WordPress production assets, the canonical deployment registry, and the Experience JSON assets named by that registry.
 
 The release artifact excludes at least:
 
@@ -113,13 +113,19 @@ This gate exists because repository-root `wp-env` can satisfy imports from files
 
 ## Experience placement
 
-The synthetic diagnostic Experience follows the module graph into the same version-bearing release root:
+The canonical deployment registry ships at the stable plugin path:
 
 ```text
-code-in-motion/wordpress/assets/modules/<plugin-version>/wordpress/experiences/synthetic-wordpress.json
+code-in-motion/wordpress/experiences/registry.json
 ```
 
-`bootstrap-module.mjs` resolves the Experience relative to its own physical module URL, preserving the existing production loader contract.
+Every registered Experience asset follows the module graph into the version-bearing release root:
+
+```text
+code-in-motion/wordpress/assets/modules/<plugin-version>/wordpress/experiences/<registered-asset>.json
+```
+
+The generated browser projection is part of the version-bearing module graph. `bootstrap-module.mjs` owns the relative path rule from an inert registry asset name to the colocated Experience directory.
 
 ## Metadata and license
 
@@ -167,7 +173,8 @@ wordpress/assets/bootstrap.js
 wordpress/assets/cim.css
 src/**/*.mjs
 wordpress/assets/**/*.mjs
-wordpress/experiences/synthetic-wordpress.json
+wordpress/experiences/registry.json
+wordpress/experiences/<registered-asset>.json
 ```
 
 The `src/**/*.mjs` and `wordpress/assets/**/*.mjs` production modules are relocated beneath the version-bearing module root while preserving repository-relative topology. The synthetic Experience follows the same mapping. The stable PHP, classic bootstrap, and stylesheet remain at their R12 paths.

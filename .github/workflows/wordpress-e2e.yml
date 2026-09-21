@@ -291,13 +291,14 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
 
       - name: Set R16 workspace paths
         shell: bash
         run: |
           echo "CIM_R16_CONFIG=r16-wp-env.json" >> "${GITHUB_ENV}"
           echo "CIM_R16_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r16-artifact" >> "${GITHUB_ENV}"
-          echo "CIM_R16_PRIOR_VERSION=0.0.9" >> "${GITHUB_ENV}"
 
       - name: Set up pinned release Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
@@ -308,28 +309,41 @@ jobs:
       - name: Install repository dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
 
-      - name: Build N and N+1 artifacts
+      - name: Build prior and current release artifacts
         shell: bash
         run: |
           set -euo pipefail
           npm run build:wordpress
-          node tools/build-wordpress-upgrade-fixture.mjs
-          VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
-          test "${VERSION}" = "0.1.1"
-          echo "CIM_R16_CURRENT_VERSION=${VERSION}" >> "${GITHUB_ENV}"
+          mkdir -p "${CIM_R16_ARTIFACT_DIR}"
+          node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}"
+
+          CURRENT_VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          PRIOR_VERSION="$(node -p "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).prior.version" "${CIM_R16_ARTIFACT_DIR}/upgrade-pair.json")"
+          CURRENT_ZIP="code-in-motion-${CURRENT_VERSION}.zip"
+          PRIOR_ZIP="code-in-motion-${PRIOR_VERSION}.zip"
+
+          cp "dist/${CURRENT_ZIP}" "${CIM_R16_ARTIFACT_DIR}/${CURRENT_ZIP}"
+          cp "dist/${CURRENT_ZIP}.sha256" "${CIM_R16_ARTIFACT_DIR}/${CURRENT_ZIP}.sha256"
+          (cd "${CIM_R16_ARTIFACT_DIR}" && sha256sum --check "${PRIOR_ZIP}.sha256")
+          (cd "${CIM_R16_ARTIFACT_DIR}" && sha256sum --check "${CURRENT_ZIP}.sha256")
+
+          PRIOR_COUNT="$(unzip -Z1 "${CIM_R16_ARTIFACT_DIR}/${PRIOR_ZIP}" | grep -v '/$' | wc -l | tr -d ' ')"
+          CURRENT_COUNT="$(unzip -Z1 "${CIM_R16_ARTIFACT_DIR}/${CURRENT_ZIP}" | grep -v '/$' | wc -l | tr -d ' ')"
+
+          echo "CIM_R16_PRIOR_VERSION=${PRIOR_VERSION}" >> "${GITHUB_ENV}"
+          echo "CIM_R16_CURRENT_VERSION=${CURRENT_VERSION}" >> "${GITHUB_ENV}"
+          echo "CIM_R16_PRIOR_FILE_COUNT=${PRIOR_COUNT}" >> "${GITHUB_ENV}"
+          echo "CIM_R16_CURRENT_FILE_COUNT=${CURRENT_COUNT}" >> "${GITHUB_ENV}"
 
       - name: Prepare isolated upgrade source and wp-env config
         shell: bash
         run: |
           set -euo pipefail
           CURRENT_ZIP="code-in-motion-${CIM_R16_CURRENT_VERSION}.zip"
-          PRIOR_ZIP="code-in-motion-${CIM_R16_PRIOR_VERSION}-r16-fixture.zip"
+          PRIOR_ZIP="code-in-motion-${CIM_R16_PRIOR_VERSION}.zip"
 
-          mkdir -p "${CIM_R16_ARTIFACT_DIR}"
-          cp "dist/${CURRENT_ZIP}" "${CIM_R16_ARTIFACT_DIR}/${CURRENT_ZIP}"
-          cp "dist/${CURRENT_ZIP}.sha256" "${CIM_R16_ARTIFACT_DIR}/${CURRENT_ZIP}.sha256"
-          cp "dist/${PRIOR_ZIP}" "${CIM_R16_ARTIFACT_DIR}/${PRIOR_ZIP}"
-          (cd "${CIM_R16_ARTIFACT_DIR}" && sha256sum --check "${CURRENT_ZIP}.sha256")
+          test -f "${CIM_R16_ARTIFACT_DIR}/${CURRENT_ZIP}"
+          test -f "${CIM_R16_ARTIFACT_DIR}/${PRIOR_ZIP}"
 
           node --input-type=module <<'NODE'
           import { writeFile } from 'node:fs/promises';
@@ -366,7 +380,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PRIOR_ZIP="code-in-motion-${CIM_R16_PRIOR_VERSION}-r16-fixture.zip"
+          PRIOR_ZIP="code-in-motion-${CIM_R16_PRIOR_VERSION}.zip"
 
           wp_env() {
             npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" "$@"
@@ -384,12 +398,11 @@ jobs:
           test "${STATUS}" = "active"
           test "${VERSION}" = "${CIM_R16_PRIOR_VERSION}"
 
-          wp_env run cli bash -lc 'test -f wp-content/plugins/code-in-motion/wordpress/assets/r16-obsolete.txt'
-          wp_env run cli bash -lc 'test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/0.0.9'
-          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.1'
+          wp_env run cli bash -lc "test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/${CIM_R16_PRIOR_VERSION}"
+          wp_env run cli bash -lc "test ! -e wp-content/plugins/code-in-motion/wordpress/assets/modules/${CIM_R16_CURRENT_VERSION}"
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
-          test "${INSTALLED_COUNT}" = "61"
+          test "${INSTALLED_COUNT}" = "${CIM_R16_PRIOR_FILE_COUNT}"
           echo "PASS: R16 N installed active (${VERSION}, ${INSTALLED_COUNT} files)."
 
       - name: Create upgrade diagnostic page
@@ -403,11 +416,15 @@ jobs:
             --post_name='cim-e2e-r16' \
             --post_content='[cim experience="synthetic-wordpress"]CiM R16 fallback.[/cim]'
 
-      - name: Run warm-cache N to N+1 browser upgrade proof
-        env:
-          CIM_WP_BASE_URL: http://localhost:8891
-          CIM_R16_CURRENT_ZIP: wp-content/r16-artifact/code-in-motion-0.1.1.zip
-        run: npx playwright test tests/e2e/wordpress-upgrade.spec.mjs --reporter=line
+      - name: Run warm-cache prior-to-current browser upgrade proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          CIM_WP_BASE_URL=http://localhost:8891 \
+          CIM_R16_CURRENT_ZIP="wp-content/r16-artifact/code-in-motion-${CIM_R16_CURRENT_VERSION}.zip" \
+          CIM_R16_PRIOR_VERSION="${CIM_R16_PRIOR_VERSION}" \
+          CIM_R16_CURRENT_VERSION="${CIM_R16_CURRENT_VERSION}" \
+          npx playwright test tests/e2e/wordpress-upgrade.spec.mjs --reporter=line
 
       - name: Verify N+1 replacement postconditions
         shell: bash
@@ -423,12 +440,11 @@ jobs:
           test "${STATUS}" = "active"
           test "${VERSION}" = "${CIM_R16_CURRENT_VERSION}"
 
-          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/r16-obsolete.txt'
-          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/wordpress/assets/modules/0.0.9'
-          wp_env run cli bash -lc 'test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/0.1.1'
+          wp_env run cli bash -lc "test ! -e wp-content/plugins/code-in-motion/wordpress/assets/modules/${CIM_R16_PRIOR_VERSION}"
+          wp_env run cli bash -lc "test -d wp-content/plugins/code-in-motion/wordpress/assets/modules/${CIM_R16_CURRENT_VERSION}"
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
-          test "${INSTALLED_COUNT}" = "60"
+          test "${INSTALLED_COUNT}" = "${CIM_R16_CURRENT_FILE_COUNT}"
           echo "PASS: R16 N -> N+1 replacement preserved activation (${VERSION}, ${INSTALLED_COUNT} files)."
 
       - name: Stop isolated R16 environment

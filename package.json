@@ -1,6 +1,6 @@
 {
   "name": "code-in-motion",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Reusable Localis platform for learner-controlled technical process experiences.",
   "private": true,
   "type": "module",
@@ -34,7 +34,8 @@
     "check:workflow-gates": "node tools/check-required-workflow-gates.mjs",
     "generate:cim-fixture": "node tools/compile-cim.mjs",
     "check:cim-authoring": "node tools/compile-cim.mjs --check",
-    "check:wordpress-experience-registry": "node tools/check-wordpress-experience-registry.mjs"
+    "check:wordpress-experience-registry": "node tools/check-wordpress-experience-registry.mjs",
+    "generate:wordpress-experience-registry": "node tools/check-wordpress-experience-registry.mjs --write"
   },
   "devDependencies": {
     "@wordpress/env": "11.15.0",

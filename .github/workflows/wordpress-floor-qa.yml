@@ -41,8 +41,9 @@ jobs:
           [[ "$php_version" == 7.4.* ]]
 
           plugin_version="$(npm run --silent wp-env -- run cli wp eval 'echo defined("LOCALIS_CIM_PLUGIN_VERSION") ? LOCALIS_CIM_PLUGIN_VERSION : "MISSING";' | tail -n 1)"
+          expected_plugin_version="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
           printf '%s\n' "$plugin_version"
-          test "$plugin_version" = '0.1.1'
+          test "$plugin_version" = "$expected_plugin_version"
 
           rendered="$(npm run --silent wp-env -- run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]CiM floor fallback.[/cim]");' | tail -n 1)"
           printf '%s\n' "$rendered"

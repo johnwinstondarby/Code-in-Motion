@@ -115,6 +115,8 @@ Accepted asset names:
 
 The deployment registry therefore cannot escape the WordPress Experience directory or redirect Experience loading to a remote origin.
 
+An `asset` value is a name only. It carries no path-resolution semantics. Each consumer owns the path rule that resolves that name within its deployment context. R30 does not add a `path`, base URL, subdirectory, or equivalent registry field.
+
 ## Canonical deployment copies
 
 Every registered Runtime Experience has one deployable JSON file in:
@@ -133,7 +135,7 @@ For the R27 Git Experience, the canonical generated Runtime object remains gover
 
 Browser composition must stop owning a handwritten Experience-path table.
 
-R30 generates or otherwise derives a browser-consumable registry projection from `wordpress/experiences/registry.json`. The projection is freshness-gated against the canonical registry and contains no executable callbacks, expressions, remote URLs, or Runtime objects.
+R30 generates the browser-consumable projection `wordpress/assets/experience-registry.generated.mjs` from `wordpress/experiences/registry.json`. The generated module contains inert ID/asset data only, is staged as part of the reproducible release module graph, and is freshness-gated against the canonical registry. It contains no callbacks, renderer factories, remote URLs, path policy, Runtime objects, or other executable authority.
 
 `bootstrap-module.mjs` may construct the existing `experienceUrlFor(experienceId)` capability from the validated registry projection.
 
@@ -157,7 +159,7 @@ Every registry entry must produce exactly one staged Experience asset.
 
 Every staged registered Experience asset must correspond to exactly one registry entry.
 
-Unregistered JSON files in `wordpress/experiences/` are outside the shipped Experience set unless explicitly designated as non-deployment fixtures and excluded by rule.
+The JSON deployment set beneath `wordpress/experiences/` must equal the registry exactly, excluding only the registry file itself. Non-deployment fixtures belong outside that directory, for example beneath `wordpress/fixtures/`; R30 defines no exclusion mechanism for deployment-directory JSON.
 
 ## Validation boundary
 
@@ -177,7 +179,8 @@ At minimum it verifies:
 - no unregistered deployed Experience;
 - browser projection freshness;
 - WordPress deployment-copy freshness where a canonical source lives elsewhere;
-- release staging derives from the registry rather than a separate Experience list.
+- release staging derives from the registry rather than a separate Experience list;
+- the retired handwritten browser-path and release-staging list identifiers are absent from the repository tree.
 
 Registry validation may inspect Runtime Experience data only by using the existing production ingestion boundary. It does not add another Runtime validator.
 

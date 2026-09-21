@@ -17,15 +17,13 @@ import {
   createGitRenderer,
   GIT_RENDERER_ID
 } from '../../src/renderers/subjects/git/renderer.mjs';
+import { WORDPRESS_EXPERIENCE_REGISTRY } from './experience-registry.generated.mjs';
 import { createWordPressRootLifecycleBinding } from './root-lifecycle-binding.mjs';
 import { createWordPressTransportBinding } from './transport-binding.mjs';
 
-const SYNTHETIC_EXPERIENCE_ID = 'synthetic-wordpress';
-const GIT_BASIC_CYCLE_EXPERIENCE_ID = 'git-basic-cycle';
-const EXPERIENCE_PATHS = new Map([
-  [SYNTHETIC_EXPERIENCE_ID, '../experiences/synthetic-wordpress.json'],
-  [GIT_BASIC_CYCLE_EXPERIENCE_ID, '../../experiences/git/git-basic-cycle.json']
-]);
+const experienceAssets = new Map(
+  WORDPRESS_EXPERIENCE_REGISTRY.map(({ id, asset }) => [id, asset])
+);
 const ROOT_SELECTOR = '[data-cim-experience]';
 const moduleUrl = new URL(import.meta.url);
 
@@ -38,8 +36,8 @@ function versionedUrl(relativePath) {
 const experienceLoader = createWordPressExperienceLoader({
   fetch: (url) => window.fetch(url, { credentials: 'same-origin' }),
   experienceUrlFor(experienceId) {
-    const path = EXPERIENCE_PATHS.get(experienceId);
-    return path === undefined ? '' : versionedUrl(path);
+    const asset = experienceAssets.get(experienceId);
+    return asset === undefined ? '' : versionedUrl('../experiences/' + asset);
   }
 });
 
