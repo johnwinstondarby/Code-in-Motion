@@ -1,6 +1,6 @@
 # ADR 0038: WordPress Experience Deployment Registry
 
-Status: Proposed for R30
+Status: Accepted for R30
 
 ## Context
 
