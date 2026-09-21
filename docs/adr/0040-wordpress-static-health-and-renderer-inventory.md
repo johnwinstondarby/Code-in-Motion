@@ -1,6 +1,6 @@
 # ADR 0040: WordPress Static Health and Renderer Inventory
 
-Status: Proposed for R32
+Status: Accepted for R32
 
 ## Context
 

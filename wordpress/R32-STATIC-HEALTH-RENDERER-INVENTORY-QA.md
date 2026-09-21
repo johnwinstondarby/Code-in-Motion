@@ -19,7 +19,7 @@ R32 is governed by:
 - `docs/adr/0040-wordpress-static-health-and-renderer-inventory.md`;
 - this QA record.
 
-ADR 0040 remains `Proposed for R32` until implementation audit is complete.
+ADR 0040 is `Accepted for R32` after implementation audit.
 
 ## Branch and base
 
@@ -295,3 +295,84 @@ R32 establishes:
 R32 does not establish:
 
 `WordPress administration → live runtime/network diagnostics or mutation`
+
+
+## Implementation audit
+
+Accepted implementation head:
+
+`c4181b0af4269d4fe7101efc0d328a483cb16a28`
+
+The implementation audit confirms:
+
+- `wordpress/assets/renderer-registry.mjs` owns the shipped WordPress renderer-factory registrations;
+- `bootstrap-module.mjs` consumes `createWordPressRendererRegistry()` and no longer imports subject renderers for registration;
+- registered renderer IDs are `git/v1` and `synthetic/v1`, in canonical lexical order;
+- `wordpress/renderers/inventory.generated.json` contains only schema plus ID-only renderer records;
+- the generated renderer inventory is freshness-gated against the production renderer registry;
+- the release builder invokes the renderer-registry check before staging, so a direct release build cannot package stale renderer management data;
+- Node verification proves both registered Experiences resolve through the production WordPress renderer registry;
+- the Experience deployment registry and renderer factory registry remain separate authorities;
+- `wordpress/admin-console.php` reads only the inert generated renderer inventory for renderer display;
+- PHP does not import, parse, or execute renderer JavaScript;
+- PHP does not inspect Runtime Experience renderer fields;
+- the renderer inventory displays `Registered` only as a projection-membership fact;
+- R31 deployment mode is factored through `localis_cim_admin_deployment_context()` and reused by both Experience presence and bootstrap health;
+- source mode reports Source without classifying the absent release root as unhealthy;
+- release mode resolves bootstrap presence inside the active version-bearing module root;
+- Experience registry health reuses the R31 Experience inventory result;
+- renderer inventory health is derived only from local projection readability and defensive structure checks;
+- plugin-version consistency compares the root plugin header Version against `LOCALIS_CIM_PLUGIN_VERSION`;
+- a live WordPress proof confirms a deliberately divergent version pair reports `mismatch`;
+- static verification and the packaging gate reject WordPress HTTP API, cURL, and socket probe tokens from the Admin Console;
+- no R32 displayed status depends on network access;
+- the generated renderer inventory is staged at the exact stable path `wordpress/renderers/inventory.generated.json`;
+- R23 approves that exact path without a renderer-directory wildcard;
+- the new renderer registry module enters the version-bearing module graph through the bootstrap import;
+- the WordPress 6.5 / PHP 7.4 floor and R31 authorization/escaping behavior remain unchanged.
+
+No ADR 0040 correction is required after implementation audit.
+
+## Accepted 0.1.4 artifact identity
+
+The accepted implementation build establishes:
+
+- 65 staged files;
+- 449,348 staged bytes;
+- 36 modules;
+- 54 import edges;
+- ZIP SHA-256 `8d7064bb23994afaf0b910a7c49269d184f7e6c7dfdcba07621be4a3a68f3e66`;
+- R23 manifest SHA-256 `841e27c0621387e56a88f60594c8179931d49917a48a7ee4e142ab1a3c1fd301`.
+
+Relative to the frozen 0.1.3 baseline, the final R32 release adds exactly two staged files:
+
+- `wordpress/assets/renderer-registry.mjs` inside the version-bearing module graph;
+- `wordpress/renderers/inventory.generated.json` at its stable management-data path.
+
+The module graph therefore moves from 35 modules / 53 import edges to 36 modules / 54 import edges. The second R32 slice changes the existing `wordpress/admin-console.php` bytes but adds no further release path.
+
+## Implementation-head verification
+
+On `c4181b0af4269d4fe7101efc0d328a483cb16a28`:
+
+- Node 20: 694/694 PASS;
+- Node 22: 694/694 PASS;
+- renderer-registry freshness and Experience-to-renderer compatibility: PASS;
+- WordPress packaging baseline: PASS;
+- release build: PASS;
+- release reproducibility: PASS;
+- repository-source R32 renderer inventory and static-health proof: PASS;
+- explicit version-mismatch visibility proof: PASS;
+- installed-release R32 renderer inventory and static-health proof: PASS;
+- fresh 0.1.4 ZIP install: PASS;
+- real warm-cache 0.1.3 to 0.1.4 upgrade: PASS;
+- Plugin Check: PASS;
+- WordPress 6.5.10 through 7.1.1: PASS;
+- PHP 7.4 and PHP 8.5: PASS;
+- Chromium, Firefox, and WebKit: PASS;
+- `CiM / Verify`: PASS;
+- `CiM / Floor QA`: PASS;
+- `CiM / Browser E2E`: PASS;
+- `CiM / Playground`: PASS.
+
+The ADR/QA acceptance update that records this audit is documentation-only and does not alter the 0.1.4 release artifact identity.
