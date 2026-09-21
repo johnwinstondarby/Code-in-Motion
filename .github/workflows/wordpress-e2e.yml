@@ -210,7 +210,8 @@ jobs:
           wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion/tests && test ! -e wp-content/plugins/code-in-motion/tools && test ! -e wp-content/plugins/code-in-motion/package.json'
 
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
-          test "${INSTALLED_COUNT}" = "60"
+          EXPECTED_COUNT="$(unzip -Z1 "${CIM_R15_ARTIFACT_DIR}/${ZIP_NAME}" | grep -v '/$' | wc -l | tr -d ' ')"
+          test "${INSTALLED_COUNT}" = "${EXPECTED_COUNT}"
           echo "PASS: R15 fresh ZIP install (WordPress ${CORE_VERSION}, plugin ${VERSION}, ${INSTALLED_COUNT} installed files)."
 
       - name: Create artifact-backed browser diagnostic pages
