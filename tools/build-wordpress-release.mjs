@@ -15,6 +15,7 @@ import { constants as zlibConstants, deflateRawSync } from 'node:zlib';
 
 import { validateWordPressExperienceRegistry } from './check-wordpress-experience-registry.mjs';
 import { validateWordPressRendererRegistry } from './check-wordpress-renderer-registry.mjs';
+import { validateWordPressReleaseInfo } from './check-wordpress-release-info.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST_ROOT = resolve(ROOT, 'dist');
@@ -285,6 +286,7 @@ function assertPluginVersion(source, version, label) {
 async function releaseInputs(version) {
   const registry = await validateWordPressExperienceRegistry(ROOT);
   await validateWordPressRendererRegistry(ROOT);
+  await validateWordPressReleaseInfo(ROOT);
   const expected = [];
   for (const file of STATIC_STAGE_FILES) {
     expected.push(await stageSourceFile(file.source, file.destination));
@@ -297,6 +299,10 @@ async function releaseInputs(version) {
   expected.push(await stageSourceFile(
     'wordpress/renderers/inventory.generated.json',
     'wordpress/renderers/inventory.generated.json'
+  ));
+  expected.push(await stageSourceFile(
+    'wordpress/release/release-info.generated.json',
+    'wordpress/release/release-info.generated.json'
   ));
 
   const bootstrapSource = await readFile(resolve(ROOT, 'wordpress', 'assets', 'bootstrap.js'), 'utf8');

@@ -118,6 +118,24 @@ function localis_cim_admin_unavailable_renderer_inventory() {
 }
 
 /**
+ * Return a fail-closed unavailable release-info projection.
+ *
+ * @return array
+ */
+function localis_cim_admin_unavailable_release_info() {
+	return array(
+		'status'          => 'unavailable',
+		'stable_tag'      => '',
+		'tested_up_to'    => '',
+		'current_release' => array(
+			'version' => '',
+			'notes'   => array(),
+		),
+		'support_uri'     => '',
+	);
+}
+
+/**
  * Resolve one registry asset against one deployment mode.
  *
  * @param string $asset         Safe registry asset file name.
@@ -306,6 +324,65 @@ function localis_cim_admin_version_consistency( $header_version, $runtime_versio
 }
 
 /**
+ * Read the generated R33 release-info projection for display only.
+ *
+ * @return array
+ */
+function localis_cim_read_admin_release_info() {
+	$path = __DIR__ . '/release/release-info.generated.json';
+	if ( ! is_readable( $path ) ) {
+		return localis_cim_admin_unavailable_release_info();
+	}
+
+	$data = wp_json_file_decode(
+		$path,
+		array(
+			'associative' => true,
+		)
+	);
+
+	if (
+		! is_array( $data )
+		|| array(
+			'schema',
+			'stable_tag',
+			'tested_up_to',
+			'current_release',
+			'support_uri',
+		) !== array_keys( $data )
+		|| 'localis.cim/wordpress-release-info/v1' !== $data['schema']
+		|| ! is_string( $data['stable_tag'] )
+		|| '' === $data['stable_tag']
+		|| ! is_string( $data['tested_up_to'] )
+		|| '' === $data['tested_up_to']
+		|| ! is_array( $data['current_release'] )
+		|| array( 'version', 'notes' ) !== array_keys( $data['current_release'] )
+		|| ! is_string( $data['current_release']['version'] )
+		|| $data['current_release']['version'] !== $data['stable_tag']
+		|| ! is_array( $data['current_release']['notes'] )
+		|| 0 === count( $data['current_release']['notes'] )
+		|| ! is_string( $data['support_uri'] )
+		|| 'https' !== wp_parse_url( $data['support_uri'], PHP_URL_SCHEME )
+	) {
+		return localis_cim_admin_unavailable_release_info();
+	}
+
+	foreach ( $data['current_release']['notes'] as $note ) {
+		if ( ! is_string( $note ) || '' === $note ) {
+			return localis_cim_admin_unavailable_release_info();
+		}
+	}
+
+	return array(
+		'status'          => 'available',
+		'stable_tag'      => $data['stable_tag'],
+		'tested_up_to'    => $data['tested_up_to'],
+		'current_release' => $data['current_release'],
+		'support_uri'     => $data['support_uri'],
+	);
+}
+
+/**
  * Resolve bootstrap presence from the active deployment mode.
  *
  * @param string $wordpress_dir WordPress implementation directory.
@@ -432,6 +509,7 @@ function localis_cim_render_admin_console() {
 	$support            = localis_cim_admin_support_metadata();
 	$inventory          = localis_cim_read_admin_inventory();
 	$renderer_inventory = localis_cim_read_admin_renderer_inventory();
+	$release_info       = localis_cim_read_admin_release_info();
 	$health             = localis_cim_admin_static_health( $inventory, $renderer_inventory );
 
 	echo '<div class="wrap">';
@@ -468,6 +546,27 @@ function localis_cim_render_admin_console() {
 	);
 	localis_cim_admin_info_row( 'Plugin version consistency', localis_cim_admin_status_label( $health['version_consistency'] ) );
 	echo '</tbody></table>';
+
+	echo '<h2>Release information</h2>';
+	if ( 'available' !== $release_info['status'] ) {
+		echo '<div class="notice notice-error inline"><p>Release information unavailable.</p></div>';
+	} else {
+		echo '<table class="widefat striped"><tbody>';
+		localis_cim_admin_info_row( 'Stable tag', $release_info['stable_tag'] );
+		localis_cim_admin_info_row( 'Tested up to', $release_info['tested_up_to'] );
+		localis_cim_admin_info_row( 'Current release', $release_info['current_release']['version'] );
+		echo '</tbody></table>';
+		echo '<h3>Current release notes</h3>';
+		echo '<ul>';
+		foreach ( $release_info['current_release']['notes'] as $note ) {
+			printf( '<li>%s</li>', esc_html( $note ) );
+		}
+		echo '</ul>';
+		printf(
+			'<p><a href="%1$s">Support and issue reporting</a></p>',
+			esc_url( $release_info['support_uri'] )
+		);
+	}
 
 	echo '<h2>Experience inventory</h2>';
 	if ( 'available' !== $inventory['status'] ) {

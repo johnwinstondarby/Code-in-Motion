@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.1.4
+Stable tag: 0.1.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,7 +13,7 @@ WordPress host, runtime bindings, and controls for Code in Motion experiences.
 
 Code in Motion supplies the WordPress host, runtime bindings, transport controls, and release packaging required to mount CiM experiences from WordPress content.
 
-Version 0.1.4 adds centralized WordPress renderer registration and a generated read-only renderer inventory projection.
+Version 0.1.5 adds lifecycle residue verification and canonical release metadata to the read-only WordPress Admin Console.
 
 == Installation ==
 
@@ -26,6 +26,10 @@ Version 0.1.4 adds centralized WordPress renderer registration and a generated r
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.1.5 =
+* Adds state-free lifecycle residue verification across install, activation, deactivation, and uninstall.
+* Adds canonical release metadata to the read-only WordPress Admin Console.
 
 = 0.1.4 =
 * Adds centralized WordPress renderer registration and generated renderer inventory data.

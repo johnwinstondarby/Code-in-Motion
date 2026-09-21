@@ -104,7 +104,8 @@ export function classifyReleasePath(path, version = '0.1.0', registeredAssets = 
     'wordpress/assets/bootstrap.js',
     'wordpress/assets/cim.css',
     'wordpress/experiences/registry.json',
-    'wordpress/renderers/inventory.generated.json'
+    'wordpress/renderers/inventory.generated.json',
+    'wordpress/release/release-info.generated.json'
   ]);
   if (exact.has(path)) return 'approved-static';
 

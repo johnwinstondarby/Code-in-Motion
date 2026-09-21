@@ -59,6 +59,16 @@ test('R32 Admin Console reads inert renderer inventory and static local health',
   assert.match(adminSource, /Plugin version consistency/);
 });
 
+test('R33 Admin Console reads inert release metadata without parsing the WordPress readme', () => {
+  assert.match(adminSource, /release\/release-info\.generated\.json/);
+  assert.match(adminSource, /localis\.cim\/wordpress-release-info\/v1/);
+  assert.match(adminSource, /function localis_cim_read_admin_release_info/);
+  assert.match(adminSource, /Release information/);
+  assert.match(adminSource, /Current release notes/);
+  assert.match(adminSource, /esc_url\( \$release_info\['support_uri'\] \)/);
+  assert.equal(adminSource.includes('readme.txt'), false);
+});
+
 test('R32 PHP management surface has no renderer execution, Runtime semantics, or network health probing', () => {
   const forbidden = [
     'update_option(',
