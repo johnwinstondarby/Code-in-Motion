@@ -225,6 +225,41 @@ jobs:
           }
           NODE
 
+          RENDERER_INVENTORY="$(wp_env run cli wp eval 'echo wp_json_encode(localis_cim_read_admin_renderer_inventory());' | tail -n 1)"
+          RENDERER_INVENTORY="$RENDERER_INVENTORY" node --input-type=module <<'NODE'
+          const inventory = JSON.parse(process.env.RENDERER_INVENTORY);
+          if (inventory.status !== 'available') throw new Error('R32 installed renderer inventory unavailable.');
+          if (inventory.schema !== 'localis.cim/wordpress-renderer-inventory/v1') {
+            throw new Error('R32 installed renderer inventory schema mismatch.');
+          }
+          if (inventory.renderers.map((entry) => entry.id).join(',') !== 'git/v1,synthetic/v1') {
+            throw new Error('R32 installed renderer inventory membership mismatch.');
+          }
+          NODE
+
+          STATIC_HEALTH="$(wp_env run cli wp eval '
+            $experiences = localis_cim_read_admin_inventory();
+            $renderers = localis_cim_read_admin_renderer_inventory();
+            echo wp_json_encode(localis_cim_admin_static_health($experiences, $renderers));
+          ' | tail -n 1)"
+          STATIC_HEALTH="$STATIC_HEALTH" node --input-type=module <<'NODE'
+          const health = JSON.parse(process.env.STATIC_HEALTH);
+          const expected = {
+            deployment_mode: 'release',
+            active_module_root: 'present',
+            bootstrap: 'present',
+            experience_registry: 'available',
+            renderer_inventory: 'available',
+            renderer_count: 2,
+            version_consistency: 'consistent'
+          };
+          for (const [key, value] of Object.entries(expected)) {
+            if (health[key] !== value) {
+              throw new Error(`R32 installed health mismatch for ${key}: ${health[key]}`);
+            }
+          }
+          NODE
+
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
           EXPECTED_COUNT="$(unzip -Z1 "${CIM_R15_ARTIFACT_DIR}/${ZIP_NAME}" | grep -v '/$' | wc -l | tr -d ' ')"
           test "${INSTALLED_COUNT}" = "${EXPECTED_COUNT}"

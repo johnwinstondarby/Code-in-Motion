@@ -1,6 +1,6 @@
 {
   "name": "code-in-motion",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Reusable Localis platform for learner-controlled technical process experiences.",
   "private": true,
   "type": "module",
@@ -25,7 +25,7 @@
     "check:wordpress-release-tree": "node tools/check-wordpress-release-tree.mjs",
     "check:wordpress-metadata": "node tools/check-wordpress-release-metadata.mjs",
     "test": "node --test",
-    "verify": "npm run check:schema && npm run check:git-content && npm run check:page-3227 && npm run check:cim-authoring && npm run check:wordpress-experience-registry && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm run check:workflow-gates && npm test",
+    "verify": "npm run check:schema && npm run check:git-content && npm run check:page-3227 && npm run check:cim-authoring && npm run check:wordpress-experience-registry && npm run check:wordpress-renderer-registry && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm run check:workflow-gates && npm test",
     "wp-env": "wp-env",
     "generate:git-basic-cycle": "node tools/generate-git-basic-cycle.mjs",
     "check:git-content": "node tools/generate-git-basic-cycle.mjs --check",
@@ -35,7 +35,9 @@
     "generate:cim-fixture": "node tools/compile-cim.mjs",
     "check:cim-authoring": "node tools/compile-cim.mjs --check",
     "check:wordpress-experience-registry": "node tools/check-wordpress-experience-registry.mjs",
-    "generate:wordpress-experience-registry": "node tools/check-wordpress-experience-registry.mjs --write"
+    "generate:wordpress-experience-registry": "node tools/check-wordpress-experience-registry.mjs --write",
+    "check:wordpress-renderer-registry": "node tools/check-wordpress-renderer-registry.mjs",
+    "generate:wordpress-renderer-inventory": "node tools/check-wordpress-renderer-registry.mjs --write"
   },
   "devDependencies": {
     "@wordpress/env": "11.15.0",

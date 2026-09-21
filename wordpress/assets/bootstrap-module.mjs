@@ -9,15 +9,8 @@ import {
   createWordPressExperienceLoader,
   createWordPressRendererResolver
 } from '../../src/host/wordpress-browser-bindings.mjs';
-import {
-  createSyntheticRenderer,
-  SYNTHETIC_RENDERER_ID
-} from '../../src/renderers/subjects/synthetic/renderer.mjs';
-import {
-  createGitRenderer,
-  GIT_RENDERER_ID
-} from '../../src/renderers/subjects/git/renderer.mjs';
 import { WORDPRESS_EXPERIENCE_REGISTRY } from './experience-registry.generated.mjs';
+import { createWordPressRendererRegistry } from './renderer-registry.mjs';
 import { createWordPressRootLifecycleBinding } from './root-lifecycle-binding.mjs';
 import { createWordPressTransportBinding } from './transport-binding.mjs';
 
@@ -42,10 +35,7 @@ const experienceLoader = createWordPressExperienceLoader({
 });
 
 const rendererResolver = createWordPressRendererResolver({
-  registry: new Map([
-    [SYNTHETIC_RENDERER_ID, () => createSyntheticRenderer()],
-    [GIT_RENDERER_ID, () => createGitRenderer()]
-  ])
+  registry: createWordPressRendererRegistry()
 });
 
 const clockFactory = createWordPressClockFactory({
