@@ -63,6 +63,57 @@ test('R34 differential permits only exact control-observed numeric churn', () =>
   );
 });
 
+test('R34 differential normalizes only control-observed timestamp keys, not intervals', () => {
+  const beforeControl = {
+    '1780000000': {
+      wp_update_plugins: { interval: 43200, schedule: 'twicedaily' }
+    },
+    version: 2
+  };
+  const afterControl = {
+    ...beforeControl,
+    '1780000004': {
+      wp_delete_temp_updater_backups: { interval: 604800, schedule: 'weekly' }
+    }
+  };
+  const beforeCim = {
+    '1780000100': {
+      wp_update_plugins: { interval: 43200, schedule: 'twicedaily' }
+    },
+    version: 2
+  };
+  const afterCim = {
+    ...beforeCim,
+    '1780000104': {
+      wp_delete_temp_updater_backups: { interval: 604800, schedule: 'weekly' }
+    }
+  };
+
+  const result = compareLifecycleDifferentials({
+    controlBefore: snapshot({ records: [{ locator: 'options:cron', value: beforeControl }] }),
+    controlAfter: snapshot({ records: [{ locator: 'options:cron', value: afterControl }] }),
+    cimBefore: snapshot({ records: [{ locator: 'options:cron', value: beforeCim }] }),
+    cimAfter: snapshot({ records: [{ locator: 'options:cron', value: afterCim }] })
+  });
+
+  assert.equal(result.findings.length, 0);
+  assert.deepEqual(
+    result.control_exclusions[0].normalization.numeric_key_parent_paths,
+    ['/']
+  );
+
+  const badAfter = structuredClone(afterCim);
+  badAfter['1780000104'].wp_delete_temp_updater_backups.interval = 604801;
+  const bad = compareLifecycleDifferentials({
+    controlBefore: snapshot({ records: [{ locator: 'options:cron', value: beforeControl }] }),
+    controlAfter: snapshot({ records: [{ locator: 'options:cron', value: afterControl }] }),
+    cimBefore: snapshot({ records: [{ locator: 'options:cron', value: beforeCim }] }),
+    cimAfter: snapshot({ records: [{ locator: 'options:cron', value: badAfter }] })
+  });
+  assert.equal(bad.findings.length, 1);
+  assert.equal(bad.findings[0].locator, 'options:cron');
+});
+
 test('R34 differential rejects an extra generic database write', () => {
   const result = compareLifecycleDifferentials({
     controlBefore: snapshot(),

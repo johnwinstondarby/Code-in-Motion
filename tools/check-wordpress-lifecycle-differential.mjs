@@ -26,8 +26,14 @@ function equal(a, b) {
 }
 
 function isDynamicNumber(value) {
-  return (typeof value === 'number' && Number.isFinite(value)) ||
-    (typeof value === 'string' && /^\d{9,}$/.test(value));
+  return (
+    typeof value === 'number' &&
+    Number.isInteger(value) &&
+    Math.abs(value) >= 100000000
+  ) || (
+    typeof value === 'string' &&
+    /^\d{9,}$/.test(value)
+  );
 }
 
 function escapePointer(value) {
@@ -93,9 +99,10 @@ function normalizeWithSpec(value, spec, path = '') {
         normalizeNumericKeys && /^\d{9,}$/.test(key)
           ? '<control-derived-number-key>'
           : key;
+      const childPath = path + '/' + escapePointer(normalizedKey);
       return [
         normalizedKey,
-        normalizeWithSpec(item, spec, path + '/' + escapePointer(key))
+        normalizeWithSpec(item, spec, childPath)
       ];
     });
 
