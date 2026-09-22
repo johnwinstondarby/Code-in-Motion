@@ -19,10 +19,12 @@ const experienceAssets = new Map(
 );
 const ROOT_SELECTOR = '[data-cim-experience]';
 const moduleUrl = new URL(import.meta.url);
+const forceReducedMotion = moduleUrl.searchParams.get('cim-motion-policy') === 'reduce';
 
 function versionedUrl(relativePath) {
   const url = new URL(relativePath, moduleUrl);
   url.search = moduleUrl.search;
+  url.searchParams.delete('cim-motion-policy');
   return url.href;
 }
 
@@ -63,6 +65,7 @@ const diagnostics = Object.freeze({
 const host = createWordPressLiveHost({
   document,
   matchMedia: (query) => window.matchMedia(query),
+  forceReducedMotion,
   experienceLoader,
   rendererResolver,
   clockFactory,

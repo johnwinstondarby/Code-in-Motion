@@ -10,6 +10,18 @@ const implementationSource = await readFile(
   new URL('../wordpress/code-in-motion.php', import.meta.url),
   'utf8'
 );
+const uninstallSource = await readFile(
+  new URL('../uninstall.php', import.meta.url),
+  'utf8'
+);
+const bootstrapSource = await readFile(
+  new URL('../wordpress/assets/bootstrap.js', import.meta.url),
+  'utf8'
+);
+const bootstrapModuleSource = await readFile(
+  new URL('../wordpress/assets/bootstrap-module.mjs', import.meta.url),
+  'utf8'
+);
 
 test('R31 wires one dedicated read-only Admin Console module', () => {
   assert.match(
@@ -92,6 +104,29 @@ test('R34 motion-policy persistence uses one exact authenticated write surface',
   assert.match(adminSource, /current_user_can\( 'manage_options' \)/);
   assert.match(adminSource, /Host configuration/);
   assert.match(adminSource, /Force reduced motion/);
+});
+
+test('R34 motion policy projects through the external bootstrap into Host composition', () => {
+  assert.match(implementationSource, /function localis_cim_project_motion_policy_script_tag/);
+  assert.match(implementationSource, /'script_loader_tag'/);
+  assert.match(implementationSource, /data-cim-motion-policy/);
+  assert.match(bootstrapSource, /getAttribute\('data-cim-motion-policy'\)/);
+  assert.match(
+    bootstrapSource,
+    /searchParams\.set\('cim-motion-policy', motionPolicy\)/
+  );
+  assert.match(
+    bootstrapModuleSource,
+    /searchParams\.get\('cim-motion-policy'\) === 'reduce'/
+  );
+  assert.match(bootstrapModuleSource, /forceReducedMotion,/);
+  assert.match(bootstrapModuleSource, /searchParams\.delete\('cim-motion-policy'\)/);
+});
+
+test('R34 uninstall cleanup is exact and isolated', () => {
+  assert.match(uninstallSource, /defined\( 'WP_UNINSTALL_PLUGIN' \)/);
+  assert.match(uninstallSource, /delete_option\( 'localis_cim_motion_policy' \)/);
+  assert.equal((uninstallSource.match(/delete_option\(/g) ?? []).length, 1);
 });
 
 test('R32 PHP management surface has no renderer execution, Runtime semantics, or network health probing', () => {

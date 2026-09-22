@@ -68,6 +68,33 @@ function localis_cim_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'localis_cim_enqueue_assets' );
 
 /**
+ * Project the site motion policy onto CiM's external bootstrap script.
+ *
+ * @param string $tag    Script element HTML.
+ * @param string $handle WordPress script handle.
+ * @return string
+ */
+function localis_cim_project_motion_policy_script_tag( $tag, $handle ) {
+	if ( LOCALIS_CIM_SCRIPT_HANDLE !== $handle ) {
+		return $tag;
+	}
+
+	$attribute = sprintf(
+		' data-cim-motion-policy="%s" src=',
+		esc_attr( localis_cim_get_motion_policy() )
+	);
+	$projected = preg_replace( '/\ssrc=/', $attribute, $tag, 1 );
+
+	return is_string( $projected ) ? $projected : $tag;
+}
+add_filter(
+	'script_loader_tag',
+	'localis_cim_project_motion_policy_script_tag',
+	10,
+	2
+);
+
+/**
  * Validate canonical CiM identifiers accepted by the shortcode edge.
  *
  * @param mixed $value Candidate identifier.

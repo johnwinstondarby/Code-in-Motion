@@ -116,6 +116,9 @@ async function run() {
   assertContains(entry, "require_once __DIR__ . '/admin-console.php';", 'Admin Console module delegation');
   assertContains(entry, "LOCALIS_CIM_MOTION_POLICY_OPTION', 'localis_cim_motion_policy'", 'R34 motion-policy option constant');
   assertContains(entry, 'function localis_cim_get_motion_policy()', 'R34 motion-policy reader');
+  assertContains(entry, 'function localis_cim_project_motion_policy_script_tag', 'R34 motion-policy script projection');
+  assertContains(entry, "'script_loader_tag'", 'R34 motion-policy script filter');
+  assertContains(entry, 'data-cim-motion-policy', 'R34 motion-policy external-script attribute');
 
   const adminConsole = await readFile(ADMIN_CONSOLE_PATH, 'utf8');
   assertContains(adminConsole, "add_action( 'admin_menu', 'localis_cim_register_admin_menu' );", 'Admin Console menu hook');
@@ -153,6 +156,14 @@ async function run() {
   }
 
   for (const assetPath of REQUIRED_EXTERNAL_ASSETS) await readFile(assetPath, 'utf8');
+
+  const bootstrapSource = await readFile(REQUIRED_EXTERNAL_ASSETS[0], 'utf8');
+  const bootstrapModuleSource = await readFile(REQUIRED_EXTERNAL_ASSETS[1], 'utf8');
+  assertContains(bootstrapSource, "getAttribute('data-cim-motion-policy')", 'R34 bootstrap motion-policy read');
+  assertContains(bootstrapSource, "searchParams.set('cim-motion-policy', motionPolicy)", 'R34 bootstrap motion-policy handoff');
+  assertContains(bootstrapModuleSource, "searchParams.get('cim-motion-policy') === 'reduce'", 'R34 module motion-policy reduction');
+  assertContains(bootstrapModuleSource, "searchParams.delete('cim-motion-policy')", 'R34 module asset-URL policy stripping');
+  assertContains(bootstrapModuleSource, 'forceReducedMotion,', 'R34 Host force-reduced-motion handoff');
 
   await verifyEnvironmentBaseline();
   await verifyPlaygroundBaseline();

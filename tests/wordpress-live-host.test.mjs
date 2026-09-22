@@ -207,6 +207,7 @@ function capabilityHarness({
 function hostOptions({
   roots = [rootHarness().root],
   media = mediaHarness(),
+  forceReducedMotion = false,
   diagnostics = diagnosticsHarness(),
   load = async (id) => experienceFixture(id),
   resolve = async () => rendererFixture().renderer,
@@ -219,6 +220,7 @@ function hostOptions({
     options: {
       document,
       matchMedia: media.matchMedia,
+      forceReducedMotion,
       experienceLoader: capabilities.experienceLoader,
       rendererResolver: capabilities.rendererResolver,
       clockFactory: capabilities.clockFactory,
@@ -293,6 +295,36 @@ test('one WordPress page host shares exactly one reduced-motion source across mu
   assert.equal(media.listenerCount(), 0);
   assert.equal(first.state(), 'fallback');
   assert.equal(second.state(), 'fallback');
+});
+
+test('site forced reduced motion is a floor over browser preference', async () => {
+  const root = rootHarness({ instanceId: 'forced-reduced-motion' });
+  const media = mediaHarness({ initial: false });
+  const recording = rendererFixture();
+  const source = hostOptions({
+    roots: [root.root],
+    media,
+    forceReducedMotion: true,
+    resolve: async () => recording.renderer
+  });
+  const host = createWordPressLiveHost(source.options);
+
+  assert.deepEqual(await host.mount(), { mounted: 1, fallback: 0 });
+  assert.equal(recording.contexts.length, 1);
+  assert.equal(recording.contexts[0].reducedMotion, true);
+
+  media.setMatches(true);
+  media.emit();
+  media.setMatches(false);
+  media.emit();
+  await Promise.resolve();
+
+  assert.equal(recording.contexts.length, 1);
+  assert.equal(recording.contexts[0].reducedMotion, true);
+
+  await host.dispose();
+  assert.equal(media.removeCalls(), 1);
+  assert.equal(media.listenerCount(), 0);
 });
 
 test('experience load failure is isolated to one WordPress root and uses CIM-HST-001', async () => {
@@ -543,6 +575,18 @@ test('WordPress live Host rejects widened or mutable injected production capabil
   assert.throws(() => createWordPressLiveHost({
     document,
     matchMedia: media.matchMedia,
+    forceReducedMotion: 'reduce',
+    experienceLoader: valid.experienceLoader,
+    rendererResolver: valid.rendererResolver,
+    clockFactory: valid.clockFactory,
+    entryResolver: valid.entryResolver,
+    diagnostics: diagnostics.diagnostics
+  }), /forceReducedMotion must be boolean/);
+
+  assert.throws(() => createWordPressLiveHost({
+    document,
+    matchMedia: media.matchMedia,
+    forceReducedMotion: false,
     experienceLoader: { load: valid.experienceLoader.load },
     rendererResolver: valid.rendererResolver,
     clockFactory: valid.clockFactory,
@@ -553,6 +597,7 @@ test('WordPress live Host rejects widened or mutable injected production capabil
   assert.throws(() => createWordPressLiveHost({
     document,
     matchMedia: media.matchMedia,
+    forceReducedMotion: false,
     experienceLoader: valid.experienceLoader,
     rendererResolver: Object.freeze({ resolve: valid.rendererResolver.resolve, extra() {} }),
     clockFactory: valid.clockFactory,
@@ -563,6 +608,7 @@ test('WordPress live Host rejects widened or mutable injected production capabil
   assert.throws(() => createWordPressLiveHost({
     document,
     matchMedia: media.matchMedia,
+    forceReducedMotion: false,
     experienceLoader: valid.experienceLoader,
     rendererResolver: valid.rendererResolver,
     clockFactory: valid.clockFactory,

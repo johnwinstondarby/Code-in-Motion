@@ -1231,6 +1231,14 @@ jobs:
           test "${WRITE_RESULT}" = "saved"
           test "$(wp_env run cli wp option get localis_cim_motion_policy | tail -n 1)" = "reduce"
 
+          PROJECTED_TAG="$(wp_env run cli wp eval '
+            echo localis_cim_project_motion_policy_script_tag(
+              "<script src=\"https://example.test/bootstrap.js\"></script>",
+              LOCALIS_CIM_SCRIPT_HANDLE
+            );
+          ' | tail -n 1)"
+          printf '%s\n' "${PROJECTED_TAG}" | grep -q 'data-cim-motion-policy="reduce"'
+
           wp_env run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]R34 differential exercise.[/cim]");' >/dev/null
           wp_env run cli wp plugin deactivate code-in-motion
           test "$(wp_env run cli wp option get localis_cim_motion_policy | tail -n 1)" = "reduce"
