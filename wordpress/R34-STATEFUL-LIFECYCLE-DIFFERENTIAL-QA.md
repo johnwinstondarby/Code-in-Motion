@@ -192,6 +192,43 @@ Before Commit B, the proposed state must have a canonical CiM Host/runtime or pr
 
 If no canonical persistent seam is established, R34 closes or pauses after Commit A and ADR 0042 remains the prerequisite for the later stateful checkpoint.
 
+## Commit B selected state contract
+
+ADR 0043 selects the first canonical persistent CiM state:
+
+`localis_cim_motion_policy`
+
+Policy values:
+
+- `system`;
+- `reduce`.
+
+Effective Host rule:
+
+`browserReducedMotion || siteMotionPolicy === "reduce"`
+
+The setting cannot force motion against a learner's browser preference.
+
+Commit B prediction, recorded before the production state write:
+
+- scope: `database`;
+- locator: `options:localis_cim_motion_policy`;
+- differential kind: `added`;
+- exercised value: `reduce`;
+- expected after deactivation: still present with value `reduce`;
+- expected after delete in Commit B: still present because cleanup is deliberately absent;
+- control exclusion check: the locator is not one of Commit A's six exact control-derived exclusions.
+
+Approved Commit B persistence surface:
+
+- file: `wordpress/admin-console.php`;
+- API: `update_option()`;
+- exact option: `localis_cim_motion_policy`;
+- no activation-time initialization;
+- no other persistent write API.
+
+A failure at another locator or with another differential kind must be investigated and does not count as the expected-red proof.
+
 ## Commit B prediction contract
 
 Before Commit B is written, the stateful-feature decision record must name:
