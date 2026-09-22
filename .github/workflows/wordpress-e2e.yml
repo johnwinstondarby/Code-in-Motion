@@ -1241,6 +1241,10 @@ jobs:
             exit 1
           fi
           wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion'
+          if wp_env run cli wp option get localis_cim_motion_policy >/dev/null 2>&1; then
+            echo "R34 motion policy survived uninstall/delete." >&2
+            exit 1
+          fi
 
           wp_env run cli wp eval-file wp-content/r34-artifact/r34-wordpress-lifecycle-snapshot.php | tail -n 1 > "${CIM_R34_EVIDENCE_DIR}/cim-after.json"
 

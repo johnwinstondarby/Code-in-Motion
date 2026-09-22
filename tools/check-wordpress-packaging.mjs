@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ROOT_ENTRY_PATH = resolve(ROOT, 'code-in-motion.php');
+const UNINSTALL_PATH = resolve(ROOT, 'uninstall.php');
 const WORDPRESS_DIR = resolve(ROOT, 'wordpress');
 const IMPLEMENTATION_ENTRY_PATH = resolve(WORDPRESS_DIR, 'code-in-motion.php');
 const ADMIN_CONSOLE_PATH = resolve(WORDPRESS_DIR, 'admin-console.php');
@@ -13,6 +14,8 @@ const PLAYGROUND_BLUEPRINT_PATH = resolve(WORDPRESS_DIR, 'playground', 'blueprin
 const PLAYGROUND_PREVIEW_WORKFLOW_PATH = resolve(ROOT, '.github', 'workflows', 'playground-preview.yml');
 const R34_APPROVED_MOTION_POLICY_WRITE =
   'update_option( LOCALIS_CIM_MOTION_POLICY_OPTION, $motion_policy, false )';
+const R34_APPROVED_MOTION_POLICY_DELETE =
+  "delete_option( 'localis_cim_motion_policy' )";
 const REQUIRED_EXTERNAL_ASSETS = Object.freeze([
   resolve(WORDPRESS_DIR, 'assets', 'bootstrap.js'),
   resolve(WORDPRESS_DIR, 'assets', 'bootstrap-module.mjs'),
@@ -97,6 +100,13 @@ async function run() {
   assertContains(rootEntry, 'Requires PHP: 7.4', 'PHP support floor header');
   assertContains(rootEntry, "require_once __DIR__ . '/wordpress/code-in-motion.php';", 'repository-root implementation delegation');
 
+  const uninstall = await readFile(UNINSTALL_PATH, 'utf8');
+  assertContains(uninstall, "defined( 'WP_UNINSTALL_PLUGIN' )", 'R34 uninstall execution guard');
+  assertContains(uninstall, R34_APPROVED_MOTION_POLICY_DELETE, 'R34 exact motion-policy uninstall cleanup');
+  if ((uninstall.match(/delete_option\(/g) ?? []).length !== 1) {
+    throw new Error('WordPress packaging gate: R34 uninstall.php must contain exactly one delete_option() call.');
+  }
+
   const entry = await readFile(IMPLEMENTATION_ENTRY_PATH, 'utf8');
   assertContains(entry, 'wp_enqueue_script(', 'wp_enqueue_script() external JavaScript registration');
   assertContains(entry, 'wp_enqueue_style(', 'wp_enqueue_style() external CSS registration');
@@ -148,7 +158,7 @@ async function run() {
   await verifyPlaygroundBaseline();
 
   const files = await walk(WORDPRESS_DIR);
-  const phpFiles = [ROOT_ENTRY_PATH, ...files.filter((path) => extname(path) === '.php')];
+  const phpFiles = [ROOT_ENTRY_PATH, UNINSTALL_PATH, ...files.filter((path) => extname(path) === '.php')];
   const forbidden = [
     ['wp_add_inline_script(', 'wp_add_inline_script()'],
     ['wp_add_inline_style(', 'wp_add_inline_style()'],
@@ -162,7 +172,6 @@ async function run() {
     'register_uninstall_hook(',
     'register_setting(',
     'add_option(',
-    'delete_option(',
     'add_site_option(',
     'update_site_option(',
     'delete_site_option(',
@@ -198,6 +207,19 @@ async function run() {
         throw new Error(`WordPress packaging gate: ${label} is forbidden in ${path}.`);
       }
     }
+    const deleteOptionCalls = source.match(/delete_option\(/g) ?? [];
+    if (deleteOptionCalls.length > 0) {
+      if (
+        path !== UNINSTALL_PATH ||
+        deleteOptionCalls.length !== 1 ||
+        !source.includes(R34_APPROVED_MOTION_POLICY_DELETE)
+      ) {
+        throw new Error(
+          `WordPress packaging gate: R34 permits exactly one approved motion-policy delete_option() call in ${UNINSTALL_PATH}.`
+        );
+      }
+    }
+
     const updateOptionCalls = source.match(/update_option\(/g) ?? [];
     if (updateOptionCalls.length > 0) {
       if (
@@ -224,8 +246,11 @@ async function run() {
   }
 
   const rootEntries = await readdir(ROOT);
-  if (rootEntries.includes('uninstall.php') || files.some((path) => path.endsWith('/uninstall.php'))) {
-    throw new Error('WordPress packaging gate: R33 state-free lifecycle forbids uninstall.php.');
+  if (!rootEntries.includes('uninstall.php')) {
+    throw new Error('WordPress packaging gate: R34 uninstall.php is required once motion-policy state exists.');
+  }
+  if (files.some((path) => path.endsWith('/uninstall.php'))) {
+    throw new Error('WordPress packaging gate: R34 permits uninstall.php only at the plugin root.');
   }
 
   console.log(

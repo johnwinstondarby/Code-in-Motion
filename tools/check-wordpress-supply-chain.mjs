@@ -99,6 +99,7 @@ export function classifyReleasePath(path, version = '0.1.0', registeredAssets = 
     'LICENSE',
     'readme.txt',
     'code-in-motion.php',
+    'uninstall.php',
     'wordpress/code-in-motion.php',
     'wordpress/admin-console.php',
     'wordpress/assets/bootstrap.js',

@@ -16,6 +16,7 @@ test('R23 accepts only approved v1 release locations', () => {
   assert.equal(classifyReleasePath('LICENSE', '0.1.6', REGISTERED_ASSETS), 'approved-static');
   assert.equal(classifyReleasePath('readme.txt', '0.1.6', REGISTERED_ASSETS), 'approved-static');
   assert.equal(classifyReleasePath('code-in-motion.php', '0.1.6', REGISTERED_ASSETS), 'approved-static');
+  assert.equal(classifyReleasePath('uninstall.php', '0.1.6', REGISTERED_ASSETS), 'approved-static');
   assert.equal(classifyReleasePath('wordpress/admin-console.php', '0.1.6', REGISTERED_ASSETS), 'approved-static');
   assert.equal(
     classifyReleasePath('wordpress/experiences/registry.json', '0.1.6', REGISTERED_ASSETS),
