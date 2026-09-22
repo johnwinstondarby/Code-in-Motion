@@ -27,7 +27,8 @@ export const REQUIRED_WORKFLOW_GATES = Object.freeze([
       'upgrade-e2e',
       'compatibility-matrix',
       'php-matrix',
-      'browser-family-matrix'
+      'browser-family-matrix',
+      'lifecycle-differential'
     ])
   }),
   Object.freeze({

@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ROOT_ENTRY_PATH = resolve(ROOT, 'code-in-motion.php');
+const UNINSTALL_PATH = resolve(ROOT, 'uninstall.php');
 const WORDPRESS_DIR = resolve(ROOT, 'wordpress');
 const IMPLEMENTATION_ENTRY_PATH = resolve(WORDPRESS_DIR, 'code-in-motion.php');
 const ADMIN_CONSOLE_PATH = resolve(WORDPRESS_DIR, 'admin-console.php');
@@ -11,6 +12,10 @@ const WP_ENV_PATH = resolve(ROOT, '.wp-env.json');
 const PACKAGE_PATH = resolve(ROOT, 'package.json');
 const PLAYGROUND_BLUEPRINT_PATH = resolve(WORDPRESS_DIR, 'playground', 'blueprint.json');
 const PLAYGROUND_PREVIEW_WORKFLOW_PATH = resolve(ROOT, '.github', 'workflows', 'playground-preview.yml');
+const R34_APPROVED_MOTION_POLICY_WRITE =
+  'update_option( LOCALIS_CIM_MOTION_POLICY_OPTION, $motion_policy, false )';
+const R34_APPROVED_MOTION_POLICY_DELETE =
+  "delete_option( 'localis_cim_motion_policy' )";
 const REQUIRED_EXTERNAL_ASSETS = Object.freeze([
   resolve(WORDPRESS_DIR, 'assets', 'bootstrap.js'),
   resolve(WORDPRESS_DIR, 'assets', 'bootstrap-module.mjs'),
@@ -95,6 +100,13 @@ async function run() {
   assertContains(rootEntry, 'Requires PHP: 7.4', 'PHP support floor header');
   assertContains(rootEntry, "require_once __DIR__ . '/wordpress/code-in-motion.php';", 'repository-root implementation delegation');
 
+  const uninstall = await readFile(UNINSTALL_PATH, 'utf8');
+  assertContains(uninstall, "defined( 'WP_UNINSTALL_PLUGIN' )", 'R34 uninstall execution guard');
+  assertContains(uninstall, R34_APPROVED_MOTION_POLICY_DELETE, 'R34 exact motion-policy uninstall cleanup');
+  if ((uninstall.match(/delete_option\(/g) ?? []).length !== 1) {
+    throw new Error('WordPress packaging gate: R34 uninstall.php must contain exactly one delete_option() call.');
+  }
+
   const entry = await readFile(IMPLEMENTATION_ENTRY_PATH, 'utf8');
   assertContains(entry, 'wp_enqueue_script(', 'wp_enqueue_script() external JavaScript registration');
   assertContains(entry, 'wp_enqueue_style(', 'wp_enqueue_style() external CSS registration');
@@ -102,6 +114,11 @@ async function run() {
   assertContains(entry, 'data-cim-experience', 'canonical Experience attribute');
   assertContains(entry, 'data-cim-renderer-root', 'canonical renderer-root attribute');
   assertContains(entry, "require_once __DIR__ . '/admin-console.php';", 'Admin Console module delegation');
+  assertContains(entry, "LOCALIS_CIM_MOTION_POLICY_OPTION', 'localis_cim_motion_policy'", 'R34 motion-policy option constant');
+  assertContains(entry, 'function localis_cim_get_motion_policy()', 'R34 motion-policy reader');
+  assertContains(entry, 'function localis_cim_project_motion_policy_script_tag', 'R34 motion-policy script projection');
+  assertContains(entry, "'script_loader_tag'", 'R34 motion-policy script filter');
+  assertContains(entry, 'data-cim-motion-policy', 'R34 motion-policy external-script attribute');
 
   const adminConsole = await readFile(ADMIN_CONSOLE_PATH, 'utf8');
   assertContains(adminConsole, "add_action( 'admin_menu', 'localis_cim_register_admin_menu' );", 'Admin Console menu hook');
@@ -117,6 +134,10 @@ async function run() {
   assertContains(adminConsole, 'release/release-info.generated.json', 'R33 inert release information');
   assertContains(adminConsole, 'localis_cim_read_admin_release_info', 'R33 release-info reader');
   assertContains(adminConsole, "esc_url( $release_info['support_uri'] )", 'R33 escaped support URI');
+  assertContains(adminConsole, 'localis_cim_admin_update_motion_policy', 'R34 motion-policy writer');
+  assertContains(adminConsole, "check_admin_referer( 'localis_cim_update_motion_policy' )", 'R34 motion-policy nonce check');
+  assertContains(adminConsole, "'admin_post_localis_cim_update_motion_policy'", 'R34 authenticated admin-post action');
+  assertContains(adminConsole, R34_APPROVED_MOTION_POLICY_WRITE, 'R34 exact motion-policy persistence call');
   if (adminConsole.includes('readme.txt')) {
     throw new Error('WordPress packaging gate: Admin Console must not parse readme.txt.');
   }
@@ -136,11 +157,20 @@ async function run() {
 
   for (const assetPath of REQUIRED_EXTERNAL_ASSETS) await readFile(assetPath, 'utf8');
 
+  const bootstrapSource = await readFile(REQUIRED_EXTERNAL_ASSETS[0], 'utf8');
+  const bootstrapModuleSource = await readFile(REQUIRED_EXTERNAL_ASSETS[1], 'utf8');
+  assertContains(bootstrapSource, "getAttribute('data-cim-motion-policy')", 'R34 bootstrap motion-policy read');
+  assertContains(bootstrapSource, "searchParams.set('cim-motion-policy', motionPolicy)", 'R34 bootstrap motion-policy handoff');
+  assertContains(bootstrapModuleSource, "searchParams.get('cim-motion-policy') === 'reduce'", 'R34 module motion-policy reduction');
+  assertContains(bootstrapModuleSource, "searchParams.delete('cim-motion-policy')", 'R34 module asset-URL policy stripping');
+  assertContains(bootstrapModuleSource, 'createWordPressMotionPolicyMatchMedia', 'R34 Host motion-policy composition');
+  assertContains(bootstrapModuleSource, 'matchMedia,', 'R34 unchanged live Host matchMedia handoff');
+
   await verifyEnvironmentBaseline();
   await verifyPlaygroundBaseline();
 
   const files = await walk(WORDPRESS_DIR);
-  const phpFiles = [ROOT_ENTRY_PATH, ...files.filter((path) => extname(path) === '.php')];
+  const phpFiles = [ROOT_ENTRY_PATH, UNINSTALL_PATH, ...files.filter((path) => extname(path) === '.php')];
   const forbidden = [
     ['wp_add_inline_script(', 'wp_add_inline_script()'],
     ['wp_add_inline_style(', 'wp_add_inline_style()'],
@@ -154,8 +184,6 @@ async function run() {
     'register_uninstall_hook(',
     'register_setting(',
     'add_option(',
-    'update_option(',
-    'delete_option(',
     'add_site_option(',
     'update_site_option(',
     'delete_site_option(',
@@ -191,9 +219,35 @@ async function run() {
         throw new Error(`WordPress packaging gate: ${label} is forbidden in ${path}.`);
       }
     }
+    const deleteOptionCalls = source.match(/delete_option\(/g) ?? [];
+    if (deleteOptionCalls.length > 0) {
+      if (
+        path !== UNINSTALL_PATH ||
+        deleteOptionCalls.length !== 1 ||
+        !source.includes(R34_APPROVED_MOTION_POLICY_DELETE)
+      ) {
+        throw new Error(
+          `WordPress packaging gate: R34 permits exactly one approved motion-policy delete_option() call in ${UNINSTALL_PATH}.`
+        );
+      }
+    }
+
+    const updateOptionCalls = source.match(/update_option\(/g) ?? [];
+    if (updateOptionCalls.length > 0) {
+      if (
+        path !== ADMIN_CONSOLE_PATH ||
+        updateOptionCalls.length !== 1 ||
+        !source.includes(R34_APPROVED_MOTION_POLICY_WRITE)
+      ) {
+        throw new Error(
+          `WordPress packaging gate: R34 permits exactly one approved motion-policy update_option() call in ${ADMIN_CONSOLE_PATH}.`
+        );
+      }
+    }
+
     for (const token of statefulTokens) {
       if (source.includes(token)) {
-        throw new Error(`WordPress packaging gate: R33 state-free lifecycle forbids ${token} in ${path}.`);
+        throw new Error(`WordPress packaging gate: R34 persistence boundary forbids ${token} in ${path}.`);
       }
     }
     for (const token of updateTokens) {
@@ -204,8 +258,11 @@ async function run() {
   }
 
   const rootEntries = await readdir(ROOT);
-  if (rootEntries.includes('uninstall.php') || files.some((path) => path.endsWith('/uninstall.php'))) {
-    throw new Error('WordPress packaging gate: R33 state-free lifecycle forbids uninstall.php.');
+  if (!rootEntries.includes('uninstall.php')) {
+    throw new Error('WordPress packaging gate: R34 uninstall.php is required once motion-policy state exists.');
+  }
+  if (files.some((path) => path.endsWith('/uninstall.php'))) {
+    throw new Error('WordPress packaging gate: R34 permits uninstall.php only at the plugin root.');
   }
 
   console.log(

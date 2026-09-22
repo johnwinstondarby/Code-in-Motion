@@ -457,6 +457,70 @@ function localis_cim_register_admin_menu() {
 add_action( 'admin_menu', 'localis_cim_register_admin_menu' );
 
 /**
+ * Persist the canonical site motion policy.
+ *
+ * Commit B intentionally has no uninstall cleanup.
+ *
+ * @param string $motion_policy Validated motion policy.
+ * @return bool
+ */
+function localis_cim_admin_update_motion_policy( $motion_policy ) {
+	if ( ! localis_cim_is_motion_policy( $motion_policy ) ) {
+		return false;
+	}
+
+	return update_option( LOCALIS_CIM_MOTION_POLICY_OPTION, $motion_policy, false );
+}
+
+/**
+ * Handle the authenticated Admin Console motion-policy update.
+ */
+function localis_cim_admin_handle_motion_policy_update() {
+	if ( ! localis_cim_admin_can_view() ) {
+		wp_die(
+			'You do not have permission to update Code in Motion configuration.',
+			'Code in Motion',
+			array(
+				'response' => 403,
+			)
+		);
+	}
+
+	check_admin_referer( 'localis_cim_update_motion_policy' );
+
+	$motion_policy = isset( $_POST['motion_policy'] )
+		? sanitize_key( wp_unslash( $_POST['motion_policy'] ) )
+		: '';
+
+	if ( ! localis_cim_is_motion_policy( $motion_policy ) ) {
+		wp_die(
+			'Invalid Code in Motion motion policy.',
+			'Code in Motion',
+			array(
+				'response' => 400,
+			)
+		);
+	}
+
+	localis_cim_admin_update_motion_policy( $motion_policy );
+
+	wp_safe_redirect(
+		add_query_arg(
+			array(
+				'page'       => 'code-in-motion',
+				'cim_saved'  => 'motion-policy',
+			),
+			admin_url( 'admin.php' )
+		)
+	);
+	exit;
+}
+add_action(
+	'admin_post_localis_cim_update_motion_policy',
+	'localis_cim_admin_handle_motion_policy_update'
+);
+
+/**
  * Render one escaped two-column information table row.
  *
  * @param string $label Row label.
@@ -511,10 +575,11 @@ function localis_cim_render_admin_console() {
 	$renderer_inventory = localis_cim_read_admin_renderer_inventory();
 	$release_info       = localis_cim_read_admin_release_info();
 	$health             = localis_cim_admin_static_health( $inventory, $renderer_inventory );
+	$motion_policy      = localis_cim_get_motion_policy();
 
 	echo '<div class="wrap">';
 	echo '<h1>Code in Motion</h1>';
-	echo '<p>Read-only deployment inventory and static artifact health.</p>';
+	echo '<p>Deployment inventory, static artifact health, and host configuration.</p>';
 
 	echo '<h2>System</h2>';
 	echo '<table class="widefat striped"><tbody>';
@@ -532,6 +597,30 @@ function localis_cim_render_admin_console() {
 		'available' === $inventory['status'] ? (string) count( $inventory['experiences'] ) : 'Unavailable'
 	);
 	echo '</tbody></table>';
+
+	echo '<h2>Host configuration</h2>';
+	echo '<p>Motion policy can follow the learner browser preference or force reduced motion. It cannot force motion against a learner preference.</p>';
+	printf(
+		'<form method="post" action="%s">',
+		esc_url( admin_url( 'admin-post.php' ) )
+	);
+	echo '<input type="hidden" name="action" value="localis_cim_update_motion_policy">';
+	wp_nonce_field( 'localis_cim_update_motion_policy' );
+	echo '<label for="localis-cim-motion-policy">Site motion policy</label> ';
+	echo '<select id="localis-cim-motion-policy" name="motion_policy">';
+	printf(
+		'<option value="%1$s"%2$s>System preference</option>',
+		esc_attr( LOCALIS_CIM_MOTION_POLICY_SYSTEM ),
+		selected( $motion_policy, LOCALIS_CIM_MOTION_POLICY_SYSTEM, false )
+	);
+	printf(
+		'<option value="%1$s"%2$s>Force reduced motion</option>',
+		esc_attr( LOCALIS_CIM_MOTION_POLICY_REDUCE ),
+		selected( $motion_policy, LOCALIS_CIM_MOTION_POLICY_REDUCE, false )
+	);
+	echo '</select> ';
+	submit_button( 'Save motion policy', 'secondary', 'submit', false );
+	echo '</form>';
 
 	echo '<h2>Static health</h2>';
 	echo '<table class="widefat striped"><tbody>';

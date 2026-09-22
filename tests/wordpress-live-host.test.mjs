@@ -10,7 +10,8 @@ import {
   WORDPRESS_LIVE_HOST_OPTIONS_KEYS,
   WORDPRESS_MOUNT_RESULT_KEYS,
   WORDPRESS_RENDERER_RESOLVER_KEYS,
-  createWordPressLiveHost
+  createWordPressLiveHost,
+  createWordPressMotionPolicyMatchMedia
 } from '../src/host/wordpress-live-host.mjs';
 
 function experienceFixture(id = 'wordpress-host-experience') {
@@ -295,6 +296,40 @@ test('one WordPress page host shares exactly one reduced-motion source across mu
   assert.equal(second.state(), 'fallback');
 });
 
+test('site forced reduced motion is a floor over browser preference', async () => {
+  const root = rootHarness({ instanceId: 'forced-reduced-motion' });
+  const media = mediaHarness({ initial: false });
+  const recording = rendererFixture();
+  const source = hostOptions({
+    roots: [root.root],
+    media,
+    resolve: async () => recording.renderer
+  });
+  source.options.matchMedia = createWordPressMotionPolicyMatchMedia(
+    media.matchMedia,
+    true
+  );
+  const host = createWordPressLiveHost(source.options);
+
+  assert.deepEqual(await host.mount(), { mounted: 1, fallback: 0 });
+  assert.equal(recording.contexts.length, 1);
+  assert.equal(recording.contexts[0].reducedMotion, true);
+  assert.equal(media.queryCalls(), 0);
+
+  media.setMatches(true);
+  media.emit();
+  media.setMatches(false);
+  media.emit();
+  await Promise.resolve();
+
+  assert.equal(recording.contexts.length, 1);
+  assert.equal(recording.contexts[0].reducedMotion, true);
+
+  await host.dispose();
+  assert.equal(media.removeCalls(), 0);
+  assert.equal(media.listenerCount(), 0);
+});
+
 test('experience load failure is isolated to one WordPress root and uses CIM-HST-001', async () => {
   const bad = rootHarness({ experienceId: 'bad', instanceId: 'bad-instance' });
   const good = rootHarness({ experienceId: 'good', instanceId: 'good-instance' });
@@ -539,6 +574,11 @@ test('WordPress live Host rejects widened or mutable injected production capabil
     load: async (id) => experienceFixture(id),
     resolve: async () => rendererFixture().renderer
   });
+
+  assert.throws(
+    () => createWordPressMotionPolicyMatchMedia(media.matchMedia, 'reduce'),
+    /forceReducedMotion must be boolean/
+  );
 
   assert.throws(() => createWordPressLiveHost({
     document,

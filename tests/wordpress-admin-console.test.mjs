@@ -10,6 +10,18 @@ const implementationSource = await readFile(
   new URL('../wordpress/code-in-motion.php', import.meta.url),
   'utf8'
 );
+const uninstallSource = await readFile(
+  new URL('../uninstall.php', import.meta.url),
+  'utf8'
+);
+const bootstrapSource = await readFile(
+  new URL('../wordpress/assets/bootstrap.js', import.meta.url),
+  'utf8'
+);
+const bootstrapModuleSource = await readFile(
+  new URL('../wordpress/assets/bootstrap-module.mjs', import.meta.url),
+  'utf8'
+);
 
 test('R31 wires one dedicated read-only Admin Console module', () => {
   assert.match(
@@ -69,9 +81,57 @@ test('R33 Admin Console reads inert release metadata without parsing the WordPre
   assert.equal(adminSource.includes('readme.txt'), false);
 });
 
+test('R34 motion-policy persistence uses one exact authenticated write surface', () => {
+  assert.match(
+    implementationSource,
+    /LOCALIS_CIM_MOTION_POLICY_OPTION', 'localis_cim_motion_policy'/
+  );
+  assert.match(implementationSource, /LOCALIS_CIM_MOTION_POLICY_SYSTEM', 'system'/);
+  assert.match(implementationSource, /LOCALIS_CIM_MOTION_POLICY_REDUCE', 'reduce'/);
+  assert.match(implementationSource, /function localis_cim_get_motion_policy\(\)/);
+  assert.match(adminSource, /function localis_cim_admin_update_motion_policy/);
+  assert.match(
+    adminSource,
+    /update_option\( LOCALIS_CIM_MOTION_POLICY_OPTION, \$motion_policy, false \)/
+  );
+  assert.equal((adminSource.match(/update_option\(/g) ?? []).length, 1);
+  assert.match(adminSource, /check_admin_referer\( 'localis_cim_update_motion_policy' \)/);
+  assert.match(
+    adminSource,
+    /sanitize_key\( wp_unslash\( \$_POST\['motion_policy'\] \) \)/
+  );
+  assert.match(adminSource, /admin_post_localis_cim_update_motion_policy/);
+  assert.match(adminSource, /current_user_can\( 'manage_options' \)/);
+  assert.match(adminSource, /Host configuration/);
+  assert.match(adminSource, /Force reduced motion/);
+});
+
+test('R34 motion policy projects through the external bootstrap into Host composition', () => {
+  assert.match(implementationSource, /function localis_cim_project_motion_policy_script_tag/);
+  assert.match(implementationSource, /'script_loader_tag'/);
+  assert.match(implementationSource, /data-cim-motion-policy/);
+  assert.match(bootstrapSource, /getAttribute\('data-cim-motion-policy'\)/);
+  assert.match(
+    bootstrapSource,
+    /searchParams\.set\('cim-motion-policy', motionPolicy\)/
+  );
+  assert.match(
+    bootstrapModuleSource,
+    /searchParams\.get\('cim-motion-policy'\) === 'reduce'/
+  );
+  assert.match(bootstrapModuleSource, /createWordPressMotionPolicyMatchMedia/);
+  assert.match(bootstrapModuleSource, /matchMedia,/);
+  assert.match(bootstrapModuleSource, /searchParams\.delete\('cim-motion-policy'\)/);
+});
+
+test('R34 uninstall cleanup is exact and isolated', () => {
+  assert.match(uninstallSource, /defined\( 'WP_UNINSTALL_PLUGIN' \)/);
+  assert.match(uninstallSource, /delete_option\( 'localis_cim_motion_policy' \)/);
+  assert.equal((uninstallSource.match(/delete_option\(/g) ?? []).length, 1);
+});
+
 test('R32 PHP management surface has no renderer execution, Runtime semantics, or network health probing', () => {
   const forbidden = [
-    'update_option(',
     'add_option(',
     'delete_option(',
     'register_setting(',

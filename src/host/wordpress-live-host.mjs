@@ -100,6 +100,31 @@ function assertMatchMedia(matchMedia) {
   }
 }
 
+function assertBoolean(value, label) {
+  if (typeof value !== 'boolean') fail(label + ' must be boolean.');
+}
+
+export function createWordPressMotionPolicyMatchMedia(matchMedia, forceReducedMotion) {
+  assertMatchMedia(matchMedia);
+  assertBoolean(forceReducedMotion, 'WordPress motion-policy forceReducedMotion');
+
+  if (!forceReducedMotion) return matchMedia;
+
+  return function forcedReducedMotionMatchMedia() {
+    return Object.freeze({
+      matches: true,
+      addEventListener(type, listener) {
+        if (type !== 'change') fail('Forced reduced-motion media query supports only change listeners.');
+        if (typeof listener !== 'function') fail('Forced reduced-motion listener must be a function.');
+      },
+      removeEventListener(type, listener) {
+        if (type !== 'change') fail('Forced reduced-motion media query supports only change listeners.');
+        if (typeof listener !== 'function') fail('Forced reduced-motion listener must be a function.');
+      }
+    });
+  };
+}
+
 function assertRoot(root) {
   if (root === null || (typeof root !== 'object' && typeof root !== 'function')) {
     fail('WordPress CiM root must be an object.');

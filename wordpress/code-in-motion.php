@@ -7,9 +7,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LOCALIS_CIM_PLUGIN_VERSION', '0.1.5' );
+define( 'LOCALIS_CIM_PLUGIN_VERSION', '0.1.6' );
 define( 'LOCALIS_CIM_SCRIPT_HANDLE', 'localis-cim-wordpress' );
 define( 'LOCALIS_CIM_STYLE_HANDLE', 'localis-cim-wordpress' );
+define( 'LOCALIS_CIM_MOTION_POLICY_OPTION', 'localis_cim_motion_policy' );
+define( 'LOCALIS_CIM_MOTION_POLICY_SYSTEM', 'system' );
+define( 'LOCALIS_CIM_MOTION_POLICY_REDUCE', 'reduce' );
+
+/**
+ * Validate the site motion policy.
+ *
+ * @param mixed $value Candidate policy.
+ * @return bool
+ */
+function localis_cim_is_motion_policy( $value ) {
+	return LOCALIS_CIM_MOTION_POLICY_SYSTEM === $value
+		|| LOCALIS_CIM_MOTION_POLICY_REDUCE === $value;
+}
+
+/**
+ * Read the site motion policy.
+ *
+ * Absence and malformed stored values both resolve to system behavior.
+ *
+ * @return string
+ */
+function localis_cim_get_motion_policy() {
+	$value = get_option(
+		LOCALIS_CIM_MOTION_POLICY_OPTION,
+		LOCALIS_CIM_MOTION_POLICY_SYSTEM
+	);
+
+	return localis_cim_is_motion_policy( $value )
+		? $value
+		: LOCALIS_CIM_MOTION_POLICY_SYSTEM;
+}
 
 /**
  * Enqueue the external CiM browser entry and stylesheet.
@@ -34,6 +66,33 @@ function localis_cim_enqueue_assets() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'localis_cim_enqueue_assets' );
+
+/**
+ * Project the site motion policy onto CiM's external bootstrap script.
+ *
+ * @param string $tag    Script element HTML.
+ * @param string $handle WordPress script handle.
+ * @return string
+ */
+function localis_cim_project_motion_policy_script_tag( $tag, $handle ) {
+	if ( LOCALIS_CIM_SCRIPT_HANDLE !== $handle ) {
+		return $tag;
+	}
+
+	$attribute = sprintf(
+		' data-cim-motion-policy="%s" src=',
+		esc_attr( localis_cim_get_motion_policy() )
+	);
+	$projected = preg_replace( '/\ssrc=/', $attribute, $tag, 1 );
+
+	return is_string( $projected ) ? $projected : $tag;
+}
+add_filter(
+	'script_loader_tag',
+	'localis_cim_project_motion_policy_script_tag',
+	10,
+	2
+);
 
 /**
  * Validate canonical CiM identifiers accepted by the shortcode edge.
