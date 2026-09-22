@@ -326,7 +326,7 @@ test('site forced reduced motion is a floor over browser preference', async () =
   assert.equal(recording.contexts[0].reducedMotion, true);
 
   await host.dispose();
-  assert.equal(media.removeCalls(), 1);
+  assert.equal(media.removeCalls(), 0);
   assert.equal(media.listenerCount(), 0);
 });
 
