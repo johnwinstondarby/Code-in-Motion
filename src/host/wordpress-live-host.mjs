@@ -9,7 +9,6 @@ import {
 export const WORDPRESS_LIVE_HOST_OPTIONS_KEYS = Object.freeze([
   'document',
   'matchMedia',
-  'forceReducedMotion',
   'experienceLoader',
   'rendererResolver',
   'clockFactory',
@@ -45,7 +44,6 @@ const HOST_DEEP_LINK_DIAGNOSTIC_CODE = 'CIM-HST-002';
 const HOST_MOUNT_DIAGNOSTIC_CODE = 'CIM-HST-004';
 const RENDERER_RESOLUTION_DIAGNOSTIC_CODE = 'CIM-RND-001';
 const EXPERIENCE_FAULT_CODE_PATTERN = /^CIM-EXP-\d{3}$/;
-const NOOP_UNSUBSCRIBE = Object.freeze(() => false);
 
 function fail(message) {
   throw new TypeError(message);
@@ -106,26 +104,25 @@ function assertBoolean(value, label) {
   if (typeof value !== 'boolean') fail(label + ' must be boolean.');
 }
 
-function createForcedReducedMotionSource(browserSource) {
-  const preference = Object.freeze({
-    read() {
-      return true;
-    }
-  });
+export function createWordPressMotionPolicyMatchMedia(matchMedia, forceReducedMotion) {
+  assertMatchMedia(matchMedia);
+  assertBoolean(forceReducedMotion, 'WordPress motion-policy forceReducedMotion');
 
-  const changes = Object.freeze({
-    subscribe(listener) {
-      if (typeof listener !== 'function') {
-        fail('Forced reduced-motion change subscriber must be a function.');
+  if (!forceReducedMotion) return matchMedia;
+
+  return function forcedReducedMotionMatchMedia() {
+    return Object.freeze({
+      matches: true,
+      addEventListener(type, listener) {
+        if (type !== 'change') fail('Forced reduced-motion media query supports only change listeners.');
+        if (typeof listener !== 'function') fail('Forced reduced-motion listener must be a function.');
+      },
+      removeEventListener(type, listener) {
+        if (type !== 'change') fail('Forced reduced-motion media query supports only change listeners.');
+        if (typeof listener !== 'function') fail('Forced reduced-motion listener must be a function.');
       }
-      return NOOP_UNSUBSCRIBE;
-    },
-    dispose() {
-      return browserSource.changes.dispose();
-    }
-  });
-
-  return Object.freeze({ preference, changes });
+    });
+  };
 }
 
 function assertRoot(root) {
@@ -352,7 +349,6 @@ export function createWordPressLiveHost(optionsInput) {
 
   const document = dataValue(optionsInput, 'document', 'WordPress live Host options');
   const matchMedia = dataValue(optionsInput, 'matchMedia', 'WordPress live Host options');
-  const forceReducedMotion = dataValue(optionsInput, 'forceReducedMotion', 'WordPress live Host options');
   const experienceLoader = dataValue(optionsInput, 'experienceLoader', 'WordPress live Host options');
   const rendererResolver = dataValue(optionsInput, 'rendererResolver', 'WordPress live Host options');
   const clockFactory = dataValue(optionsInput, 'clockFactory', 'WordPress live Host options');
@@ -361,7 +357,6 @@ export function createWordPressLiveHost(optionsInput) {
 
   assertDocument(document);
   assertMatchMedia(matchMedia);
-  assertBoolean(forceReducedMotion, 'WordPress Host forceReducedMotion');
   const { load } = readFrozenFunctionCapability(
     experienceLoader,
     WORDPRESS_EXPERIENCE_LOADER_KEYS,
@@ -548,10 +543,7 @@ export function createWordPressLiveHost(optionsInput) {
     }
 
     try {
-      const browserReducedMotionSource = createReducedMotionPreferenceSource({ matchMedia });
-      reducedMotionSource = forceReducedMotion
-        ? createForcedReducedMotionSource(browserReducedMotionSource)
-        : browserReducedMotionSource;
+      reducedMotionSource = createReducedMotionPreferenceSource({ matchMedia });
     } catch (error) {
       for (const descriptor of descriptors) {
         projectFallback(descriptor.root, report, descriptor.instanceId);

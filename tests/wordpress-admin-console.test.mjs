@@ -119,7 +119,8 @@ test('R34 motion policy projects through the external bootstrap into Host compos
     bootstrapModuleSource,
     /searchParams\.get\('cim-motion-policy'\) === 'reduce'/
   );
-  assert.match(bootstrapModuleSource, /forceReducedMotion,/);
+  assert.match(bootstrapModuleSource, /createWordPressMotionPolicyMatchMedia/);
+  assert.match(bootstrapModuleSource, /matchMedia,/);
   assert.match(bootstrapModuleSource, /searchParams\.delete\('cim-motion-policy'\)/);
 });
 

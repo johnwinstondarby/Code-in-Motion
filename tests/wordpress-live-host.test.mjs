@@ -10,7 +10,8 @@ import {
   WORDPRESS_LIVE_HOST_OPTIONS_KEYS,
   WORDPRESS_MOUNT_RESULT_KEYS,
   WORDPRESS_RENDERER_RESOLVER_KEYS,
-  createWordPressLiveHost
+  createWordPressLiveHost,
+  createWordPressMotionPolicyMatchMedia
 } from '../src/host/wordpress-live-host.mjs';
 
 function experienceFixture(id = 'wordpress-host-experience') {
@@ -207,7 +208,6 @@ function capabilityHarness({
 function hostOptions({
   roots = [rootHarness().root],
   media = mediaHarness(),
-  forceReducedMotion = false,
   diagnostics = diagnosticsHarness(),
   load = async (id) => experienceFixture(id),
   resolve = async () => rendererFixture().renderer,
@@ -220,7 +220,6 @@ function hostOptions({
     options: {
       document,
       matchMedia: media.matchMedia,
-      forceReducedMotion,
       experienceLoader: capabilities.experienceLoader,
       rendererResolver: capabilities.rendererResolver,
       clockFactory: capabilities.clockFactory,
@@ -304,14 +303,18 @@ test('site forced reduced motion is a floor over browser preference', async () =
   const source = hostOptions({
     roots: [root.root],
     media,
-    forceReducedMotion: true,
     resolve: async () => recording.renderer
   });
+  source.options.matchMedia = createWordPressMotionPolicyMatchMedia(
+    media.matchMedia,
+    true
+  );
   const host = createWordPressLiveHost(source.options);
 
   assert.deepEqual(await host.mount(), { mounted: 1, fallback: 0 });
   assert.equal(recording.contexts.length, 1);
   assert.equal(recording.contexts[0].reducedMotion, true);
+  assert.equal(media.queryCalls(), 0);
 
   media.setMatches(true);
   media.emit();
@@ -572,21 +575,14 @@ test('WordPress live Host rejects widened or mutable injected production capabil
     resolve: async () => rendererFixture().renderer
   });
 
-  assert.throws(() => createWordPressLiveHost({
-    document,
-    matchMedia: media.matchMedia,
-    forceReducedMotion: 'reduce',
-    experienceLoader: valid.experienceLoader,
-    rendererResolver: valid.rendererResolver,
-    clockFactory: valid.clockFactory,
-    entryResolver: valid.entryResolver,
-    diagnostics: diagnostics.diagnostics
-  }), /forceReducedMotion must be boolean/);
+  assert.throws(
+    () => createWordPressMotionPolicyMatchMedia(media.matchMedia, 'reduce'),
+    /forceReducedMotion must be boolean/
+  );
 
   assert.throws(() => createWordPressLiveHost({
     document,
     matchMedia: media.matchMedia,
-    forceReducedMotion: false,
     experienceLoader: { load: valid.experienceLoader.load },
     rendererResolver: valid.rendererResolver,
     clockFactory: valid.clockFactory,
@@ -597,7 +593,6 @@ test('WordPress live Host rejects widened or mutable injected production capabil
   assert.throws(() => createWordPressLiveHost({
     document,
     matchMedia: media.matchMedia,
-    forceReducedMotion: false,
     experienceLoader: valid.experienceLoader,
     rendererResolver: Object.freeze({ resolve: valid.rendererResolver.resolve, extra() {} }),
     clockFactory: valid.clockFactory,
@@ -608,7 +603,6 @@ test('WordPress live Host rejects widened or mutable injected production capabil
   assert.throws(() => createWordPressLiveHost({
     document,
     matchMedia: media.matchMedia,
-    forceReducedMotion: false,
     experienceLoader: valid.experienceLoader,
     rendererResolver: valid.rendererResolver,
     clockFactory: valid.clockFactory,

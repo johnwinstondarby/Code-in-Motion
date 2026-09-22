@@ -163,7 +163,8 @@ async function run() {
   assertContains(bootstrapSource, "searchParams.set('cim-motion-policy', motionPolicy)", 'R34 bootstrap motion-policy handoff');
   assertContains(bootstrapModuleSource, "searchParams.get('cim-motion-policy') === 'reduce'", 'R34 module motion-policy reduction');
   assertContains(bootstrapModuleSource, "searchParams.delete('cim-motion-policy')", 'R34 module asset-URL policy stripping');
-  assertContains(bootstrapModuleSource, 'forceReducedMotion,', 'R34 Host force-reduced-motion handoff');
+  assertContains(bootstrapModuleSource, 'createWordPressMotionPolicyMatchMedia', 'R34 Host motion-policy composition');
+  assertContains(bootstrapModuleSource, 'matchMedia,', 'R34 unchanged live Host matchMedia handoff');
 
   await verifyEnvironmentBaseline();
   await verifyPlaygroundBaseline();

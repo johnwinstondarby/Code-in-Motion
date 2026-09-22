@@ -3,7 +3,10 @@ import {
   createWordPressDeepLinkResolver,
   parseCiMDeepLinkFragment
 } from '../../src/host/wordpress-deep-link.mjs';
-import { createWordPressLiveHost } from '../../src/host/wordpress-live-host.mjs';
+import {
+  createWordPressLiveHost,
+  createWordPressMotionPolicyMatchMedia
+} from '../../src/host/wordpress-live-host.mjs';
 import {
   createWordPressClockFactory,
   createWordPressExperienceLoader,
@@ -20,6 +23,10 @@ const experienceAssets = new Map(
 const ROOT_SELECTOR = '[data-cim-experience]';
 const moduleUrl = new URL(import.meta.url);
 const forceReducedMotion = moduleUrl.searchParams.get('cim-motion-policy') === 'reduce';
+const matchMedia = createWordPressMotionPolicyMatchMedia(
+  (query) => window.matchMedia(query),
+  forceReducedMotion
+);
 
 function versionedUrl(relativePath) {
   const url = new URL(relativePath, moduleUrl);
@@ -64,8 +71,7 @@ const diagnostics = Object.freeze({
 
 const host = createWordPressLiveHost({
   document,
-  matchMedia: (query) => window.matchMedia(query),
-  forceReducedMotion,
+  matchMedia,
   experienceLoader,
   rendererResolver,
   clockFactory,
