@@ -101,6 +101,39 @@ Any new or changed path beneath `wp-content/` after the CiM lifecycle is a findi
 
 Files written to `uploads/`, cache directories, or third-party directories remain in scope.
 
+## First live differential finding
+
+The first successfully executing R34 lifecycle-differential run was Browser E2E run `35669391174`, job `106562218695`, on branch head `b55e1feb8723132803cb8854e5fdb46df1394f78`.
+
+Both lifecycle executions completed successfully. The comparison then reported exactly one finding:
+
+`database:options:cron - CiM lifecycle delta is not value-equivalent to the exact inert-control delta.`
+
+Inspection of all four retained snapshots established:
+
+- control and CiM changed the same database locator set;
+- each lifecycle produced five added locators, one changed locator, and zero removed locators;
+- database table-name sets were identical across all four snapshots;
+- filesystem snapshots contained 1,432 files and zero before/after changes in either lifecycle;
+- the sole mismatch was `options:cron`;
+- both cron deltas added the WordPress-owned `wp_delete_temp_updater_backups` weekly event with no arguments;
+- the raw cron option differed only in absolute timestamp keys because the two isolated lifecycles ran at different wall-clock times;
+- both control and CiM installed under the same basename, `code-in-motion/code-in-motion.php`, so WordPress plugin-identity bookkeeping did not require slug normalization.
+
+The finding was classified as WordPress lifecycle timing churn rather than CiM persistence.
+
+The comparator was made more precise rather than more permissive:
+
+- normalization remains scoped to exact control-observed database locators and JSON paths;
+- only control-observed timestamp-sized numeric values or keys normalize;
+- timestamp buckets are flattened into their hook/payload entries and compared as a canonically sorted multiset;
+- cron schedule names, intervals, arguments, and hook names remain under exact comparison;
+- intervals such as `43200`, `86400`, and `604800` do not meet the timestamp threshold and therefore remain exact;
+- a new hook, changed interval, changed arguments, or changed schedule remains a finding;
+- identical cron payloads remain equivalent if their absolute timestamps or relative timestamp ordering differ between isolated runs.
+
+The failed first comparison and its retained evidence are part of the R34 record because they demonstrate that the strengthened gate detected a real control/CiM difference and was corrected by increasing comparison precision rather than by adding an exclusion.
+
 ## Stateful feature precondition
 
 R34 must not create a persistent setting solely to exercise the gate.

@@ -117,6 +117,58 @@ test('R34 differential flattens only control-observed timestamp buckets and stil
   assert.equal(bad.findings.length, 1);
   assert.equal(bad.findings[0].locator, 'options:cron');
 });
+test('R34 differential compares identical cron payloads as a multiset across timestamp order', () => {
+  const controlBefore = { version: 2 };
+  const controlAfter = {
+    '1780000004': {
+      wp_delete_temp_updater_backups: {
+        schedule: 'weekly',
+        args: [],
+        interval: 604800
+      }
+    },
+    '1780000008': {
+      wp_update_plugins: {
+        schedule: 'twicedaily',
+        args: [],
+        interval: 43200
+      }
+    },
+    version: 2
+  };
+  const cimBefore = { version: 2 };
+  const cimAfter = {
+    '1780000104': {
+      wp_update_plugins: {
+        schedule: 'twicedaily',
+        args: [],
+        interval: 43200
+      }
+    },
+    '1780000108': {
+      wp_delete_temp_updater_backups: {
+        schedule: 'weekly',
+        args: [],
+        interval: 604800
+      }
+    },
+    version: 2
+  };
+
+  const result = compareLifecycleDifferentials({
+    controlBefore: snapshot({ records: [{ locator: 'options:cron', value: controlBefore }] }),
+    controlAfter: snapshot({ records: [{ locator: 'options:cron', value: controlAfter }] }),
+    cimBefore: snapshot({ records: [{ locator: 'options:cron', value: cimBefore }] }),
+    cimAfter: snapshot({ records: [{ locator: 'options:cron', value: cimAfter }] })
+  });
+
+  assert.equal(result.findings.length, 0);
+  assert.equal(
+    result.control_exclusions[0].normalization.mode,
+    'control-derived-numeric-paths'
+  );
+});
+
 test('R34 differential rejects an extra generic database write', () => {
   const result = compareLifecycleDifferentials({
     controlBefore: snapshot(),

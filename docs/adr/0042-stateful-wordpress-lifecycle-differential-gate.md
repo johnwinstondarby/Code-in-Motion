@@ -164,6 +164,8 @@ The normalization, if any, must be narrow, deterministic, and applied only to ex
 
 A broad value-normalization rule is prohibited.
 
+When WordPress stores time as numeric object keys, normalization may remove only the control-observed timestamp component at that exact locator and JSON path. Payloads from normalized timestamp buckets are compared as a canonically sorted multiset so wall-clock timing and relative timestamp ordering cannot hide or manufacture a lifecycle difference.
+
 Examples:
 
 - `active_plugins` must equal its baseline after deletion;
