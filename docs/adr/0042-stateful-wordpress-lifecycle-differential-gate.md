@@ -52,7 +52,22 @@ This commit must not introduce an option, transient, table, metadata write, or p
 
 The first persistent CiM setting or other state write lands in a separate commit before uninstall cleanup is added.
 
-The strengthened lifecycle differential is expected to fail on this commit.
+Before Commit B is created, the governing stateful-feature decision record must predict the expected lifecycle finding:
+
+- exact database locator or filesystem path;
+- expected differential kind;
+- expected value/state after activation;
+- confirmation that the locator/path is absent from the inert-control differential.
+
+For a first WordPress option, the expected negative-control shape is:
+
+`scope: database → locator: options:<exact-option-name> → kind: added`
+
+The exact option name must be the production name that would ship. A deliberately generic production name must not be invented to strengthen the test. Generic-name coverage belongs in verification tooling; the R34 differential already carries a hostile `options:some_library_state` regression proving namespace independence.
+
+The strengthened lifecycle differential is expected to fail on Commit B for the predicted finding.
+
+A failure at a different locator or for a different reason is itself a finding and must be investigated before Commit C.
 
 The failing exact-head workflow evidence must be retained in the R34 QA record.
 
@@ -62,9 +77,38 @@ This is deliberate negative-control evidence that the new tripwire detects omitt
 
 The matching uninstall cleanup and any required migration/lifecycle code land in a later commit.
 
-The same lifecycle differential must return to green.
+For the first ordinary configuration option, lifecycle semantics are uninstall-only unless the stateful-feature decision record establishes a different product contract:
+
+- activation or first use may create/update the option;
+- deactivation preserves the option and its value;
+- uninstall/delete removes the option.
+
+The lifecycle workflow must therefore capture an intermediate post-deactivation snapshot before delete. For uninstall-only state, Commit B and Commit C must prove that the option is still present with the expected value after deactivation. Commit C must additionally prove that it is absent after uninstall/delete.
+
+Cleanup wired to deactivation is a lifecycle defect for uninstall-only state because it destroys configuration during a reversible plugin disable.
+
+The same final lifecycle differential must return to green after uninstall cleanup.
 
 The failing Commit B must remain in branch history. It must not be amended away, squashed into Commit C, or replaced by a synthetic unit test.
+
+## Static persistence guard transition
+
+R33 and Commit A statically reject WordPress persistence APIs because the plugin is state-free.
+
+Commit B must not disable that guard wholesale.
+
+The stateful-feature decision record must identify the exact production file, exact persistence API, and exact persistent locator authorized by the new state contract.
+
+Static verification may then allow only that specific write surface while continuing to reject all other option, transient, metadata, table, and filesystem persistence paths.
+
+For an option-backed first state, the preferred static rule is:
+
+- allow the approved option API only in the named production file;
+- require the approved literal option name at that call site where practical;
+- continue rejecting the same API everywhere else;
+- continue rejecting all other persistence API families.
+
+Commit C extends the same surgical rule to the exact uninstall cleanup surface. Cleanup permission does not widen write permission.
 
 ## Stateful-feature precondition
 
@@ -265,9 +309,15 @@ The first stateful checkpoint must prove:
 - no blanket transient exclusion exists;
 - value-aware comparison is enforced;
 - the first state-writing commit is separate from cleanup;
+- the expected Commit B finding is named before the state write lands;
+- Commit B fails at the predicted exact locator/path and differential kind;
+- a different Commit B failure is investigated rather than accepted as expected-red evidence;
+- an intermediate post-deactivation snapshot proves uninstall-only state survives deactivation;
+- static persistence verification is widened only by exact file/API/locator authorization;
 - that state-writing commit fails the lifecycle differential;
 - the failure evidence is retained;
 - cleanup lands in a later commit;
-- the same lifecycle differential returns to green;
+- cleanup is absent from deactivation for uninstall-only state;
+- the same final lifecycle differential returns to green;
 - the negative-control commit remains reachable in branch history;
 - no persistent setting is introduced without a canonical CiM policy seam.

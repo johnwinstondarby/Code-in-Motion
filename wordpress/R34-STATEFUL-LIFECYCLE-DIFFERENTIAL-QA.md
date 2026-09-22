@@ -192,11 +192,62 @@ Before Commit B, the proposed state must have a canonical CiM Host/runtime or pr
 
 If no canonical persistent seam is established, R34 closes or pauses after Commit A and ADR 0042 remains the prerequisite for the later stateful checkpoint.
 
+## Commit B prediction contract
+
+Before Commit B is written, the stateful-feature decision record must name:
+
+- the canonical product/Host policy represented by the state;
+- the exact production persistence locator;
+- the production file and persistence API that will write it;
+- the expected value after activation/first use;
+- the expected differential kind;
+- the expected deactivation behavior;
+- confirmation that the exact locator/path is absent from the current six-item inert-control exclusion set.
+
+For an option-backed first state, the predicted red finding must use the production option name and should have this form:
+
+`database:options:<exact-option-name> — kind: added — present only in CiM final delta`
+
+The hostile unit test using `options:some_library_state` remains the proof that the comparator no longer relies on CiM naming. Production code must use the actual product option name.
+
+If Commit B fails anywhere other than the predicted state locator, the failure is investigated before cleanup work begins.
+
+## Deactivation and uninstall semantics
+
+For an ordinary configuration option, the default R34 lifecycle contract is:
+
+- deactivation preserves configuration;
+- uninstall/delete removes configuration.
+
+The lifecycle workflow must add a post-deactivation snapshot before delete.
+
+Commit B must prove the new state exists after deactivation.
+
+Commit C must prove the same state exists after deactivation and is absent after delete.
+
+An option disappearing at deactivation is a failure unless the feature decision record explicitly defines deactivation cleanup semantics.
+
+## Static guard transition
+
+The current static scanner remains authoritative during the transition to state ownership.
+
+Commit B may replace the blanket prohibition only with an exact allowlist for:
+
+- one named production file;
+- one approved persistence API;
+- one exact option/locator where static analysis can verify it.
+
+All other persistence APIs and call sites remain forbidden.
+
+Commit C adds only the exact uninstall cleanup authorization required by the same state contract.
+
+No broad removal of the R33 persistence guard is acceptable.
+
 ## Negative-control evidence
 
 Commit B must intentionally omit cleanup for the first real state write.
 
-The lifecycle workflow is expected to fail.
+The lifecycle workflow is expected to fail at the predeclared locator.
 
 The QA record must capture:
 
@@ -233,20 +284,29 @@ The first stateful checkpoint cannot close until all of the following are proven
 19. `active_plugins` returns exactly to baseline.
 20. Control-observed changed values require equivalent CiM deltas.
 21. Commit B introduces the first canonical persistent CiM state.
-22. Commit B does not include uninstall cleanup.
-23. Commit B fails the live lifecycle differential.
-24. Commit B's failure is retained as evidence.
-25. Commit B remains reachable in branch history.
-26. Commit C adds the required cleanup.
-27. Commit C passes the same lifecycle differential.
-28. No unrelated filesystem residue remains under `wp-content/`.
-29. No unrelated database residue remains.
-30. The final stateful feature has an explicit persistence namespace/schema.
-31. The final stateful feature has migration semantics if needed.
-32. The final stateful feature has uninstall semantics.
-33. Existing R33 exact-ZIP lifecycle behavior remains covered.
-34. Final exact-head protected gates pass before merge.
-35. Integration uses a true merge commit into protected `main`.
+22. The exact Commit B residue locator and differential kind are recorded before implementation.
+23. The Commit B locator is absent from the inert-control exclusion set.
+24. The production state name is chosen from product semantics rather than test convenience.
+25. Commit B static verification authorizes only the exact approved write surface.
+26. Commit B does not include uninstall cleanup.
+27. Commit B post-deactivation snapshot proves uninstall-only state survives deactivation.
+28. Commit B fails the live lifecycle differential at the predicted locator and kind.
+29. A Commit B failure at any other locator is investigated separately.
+30. Commit B's failure is retained as evidence.
+31. Commit B remains reachable in branch history.
+32. Commit C adds the required uninstall cleanup.
+33. Commit C does not erase uninstall-only configuration at deactivation.
+34. Commit C post-deactivation snapshot still contains the state.
+35. Commit C final post-delete snapshot no longer contains the state.
+36. Commit C passes the same lifecycle differential.
+37. No unrelated filesystem residue remains under `wp-content/`.
+38. No unrelated database residue remains.
+39. The final stateful feature has an explicit persistence namespace/schema.
+40. The final stateful feature has migration semantics if needed.
+41. The final stateful feature has uninstall semantics.
+42. Existing R33 exact-ZIP lifecycle behavior remains covered.
+43. Final exact-head protected gates pass before merge.
+44. Integration uses a true merge commit into protected `main`.
 
 ## Stop conditions
 
@@ -258,6 +318,9 @@ Stop the stateful implementation if:
 - the control plugin itself writes state;
 - the filesystem comparison omits non-plugin `wp-content/` paths;
 - the first setting has no canonical CiM policy owner;
+- the predicted Commit B locator/kind has not been written down before implementation;
+- the static persistence guard is broadly disabled instead of surgically widened;
+- uninstall-only state disappears at deactivation;
 - cleanup is bundled into the first state-write commit;
 - the expected-red evidence is lost or rewritten from branch history.
 
