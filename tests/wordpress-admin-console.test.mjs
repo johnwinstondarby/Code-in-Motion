@@ -69,9 +69,29 @@ test('R33 Admin Console reads inert release metadata without parsing the WordPre
   assert.equal(adminSource.includes('readme.txt'), false);
 });
 
+test('R34 motion-policy persistence uses one exact authenticated write surface', () => {
+  assert.match(
+    implementationSource,
+    /LOCALIS_CIM_MOTION_POLICY_OPTION', 'localis_cim_motion_policy'/
+  );
+  assert.match(implementationSource, /LOCALIS_CIM_MOTION_POLICY_SYSTEM', 'system'/);
+  assert.match(implementationSource, /LOCALIS_CIM_MOTION_POLICY_REDUCE', 'reduce'/);
+  assert.match(implementationSource, /function localis_cim_get_motion_policy\(\)/);
+  assert.match(adminSource, /function localis_cim_admin_update_motion_policy/);
+  assert.match(
+    adminSource,
+    /update_option\( LOCALIS_CIM_MOTION_POLICY_OPTION, \$motion_policy, false \)/
+  );
+  assert.equal((adminSource.match(/update_option\(/g) ?? []).length, 1);
+  assert.match(adminSource, /check_admin_referer\( 'localis_cim_update_motion_policy' \)/);
+  assert.match(adminSource, /admin_post_localis_cim_update_motion_policy/);
+  assert.match(adminSource, /current_user_can\( 'manage_options' \)/);
+  assert.match(adminSource, /Host configuration/);
+  assert.match(adminSource, /Force reduced motion/);
+});
+
 test('R32 PHP management surface has no renderer execution, Runtime semantics, or network health probing', () => {
   const forbidden = [
-    'update_option(',
     'add_option(',
     'delete_option(',
     'register_setting(',

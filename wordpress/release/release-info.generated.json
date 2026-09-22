@@ -1,12 +1,12 @@
 {
   "schema": "localis.cim/wordpress-release-info/v1",
-  "stable_tag": "0.1.5",
+  "stable_tag": "0.1.6",
   "tested_up_to": "7.1",
   "current_release": {
-    "version": "0.1.5",
+    "version": "0.1.6",
     "notes": [
-      "Adds state-free lifecycle residue verification across install, activation, deactivation, and uninstall.",
-      "Adds canonical release metadata to the read-only WordPress Admin Console."
+      "Adds site reduced-motion policy administration with System preference and Force reduced motion values.",
+      "Establishes the first persistent WordPress host configuration under the R34 lifecycle differential."
     ]
   },
   "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"

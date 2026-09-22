@@ -11,6 +11,8 @@ const WP_ENV_PATH = resolve(ROOT, '.wp-env.json');
 const PACKAGE_PATH = resolve(ROOT, 'package.json');
 const PLAYGROUND_BLUEPRINT_PATH = resolve(WORDPRESS_DIR, 'playground', 'blueprint.json');
 const PLAYGROUND_PREVIEW_WORKFLOW_PATH = resolve(ROOT, '.github', 'workflows', 'playground-preview.yml');
+const R34_APPROVED_MOTION_POLICY_WRITE =
+  'update_option( LOCALIS_CIM_MOTION_POLICY_OPTION, $motion_policy, false )';
 const REQUIRED_EXTERNAL_ASSETS = Object.freeze([
   resolve(WORDPRESS_DIR, 'assets', 'bootstrap.js'),
   resolve(WORDPRESS_DIR, 'assets', 'bootstrap-module.mjs'),
@@ -102,6 +104,8 @@ async function run() {
   assertContains(entry, 'data-cim-experience', 'canonical Experience attribute');
   assertContains(entry, 'data-cim-renderer-root', 'canonical renderer-root attribute');
   assertContains(entry, "require_once __DIR__ . '/admin-console.php';", 'Admin Console module delegation');
+  assertContains(entry, "LOCALIS_CIM_MOTION_POLICY_OPTION', 'localis_cim_motion_policy'", 'R34 motion-policy option constant');
+  assertContains(entry, 'function localis_cim_get_motion_policy()', 'R34 motion-policy reader');
 
   const adminConsole = await readFile(ADMIN_CONSOLE_PATH, 'utf8');
   assertContains(adminConsole, "add_action( 'admin_menu', 'localis_cim_register_admin_menu' );", 'Admin Console menu hook');
@@ -117,6 +121,10 @@ async function run() {
   assertContains(adminConsole, 'release/release-info.generated.json', 'R33 inert release information');
   assertContains(adminConsole, 'localis_cim_read_admin_release_info', 'R33 release-info reader');
   assertContains(adminConsole, "esc_url( $release_info['support_uri'] )", 'R33 escaped support URI');
+  assertContains(adminConsole, 'localis_cim_admin_update_motion_policy', 'R34 motion-policy writer');
+  assertContains(adminConsole, "check_admin_referer( 'localis_cim_update_motion_policy' )", 'R34 motion-policy nonce check');
+  assertContains(adminConsole, "'admin_post_localis_cim_update_motion_policy'", 'R34 authenticated admin-post action');
+  assertContains(adminConsole, R34_APPROVED_MOTION_POLICY_WRITE, 'R34 exact motion-policy persistence call');
   if (adminConsole.includes('readme.txt')) {
     throw new Error('WordPress packaging gate: Admin Console must not parse readme.txt.');
   }
@@ -154,7 +162,6 @@ async function run() {
     'register_uninstall_hook(',
     'register_setting(',
     'add_option(',
-    'update_option(',
     'delete_option(',
     'add_site_option(',
     'update_site_option(',
@@ -191,9 +198,22 @@ async function run() {
         throw new Error(`WordPress packaging gate: ${label} is forbidden in ${path}.`);
       }
     }
+    const updateOptionCalls = source.match(/update_option\(/g) ?? [];
+    if (updateOptionCalls.length > 0) {
+      if (
+        path !== ADMIN_CONSOLE_PATH ||
+        updateOptionCalls.length !== 1 ||
+        !source.includes(R34_APPROVED_MOTION_POLICY_WRITE)
+      ) {
+        throw new Error(
+          `WordPress packaging gate: R34 permits exactly one approved motion-policy update_option() call in ${ADMIN_CONSOLE_PATH}.`
+        );
+      }
+    }
+
     for (const token of statefulTokens) {
       if (source.includes(token)) {
-        throw new Error(`WordPress packaging gate: R33 state-free lifecycle forbids ${token} in ${path}.`);
+        throw new Error(`WordPress packaging gate: R34 persistence boundary forbids ${token} in ${path}.`);
       }
     }
     for (const token of updateTokens) {

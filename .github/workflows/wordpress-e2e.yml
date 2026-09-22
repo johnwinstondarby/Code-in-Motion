@@ -1197,6 +1197,7 @@ jobs:
           test "$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active$' | tail -n 1)" = "active"
           wp_env run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]R34 differential exercise.[/cim]");' >/dev/null
           wp_env run cli wp plugin deactivate code-in-motion
+          wp_env run cli wp eval-file wp-content/r34-artifact/r34-wordpress-lifecycle-snapshot.php | tail -n 1 > "${CIM_R34_EVIDENCE_DIR}/control-after-deactivate.json"
           wp_env run cli wp plugin delete code-in-motion
           if wp_env run cli wp plugin is-installed code-in-motion >/dev/null 2>&1; then
             echo "R34 inert control remained installed after delete." >&2
@@ -1225,8 +1226,15 @@ jobs:
           wp_env run cli wp plugin install "wp-content/r34-artifact/${ZIP_NAME}" --activate
           test "$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active$' | tail -n 1)" = "active"
           test "$(wp_env run cli wp plugin get code-in-motion --field=version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)" = "${CIM_PLUGIN_VERSION}"
+
+          WRITE_RESULT="$(wp_env run cli wp eval 'echo localis_cim_admin_update_motion_policy("reduce") ? "saved" : "not-saved";' | tail -n 1)"
+          test "${WRITE_RESULT}" = "saved"
+          test "$(wp_env run cli wp option get localis_cim_motion_policy | tail -n 1)" = "reduce"
+
           wp_env run cli wp eval 'echo do_shortcode("[cim experience=\"synthetic-wordpress\"]R34 differential exercise.[/cim]");' >/dev/null
           wp_env run cli wp plugin deactivate code-in-motion
+          test "$(wp_env run cli wp option get localis_cim_motion_policy | tail -n 1)" = "reduce"
+          wp_env run cli wp eval-file wp-content/r34-artifact/r34-wordpress-lifecycle-snapshot.php | tail -n 1 > "${CIM_R34_EVIDENCE_DIR}/cim-after-deactivate.json"
           wp_env run cli wp plugin delete code-in-motion
           if wp_env run cli wp plugin is-installed code-in-motion >/dev/null 2>&1; then
             echo "R34 CiM remained installed after delete." >&2
