@@ -488,11 +488,8 @@ function localis_cim_admin_handle_motion_policy_update() {
 
 	check_admin_referer( 'localis_cim_update_motion_policy' );
 
-	$raw_policy    = isset( $_POST['motion_policy'] )
-		? wp_unslash( $_POST['motion_policy'] )
-		: '';
-	$motion_policy = is_string( $raw_policy )
-		? sanitize_key( $raw_policy )
+	$motion_policy = isset( $_POST['motion_policy'] )
+		? sanitize_key( wp_unslash( $_POST['motion_policy'] ) )
 		: '';
 
 	if ( ! localis_cim_is_motion_policy( $motion_policy ) ) {

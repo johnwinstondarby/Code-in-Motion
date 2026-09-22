@@ -84,6 +84,10 @@ test('R34 motion-policy persistence uses one exact authenticated write surface',
   );
   assert.equal((adminSource.match(/update_option\(/g) ?? []).length, 1);
   assert.match(adminSource, /check_admin_referer\( 'localis_cim_update_motion_policy' \)/);
+  assert.match(
+    adminSource,
+    /sanitize_key\( wp_unslash\( \$_POST\['motion_policy'\] \) \)/
+  );
   assert.match(adminSource, /admin_post_localis_cim_update_motion_policy/);
   assert.match(adminSource, /current_user_can\( 'manage_options' \)/);
   assert.match(adminSource, /Host configuration/);
