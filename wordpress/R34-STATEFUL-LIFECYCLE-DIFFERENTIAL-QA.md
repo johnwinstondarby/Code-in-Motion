@@ -280,6 +280,109 @@ Commit C adds only the exact uninstall cleanup authorization required by the sam
 
 No broad removal of the R33 persistence guard is acceptable.
 
+## Commit B expected-red evidence
+
+The first production state-write commit is:
+
+`3db9adc02e6b622f11ca08505a20e1149e46e403`
+
+Commit message:
+
+`R34: add persistent motion policy without cleanup`
+
+That commit introduced:
+
+- release version `0.1.6`;
+- canonical option `localis_cim_motion_policy`;
+- allowed values `system` and `reduce`;
+- one approved non-autoloaded `update_option()` call in `wordpress/admin-console.php`;
+- authenticated Admin Console mutation through `manage_options`, nonce verification, and `admin-post.php`;
+- no activation-time initialization;
+- no `delete_option()`;
+- no uninstall hook or `uninstall.php`;
+- post-deactivation lifecycle snapshots.
+
+The first exact-head run exposed one unrelated Plugin Check REVIEW finding for input sanitization syntax. It did not change the lifecycle result. The correction landed as:
+
+`994ff50d133daa782024849f7867375a1c8188de`
+
+Commit message:
+
+`R34: sanitize motion policy input at source`
+
+The correction changed only the input-sanitization expression and its static test. It did not change the option name, stored value, persistence API, deactivation semantics, or absence of uninstall cleanup.
+
+The corrected Commit B negative-control checkpoint is therefore:
+
+`994ff50d133daa782024849f7867375a1c8188de`
+
+Exact-head workflow evidence on that checkpoint:
+
+- Verify CiM contracts run `35675261155`: PASS;
+- WordPress Floor QA run `35675261108`: PASS;
+- WordPress Playground PR Preview run `35675261109`: PASS;
+- WordPress Browser E2E run `35675261116`: FAIL only because the required R34 lifecycle differential failed;
+- Node 20: 707/707 tests PASS;
+- Node 22: 707/707 tests PASS;
+- Plugin Check 2.1.0: 0 FAIL, 0 REVIEW, 2 accepted enqueue-scope exceptions;
+- WordPress compatibility matrix: PASS;
+- PHP 7.4 and 8.5: PASS;
+- Chromium, Firefox, and WebKit: PASS;
+- fresh ZIP install and real upgrade path: PASS.
+
+The R34 lifecycle-differential job is `106580341013`.
+
+Its retained evidence artifact is:
+
+- artifact ID: `10672788211`;
+- artifact name: `r34-lifecycle-differential`;
+- artifact digest: `sha256:aac363faa93d52b321bddbdfdd0c8945553d755e9a39d82ee590f4ab4a8104dd`.
+
+The differential contains exactly one unexplained finding:
+
+```text
+scope: database
+locator: options:localis_cim_motion_policy
+kind: added
+before: null
+after: reduce
+```
+
+The finding exactly matches the prediction recorded before Commit B implementation.
+
+The post-deactivation CiM snapshot contains:
+
+```text
+options:localis_cim_motion_policy = reduce
+```
+
+The final post-delete Commit B snapshot also contains:
+
+```text
+options:localis_cim_motion_policy = reduce
+```
+
+The inert control before, post-deactivation, and post-delete snapshots contain no locator matching `localis_cim_motion_policy`.
+
+This proves all three intended Commit B facts:
+
+1. production state is created through the approved CiM write surface;
+2. deactivation preserves the configuration;
+3. omission of uninstall cleanup is detected by the broad lifecycle differential at the predeclared exact locator.
+
+No filesystem finding or additional database finding accompanied the expected residue.
+
+The corrected Commit B `0.1.6` artifact identity is:
+
+- 66 staged files;
+- 456,633 staged bytes;
+- 36 modules;
+- 54 import edges;
+- ZIP SHA-256 `b59a7fb1f4c1ca13678df9f5617cfee6150ddac8ad72311880b95a2e0da55c0d`;
+- R23 manifest SHA-256 `ed969c83b01178eacf73baebdc3c6ae2638a9fd7370dcbed8c123013bd385e6e`.
+
+Commit B is intentionally non-mergeable evidence. Commit C must add uninstall-only cleanup for the exact option, preserve the post-deactivation `reduce` value, remove the option during delete/uninstall, and return the same broad differential and terminal Browser gate to green.
+
 ## Negative-control evidence
 
 Commit B must intentionally omit cleanup for the first real state write.
