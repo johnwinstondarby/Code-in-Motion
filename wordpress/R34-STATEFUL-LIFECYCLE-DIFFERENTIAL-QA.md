@@ -134,6 +134,56 @@ The comparator was made more precise rather than more permissive:
 
 The failed first comparison and its retained evidence are part of the R34 record because they demonstrate that the strengthened gate detected a real control/CiM difference and was corrected by increasing comparison precision rather than by adding an exclusion.
 
+## Commit A green evidence
+
+Commit A implementation head:
+
+`ced5a2ce07bbf693262885c8dcef6fa4fc2b91eb`
+
+This head contains the strengthened lifecycle differential and no persistent CiM state.
+
+Exact-head workflow evidence:
+
+- Verify CiM contracts run `35670705799`: PASS;
+- WordPress Floor QA run `35670705897`: PASS;
+- WordPress Browser E2E run `35670705842`: PASS;
+- WordPress Playground PR Preview run `35670705906`: PASS;
+- Node 20: 706/706 tests PASS;
+- Node 22: 706/706 tests PASS;
+- R34 lifecycle differential: PASS with 6 exact control-derived exclusions and 0 unexplained findings;
+- exact 0.1.5 ZIP lifecycle: PASS;
+- WordPress compatibility matrix: PASS;
+- PHP 7.4 and 8.5: PASS;
+- Chromium, Firefox, and WebKit: PASS.
+
+Commit A lifecycle evidence artifact:
+
+- artifact ID: `10671305089`;
+- artifact name: `r34-lifecycle-differential`;
+- artifact digest: `sha256:b9fc729b48d902912643df5f3d4e90520a558911df299a69836386ff56ed1a84`.
+
+The control-derived exclusion set contains exactly six database locators:
+
+1. `options:_site_transient_theme_roots` — exact control-equivalent value;
+2. `options:_site_transient_timeout_theme_roots` — exact locator with control-derived timestamp-value normalization;
+3. `options:_site_transient_update_core` — exact locator with control-derived `last_checked` timestamp normalization;
+4. `options:_site_transient_update_themes` — exact locator with control-derived `last_checked` timestamp normalization;
+5. `options:cron` — exact locator with control-derived timestamp-bucket normalization and canonical payload-multiset comparison;
+6. `options:recently_activated` — exact locator with control-derived activation timestamp normalization for the common `code-in-motion/code-in-motion.php` basename.
+
+No filesystem path and no database-table name required exclusion.
+
+Commit A does not change release bytes. The R33 0.1.5 artifact identity remains:
+
+- 66 staged files;
+- 452,940 staged bytes;
+- 36 modules;
+- 54 import edges;
+- ZIP SHA-256 `8bf7ed73e39789754ae029bc2c19dcd9eb9ba28c3a47ebe4232d54ebe6446e23`;
+- R23 manifest SHA-256 `aba3ae9636b427533729a34dc8ada7600735c7ed435c01bb3fdfeba25d1c79d8`.
+
+The next production state-writing commit must therefore be Commit B. It must introduce a canonical CiM persistent state write without uninstall cleanup and is expected to fail this live differential.
+
 ## Stateful feature precondition
 
 R34 must not create a persistent setting solely to exercise the gate.
