@@ -1,6 +1,6 @@
 # ADR 0042: Stateful WordPress Lifecycle Differential Gate
 
-Status: Proposed for R34
+Status: Accepted for R34
 
 ## Context
 
@@ -321,3 +321,22 @@ The first stateful checkpoint must prove:
 - the same final lifecycle differential returns to green;
 - the negative-control commit remains reachable in branch history;
 - no persistent setting is introduced without a canonical CiM policy seam.
+
+## R34 acceptance
+
+Accepted against the completed R34 evidence chain.
+
+Commit A established the control-derived lifecycle differential before any persistent CiM state.
+
+Commit B introduced the first production state, `localis_cim_motion_policy`, without cleanup and produced the predicted exact red finding at `options:localis_cim_motion_policy`.
+
+Commit C added uninstall-only cleanup through the root `uninstall.php` surface, preserved the option through deactivation, removed it on real WordPress uninstall, and returned the same broad lifecycle differential to green.
+
+Final accepted evidence on `88cc0cbf1024643c8dfa00d84ec2cc926eea8325` includes:
+
+- 710/710 tests on Node 20 and Node 22;
+- the live R34 lifecycle differential green with 6 exact control-derived exclusions and 0 unexplained findings;
+- exact-ZIP install/deactivate/uninstall verification;
+- recursive `wp-content/` filesystem differential;
+- value-aware database differential;
+- all protected terminal gates green.

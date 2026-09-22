@@ -28,7 +28,13 @@ The entry delegates to the WordPress implementation under:
 code-in-motion/wordpress/code-in-motion.php
 ```
 
-The implementation loads the read-only administration module at:
+The plugin root also carries the uninstall-only cleanup surface:
+
+```text
+code-in-motion/uninstall.php
+```
+
+The implementation loads the administration module at:
 
 ```text
 code-in-motion/wordpress/admin-console.php
@@ -202,6 +208,7 @@ The builder stages only these inputs:
 LICENSE
 readme.txt
 code-in-motion.php
+uninstall.php
 wordpress/code-in-motion.php
 wordpress/admin-console.php
 wordpress/assets/bootstrap.js
@@ -214,7 +221,7 @@ wordpress/renderers/inventory.generated.json
 wordpress/release/release-info.generated.json
 ```
 
-The `src/**/*.mjs` and `wordpress/assets/**/*.mjs` production modules are relocated beneath the version-bearing module root while preserving repository-relative topology. The synthetic Experience follows the same mapping. The stable PHP, classic bootstrap, and stylesheet remain at their R12 paths.
+The `src/**/*.mjs` and `wordpress/assets/**/*.mjs` production modules are relocated beneath the version-bearing module root while preserving repository-relative topology. The synthetic Experience follows the same mapping. The stable PHP, root uninstall cleanup, classic bootstrap, and stylesheet remain at their release paths.
 
 The classic bootstrap must contain exactly one repository-tree module handoff. During staging, that one target changes from:
 
@@ -262,7 +269,7 @@ The audit runs against both:
 - `dist/code-in-motion/`;
 - a fresh extraction of `dist/code-in-motion-<plugin-version>.zip`.
 
-The v1 release policy is text-only. Approved content is limited to release metadata, the WordPress entry and administration PHP, stable WordPress assets, the version-bearing `.mjs` module graph, the canonical Experience registry, registered Experience assets, the exact generated renderer inventory path, and the exact generated release-info path.
+The v1 release policy is text-only. Approved content is limited to release metadata, the WordPress entry and administration PHP, the exact root `uninstall.php` cleanup path, stable WordPress assets, the version-bearing `.mjs` module graph, the canonical Experience registry, registered Experience assets, the exact generated renderer inventory path, and the exact generated release-info path.
 
 R23 fails closed on:
 

@@ -1,6 +1,6 @@
 # ADR 0043: Site Reduced-Motion Floor Policy
 
-Status: Proposed for R34 Commit B
+Status: Accepted for R34
 
 ## Context
 
@@ -179,3 +179,40 @@ Commit B must prove:
 - the final lifecycle differential fails at exactly `options:localis_cim_motion_policy`, `kind: added`;
 - Commit B includes no uninstall cleanup;
 - the red workflow evidence is retained for Commit C.
+
+## R34 accepted implementation
+
+The accepted 0.1.6 implementation preserves the policy contract end to end.
+
+WordPress persists exactly one site option:
+
+`localis_cim_motion_policy`
+
+Allowed values remain exactly:
+
+- `system`;
+- `reduce`.
+
+The production projection path is:
+
+`WordPress option → external script data attribute → classic bootstrap module query → WordPress Host motion-policy facade → existing reducedMotion boolean`
+
+The effective rule remains:
+
+`browserReducedMotion || siteMotionPolicy === "reduce"`
+
+The WordPress policy therefore cannot force motion against a learner browser preference.
+
+The Host public option contract remains unchanged. WordPress composes the motion-policy facade before constructing `createWordPressLiveHost()`.
+
+Lifecycle semantics are accepted as:
+
+- deactivation preserves the option;
+- uninstall removes the option;
+- malformed or absent state resolves to `system`.
+
+The accepted cleanup surface is root `uninstall.php` with one exact `delete_option( 'localis_cim_motion_policy' )` call guarded by `WP_UNINSTALL_PLUGIN`.
+
+Final accepted implementation head:
+
+`88cc0cbf1024643c8dfa00d84ec2cc926eea8325`

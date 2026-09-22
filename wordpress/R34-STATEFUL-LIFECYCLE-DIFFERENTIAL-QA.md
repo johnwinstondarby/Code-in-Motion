@@ -15,7 +15,7 @@ R34 is governed by:
 - `docs/adr/0042-stateful-wordpress-lifecycle-differential-gate.md`;
 - this QA record.
 
-ADR 0042 remains `Proposed for R34` until the differential gate is implemented and audited.
+ADR 0042 is `Accepted for R34` after the completed A→B→C lifecycle audit.
 
 ## Branch
 
@@ -382,6 +382,130 @@ The corrected Commit B `0.1.6` artifact identity is:
 - R23 manifest SHA-256 `ed969c83b01178eacf73baebdc3c6ae2638a9fd7370dcbed8c123013bd385e6e`.
 
 Commit B is intentionally non-mergeable evidence. Commit C must add uninstall-only cleanup for the exact option, preserve the post-deactivation `reduce` value, remove the option during delete/uninstall, and return the same broad differential and terminal Browser gate to green.
+
+## Commit C green evidence
+
+The uninstall-only cleanup implementation landed at:
+
+`c540cd631aebcc951cdf1f7c8021ff116d98a224`
+
+Commit message:
+
+`R34: add uninstall-only motion policy cleanup`
+
+That commit added the root production cleanup surface:
+
+`uninstall.php`
+
+with exactly one state deletion:
+
+`delete_option( 'localis_cim_motion_policy' )`
+
+and extended the release builder, R23 exact-path supply-chain approval, static persistence scanner, and lifecycle proof accordingly.
+
+The lifecycle workflow was then corrected at:
+
+`71435661b543c7f25be85c54f416698275bbbf62`
+
+Commit message:
+
+`R34: execute real WordPress uninstall lifecycle`
+
+The control and CiM paths now both use WordPress's real:
+
+`wp plugin uninstall code-in-motion`
+
+command rather than deleting plugin files directly. This ensures the accepted proof actually executes `uninstall.php`.
+
+The stored motion policy was then connected to Host composition at:
+
+`252934157fe67883d2f002741424256b9cde9875`
+
+Commit message:
+
+`R34: project motion policy into Host reduced motion`
+
+The final policy projection is:
+
+`WordPress option → script data attribute → external bootstrap query → Host motion-policy matchMedia facade`
+
+with effective semantics:
+
+`browserReducedMotion || siteMotionPolicy === "reduce"`
+
+The existing `createWordPressLiveHost()` option key set remains unchanged.
+
+A follow-up contract-preservation commit:
+
+`74475e7c8e3fdfabd00197fb2ed6e3b7ac91d7b2`
+
+kept the live Host public option surface exact while retaining the motion-policy composition.
+
+The final test-only correction:
+
+`88cc0cbf1024643c8dfa00d84ec2cc926eea8325`
+
+aligned the forced-reduced-motion disposal test with the implementation invariant that forced mode never subscribes to native `matchMedia`; therefore there is no native listener to remove.
+
+### Exact-head final evidence
+
+Final implementation head:
+
+`88cc0cbf1024643c8dfa00d84ec2cc926eea8325`
+
+Protected workflow evidence:
+
+- Verify CiM contracts run `35690521735`: PASS;
+- WordPress Floor QA run `35690521949`: PASS;
+- WordPress Browser E2E run `35690521750`: PASS;
+- WordPress Playground PR Preview run `35690521713`: PASS;
+- Node 20: 710/710 PASS;
+- Node 22: 710/710 PASS;
+- WordPress 6.5.10 through 7.1.1: PASS;
+- PHP 7.4 and 8.5: PASS;
+- Chromium, Firefox, and WebKit: PASS;
+- Plugin Check: PASS;
+- real 0.1.5 → 0.1.6 upgrade path: PASS.
+
+R34 lifecycle differential job:
+
+`106626344223`
+
+Result:
+
+`PASS: R34 lifecycle differential (6 exact control-derived exclusion(s), 0 unexplained finding(s)).`
+
+Retained lifecycle evidence artifact:
+
+- artifact ID: `10678159481`;
+- artifact name: `r34-lifecycle-differential`;
+- artifact digest: `sha256:b107fb735fc725e95d8fd58319a992aca89565297f0b6b6107b2ff671d631de7`.
+
+The live lifecycle proves:
+
+1. `localis_cim_motion_policy = reduce` is created through the production write surface;
+2. the value remains `reduce` after plugin deactivation;
+3. WordPress executes the plugin's real uninstall surface;
+4. the option is absent after uninstall;
+5. the plugin directory is absent after uninstall;
+6. the broad database/table/filesystem differential returns to zero unexplained findings.
+
+No additional filesystem or database residue is present.
+
+### Final 0.1.6 artifact identity
+
+- 67 staged files;
+- 458,920 staged bytes;
+- 36 modules;
+- 54 import edges;
+- ZIP SHA-256 `e3671ceb74224577d10b4613631bd4c6010b18eee09e3144df0251c8b9ff3f0f`;
+- R23 manifest SHA-256 `c0bd1ee1d3341052384f831b253cc03d16b4a1123dc4c2ca67de7e7a9635dc9e`.
+
+The extra staged file relative to Commit B is the exact root cleanup surface:
+
+`uninstall.php`
+
+ADR 0042 and ADR 0043 are accepted for R34.
 
 ## Negative-control evidence
 
