@@ -63,9 +63,12 @@ test('R34 differential permits only exact control-observed numeric churn', () =>
   );
 });
 
-test('R34 differential normalizes only control-observed timestamp keys, not intervals', () => {
+test('R34 differential flattens only control-observed timestamp buckets and still compares payloads', () => {
   const beforeControl = {
     '1780000000': {
+      recovery_mode_clean_expired_keys: { interval: 86400, schedule: 'daily' }
+    },
+    '1780000001': {
       wp_update_plugins: { interval: 43200, schedule: 'twicedaily' }
     },
     version: 2
@@ -78,6 +81,7 @@ test('R34 differential normalizes only control-observed timestamp keys, not inte
   };
   const beforeCim = {
     '1780000100': {
+      recovery_mode_clean_expired_keys: { interval: 86400, schedule: 'daily' },
       wp_update_plugins: { interval: 43200, schedule: 'twicedaily' }
     },
     version: 2
@@ -113,7 +117,6 @@ test('R34 differential normalizes only control-observed timestamp keys, not inte
   assert.equal(bad.findings.length, 1);
   assert.equal(bad.findings[0].locator, 'options:cron');
 });
-
 test('R34 differential rejects an extra generic database write', () => {
   const result = compareLifecycleDifferentials({
     controlBefore: snapshot(),

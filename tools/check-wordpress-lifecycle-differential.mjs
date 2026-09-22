@@ -57,11 +57,15 @@ function collectNormalization(value, path = '') {
 
     if (current && typeof current === 'object') {
       const keys = Object.keys(current);
-      if (keys.some((key) => /^\d{9,}$/.test(key))) {
+      const hasNumericKeys = keys.some((key) => /^\d{9,}$/.test(key));
+      if (hasNumericKeys) {
         numericKeyParents.push(currentPath || '/');
       }
       for (const key of keys) {
-        visit(current[key], currentPath + '/' + escapePointer(key));
+        const pathKey = hasNumericKeys && /^\d{9,}$/.test(key)
+          ? '<control-derived-number-key>'
+          : key;
+        visit(current[key], currentPath + '/' + escapePointer(pathKey));
       }
     }
   }
@@ -94,31 +98,62 @@ function normalizeWithSpec(value, spec, path = '') {
 
   if (value && typeof value === 'object') {
     const normalizeNumericKeys = spec.numeric_key_parent_paths.includes(pointer);
-    const entries = Object.entries(value).map(([key, item]) => {
-      const normalizedKey =
-        normalizeNumericKeys && /^\d{9,}$/.test(key)
-          ? '<control-derived-number-key>'
-          : key;
-      const childPath = path + '/' + escapePointer(normalizedKey);
-      return [
-        normalizedKey,
-        normalizeWithSpec(item, spec, childPath)
-      ];
-    });
 
-    entries.sort(([a], [b]) => a.localeCompare(b));
+    if (normalizeNumericKeys) {
+      const staticEntries = [];
+      const bucketEntries = [];
 
-    const result = {};
-    for (const [key, item] of entries) {
-      if (Object.hasOwn(result, key)) {
-        const existing = Array.isArray(result[key]) ? result[key] : [result[key]];
-        existing.push(item);
-        result[key] = existing;
-      } else {
-        result[key] = item;
+      for (const [key, item] of Object.entries(value)) {
+        if (/^\d{9,}$/.test(key)) {
+          const bucketPath = path + '/<control-derived-number-key>';
+          if (item && typeof item === 'object' && !Array.isArray(item)) {
+            for (const [childKey, childValue] of Object.entries(item)) {
+              bucketEntries.push([
+                childKey,
+                normalizeWithSpec(
+                  childValue,
+                  spec,
+                  bucketPath + '/' + escapePointer(childKey)
+                )
+              ]);
+            }
+          } else {
+            bucketEntries.push([
+              '<value>',
+              normalizeWithSpec(item, spec, bucketPath)
+            ]);
+          }
+        } else {
+          staticEntries.push([
+            key,
+            normalizeWithSpec(item, spec, path + '/' + escapePointer(key))
+          ]);
+        }
       }
+
+      staticEntries.sort(([a], [b]) => a.localeCompare(b));
+      bucketEntries.sort((left, right) => {
+        const keyOrder = left[0].localeCompare(right[0]);
+        if (keyOrder !== 0) return keyOrder;
+        return JSON.stringify(stable(left[1])).localeCompare(
+          JSON.stringify(stable(right[1]))
+        );
+      });
+
+      return {
+        __static: Object.fromEntries(staticEntries),
+        __control_derived_numeric_buckets: bucketEntries
+      };
     }
-    return result;
+
+    return Object.fromEntries(
+      Object.entries(value)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([key, item]) => [
+          key,
+          normalizeWithSpec(item, spec, path + '/' + escapePointer(key))
+        ])
+    );
   }
 
   return value;
