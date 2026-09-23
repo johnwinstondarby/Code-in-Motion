@@ -14,12 +14,11 @@ R38 defines and verifies the WordPress presentation boundary for Code in Motion 
 
 R37 closed the production-only F4 reachability item. R38 therefore evaluates the real learner-facing 0.1.8 surface rather than an incomplete production composition.
 
-The checkpoint has two linked outputs:
+The checkpoint has three linked outputs:
 
 1. a documented ownership contract for CiM presentation versus host-theme presentation;
-2. an implementation and browser evidence matching that contract.
-
-R38 must decide whether the fixed light instrument-panel presentation remains the supported contract or whether CiM introduces a narrow, explicit theming interface. The decision is recorded before candidate freeze.
+2. a fixed instrument-panel implementation governed by `cim.css`;
+3. browser evidence that the fixed panel, its interactive controls, and existing behavior remain correct in real host contexts.
 
 ## Entering state
 
@@ -40,7 +39,7 @@ Production Localis runs the exact published Code in Motion 0.1.8 artifact and R3
 - effective reduced motion reaches the same stable result without CiM animation frames;
 - F4 disposition: CLOSED.
 
-ADR 0044 records the current 0.1.8 presentation contract as a fixed light Git instrument panel with these owned values:
+ADR 0044 records the current 0.1.8 presentation as a fixed light Git instrument panel with these owned values:
 
 - text: `#171b22`;
 - panel background: `#f4f6f8`;
@@ -51,90 +50,52 @@ The current CSS also owns Git panel padding, lane layout, lane spacing, borders,
 
 No supported renderer-theming override or custom-property API exists in 0.1.8.
 
-## Presentation ownership decision
+## R38 presentation decision
 
-R38 must explicitly classify each presentation family as CiM-owned, host-inherited, or configurable through a supported CiM interface.
+R38 selects the fixed instrument-panel model.
 
-At minimum the decision covers:
+Fixed means:
+
+- `wordpress/assets/cim.css` is the sole supported presentation authority for the WordPress instrument panel;
+- the user cannot select or modify the panel theme through a supported CiM setting;
+- WordPress themes, page builders, and site-wide CSS receive no supported theming interface for the panel;
+- CiM-owned visual properties do not depend on incidental host inheritance;
+- interactive content and learner controls may change state and manipulate the action while remaining visually governed by `cim.css`.
+
+ADR 0045, `WordPress Presentation and Theme Boundary`, records this decision.
+
+## Presentation ownership
+
+R38 classifies the following as CiM-owned and governed by `cim.css`:
 
 - renderer foreground color;
 - renderer surface color;
 - lane surface color;
-- border color;
+- structural border color;
 - focus indication;
+- playback-control presentation;
 - spacing and panel padding;
 - lane grid and responsive collapse;
 - border radii;
-- renderer typography inheritance;
-- fallback presentation before `ready`;
-- dark host pages and other host-theme color contexts.
+- visual state treatment explicitly emitted by CiM;
+- fallback presentation where CiM supplies the fallback element.
 
-The contract must prevent accidental theme coupling. Host CSS may surround the CiM root, but a CiM-owned visual property cannot depend on incidental inheritance, selector order, or a theme-specific variable whose presence CiM does not control.
+Typography inheritance must be explicit. If renderer typography is permitted to inherit from the host, that is a documented exception rather than accidental coupling.
 
-## Theming decision alternatives
+Host page layout may surround the `.cim` invocation. It does not become presentation authority for CiM-owned internals.
 
-R38 evaluates two permissible contracts.
+## Interactive panel content
 
-### A. Fixed instrument panel
+Fixed presentation does not mean static content.
 
-CiM retains a fixed production presentation for renderer-owned colors and visual boundaries.
+The instrument panel may contain dynamic renderer content and learner-facing playback controls. Those controls may manipulate the action and reflect Transport or Runtime-derived state while retaining fixed CiM-owned styling.
 
-Under this contract:
+R38 therefore includes the presentation and WordPress composition needed for visible playback controls that belong inside the instrument panel.
 
-- the 0.1.8 light instrument-panel values remain explicit CiM-owned values;
-- host themes cannot recolor renderer-owned surfaces through ordinary inheritance;
-- no public theming API is promised;
-- future presentation changes require a governed CiM release.
+The exact control behavior must reuse existing Transport authority and binding contracts rather than creating parallel playback logic.
 
-### B. Scoped CiM theme interface
+R38 does not expand into:
 
-CiM exposes a deliberately small set of CSS custom properties scoped at the `.cim` invocation root or a documented descendant boundary.
-
-Under this contract:
-
-- each supported token has a CiM-owned fallback value;
-- absent overrides reproduce the approved default presentation;
-- host themes gain no implicit control over undocumented internals;
-- override scope is per CiM invocation unless a documented site-wide rule is deliberately applied by the host;
-- token names, fallback values, inheritance behavior, and unsupported properties are documented;
-- renderer semantics and transport behavior remain independent from presentation tokens.
-
-R38 may choose either alternative. A partial or accidental hybrid is not acceptable.
-
-## Decision record
-
-R38 creates ADR 0045, `WordPress Presentation and Theme Boundary`, before candidate freeze.
-
-ADR 0045 records:
-
-- the selected ownership model;
-- the reason for selecting it;
-- the supported public presentation surface, if any;
-- default values;
-- inheritance rules;
-- compatibility expectations;
-- what remains deliberately unsupported;
-- the evidence required for future presentation changes.
-
-ADR 0044 remains the historical record for the 0.1.8 fixed-light production surface.
-
-## Implementation boundaries
-
-R38 may modify presentation-layer source and the tests required to prove it.
-
-Expected implementation areas include:
-
-- `wordpress/assets/cim.css`;
-- Browser E2E assertions for computed presentation;
-- presentation-specific documentation;
-- ADR 0045;
-- release metadata only when source changes require a new candidate version.
-
-R38 does not change Runtime authority, Host authority, Transport authority, experience state semantics, renderer state semantics, playback timing, or reduced-motion policy.
-
-R38 does not add:
-
-- Transport buttons;
 - semantic rail;
 - marker activation;
 - scrub interaction;
@@ -145,9 +106,74 @@ R38 does not add:
 
 Those remain separate composition or product-surface decisions.
 
+## Future theming seam
+
+R38 deliberately preserves a future path to configurable presentation without exposing that path now.
+
+The internal semantic presentation vocabulary includes at least:
+
+- panel foreground;
+- panel surface;
+- lane surface;
+- structural border;
+- focus indicator;
+- control foreground;
+- control surface;
+- spacing units;
+- radii.
+
+These are architectural concepts only. They are not public CSS token names.
+
+R38 does not introduce inheritable `--cim-*` custom properties. A future governed release may promote a selected subset of the semantic vocabulary to a documented public interface with explicit scope, fallback values, inheritance, isolation, compatibility, and evidence.
+
+Current literal values should remain centralized and semantically consistent so such a future migration is mechanical rather than archaeological.
+
+## CSS authority boundary
+
+Ordinary host-theme inheritance and realistic global theme rules must not silently determine CiM-owned presentation.
+
+R38 browser evidence must include hostile surrounding declarations sufficient to expose accidental inheritance or weak selector assumptions.
+
+Arbitrary external CSS with sufficient specificity or `!important` is outside the supported contract. Literal immunity from all page CSS would require a stronger containment mechanism such as Shadow DOM and is outside R38.
+
+## Decision record
+
+ADR 0045 is Accepted before implementation freeze.
+
+ADR 0045 records:
+
+- `cim.css` as the sole supported presentation authority;
+- the meaning of fixed presentation;
+- the relationship between fixed presentation and interactive controls;
+- CiM-owned versus explicitly inherited properties;
+- the absence of a public theming interface;
+- the internal semantic presentation vocabulary;
+- the reserved future theming path;
+- the supported CSS authority boundary;
+- verification requirements for future presentation changes.
+
+ADR 0044 remains the historical record for the 0.1.8 fixed-light production surface.
+
+## Implementation boundaries
+
+R38 may modify presentation-layer source, WordPress control composition, and tests required to prove the approved panel contract.
+
+Expected implementation areas include:
+
+- `wordpress/assets/cim.css`;
+- WordPress Transport/control presentation composition;
+- Browser E2E assertions for computed presentation and visible controls;
+- presentation-specific documentation;
+- ADR 0045;
+- release metadata when source changes require a new candidate version.
+
+R38 does not change Runtime authority, Host authority, Transport authority, experience state semantics, renderer state semantics, playback timing, or reduced-motion policy.
+
+Any visible controls added to the panel must submit through existing Transport authority.
+
 ## Default visual compatibility
 
-Unless ADR 0045 explicitly approves a changed default, the no-override presentation must preserve the 0.1.8 Git renderer computed colors:
+Unless R38 explicitly records an approved visual change, the Git renderer default presentation preserves the 0.1.8 computed colors:
 
 - renderer text `rgb(23, 27, 34)`;
 - renderer background `rgb(244, 246, 248)`;
@@ -155,7 +181,9 @@ Unless ADR 0045 explicitly approves a changed default, the no-override presentat
 - lane background `rgb(255, 255, 255)`;
 - border/focus derived from `#323a4a`.
 
-Any deliberate default change must be called out as a presentation change rather than hidden inside the theming mechanism.
+Control colors and states introduced by R38 must be CiM-owned and documented as part of the fixed panel presentation.
+
+Any deliberate default change must be called out as a presentation change rather than hidden inside implementation cleanup.
 
 ## Responsive contract
 
@@ -168,11 +196,11 @@ The entering behavior is:
 
 Verification must cover at least one width on each side of the breakpoint and a narrow mobile width.
 
-No renderer content may become unreachable because of horizontal clipping introduced by R38.
+Panel controls must remain usable at narrow width, and renderer content may not become unreachable because of horizontal clipping introduced by R38.
 
 ## Focus and keyboard presentation
 
-R38 must preserve a visible learner focus indication for Git lane focus and must not interfere with the production keyboard subset established by R36:
+R38 must preserve visible learner focus indication and must not interfere with the production keyboard subset established by R36:
 
 - ArrowLeft;
 - ArrowRight;
@@ -180,9 +208,9 @@ R38 must preserve a visible learner focus indication for Git lane focus and must
 - End;
 - Space play/pause.
 
-Presentation changes may alter focus styling only when the replacement remains explicit and browser-verifiable.
+Visible panel controls must have browser-verifiable focus presentation and must preserve protected native interaction behavior.
 
-Protected native interaction targets must retain native behavior.
+Presentation changes may alter focus styling only when the replacement remains explicit and browser-verifiable.
 
 ## Host-context verification
 
@@ -193,13 +221,10 @@ At minimum verify:
 1. the default CiM presentation with no host override;
 2. a dark surrounding host surface;
 3. hostile host foreground/background declarations that would reveal accidental inheritance;
-4. Localis production integration or a faithful page-level reproduction of its surrounding theme context.
+4. visible control presentation and focus state;
+5. Localis production integration or a faithful page-level reproduction of its surrounding theme context.
 
-If R38 selects a scoped theming interface, add:
-
-5. one explicit supported override case;
-6. one partial override case proving unspecified tokens retain CiM defaults;
-7. invocation isolation proving an override on one `.cim` root does not restyle another root.
+Because R38 exposes no supported theming interface, host rules are verification adversaries rather than supported override cases.
 
 ## Behavioral non-regression
 
@@ -211,6 +236,7 @@ The exact R38 implementation head must keep green:
 - WordPress production-composition assertions;
 - Git production Browser E2E navigation;
 - WordPress Space playback Browser E2E;
+- any added visible playback-control Browser E2E;
 - normal-motion and reduced-motion playback evidence;
 - detached-root lifecycle and instance-isolation coverage;
 - WordPress Floor QA;
@@ -220,11 +246,11 @@ The exact R38 implementation head must keep green:
 
 ## Accessibility evidence
 
-R38 records computed foreground/background pairs for renderer-owned surfaces and focus indication.
+R38 records computed foreground/background pairs for renderer-owned surfaces, controls, and focus indication.
 
-If any default or supported override changes a color pair, the checkpoint must calculate and record the resulting contrast rather than relying on visual inspection alone.
+If any default color pair changes, the checkpoint must calculate and record resulting contrast rather than relying on visual inspection alone.
 
-The browser evidence must also confirm that focus indication remains distinguishable without requiring animation.
+The browser evidence must confirm that focus indication remains distinguishable without requiring animation and that visible controls expose appropriate native or explicit accessible names and states.
 
 ## Production review
 
@@ -234,8 +260,9 @@ The review records:
 
 - desktop integration;
 - narrow/mobile integration;
-- surrounding Localis light/dark context interaction where applicable;
+- surrounding Localis context interaction;
 - focus presentation;
+- visible playback-control presentation;
 - playback state changes;
 - any host CSS collision found and its disposition.
 
@@ -245,49 +272,52 @@ The review is presentation evidence, not a substitute for automated Browser E2E.
 
 The definition commit does not change release identity.
 
-If R38 changes release-staged source bytes, candidate freeze aligns the plugin/package/readme/release metadata to the next release identity, expected to be `0.1.9`, and regenerates the normal release identity evidence.
+R38 is expected to change release-staged source bytes through presentation and visible-control work. Candidate freeze therefore aligns plugin/package/readme/release metadata to the next release identity, expected to be `0.1.9`, and regenerates the normal release identity evidence.
 
-If R38 concludes with documentation only and no release-staged source change, it does not create a synthetic version bump merely for the checkpoint number.
+The version change occurs at candidate freeze rather than at the architectural decision commit.
 
 ## Acceptance criteria
 
 R38 closes only when all applicable items below are satisfied:
 
-- presentation ownership is explicit rather than incidental;
 - ADR 0045 is Accepted;
-- the selected fixed or configurable theming contract is implemented exactly;
+- `cim.css` is recorded as the sole supported presentation authority;
+- no public theming custom-property or user-theme surface is introduced;
+- the internal semantic presentation vocabulary is recorded for future evolution;
 - no-override default presentation is browser-verified;
-- hostile host styling cannot silently alter CiM-owned properties;
+- realistic hostile host styling cannot silently determine CiM-owned properties;
 - responsive behavior is browser-verified on both sides of the breakpoint and at mobile width;
 - focus presentation is browser-verified;
+- visible playback controls, if composed in R38, use existing Transport authority and fixed CiM styling;
 - production keyboard and playback behavior remain green;
 - normal-motion and reduced-motion behavior remain green;
 - invocation isolation remains green;
 - Localis integration has been visually reviewed after `ready`;
 - exact implementation-head protected gates are green;
-- if release bytes change, candidate versioning and release evidence are regenerated under the standard release procedure;
-- no learner-control scope from outside R38 is pulled into the checkpoint.
+- candidate versioning and release evidence are regenerated under the standard release procedure;
+- semantic rail, marker, scrub, Commentary, and update-channel scope remain outside R38.
 
 ## RC relationship
 
-R38 is the presentation/theming checkpoint identified after R37 production validation.
+R38 is the presentation checkpoint identified after R37 production validation.
 
-Closing R38 removes the known deferred visual-contract decision from the narrow RC #1 path. It does not, by itself, decide whether broader learner controls, CLI identity work, or WordPress Admin/update/community tooling are required for the eventual V1 RC.
+Closing R38 removes the known deferred visual-contract decision from the narrow RC #1 path and gives the WordPress instrument panel its intended visible learner-control presentation.
+
+It does not, by itself, decide whether semantic rail, marker/scrub interaction, CLI identity work, or WordPress Admin/update/community tooling are required for the eventual V1 RC.
 
 ## Closure record
 
 To be completed with:
 
-- selected presentation ownership model;
 - ADR 0045 commit;
 - implementation commit(s);
 - exact default computed-style evidence;
 - host-context evidence;
 - responsive evidence;
 - focus evidence;
-- any supported theming override evidence;
+- visible playback-control evidence;
 - behavioral non-regression evidence;
 - Localis review result;
-- candidate/release identity if source bytes changed;
+- candidate/release identity;
 - exact-head protected workflow run IDs;
 - final R38 disposition.
