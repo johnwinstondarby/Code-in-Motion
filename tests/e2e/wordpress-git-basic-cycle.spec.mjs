@@ -44,6 +44,8 @@ test('R27 Git basic cycle mounts through the production WordPress path and advan
 
   await expect(rendered).toHaveAttribute('data-step', 'initial');
   await expect(rendered).toHaveAttribute('data-git-focus', 'overview');
+  await expect(rendered).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(rendered).toHaveCSS('background-color', 'rgb(244, 246, 248)');
 
   const lanes = rendered.locator('[data-role="git-lanes"] > [data-git-lane]');
   await expect(lanes).toHaveCount(4);
@@ -51,6 +53,8 @@ test('R27 Git basic cycle mounts through the production WordPress path and advan
   await expect(lanes.nth(1)).toHaveAttribute('data-git-lane', 'index');
   await expect(lanes.nth(2)).toHaveAttribute('data-git-lane', 'local');
   await expect(lanes.nth(3)).toHaveAttribute('data-git-lane', 'remote');
+  await expect(lanes.nth(0)).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(lanes.nth(0)).toHaveCSS('background-color', 'rgb(255, 255, 255)');
 
   const reflog = rendered.locator('[data-git-evidence="reflog"]');
   await expect(reflog).toHaveAttribute('data-git-grammar', 'evidence-timeline');
