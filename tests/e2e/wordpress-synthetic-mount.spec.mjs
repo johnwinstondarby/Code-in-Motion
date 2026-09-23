@@ -79,6 +79,12 @@ test('R8 mounts the synthetic WordPress Experience and navigates through product
   await expect(root).toHaveAttribute('tabindex', '0');
   await root.focus();
   await expect(root).toBeFocused();
+
+  // R35 production-composition boundary: WordPress 0.1.x wires timeline
+  // keyboard navigation but does not wire the playback keyboard binding.
+  await page.keyboard.press('Space');
+  await expectInitial(rendered);
+
   await page.keyboard.press('ArrowRight');
 
   await expect(rendered).toHaveAttribute('data-step', 'step-01');
