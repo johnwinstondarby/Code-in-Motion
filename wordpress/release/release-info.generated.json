@@ -1,12 +1,12 @@
 {
   "schema": "localis.cim/wordpress-release-info/v1",
-  "stable_tag": "0.1.7",
+  "stable_tag": "0.1.8",
   "tested_up_to": "7.1",
   "current_release": {
-    "version": "0.1.7",
+    "version": "0.1.8",
     "notes": [
-      "Adds host-independent Git renderer presentation with production browser contrast verification.",
-      "Records and gates the exact WordPress Transport composition exposed by the production binding."
+      "Composes learner-facing Space play/pause into the exact WordPress production Transport binding.",
+      "Adds browser-level normal-motion versus reduced-motion behavioral proof through the production playback path."
     ]
   },
   "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"

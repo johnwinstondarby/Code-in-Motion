@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.1.7
+Stable tag: 0.1.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,7 +13,7 @@ WordPress host, runtime bindings, and controls for Code in Motion experiences.
 
 Code in Motion supplies the WordPress host, runtime bindings, transport controls, and release packaging required to mount CiM experiences from WordPress content.
 
-Version 0.1.7 hardens the WordPress production surface after live deployment verification, including host-independent Git renderer presentation and explicit production Transport composition evidence.
+Version 0.1.8 composes learner-facing Space playback into the WordPress production surface and proves normal-motion versus reduced-motion behavior through that exact production path.
 
 == Installation ==
 
@@ -26,6 +26,10 @@ Version 0.1.7 hardens the WordPress production surface after live deployment ver
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.1.8 =
+* Composes learner-facing Space play/pause into the exact WordPress production Transport binding.
+* Adds browser-level normal-motion versus reduced-motion behavioral proof through the production playback path.
 
 = 0.1.7 =
 * Adds host-independent Git renderer presentation with production browser contrast verification.

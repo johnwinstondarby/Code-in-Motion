@@ -6,7 +6,7 @@ Status: Production Host composition contract
 
 `wordpress-live-host.mjs` is the production JavaScript composition boundary between stable WordPress page markup and `createLiveHostCiMInstance()`.
 
-It owns page discovery, page-scoped reduced-motion observation, per-root live Host construction, initialization, readiness projection, root-scoped command-capability projection, root-scoped Runtime disposal, static fallback preservation, and page teardown ordering.
+It owns page discovery, page-scoped reduced-motion observation, per-root live Host construction, initialization, readiness projection, root-scoped command and observation capability projection, root-scoped Runtime disposal, static fallback preservation, and page teardown ordering.
 
 It does not own Experience storage policy, renderer registry contents, browser-clock implementation, Transport implementation, WordPress PHP packaging, asset enqueueing, shortcode/block generation, DOM mutation observation, or the external URL/fragment grammar implementation. Deep-link resolution is injected as a Host capability.
 
@@ -105,6 +105,7 @@ The returned Host surface is exact and frozen:
 ```text
 mount
 commands
+observations
 disposeRoot
 dispose
 ```
@@ -126,7 +127,17 @@ restart
 
 The port exposes no `identity`, `read`, `events`, `initialize`, `adoptReducedMotion`, or `dispose` authority. Host imports no Transport implementation module. The outer composition layer may grant this command-only port to Transport.
 
-`disposeRoot(root)` is the root-scoped terminal disposal capability. For a successfully mounted root it synchronously removes the command projection, projects fallback, and starts disposal of that root's live Host façade. Repeated calls for that root return the identical disposal promise. An unknown or failed root resolves `false` and changes no mounted instance. Root-scoped disposal leaves sibling roots and the page-owned reduced-motion source active. Later page-wide `dispose()` reuses already-started root disposal work and does not dispose the same live façade twice.
+`observations(root)` is a read-only Runtime observation projection. Before successful mount, for a failed or unknown root, after `disposeRoot(root)` starts for that root, and after page disposal begins, it returns `null`.
+
+For a successfully mounted root it returns one frozen observation port with exactly:
+
+```text
+snapshot
+```
+
+The snapshot comes from the same retained Runtime instance that owns the root command projection. The observation port exposes no command, identity, event, initialization, reduced-motion adoption, or disposal authority. Host remains Transport-agnostic. The outer composition layer may grant this snapshot-only projection to Transport presentation logic.
+
+`disposeRoot(root)` is the root-scoped terminal disposal capability. For a successfully mounted root it synchronously removes the command and observation projections, projects fallback, and starts disposal of that root's live Host façade. Repeated calls for that root return the identical disposal promise. An unknown or failed root resolves `false` and changes no mounted instance. Root-scoped disposal leaves sibling roots and the page-owned reduced-motion source active. Later page-wide `dispose()` reuses already-started root disposal work and does not dispose the same live façade twice.
 
 ## Mount Lifecycle
 
@@ -139,7 +150,7 @@ create clock
 createLiveHostCiMInstance(...)
 initialize()
 project ready
-project command-only capability
+project command and observation capabilities
 ```
 
 One failed root projects fallback and does not prevent later roots from mounting.
@@ -160,7 +171,7 @@ A page with no CiM roots returns:
 
 without creating a reduced-motion source.
 
-A root never receives a command capability before successful initialization and readiness projection. If a later construction-stage failure occurs, any provisional command projection is removed before the root settles to fallback.
+A root never receives a command or observation capability before successful initialization and readiness projection. If a later construction-stage failure occurs, any provisional command or observation projection is removed before the root settles to fallback.
 
 ## Reduced-Motion Ownership
 
@@ -172,7 +183,7 @@ Root-scoped disposal removes only that façade's reduced-motion subscription. Th
 
 On page-host disposal:
 
-1. command projections are removed synchronously for already-mounted roots that have not already entered root-scoped disposal;
+1. command and observation projections are removed synchronously for already-mounted roots that have not already entered root-scoped disposal;
 2. all remaining mounted live Host façades are told to dispose;
 3. each façade synchronously removes its own reduced-motion subscription before Runtime disposal settlement;
 4. the page host disposes the shared source-level listener;
