@@ -80,9 +80,13 @@ test('R8 mounts the synthetic WordPress Experience and navigates through product
   await root.focus();
   await expect(root).toBeFocused();
 
-  // R35 production-composition boundary: WordPress 0.1.x wires timeline
-  // keyboard navigation but does not wire the playback keyboard binding.
+  // R36 production composition: Space reaches continuous playback through
+  // the same root-scoped Transport binding as timeline keyboard navigation.
   await page.keyboard.press('Space');
+  await expect(rendered).toHaveAttribute('data-step', 'step-02');
+  await expect(rendered).toHaveAttribute('data-node', 'C');
+
+  await page.keyboard.press('Home');
   await expectInitial(rendered);
 
   await page.keyboard.press('ArrowRight');
@@ -101,6 +105,7 @@ test('R8 mounts the synthetic WordPress Experience and navigates through product
   expect(paths.some((path) => path.endsWith('/src/runtime/cim-instance.mjs'))).toBe(true);
   expect(paths.some((path) => path.endsWith('/src/transport/transport-controller.mjs'))).toBe(true);
   expect(paths.some((path) => path.endsWith('/src/transport/keyboard-binding.mjs'))).toBe(true);
+  expect(paths.some((path) => path.endsWith('/src/transport/playback-presentation.mjs'))).toBe(true);
   expect(paths.some((path) => path.endsWith('/src/renderers/subjects/synthetic/renderer.mjs'))).toBe(true);
 
   expect(observed.requestFailures, `request failures:\n${observed.requestFailures.join('\n')}`).toEqual([]);

@@ -168,9 +168,18 @@ async function mountPageHost() {
     const commandPort = host.commands(root);
     if (commandPort === null) continue;
     mountedRoots.push(root);
+    const observationPort = host.observations(root);
+    if (observationPort === null) {
+      reportBootstrapError(
+        root,
+        'transport_bind',
+        new Error('WordPress Host observation port is unavailable for a mounted root.')
+      );
+      continue;
+    }
 
     try {
-      const binding = createWordPressTransportBinding({ root, commandPort });
+      const binding = createWordPressTransportBinding({ root, commandPort, observationPort });
       transportBindings.set(root, binding);
     } catch (error) {
       reportBootstrapError(root, 'transport_bind', error);
