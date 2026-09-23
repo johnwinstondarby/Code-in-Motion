@@ -81,26 +81,48 @@ function makeCommandPort(calls) {
   });
 }
 
-test('R35 WordPress Transport imports the exact production composition subset', () => {
+function playbackSnapshot(status, playbackIntent) {
+  return Object.freeze({
+    canonical: Object.freeze({ status }),
+    operational: Object.freeze({ playbackIntent })
+  });
+}
+
+function makeObservationPort() {
+  let snapshot = playbackSnapshot('idle', false);
+  return {
+    port: Object.freeze({
+      snapshot: () => snapshot
+    }),
+    set(status, playbackIntent) {
+      snapshot = playbackSnapshot(status, playbackIntent);
+    }
+  };
+}
+
+test('R36 WordPress Transport imports the exact production composition subset', () => {
   const transportImports = [...bindingSource.matchAll(/from '([^']+)'/g)]
     .map((match) => match[1])
     .filter((specifier) => specifier.includes('/transport/'));
 
   assert.deepEqual(transportImports, [
     '../../src/transport/keyboard-binding.mjs',
+    '../../src/transport/playback-presentation.mjs',
     '../../src/transport/transport-controller.mjs'
   ]);
-  assert.match(bindingSource, /createTransportKeyboardBinding/);
-  assert.doesNotMatch(bindingSource, /createTransportPlaybackKeyboardBinding/);
-  assert.doesNotMatch(bindingSource, /playback-presentation\.mjs/);
+  assert.match(bindingSource, /createTransportPlaybackKeyboardBinding/);
+  assert.match(bindingSource, /createTransportPlaybackPresentation/);
+  assert.doesNotMatch(bindingSource, /createTransportKeyboardBinding/);
 });
 
-test('R35 WordPress Transport exposes timeline keyboard navigation but no playback key path', () => {
+test('R36 WordPress Transport exposes timeline navigation and Space playback from Runtime observation', () => {
   const calls = [];
   const root = makeRoot();
+  const observation = makeObservationPort();
   const binding = createWordPressTransportBinding({
     root,
-    commandPort: makeCommandPort(calls)
+    commandPort: makeCommandPort(calls),
+    observationPort: observation.port
   });
 
   assert.equal(root.getAttribute('tabindex'), '0');
@@ -112,8 +134,23 @@ test('R35 WordPress Transport exposes timeline keyboard navigation but no playba
   ]);
 
   calls.length = 0;
-  const playbackResult = root.dispatchKey(' ');
-  assert.equal(playbackResult.prevented, false);
+  const playResult = root.dispatchKey(' ');
+  assert.equal(playResult.prevented, true);
+  assert.deepEqual(calls, [
+    { name: 'play', args: ['transport'] }
+  ]);
+
+  calls.length = 0;
+  observation.set('transitioning', true);
+  const pauseResult = root.dispatchKey(' ');
+  assert.equal(pauseResult.prevented, true);
+  assert.deepEqual(calls, [
+    { name: 'pause', args: ['transport'] }
+  ]);
+
+  calls.length = 0;
+  const repeatResult = root.dispatchKey(' ', { repeat: true });
+  assert.equal(repeatResult.prevented, false);
   assert.deepEqual(calls, []);
 
   assert.equal(binding.dispose(), null);

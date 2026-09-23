@@ -1,9 +1,11 @@
-import { createTransportKeyboardBinding } from '../../src/transport/keyboard-binding.mjs';
+import { createTransportPlaybackKeyboardBinding } from '../../src/transport/keyboard-binding.mjs';
+import { createTransportPlaybackPresentation } from '../../src/transport/playback-presentation.mjs';
 import { createTransportController } from '../../src/transport/transport-controller.mjs';
 
 export const WORDPRESS_TRANSPORT_BINDING_OPTIONS_KEYS = Object.freeze([
   'root',
-  'commandPort'
+  'commandPort',
+  'observationPort'
 ]);
 export const WORDPRESS_TRANSPORT_BINDING_KEYS = Object.freeze(['dispose']);
 
@@ -66,15 +68,19 @@ export function createWordPressTransportBinding(optionsInput) {
 
   const root = assertRoot(dataValue(optionsInput, 'root', 'WordPress Transport binding options'));
   const commandPort = dataValue(optionsInput, 'commandPort', 'WordPress Transport binding options');
+  const observationPort = dataValue(optionsInput, 'observationPort', 'WordPress Transport binding options');
   const previousTabIndex = root.getAttribute('tabindex');
   let keyboardBinding = null;
 
   try {
     root.setAttribute('tabindex', '0');
     const transport = createTransportController(commandPort);
-    keyboardBinding = createTransportKeyboardBinding({
+    const playbackPresentation = createTransportPlaybackPresentation(observationPort);
+    keyboardBinding = createTransportPlaybackKeyboardBinding({
       root,
-      timelineKey: (key) => transport.timelineKey(key)
+      timelineKey: (key) => transport.timelineKey(key),
+      playbackKey: (key, action) => transport.playbackKey(key, action),
+      playbackPresentation
     });
   } catch (error) {
     try {

@@ -16,12 +16,13 @@ export const WORDPRESS_LIVE_HOST_OPTIONS_KEYS = Object.freeze([
   'diagnostics'
 ]);
 
-export const WORDPRESS_LIVE_HOST_KEYS = Object.freeze(['mount', 'commands', 'disposeRoot', 'dispose']);
+export const WORDPRESS_LIVE_HOST_KEYS = Object.freeze(['mount', 'commands', 'observations', 'disposeRoot', 'dispose']);
 export const WORDPRESS_EXPERIENCE_LOADER_KEYS = Object.freeze(['load']);
 export const WORDPRESS_RENDERER_RESOLVER_KEYS = Object.freeze(['resolve']);
 export const WORDPRESS_CLOCK_FACTORY_KEYS = Object.freeze(['create']);
 export const WORDPRESS_ENTRY_RESOLVER_KEYS = Object.freeze(['resolve']);
 export const WORDPRESS_MOUNT_RESULT_KEYS = Object.freeze(['mounted', 'fallback']);
+export const WORDPRESS_OBSERVATION_PORT_KEYS = Object.freeze(['snapshot']);
 export const WORDPRESS_COMMAND_PORT_KEYS = Object.freeze([
   'play',
   'pause',
@@ -264,6 +265,14 @@ function createCommandPort(instance) {
   return Object.freeze(port);
 }
 
+function createObservationPort(instance) {
+  const port = {
+    snapshot: () => instance.read.snapshot()
+  };
+  assertExactKeys(port, WORDPRESS_OBSERVATION_PORT_KEYS, 'WordPress Host observation port');
+  return Object.freeze(port);
+}
+
 function deriveDescriptor(root, ordinal, seenInstanceIds) {
   assertRoot(root);
   const experienceId = readAttribute(root, EXPERIENCE_ATTRIBUTE);
@@ -389,6 +398,7 @@ export function createWordPressLiveHost(optionsInput) {
   let reducedMotionSource = null;
   const mountedRecords = [];
   const commandPorts = new Map();
+  const observationPorts = new Map();
   const rootDisposePromises = new Map();
 
   function isDisposing() {
@@ -482,10 +492,12 @@ export function createWordPressLiveHost(optionsInput) {
       }
 
       commandPorts.set(root, createCommandPort(instance));
+      observationPorts.set(root, createObservationPort(instance));
       mountedRecords.push({ root, instanceId, experienceId, instance });
       return true;
     } catch (error) {
       commandPorts.delete(root);
+      observationPorts.delete(root);
       await cleanupInstance(instance, report, instanceId, 'failed_mount_cleanup');
       projectFallback(root, report, instanceId);
       const structuredExperienceFault = stage === 'experience_load'
@@ -583,11 +595,16 @@ export function createWordPressLiveHost(optionsInput) {
     return commandPorts.get(root) ?? null;
   }
 
+  function observations(root) {
+    return observationPorts.get(root) ?? null;
+  }
+
   function startRecordDisposal(record) {
     const existing = rootDisposePromises.get(record.root);
     if (existing !== undefined) return existing;
 
     commandPorts.delete(record.root);
+    observationPorts.delete(record.root);
     projectFallback(record.root, report, record.instanceId);
 
     let pending;
@@ -663,7 +680,7 @@ export function createWordPressLiveHost(optionsInput) {
     return disposePromise;
   }
 
-  const host = { mount, commands, disposeRoot, dispose };
+  const host = { mount, commands, observations, disposeRoot, dispose };
   assertExactKeys(host, WORDPRESS_LIVE_HOST_KEYS, 'WordPress live Host');
   return Object.freeze(host);
 }
