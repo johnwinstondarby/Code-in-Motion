@@ -7,37 +7,43 @@ import {
   scanReleaseBytes
 } from '../tools/check-wordpress-supply-chain.mjs';
 
+const packageJson = JSON.parse(
+  readFileSync(new URL('../package.json', import.meta.url), 'utf8')
+);
+const RELEASE_VERSION = packageJson.version;
+const MODULE_ROOT = `wordpress/assets/modules/${RELEASE_VERSION}`;
+
 const registry = JSON.parse(
   readFileSync(new URL('../wordpress/experiences/registry.json', import.meta.url), 'utf8')
 );
 const REGISTERED_ASSETS = new Set(registry.experiences.map((experience) => experience.asset));
 
 test('R23 accepts only approved v1 release locations', () => {
-  assert.equal(classifyReleasePath('LICENSE', '0.1.6', REGISTERED_ASSETS), 'approved-static');
-  assert.equal(classifyReleasePath('readme.txt', '0.1.6', REGISTERED_ASSETS), 'approved-static');
-  assert.equal(classifyReleasePath('code-in-motion.php', '0.1.6', REGISTERED_ASSETS), 'approved-static');
-  assert.equal(classifyReleasePath('uninstall.php', '0.1.6', REGISTERED_ASSETS), 'approved-static');
-  assert.equal(classifyReleasePath('wordpress/admin-console.php', '0.1.6', REGISTERED_ASSETS), 'approved-static');
+  assert.equal(classifyReleasePath('LICENSE', RELEASE_VERSION, REGISTERED_ASSETS), 'approved-static');
+  assert.equal(classifyReleasePath('readme.txt', RELEASE_VERSION, REGISTERED_ASSETS), 'approved-static');
+  assert.equal(classifyReleasePath('code-in-motion.php', RELEASE_VERSION, REGISTERED_ASSETS), 'approved-static');
+  assert.equal(classifyReleasePath('uninstall.php', RELEASE_VERSION, REGISTERED_ASSETS), 'approved-static');
+  assert.equal(classifyReleasePath('wordpress/admin-console.php', RELEASE_VERSION, REGISTERED_ASSETS), 'approved-static');
   assert.equal(
-    classifyReleasePath('wordpress/experiences/registry.json', '0.1.6', REGISTERED_ASSETS),
+    classifyReleasePath('wordpress/experiences/registry.json', RELEASE_VERSION, REGISTERED_ASSETS),
     'approved-static'
   );
   assert.equal(
-    classifyReleasePath('wordpress/renderers/inventory.generated.json', '0.1.6', REGISTERED_ASSETS),
+    classifyReleasePath('wordpress/renderers/inventory.generated.json', RELEASE_VERSION, REGISTERED_ASSETS),
     'approved-static'
   );
   assert.equal(
-    classifyReleasePath('wordpress/release/release-info.generated.json', '0.1.6', REGISTERED_ASSETS),
+    classifyReleasePath('wordpress/release/release-info.generated.json', RELEASE_VERSION, REGISTERED_ASSETS),
     'approved-static'
   );
   assert.equal(
-    classifyReleasePath('wordpress/assets/modules/0.1.6/src/core/cim-core.mjs', '0.1.6', REGISTERED_ASSETS),
+    classifyReleasePath(`${MODULE_ROOT}/src/core/cim-core.mjs`, RELEASE_VERSION, REGISTERED_ASSETS),
     'approved-module'
   );
   assert.equal(
     classifyReleasePath(
-      'wordpress/assets/modules/0.1.6/wordpress/assets/bootstrap-module.mjs',
-      '0.1.6',
+      `${MODULE_ROOT}/wordpress/assets/bootstrap-module.mjs`,
+      RELEASE_VERSION,
       REGISTERED_ASSETS
     ),
     'approved-wordpress-module'
@@ -45,8 +51,8 @@ test('R23 accepts only approved v1 release locations', () => {
   for (const asset of REGISTERED_ASSETS) {
     assert.equal(
       classifyReleasePath(
-        'wordpress/assets/modules/0.1.6/wordpress/experiences/' + asset,
-        '0.1.6',
+        `${MODULE_ROOT}/wordpress/experiences/${asset}`,
+        RELEASE_VERSION,
         REGISTERED_ASSETS
       ),
       'approved-experience'
@@ -57,8 +63,8 @@ test('R23 accepts only approved v1 release locations', () => {
 test('R23 rejects unregistered Experience JSON from the version-bearing deployment directory', () => {
   assert.throws(
     () => classifyReleasePath(
-      'wordpress/assets/modules/0.1.6/wordpress/experiences/unregistered.json',
-      '0.1.6',
+      `${MODULE_ROOT}/wordpress/experiences/unregistered.json`,
+      RELEASE_VERSION,
       REGISTERED_ASSETS
     ),
     /not an approved release input/
@@ -76,7 +82,7 @@ test('R23 rejects test, harness, tooling, and development paths', () => {
     'package.json',
     '.nvmrc'
   ]) {
-    assert.throws(() => classifyReleasePath(path, '0.1.6', REGISTERED_ASSETS), /denied|outside the approved/);
+    assert.throws(() => classifyReleasePath(path, RELEASE_VERSION, REGISTERED_ASSETS), /denied|outside the approved/);
   }
 });
 
@@ -84,12 +90,12 @@ test('R23 rejects environment and credential file names', () => {
   for (const path of [
     '.env',
     '.env.production',
-    'wordpress/assets/modules/0.1.6/src/.env.local',
-    'wordpress/assets/modules/0.1.6/src/private.key',
-    'wordpress/assets/modules/0.1.6/src/certificate.pem'
+    `${MODULE_ROOT}/src/.env.local`,
+    `${MODULE_ROOT}/src/private.key`,
+    `${MODULE_ROOT}/src/certificate.pem`
   ]) {
     assert.throws(
-      () => classifyReleasePath(path, '0.1.6', REGISTERED_ASSETS),
+      () => classifyReleasePath(path, RELEASE_VERSION, REGISTERED_ASSETS),
       /environment file|denied secret\/binary\/archive extension/
     );
   }
@@ -97,14 +103,14 @@ test('R23 rejects environment and credential file names', () => {
 
 test('R23 rejects archives, native binaries, WebAssembly, databases, and source maps', () => {
   for (const path of [
-    'wordpress/assets/modules/0.1.6/src/native.node',
-    'wordpress/assets/modules/0.1.6/src/helper.wasm',
-    'wordpress/assets/modules/0.1.6/src/archive.zip',
-    'wordpress/assets/modules/0.1.6/src/cache.sqlite',
-    'wordpress/assets/modules/0.1.6/src/runtime.mjs.map'
+    `${MODULE_ROOT}/src/native.node`,
+    `${MODULE_ROOT}/src/helper.wasm`,
+    `${MODULE_ROOT}/src/archive.zip`,
+    `${MODULE_ROOT}/src/cache.sqlite`,
+    `${MODULE_ROOT}/src/runtime.mjs.map`
   ]) {
     assert.throws(
-      () => classifyReleasePath(path, '0.1.6', REGISTERED_ASSETS),
+      () => classifyReleasePath(path, RELEASE_VERSION, REGISTERED_ASSETS),
       /denied secret\/binary\/archive extension/
     );
   }
@@ -131,7 +137,7 @@ test('R23 rejects private keys and high-confidence credential indicators', () =>
 test('R23 permits ordinary production text containing non-secret token vocabulary', () => {
   assert.doesNotThrow(() =>
     scanReleaseBytes(
-      'wordpress/assets/modules/0.1.6/src/runtime/example.mjs',
+      `${MODULE_ROOT}/src/runtime/example.mjs`,
       Buffer.from("const token = 'semantic-token';\nconst passwordField = 'password';\n")
     )
   );
