@@ -35,6 +35,16 @@ Reflog uses:
 
 and is rendered outside the lane container. This keeps recovery evidence visually distinct from repository location.
 
+## Motion scope
+
+`git/v1` has deterministic animated-settlement timing but no intermediate visual animation.
+
+When `context.animate` is true and `context.reducedMotion` is false, the renderer waits for the configured frame count before replacing the prior stable subtree. It does not render intermediate frames, transforms, opacity changes, or other visible motion during that wait.
+
+When `context.animate` is false or `context.reducedMotion` is true, the destination subtree is installed immediately.
+
+The stable output is identical in both paths. Reduced motion therefore changes settlement timing for this renderer, not the appearance of a visible animation.
+
 ## Contract
 
 The renderer implements the v1 `mount / render / dispose` interface, uses only the injected clock and abort capabilities for animated settlement, and settles the same destination to canonically equivalent output across animated and absolute arrival paths.
