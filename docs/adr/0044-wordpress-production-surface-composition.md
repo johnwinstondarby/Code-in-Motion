@@ -1,6 +1,6 @@
 # ADR 0044: WordPress Production Surface Composition
 
-Status: Proposed for R35
+Status: Accepted
 
 Date: 2026-09-22
 
@@ -43,15 +43,15 @@ F4 from the first Localis production verification is preserved as a known compos
 
 Future control work gains a clear closure rule: wire the capability into the WordPress composition, update the production-composition gate, and prove the learner-facing path in browser E2E.
 
-The current decision does not add playback controls or change 0.1.6 runtime behavior.
+The current decision does not add playback controls or change the production Transport behavior carried from 0.1.6 into 0.1.7.
 
 ## Verification
 
-R35 must prove:
+R35 established that:
 
 - the WordPress Transport binding imports the exact declared Transport subset;
 - ArrowRight reaches the command-only Transport path with source `transport`;
-- Space is not captured by the 0.1.6-style production binding and submits no playback command;
+- Space is not captured by the current production binding and submits no playback command;
 - disposal removes the scoped keyboard binding and restores the prior tabindex;
 - existing complete learner-path and playback component tests remain green;
 - WordPress Browser E2E remains green across the supported browsers.
