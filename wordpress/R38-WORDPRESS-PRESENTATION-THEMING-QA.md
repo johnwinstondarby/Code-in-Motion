@@ -276,6 +276,47 @@ R38 is expected to change release-staged source bytes through presentation and v
 
 The version change occurs at candidate freeze rather than at the architectural decision commit.
 
+## Interim R38 evidence
+
+ADR 0045 commit:
+
+`9ea3b5d6602bf221491f308185ffe32bb249aab5`
+
+Initial fixed-panel/control implementation head:
+
+`c1b37b1262e33926c4e9dea3572151a6e38a1b38`
+
+Contract-fixture correction:
+
+`c65b6b7411da10fe430b97de006143a29fc6d044`
+
+At `c65b6b7411da10fe430b97de006143a29fc6d044`, the protected gates were green:
+
+- Verify CiM contracts run `35932503432`: PASS, 714/714 tests;
+- WordPress Floor QA run `35932503401`: PASS;
+- WordPress Playground PR Preview run `35932503397`: PASS;
+- WordPress Browser E2E run `35932503393`: PASS, including Chromium, Firefox, WebKit, WordPress 6.5.10 through 7.1.1, PHP 7.4 and 8.5, ZIP install, upgrade, synthetic mount, lifecycle differential, and aggregate CiM / Browser E2E.
+
+R38 presentation-browser evidence commit:
+
+`885b4510e180e1f0ae6e54a0f94ff7b8de227a7c`
+
+That browser evidence adds direct assertions for:
+
+- a dark surrounding host surface;
+- hostile host foreground, background, border, radius, typography, alignment, and text-transform declarations;
+- preserved CiM renderer, lane, control-surface, and button presentation;
+- six accessible native controls with the expected labels;
+- visible `#323a4a` focus outline;
+- learner Next control behavior;
+- Play to Pause and Pause to Play state reflection;
+- four-column layout at 721 px;
+- one-column layout at 720 px;
+- one-column mobile layout at 360 px;
+- no horizontal overflow of the CiM root or control surface at 360 px.
+
+The exact-head protected gates for `885b4510e180e1f0ae6e54a0f94ff7b8de227a7c` are pending and must replace the interim `c65b6b...` gate set before candidate freeze.
+
 ## Acceptance criteria
 
 R38 closes only when all applicable items below are satisfied:
