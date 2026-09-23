@@ -102,6 +102,55 @@ R35 changes WordPress release bytes through `wordpress/assets/cim.css`. The publ
 
 R35 must not merge to protected `main` while package/plugin/release metadata still identifies the changed artifact as 0.1.6. Before candidate freeze, R35 must advance the release version and regenerate every version-coupled release artifact through the existing deterministic release pipeline.
 
+## Interim exact-head evidence
+
+Interim implementation head before release-identity work:
+
+`9fd6d1cc57fe258cf2137d3d114cf82c5f59c4d3`
+
+All four protected workflow families completed successfully at that exact head:
+
+| Family | Run | Result |
+| --- | ---: | --- |
+| Verify CiM contracts | `35818590044` | PASS |
+| WordPress Browser E2E | `35818589978` | PASS |
+| WordPress Floor QA | `35818590055` | PASS |
+| WordPress Playground PR Preview | `35818590143` | PASS |
+
+Verify family evidence:
+
+- Node 20: PASS;
+- Node 22: PASS;
+- release build: PASS;
+- release reproducibility: PASS;
+- terminal `CiM / Verify`: PASS.
+
+Browser E2E evidence:
+
+- Chromium: PASS;
+- Firefox: PASS;
+- WebKit: PASS;
+- WordPress compatibility: 6.5.10, 6.6.7, 6.7.7, 6.8.8, 6.9.7, 7.0.4, and 7.1.1: PASS;
+- PHP 7.4 and PHP 8.5: PASS;
+- synthetic mount: PASS;
+- ZIP install E2E: PASS;
+- prior-to-current upgrade E2E: PASS;
+- R34 lifecycle differential: PASS;
+- terminal `CiM / Browser E2E`: PASS.
+
+Floor QA evidence:
+
+- WordPress floor: PASS;
+- Plugin Check: PASS;
+- terminal `CiM / Floor QA`: PASS.
+
+Playground evidence:
+
+- WordPress Playground preview: PASS;
+- terminal `CiM / Playground`: PASS.
+
+This is interim evidence only. R35 changes release bytes while the branch still identifies the artifact as 0.1.6, so these runs cannot serve as final release-candidate evidence. Final evidence must be captured again after the version transition and regenerated release artifacts.
+
 ## R35 acceptance gates
 
 Before R35 can close:
