@@ -182,9 +182,9 @@ test('R38 fixed instrument panel resists host styling and preserves controls, fo
     .locator('section[data-cim-renderer="git/v1"]');
   const laneRegion = rendered.locator('[data-role="git-lanes"]');
   const firstLane = laneRegion.locator('[data-git-lane]').first();
-  const controls = root.getByRole('group', { name: 'Code in Motion controls' });
-  const next = controls.getByRole('button', { name: 'Next' });
-  const playback = controls.getByRole('button', { name: 'Play' });
+  const controls = root.getByRole('group', { name: 'Code in Motion controls', exact: true });
+  const next = controls.getByRole('button', { name: 'Next', exact: true });
+  const playback = controls.getByRole('button', { name: 'Play', exact: true });
 
   await expect(rendered).toHaveCSS('color', 'rgb(23, 27, 34)');
   await expect(rendered).toHaveCSS('background-color', 'rgb(244, 246, 248)');
@@ -199,12 +199,12 @@ test('R38 fixed instrument panel resists host styling and preserves controls, fo
   await expect(controls).toHaveCSS('background-color', 'rgb(244, 246, 248)');
   await expect(controls).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
   await expect(controls.getByRole('button')).toHaveCount(6);
-  await expect(controls.getByRole('button', { name: 'Start' })).toHaveCount(1);
-  await expect(controls.getByRole('button', { name: 'Previous' })).toHaveCount(1);
+  await expect(controls.getByRole('button', { name: 'Start', exact: true })).toHaveCount(1);
+  await expect(controls.getByRole('button', { name: 'Previous', exact: true })).toHaveCount(1);
   await expect(playback).toHaveCount(1);
   await expect(next).toHaveCount(1);
-  await expect(controls.getByRole('button', { name: 'End' })).toHaveCount(1);
-  await expect(controls.getByRole('button', { name: 'Restart' })).toHaveCount(1);
+  await expect(controls.getByRole('button', { name: 'End', exact: true })).toHaveCount(1);
+  await expect(controls.getByRole('button', { name: 'Restart', exact: true })).toHaveCount(1);
   await expect(next).toHaveCSS('color', 'rgb(23, 27, 34)');
   await expect(next).toHaveCSS('background-color', 'rgb(255, 255, 255)');
   await expect(next).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
@@ -221,9 +221,9 @@ test('R38 fixed instrument panel resists host styling and preserves controls, fo
   await expect(rendered).toHaveAttribute('data-step', 'step-01');
 
   await playback.click();
-  await expect(controls.getByRole('button', { name: 'Pause' })).toHaveCount(1);
-  await controls.getByRole('button', { name: 'Pause' }).click();
-  await expect(controls.getByRole('button', { name: 'Play' })).toHaveCount(1);
+  await expect(controls.getByRole('button', { name: 'Pause', exact: true })).toHaveCount(1);
+  await controls.getByRole('button', { name: 'Pause', exact: true }).click();
+  await expect(controls.getByRole('button', { name: 'Play', exact: true })).toHaveCount(1);
 
   const columnCount = () => laneRegion.evaluate((element) => {
     const value = getComputedStyle(element).gridTemplateColumns.trim();
