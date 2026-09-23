@@ -10,18 +10,18 @@ const bindingSource = readFileSync(
 );
 
 function makeDocument() {
-  let nextFrame = 0;
-  const frames = new Map();
+  let nextTimer = 0;
+  const timers = new Map();
 
   const document = {
     defaultView: {
-      requestAnimationFrame(callback) {
-        const handle = ++nextFrame;
-        frames.set(handle, callback);
+      setTimeout(callback, delay) {
+        const handle = ++nextTimer;
+        timers.set(handle, { callback, delay });
         return handle;
       },
-      cancelAnimationFrame(handle) {
-        frames.delete(handle);
+      clearTimeout(handle) {
+        timers.delete(handle);
       }
     },
     getSelection() {
@@ -30,15 +30,18 @@ function makeDocument() {
     createElement(tagName) {
       return makeElement(tagName, document);
     },
-    pendingFrames() {
-      return frames.size;
+    pendingTimers() {
+      return timers.size;
     },
-    runFrame() {
-      const entry = frames.entries().next();
+    pendingTimerDelays() {
+      return [...timers.values()].map(({ delay }) => delay);
+    },
+    runTimer() {
+      const entry = timers.entries().next();
       if (entry.done) return false;
-      const [handle, callback] = entry.value;
-      frames.delete(handle);
-      callback(16.67);
+      const [handle, timer] = entry.value;
+      timers.delete(handle);
+      timer.callback();
       return true;
     }
   };
@@ -227,13 +230,14 @@ test('R38 WordPress Transport composes fixed native controls and keeps playback 
   assert.deepEqual(calls, [{ name: 'play', args: ['transport'] }]);
   assert.equal(playback.textContent, 'Pause');
   assert.equal(playback.getAttribute('data-cim-action'), 'pause');
-  assert.equal(document.pendingFrames(), 1);
+  assert.equal(document.pendingTimers(), 1);
+  assert.deepEqual(document.pendingTimerDelays(), [50]);
 
   observation.set('idle', false);
-  assert.equal(document.runFrame(), true);
+  assert.equal(document.runTimer(), true);
   assert.equal(playback.textContent, 'Play');
   assert.equal(playback.getAttribute('data-cim-action'), 'play');
-  assert.equal(document.pendingFrames(), 0);
+  assert.equal(document.pendingTimers(), 0);
 
   calls.length = 0;
   control(root, 'previous').click();
@@ -252,7 +256,7 @@ test('R38 WordPress Transport composes fixed native controls and keeps playback 
   assert.equal(binding.dispose(), null);
   assert.equal(root.getAttribute('tabindex'), null);
   assert.equal(controlSurface(root), null);
-  assert.equal(document.pendingFrames(), 0);
+  assert.equal(document.pendingTimers(), 0);
 });
 
 test('R38 WordPress Transport preserves timeline keys and Space playback with control refresh', () => {
@@ -278,7 +282,8 @@ test('R38 WordPress Transport preserves timeline keys and Space playback with co
     { name: 'play', args: ['transport'] }
   ]);
   assert.equal(control(root, 'playback').textContent, 'Pause');
-  assert.equal(document.pendingFrames(), 1);
+  assert.equal(document.pendingTimers(), 1);
+  assert.deepEqual(document.pendingTimerDelays(), [50]);
 
   calls.length = 0;
   const pauseResult = root.dispatchKey(' ');
@@ -287,7 +292,7 @@ test('R38 WordPress Transport preserves timeline keys and Space playback with co
     { name: 'pause', args: ['transport'] }
   ]);
   assert.equal(control(root, 'playback').textContent, 'Play');
-  assert.equal(document.pendingFrames(), 0);
+  assert.equal(document.pendingTimers(), 0);
 
   calls.length = 0;
   const repeatResult = root.dispatchKey(' ', { repeat: true });
