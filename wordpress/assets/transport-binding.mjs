@@ -21,6 +21,7 @@ const BUTTON_LABELS = Object.freeze({
   end: 'End',
   restart: 'Restart'
 });
+const PRESENTATION_REFRESH_MS = 50;
 
 function fail(message) {
   throw new TypeError(message);
@@ -81,8 +82,8 @@ function assertRoot(root) {
   if (view === null || (typeof view !== 'object' && typeof view !== 'function')) {
     fail('WordPress Transport root ownerDocument must expose defaultView.');
   }
-  if (typeof view.requestAnimationFrame !== 'function' || typeof view.cancelAnimationFrame !== 'function') {
-    fail('WordPress Transport defaultView must expose animation-frame scheduling.');
+  if (typeof view.setTimeout !== 'function' || typeof view.clearTimeout !== 'function') {
+    fail('WordPress Transport defaultView must expose timeout scheduling.');
   }
 
   return root;
@@ -132,14 +133,14 @@ function cleanupAfterConstructionFailure({
   keyboardBinding,
   buttonBinding,
   controlSurface,
-  frameHandle
+  refreshTimer
 }) {
   const errors = [];
   const view = root.ownerDocument.defaultView;
 
-  if (frameHandle !== null) {
+  if (refreshTimer !== null) {
     try {
-      view.cancelAnimationFrame(frameHandle);
+      view.clearTimeout(refreshTimer);
     } catch (error) {
       errors.push(error);
     }
@@ -195,7 +196,7 @@ export function createWordPressTransportBinding(optionsInput) {
   let keyboardBinding = null;
   let buttonBinding = null;
   let controlSurface = null;
-  let frameHandle = null;
+  let refreshTimer = null;
   let disposed = false;
 
   try {
@@ -210,10 +211,10 @@ export function createWordPressTransportBinding(optionsInput) {
 
     controlSurface = createControlSurface(root);
 
-    function cancelPresentationFrame() {
-      if (frameHandle === null) return;
-      view.cancelAnimationFrame(frameHandle);
-      frameHandle = null;
+    function cancelPresentationRefresh() {
+      if (refreshTimer === null) return;
+      view.clearTimeout(refreshTimer);
+      refreshTimer = null;
     }
 
     function refreshControls() {
@@ -222,15 +223,15 @@ export function createWordPressTransportBinding(optionsInput) {
       const action = playbackPresentation.read().action;
 
       if (action !== 'pause') {
-        cancelPresentationFrame();
+        cancelPresentationRefresh();
         return;
       }
-      if (frameHandle !== null) return;
+      if (refreshTimer !== null) return;
 
-      frameHandle = view.requestAnimationFrame(() => {
-        frameHandle = null;
+      refreshTimer = view.setTimeout(() => {
+        refreshTimer = null;
         refreshControls();
-      });
+      }, PRESENTATION_REFRESH_MS);
     }
 
     function submit(command) {
@@ -270,7 +271,7 @@ export function createWordPressTransportBinding(optionsInput) {
       keyboardBinding,
       buttonBinding,
       controlSurface,
-      frameHandle
+      refreshTimer
     });
     if (cleanupErrors.length > 0) {
       throw new AggregateError(
@@ -287,10 +288,10 @@ export function createWordPressTransportBinding(optionsInput) {
     disposed = true;
     const errors = [];
 
-    if (frameHandle !== null) {
+    if (refreshTimer !== null) {
       try {
-        view.cancelAnimationFrame(frameHandle);
-        frameHandle = null;
+        view.clearTimeout(refreshTimer);
+        refreshTimer = null;
       } catch (error) {
         errors.push(error);
       }
