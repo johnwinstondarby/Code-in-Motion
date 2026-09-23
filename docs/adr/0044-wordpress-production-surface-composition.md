@@ -19,6 +19,8 @@ The binding installs the timeline keyboard path for ArrowLeft, ArrowRight, Home,
 
 This distinction was material during reduced-motion verification. Both registered renderers were available and the reduced-motion policy was computed and delivered correctly, but the deployed WordPress surface exposed no learner action that could request continuous playback. Renderer `context.animate` therefore remained false in production.
 
+R35 also established a presentation boundary for the Git renderer. The live Localis deployment showed that inheriting host-page text color made `git/v1` illegible against the dark page field. The 0.1.7 fix therefore gives the renderer an explicit light instrument-panel surface rather than relying on host-theme inheritance.
+
 ## Decision
 
 1. WordPress production composition is a separately verified contract. Component availability, registry membership, harness coverage, and conformance coverage do not establish that a capability is reachable on the deployed WordPress surface.
@@ -35,6 +37,8 @@ This distinction was material during reduced-motion verification. Both registere
 
 7. Renderer registration and renderer resolution remain separate from Transport reachability. A registered renderer does not imply that every Transport mode capable of driving that renderer is reachable from WordPress.
 
+8. `git/v1` in 0.1.7 uses a fixed host-independent light presentation surface: text `#171b22`, panel `#f4f6f8`, lane background `#ffffff`, and border/focus `#323a4a`. This is the deliberate v1 production presentation contract. WordPress 0.1.7 exposes no supported renderer-theming override or custom-property interface. A later theming checkpoint may add one, but it must define the override contract explicitly and preserve browser-level contrast evidence rather than depending on incidental host stylesheet inheritance.
+
 ## Consequences
 
 The production surface has an explicit boundary instead of inheriting an assumption from the broader component suite.
@@ -42,6 +46,8 @@ The production surface has an explicit boundary instead of inheriting an assumpt
 F4 from the first Localis production verification is preserved as a known composition limitation rather than misclassified as a reduced-motion or renderer defect.
 
 Future control work gains a clear closure rule: wire the capability into the WordPress composition, update the production-composition gate, and prove the learner-facing path in browser E2E.
+
+The 0.1.7 Git renderer intentionally appears as a light instrument panel against the darker Localis page field. That visual separation is part of the v1 presentation choice. Theme configurability is deferred until an explicit renderer-theming contract is designed and tested.
 
 The current decision does not add playback controls or change the production Transport behavior carried from 0.1.6 into 0.1.7.
 
@@ -54,4 +60,5 @@ R35 established that:
 - Space is not captured by the current production binding and submits no playback command;
 - disposal removes the scoped keyboard binding and restores the prior tabindex;
 - existing complete learner-path and playback component tests remain green;
-- WordPress Browser E2E remains green across the supported browsers.
+- WordPress Browser E2E remains green across the supported browsers;
+- `git/v1` computed text and surface colors are asserted in Browser E2E so host theme inheritance cannot silently reintroduce the F1 failure.
