@@ -44,8 +44,10 @@ test('R27 Git basic cycle mounts through the production WordPress path and advan
 
   await expect(rendered).toHaveAttribute('data-step', 'initial');
   await expect(rendered).toHaveAttribute('data-git-focus', 'overview');
+  await expect(root).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(root).toHaveCSS('background-color', 'rgb(244, 246, 248)');
   await expect(rendered).toHaveCSS('color', 'rgb(23, 27, 34)');
-  await expect(rendered).toHaveCSS('background-color', 'rgb(244, 246, 248)');
+  await expect(rendered).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
 
   const lanes = rendered.locator('[data-role="git-lanes"] > [data-git-lane]');
   await expect(lanes).toHaveCount(4);
@@ -186,29 +188,44 @@ test('R38 fixed instrument panel resists host styling and preserves controls, fo
   const next = controls.getByRole('button', { name: 'Next', exact: true });
   const playback = controls.getByRole('button', { name: 'Play', exact: true });
 
+  await expect(root).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(root).toHaveCSS('background-color', 'rgb(244, 246, 248)');
+  await expect(root).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
+  await expect(root).toHaveCSS('border-top-width', '1px');
+  await expect(root).toHaveCSS('border-radius', '8px');
+
   await expect(rendered).toHaveCSS('color', 'rgb(23, 27, 34)');
-  await expect(rendered).toHaveCSS('background-color', 'rgb(244, 246, 248)');
-  await expect(rendered).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
-  await expect(rendered).toHaveCSS('border-radius', '8px');
+  await expect(rendered).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect(rendered).toHaveCSS('border-top-width', '0px');
+  await expect(rendered).toHaveCSS('border-radius', '0px');
   await expect(firstLane).toHaveCSS('color', 'rgb(23, 27, 34)');
   await expect(firstLane).toHaveCSS('background-color', 'rgb(255, 255, 255)');
   await expect(firstLane).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
 
   await expect(controls).toHaveCount(1);
   await expect(controls).toHaveCSS('color', 'rgb(23, 27, 34)');
-  await expect(controls).toHaveCSS('background-color', 'rgb(244, 246, 248)');
+  await expect(controls).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   await expect(controls).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
-  await expect(controls.getByRole('button')).toHaveCount(6);
+  await expect(controls).toHaveCSS('border-top-width', '2px');
+  await expect(controls).toHaveCSS('border-right-width', '0px');
+  await expect(controls).toHaveCSS('border-bottom-width', '0px');
+  await expect(controls).toHaveCSS('border-left-width', '0px');
+  await expect(controls).toHaveCSS('border-radius', '0px');
+  await expect(controls.getByRole('button')).toHaveCount(5);
   await expect(controls.getByRole('button', { name: 'Start', exact: true })).toHaveCount(1);
   await expect(controls.getByRole('button', { name: 'Previous', exact: true })).toHaveCount(1);
   await expect(playback).toHaveCount(1);
   await expect(next).toHaveCount(1);
   await expect(controls.getByRole('button', { name: 'End', exact: true })).toHaveCount(1);
-  await expect(controls.getByRole('button', { name: 'Restart', exact: true })).toHaveCount(1);
+  await expect(controls.getByRole('button', { name: 'Restart', exact: true })).toHaveCount(0);
+
   await expect(next).toHaveCSS('color', 'rgb(23, 27, 34)');
   await expect(next).toHaveCSS('background-color', 'rgb(255, 255, 255)');
   await expect(next).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
   await expect(next).toHaveCSS('font-weight', '700');
+  await expect(playback).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(playback).toHaveCSS('background-color', 'rgb(232, 236, 239)');
+  await expect(playback).toHaveCSS('border-top-width', '2px');
 
   await next.focus();
   await expect(next).toBeFocused();
@@ -221,9 +238,15 @@ test('R38 fixed instrument panel resists host styling and preserves controls, fo
   await expect(rendered).toHaveAttribute('data-step', 'step-01');
 
   await playback.click();
-  await expect(controls.getByRole('button', { name: 'Pause', exact: true })).toHaveCount(1);
-  await controls.getByRole('button', { name: 'Pause', exact: true }).click();
-  await expect(controls.getByRole('button', { name: 'Play', exact: true })).toHaveCount(1);
+  const pause = controls.getByRole('button', { name: 'Pause', exact: true });
+  await expect(pause).toHaveCount(1);
+  await expect(pause).toHaveCSS('color', 'rgb(255, 255, 255)');
+  await expect(pause).toHaveCSS('background-color', 'rgb(50, 58, 74)');
+  await pause.click();
+  const playAgain = controls.getByRole('button', { name: 'Play', exact: true });
+  await expect(playAgain).toHaveCount(1);
+  await expect(playAgain).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(playAgain).toHaveCSS('background-color', 'rgb(232, 236, 239)');
 
   const columnCount = () => laneRegion.evaluate((element) => {
     const value = getComputedStyle(element).gridTemplateColumns.trim();
