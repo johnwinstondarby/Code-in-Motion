@@ -197,22 +197,22 @@
   border-color: #323a4a;
 }
 
-.cim [data-cim-transport-controls] [data-cim-control="playback"] {
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"] {
   background: #e8ecef;
   border-width: 2px;
 }
 
-.cim [data-cim-transport-controls] [data-cim-control="playback"]:hover,
-.cim [data-cim-transport-controls] [data-cim-control="playback"]:focus,
-.cim [data-cim-transport-controls] [data-cim-control="playback"]:focus-visible {
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"]:hover,
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"]:focus,
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"]:focus-visible {
   background: #e8ecef;
 }
 
-.cim [data-cim-transport-controls] [data-cim-control="playback"][data-cim-action="pause"],
-.cim [data-cim-transport-controls] [data-cim-control="playback"][data-cim-action="pause"]:hover,
-.cim [data-cim-transport-controls] [data-cim-control="playback"][data-cim-action="pause"]:focus,
-.cim [data-cim-transport-controls] [data-cim-control="playback"][data-cim-action="pause"]:focus-visible,
-.cim [data-cim-transport-controls] [data-cim-control="playback"][data-cim-action="pause"]:active {
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"],
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:hover,
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:focus,
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:focus-visible,
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:active {
   color: #ffffff;
   background: #323a4a;
   border-color: #323a4a;
