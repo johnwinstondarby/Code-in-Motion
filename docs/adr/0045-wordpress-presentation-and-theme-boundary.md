@@ -52,13 +52,27 @@ A future release may deliberately expose visual configuration. R38 should preser
 
 12. Presentation authority is independent from Runtime, Host, Transport, renderer-state, playback-timing, and reduced-motion authority. R38 presentation work must preserve those contracts.
 
+13. The outer instrument-panel shell belongs to WordPress composition. The WordPress `.cim` root composes renderer output and learner-control output inside one visual shell. The renderer does not know that Transport controls exist, and the control composition does not know renderer semantics. Neither side reaches across the boundary to style or operate the other.
+
+14. Renderer output does not own a second outer frame inside the WordPress composition shell. Renderer-specific styling owns the content region inside that shell. The learner-control region is separated from renderer output by an internal divider rather than by a second enclosing border.
+
+15. A control appears in the primary learner-facing row only when its effect is observable in the current composition. An action whose consequence cannot be perceived in the visible learner surface remains available to the underlying authority but is withheld from the primary row until a composition can expose its consequence.
+
+16. R38 therefore withholds `restart` from the visible WordPress control row. `restart()` remains part of Transport authority, but its reveal-frontier reset is not observable while Commentary UI remains outside R38. The visible row contains Start, Previous, Play/Pause, Next, and End.
+
+17. Play/Pause presentation carries deliberate state information without visually outranking the instrument content. Play receives a restrained emphasis in the idle state. Pause receives a stronger active-state treatment while playback is engaged, so the running state can be recognized without depending on label text alone.
+
 ## Consequences
 
 The current WordPress instrument panel has one supported presentation source: `cim.css`.
 
 The surrounding WordPress theme may provide page context, but it does not gain a supported mechanism for recoloring or restructuring the CiM instrument panel.
 
+The WordPress composition shell encloses both renderer output and learner controls. Renderer code remains independent from Transport, and Transport presentation remains independent from renderer semantics.
+
 Learner-facing controls can remain interactive and stateful without making the presentation configurable.
+
+The visible control row is intentionally smaller than the complete Transport command surface. Surface admission depends on an observable learner consequence rather than on command availability alone.
 
 The internal semantic vocabulary reduces future migration cost. If configurable theming is later approved, selected concepts can be promoted deliberately instead of reverse-engineering scattered literal declarations.
 
@@ -71,10 +85,14 @@ Shadow DOM or another stronger style-isolation mechanism is not introduced by R3
 R38 verification must demonstrate that:
 
 - the approved default computed presentation is supplied by `cim.css`;
+- one WordPress composition shell encloses renderer output and the learner-control region without a nested renderer frame or separate control frame;
+- renderer code remains unaware of Transport and WordPress Transport composition remains unaware of renderer semantics;
 - dark host context does not alter CiM-owned colors or surfaces;
 - realistic hostile host foreground/background rules do not silently alter CiM-owned presentation;
 - responsive layout remains correct above and below the approved breakpoint and at narrow mobile width;
 - focus indication remains visible and CiM-owned;
+- the visible control row contains Start, Previous, Play/Pause, Next, and End, with Restart absent from the learner-facing surface;
+- Play and Pause expose intentionally different computed presentation states;
 - learner playback and keyboard behavior remain green;
 - normal-motion and reduced-motion behavior remain green;
 - multiple CiM invocations remain isolated;
