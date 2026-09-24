@@ -6,12 +6,71 @@
   display: none;
 }
 
-.cim [data-cim-renderer="git/v1"] {
+/*
+ * R38 internal semantic presentation vocabulary:
+ * panel foreground, panel surface, lane surface, structural border,
+ * focus indicator, control foreground, control surface, spacing, radii.
+ * These are internal concepts only. R38 exposes no public theming tokens.
+ */
+.cim[data-cim-state="ready"] {
+  box-sizing: border-box;
+  margin: 0;
   padding: 1rem;
   color: #171b22;
   background: #f4f6f8;
   border: 1px solid #323a4a;
   border-radius: 0.5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: none;
+}
+
+.cim [data-cim-renderer="git/v1"] {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: #171b22;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font: inherit;
+  text-align: left;
+  text-transform: none;
+}
+
+.cim [data-cim-renderer="git/v1"] *,
+.cim [data-cim-transport-controls],
+.cim [data-cim-transport-controls] * {
+  box-sizing: border-box;
+}
+
+.cim [data-cim-renderer="git/v1"] [data-role="title"],
+.cim [data-cim-renderer="git/v1"] [data-role="lane-title"],
+.cim [data-cim-renderer="git/v1"] [data-role="evidence-title"] {
+  margin: 0;
+  padding: 0;
+  color: #171b22;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.cim [data-cim-renderer="git/v1"] [data-role="title"] {
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+}
+
+.cim [data-cim-renderer="git/v1"] [data-role="lane-title"],
+.cim [data-cim-renderer="git/v1"] [data-role="evidence-title"] {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 }
 
 .cim [data-cim-renderer="git/v1"] [data-role="git-lanes"] {
@@ -22,11 +81,43 @@
 
 .cim [data-cim-renderer="git/v1"] [data-git-lane] {
   min-width: 0;
+  margin: 0;
   padding: 0.75rem;
   color: #171b22;
   background: #ffffff;
   border: 1px solid #323a4a;
   border-radius: 0.25rem;
+  font: inherit;
+}
+
+.cim [data-cim-renderer="git/v1"] [data-git-lane] > div {
+  margin: 0.25rem 0 0;
+  padding: 0;
+  color: #171b22;
+  background: transparent;
+  border: 0;
+  font: inherit;
+}
+
+.cim [data-cim-renderer="git/v1"] [data-git-lane] ul,
+.cim [data-cim-renderer="git/v1"] [data-git-evidence="reflog"] ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+  color: #171b22;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  list-style-position: outside;
+}
+
+.cim [data-cim-renderer="git/v1"] [data-git-lane] li,
+.cim [data-cim-renderer="git/v1"] [data-git-evidence="reflog"] li {
+  margin: 0;
+  padding: 0;
+  color: #171b22;
+  background: transparent;
+  border: 0;
+  font: inherit;
 }
 
 .cim [data-cim-renderer="git/v1"] [data-git-lane][data-focus="true"] {
@@ -35,18 +126,108 @@
 }
 
 .cim [data-cim-renderer="git/v1"] [data-git-evidence="reflog"] {
-  margin-top: 1rem;
-  padding-top: 0.75rem;
+  margin: 1rem 0 0;
+  padding: 0.75rem 0 0;
+  color: #171b22;
+  background: transparent;
+  border: 0;
   border-top: 2px solid #323a4a;
+  border-radius: 0;
+  font: inherit;
 }
 
-.cim [data-cim-renderer="git/v1"] [data-git-evidence="reflog"] [data-role="evidence-timeline"] {
-  margin: 0.5rem 0 0;
-  padding-left: 1.25rem;
+.cim [data-cim-transport-controls] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0.75rem 0 0;
+  color: #171b22;
+  background: transparent;
+  border: 0;
+  border-top: 2px solid #323a4a;
+  border-radius: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: none;
+}
+
+.cim [data-cim-transport-controls] button[type="button"] {
+  appearance: none;
+  min-height: 2.5rem;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  color: #171b22;
+  background: #ffffff;
+  border: 1px solid #323a4a;
+  border-radius: 0.25rem;
+  box-shadow: none;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  text-shadow: none;
+  cursor: pointer;
+}
+
+.cim [data-cim-transport-controls] button[type="button"]:hover {
+  color: #171b22;
+  background: #f4f6f8;
+  border-color: #323a4a;
+}
+
+.cim [data-cim-transport-controls] button[type="button"]:focus,
+.cim [data-cim-transport-controls] button[type="button"]:focus-visible {
+  color: #171b22;
+  background: #ffffff;
+  border-color: #323a4a;
+  outline: 2px solid #323a4a;
+  outline-offset: 2px;
+}
+
+.cim [data-cim-transport-controls] button[type="button"]:active {
+  color: #171b22;
+  background: #e8ecef;
+  border-color: #323a4a;
+}
+
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"] {
+  background: #e8ecef;
+  border-width: 2px;
+}
+
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"]:hover,
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"]:focus,
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"]:focus-visible {
+  background: #e8ecef;
+}
+
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"],
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:hover,
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:focus,
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:focus-visible,
+.cim [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:active {
+  color: #ffffff;
+  background: #323a4a;
+  border-color: #323a4a;
 }
 
 @media (max-width: 720px) {
   .cim [data-cim-renderer="git/v1"] [data-role="git-lanes"] {
     grid-template-columns: 1fr;
+  }
+
+  .cim [data-cim-transport-controls] {
+    align-items: stretch;
+  }
+
+  .cim [data-cim-transport-controls] button[type="button"] {
+    flex: 1 1 calc(50% - 0.5rem);
   }
 }

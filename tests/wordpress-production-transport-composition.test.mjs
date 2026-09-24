@@ -9,16 +9,58 @@ const bindingSource = readFileSync(
   'utf8'
 );
 
-function makeRoot() {
-  const attributes = new Map();
-  const listeners = new Map();
+function makeDocument() {
+  let nextTimer = 0;
+  const timers = new Map();
 
-  const root = {
-    ownerDocument: {
-      getSelection() {
-        return { isCollapsed: true };
+  const document = {
+    defaultView: {
+      setTimeout(callback, delay) {
+        const handle = ++nextTimer;
+        timers.set(handle, { callback, delay });
+        return handle;
+      },
+      clearTimeout(handle) {
+        timers.delete(handle);
       }
     },
+    getSelection() {
+      return { isCollapsed: true };
+    },
+    createElement(tagName) {
+      return makeElement(tagName, document);
+    },
+    pendingTimers() {
+      return timers.size;
+    },
+    pendingTimerDelays() {
+      return [...timers.values()].map(({ delay }) => delay);
+    },
+    runTimer() {
+      const entry = timers.entries().next();
+      if (entry.done) return false;
+      const [handle, timer] = entry.value;
+      timers.delete(handle);
+      timer.callback();
+      return true;
+    }
+  };
+
+  return document;
+}
+
+function makeElement(tagName, ownerDocument) {
+  const attributes = new Map();
+  const listeners = new Map();
+  const children = [];
+
+  const element = {
+    tagName: String(tagName).toUpperCase(),
+    type: '',
+    textContent: '',
+    ownerDocument,
+    parentNode: null,
+    children,
     getAttribute(name) {
       return attributes.has(name) ? attributes.get(name) : null;
     },
@@ -34,7 +76,25 @@ function makeRoot() {
     removeEventListener(type, listener) {
       if (listeners.get(type) === listener) listeners.delete(type);
     },
-    dispatchKey(key, { repeat = false } = {}) {
+    appendChild(child) {
+      if (child.parentNode !== null) throw new Error('child already mounted');
+      children.push(child);
+      child.parentNode = element;
+      return child;
+    },
+    removeChild(child) {
+      const index = children.indexOf(child);
+      if (index < 0) throw new Error('child is not mounted');
+      children.splice(index, 1);
+      child.parentNode = null;
+      return child;
+    },
+    click() {
+      const listener = listeners.get('click');
+      if (listener === undefined) return;
+      listener({ defaultPrevented: false });
+    },
+    dispatchKey(key, { repeat = false, path = [element] } = {}) {
       const listener = listeners.get('keydown');
       if (listener === undefined) return { prevented: false };
 
@@ -49,7 +109,7 @@ function makeRoot() {
         metaKey: false,
         shiftKey: false,
         composedPath() {
-          return [root];
+          return path;
         },
         preventDefault() {
           prevented = true;
@@ -60,25 +120,13 @@ function makeRoot() {
     }
   };
 
-  return root;
+  return element;
 }
 
-function makeCommandPort(calls) {
-  function record(name, args) {
-    calls.push({ name, args });
-    return Object.freeze({ result: 'success' });
-  }
-
-  return Object.freeze({
-    play: (...args) => record('play', args),
-    pause: (...args) => record('pause', args),
-    next: (...args) => record('next', args),
-    previous: (...args) => record('previous', args),
-    seek: (...args) => record('seek', args),
-    home: (...args) => record('home', args),
-    end: (...args) => record('end', args),
-    restart: (...args) => record('restart', args)
-  });
+function makeRoot() {
+  const document = makeDocument();
+  const root = makeElement('div', document);
+  return { root, document };
 }
 
 function playbackSnapshot(status, playbackIntent) {
@@ -100,32 +148,126 @@ function makeObservationPort() {
   };
 }
 
-test('R36 WordPress Transport imports the exact production composition subset', () => {
+function makeCommandPort(calls, observation) {
+  function record(name, args) {
+    calls.push({ name, args });
+    if (name === 'play') observation.set('transitioning', true);
+    if (name === 'pause') observation.set('paused', true);
+    return Object.freeze({ result: 'success' });
+  }
+
+  return Object.freeze({
+    play: (...args) => record('play', args),
+    pause: (...args) => record('pause', args),
+    next: (...args) => record('next', args),
+    previous: (...args) => record('previous', args),
+    seek: (...args) => record('seek', args),
+    home: (...args) => record('home', args),
+    end: (...args) => record('end', args),
+    restart: (...args) => record('restart', args)
+  });
+}
+
+function controlSurface(root) {
+  return root.children.find((child) => child.getAttribute('data-cim-transport-controls') === '') ?? null;
+}
+
+function control(root, key) {
+  const surface = controlSurface(root);
+  if (surface === null) return null;
+  return surface.children.find((child) => child.getAttribute('data-cim-control') === key) ?? null;
+}
+
+test('R38 WordPress Transport imports keyboard, playback, and native-button composition only', () => {
   const transportImports = [...bindingSource.matchAll(/from '([^']+)'/g)]
     .map((match) => match[1])
     .filter((specifier) => specifier.includes('/transport/'));
 
   assert.deepEqual(transportImports, [
+    '../../src/transport/button-presentation.mjs',
     '../../src/transport/keyboard-binding.mjs',
+    '../../src/transport/native-button-binding.mjs',
     '../../src/transport/playback-presentation.mjs',
     '../../src/transport/transport-controller.mjs'
   ]);
   assert.match(bindingSource, /createTransportPlaybackKeyboardBinding/);
   assert.match(bindingSource, /createTransportPlaybackPresentation/);
+  assert.match(bindingSource, /createTransportButtonPresentation/);
+  assert.match(bindingSource, /createTransportNativeButtonBinding/);
   assert.doesNotMatch(bindingSource, /createTransportKeyboardBinding/);
+  assert.doesNotMatch(bindingSource, /createTransportTimeline/);
+  assert.doesNotMatch(bindingSource, /createTransportScrubGesture/);
 });
 
-test('R36 WordPress Transport exposes timeline navigation and Space playback from Runtime observation', () => {
+test('R38 WordPress Transport composes only controls with observable learner effects and keeps playback presentation fresh', () => {
   const calls = [];
-  const root = makeRoot();
+  const { root, document } = makeRoot();
   const observation = makeObservationPort();
   const binding = createWordPressTransportBinding({
     root,
-    commandPort: makeCommandPort(calls),
+    commandPort: makeCommandPort(calls, observation),
     observationPort: observation.port
   });
 
   assert.equal(root.getAttribute('tabindex'), '0');
+  assert.ok(controlSurface(root));
+  assert.equal(controlSurface(root).getAttribute('role'), 'group');
+  assert.equal(controlSurface(root).getAttribute('aria-label'), 'Code in Motion controls');
+  assert.equal(controlSurface(root).children.length, 5);
+
+  for (const key of ['home', 'previous', 'playback', 'next', 'end']) {
+    const button = control(root, key);
+    assert.ok(button, `missing ${key} control`);
+    assert.equal(button.tagName, 'BUTTON');
+    assert.equal(button.type, 'button');
+  }
+  assert.equal(control(root, 'restart'), null);
+
+  const playback = control(root, 'playback');
+  assert.equal(playback.textContent, 'Play');
+  assert.equal(playback.getAttribute('aria-label'), 'Play');
+  assert.equal(playback.getAttribute('data-cim-action'), 'play');
+
+  playback.click();
+  assert.deepEqual(calls, [{ name: 'play', args: ['transport'] }]);
+  assert.equal(playback.textContent, 'Pause');
+  assert.equal(playback.getAttribute('data-cim-action'), 'pause');
+  assert.equal(document.pendingTimers(), 1);
+  assert.deepEqual(document.pendingTimerDelays(), [50]);
+
+  observation.set('idle', false);
+  assert.equal(document.runTimer(), true);
+  assert.equal(playback.textContent, 'Play');
+  assert.equal(playback.getAttribute('data-cim-action'), 'play');
+  assert.equal(document.pendingTimers(), 0);
+
+  calls.length = 0;
+  control(root, 'previous').click();
+  control(root, 'next').click();
+  control(root, 'home').click();
+  control(root, 'end').click();
+  assert.deepEqual(calls, [
+    { name: 'previous', args: ['transport'] },
+    { name: 'next', args: ['transport'] },
+    { name: 'home', args: ['transport'] },
+    { name: 'end', args: ['transport'] }
+  ]);
+
+  assert.equal(binding.dispose(), null);
+  assert.equal(root.getAttribute('tabindex'), null);
+  assert.equal(controlSurface(root), null);
+  assert.equal(document.pendingTimers(), 0);
+});
+
+test('R38 WordPress Transport preserves timeline keys and Space playback with control refresh', () => {
+  const calls = [];
+  const { root, document } = makeRoot();
+  const observation = makeObservationPort();
+  const binding = createWordPressTransportBinding({
+    root,
+    commandPort: makeCommandPort(calls, observation),
+    observationPort: observation.port
+  });
 
   const timelineResult = root.dispatchKey('ArrowRight');
   assert.equal(timelineResult.prevented, true);
@@ -139,14 +281,18 @@ test('R36 WordPress Transport exposes timeline navigation and Space playback fro
   assert.deepEqual(calls, [
     { name: 'play', args: ['transport'] }
   ]);
+  assert.equal(control(root, 'playback').textContent, 'Pause');
+  assert.equal(document.pendingTimers(), 1);
+  assert.deepEqual(document.pendingTimerDelays(), [50]);
 
   calls.length = 0;
-  observation.set('transitioning', true);
   const pauseResult = root.dispatchKey(' ');
   assert.equal(pauseResult.prevented, true);
   assert.deepEqual(calls, [
     { name: 'pause', args: ['transport'] }
   ]);
+  assert.equal(control(root, 'playback').textContent, 'Play');
+  assert.equal(document.pendingTimers(), 0);
 
   calls.length = 0;
   const repeatResult = root.dispatchKey(' ', { repeat: true });
@@ -154,7 +300,6 @@ test('R36 WordPress Transport exposes timeline navigation and Space playback fro
   assert.deepEqual(calls, []);
 
   assert.equal(binding.dispose(), null);
-  assert.equal(root.getAttribute('tabindex'), null);
 
   const disposedResult = root.dispatchKey('ArrowRight');
   assert.equal(disposedResult.prevented, false);

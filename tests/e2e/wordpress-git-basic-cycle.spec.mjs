@@ -44,8 +44,10 @@ test('R27 Git basic cycle mounts through the production WordPress path and advan
 
   await expect(rendered).toHaveAttribute('data-step', 'initial');
   await expect(rendered).toHaveAttribute('data-git-focus', 'overview');
+  await expect(root).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(root).toHaveCSS('background-color', 'rgb(244, 246, 248)');
   await expect(rendered).toHaveCSS('color', 'rgb(23, 27, 34)');
-  await expect(rendered).toHaveCSS('background-color', 'rgb(244, 246, 248)');
+  await expect(rendered).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
 
   const lanes = rendered.locator('[data-role="git-lanes"] > [data-git-lane]');
   await expect(lanes).toHaveCount(4);
@@ -135,4 +137,130 @@ test('R27 Git deep link enters directly and hashchange seeks the mounted instanc
 
   await expect(rendered).toHaveAttribute('data-step', 'step-08');
   expect(consoleErrors).toEqual([]);
+});
+
+
+test('R38 fixed instrument panel resists host styling and preserves controls, focus, and responsive layout', async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 900 });
+  await page.goto(`${BASE_URL}/?pagename=cim-e2e-git`, { waitUntil: 'domcontentloaded' });
+
+  const root = page.locator('.cim[data-cim-experience="git-basic-cycle"]');
+  await expect(root).toHaveAttribute('data-cim-state', 'ready', { timeout: 10000 });
+
+  await root.evaluate((element) => {
+    element.parentElement?.setAttribute('data-r38-host', 'dark');
+  });
+  await page.addStyleTag({
+    content: `
+      [data-r38-host="dark"] {
+        padding: 2rem;
+        color: rgb(245, 247, 250);
+        background: rgb(11, 13, 16);
+        font-family: Georgia, serif;
+        text-align: center;
+      }
+      [data-r38-host="dark"] section,
+      [data-r38-host="dark"] div,
+      [data-r38-host="dark"] button,
+      [data-r38-host="dark"] h2,
+      [data-r38-host="dark"] h3,
+      [data-r38-host="dark"] ul,
+      [data-r38-host="dark"] li {
+        color: rgb(224, 0, 160);
+        background: rgb(8, 40, 60);
+        border-color: rgb(0, 210, 120);
+        border-radius: 2rem;
+        font-family: Georgia, serif;
+        font-weight: 300;
+        line-height: 2;
+        text-align: center;
+        text-transform: uppercase;
+      }
+    `
+  });
+
+  const rendered = root
+    .locator('[data-cim-renderer-root]')
+    .locator('section[data-cim-renderer="git/v1"]');
+  const laneRegion = rendered.locator('[data-role="git-lanes"]');
+  const firstLane = laneRegion.locator('[data-git-lane]').first();
+  const controls = root.getByRole('group', { name: 'Code in Motion controls', exact: true });
+  const next = controls.getByRole('button', { name: 'Next', exact: true });
+  const playback = controls.getByRole('button', { name: 'Play', exact: true });
+
+  await expect(root).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(root).toHaveCSS('background-color', 'rgb(244, 246, 248)');
+  await expect(root).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
+  await expect(root).toHaveCSS('border-top-width', '1px');
+  await expect(root).toHaveCSS('border-radius', '8px');
+
+  await expect(rendered).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(rendered).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect(rendered).toHaveCSS('border-top-width', '0px');
+  await expect(rendered).toHaveCSS('border-radius', '0px');
+  await expect(firstLane).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(firstLane).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  await expect(firstLane).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
+
+  await expect(controls).toHaveCount(1);
+  await expect(controls).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(controls).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect(controls).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
+  await expect(controls).toHaveCSS('border-top-width', '2px');
+  await expect(controls).toHaveCSS('border-right-width', '0px');
+  await expect(controls).toHaveCSS('border-bottom-width', '0px');
+  await expect(controls).toHaveCSS('border-left-width', '0px');
+  await expect(controls).toHaveCSS('border-radius', '0px');
+  await expect(controls.getByRole('button')).toHaveCount(5);
+  await expect(controls.getByRole('button', { name: 'Start', exact: true })).toHaveCount(1);
+  await expect(controls.getByRole('button', { name: 'Previous', exact: true })).toHaveCount(1);
+  await expect(playback).toHaveCount(1);
+  await expect(next).toHaveCount(1);
+  await expect(controls.getByRole('button', { name: 'End', exact: true })).toHaveCount(1);
+  await expect(controls.getByRole('button', { name: 'Restart', exact: true })).toHaveCount(0);
+
+  await expect(next).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(next).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  await expect(next).toHaveCSS('border-top-color', 'rgb(50, 58, 74)');
+  await expect(next).toHaveCSS('font-weight', '700');
+  await expect(playback).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(playback).toHaveCSS('background-color', 'rgb(232, 236, 239)');
+  await expect(playback).toHaveCSS('border-top-width', '2px');
+
+  await next.focus();
+  await expect(next).toBeFocused();
+  await expect(next).toHaveCSS('outline-style', 'solid');
+  await expect(next).toHaveCSS('outline-width', '2px');
+  await expect(next).toHaveCSS('outline-color', 'rgb(50, 58, 74)');
+  await expect(next).toHaveCSS('outline-offset', '2px');
+
+  await next.click();
+  await expect(rendered).toHaveAttribute('data-step', 'step-01');
+
+  await playback.click();
+  const pause = controls.getByRole('button', { name: 'Pause', exact: true });
+  await expect(pause).toHaveCount(1);
+  await expect(pause).toHaveCSS('color', 'rgb(255, 255, 255)');
+  await expect(pause).toHaveCSS('background-color', 'rgb(50, 58, 74)');
+  await pause.click();
+  const playAgain = controls.getByRole('button', { name: 'Play', exact: true });
+  await expect(playAgain).toHaveCount(1);
+  await expect(playAgain).toHaveCSS('color', 'rgb(23, 27, 34)');
+  await expect(playAgain).toHaveCSS('background-color', 'rgb(232, 236, 239)');
+
+  const columnCount = () => laneRegion.evaluate((element) => {
+    const value = getComputedStyle(element).gridTemplateColumns.trim();
+    return value === 'none' || value === '' ? 0 : value.split(/\s+/).length;
+  });
+
+  await page.setViewportSize({ width: 721, height: 900 });
+  await expect.poll(columnCount).toBe(4);
+
+  await page.setViewportSize({ width: 720, height: 900 });
+  await expect.poll(columnCount).toBe(1);
+
+  await page.setViewportSize({ width: 360, height: 800 });
+  await expect.poll(columnCount).toBe(1);
+  expect(await root.evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
+  expect(await controls.evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
 });

@@ -1,4 +1,6 @@
+import { createTransportButtonPresentation } from '../../src/transport/button-presentation.mjs';
 import { createTransportPlaybackKeyboardBinding } from '../../src/transport/keyboard-binding.mjs';
+import { createTransportNativeButtonBinding } from '../../src/transport/native-button-binding.mjs';
 import { createTransportPlaybackPresentation } from '../../src/transport/playback-presentation.mjs';
 import { createTransportController } from '../../src/transport/transport-controller.mjs';
 
@@ -8,6 +10,19 @@ export const WORDPRESS_TRANSPORT_BINDING_OPTIONS_KEYS = Object.freeze([
   'observationPort'
 ]);
 export const WORDPRESS_TRANSPORT_BINDING_KEYS = Object.freeze(['dispose']);
+
+const CONTROL_KEYS = Object.freeze(['home', 'previous', 'playback', 'next', 'end', 'restart']);
+const VISIBLE_CONTROL_ORDER = Object.freeze(['home', 'previous', 'playback', 'next', 'end']);
+const BUTTON_LABELS = Object.freeze({
+  play: 'Play',
+  pause: 'Pause',
+  previous: 'Previous',
+  next: 'Next',
+  home: 'Start',
+  end: 'End',
+  restart: 'Restart'
+});
+const PRESENTATION_REFRESH_MS = 50;
 
 function fail(message) {
   throw new TypeError(message);
@@ -44,18 +59,127 @@ function assertRoot(root) {
     'setAttribute',
     'removeAttribute',
     'addEventListener',
-    'removeEventListener'
+    'removeEventListener',
+    'appendChild',
+    'removeChild'
   ]) {
     if (typeof root[method] !== 'function') {
       fail(`WordPress Transport root must expose ${method}().`);
     }
   }
+
+  const document = root.ownerDocument;
+  if (document === null || (typeof document !== 'object' && typeof document !== 'function')) {
+    fail('WordPress Transport root must expose ownerDocument.');
+  }
+  if (typeof document.createElement !== 'function') {
+    fail('WordPress Transport root ownerDocument must expose createElement().');
+  }
+  if (typeof document.getSelection !== 'function') {
+    fail('WordPress Transport root ownerDocument must expose getSelection().');
+  }
+
+  const view = document.defaultView;
+  if (view === null || (typeof view !== 'object' && typeof view !== 'function')) {
+    fail('WordPress Transport root ownerDocument must expose defaultView.');
+  }
+  if (typeof view.setTimeout !== 'function' || typeof view.clearTimeout !== 'function') {
+    fail('WordPress Transport defaultView must expose timeout scheduling.');
+  }
+
   return root;
 }
 
 function restoreTabIndex(root, previousTabIndex) {
   if (previousTabIndex === null) root.removeAttribute('tabindex');
   else root.setAttribute('tabindex', previousTabIndex);
+}
+
+function createControlSurface(root) {
+  const document = root.ownerDocument;
+  const container = document.createElement('div');
+  container.setAttribute('data-cim-transport-controls', '');
+  container.setAttribute('role', 'group');
+  container.setAttribute('aria-label', 'Code in Motion controls');
+
+  const controls = {};
+  for (const key of CONTROL_KEYS) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.setAttribute('data-cim-control', key);
+    controls[key] = button;
+  }
+  for (const key of VISIBLE_CONTROL_ORDER) {
+    container.appendChild(controls[key]);
+  }
+
+  return Object.freeze({
+    container,
+    controls: Object.freeze({
+      playback: controls.playback,
+      previous: controls.previous,
+      next: controls.next,
+      home: controls.home,
+      end: controls.end,
+      restart: controls.restart
+    })
+  });
+}
+
+function removeControlSurface(root, container) {
+  if (container.parentNode === root) root.removeChild(container);
+}
+
+function cleanupAfterConstructionFailure({
+  root,
+  previousTabIndex,
+  keyboardBinding,
+  buttonBinding,
+  controlSurface,
+  refreshTimer
+}) {
+  const errors = [];
+  const view = root.ownerDocument.defaultView;
+
+  if (refreshTimer !== null) {
+    try {
+      view.clearTimeout(refreshTimer);
+    } catch (error) {
+      errors.push(error);
+    }
+  }
+
+  if (buttonBinding !== null) {
+    try {
+      buttonBinding.dispose();
+    } catch (error) {
+      errors.push(error);
+    }
+  }
+
+  if (keyboardBinding !== null) {
+    try {
+      keyboardBinding.dispose();
+    } catch (error) {
+      errors.push(error);
+    }
+  }
+
+  if (controlSurface !== null) {
+    try {
+      removeControlSurface(root, controlSurface.container);
+    } catch (error) {
+      errors.push(error);
+    }
+  }
+
+  try {
+    restoreTabIndex(root, previousTabIndex);
+  } catch (error) {
+    errors.push(error);
+  }
+
+  return errors;
 }
 
 export function createWordPressTransportBinding(optionsInput) {
@@ -70,39 +194,126 @@ export function createWordPressTransportBinding(optionsInput) {
   const commandPort = dataValue(optionsInput, 'commandPort', 'WordPress Transport binding options');
   const observationPort = dataValue(optionsInput, 'observationPort', 'WordPress Transport binding options');
   const previousTabIndex = root.getAttribute('tabindex');
+  const view = root.ownerDocument.defaultView;
+
   let keyboardBinding = null;
+  let buttonBinding = null;
+  let controlSurface = null;
+  let refreshTimer = null;
+  let disposed = false;
 
   try {
     root.setAttribute('tabindex', '0');
+
     const transport = createTransportController(commandPort);
     const playbackPresentation = createTransportPlaybackPresentation(observationPort);
+    const buttonPresentation = createTransportButtonPresentation({
+      playbackPresentation,
+      labels: BUTTON_LABELS
+    });
+
+    controlSurface = createControlSurface(root);
+
+    function cancelPresentationRefresh() {
+      if (refreshTimer === null) return;
+      view.clearTimeout(refreshTimer);
+      refreshTimer = null;
+    }
+
+    function refreshControls() {
+      if (disposed || buttonBinding === null) return;
+      buttonBinding.refresh();
+      const action = playbackPresentation.read().action;
+
+      if (action !== 'pause') {
+        cancelPresentationRefresh();
+        return;
+      }
+      if (refreshTimer !== null) return;
+
+      refreshTimer = view.setTimeout(() => {
+        refreshTimer = null;
+        refreshControls();
+      }, PRESENTATION_REFRESH_MS);
+    }
+
+    function submit(command) {
+      const outcome = command();
+      refreshControls();
+      return outcome;
+    }
+
+    const commands = Object.freeze({
+      play: () => submit(() => transport.play()),
+      pause: () => submit(() => transport.pause()),
+      previous: () => submit(() => transport.previous()),
+      next: () => submit(() => transport.next()),
+      home: () => submit(() => transport.home()),
+      end: () => submit(() => transport.end()),
+      restart: () => submit(() => transport.restart())
+    });
+
+    buttonBinding = createTransportNativeButtonBinding({
+      controls: controlSurface.controls,
+      presentation: buttonPresentation,
+      commands
+    });
+
     keyboardBinding = createTransportPlaybackKeyboardBinding({
       root,
-      timelineKey: (key) => transport.timelineKey(key),
-      playbackKey: (key, action) => transport.playbackKey(key, action),
+      timelineKey: (key) => submit(() => transport.timelineKey(key)),
+      playbackKey: (key, action) => submit(() => transport.playbackKey(key, action)),
       playbackPresentation
     });
+
+    root.appendChild(controlSurface.container);
   } catch (error) {
-    try {
-      restoreTabIndex(root, previousTabIndex);
-    } catch (rollbackError) {
+    const cleanupErrors = cleanupAfterConstructionFailure({
+      root,
+      previousTabIndex,
+      keyboardBinding,
+      buttonBinding,
+      controlSurface,
+      refreshTimer
+    });
+    if (cleanupErrors.length > 0) {
       throw new AggregateError(
-        [error, rollbackError],
-        'WordPress Transport binding failed and tabindex rollback also failed.',
+        [error, ...cleanupErrors],
+        'WordPress Transport binding failed and rollback was incomplete.',
         { cause: error }
       );
     }
     throw error;
   }
 
-  let disposed = false;
   function dispose() {
     if (disposed) return null;
     disposed = true;
     const errors = [];
 
+    if (refreshTimer !== null) {
+      try {
+        view.clearTimeout(refreshTimer);
+        refreshTimer = null;
+      } catch (error) {
+        errors.push(error);
+      }
+    }
+
+    try {
+      buttonBinding.dispose();
+    } catch (error) {
+      errors.push(error);
+    }
+
     try {
       keyboardBinding.dispose();
+    } catch (error) {
+      errors.push(error);
+    }
+
+    try {
+      removeControlSurface(root, controlSurface.container);
     } catch (error) {
       errors.push(error);
     }
