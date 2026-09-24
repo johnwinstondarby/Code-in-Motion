@@ -1,12 +1,12 @@
 {
   "schema": "localis.cim/wordpress-release-info/v1",
-  "stable_tag": "0.1.8",
+  "stable_tag": "0.1.9",
   "tested_up_to": "7.1",
   "current_release": {
-    "version": "0.1.8",
+    "version": "0.1.9",
     "notes": [
-      "Composes learner-facing Space play/pause into the exact WordPress production Transport binding.",
-      "Adds browser-level normal-motion versus reduced-motion behavioral proof through the production playback path."
+      "Adds the fixed WordPress instrument-panel presentation and learner-facing Start, Previous, Play/Pause, Next, and End controls.",
+      "Preserves production playback, keyboard focus, responsive layout, and reduced-motion behavior through the WordPress composition."
     ]
   },
   "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"
