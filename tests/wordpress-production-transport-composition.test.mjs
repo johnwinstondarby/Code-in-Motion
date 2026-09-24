@@ -199,7 +199,7 @@ test('R38 WordPress Transport imports keyboard, playback, and native-button comp
   assert.doesNotMatch(bindingSource, /createTransportScrubGesture/);
 });
 
-test('R38 WordPress Transport composes fixed native controls and keeps playback presentation fresh', () => {
+test('R38 WordPress Transport composes only controls with observable learner effects and keeps playback presentation fresh', () => {
   const calls = [];
   const { root, document } = makeRoot();
   const observation = makeObservationPort();
@@ -213,13 +213,15 @@ test('R38 WordPress Transport composes fixed native controls and keeps playback 
   assert.ok(controlSurface(root));
   assert.equal(controlSurface(root).getAttribute('role'), 'group');
   assert.equal(controlSurface(root).getAttribute('aria-label'), 'Code in Motion controls');
+  assert.equal(controlSurface(root).children.length, 5);
 
-  for (const key of ['home', 'previous', 'playback', 'next', 'end', 'restart']) {
+  for (const key of ['home', 'previous', 'playback', 'next', 'end']) {
     const button = control(root, key);
     assert.ok(button, `missing ${key} control`);
     assert.equal(button.tagName, 'BUTTON');
     assert.equal(button.type, 'button');
   }
+  assert.equal(control(root, 'restart'), null);
 
   const playback = control(root, 'playback');
   assert.equal(playback.textContent, 'Play');
@@ -244,13 +246,11 @@ test('R38 WordPress Transport composes fixed native controls and keeps playback 
   control(root, 'next').click();
   control(root, 'home').click();
   control(root, 'end').click();
-  control(root, 'restart').click();
   assert.deepEqual(calls, [
     { name: 'previous', args: ['transport'] },
     { name: 'next', args: ['transport'] },
     { name: 'home', args: ['transport'] },
-    { name: 'end', args: ['transport'] },
-    { name: 'restart', args: ['transport'] }
+    { name: 'end', args: ['transport'] }
   ]);
 
   assert.equal(binding.dispose(), null);
