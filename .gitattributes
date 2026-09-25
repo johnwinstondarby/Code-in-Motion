@@ -1,0 +1,17 @@
+# Code in Motion repository text policy.
+# Generated artifacts and source files use LF so exact-text contracts are
+# independent of the contributor's Git/OS line-ending configuration.
+
+* text=auto
+
+*.js    text eol=lf
+*.mjs   text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+*.php   text eol=lf
+*.txt   text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.cim   text eol=lf
+
+*.zip   binary

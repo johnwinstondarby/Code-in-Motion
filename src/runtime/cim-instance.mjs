@@ -369,6 +369,36 @@ class CiMInstance {
       });
     }
 
+    if (this.#operational.playbackIntent) {
+      this.#eventControl.emit({
+        component: EVENT_COMPONENT.RUNTIME,
+        event: EVENT_NAME.COMMAND_ACCEPTED,
+        result: EVENT_RESULT.SUCCESS,
+        command_id: commandId,
+        from_step: canonical.currentStepId,
+        to_step: canonical.currentStepId,
+        details: detailsForCommand(command, source)
+      });
+
+      this.#controls.statusControl.setStatus(SESSION_STATUS.PAUSED);
+      this.#eventControl.emit({
+        component: EVENT_COMPONENT.RUNTIME,
+        event: EVENT_NAME.PLAYBACK_PAUSED,
+        result: EVENT_RESULT.SUCCESS,
+        command_id: commandId,
+        step_id: canonical.currentStepId,
+        details: { source }
+      });
+
+      return commandOutcome({
+        commandId,
+        command,
+        result: COMMAND_RESULT.SUCCESS,
+        fromStepId: canonical.currentStepId,
+        toStepId: canonical.currentStepId
+      });
+    }
+
     return this.#acceptNoChange(commandId, command, source, canonical.currentStepId);
   }
 
@@ -532,6 +562,60 @@ class CiMInstance {
         result: COMMAND_RESULT.SUCCESS,
         fromStepId: canonical.currentStepId,
         toStepId: canonical.currentStepId
+      });
+    }
+
+    if (this.#operational.playbackIntent) {
+      const nextStepId = this.#nextBoundaryId(canonical.currentStepId);
+
+      if (nextStepId === null) {
+        this.#eventControl.emit({
+          component: EVENT_COMPONENT.RUNTIME,
+          event: EVENT_NAME.COMMAND_ACCEPTED,
+          result: EVENT_RESULT.NO_CHANGE,
+          command_id: commandId,
+          from_step: canonical.currentStepId,
+          to_step: canonical.currentStepId,
+          details: detailsForCommand(CONTINUITY_COMMAND.PLAY, source, NAVIGATION_REASON.AT_END)
+        });
+        this.#stopPlayback(commandId, 'at_end', source);
+        return commandOutcome({
+          commandId,
+          command: CONTINUITY_COMMAND.PLAY,
+          result: COMMAND_RESULT.NO_CHANGE,
+          fromStepId: canonical.currentStepId,
+          toStepId: canonical.currentStepId,
+          reason: NAVIGATION_REASON.AT_END
+        });
+      }
+
+      this.#eventControl.emit({
+        component: EVENT_COMPONENT.RUNTIME,
+        event: EVENT_NAME.COMMAND_ACCEPTED,
+        result: EVENT_RESULT.SUCCESS,
+        command_id: commandId,
+        from_step: canonical.currentStepId,
+        to_step: nextStepId,
+        details: detailsForCommand(CONTINUITY_COMMAND.PLAY, source)
+      });
+      this.#controls.statusControl.setStatus(SESSION_STATUS.PLAYING);
+      this.#eventControl.emit({
+        component: EVENT_COMPONENT.RUNTIME,
+        event: EVENT_NAME.PLAYBACK_RESUMED,
+        result: EVENT_RESULT.SUCCESS,
+        command_id: commandId,
+        step_id: canonical.currentStepId,
+        details: { source }
+      });
+
+      this.#continuePlayback(commandId, source, canonical.currentStepId);
+
+      return commandOutcome({
+        commandId,
+        command: CONTINUITY_COMMAND.PLAY,
+        result: COMMAND_RESULT.SUCCESS,
+        fromStepId: canonical.currentStepId,
+        toStepId: nextStepId
       });
     }
 
@@ -1498,6 +1582,7 @@ class CiMInstance {
 
   #continuePlayback(commandId, source, fromStepId) {
     if (!this.#operational.playbackIntent) return;
+    if (this.#session.read.snapshot().status === SESSION_STATUS.PAUSED) return;
     const nextStepId = this.#nextBoundaryId(fromStepId);
     if (nextStepId === null) {
       this.#stopPlayback(commandId, 'at_end', source);
@@ -1508,6 +1593,7 @@ class CiMInstance {
 
   #startDwell(commandId, source, stepId, dwellMs) {
     if (!this.#operational.playbackIntent) return;
+    if (this.#session.read.snapshot().status === SESSION_STATUS.PAUSED) return;
     if (this.#activeDwell) throw new Error('Runtime cannot begin dwell while another dwell is active.');
 
     const startedAt = this.#readSchedulerNow();
