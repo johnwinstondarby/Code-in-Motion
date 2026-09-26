@@ -10,10 +10,22 @@ export const WORDPRESS_TRANSPORT_BINDING_OPTIONS_KEYS = Object.freeze([
   'observationPort'
 ]);
 export const WORDPRESS_TRANSPORT_BINDING_KEYS = Object.freeze(['dispose']);
-
-const CONTROL_KEYS = Object.freeze(['home', 'previous', 'playback', 'next', 'end', 'restart']);
-const VISIBLE_CONTROL_ORDER = Object.freeze(['home', 'previous', 'playback', 'next', 'end']);
-const BUTTON_LABELS = Object.freeze({
+export const WORDPRESS_TRANSPORT_CONTROL_KEYS = Object.freeze([
+  'home',
+  'previous',
+  'playback',
+  'next',
+  'end',
+  'restart'
+]);
+export const WORDPRESS_TRANSPORT_VISIBLE_CONTROL_ORDER = Object.freeze([
+  'home',
+  'previous',
+  'playback',
+  'next',
+  'end'
+]);
+export const WORDPRESS_TRANSPORT_BUTTON_LABELS = Object.freeze({
   play: 'Play',
   pause: 'Pause',
   previous: 'Previous',
@@ -103,13 +115,13 @@ function createControlSurface(root) {
   container.setAttribute('aria-label', 'Code in Motion controls');
 
   const controls = {};
-  for (const key of CONTROL_KEYS) {
+  for (const key of WORDPRESS_TRANSPORT_CONTROL_KEYS) {
     const button = document.createElement('button');
     button.type = 'button';
     button.setAttribute('data-cim-control', key);
     controls[key] = button;
   }
-  for (const key of VISIBLE_CONTROL_ORDER) {
+  for (const key of WORDPRESS_TRANSPORT_VISIBLE_CONTROL_ORDER) {
     container.appendChild(controls[key]);
   }
 
@@ -209,7 +221,7 @@ export function createWordPressTransportBinding(optionsInput) {
     const playbackPresentation = createTransportPlaybackPresentation(observationPort);
     const buttonPresentation = createTransportButtonPresentation({
       playbackPresentation,
-      labels: BUTTON_LABELS
+      labels: WORDPRESS_TRANSPORT_BUTTON_LABELS
     });
 
     controlSurface = createControlSurface(root);
