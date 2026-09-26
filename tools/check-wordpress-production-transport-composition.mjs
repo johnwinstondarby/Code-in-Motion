@@ -83,7 +83,7 @@ export function assertWordPressProductionTransportComposition({
   return true;
 }
 
-export function checkWordPressProductionTransportComposition() {
+function checkWordPressProductionTransportComposition() {
   assertWordPressProductionTransportComposition({
     controlKeys: WORDPRESS_TRANSPORT_CONTROL_KEYS,
     visibleControlOrder: WORDPRESS_TRANSPORT_VISIBLE_CONTROL_ORDER,
