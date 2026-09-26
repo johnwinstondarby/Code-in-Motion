@@ -216,6 +216,269 @@ test('play starts animated continuity and automatically advances through zero-dw
   assert.equal(stopped.details.reason, 'at_end');
 });
 
+test('pause at a zero-dwell committed boundary stops playback', async () => {
+  const time = virtualScheduler();
+  const controlled = controlledRenderer();
+  const instance = createCiMInstance({
+    instanceId: 'pause-zero-dwell-boundary',
+    experience: experienceFixture(),
+    clock: time.scheduler,
+    renderer: controlled.renderer,
+    rendererRoot: rootFixture()
+  });
+  const events = [];
+  let pauseOutcome = null;
+
+  instance.events.subscribe((event) => {
+    events.push(event);
+    if (event.event === EVENT_NAME.STEP_CHANGED && event.step_id === 'step-01') {
+      pauseOutcome = instance.pause(COMMAND_SOURCE.TRANSPORT);
+    }
+  });
+
+  await instance.initialize();
+  await instance.play(COMMAND_SOURCE.TRANSPORT);
+
+  controlled.pending[0].resolve();
+  await flush();
+
+  const snapshot = instance.read.snapshot();
+  assert.equal(pauseOutcome?.result, 'success');
+  assert.equal(snapshot.canonical.currentStepId, 'step-01');
+  assert.equal(snapshot.canonical.targetStepId, null);
+  assert.equal(snapshot.canonical.status, 'paused');
+  assert.equal(snapshot.operational.playbackIntent, true);
+  assert.equal(controlled.pending.length, 1);
+
+  const changed = events.filter((event) => event.event === EVENT_NAME.STEP_CHANGED);
+  assert.deepEqual(changed.map((event) => event.step_id), ['step-01']);
+  assert.equal(
+    events.filter((event) => event.event === EVENT_NAME.PLAYBACK_PAUSED).length,
+    1
+  );
+});
+
+test('play resumes from a paused zero-dwell committed boundary and completes playback', async () => {
+  const time = virtualScheduler();
+  const controlled = controlledRenderer();
+  const instance = createCiMInstance({
+    instanceId: 'resume-zero-dwell-boundary',
+    experience: experienceFixture(),
+    clock: time.scheduler,
+    renderer: controlled.renderer,
+    rendererRoot: rootFixture()
+  });
+  const events = [];
+  let pauseOutcome = null;
+  let pauseIssued = false;
+
+  instance.events.subscribe((event) => {
+    events.push(event);
+    if (
+      !pauseIssued &&
+      event.event === EVENT_NAME.STEP_CHANGED &&
+      event.step_id === 'step-01'
+    ) {
+      pauseIssued = true;
+      pauseOutcome = instance.pause(COMMAND_SOURCE.TRANSPORT);
+    }
+  });
+
+  await instance.initialize();
+  await instance.play(COMMAND_SOURCE.TRANSPORT);
+
+  controlled.pending[0].resolve();
+  await flush();
+
+  let snapshot = instance.read.snapshot();
+  assert.equal(pauseOutcome?.result, 'success');
+  assert.equal(snapshot.canonical.currentStepId, 'step-01');
+  assert.equal(snapshot.canonical.targetStepId, null);
+  assert.equal(snapshot.canonical.status, 'paused');
+  assert.equal(snapshot.operational.playbackIntent, true);
+  assert.equal(controlled.pending.length, 1);
+
+  const resumed = await instance.play(COMMAND_SOURCE.TRANSPORT);
+  assert.equal(resumed.result, 'success');
+  assert.equal(resumed.fromStepId, 'step-01');
+  assert.equal(resumed.toStepId, 'step-02');
+
+  snapshot = instance.read.snapshot();
+  assert.equal(snapshot.canonical.status, 'transitioning');
+  assert.equal(snapshot.canonical.currentStepId, 'step-01');
+  assert.equal(snapshot.canonical.targetStepId, 'step-02');
+  assert.equal(controlled.pending.length, 2);
+
+  controlled.pending[1].resolve();
+  await flush();
+  snapshot = instance.read.snapshot();
+  assert.equal(snapshot.canonical.currentStepId, 'step-02');
+  assert.equal(snapshot.canonical.targetStepId, 'step-03');
+  assert.equal(controlled.pending.length, 3);
+
+  controlled.pending[2].resolve();
+  await flush();
+
+  snapshot = instance.read.snapshot();
+  assert.equal(snapshot.canonical.currentStepId, 'step-03');
+  assert.equal(snapshot.canonical.targetStepId, null);
+  assert.equal(snapshot.canonical.status, 'idle');
+  assert.equal(snapshot.operational.playbackIntent, false);
+
+  const changed = events.filter((event) => event.event === EVENT_NAME.STEP_CHANGED);
+  assert.deepEqual(
+    changed.map((event) => event.step_id),
+    ['step-01', 'step-02', 'step-03']
+  );
+
+  assert.equal(
+    events.filter((event) => event.event === EVENT_NAME.PLAYBACK_PAUSED).length,
+    1
+  );
+  assert.equal(
+    events.filter((event) => event.event === EVENT_NAME.PLAYBACK_RESUMED).length,
+    1
+  );
+
+  const stopped = events.findLast(
+    (event) => event.event === EVENT_NAME.PLAYBACK_STOPPED
+  );
+  assert.equal(stopped?.details?.reason, 'at_end');
+});
+
+test('play from a paused final boundary resolves at_end and stops playback', async () => {
+  const time = virtualScheduler();
+  const controlled = controlledRenderer();
+  const instance = createCiMInstance({
+    instanceId: 'resume-paused-final-boundary',
+    experience: experienceFixture({ steps: 1 }),
+    clock: time.scheduler,
+    renderer: controlled.renderer,
+    rendererRoot: rootFixture()
+  });
+  const events = [];
+  let pauseOutcome = null;
+  let pauseIssued = false;
+
+  instance.events.subscribe((event) => {
+    events.push(event);
+    if (
+      !pauseIssued &&
+      event.event === EVENT_NAME.STEP_CHANGED &&
+      event.step_id === 'step-01'
+    ) {
+      pauseIssued = true;
+      pauseOutcome = instance.pause(COMMAND_SOURCE.TRANSPORT);
+    }
+  });
+
+  await instance.initialize();
+  await instance.play(COMMAND_SOURCE.TRANSPORT);
+
+  assert.equal(controlled.pending.length, 1);
+  controlled.pending[0].resolve();
+  await flush();
+
+  let snapshot = instance.read.snapshot();
+  assert.equal(pauseOutcome?.result, 'success');
+  assert.equal(snapshot.canonical.currentStepId, 'step-01');
+  assert.equal(snapshot.canonical.targetStepId, null);
+  assert.equal(snapshot.canonical.status, 'paused');
+  assert.equal(snapshot.operational.playbackIntent, true);
+
+  const resumed = await instance.play(COMMAND_SOURCE.TRANSPORT);
+  assert.equal(resumed.result, 'no_change');
+  assert.equal(resumed.reason, 'at_end');
+  assert.equal(resumed.fromStepId, 'step-01');
+  assert.equal(resumed.toStepId, 'step-01');
+
+  snapshot = instance.read.snapshot();
+  assert.equal(snapshot.canonical.currentStepId, 'step-01');
+  assert.equal(snapshot.canonical.targetStepId, null);
+  assert.equal(snapshot.canonical.status, 'idle');
+  assert.equal(snapshot.operational.playbackIntent, false);
+  assert.equal(controlled.pending.length, 1);
+
+  const changed = events.filter((event) => event.event === EVENT_NAME.STEP_CHANGED);
+  assert.deepEqual(changed.map((event) => event.step_id), ['step-01']);
+
+  const stopped = events.findLast(
+    (event) =>
+      event.event === EVENT_NAME.PLAYBACK_STOPPED &&
+      event.details?.reason === 'at_end'
+  );
+  assert.ok(stopped);
+});
+
+test('paused active transition parks settlement until play resumes and commits once', async () => {
+  const time = virtualScheduler();
+  const controlled = controlledRenderer();
+  const instance = createCiMInstance({
+    instanceId: 'pause-parked-settlement',
+    experience: experienceFixture({ steps: 1 }),
+    clock: time.scheduler,
+    renderer: controlled.renderer,
+    rendererRoot: rootFixture()
+  });
+  const events = [];
+  instance.events.subscribe((event) => events.push(event));
+
+  await instance.initialize();
+  await instance.play(COMMAND_SOURCE.TRANSPORT);
+
+  assert.equal(controlled.pending.length, 1);
+
+  let snapshot = instance.read.snapshot();
+  assert.equal(snapshot.canonical.currentStepId, 'initial');
+  assert.equal(snapshot.canonical.targetStepId, 'step-01');
+  assert.equal(snapshot.canonical.status, 'transitioning');
+
+  const paused = instance.pause(COMMAND_SOURCE.TRANSPORT);
+  assert.equal(paused.result, 'success');
+
+  snapshot = instance.read.snapshot();
+  assert.equal(snapshot.canonical.status, 'paused');
+  assert.equal(snapshot.canonical.currentStepId, 'initial');
+  assert.equal(snapshot.canonical.targetStepId, 'step-01');
+  assert.equal(snapshot.operational.playbackIntent, true);
+
+  controlled.pending[0].resolve();
+  await flush();
+
+  snapshot = instance.read.snapshot();
+  assert.equal(snapshot.canonical.status, 'paused');
+  assert.equal(snapshot.canonical.currentStepId, 'initial');
+  assert.equal(snapshot.canonical.targetStepId, 'step-01');
+  assert.equal(snapshot.operational.playbackIntent, true);
+  assert.equal(
+    events.filter((event) => event.event === EVENT_NAME.STEP_CHANGED).length,
+    0
+  );
+
+  const resumed = await instance.play(COMMAND_SOURCE.TRANSPORT);
+  assert.equal(resumed.result, 'success');
+
+  await flush();
+
+  snapshot = instance.read.snapshot();
+  assert.equal(snapshot.canonical.currentStepId, 'step-01');
+  assert.equal(snapshot.canonical.targetStepId, null);
+  assert.equal(snapshot.canonical.status, 'idle');
+  assert.equal(snapshot.operational.playbackIntent, false);
+
+  const changed = events.filter((event) => event.event === EVENT_NAME.STEP_CHANGED);
+  assert.deepEqual(changed.map((event) => event.step_id), ['step-01']);
+
+  assert.equal(
+    events.filter((event) => event.event === EVENT_NAME.PLAYBACK_PAUSED).length,
+    1
+  );
+  assert.equal(
+    events.filter((event) => event.event === EVENT_NAME.PLAYBACK_RESUMED).length,
+    1
+  );
+});
+
 test('equal subject state does not suppress semantic advancement during playback', async () => {
   const time = virtualScheduler();
   const controlled = controlledRenderer();
