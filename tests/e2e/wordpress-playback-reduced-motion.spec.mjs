@@ -62,7 +62,7 @@ async function runOneAnimationFrame(page) {
   expect(ran).toBe(true);
 }
 
-test('R36 WordPress Space playback reaches the animated production path under normal motion', async ({ page }) => {
+test('R40 F4 WordPress playback reaches the animated production path under normal motion', async ({ page }) => {
   const root = await openSynthetic(page, 'no-preference');
   const rendered = root.locator(RENDERED_SELECTOR);
 
@@ -88,7 +88,7 @@ test('R36 WordPress Space playback reaches the animated production path under no
   await expect.poll(() => pendingAnimationFrames(page)).toBe(0);
 });
 
-test('R36 effective reduced motion completes the same Space playback path without animation frames', async ({ page }) => {
+test('R40 F4 effective reduced motion completes the same playback path without animation frames', async ({ page }) => {
   const root = await openSynthetic(page, 'reduce');
   const rendered = root.locator(RENDERED_SELECTOR);
 
