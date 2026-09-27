@@ -19,7 +19,22 @@ Version 0.1.9 adds the fixed WordPress instrument-panel presentation and learner
 
 1. Install the Code in Motion release ZIP through the WordPress Plugins screen or WP-CLI.
 2. Activate Code in Motion.
-3. Add a supported `[cim]` shortcode to WordPress content.
+3. Add the shortcode shown for the required Experience in the Code in Motion Admin Console to WordPress content.
+4. Publish or update the content and confirm that the Code in Motion panel appears.
+
+The Code in Motion Admin Console reports the active deployment mode, bootstrap-module presence, Experience registry, renderer inventory, version consistency, Experience deployment status, and the supported shortcode for each registered Experience.
+
+== Frequently Asked Questions ==
+
+= The shortcode shows fallback text instead of the Code in Motion panel. What should I check? =
+
+Open the Code in Motion Admin Console in WordPress and check these items:
+
+1. Under Static health, confirm that Deployment mode is Release, Active module root is Present, Bootstrap module is Present, Experience registry is Available, Renderer inventory is Available, and Plugin version consistency is Consistent.
+2. Under Experience inventory, find the Experience used by the shortcode and confirm that its Deployment status is Present (release). Confirm that the shortcode on the page matches the shortcode shown in the inventory.
+3. Under Renderer inventory, confirm that the renderer required by the Experience is Registered.
+
+If any of these checks fail, preserve the fallback text and report the failed status together with the Code in Motion version through the project support channel.
 
 == Support ==
 
