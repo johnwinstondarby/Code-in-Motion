@@ -96,6 +96,9 @@ function validatePlan(plan, byId) {
     requireNonEmptyString(step.stepId, 'step.stepId');
     requireNonEmptyString(step.commentary, 'step.commentary');
     requireNonEmptyString(step.focus, 'step.focus');
+    if (step.dwell_ms !== undefined && (!Number.isInteger(step.dwell_ms) || step.dwell_ms < 0)) {
+      fail('step.dwell_ms must be a non-negative integer when present.');
+    }
     if (!isObject(step.state)) fail('step.state must be an object.');
 
     const fact = byId.get(step.factId);
@@ -169,6 +172,7 @@ export function buildGitBasicCycleExperience(source, plan) {
           links: fact.references
         },
         state: step.state,
+        ...(step.dwell_ms === undefined ? {} : { dwell_ms: step.dwell_ms }),
         renderer_config: {
           focus: step.focus
         }

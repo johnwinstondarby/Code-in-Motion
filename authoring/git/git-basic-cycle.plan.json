@@ -45,6 +45,7 @@
       "stepId": "step-01",
       "commentary": "Start by reading the repository state. Git status reports what differs among the working tree, index, and current commit without changing any of them.",
       "focus": "overview",
+      "dwell_ms": 1000,
       "state": {
         "working_tree": {
           "content": "v2",
@@ -77,6 +78,7 @@
       "stepId": "step-02",
       "commentary": "Inspect the exact content difference before staging. The repository state is unchanged; only the evidence under examination changes.",
       "focus": "working-tree",
+      "dwell_ms": 1000,
       "state": {
         "working_tree": {
           "content": "v2",
@@ -109,6 +111,7 @@
       "stepId": "step-03",
       "commentary": "Stage the selected change into the index. The index now contains the content intended for the next commit.",
       "focus": "index",
+      "dwell_ms": 1000,
       "state": {
         "working_tree": {
           "content": "v2",
@@ -141,6 +144,7 @@
       "stepId": "step-04",
       "commentary": "Record the staged snapshot. The local branch advances to a new commit and the index returns to an unstaged state.",
       "focus": "local",
+      "dwell_ms": 1000,
       "state": {
         "working_tree": {
           "content": "v2",
@@ -175,6 +179,7 @@
       "stepId": "step-05",
       "commentary": "Resolve HEAD after the commit to identify the exact object now selected by the local branch.",
       "focus": "head",
+      "dwell_ms": 1000,
       "state": {
         "working_tree": {
           "content": "v2",
@@ -209,6 +214,7 @@
       "stepId": "step-06",
       "commentary": "Attach a human-readable name to the recorded commit. The tag points at c101 while the commit identity itself remains unchanged.",
       "focus": "refs",
+      "dwell_ms": 1000,
       "state": {
         "working_tree": {
           "content": "v2",
@@ -248,6 +254,7 @@
       "stepId": "step-07",
       "commentary": "Publish the local history. The remote reference advances to the same commit as the local branch.",
       "focus": "remote",
+      "dwell_ms": 1000,
       "state": {
         "working_tree": {
           "content": "v2",
