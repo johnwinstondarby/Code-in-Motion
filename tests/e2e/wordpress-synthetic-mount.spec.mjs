@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+import { probeCiMReadiness } from '../../tools/probe-wordpress-readiness.mjs';
+
 const BASE_URL = process.env.CIM_WP_BASE_URL ?? 'http://127.0.0.1:8888';
 const EXPERIENCE_PATH = '/wordpress/experiences/synthetic-wordpress.json';
 
@@ -110,6 +112,23 @@ test('R8 mounts the synthetic WordPress Experience and navigates through product
 
   expect(observed.requestFailures, `request failures:\n${observed.requestFailures.join('\n')}`).toEqual([]);
   expect(observed.consoleErrors, `browser console/page errors:\n${observed.consoleErrors.join('\n')}`).toEqual([]);
+});
+
+test('RC1 F2 readiness probe returns mounted synthetic evidence only after ready', async ({ page }) => {
+  const result = await probeCiMReadiness({
+    page,
+    url: `${BASE_URL}/?pagename=cim-e2e`,
+    selector: '.cim[data-cim-experience="synthetic-wordpress"]',
+    timeoutMs: 10000
+  });
+
+  expect(result.ok).toBe(true);
+  expect(result.state).toBe('ready');
+  expect(result.rendererId).toBe('synthetic/v1');
+  expect(result.step).toBe('initial');
+  expect(result.elapsedMs).toBeGreaterThanOrEqual(0);
+  expect(result.dom).toContain('data-cim-state="ready"');
+  expect(result.dom).toContain('data-cim-renderer="synthetic/v1"');
 });
 
 test('R9 keeps three same-Experience WordPress instances isolated', async ({ page }) => {
