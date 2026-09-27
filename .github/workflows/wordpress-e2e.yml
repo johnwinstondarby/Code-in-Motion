@@ -382,6 +382,7 @@ jobs:
           tests/e2e/wordpress-detached-root.spec.mjs
           tests/e2e/wordpress-fault-matrix.spec.mjs
           tests/e2e/wordpress-zip-install.spec.mjs
+          tests/e2e/wordpress-playback-reduced-motion.spec.mjs
           --reporter=line
 
       - name: Prove R33 state-free deactivate and uninstall lifecycle
