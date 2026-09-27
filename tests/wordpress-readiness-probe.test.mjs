@@ -114,3 +114,14 @@ test('readiness timeout reports the observed non-ready state', async () => {
     }
   );
 });
+
+test('readiness probe rejects ready without mounted renderer and step evidence', async () => {
+  const page = fakePage([
+    { count: 1, state: 'ready', dom: '<div class="cim" data-cim-state="ready"></div>', rendererId: null, step: null }
+  ]);
+
+  await expectProbeError(
+    probeCiMReadiness({ page, url: URL, selector: SELECTOR, timeoutMs: 100 }),
+    'render_evidence_missing'
+  );
+});
