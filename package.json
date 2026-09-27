@@ -27,6 +27,7 @@
     "test": "node --test",
     "verify": "npm run check:schema && npm run check:git-content && npm run check:page-3227 && npm run check:cim-authoring && npm run check:wordpress-experience-registry && npm run check:wordpress-renderer-registry && npm run check:wordpress-release-info && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm run check:workflow-gates && npm run check:wordpress-production-transport && npm test",
     "wp-env": "wp-env",
+    "probe:wordpress-readiness": "node tools/probe-wordpress-readiness.mjs",
     "generate:git-basic-cycle": "node tools/generate-git-basic-cycle.mjs",
     "check:git-content": "node tools/generate-git-basic-cycle.mjs --check",
     "generate:page-3227": "node tools/generate-page-3227-git-adapter.mjs",
