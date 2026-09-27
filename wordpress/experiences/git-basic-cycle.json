@@ -80,6 +80,7 @@
           "c100"
         ]
       },
+      "dwell_ms": 1000,
       "renderer_config": {
         "focus": "overview"
       }
@@ -124,6 +125,7 @@
           "c100"
         ]
       },
+      "dwell_ms": 1000,
       "renderer_config": {
         "focus": "working-tree"
       }
@@ -168,6 +170,7 @@
           "c100"
         ]
       },
+      "dwell_ms": 1000,
       "renderer_config": {
         "focus": "index"
       }
@@ -214,6 +217,7 @@
           "c100"
         ]
       },
+      "dwell_ms": 1000,
       "renderer_config": {
         "focus": "local"
       }
@@ -260,6 +264,7 @@
           "c100"
         ]
       },
+      "dwell_ms": 1000,
       "renderer_config": {
         "focus": "head"
       }
@@ -311,6 +316,7 @@
           "c100"
         ]
       },
+      "dwell_ms": 1000,
       "renderer_config": {
         "focus": "refs"
       }
@@ -363,6 +369,7 @@
           "c100"
         ]
       },
+      "dwell_ms": 1000,
       "renderer_config": {
         "focus": "remote"
       }
