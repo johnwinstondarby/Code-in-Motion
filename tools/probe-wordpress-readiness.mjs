@@ -100,6 +100,14 @@ export async function probeCiMReadiness({
   }
 
   const elapsedMs = Date.now() - startedAt;
+  if (snapshot.rendererId === null || snapshot.step === null) {
+    throw new CiMReadinessProbeError(
+      'render_evidence_missing',
+      `CiM readiness probe reached ready after ${elapsedMs} ms without mounted renderer/step evidence.`,
+      { selector, state: snapshot.state, rendererId: snapshot.rendererId, step: snapshot.step, elapsedMs }
+    );
+  }
+
   return Object.freeze({
     ok: true,
     url,
