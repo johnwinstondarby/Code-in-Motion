@@ -4,20 +4,33 @@ import test from 'node:test';
 import {
   REQUIRED_WORKFLOW_GATES,
   assertWorkflowGateSource,
+  assertWorkflowTriggerSource,
   extractJobBlock,
   readNeeds
 } from '../tools/check-required-workflow-gates.mjs';
 
+function triggerFor(contract, { push = contract.trigger === 'pr-and-main-push', branch = 'main' } = {}) {
+  const lines = ['on:', '  pull_request:'];
+  if (push) {
+    lines.push('  push:', '    branches:', `      - ${branch}`);
+  }
+  return lines;
+}
+
 function sourceFor(contract, {
   name = contract.checkName,
   always = true,
-  needs = contract.needs
+  needs = contract.needs,
+  push = contract.trigger === 'pr-and-main-push',
+  branch = 'main'
 } = {}) {
   const dependencies = contract.needs
     .map((dependency) => `  ${dependency}:\n    runs-on: ubuntu-latest\n`)
     .join('\n');
 
   return [
+    ...triggerFor(contract, { push, branch }),
+    '',
     'jobs:',
     dependencies.trimEnd(),
     `  ${contract.jobId}:`,
@@ -32,10 +45,15 @@ function sourceFor(contract, {
   ].join('\n');
 }
 
-test('R28 declares four stable required workflow check names', () => {
+test('R28 declares four stable required workflow check names and trigger contracts', () => {
   assert.deepEqual(
-    REQUIRED_WORKFLOW_GATES.map((gate) => gate.checkName),
-    ['CiM / Verify', 'CiM / Floor QA', 'CiM / Browser E2E', 'CiM / Playground']
+    REQUIRED_WORKFLOW_GATES.map((gate) => [gate.checkName, gate.trigger]),
+    [
+      ['CiM / Verify', 'pr-and-main-push'],
+      ['CiM / Floor QA', 'pr-and-main-push'],
+      ['CiM / Browser E2E', 'pr-and-main-push'],
+      ['CiM / Playground', 'pr-only']
+    ]
   );
   assert.equal(new Set(REQUIRED_WORKFLOW_GATES.map((gate) => gate.checkName)).size, 4);
 });
@@ -47,6 +65,30 @@ test('R28 workflow gate parser extracts exact gate block and dependencies', () =
 
   assert.deepEqual(readNeeds(block, contract.jobId), contract.needs);
   assert.equal(assertWorkflowGateSource(source, contract), true);
+});
+
+test('R28 workflow trigger contract rejects a missing main push', () => {
+  const contract = REQUIRED_WORKFLOW_GATES[1];
+  assert.throws(
+    () => assertWorkflowTriggerSource(sourceFor(contract, { push: false }), contract),
+    /must run on push to main/
+  );
+});
+
+test('R28 workflow trigger contract rejects the wrong push branch', () => {
+  const contract = REQUIRED_WORKFLOW_GATES[2];
+  assert.throws(
+    () => assertWorkflowTriggerSource(sourceFor(contract, { branch: 'release' }), contract),
+    /push branches must be exactly \[main\]/
+  );
+});
+
+test('R28 workflow trigger contract keeps Playground pull-request-only', () => {
+  const contract = REQUIRED_WORKFLOW_GATES[3];
+  assert.throws(
+    () => assertWorkflowTriggerSource(sourceFor(contract, { push: true }), contract),
+    /must remain pull_request-only/
+  );
 });
 
 test('R28 workflow gate contract rejects a renamed required check', () => {
