@@ -1,0 +1,53 @@
+name: RC1 workflow topology repair bootstrap
+
+on:
+  push:
+    branches:
+      - rc1/step-3-workflow-topology-repair
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: rc1/step-3-workflow-topology-repair
+
+      - name: Apply trigger topology repair
+        shell: python
+        run: |
+          from pathlib import Path
+
+          trigger_old = "on:\n  pull_request:\n    types: [opened, synchronize, reopened]\n"
+          trigger_new = trigger_old + "  push:\n    branches:\n      - main\n"
+
+          for name in ("wordpress-floor-qa.yml", "wordpress-e2e.yml"):
+              path = Path(".github/workflows") / name
+              text = path.read_text(encoding="utf-8")
+              if text.count(trigger_old) != 1:
+                  raise SystemExit(f"Expected one PR-only trigger preamble in {path}")
+              path.write_text(text.replace(trigger_old, trigger_new, 1), encoding="utf-8")
+
+          floor = Path(".github/workflows/wordpress-floor-qa.yml")
+          text = floor.read_text(encoding="utf-8")
+          old = "          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}"
+          new = "          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}"
+          if text.count(old) != 1:
+              raise SystemExit("Expected one PR_HEAD_SHA assignment in Floor QA")
+          floor.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          Path(".github/workflows/rc1-topology-repair-bootstrap.yml").unlink()
+
+      - name: Commit repair and remove bootstrap
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/wordpress-floor-qa.yml .github/workflows/wordpress-e2e.yml .github/workflows/rc1-topology-repair-bootstrap.yml
+          git commit -m "RC1 Step 3: run production QA after main merges"
+          git push origin HEAD:rc1/step-3-workflow-topology-repair
