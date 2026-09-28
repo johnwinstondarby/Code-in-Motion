@@ -3,6 +3,9 @@ name: WordPress Floor QA
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -210,7 +213,7 @@ jobs:
       - name: Capture authoritative WordPress rendering fixtures
         shell: bash
         env:
-          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
           mkdir -p .ci/wordpress-fixtures

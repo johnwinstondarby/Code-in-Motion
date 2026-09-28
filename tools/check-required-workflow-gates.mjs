@@ -9,13 +9,15 @@ export const REQUIRED_WORKFLOW_GATES = Object.freeze([
     path: '.github/workflows/verify.yml',
     jobId: 'required-verify-gate',
     checkName: 'CiM / Verify',
-    needs: Object.freeze(['verify', 'release-build', 'release-reproducibility'])
+    needs: Object.freeze(['verify', 'release-build', 'release-reproducibility']),
+    trigger: 'pr-and-main-push'
   }),
   Object.freeze({
     path: '.github/workflows/wordpress-floor-qa.yml',
     jobId: 'required-floor-qa-gate',
     checkName: 'CiM / Floor QA',
-    needs: Object.freeze(['wordpress-floor', 'plugin-check'])
+    needs: Object.freeze(['wordpress-floor', 'plugin-check']),
+    trigger: 'pr-and-main-push'
   }),
   Object.freeze({
     path: '.github/workflows/wordpress-e2e.yml',
@@ -29,13 +31,15 @@ export const REQUIRED_WORKFLOW_GATES = Object.freeze([
       'php-matrix',
       'browser-family-matrix',
       'lifecycle-differential'
-    ])
+    ]),
+    trigger: 'pr-and-main-push'
   }),
   Object.freeze({
     path: '.github/workflows/playground-preview.yml',
     jobId: 'required-playground-gate',
     checkName: 'CiM / Playground',
-    needs: Object.freeze(['preview'])
+    needs: Object.freeze(['preview']),
+    trigger: 'pr-only'
   })
 ]);
 
@@ -44,7 +48,56 @@ function fail(message) {
 }
 
 function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[]\\]/g, '\\$&');
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+export function extractTriggerBlock(source) {
+  const lines = source.split('\n');
+  const start = lines.findIndex((line) => line === 'on:');
+  if (start < 0) fail('workflow has no on block.');
+
+  let end = lines.length;
+  for (let index = start + 1; index < lines.length; index += 1) {
+    if (/^[A-Za-z0-9_-]+:$/.test(lines[index])) {
+      end = index;
+      break;
+    }
+  }
+  return lines.slice(start, end).join('\n');
+}
+
+export function assertWorkflowTriggerSource(source, contract) {
+  const block = extractTriggerBlock(source);
+  if (!/^  pull_request:$/m.test(block)) {
+    fail(contract.path + ' must run on pull_request.');
+  }
+
+  const hasPush = /^  push:$/m.test(block);
+  if (contract.trigger === 'pr-only') {
+    if (hasPush) fail(contract.path + ' must remain pull_request-only.');
+    return true;
+  }
+
+  if (contract.trigger !== 'pr-and-main-push') {
+    fail(contract.path + ' has unknown trigger contract ' + contract.trigger + '.');
+  }
+  if (!hasPush) fail(contract.path + ' must run on push to main.');
+
+  const pushLines = block.split('\n');
+  const pushStart = pushLines.findIndex((line) => line === '  push:');
+  let pushEnd = pushLines.length;
+  for (let index = pushStart + 1; index < pushLines.length; index += 1) {
+    if (/^  [A-Za-z0-9_-]+:$/.test(pushLines[index])) {
+      pushEnd = index;
+      break;
+    }
+  }
+  const pushBlock = pushLines.slice(pushStart, pushEnd).join('\n');
+  const branches = [...pushBlock.matchAll(/^      - (.+)$/gm)].map((match) => match[1]);
+  if (!/^    branches:$/m.test(pushBlock) || JSON.stringify(branches) !== JSON.stringify(['main'])) {
+    fail(contract.path + ' push branches must be exactly [main].');
+  }
+  return true;
 }
 
 export function extractJobBlock(source, jobId) {
@@ -80,6 +133,7 @@ export function readNeeds(block, jobId) {
 }
 
 export function assertWorkflowGateSource(source, contract) {
+  assertWorkflowTriggerSource(source, contract);
   const block = extractJobBlock(source, contract.jobId);
 
   const namePattern = new RegExp(
@@ -128,7 +182,7 @@ export async function checkRequiredWorkflowGates({ root = ROOT } = {}) {
   }
 
   console.log(
-    'PASS: R28 required workflow gates (' +
+    'PASS: R28 required workflow gates and trigger topology (' +
     [...names].join(', ') +
     ').'
   );
