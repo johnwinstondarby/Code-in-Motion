@@ -3,6 +3,9 @@ name: WordPress Browser E2E
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
