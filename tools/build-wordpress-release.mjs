@@ -17,6 +17,7 @@ import { validateWordPressExperienceRegistry } from './check-wordpress-experienc
 import { validateWordPressRendererRegistry } from './check-wordpress-renderer-registry.mjs';
 import { validateWordPressReleaseInfo } from './check-wordpress-release-info.mjs';
 
+import { execFileSync } from 'node:child_process';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST_ROOT = resolve(ROOT, 'dist');
 const STAGE_ROOT = resolve(DIST_ROOT, 'code-in-motion');
@@ -123,8 +124,57 @@ async function writeStagedFile(destination, data) {
   return canonical;
 }
 
+const GIT_MAX_BUFFER = 64 * 1024 * 1024;
+
+function runGit(args, options = {}) {
+  try {
+    return execFileSync('git', args, {
+      cwd: ROOT,
+      maxBuffer: GIT_MAX_BUFFER,
+      ...options
+    });
+  } catch (error) {
+    fail(
+      `R13 release build requires an accessible Git repository and git executable: ${error.message}`
+    );
+  }
+}
+
+export function readHeadFile(path, encoding = null, repositoryRoot = ROOT) {
+  try {
+    return execFileSync(
+      'git',
+      ['show', `HEAD:${path}`],
+      {
+        cwd: repositoryRoot,
+        maxBuffer: GIT_MAX_BUFFER,
+        ...(encoding === null ? {} : { encoding })
+      }
+    );
+  } catch (error) {
+    fail(
+      `R13 release build requires committed source ${path} from HEAD: ${error.message}`
+    );
+  }
+}
+
+export function assertCleanReleaseCheckout() {
+  runGit(['rev-parse', '--verify', 'HEAD']);
+
+  const status = runGit(
+    ['status', '--porcelain'],
+    { encoding: 'utf8' }
+  );
+
+  if (status.length !== 0) {
+    fail(
+      'R13 release build requires a clean checkout matching HEAD; commit, discard, or remove pending changes before building.'
+    );
+  }
+}
+
 async function stageSourceFile(source, destination) {
-  const data = await readFile(resolve(ROOT, ...source.split('/')));
+  const data = readHeadFile(source);
   return writeStagedFile(destination, data);
 }
 
@@ -306,7 +356,7 @@ async function releaseInputs(version) {
     'wordpress/release/release-info.generated.json'
   ));
 
-  const bootstrapSource = await readFile(resolve(ROOT, 'wordpress', 'assets', 'bootstrap.js'), 'utf8');
+  const bootstrapSource = readHeadFile('wordpress/assets/bootstrap.js', 'utf8');
   expected.push(await writeStagedFile(
     'wordpress/assets/bootstrap.js',
     rewriteBootstrapForRelease(bootstrapSource, version)
@@ -335,17 +385,18 @@ async function releaseInputs(version) {
 }
 
 async function buildRelease() {
-  const requiredNodeVersion = (await readFile(resolve(ROOT, '.nvmrc'), 'utf8')).trim();
+  assertCleanReleaseCheckout();
+  const requiredNodeVersion = readHeadFile('.nvmrc', 'utf8').trim();
   assertReleaseNodeVersion(process.version, requiredNodeVersion);
 
-  const packageJson = JSON.parse(await readFile(resolve(ROOT, 'package.json'), 'utf8'));
+  const packageJson = JSON.parse(readHeadFile('package.json', 'utf8'));
   const version = packageJson.version;
   if (typeof version !== 'string' || !/^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(version)) {
     fail(`package version is not a usable release token: ${JSON.stringify(version)}`);
   }
 
-  const rootPlugin = await readFile(resolve(ROOT, 'code-in-motion.php'), 'utf8');
-  const wordpressPlugin = await readFile(resolve(ROOT, 'wordpress', 'code-in-motion.php'), 'utf8');
+  const rootPlugin = readHeadFile('code-in-motion.php', 'utf8');
+  const wordpressPlugin = readHeadFile('wordpress/code-in-motion.php', 'utf8');
   assertPluginVersion(rootPlugin, version, 'root plugin entry');
   if (/^\\s*\\* Plugin Name:/m.test(wordpressPlugin)) {
     fail('WordPress implementation entry must not declare a second plugin header.');
