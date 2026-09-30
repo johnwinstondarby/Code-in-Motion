@@ -15,3 +15,7 @@
 *.cim   text eol=lf
 
 *.zip   binary
+
+# Release text inputs not covered by extension rules above.
+LICENSE text eol=lf
+*.css   text eol=lf

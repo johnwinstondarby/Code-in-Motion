@@ -1,9 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 import {
   assertReleaseNodeVersion,
   createDeterministicZip,
+  readHeadFile,
   rewriteBootstrapForRelease
 } from '../tools/build-wordpress-release.mjs';
 
@@ -63,6 +68,44 @@ test('R13 ZIP bytes are input-order independent and carry fixed archive metadata
   assert.equal(first.readUInt16LE(central + 30), 0);
   assert.equal(first.readUInt16LE(central + 32), 0);
   assert.equal(first.readUInt32LE(central + 38), (0o100644 << 16) >>> 0);
+});
+
+
+test('R13 committed source authority is independent of working-tree line endings', () => {
+  const repo = mkdtempSync(join(tmpdir(), 'cim-r13-head-'));
+  const fixture = join(repo, 'fixture.txt');
+
+  const git = (args, options = {}) => execFileSync('git', args, {
+    cwd: repo,
+    encoding: 'utf8',
+    ...options
+  });
+
+  git(['init', '-q']);
+  git(['config', 'user.name', 'Code in Motion QA']);
+  git(['config', 'user.email', 'qa@example.invalid']);
+  git(['config', 'core.autocrlf', 'false']);
+
+  writeFileSync(fixture, 'alpha\nbeta\n', 'utf8');
+  git(['add', 'fixture.txt']);
+  git(['commit', '-q', '-m', 'canonical LF fixture']);
+
+  const headBytes = execFileSync(
+    'git',
+    ['show', 'HEAD:fixture.txt'],
+    { cwd: repo }
+  );
+
+  writeFileSync(fixture, 'alpha\r\nbeta\r\n', 'utf8');
+  const workingBytes = readFileSync(fixture);
+
+  assert.deepEqual(headBytes, Buffer.from('alpha\nbeta\n'));
+  assert.notDeepEqual(workingBytes, headBytes);
+
+  const releaseBytes = readHeadFile('fixture.txt', null, repo);
+
+  assert.deepEqual(releaseBytes, headBytes);
+  assert.notDeepEqual(releaseBytes, workingBytes);
 });
 
 test('R13 ZIP rejects entries outside the single code-in-motion plugin root', () => {
