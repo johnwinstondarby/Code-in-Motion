@@ -1,12 +1,12 @@
 {
   "schema": "localis.cim/wordpress-release-info/v1",
-  "stable_tag": "0.1.9",
+  "stable_tag": "0.1.10",
   "tested_up_to": "7.1",
   "current_release": {
-    "version": "0.1.9",
+    "version": "0.1.10",
     "notes": [
-      "Adds the fixed WordPress instrument-panel presentation and learner-facing Start, Previous, Play/Pause, Next, and End controls.",
-      "Preserves production playback, keyboard focus, responsive layout, and reduced-motion behavior through the WordPress composition."
+      "Assigns a distinct release identity to the RC#1 candidate following release reproducibility hardening.",
+      "Carries the 0.1.9 product scope forward without additional product changes."
     ]
   },
   "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"
