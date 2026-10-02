@@ -218,3 +218,93 @@ test('[CR-B05] copy controls are inert and carry the resolved value, including t
     assert.equal(Object.keys(control).some((k) => /^on|listener/i.test(k)), false);
   }
 });
+
+// ---- D1–D3: cursor, ready line, title-bar risk (visual-DOM audit; CONSOLE-RENDERER-v1 §4.7) ----
+const parentOf = (root, target) => {
+  let found = null;
+  const walk = (node) => { for (const child of node.childNodes ?? []) { if (child === target) found = node; else walk(child); } };
+  walk(root);
+  return found;
+};
+
+function expectedPlacement(state) {
+  // Independent restatement of the approved derivation table; deliberately not imported.
+  const last = state.transcript.at(-1);
+  if (last === undefined) return 'ready-line';
+  if (last.awaiting_response === true) return 'output-line';
+  if (last.output !== undefined || last.response !== undefined) return 'ready-line';
+  return 'command-line';
+}
+
+test('[CR-C01] at all 19 boundaries: exactly one cursor, positioned by the approved derivation table', async () => {
+  const seen = new Set();
+  for (const id of IDS) {
+    const root = await rendered(id);
+    const cursors = find(root, 'cursor');
+    assert.equal(cursors.length, 1, id);
+    assert.equal(cursors[0].getAttribute('aria-hidden'), 'true');
+    assert.equal(cursors[0].childNodes.length, 0, 'cursor is an empty element; blinking is CSS');
+    const placement = expectedPlacement(stateFor(id));
+    assert.equal(parentOf(root, cursors[0]).getAttribute('data-role'), placement, id);
+    seen.add(placement);
+  }
+  assert.deepEqual([...seen].sort(), ['command-line', 'output-line', 'ready-line'], 'the specimen exercises every placement');
+});
+
+test('[CR-C02] ready line exists exactly when the cursor is ready; V3 prompt is the last entry\'s effective prompt, or renderer_config.prompt at initial', async () => {
+  for (const id of IDS) {
+    const root = await rendered(id);
+    const ready = find(root, 'ready-line');
+    const state = stateFor(id);
+    assert.equal(ready.length, expectedPlacement(state) === 'ready-line' ? 1 : 0, id);
+    if (ready.length === 1) {
+      const last = state.transcript.at(-1);
+      const prompt = last === undefined ? experience.renderer_config.prompt : (last.prompt ?? experience.renderer_config.prompt);
+      assert.equal(text(find(ready[0], 'prompt')[0]), prompt, id);
+      const transcript = find(root, 'transcript')[0];
+      assert.equal(transcript.childNodes.at(-1), ready[0], 'the ready line is the transcript\'s last line');
+    }
+  }
+});
+
+test('[CR-C03] D3: the title bar carries data-risk exactly when the badge does, with the same level', async () => {
+  for (const id of IDS) {
+    const root = await rendered(id);
+    const header = find(root, 'titlebar')[0];
+    const badge = find(root, 'risk-badge')[0];
+    assert.equal(header.getAttribute('data-risk'), badge ? badge.getAttribute('data-risk') : null, id);
+  }
+});
+
+test('[CR-C04] V2 and edge cases: command-only entry keeps the cursor after its command; no-prompt initial renders a bare ready cursor', async () => {
+  const { renderer, root } = mounted();
+  const commandOnly = { transcript: [{ beat: 'fetch', command: 'git fetch', copy: 'git fetch' }], focus: [] };
+  const t = transition('fetch--s01');
+  await renderer.render(commandOnly, t.context);
+  const c = find(root, 'cursor');
+  assert.equal(c.length, 1);
+  assert.equal(parentOf(root, c[0]).getAttribute('data-role'), 'command-line');
+  assert.equal(find(root, 'ready-line').length, 0, 'V2: completion is not inferable without a contract change');
+
+  const bare = mounted();
+  sequence += 1;
+  const abort = createRendererAbortCapability();
+  const clock = createRendererClockCapability({ transitionId: `bare-${sequence}`, scheduler: countingScheduler() });
+  const context = createRendererContext({
+    animate: false, fromState: null, fromStepId: null, stepId: 'initial', rendererConfig: Object.freeze({ title: 'x' }), stepRendererConfig: null,
+    transitionId: `bare-${sequence}`, abortSignal: abort.facade, clock: clock.facade, reducedMotion: false
+  });
+  await bare.renderer.render({ transcript: [], focus: [] }, context);
+  const ready = find(bare.root, 'ready-line');
+  assert.equal(ready.length, 1);
+  assert.equal(find(ready[0], 'prompt').length, 0);
+  assert.equal(find(ready[0], 'cursor').length, 1);
+});
+
+test('[CR-C05] the committed oracle records its supersession of the slice-2 evidence', () => {
+  assert.deepEqual(committed.lineage.map((entry) => [entry.supersedes_evidence_sha256, entry.superseded_at_commit]), [[
+    'b8403bb7b7d649419485c654f90982c4bfe9b8b08ae4b032d6c4fa53556688d0',
+    'd208800704f8e9e7111c38fe1123013107fd7f1a'
+  ]]);
+  assert.match(committed.lineage[0].reason, /D1-D3/);
+});
