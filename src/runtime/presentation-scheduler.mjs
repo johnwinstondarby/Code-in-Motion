@@ -9,13 +9,21 @@ function assertFunction(value, label) {
   if (typeof value !== 'function') fail(`${label} must be a function.`);
 }
 
-function assertSourceScheduler(sourceScheduler) {
+function assertSourceClock(sourceScheduler) {
   if (!sourceScheduler || typeof sourceScheduler !== 'object') {
     fail('presentation scheduler sourceScheduler must be an object.');
   }
-  for (const method of ['now', 'schedule', 'cancel', 'onFrame']) {
-    assertFunction(sourceScheduler[method], `presentation scheduler sourceScheduler.${method}`);
-  }
+  assertFunction(sourceScheduler.now, 'presentation scheduler sourceScheduler.now');
+}
+
+function assertDelayScheduler(sourceScheduler) {
+  assertFunction(sourceScheduler.schedule, 'presentation scheduler sourceScheduler.schedule');
+  assertFunction(sourceScheduler.cancel, 'presentation scheduler sourceScheduler.cancel');
+}
+
+function assertFrameScheduler(sourceScheduler) {
+  assertFunction(sourceScheduler.onFrame, 'presentation scheduler sourceScheduler.onFrame');
+  assertFunction(sourceScheduler.cancel, 'presentation scheduler sourceScheduler.cancel');
 }
 
 function readSourceNow(sourceScheduler) {
@@ -34,7 +42,7 @@ export function assertPlaybackRate(rate) {
 }
 
 export function createPresentationScheduler({ sourceScheduler, initialRate = 1 }) {
-  assertSourceScheduler(sourceScheduler);
+  assertSourceClock(sourceScheduler);
   let rate = assertPlaybackRate(initialRate);
   let anchorSourceNow = readSourceNow(sourceScheduler);
   let anchorPresentationNow = 0;
@@ -88,6 +96,7 @@ export function createPresentationScheduler({ sourceScheduler, initialRate = 1 }
       if (!Number.isFinite(delayMs) || delayMs < 0) {
         throw new RangeError('presentation scheduler delay must be a finite non-negative number.');
       }
+      assertDelayScheduler(sourceScheduler);
       const handle = nextHandle('delay');
       const now = presentationNow();
       const entry = {
@@ -127,6 +136,7 @@ export function createPresentationScheduler({ sourceScheduler, initialRate = 1 }
 
     onFrame(callback) {
       assertFunction(callback, 'presentation scheduler frame callback');
+      assertFrameScheduler(sourceScheduler);
       const handle = nextHandle('frame');
       const entry = { callback, sourceHandle: null };
       frames.set(handle, entry);

@@ -15,6 +15,7 @@ const RUNTIME_OPERATIONAL_KEYS = Object.freeze([
   'playbackIntent',
   'transitionId',
   'transitionPhase',
+  'playbackRate',
   'dwellRemainingMs',
   'activeAbortState'
 ]);
@@ -48,6 +49,13 @@ function readOptionalDataProperty(object, key, label, fallback = undefined) {
   return descriptor.value;
 }
 
+function assertPlaybackRateValue(rate, label) {
+  if (typeof rate !== 'number' || !Number.isFinite(rate) || rate < 0.5 || rate > 2) {
+    fail(`${label} must be a finite number from 0.5 through 2.`);
+  }
+  return rate;
+}
+
 export function readExperienceEnvelope(experience) {
   if (!isPlainObject(experience) || !Object.isFrozen(experience)) {
     fail('CiMInstance experience must be a frozen validated plain object.');
@@ -60,12 +68,26 @@ export function readExperienceEnvelope(experience) {
   const steps = readDataProperty(experience, 'steps', 'experience');
   const rendererConfig = readOptionalDataProperty(experience, 'renderer_config', 'experience', null);
 
-  if (schema !== 'localis.cim/v1') fail('CiMInstance requires localis.cim/v1 experience data.');
+  if (schema !== 'localis.cim/v1' && schema !== 'localis.cim/v2') {
+    fail('CiMInstance requires localis.cim/v1 or localis.cim/v2 experience data.');
+  }
   if (typeof experienceId !== 'string' || experienceId.length === 0) fail('experience.id must be a non-empty string.');
   if (typeof experienceVersion !== 'string' || experienceVersion.length === 0) fail('experience.experience_version must be a non-empty string.');
   if (initialState === null) fail('experience.initial_state must be non-null.');
   if (!Array.isArray(steps) || !Object.isFrozen(steps) || steps.length === 0) {
     fail('experience.steps must be a frozen non-empty array.');
+  }
+
+  let defaultPlaybackRate = 1;
+  if (schema === 'localis.cim/v2') {
+    const presentation = readDataProperty(experience, 'presentation', 'experience');
+    if (!isPlainObject(presentation) || !Object.isFrozen(presentation)) {
+      fail('experience.presentation must be a frozen validated plain object.');
+    }
+    defaultPlaybackRate = assertPlaybackRateValue(
+      readDataProperty(presentation, 'default_playback_rate', 'experience.presentation'),
+      'experience.presentation.default_playback_rate'
+    );
   }
 
   const stepIds = [];
@@ -109,9 +131,11 @@ export function readExperienceEnvelope(experience) {
   }
 
   return {
+    schema,
     experienceId,
     experienceVersion,
     rendererConfig,
+    defaultPlaybackRate,
     stepIds: Object.freeze(stepIds),
     boundaries
   };
@@ -158,11 +182,13 @@ export function assertSource(source) {
   return source;
 }
 
-export function createOperationalState() {
+export function createOperationalState(initialPlaybackRate = 1) {
+  assertPlaybackRateValue(initialPlaybackRate, 'Runtime initial playbackRate');
   const state = {
     playbackIntent: false,
     transitionId: null,
     transitionPhase: TRANSITION_PHASE.IDLE,
+    playbackRate: initialPlaybackRate,
     dwellRemainingMs: 0,
     activeAbortState: null
   };

@@ -45,6 +45,7 @@ export const EVENT_NAME = Object.freeze({
   PLAYBACK_PAUSED: 'playback.paused',
   PLAYBACK_RESUMED: 'playback.resumed',
   PLAYBACK_STOPPED: 'playback.stopped',
+  PLAYBACK_RATE_CHANGED: 'playback.rate_changed',
   DWELL_STARTED: 'dwell.started',
   DWELL_COMPLETED: 'dwell.completed',
   DWELL_CANCELLED: 'dwell.cancelled',
