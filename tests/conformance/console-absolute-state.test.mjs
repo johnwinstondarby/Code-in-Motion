@@ -16,6 +16,7 @@ import { ConsoleRendererInputError } from '../../src/renderers/subjects/console/
 import { CONSOLE_RISK_LABELS, createConsoleRenderer } from '../../src/renderers/subjects/console/renderer.mjs';
 import { createRendererAbortCapability, createRendererClockCapability } from '../../src/runtime/renderer-capabilities.mjs';
 import { createRendererContext } from '../../src/runtime/renderer-context.mjs';
+import { drain, virtualScheduler } from './console-test-support.mjs';
 import { classifyRendererRejection } from '../../src/runtime/renderer-outcome.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
@@ -24,24 +25,13 @@ const committed = JSON.parse(readFileSync(resolve(ROOT, 'harness/evidence/consol
 const IDS = ['initial', ...experience.steps.map((s) => s.id)];
 let sequence = 0;
 
-function countingScheduler() {
-  const counts = { schedule: 0, onFrame: 0 };
-  return {
-    counts,
-    now: () => 0,
-    schedule: () => { counts.schedule += 1; return `d-${counts.schedule}`; },
-    cancel: () => false,
-    onFrame: () => { counts.onFrame += 1; return `f-${counts.onFrame}`; }
-  };
-}
-
 const stateFor = (id) => (id === 'initial' ? experience.initial_state : experience.steps.find((s) => s.id === id).state);
 
 function transition(stepId, { animate = false, fromStepId = null, reducedMotion = false } = {}) {
   sequence += 1;
   const transitionId = `console-${sequence}`;
   const abort = createRendererAbortCapability();
-  const scheduler = countingScheduler();
+  const scheduler = virtualScheduler();
   const clock = createRendererClockCapability({ transitionId, scheduler });
   const context = createRendererContext({
     animate, fromState: fromStepId === null ? null : stateFor(fromStepId), fromStepId, stepId,
@@ -53,7 +43,7 @@ function transition(stepId, { animate = false, fromStepId = null, reducedMotion 
 
 async function settle(renderer, stepId, options) {
   const t = transition(stepId, options);
-  await renderer.render(stateFor(stepId), t.context);
+  await drain(renderer.render(stateFor(stepId), t.context), t.scheduler);
   t.clock.controller.revoke();
   t.abort.controller.close();
   return t;
@@ -125,11 +115,21 @@ test('[CR-A03] destinations are distinguishable: 19 boundaries produce 19 distin
   assert.equal(new Set(committed.boundaries.map((b) => b.render_digest)).size, 19);
 });
 
-test('[CR-A04] stable settlement consumes no time: no delayed or frame callbacks on any arrival', async () => {
+test('[CR-A04] direct, reduced-motion, and non-forward arrivals consume no time (forward animation is proven in console-animation)', async () => {
   const { renderer } = mounted();
   for (const [index, stepId] of IDS.entries()) {
-    const t = await settle(renderer, stepId, index === 0 ? {} : { animate: true, fromStepId: IDS[index - 1] });
-    assert.deepEqual(t.scheduler.counts, { schedule: 0, onFrame: 0 }, stepId);
+    const direct = await settle(renderer, stepId);
+    assert.deepEqual(direct.scheduler.counts, { schedule: 0, onFrame: 0 }, `direct ${stepId}`);
+    if (index > 0) {
+      await settle(renderer, IDS[index - 1]);
+      const reduced = await settle(renderer, stepId, { animate: true, fromStepId: IDS[index - 1], reducedMotion: true });
+      assert.deepEqual(reduced.scheduler.counts, { schedule: 0, onFrame: 0 }, `reduced-motion ${stepId}`);
+    }
+    if (index < IDS.length - 1) {
+      await settle(renderer, IDS[index + 1]);
+      const reverse = await settle(renderer, stepId, { animate: true, fromStepId: IDS[index + 1] });
+      assert.deepEqual(reverse.scheduler.counts, { schedule: 0, onFrame: 0 }, `animated reverse ${stepId}`);
+    }
   }
 });
 
@@ -289,7 +289,7 @@ test('[CR-C04] V2 and edge cases: command-only entry keeps the cursor after its 
   const bare = mounted();
   sequence += 1;
   const abort = createRendererAbortCapability();
-  const clock = createRendererClockCapability({ transitionId: `bare-${sequence}`, scheduler: countingScheduler() });
+  const clock = createRendererClockCapability({ transitionId: `bare-${sequence}`, scheduler: virtualScheduler() });
   const context = createRendererContext({
     animate: false, fromState: null, fromStepId: null, stepId: 'initial', rendererConfig: Object.freeze({ title: 'x' }), stepRendererConfig: null,
     transitionId: `bare-${sequence}`, abortSignal: abort.facade, clock: clock.facade, reducedMotion: false
