@@ -71,7 +71,7 @@ test('WordPress experience loader does not cache failed validation and permits r
     fetch: async () => {
       fetchCount += 1;
       const value = rawExperience();
-      if (fetchCount === 1) value.schema = 'localis.cim/v2';
+      if (fetchCount === 1) value.schema = 'localis.cim/v99';
       return responseFor(value);
     },
     experienceUrlFor: () => '/experiences/synthetic-wordpress.json'

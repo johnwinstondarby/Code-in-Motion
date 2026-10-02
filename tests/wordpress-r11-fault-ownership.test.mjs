@@ -97,7 +97,7 @@ function createHost({ roots, load, diagnostics }) {
 
 test('R11 Experience validation errors expose one frozen structured fallback fault', () => {
   const invalid = rawExperience('r11-invalid');
-  invalid.schema = 'localis.cim/v2';
+  invalid.schema = 'localis.cim/v99';
 
   assert.throws(
     () => ingestExperience(invalid),
@@ -124,7 +124,7 @@ test('R11 validation failure preserves CIM-EXP ownership while a healthy sibling
     diagnostics: evidence.diagnostics,
     load: async (id) => {
       const raw = rawExperience(id);
-      if (id === 'r11-bad') raw.schema = 'localis.cim/v2';
+      if (id === 'r11-bad') raw.schema = 'localis.cim/v99';
       return ingestExperience(raw);
     }
   });

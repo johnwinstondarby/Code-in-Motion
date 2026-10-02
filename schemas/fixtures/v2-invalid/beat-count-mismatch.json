@@ -1,0 +1,7 @@
+{
+  "schema":"localis.cim/v2","engine_min":"1.0.0","experience_version":"1.0.0","id":"fixture","renderer":"synthetic/v1",
+  "presentation":{"title":"Fixture","description":"Fixture.","subject":"synthetic","beat_count":2,"default_playback_rate":1},
+  "initial_state":{},"steps":[
+    {"id":"beat--s01","label":"Beat","beat":{"id":"beat","ordinal":1,"heading":"Beat","segment_ordinal":1,"segment_count":1,"final":true},"commentary":{"text":"Beat.","links":[]},"state":{}}
+  ]
+}

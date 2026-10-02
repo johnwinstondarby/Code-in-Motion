@@ -23,7 +23,8 @@ export class ExperienceValidationError extends TypeError {
 }
 
 /**
- * Validates raw experience JSON against the production localis.cim/v1 rules,
+ * Validates raw experience JSON against the production localis.cim/v1 or
+ * localis.cim/v2 rules (branching on the explicit schema identifier),
  * rebuilds it into inert JSON data, and deep-freezes the rebuilt graph.
  *
  * A successful return is suitable for Runtime consumption. Callers must not

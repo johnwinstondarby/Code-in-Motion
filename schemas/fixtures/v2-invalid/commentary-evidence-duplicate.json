@@ -1,0 +1,17 @@
+{
+  "schema": "localis.cim/v2",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "compiled-console-v2",
+  "renderer": "console/v1",
+  "renderer_config": {"title":"git — fixture","prompt":"~/fixture (main) $"},
+  "presentation": {"title":"Compiled Console v2","description":"Fixture shaped like authoring-v1 compiler output.","subject":"git","beat_count":2,"default_playback_rate":1},
+  "initial_state": {"transcript":[]},
+  "steps": [
+    {"id":"show-status--s01","label":"Check the state","beat":{"id":"show-status","ordinal":1,"heading":"Check the state","segment_ordinal":1,"segment_count":1,"final":true},"commentary":{"text":"git status reports what has changed.","anchor":"output","evidence":["status-modified"],"links":[{"id":"ref-01","label":"Git status documentation","href":"https://git-scm.com/docs/git-status"}]},"state":{"transcript":["status"]},"dwell_ms":4000},
+    {"id":"stage-hunk--s01","label":"Stage one change","beat":{"id":"stage-hunk","ordinal":2,"heading":"Stage one change","segment_ordinal":1,"segment_count":4,"final":false},"commentary":{"text":"The -p option presents changes one hunk at a time.","anchor":"command","links":[]},"state":{"transcript":["status","add-command"]},"dwell_ms":900},
+    {"id":"stage-hunk--s02","label":"Stage one change","beat":{"id":"stage-hunk","ordinal":2,"heading":"Stage one change","segment_ordinal":2,"segment_count":4,"final":false},"commentary":{"text":"The hunk replaces the hard-coded scope.","anchor":"output","evidence":["hunk-added","hunk-added"],"links":[]},"state":{"transcript":["status","add-hunk"]},"dwell_ms":900},
+    {"id":"stage-hunk--s03","label":"Stage one change","beat":{"id":"stage-hunk","ordinal":2,"heading":"Stage one change","segment_ordinal":3,"segment_count":4,"final":false},"commentary":{"text":"Git waits for a decision.","anchor":"output","evidence":["hunk-prompt"],"links":[]},"state":{"transcript":["status","add-hunk"]},"dwell_ms":900},
+    {"id":"stage-hunk--s04","label":"Stage one change","beat":{"id":"stage-hunk","ordinal":2,"heading":"Stage one change","segment_ordinal":4,"segment_count":4,"final":true},"commentary":{"text":"Answering y adds the hunk to the index.","anchor":"response","risk":{"level":"free-to-undo","guidance":"git restore --staged src/HeaderFix.jsx removes it again."},"links":[{"id":"ref-01","label":"Git add documentation","href":"https://git-scm.com/docs/git-add"}]},"state":{"transcript":["status","add-hunk","response"]},"dwell_ms":5000}
+  ]
+}

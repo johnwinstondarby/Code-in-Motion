@@ -19,6 +19,7 @@
   "scripts": {
     "build:wordpress": "node tools/build-wordpress-release.mjs",
     "check:schema": "node tools/check-schema-fixtures.mjs",
+    "qa:r42-v1-differential": "node tools/r42-v1-differential.mjs",
     "check:architecture": "node tools/check-architecture-boundaries.mjs",
     "check:core-authority": "node tools/check-core-authority.mjs",
     "check:wordpress-packaging": "node tools/check-wordpress-packaging.mjs",

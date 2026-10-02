@@ -1,0 +1,41 @@
+{
+  "schema": "localis.cim/v2",
+  "engine_min": "1.0.0",
+  "experience_version": "1.0.0",
+  "id": "synthetic-v2",
+  "renderer": "synthetic/v1",
+  "presentation": {
+    "title": "Synthetic v2",
+    "description": "Fixture covering one-segment and multi-segment beats.",
+    "subject": "synthetic",
+    "beat_count": 2,
+    "default_playback_rate": 1
+  },
+  "initial_state": { "value": "A" },
+  "steps": [
+    {
+      "id": "observe--s01",
+      "label": "Observe",
+      "beat": { "id": "observe", "ordinal": 1, "heading": "Observe", "segment_ordinal": 1, "segment_count": 1, "final": true },
+      "commentary": { "text": "Observe A.", "links": [] },
+      "state": { "value": "A" },
+      "dwell_ms": 1600
+    },
+    {
+      "id": "change--s01",
+      "label": "Change",
+      "beat": { "id": "change", "ordinal": 2, "heading": "Change", "segment_ordinal": 1, "segment_count": 2, "final": false },
+      "commentary": { "text": "Begin the change.", "links": [] },
+      "state": { "value": "A", "phase": "begin" },
+      "dwell_ms": 900
+    },
+    {
+      "id": "change--s02",
+      "label": "Change",
+      "beat": { "id": "change", "ordinal": 2, "heading": "Change", "segment_ordinal": 2, "segment_count": 2, "final": true },
+      "commentary": { "text": "Complete the change.", "links": [{ "id": "ref-01", "label": "reference", "href": "/reference/" }] },
+      "state": { "value": "B", "phase": "settled" },
+      "dwell_ms": 2000
+    }
+  ]
+}

@@ -111,7 +111,7 @@ test('R11 classifies HTTP 200 HTML as delivery failure, never Experience validat
 
 test('R11 preserves structured Experience ownership after JSON parses', async ({ page }) => {
   const records = cimConsoleRecords(page);
-  const invalid = validExperience({ schema: 'localis.cim/v2' });
+  const invalid = validExperience({ schema: 'localis.cim/v99' });
   await page.route(EXPERIENCE_ROUTE, async (route) => {
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(invalid) });
   });

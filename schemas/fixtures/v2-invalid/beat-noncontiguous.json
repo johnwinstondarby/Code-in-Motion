@@ -1,0 +1,8 @@
+{
+  "schema":"localis.cim/v2","engine_min":"1.0.0","experience_version":"1.0.0","id":"fixture","renderer":"synthetic/v1",
+  "presentation":{"title":"Fixture","description":"Fixture.","subject":"synthetic","beat_count":2,"default_playback_rate":1},
+  "initial_state":{},"steps":[
+    {"id":"one--s01","label":"One","beat":{"id":"one","ordinal":1,"heading":"One","segment_ordinal":1,"segment_count":1,"final":true},"commentary":{"text":"One.","links":[]},"state":{}},
+    {"id":"two--s01","label":"Two","beat":{"id":"two","ordinal":3,"heading":"Two","segment_ordinal":1,"segment_count":1,"final":true},"commentary":{"text":"Two.","links":[]},"state":{}}
+  ]
+}
