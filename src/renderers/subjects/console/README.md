@@ -2,7 +2,7 @@
 
 Renderer ID: `console/v1`
 
-Status: under construction (R42). Slices 1–2 are complete: renderer-owned validation and stable absolute rendering. Every arrival settles directly; timed presentation is slice 3. The renderer is **not registered** in `wordpress/assets/renderer-registry.mjs`, so no experience can resolve `console/v1` yet.
+Status: under construction (R42). Slices 1–3 are complete: renderer-owned validation, stable absolute rendering, and timed presentation for forward arrivals. The renderer is **not registered** in `wordpress/assets/renderer-registry.mjs`, so no experience can resolve `console/v1` yet.
 
 ## Contract
 
@@ -12,7 +12,7 @@ Status: under construction (R42). Slices 1–2 are complete: renderer-owned vali
 
 | File | Responsibility |
 |---|---|
-| `renderer.mjs` | `createConsoleRenderer()`: the `{ mount, render, dispose }` lifecycle. Validates first, then settles the destination's stable DOM as a pure function of the destination state and `rendererConfig`. Badge and labels are derived from risk levels, copy controls are inert, and focus is a `data-focused` mark that never alters tone. |
+| `renderer.mjs` | `createConsoleRenderer()`: the `{ mount, render, dispose }` lifecycle. Validates first. Forward deltas (`consoleAnimationFrames`) animate through derived frames on the clock facade; everything else settles directly. The final frame is always the stable DOM, a pure function of the destination state and `rendererConfig`. Badge and labels are derived from risk levels, copy controls are inert, and focus is a `data-focused` mark that never alters tone. |
 | `validate-console-input.mjs` | §6 renderer-owned validation of `rendererConfig`, `stepRendererConfig`, and each destination state against §§2–3. Dependency-free. A violation produces `ConsoleRendererInputError`, which Runtime reports as `CIM-RND-004`. |
 
 ## Enforcement agreement
@@ -52,5 +52,5 @@ Exactly one cursor exists per state, positioned by CONSOLE-RENDERER-v1 §4.7. Ca
 
 1. Renderer-owned validation (done).
 2. Stable absolute rendering: the DOM for each destination, settlement equivalence, and canonicalization evidence (done).
-3. Timed transitions on the clock facade: typing, output reveal, response entry, and the reduced-motion path.
-4. Registration, and the beat-aware consumers required before the v2 registration gate opens.
+3. Timed transitions on the clock facade: typing, output reveal, response entry, and the reduced-motion path (done). Pause-mid-animation is deferred to the Playback Rate ADR.
+4. Playback Rate ADR and implementation, beat-aware Transport and Commentary, beat deep links, copy and viewport behavior, the visual stylesheet, replay and conformance, then registration (the R42 runway to RC#2).

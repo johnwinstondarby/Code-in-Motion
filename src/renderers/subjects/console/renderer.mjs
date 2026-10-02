@@ -1,11 +1,12 @@
-// console/v1 renderer: stable absolute rendering (docs/renderers/CONSOLE-RENDERER-v1.md).
+// console/v1 renderer (docs/renderers/CONSOLE-RENDERER-v1.md).
 //
-// R42 slice 2 scope. Every arrival settles directly to the destination's stable output. Animated
-// arrivals are accepted, but timed presentation (typing, reveal) is slice 3; RENDERER-CONTRACT §9
-// permits animate:true to change only the path, never the destination output.
+// Stable output is a pure function of (destination state, rendererConfig): no earlier boundary,
+// wall clock, randomness, or DOM history participates (RENDERER-CONTRACT §9; CONSOLE-RENDERER-v1 §5).
 //
-// Output is a pure function of (destination state, rendererConfig): no earlier boundary, wall
-// clock, randomness, or DOM history participates (RENDERER-CONTRACT §9; CONSOLE-RENDERER-v1 §5).
+// R42 slice 3 adds timed presentation for forward arrivals: command typing, output reveal, and
+// response entry, driven only by the transition-scoped clock facade (RENDERER-CONTRACT §6). The
+// final frame of every animation is the exact stable output, so animation changes the path to a
+// destination and never the destination. Every other arrival settles directly.
 
 import { RendererCancelledError } from '../../interface.mjs';
 import { assertConsoleRendererInput, CONSOLE_RENDERER_ID } from './validate-console-input.mjs';
@@ -15,6 +16,16 @@ export const CONSOLE_RISK_LABELS = Object.freeze({
   'free-to-undo': 'FREE TO UNDO',
   'leaves-a-trace': 'LEAVES A TRACE',
   'cannot-be-undone': 'CANNOT BE UNDONE'
+});
+
+// Renderer-owned presentation timing at 1.0x, in virtual CiM milliseconds (CONSOLE-RENDERER-v1
+// §4.5). Playback-rate dilation belongs to Runtime's clock (Playback Rate ADR, deferred).
+export const CONSOLE_ANIMATION_TIMING = Object.freeze({
+  typeCharMs: 45,
+  enterMs: 350,
+  firstOutputLineMs: 250,
+  outputLineMs: 90,
+  responsePauseMs: 500
 });
 
 // The Player-supplied separator between an interactive prompt and its response (§4.3).
@@ -123,7 +134,7 @@ function readyLine(document, prompt) {
   return element(document, 'div', [['data-role', 'ready-line']], children);
 }
 
-function buildStableOutput(document, state, config, stepId) {
+function buildOutput(document, state, config, stepId, placementOverride) {
   const transcript = state.transcript;
   const last = transcript.length > 0 ? transcript[transcript.length - 1] : undefined;
   const lastRisk = last?.risk;
@@ -136,7 +147,7 @@ function buildStableOutput(document, state, config, stepId) {
   if (lastRisk !== undefined) headerAttributes.push(['data-risk', lastRisk]);
 
   const focus = new Set(state.focus);
-  const placement = cursorPlacement(transcript);
+  const placement = placementOverride === undefined ? cursorPlacement(transcript) : placementOverride;
   const lines = transcript.map((entry, index) =>
     transcriptEntry(document, entry, config, focus, index === transcript.length - 1 ? placement : null));
   if (placement === 'ready') lines.push(readyLine(document, last === undefined ? config.prompt : (last.prompt ?? config.prompt)));
@@ -150,9 +161,87 @@ function buildStableOutput(document, state, config, stepId) {
   ]);
 }
 
+function buildStableOutput(document, state, config, stepId) {
+  return buildOutput(document, state, config, stepId, undefined);
+}
+
+// ---- forward-delta animation plan ----------------------------------------------------------
+
+const sameJson = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+// Fields of a transcript entry that cannot change while its phase advances.
+const PHASE_INVARIANT_FIELDS = Object.freeze(['beat', 'prompt', 'command', 'copy', 'typing', 'risk']);
+
+function phaseOf(entry) {
+  if (entry.response !== undefined) return 2;
+  if (entry.output !== undefined) return 1;
+  return 0;
+}
+
+// Returns the timed frames from `from` to `to`, or null when the arrival is not a forward delta
+// (reverse, jump, focus-only, or non-canonical producer data). Each frame is { delayMs, state,
+// placement }, where placement 'none' suppresses the cursor and ready line mid-animation. The
+// caller always finishes with the exact stable output; frames only describe the path.
+export function consoleAnimationFrames(from, to) {
+  if (from === null || !Array.isArray(from.transcript)) return null;
+  const f = from.transcript.length;
+  const t = to.transcript.length;
+  let entry;
+  let startPhase;
+  if (t === f + 1) {
+    for (let i = 0; i < f; i += 1) if (!sameJson(from.transcript[i], to.transcript[i])) return null;
+    entry = to.transcript[f];
+    startPhase = -1;
+  } else if (t === f && f > 0) {
+    for (let i = 0; i < f - 1; i += 1) if (!sameJson(from.transcript[i], to.transcript[i])) return null;
+    const before = from.transcript[f - 1];
+    entry = to.transcript[f - 1];
+    // Every phase-invariant field must be identical; only the phase may advance.
+    for (const key of PHASE_INVARIANT_FIELDS) if (!sameJson(before[key], entry[key])) return null;
+    startPhase = phaseOf(before);
+    if (phaseOf(entry) <= startPhase) return null;
+    // Output already revealed must be preserved exactly when advancing to the response.
+    if (startPhase >= 1 && !sameJson(before.output, entry.output)) return null;
+  } else {
+    return null;
+  }
+
+  const timing = CONSOLE_ANIMATION_TIMING;
+  const prefix = to.transcript.slice(0, to.transcript.length - 1);
+  const frames = [];
+  const frame = (delayMs, partial, placement) =>
+    frames.push({ delayMs, state: { transcript: [...prefix, partial], focus: [] }, placement });
+  const base = { ...entry };
+  delete base.output; delete base.awaiting_response; delete base.response;
+
+  if (startPhase < 0) {
+    if (entry.typing === false) {
+      frame(0, base, 'command');
+    } else {
+      frame(0, { ...base, command: '' }, 'command');
+      for (let k = 1; k <= entry.command.length; k += 1) frame(timing.typeCharMs, { ...base, command: entry.command.slice(0, k) }, 'command');
+    }
+  }
+  const finalPhase = phaseOf(entry);
+  if (startPhase < 1 && entry.output !== undefined) {
+    entry.output.forEach((_, index) => {
+      const delay = index === 0 ? (startPhase < 0 ? timing.enterMs : timing.firstOutputLineMs) : timing.outputLineMs;
+      frame(delay, { ...base, output: entry.output.slice(0, index + 1) }, 'none');
+    });
+  }
+  if (startPhase < 2 && finalPhase === 2) {
+    const awaiting = { ...base, output: entry.output, awaiting_response: true };
+    if (startPhase < 1) frame(timing.firstOutputLineMs, awaiting, 'awaiting');
+    for (let k = 1; k <= entry.response.length; k += 1) {
+      frame(k === 1 ? timing.responsePauseMs : timing.typeCharMs, { ...base, output: entry.output, response: entry.response.slice(0, k) }, 'none');
+    }
+  }
+  return frames;
+}
+
 export function createConsoleRenderer() {
   let root = null;
   let disposed = false;
+  let generation = 0;   // renderer-side stale-callback guard, in addition to facade revocation
 
   function mount(context) {
     if (!context || typeof context !== 'object') throw new TypeError('console renderer mount context must be an object.');
@@ -166,19 +255,70 @@ export function createConsoleRenderer() {
     if (disposed) return Promise.reject(new Error('console renderer is disposed.'));
     if (!root) return Promise.reject(new Error('console renderer must be mounted before render().'));
     if (context.abortSignal.aborted) return Promise.reject(new RendererCancelledError(context.abortSignal.reason));
+    generation += 1;
+    const token = generation;
     try {
       // §6: validate before any DOM work; reject rather than repair. The previous stable view is
       // left untouched, so Runtime's CIM-RND-004 restoration starts from a coherent DOM.
       assertConsoleRendererInput(state, context.rendererConfig, context.stepRendererConfig);
-      const output = buildStableOutput(root.ownerDocument, state, context.rendererConfig ?? {}, context.stepId);
-      root.replaceChildren(output);
-      return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
     }
+    const document = root.ownerDocument;
+    const config = context.rendererConfig ?? {};
+    const settleStable = () => root.replaceChildren(buildStableOutput(document, state, config, context.stepId));
+
+    const frames = context.animate === true && context.reducedMotion !== true
+      ? consoleAnimationFrames(context.fromState, state)
+      : null;
+    if (frames === null || frames.length === 0) {
+      settleStable();
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+      let pending = null;
+      let finished = false;
+      const live = () => !finished && !disposed && token === generation && root !== null;
+      const finish = (outcome) => {
+        if (finished) return;
+        finished = true;
+        unsubscribe();
+        if (pending !== null) { try { context.clock.cancel(pending); } catch { /* facade already revoked */ } pending = null; }
+        outcome();
+      };
+      const unsubscribe = context.abortSignal.onAbort((reason) => {
+        finish(() => reject(new RendererCancelledError(reason)));
+      });
+      if (finished) return;
+      // Frame i appears frames[i].delayMs after frame i-1 (or after render start, for frame 0).
+      // The last planned frame is replaced by the exact stable output at the moment it is due, so
+      // settlement adds no delay of its own. Only zero-delay frames apply synchronously.
+      const show = (index) => {
+        if (!live()) return;
+        if (index === frames.length - 1) {
+          settleStable();
+          finish(resolve);
+          return;
+        }
+        const { state: partial, placement } = frames[index];
+        root.replaceChildren(buildOutput(document, partial, config, context.stepId, placement));
+        arm(index + 1);
+      };
+      const arm = (index) => {
+        if (frames[index].delayMs === 0) { show(index); return; }
+        try {
+          pending = context.clock.schedule(() => { pending = null; show(index); }, frames[index].delayMs);
+        } catch (error) {
+          finish(() => reject(error));
+        }
+      };
+      arm(0);
+    });
   }
 
   function dispose() {
+    generation += 1;
     root = null;
     disposed = true;
   }
