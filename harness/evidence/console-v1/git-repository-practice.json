@@ -1,0 +1,85 @@
+{
+  "canonicalizer_id": "cim-dom-svg/v1",
+  "renderer": "console/v1",
+  "experience_id": "git-repository-practice",
+  "experience_version": "1.0.0",
+  "experience_sha256": "a77e2527c4b1feb0fbfae671d98dbd008c4f2e623bd5edddddf5aad9ff1fd005",
+  "boundaries": [
+    {
+      "step": "initial",
+      "render_digest": "sha256:4eda61333ed657f3105e0d3f3fdbffb6223985f222c3a39b3873d4ec7754d52e"
+    },
+    {
+      "step": "check-status--s01",
+      "render_digest": "sha256:f02333f1c1d157f6b7a513852e0cb787d5bdf74637f5b680773c5adec7c2640e"
+    },
+    {
+      "step": "check-status--s02",
+      "render_digest": "sha256:2f2b02c4eb5053d46d3a963fe035008e66c9f1517f4916a4ea7ecbe572f58bba"
+    },
+    {
+      "step": "stage-hunk--s01",
+      "render_digest": "sha256:569e29fa721cc2a3aba67bd590045eac8da37d9f5ef14c7eac86650f6d27b89b"
+    },
+    {
+      "step": "stage-hunk--s02",
+      "render_digest": "sha256:d100455d4aa58b096a0b5b1b1c584d56af0aa8f581bb4c714d17b9b9891c7a06"
+    },
+    {
+      "step": "stage-hunk--s03",
+      "render_digest": "sha256:c55745f7f1b870a5dda7d010c98ef6b29ed0c7dfee98b2b0123ae226e9b33ab3"
+    },
+    {
+      "step": "stage-hunk--s04",
+      "render_digest": "sha256:b67506a8c1e759bf049a7654161496b58d6e91b9f6058236f70fd45605bd2766"
+    },
+    {
+      "step": "review-staged--s01",
+      "render_digest": "sha256:df00d0f6fc95f0cd528386830bc7f2ba43d377354e93428b45c2970d41880c40"
+    },
+    {
+      "step": "review-staged--s02",
+      "render_digest": "sha256:00648e40ab1634c24f4182addff8f298d974e7816b09ac830e3d44be90e212a8"
+    },
+    {
+      "step": "commit--s01",
+      "render_digest": "sha256:cc80bd04febebc99e21d9d73a1e0edf28779e827c2cec0b5c98d4ecbef47d11a"
+    },
+    {
+      "step": "commit--s02",
+      "render_digest": "sha256:5a0facfd8faa245bb3b333ceb72918efe0068dd11643f82180577ce5dfebba55"
+    },
+    {
+      "step": "push--s01",
+      "render_digest": "sha256:8632b2065b1b33ff3aaf46d04e9661506eb53ad3dd4feb93573d0faee86c0096"
+    },
+    {
+      "step": "push--s02",
+      "render_digest": "sha256:aa75315635c9267ed38a4028f28606d6790ac582cbb5eccff4317c7fa74db626"
+    },
+    {
+      "step": "discard-commit--s01",
+      "render_digest": "sha256:93f6da33c040b1b66958fe88884c64ca3e8f7daca4cfce996e3b1b01270938f9"
+    },
+    {
+      "step": "discard-commit--s02",
+      "render_digest": "sha256:07b0e3994717a867627f1a93a9b4a887151798e104ef7f7db743aa6cbabf2703"
+    },
+    {
+      "step": "find-in-reflog--s01",
+      "render_digest": "sha256:16a373caae242f9a7a52b74010eb1c1d15daccf1c24d14e383b34606fe74d1e2"
+    },
+    {
+      "step": "find-in-reflog--s02",
+      "render_digest": "sha256:19e5ecce4990afcafd284188c2957a150836480225724ff17f06be7edf401a7e"
+    },
+    {
+      "step": "recover-from-reflog--s01",
+      "render_digest": "sha256:779a09bee1cacad2d101e10638959910f90e6f18a7fc7da8ad6dbf068854b339"
+    },
+    {
+      "step": "recover-from-reflog--s02",
+      "render_digest": "sha256:004a192e493cbe3b6297d6ce2567562edff72d718f5dcf65c3a98148bf39e7af"
+    }
+  ]
+}
