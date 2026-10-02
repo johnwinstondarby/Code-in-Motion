@@ -54,6 +54,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0044`](0044-wordpress-production-surface-composition.md) | WordPress Production Surface Composition | 2026-09-22 | Accepted |
 | [`0045`](0045-wordpress-presentation-and-theme-boundary.md) | WordPress Presentation and Theme Boundary | 2026-09-23 | Accepted |
 | [`0046`](0046-session-and-shell-experience-selection.md) | Session and Shell Experience Selection | 2026-10-02 | Accepted (decision); implementation after RC#2 |
+| [`0047`](0047-playback-rate-and-presentation-time-dilation.md) | Playback Rate and Presentation-Time Dilation | 2026-10-02 | Accepted (R41 F6) |
 
 ## Owns
 
