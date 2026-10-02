@@ -111,7 +111,11 @@ The authoring document `version` must be a valid Semantic Versioning version str
 
 The authoring schema version identifies the authoring language and remains `localis.cim/authoring/v1` for this contract.
 
-The compiler emits the runtime schema identifier required by the runtime schema revision and supplies `engine_min` from compiler/release configuration rather than asking the author to duplicate engine compatibility metadata.
+The compiler emits the runtime schema identifier required by the runtime schema revision and supplies `engine_min` from compiler configuration rather than asking the author to duplicate engine compatibility metadata.
+
+`engine_min` is the minimum compatible CiM engine version: the earliest engine whose Runtime, Core, and consumers implement every runtime-contract feature the compiled document relies on. It is independent of package and release identity. A release version may advance without changing `engine_min`, and `engine_min` names an engine capability level rather than a shipped artifact. For `localis.cim/v2` output, compiler v1 emits `engine_min: "0.2.0"`.
+
+Engine compatibility is enforced at the experience-loading boundary, before Runtime receives the document: the loader compares `engine_min` against the running engine's version and rejects an incompatible document through the experience fault path. Runtime and Core never receive an incompatible document. While production registration of `localis.cim/v2` remains gated, implementation of this enforcement may accompany the beat-aware consumer work, provided it lands before the gate opens.
 
 The compiler must reject a source document whose authoring schema identifier is unsupported.
 
@@ -140,6 +144,8 @@ The state includes, as applicable:
 - beat and presentation state required to reproduce the destination without prior rendering history.
 
 The state must contain the accumulated visible Console transcript required at the destination. A renderer must not need to replay earlier boundaries to construct it.
+
+The normative state shape, field meanings, and invariants are defined by `docs/renderers/CONSOLE-RENDERER-v1.md`. Absolute state repeats the accumulated transcript at every boundary; the resulting quadratic growth with lesson length is a documented post-v1 consideration (CONSOLE-RENDERER-v1 §7), and v1 introduces no structural sharing.
 
 `copy`, when absent in authoring, resolves to the authored command. When present, the authored copy value is preserved exactly subject to authoring validation.
 
@@ -219,7 +225,7 @@ Reduced motion may suppress renderer animation but does not remove semantic dwel
 
 ## 12. Renderer selection, navigation, and deep links
 
-`presentation.layout: "console-explanation"` selects the subject-neutral Console renderer through the compiler's fixed renderer mapping.
+`presentation.layout: "console-explanation"` selects the subject-neutral Console renderer through the compiler's fixed renderer mapping. The canonical renderer identifier is `console/v1`, whose renderer-owned state contract is `docs/renderers/CONSOLE-RENDERER-v1.md`.
 
 The compiler, not the author, writes the corresponding runtime renderer identifier. `subject` remains descriptive metadata and must not alter renderer selection.
 

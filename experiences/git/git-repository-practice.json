@@ -1,0 +1,3025 @@
+{
+  "schema": "localis.cim/v2",
+  "engine_min": "0.2.0",
+  "experience_version": "1.0.0",
+  "id": "git-repository-practice",
+  "renderer": "console/v1",
+  "renderer_config": {
+    "title": "git — localis/handbook",
+    "prompt": "~/localis/handbook (main) $"
+  },
+  "presentation": {
+    "title": "Git Repository Practice",
+    "description": "Eight commands take one change from your editor to GitHub, then undo it and recover it. The console shows what happens; this side explains what it means.",
+    "subject": "git",
+    "beat_count": 8,
+    "default_playback_rate": 1
+  },
+  "initial_state": {
+    "transcript": [],
+    "focus": []
+  },
+  "steps": [
+    {
+      "id": "check-status--s01",
+      "label": "Check the repository state",
+      "beat": {
+        "id": "check-status",
+        "ordinal": 1,
+        "heading": "Check the repository state",
+        "segment_ordinal": 1,
+        "segment_count": 2,
+        "final": false
+      },
+      "commentary": {
+        "text": "git status reads the repository and reports what has changed. It never modifies anything, so it is always safe to run.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "check-status--s02",
+      "label": "Check the repository state",
+      "beat": {
+        "id": "check-status",
+        "ordinal": 1,
+        "heading": "Check the repository state",
+        "segment_ordinal": 2,
+        "segment_count": 2,
+        "final": true
+      },
+      "commentary": {
+        "text": "HeaderFix.jsx has edits that are not staged, and NewCanary.jsx is new and untracked. Only the edit to HeaderFix.jsx belongs in this lesson's commit.",
+        "anchor": "output",
+        "evidence": [
+          "status-modified",
+          "status-untracked"
+        ],
+        "links": [
+          {
+            "id": "ref-01",
+            "label": "Git status documentation",
+            "href": "https://git-scm.com/docs/git-status"
+          }
+        ]
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          }
+        ],
+        "focus": [
+          "status-modified",
+          "status-untracked"
+        ]
+      },
+      "dwell_ms": 4000
+    },
+    {
+      "id": "stage-hunk--s01",
+      "label": "Stage one change at a time",
+      "beat": {
+        "id": "stage-hunk",
+        "ordinal": 2,
+        "heading": "Stage one change at a time",
+        "segment_ordinal": 1,
+        "segment_count": 4,
+        "final": false
+      },
+      "commentary": {
+        "text": "The -p (patch) option presents the file's changes one hunk at a time, so you decide exactly what goes into the next commit.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "stage-hunk--s02",
+      "label": "Stage one change at a time",
+      "beat": {
+        "id": "stage-hunk",
+        "ordinal": 2,
+        "heading": "Stage one change at a time",
+        "segment_ordinal": 2,
+        "segment_count": 4,
+        "final": false
+      },
+      "commentary": {
+        "text": "This hunk replaces the hard-coded scope with a prop that falls back to the old value.",
+        "anchor": "output",
+        "evidence": [
+          "hunk-removed",
+          "hunk-added"
+        ],
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "awaiting_response": true
+          }
+        ],
+        "focus": [
+          "hunk-removed",
+          "hunk-added"
+        ]
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "stage-hunk--s03",
+      "label": "Stage one change at a time",
+      "beat": {
+        "id": "stage-hunk",
+        "ordinal": 2,
+        "heading": "Stage one change at a time",
+        "segment_ordinal": 3,
+        "segment_count": 4,
+        "final": false
+      },
+      "commentary": {
+        "text": "Git now waits for a decision about this hunk.",
+        "anchor": "output",
+        "evidence": [
+          "hunk-prompt"
+        ],
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "awaiting_response": true
+          }
+        ],
+        "focus": [
+          "hunk-prompt"
+        ]
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "stage-hunk--s04",
+      "label": "Stage one change at a time",
+      "beat": {
+        "id": "stage-hunk",
+        "ordinal": 2,
+        "heading": "Stage one change at a time",
+        "segment_ordinal": 4,
+        "segment_count": 4,
+        "final": true
+      },
+      "commentary": {
+        "text": "Answering y adds this hunk to the index. The file on disk is unchanged, and nothing is committed yet.",
+        "anchor": "response",
+        "risk": {
+          "level": "free-to-undo",
+          "guidance": "git restore --staged src/HeaderFix.jsx removes the hunk from the index again."
+        },
+        "links": [
+          {
+            "id": "ref-01",
+            "label": "Git add documentation",
+            "href": "https://git-scm.com/docs/git-add"
+          }
+        ]
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 5000
+    },
+    {
+      "id": "review-staged--s01",
+      "label": "Review what is staged",
+      "beat": {
+        "id": "review-staged",
+        "ordinal": 3,
+        "heading": "Review what is staged",
+        "segment_ordinal": 1,
+        "segment_count": 2,
+        "final": false
+      },
+      "commentary": {
+        "text": "--cached compares the index with the last commit, so this is exactly what the next commit will contain.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "review-staged--s02",
+      "label": "Review what is staged",
+      "beat": {
+        "id": "review-staged",
+        "ordinal": 3,
+        "heading": "Review what is staged",
+        "segment_ordinal": 2,
+        "segment_count": 2,
+        "final": true
+      },
+      "commentary": {
+        "text": "One file, one line replaced. NewCanary.jsx is not included, because it was never staged.",
+        "anchor": "output",
+        "evidence": [
+          "stat-file"
+        ],
+        "links": [
+          {
+            "id": "ref-01",
+            "label": "Git diff documentation",
+            "href": "https://git-scm.com/docs/git-diff"
+          }
+        ]
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          }
+        ],
+        "focus": [
+          "stat-file"
+        ]
+      },
+      "dwell_ms": 3500
+    },
+    {
+      "id": "commit--s01",
+      "label": "Record the commit",
+      "beat": {
+        "id": "commit",
+        "ordinal": 4,
+        "heading": "Record the commit",
+        "segment_ordinal": 1,
+        "segment_count": 2,
+        "final": false
+      },
+      "commentary": {
+        "text": "The staged change becomes a permanent snapshot with a message describing why it was made.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "commit",
+            "command": "git commit -m \"Scope table headers explicitly\"",
+            "copy": "git commit -m \"Scope table headers explicitly\"",
+            "risk": "leaves-a-trace"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "commit--s02",
+      "label": "Record the commit",
+      "beat": {
+        "id": "commit",
+        "ordinal": 4,
+        "heading": "Record the commit",
+        "segment_ordinal": 2,
+        "segment_count": 2,
+        "final": true
+      },
+      "commentary": {
+        "text": "Commit 7a3c91d now exists on main, but only on this machine until it is pushed.",
+        "anchor": "output",
+        "evidence": [
+          "commit-created"
+        ],
+        "risk": {
+          "level": "leaves-a-trace",
+          "guidance": "git revert 7a3c91d undoes the change by recording a new commit."
+        },
+        "links": [
+          {
+            "id": "ref-01",
+            "label": "Git commit documentation",
+            "href": "https://git-scm.com/docs/git-commit"
+          }
+        ]
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "commit",
+            "command": "git commit -m \"Scope table headers explicitly\"",
+            "copy": "git commit -m \"Scope table headers explicitly\"",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "id": "commit-created",
+                "text": "[main 7a3c91d] Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          }
+        ],
+        "focus": [
+          "commit-created"
+        ]
+      },
+      "dwell_ms": 4000
+    },
+    {
+      "id": "push--s01",
+      "label": "Publish to the remote",
+      "beat": {
+        "id": "push",
+        "ordinal": 5,
+        "heading": "Publish to the remote",
+        "segment_ordinal": 1,
+        "segment_count": 2,
+        "final": false
+      },
+      "commentary": {
+        "text": "push sends your new commits to origin so other people can pull them.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "commit",
+            "command": "git commit -m \"Scope table headers explicitly\"",
+            "copy": "git commit -m \"Scope table headers explicitly\"",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "id": "commit-created",
+                "text": "[main 7a3c91d] Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "push",
+            "command": "git push",
+            "copy": "git push",
+            "risk": "leaves-a-trace"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "push--s02",
+      "label": "Publish to the remote",
+      "beat": {
+        "id": "push",
+        "ordinal": 5,
+        "heading": "Publish to the remote",
+        "segment_ordinal": 2,
+        "segment_count": 2,
+        "final": true
+      },
+      "commentary": {
+        "text": "origin/main moved from a1b2c3d to 7a3c91d. Others can now fetch this commit.",
+        "anchor": "output",
+        "evidence": [
+          "push-range"
+        ],
+        "risk": {
+          "level": "leaves-a-trace",
+          "guidance": "Once others may have the commit, undo it with git revert rather than rewriting history."
+        },
+        "links": [
+          {
+            "id": "ref-01",
+            "label": "Git push documentation",
+            "href": "https://git-scm.com/docs/git-push"
+          }
+        ]
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "commit",
+            "command": "git commit -m \"Scope table headers explicitly\"",
+            "copy": "git commit -m \"Scope table headers explicitly\"",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "id": "commit-created",
+                "text": "[main 7a3c91d] Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "push",
+            "command": "git push",
+            "copy": "git push",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "text": "To github.com:localis/handbook.git",
+                "tone": "dim"
+              },
+              {
+                "id": "push-range",
+                "text": "   a1b2c3d..7a3c91d  main -> main",
+                "tone": "normal"
+              }
+            ]
+          }
+        ],
+        "focus": [
+          "push-range"
+        ]
+      },
+      "dwell_ms": 4000
+    },
+    {
+      "id": "discard-commit--s01",
+      "label": "Discard the last commit",
+      "beat": {
+        "id": "discard-commit",
+        "ordinal": 6,
+        "heading": "Discard the last commit",
+        "segment_ordinal": 1,
+        "segment_count": 2,
+        "final": false
+      },
+      "commentary": {
+        "text": "reset --hard moves main back one commit and overwrites both the index and the working tree to match it.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "commit",
+            "command": "git commit -m \"Scope table headers explicitly\"",
+            "copy": "git commit -m \"Scope table headers explicitly\"",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "id": "commit-created",
+                "text": "[main 7a3c91d] Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "push",
+            "command": "git push",
+            "copy": "git push",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "text": "To github.com:localis/handbook.git",
+                "tone": "dim"
+              },
+              {
+                "id": "push-range",
+                "text": "   a1b2c3d..7a3c91d  main -> main",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "discard-commit",
+            "command": "git reset --hard HEAD~1",
+            "copy": "git reset --hard HEAD~1",
+            "risk": "cannot-be-undone"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "discard-commit--s02",
+      "label": "Discard the last commit",
+      "beat": {
+        "id": "discard-commit",
+        "ordinal": 6,
+        "heading": "Discard the last commit",
+        "segment_ordinal": 2,
+        "segment_count": 2,
+        "final": true
+      },
+      "commentary": {
+        "text": "Local main is back at a1b2c3d. Commit 7a3c91d is no longer on main, though origin/main still points to it because it was pushed. Any uncommitted work would have been lost for good.",
+        "anchor": "output",
+        "evidence": [
+          "reset-moved"
+        ],
+        "risk": {
+          "level": "cannot-be-undone",
+          "guidance": "Run git status first, and stash or commit any work you want to keep."
+        },
+        "links": [
+          {
+            "id": "ref-01",
+            "label": "Git reset documentation",
+            "href": "https://git-scm.com/docs/git-reset"
+          }
+        ]
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "commit",
+            "command": "git commit -m \"Scope table headers explicitly\"",
+            "copy": "git commit -m \"Scope table headers explicitly\"",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "id": "commit-created",
+                "text": "[main 7a3c91d] Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "push",
+            "command": "git push",
+            "copy": "git push",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "text": "To github.com:localis/handbook.git",
+                "tone": "dim"
+              },
+              {
+                "id": "push-range",
+                "text": "   a1b2c3d..7a3c91d  main -> main",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "discard-commit",
+            "command": "git reset --hard HEAD~1",
+            "copy": "git reset --hard HEAD~1",
+            "risk": "cannot-be-undone",
+            "output": [
+              {
+                "id": "reset-moved",
+                "text": "HEAD is now at a1b2c3d Add conformance canary",
+                "tone": "normal"
+              }
+            ]
+          }
+        ],
+        "focus": [
+          "reset-moved"
+        ]
+      },
+      "dwell_ms": 5000
+    },
+    {
+      "id": "find-in-reflog--s01",
+      "label": "Find the lost commit",
+      "beat": {
+        "id": "find-in-reflog",
+        "ordinal": 7,
+        "heading": "Find the lost commit",
+        "segment_ordinal": 1,
+        "segment_count": 2,
+        "final": false
+      },
+      "commentary": {
+        "text": "The reflog records every place HEAD has pointed on this machine, including commits no local branch reaches anymore.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "commit",
+            "command": "git commit -m \"Scope table headers explicitly\"",
+            "copy": "git commit -m \"Scope table headers explicitly\"",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "id": "commit-created",
+                "text": "[main 7a3c91d] Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "push",
+            "command": "git push",
+            "copy": "git push",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "text": "To github.com:localis/handbook.git",
+                "tone": "dim"
+              },
+              {
+                "id": "push-range",
+                "text": "   a1b2c3d..7a3c91d  main -> main",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "discard-commit",
+            "command": "git reset --hard HEAD~1",
+            "copy": "git reset --hard HEAD~1",
+            "risk": "cannot-be-undone",
+            "output": [
+              {
+                "id": "reset-moved",
+                "text": "HEAD is now at a1b2c3d Add conformance canary",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "find-in-reflog",
+            "command": "git reflog",
+            "copy": "git reflog"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "find-in-reflog--s02",
+      "label": "Find the lost commit",
+      "beat": {
+        "id": "find-in-reflog",
+        "ordinal": 7,
+        "heading": "Find the lost commit",
+        "segment_ordinal": 2,
+        "segment_count": 2,
+        "final": true
+      },
+      "commentary": {
+        "text": "7a3c91d is one step back in the reflog, so its SHA is available to recover it.",
+        "anchor": "output",
+        "evidence": [
+          "reflog-lost-commit"
+        ],
+        "links": [
+          {
+            "id": "ref-01",
+            "label": "Git reflog documentation",
+            "href": "https://git-scm.com/docs/git-reflog"
+          }
+        ]
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "commit",
+            "command": "git commit -m \"Scope table headers explicitly\"",
+            "copy": "git commit -m \"Scope table headers explicitly\"",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "id": "commit-created",
+                "text": "[main 7a3c91d] Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "push",
+            "command": "git push",
+            "copy": "git push",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "text": "To github.com:localis/handbook.git",
+                "tone": "dim"
+              },
+              {
+                "id": "push-range",
+                "text": "   a1b2c3d..7a3c91d  main -> main",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "discard-commit",
+            "command": "git reset --hard HEAD~1",
+            "copy": "git reset --hard HEAD~1",
+            "risk": "cannot-be-undone",
+            "output": [
+              {
+                "id": "reset-moved",
+                "text": "HEAD is now at a1b2c3d Add conformance canary",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "find-in-reflog",
+            "command": "git reflog",
+            "copy": "git reflog",
+            "output": [
+              {
+                "text": "a1b2c3d (HEAD -> main) HEAD@{0}: reset: moving to HEAD~1",
+                "tone": "normal"
+              },
+              {
+                "id": "reflog-lost-commit",
+                "text": "7a3c91d (origin/main) HEAD@{1}: commit: Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": "a1b2c3d HEAD@{2}: commit: Add conformance canary",
+                "tone": "normal"
+              }
+            ]
+          }
+        ],
+        "focus": [
+          "reflog-lost-commit"
+        ]
+      },
+      "dwell_ms": 4500
+    },
+    {
+      "id": "recover-from-reflog--s01",
+      "label": "Recover the commit",
+      "beat": {
+        "id": "recover-from-reflog",
+        "ordinal": 8,
+        "heading": "Recover the commit",
+        "segment_ordinal": 1,
+        "segment_count": 2,
+        "final": false
+      },
+      "commentary": {
+        "text": "In this lesson, reset --hard is the recovery step: it returns main to 7a3c91d, the commit found in the reflog.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "commit",
+            "command": "git commit -m \"Scope table headers explicitly\"",
+            "copy": "git commit -m \"Scope table headers explicitly\"",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "id": "commit-created",
+                "text": "[main 7a3c91d] Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "push",
+            "command": "git push",
+            "copy": "git push",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "text": "To github.com:localis/handbook.git",
+                "tone": "dim"
+              },
+              {
+                "id": "push-range",
+                "text": "   a1b2c3d..7a3c91d  main -> main",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "discard-commit",
+            "command": "git reset --hard HEAD~1",
+            "copy": "git reset --hard HEAD~1",
+            "risk": "cannot-be-undone",
+            "output": [
+              {
+                "id": "reset-moved",
+                "text": "HEAD is now at a1b2c3d Add conformance canary",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "find-in-reflog",
+            "command": "git reflog",
+            "copy": "git reflog",
+            "output": [
+              {
+                "text": "a1b2c3d (HEAD -> main) HEAD@{0}: reset: moving to HEAD~1",
+                "tone": "normal"
+              },
+              {
+                "id": "reflog-lost-commit",
+                "text": "7a3c91d (origin/main) HEAD@{1}: commit: Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": "a1b2c3d HEAD@{2}: commit: Add conformance canary",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "recover-from-reflog",
+            "command": "git reset --hard 7a3c91d",
+            "copy": "git reset --hard <sha-from-your-reflog>",
+            "risk": "cannot-be-undone"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "recover-from-reflog--s02",
+      "label": "Recover the commit",
+      "beat": {
+        "id": "recover-from-reflog",
+        "ordinal": 8,
+        "heading": "Recover the commit",
+        "segment_ordinal": 2,
+        "segment_count": 2,
+        "final": true
+      },
+      "commentary": {
+        "text": "The commit is back and main matches origin/main again. Using the command to rescue work does not make it safe: it still overwrites the index and working tree, so uncommitted changes would be lost.",
+        "anchor": "output",
+        "evidence": [
+          "recover-moved"
+        ],
+        "risk": {
+          "level": "cannot-be-undone",
+          "guidance": "Confirm the target commit in your own reflog and preserve uncommitted work before continuing."
+        },
+        "links": [
+          {
+            "id": "ref-01",
+            "label": "Git reset documentation",
+            "href": "https://git-scm.com/docs/git-reset"
+          },
+          {
+            "id": "ref-02",
+            "label": "Git reflog documentation",
+            "href": "https://git-scm.com/docs/git-reflog"
+          }
+        ]
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "check-status",
+            "command": "git status",
+            "copy": "git status",
+            "output": [
+              {
+                "text": "On branch main",
+                "tone": "normal"
+              },
+              {
+                "id": "status-up-to-date",
+                "text": "Your branch is up to date with 'origin/main'.",
+                "tone": "normal"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Changes not staged for commit:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to update what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-modified",
+                "text": "        modified:   src/HeaderFix.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "Untracked files:",
+                "tone": "normal"
+              },
+              {
+                "text": "  (use \"git add <file>...\" to include in what will be committed)",
+                "tone": "dim"
+              },
+              {
+                "id": "status-untracked",
+                "text": "        src/NewCanary.jsx",
+                "tone": "warning"
+              },
+              {
+                "text": "",
+                "tone": "normal"
+              },
+              {
+                "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "stage-hunk",
+            "command": "git add -p -- src/HeaderFix.jsx",
+            "copy": "git add -p -- src/HeaderFix.jsx",
+            "risk": "free-to-undo",
+            "output": [
+              {
+                "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "index 3f2c1a9..8d04e7b 100644",
+                "tone": "dim"
+              },
+              {
+                "text": "--- a/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "+++ b/src/HeaderFix.jsx",
+                "tone": "dim"
+              },
+              {
+                "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+                "tone": "normal"
+              },
+              {
+                "text": "   const rows = props.rows;",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-removed",
+                "text": "-  const scope = 'col';",
+                "tone": "removed"
+              },
+              {
+                "id": "hunk-added",
+                "text": "+  const scope = props.scope ?? 'col';",
+                "tone": "added"
+              },
+              {
+                "text": "   return (",
+                "tone": "normal"
+              },
+              {
+                "id": "hunk-prompt",
+                "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+                "tone": "normal"
+              }
+            ],
+            "response": "y"
+          },
+          {
+            "beat": "review-staged",
+            "command": "git diff --cached --stat",
+            "copy": "git diff --cached --stat",
+            "output": [
+              {
+                "id": "stat-file",
+                "text": " src/HeaderFix.jsx | 2 +-",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "commit",
+            "command": "git commit -m \"Scope table headers explicitly\"",
+            "copy": "git commit -m \"Scope table headers explicitly\"",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "id": "commit-created",
+                "text": "[main 7a3c91d] Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+                "tone": "dim"
+              }
+            ]
+          },
+          {
+            "beat": "push",
+            "command": "git push",
+            "copy": "git push",
+            "risk": "leaves-a-trace",
+            "output": [
+              {
+                "text": "To github.com:localis/handbook.git",
+                "tone": "dim"
+              },
+              {
+                "id": "push-range",
+                "text": "   a1b2c3d..7a3c91d  main -> main",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "discard-commit",
+            "command": "git reset --hard HEAD~1",
+            "copy": "git reset --hard HEAD~1",
+            "risk": "cannot-be-undone",
+            "output": [
+              {
+                "id": "reset-moved",
+                "text": "HEAD is now at a1b2c3d Add conformance canary",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "find-in-reflog",
+            "command": "git reflog",
+            "copy": "git reflog",
+            "output": [
+              {
+                "text": "a1b2c3d (HEAD -> main) HEAD@{0}: reset: moving to HEAD~1",
+                "tone": "normal"
+              },
+              {
+                "id": "reflog-lost-commit",
+                "text": "7a3c91d (origin/main) HEAD@{1}: commit: Scope table headers explicitly",
+                "tone": "normal"
+              },
+              {
+                "text": "a1b2c3d HEAD@{2}: commit: Add conformance canary",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "recover-from-reflog",
+            "command": "git reset --hard 7a3c91d",
+            "copy": "git reset --hard <sha-from-your-reflog>",
+            "risk": "cannot-be-undone",
+            "output": [
+              {
+                "id": "recover-moved",
+                "text": "HEAD is now at 7a3c91d Scope table headers explicitly",
+                "tone": "normal"
+              }
+            ]
+          }
+        ],
+        "focus": [
+          "recover-moved"
+        ]
+      },
+      "dwell_ms": 6000
+    }
+  ]
+}

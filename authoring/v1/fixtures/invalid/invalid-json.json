@@ -1,0 +1,5 @@
+{
+  "schema": "localis.cim/authoring/v1",
+  "id": "fixture-base",
+  "title": "Fixture Base",
+  "description": "Minimal clean experience used to derive single-violation fixtures.",
