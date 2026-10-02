@@ -12,6 +12,10 @@ const REGISTRY_SCHEMA = 'localis.cim/wordpress-experience-registry/v1';
 const REGISTRY_KEYS = Object.freeze(['schema', 'experiences']);
 const ENTRY_KEYS = Object.freeze(['id', 'asset']);
 const IDENTIFIER_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+// R42 production gate: localis.cim/v2 ingests correctly, but production registration stays
+// closed until the beat-aware Player, Transport, Commentary, and deep-link consumers land.
+// Opening it is a reviewed change to this set, not a side effect of registering an asset.
+export const REGISTRABLE_RUNTIME_SCHEMAS = Object.freeze(['localis.cim/v1']);
 const ASSET_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*\.json$/;
 const CANONICAL_PROJECTIONS = Object.freeze(new Map([
   ['git-basic-cycle', 'experiences/git/git-basic-cycle.json']
@@ -117,6 +121,11 @@ async function validateDeploymentEntry(root, experienceDirectory, entry) {
   catch (error) {
     fail('registered Experience asset ' + entry.asset +
       ' failed production ingestion: ' + error.message);
+  }
+  if (!REGISTRABLE_RUNTIME_SCHEMAS.includes(experience.schema)) {
+    fail('registered Experience asset ' + entry.asset + ' uses runtime schema ' +
+      JSON.stringify(experience.schema) + ', which is not yet open for production registration (R42 gate; registrable: ' +
+      REGISTRABLE_RUNTIME_SCHEMAS.join(', ') + ').');
   }
   if (experience.id !== entry.id) {
     fail('registry identity mismatch for ' + entry.asset +

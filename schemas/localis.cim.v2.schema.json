@@ -74,7 +74,22 @@
       "required": ["text", "links"],
       "properties": {
         "text": { "type": "string", "minLength": 1 },
-        "links": { "type": "array", "items": { "$ref": "#/$defs/link" } }
+        "links": { "type": "array", "items": { "$ref": "#/$defs/link" } },
+        "anchor": { "enum": ["command", "output", "response"] },
+        "evidence": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/identifier" } },
+        "risk": { "$ref": "#/$defs/risk" }
+      },
+      "dependentSchemas": {
+        "evidence": { "required": ["anchor"], "properties": { "anchor": { "enum": ["output", "response"] } } }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level"],
+      "properties": {
+        "level": { "enum": ["free-to-undo", "leaves-a-trace", "cannot-be-undone"] },
+        "guidance": { "type": "string", "minLength": 1 }
       }
     },
     "link": {

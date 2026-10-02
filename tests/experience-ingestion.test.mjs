@@ -51,7 +51,7 @@ test('ingestExperience validates, rebuilds, and deep-freezes runtime data', () =
 
 test('ingestExperience rejects invalid raw data before runtime consumption', () => {
   const source = validExperience();
-  source.schema = 'localis.cim/v2';
+  source.schema = 'localis.cim/v99';
 
   assert.throws(
     () => ingestExperience(source),

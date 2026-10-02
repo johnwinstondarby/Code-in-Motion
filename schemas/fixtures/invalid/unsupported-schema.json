@@ -1,5 +1,5 @@
 {
-  "schema": "localis.cim/v2",
+  "schema": "localis.cim/v99",
   "engine_min": "1.0.0",
   "experience_version": "1.0.0",
   "id": "invalid-schema-version",

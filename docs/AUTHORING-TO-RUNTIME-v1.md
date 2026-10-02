@@ -156,6 +156,18 @@ The compiler preserves:
 - focus relationship;
 - authored order.
 
+The field mapping into the runtime commentary object (EXPERIENCE-SCHEMA-v2 §9) is:
+
+| Authoring source | Runtime commentary field | Boundary |
+|---|---|---|
+| `segment.text` | `text` | every generated boundary |
+| `segment.at` | `anchor` | every generated boundary |
+| `segment.focus` | `evidence`, omitted when the segment has no focus | every generated boundary |
+| `beat.risk.level`, `beat.risk.guidance` | `risk.level`, `risk.guidance` | final boundary only; omitted when the beat has no risk |
+| `explanation.references[]` | `links[]` with `ref-NN` ids | final boundary only |
+
+The compiler must also write renderer-owned focus state into each boundary's opaque `state` so that it corresponds exactly to that boundary's `commentary.evidence`. Runtime validation cannot verify this correspondence, by design, so compiler conformance tests must prove it for every emitted boundary.
+
 Beat-level risk guidance and structured references attach to the final generated boundary for that beat.
 
 Risk labels are derived from the normative risk level by the Player/runtime presentation contract. Authors do not supply independent risk labels.

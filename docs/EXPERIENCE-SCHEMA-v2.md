@@ -40,10 +40,11 @@ The selected renderer owns opaque state. Presentation metadata describes the exp
 
 ## 4. Additions relative to v1
 
-v2 adds two shared structural concepts:
+v2 adds three shared structural concepts:
 
 1. required experience-level `presentation` metadata;
-2. required `beat` grouping metadata on every step.
+2. required `beat` grouping metadata on every step;
+3. optional structured commentary semantics: `anchor`, `evidence`, and `risk` (§9).
 
 All v1 fields otherwise retain their established meaning unless this document says otherwise.
 
@@ -121,11 +122,54 @@ For compiler-generated experiences, runtime semantic validation must enforce:
 
 ## 9. Commentary and references
 
-The v1 commentary shape is retained.
+The v2 commentary object is closed. It retains the v1 `text` and `links` fields and adds three optional fields:
 
-For authoring-v1 compiled experiences, each Explanation segment maps to one step commentary entry. Reference links attached to the final segment receive deterministic IDs `ref-01` through `ref-99` in authored order. Link IDs remain unique within one commentary entry.
+```json
+{
+  "text": "This hunk replaces the hard-coded scope with a prop that falls back to the old value.",
+  "anchor": "output",
+  "evidence": ["hunk-removed", "hunk-added"],
+  "risk": { "level": "free-to-undo", "guidance": "git restore --staged src/HeaderFix.jsx removes the hunk from the index again." },
+  "links": [{ "id": "ref-01", "label": "Git add documentation", "href": "https://git-scm.com/docs/git-add" }]
+}
+```
 
-Risk guidance may be incorporated into the final commentary text by the compiler until a later runtime contract gives it independent shared structure. Risk presentation state required by the Console remains opaque renderer state.
+### `anchor`
+
+Optional. One of `command`, `output`, or `response`: the Console phase the entry explains. For authoring-v1 compiled experiences it equals the authored segment's `at` value. Within one beat, anchors must not decrease (`command` → `output` → `response`).
+
+### `evidence`
+
+Optional. A non-empty array of unique canonical identifiers naming the Console evidence the entry discusses. For authoring-v1 compiled experiences it equals the authored segment's `focus` array.
+
+`evidence` requires an `anchor`, and a `command`-anchored entry cannot carry evidence, because no output has appeared at that position.
+
+`evidence` describes a relationship; it does not instruct the renderer. The renderer-owned focus representation needed to draw the boundary lives independently in opaque step `state`.
+
+**Authority boundary.** Runtime validation checks the shape of `evidence` only. It never inspects opaque step `state` to resolve evidence identifiers, so a well-formed `evidence` array validates whether or not matching identifiers exist in state. Correspondence between `commentary.evidence` and renderer state is a compiler-conformance obligation, proved by compiler tests or by renderer-owned validation (§10), never by Core or the shared validator.
+
+### `risk`
+
+Optional. Present only on a beat's final boundary (`beat.final: true`) when the beat carries risk.
+
+- `level` is required: `free-to-undo`, `leaves-a-trace`, or `cannot-be-undone`. These are the authoring vocabulary's three levels; there are no runtime-only levels. Beats without risk omit `risk`.
+- `guidance` is optional, non-empty text.
+- No `label` field exists. The Player derives the visible label from `level`.
+
+Risk presentation state required by the Console (badge and gutter marks) remains opaque renderer state; `commentary.risk` is the Explanation-side semantic record.
+
+### Links and order
+
+For authoring-v1 compiled experiences, references attach to the final boundary as links with deterministic IDs `ref-01` through `ref-99` in authored order. Link IDs remain unique within one commentary entry.
+
+A completed beat presents its final entry in the order: entry text, then `risk`, then `links`.
+
+### Diagnostics
+
+- `CIM-EXP-013`: malformed or unknown `anchor`; malformed, empty, or duplicate `evidence`; evidence without an anchor or on a `command` anchor; anchor regression within a beat.
+- `CIM-EXP-014`: malformed `risk`, unknown risk level, any `risk.label`, empty guidance, or risk on a non-final boundary.
+
+A v1 document that carries any of these fields fails as `CIM-EXP-002`, because the v1 commentary object stays closed.
 
 ## 10. State and initial state
 
@@ -172,7 +216,7 @@ Existing v1 experiences retain direct step-ID behavior unchanged.
 
 ## 14. Validation
 
-The JSON Schema enforces structural shape. Runtime semantic validation additionally enforces cross-step invariants that JSON Schema cannot express cleanly, including beat continuity, segment continuity, final-boundary uniqueness, grouping consistency, generated-ID/segment agreement, and `beat_count` agreement.
+The JSON Schema enforces structural shape. Runtime semantic validation additionally enforces cross-step invariants that JSON Schema cannot express cleanly, including beat continuity, segment continuity, final-boundary uniqueness, grouping consistency, generated-ID/segment agreement, `beat_count` agreement, anchor order within a beat, and risk only on final boundaries.
 
 The runtime diagnostic namespace remains `CIM-EXP-*`.
 
@@ -198,8 +242,10 @@ The v2 schema derivation is accepted when:
 - the published JSON Schema and runtime validator agree;
 - all existing v1 validation fixtures continue to produce their established results;
 - positive v2 fixtures cover one-segment and multi-segment beats;
-- negative v2 fixtures cover malformed generated IDs, `00`, grouping inconsistency, duplicate/final errors, non-contiguous ordinals, and beat-count mismatch;
+- negative v2 fixtures cover malformed generated IDs, `00`, grouping inconsistency, duplicate/final errors, non-contiguous ordinals, beat-count mismatch, and every `CIM-EXP-013`/`CIM-EXP-014` rule;
+- runtime validation of `commentary.evidence` is proven not to inspect opaque state;
 - the 18-boundary Git reference specimen validates;
-- Runtime ingestion accepts validated v2 without inspecting opaque Console state;
+- Runtime ingestion accepts and deep-freezes validated v2 without interpreting `presentation`, `beat`, `state`, or `renderer_config`;
+- production WordPress registration rejects `localis.cim/v2` assets until the beat-aware Player, Transport, Commentary, and deep-link consumers land; lifting that gate is a reviewed change to `check:wordpress-experience-registry`;
 - deterministic replay can address every generated semantic boundary;
 - beat-oriented Host/Transport behavior can be implemented from shared grouping metadata alone.

@@ -14,7 +14,7 @@ const VALID_DIR = join(ROOT, 'schemas', 'fixtures', 'valid');
 const INVALID_DIR = join(ROOT, 'schemas', 'fixtures', 'invalid');
 const V2_INVALID_DIR = join(ROOT, 'schemas', 'fixtures', 'v2-invalid');
 const INVALID_EXPECTATIONS = new Map([
-  ['unsupported-schema.json','CIM-EXP-001'],['missing-state.json','CIM-EXP-002'],['empty-steps.json','CIM-EXP-002'],['invalid-renderer.json','CIM-EXP-002'],['missing-commentary-links.json','CIM-EXP-002'],['null-initial-state.json','CIM-EXP-002'],['null-step-state.json','CIM-EXP-002'],['duplicate-step-id.json','CIM-EXP-003'],['reserved-initial-step.json','CIM-EXP-004'],['negative-dwell.json','CIM-EXP-005'],['javascript-link.json','CIM-EXP-006'],['javascript-tab-link.json','CIM-EXP-006'],['javascript-control-link.json','CIM-EXP-006'],['blob-link.json','CIM-EXP-006'],['invalid-link-text.json','CIM-EXP-006']
+  ['unsupported-schema.json','CIM-EXP-001'],['missing-state.json','CIM-EXP-002'],['empty-steps.json','CIM-EXP-002'],['invalid-renderer.json','CIM-EXP-002'],['missing-commentary-links.json','CIM-EXP-002'],['null-initial-state.json','CIM-EXP-002'],['null-step-state.json','CIM-EXP-002'],['duplicate-step-id.json','CIM-EXP-003'],['reserved-initial-step.json','CIM-EXP-004'],['negative-dwell.json','CIM-EXP-005'],['javascript-link.json','CIM-EXP-006'],['javascript-tab-link.json','CIM-EXP-006'],['javascript-control-link.json','CIM-EXP-006'],['blob-link.json','CIM-EXP-006'],['invalid-link-text.json','CIM-EXP-006'],['v1-commentary-evidence.json','CIM-EXP-002']
 ]);
 const V2_EXPECTATIONS = new Map([
   ['malformed-generated-id.json','CIM-EXP-002'],
@@ -27,7 +27,18 @@ const V2_EXPECTATIONS = new Map([
   ['missing-final.json','CIM-EXP-011'],
   ['final-not-last.json','CIM-EXP-011'],
   ['beat-count-mismatch.json','CIM-EXP-012'],
-  ['playback-rate-out-of-range.json','CIM-EXP-007']
+  ['playback-rate-out-of-range.json','CIM-EXP-007'],
+  ['commentary-anchor-unknown.json','CIM-EXP-013'],
+  ['commentary-anchor-regression.json','CIM-EXP-013'],
+  ['commentary-evidence-without-anchor.json','CIM-EXP-013'],
+  ['commentary-evidence-on-command.json','CIM-EXP-013'],
+  ['commentary-evidence-malformed-id.json','CIM-EXP-013'],
+  ['commentary-evidence-duplicate.json','CIM-EXP-013'],
+  ['commentary-evidence-empty.json','CIM-EXP-013'],
+  ['commentary-risk-unknown-level.json','CIM-EXP-014'],
+  ['commentary-risk-label-present.json','CIM-EXP-014'],
+  ['commentary-risk-not-final.json','CIM-EXP-014'],
+  ['commentary-risk-empty-guidance.json','CIM-EXP-014']
 ]);
 function readJsonSync(path) { return JSON.parse(readFileSync(path, 'utf8')); }
 const AJV = new Ajv2020({ allErrors: true, strict: true });
@@ -40,6 +51,9 @@ function schemaErrorCode(error, schema) {
   if (path.includes('/commentary/links/') || path.endsWith('/href')) return 'CIM-EXP-006';
   if (schema === 'localis.cim/v2' && path.startsWith('/presentation')) return 'CIM-EXP-007';
   if (schema === 'localis.cim/v2' && path.includes('/beat')) return 'CIM-EXP-008';
+  if (schema === 'localis.cim/v2' && /\/commentary\/(anchor|evidence)/.test(path)) return 'CIM-EXP-013';
+  if (schema === 'localis.cim/v2' && path.endsWith('/commentary') && error.keyword === 'required' && error.params?.missingProperty === 'anchor') return 'CIM-EXP-013';
+  if (schema === 'localis.cim/v2' && path.includes('/commentary/risk')) return 'CIM-EXP-014';
   return 'CIM-EXP-002';
 }
 export function validateAgainstPublishedSchema(experience) {

@@ -22,6 +22,10 @@ const PRESENTATION_REQUIRED = Object.freeze([...PRESENTATION_KEYS]);
 const BEAT_KEYS = new Set(['id','ordinal','heading','segment_ordinal','segment_count','final']);
 const BEAT_REQUIRED = Object.freeze([...BEAT_KEYS]);
 const COMMENTARY_KEYS = new Set(['text','links']);
+const V2_COMMENTARY_KEYS = new Set([...COMMENTARY_KEYS, 'anchor', 'evidence', 'risk']);
+const COMMENTARY_ANCHORS = Object.freeze(['command', 'output', 'response']);
+const RISK_LEVELS = new Set(['free-to-undo', 'leaves-a-trace', 'cannot-be-undone']);
+const RISK_KEYS = new Set(['level', 'guidance']);
 const COMMENTARY_REQUIRED = Object.freeze(['text','links']);
 const LINK_KEYS = new Set(['id','label','href']);
 const LINK_REQUIRED = Object.freeze(['id','label','href']);
@@ -66,12 +70,39 @@ function validateCommentaryLink(link, stepIndex, linkIndex, errors) {
   if (own(link, 'label')) requireNonEmptyString(link.label, `${path}.label`, errors, 'CIM-EXP-006');
   if (own(link, 'href') && requireNonEmptyString(link.href, `${path}.href`, errors, 'CIM-EXP-006') && !LINK_PREFIX_PATTERN.test(link.href)) addError(errors, 'CIM-EXP-006', `${path}.href`, 'must use an allowed link prefix.');
 }
-function validateCommentary(value, stepIndex, errors) {
+function validateCommentaryEvidence(value, stepIndex, errors) {
+  // Shape only. Evidence ids name renderer-owned Console evidence; this validator
+  // never inspects opaque step state to resolve them (EXPERIENCE-SCHEMA-v2 §9).
+  const path = `$.steps[${stepIndex}].commentary`;
+  if (own(value, 'anchor') && !COMMENTARY_ANCHORS.includes(value.anchor)) addError(errors, 'CIM-EXP-013', `${path}.anchor`, 'must be command, output, or response.');
+  if (!own(value, 'evidence')) return;
+  const evidence = value.evidence;
+  if (!Array.isArray(evidence) || evidence.length === 0) { addError(errors, 'CIM-EXP-013', `${path}.evidence`, 'must be a non-empty array of evidence identifiers.'); return; }
+  const seen = new Set();
+  evidence.forEach((id, i) => {
+    if (typeof id !== 'string' || !IDENTIFIER_PATTERN.test(id)) addError(errors, 'CIM-EXP-013', `${path}.evidence[${i}]`, 'must be a canonical identifier.');
+    else if (seen.has(id)) addError(errors, 'CIM-EXP-013', `${path}.evidence[${i}]`, 'evidence identifiers must be unique within one commentary entry.');
+    else seen.add(id);
+  });
+  if (!own(value, 'anchor')) addError(errors, 'CIM-EXP-013', `${path}.evidence`, 'evidence requires an anchor.');
+  else if (value.anchor === 'command') addError(errors, 'CIM-EXP-013', `${path}.evidence`, 'a command-anchored entry cannot reference evidence that has not yet appeared.');
+}
+function validateCommentaryRisk(value, stepIndex, errors) {
+  const path = `$.steps[${stepIndex}].commentary.risk`;
+  if (!isObject(value)) { addError(errors, 'CIM-EXP-014', path, 'must be an object.'); return; }
+  requireKeys(value, ['level'], path, errors, 'CIM-EXP-014'); rejectAdditionalKeys(value, RISK_KEYS, path, errors, 'CIM-EXP-014');
+  if (own(value, 'level') && !RISK_LEVELS.has(value.level)) addError(errors, 'CIM-EXP-014', `${path}.level`, 'must be free-to-undo, leaves-a-trace, or cannot-be-undone.');
+  if (own(value, 'guidance')) requireNonEmptyString(value.guidance, `${path}.guidance`, errors, 'CIM-EXP-014');
+}
+function validateCommentary(value, stepIndex, errors, v2 = false) {
   const path = `$.steps[${stepIndex}].commentary`;
   if (!isObject(value)) { addError(errors, 'CIM-EXP-002', path, 'must be an object.'); return; }
-  requireKeys(value, COMMENTARY_REQUIRED, path, errors); rejectAdditionalKeys(value, COMMENTARY_KEYS, path, errors);
+  requireKeys(value, COMMENTARY_REQUIRED, path, errors); rejectAdditionalKeys(value, v2 ? V2_COMMENTARY_KEYS : COMMENTARY_KEYS, path, errors);
   if (own(value, 'text')) requireNonEmptyString(value.text, `${path}.text`, errors);
   if (own(value, 'links')) { if (!Array.isArray(value.links)) addError(errors, 'CIM-EXP-002', `${path}.links`, 'must be an array.'); else value.links.forEach((link, i) => validateCommentaryLink(link, stepIndex, i, errors)); }
+  if (!v2) return;
+  validateCommentaryEvidence(value, stepIndex, errors);
+  if (own(value, 'risk')) validateCommentaryRisk(value.risk, stepIndex, errors);
 }
 
 function validateStep(step, stepIndex, schema, errors) {
@@ -86,7 +117,7 @@ function validateStep(step, stepIndex, schema, errors) {
   if (own(step, 'label')) requireNonEmptyString(step.label, `${path}.label`, errors);
   if (own(step, 'marker')) requireNonEmptyString(step.marker, `${path}.marker`, errors);
   if (v2 && own(step, 'beat')) validateBeat(step.beat, stepIndex, errors);
-  if (own(step, 'commentary')) validateCommentary(step.commentary, stepIndex, errors);
+  if (own(step, 'commentary')) validateCommentary(step.commentary, stepIndex, errors, v2);
   if (own(step, 'state') && step.state === null) addError(errors, 'CIM-EXP-002', `${path}.state`, 'must not be null.');
   if (own(step, 'renderer_config')) validateRendererConfig(step.renderer_config, `${path}.renderer_config`, errors);
   if (own(step, 'dwell_ms') && (!Number.isInteger(step.dwell_ms) || step.dwell_ms < 0)) addError(errors, 'CIM-EXP-005', `${path}.dwell_ms`, 'must be a non-negative integer.');
@@ -148,6 +179,16 @@ function v2SemanticErrors(experience, errors) {
     group.steps.forEach(({ step, index }, segmentIndex) => { const expected = segmentIndex + 1; if (step.beat.segment_ordinal !== expected) addError(errors, 'CIM-EXP-009', `$.steps[${index}].beat.segment_ordinal`, `segment ordinal must be contiguous; expected ${expected}.`, 'semantic'); });
     if (group.segmentCount !== group.steps.length) addError(errors, 'CIM-EXP-009', `$.steps[${group.steps[0].index}].beat.segment_count`, 'segment_count must equal the number of boundaries in the beat.', 'semantic');
     if (finals.length === 1) { const { step, index } = finals[0]; if (step.beat.segment_ordinal !== step.beat.segment_count) addError(errors, 'CIM-EXP-011', `$.steps[${index}].beat.final`, 'final boundary must have segment_ordinal equal to segment_count.', 'semantic'); }
+    let lastAnchor = -1;
+    group.steps.forEach(({ step, index }) => {
+      const commentary = step.commentary; if (!isObject(commentary)) return;
+      const anchorIndex = COMMENTARY_ANCHORS.indexOf(commentary.anchor);
+      if (anchorIndex !== -1) {
+        if (anchorIndex < lastAnchor) addError(errors, 'CIM-EXP-013', `$.steps[${index}].commentary.anchor`, 'anchors within a beat must follow command, output, response order.', 'semantic');
+        lastAnchor = Math.max(lastAnchor, anchorIndex);
+      }
+      if (own(commentary, 'risk') && step.beat.final !== true) addError(errors, 'CIM-EXP-014', `$.steps[${index}].commentary.risk`, 'risk guidance belongs only on the beat\'s final boundary.', 'semantic');
+    });
   });
   if (Number.isInteger(experience.presentation.beat_count) && experience.presentation.beat_count !== groups.length) addError(errors, 'CIM-EXP-012', '$.presentation.beat_count', 'must equal the number of distinct beats.', 'semantic');
 }
