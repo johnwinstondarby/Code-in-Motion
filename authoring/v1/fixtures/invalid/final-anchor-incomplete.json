@@ -1,0 +1,141 @@
+{
+  "schema": "localis.cim/authoring/v1",
+  "id": "fixture-base",
+  "title": "Fixture Base",
+  "description": "Minimal clean experience used to derive single-violation fixtures.",
+  "subject": "git",
+  "version": "1.0.0",
+  "console": {
+    "title": "git — fixture",
+    "prompt": "~/fixture (main) $"
+  },
+  "presentation": {
+    "layout": "console-explanation",
+    "defaultPlaybackRate": 1
+  },
+  "beats": [
+    {
+      "id": "show-status",
+      "dwell": 3000,
+      "console": {
+        "command": "git status",
+        "typing": true,
+        "output": [
+          {
+            "text": "On branch main",
+            "tone": "normal"
+          },
+          {
+            "text": "Changes not staged for commit:",
+            "tone": "normal"
+          },
+          {
+            "id": "a-mod",
+            "text": "        modified:   notes.txt",
+            "tone": "warning"
+          },
+          {
+            "text": "no changes added to commit",
+            "tone": "dim"
+          }
+        ]
+      },
+      "explanation": {
+        "heading": "Check the state",
+        "segments": [
+          {
+            "at": "command",
+            "text": "git status reports what has changed."
+          },
+          {
+            "at": "output",
+            "text": "notes.txt has unstaged edits.",
+            "focus": [
+              "a-mod"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "label": "Git status documentation",
+            "url": "https://git-scm.com/docs/git-status"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stage",
+      "dwell": 3000,
+      "console": {
+        "command": "git add -p -- notes.txt",
+        "typing": true,
+        "output": [
+          {
+            "text": "diff --git a/notes.txt b/notes.txt",
+            "tone": "dim"
+          },
+          {
+            "text": "--- a/notes.txt",
+            "tone": "dim"
+          },
+          {
+            "text": "+++ b/notes.txt",
+            "tone": "dim"
+          },
+          {
+            "text": "@@ -1,3 +1,3 @@",
+            "tone": "normal"
+          },
+          {
+            "text": " first line",
+            "tone": "normal"
+          },
+          {
+            "text": "-old line",
+            "tone": "removed"
+          },
+          {
+            "text": "+new line",
+            "tone": "added"
+          },
+          {
+            "text": " last line",
+            "tone": "normal"
+          },
+          {
+            "id": "b-prompt",
+            "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+            "tone": "normal"
+          }
+        ],
+        "response": "y"
+      },
+      "explanation": {
+        "heading": "Stage the hunk",
+        "segments": [
+          {
+            "at": "command",
+            "text": "-p presents changes one hunk at a time."
+          },
+          {
+            "at": "output",
+            "text": "Git waits for a decision.",
+            "focus": [
+              "b-prompt"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "label": "Git add documentation",
+            "url": "https://git-scm.com/docs/git-add"
+          }
+        ]
+      },
+      "risk": {
+        "level": "free-to-undo",
+        "guidance": "git restore --staged notes.txt unstages it."
+      }
+    }
+  ]
+}

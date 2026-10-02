@@ -1,0 +1,431 @@
+{
+  "valid/base.json": {
+    "errors": [],
+    "warnings": [],
+    "note": "Clean base; must validate with no diagnostics"
+  },
+  "invalid/invalid-json.json": {
+    "errors": [
+      "CIM-AUTH-PARSE"
+    ],
+    "warnings": [],
+    "note": "§22 malformed JSON"
+  },
+  "invalid/duplicate-key.json": {
+    "errors": [
+      "CIM-AUTH-DUPLICATE-KEY"
+    ],
+    "warnings": [],
+    "note": "§1 fail-closed parsing"
+  },
+  "invalid/schema-mismatch.json": {
+    "errors": [
+      "CIM-AUTH-SCHEMA-ID"
+    ],
+    "warnings": [],
+    "note": "§2"
+  },
+  "invalid/missing-required-field.json": {
+    "errors": [
+      "CIM-AUTH-MISSING-FIELD"
+    ],
+    "warnings": [],
+    "note": "§2 root field"
+  },
+  "invalid/unknown-root-field.json": {
+    "errors": [
+      "CIM-AUTH-UNKNOWN-FIELD"
+    ],
+    "warnings": [],
+    "note": "§1, §2 closed root"
+  },
+  "invalid/removed-presentation-field.json": {
+    "errors": [
+      "CIM-AUTH-UNKNOWN-FIELD"
+    ],
+    "warnings": [],
+    "note": "C1: removed from authoring v1"
+  },
+  "invalid/unknown-beat-field.json": {
+    "errors": [
+      "CIM-AUTH-UNKNOWN-FIELD"
+    ],
+    "warnings": [],
+    "note": "§1, §6 closed beat"
+  },
+  "invalid/empty-beats.json": {
+    "errors": [
+      "CIM-AUTH-EMPTY-BEATS"
+    ],
+    "warnings": [],
+    "note": "§2"
+  },
+  "invalid/invalid-experience-id.json": {
+    "errors": [
+      "CIM-AUTH-INVALID-ID"
+    ],
+    "warnings": [],
+    "note": "§3 experience id"
+  },
+  "invalid/invalid-beat-id.json": {
+    "errors": [
+      "CIM-AUTH-INVALID-ID"
+    ],
+    "warnings": [],
+    "note": "§3 beat id"
+  },
+  "invalid/invalid-output-id.json": {
+    "errors": [
+      "CIM-AUTH-INVALID-ID"
+    ],
+    "warnings": [],
+    "note": "§3 output id"
+  },
+  "invalid/duplicate-beat-id.json": {
+    "errors": [
+      "CIM-AUTH-DUPLICATE-BEAT-ID"
+    ],
+    "warnings": [],
+    "note": "§3"
+  },
+  "invalid/duplicate-output-id.json": {
+    "errors": [
+      "CIM-AUTH-DUPLICATE-OUTPUT-ID"
+    ],
+    "warnings": [],
+    "note": "§3"
+  },
+  "invalid/missing-prompt.json": {
+    "errors": [
+      "CIM-AUTH-MISSING-PROMPT"
+    ],
+    "warnings": [],
+    "note": "§4"
+  },
+  "invalid/unknown-layout.json": {
+    "errors": [
+      "CIM-AUTH-UNKNOWN-LAYOUT"
+    ],
+    "warnings": [],
+    "note": "§5"
+  },
+  "invalid/playback-rate-below-range.json": {
+    "errors": [
+      "CIM-AUTH-PLAYBACK-RATE"
+    ],
+    "warnings": [],
+    "note": "A2R §11"
+  },
+  "invalid/playback-rate-above-range.json": {
+    "errors": [
+      "CIM-AUTH-PLAYBACK-RATE"
+    ],
+    "warnings": [],
+    "note": "A2R §11"
+  },
+  "invalid/reserved-beat-id.json": {
+    "errors": [
+      "CIM-AUTH-RESERVED-ID"
+    ],
+    "warnings": [],
+    "note": "A2R §6"
+  },
+  "invalid/version-not-semver.json": {
+    "errors": [
+      "CIM-AUTH-VERSION"
+    ],
+    "warnings": [],
+    "note": "A2R §7"
+  },
+  "invalid/final-anchor-incomplete.json": {
+    "errors": [
+      "CIM-AUTH-FINAL-ANCHOR"
+    ],
+    "warnings": [],
+    "note": "A2R §3 response beat ends on output"
+  },
+  "invalid/final-anchor-output-pending.json": {
+    "errors": [
+      "CIM-AUTH-FINAL-ANCHOR"
+    ],
+    "warnings": [],
+    "note": "A2R §3 output beat ends on command"
+  },
+  "invalid/negative-dwell.json": {
+    "errors": [
+      "CIM-AUTH-TYPE"
+    ],
+    "warnings": [],
+    "note": "§6"
+  },
+  "invalid/missing-explanation.json": {
+    "errors": [
+      "CIM-AUTH-MISSING-FIELD"
+    ],
+    "warnings": [],
+    "note": "§6"
+  },
+  "invalid/missing-command.json": {
+    "errors": [
+      "CIM-AUTH-MISSING-FIELD"
+    ],
+    "warnings": [],
+    "note": "§7"
+  },
+  "invalid/missing-output.json": {
+    "errors": [
+      "CIM-AUTH-MISSING-FIELD"
+    ],
+    "warnings": [],
+    "note": "§7"
+  },
+  "invalid/typing-not-boolean.json": {
+    "errors": [
+      "CIM-AUTH-TYPE"
+    ],
+    "warnings": [],
+    "note": "§7"
+  },
+  "invalid/copy-not-string.json": {
+    "errors": [
+      "CIM-AUTH-INVALID-COPY"
+    ],
+    "warnings": [],
+    "note": "§7, §17"
+  },
+  "invalid/copy-empty.json": {
+    "errors": [
+      "CIM-AUTH-INVALID-COPY"
+    ],
+    "warnings": [],
+    "note": "§7, §17"
+  },
+  "invalid/missing-tone.json": {
+    "errors": [
+      "CIM-AUTH-MISSING-FIELD"
+    ],
+    "warnings": [],
+    "note": "§8"
+  },
+  "invalid/unknown-tone.json": {
+    "errors": [
+      "CIM-AUTH-UNKNOWN-TONE"
+    ],
+    "warnings": [],
+    "note": "§8"
+  },
+  "invalid/tab-in-output.json": {
+    "errors": [
+      "CIM-AUTH-TAB-CHARACTER"
+    ],
+    "warnings": [],
+    "note": "§9 output"
+  },
+  "invalid/tab-in-command.json": {
+    "errors": [
+      "CIM-AUTH-TAB-CHARACTER"
+    ],
+    "warnings": [],
+    "note": "§9 command"
+  },
+  "invalid/line-break-in-output.json": {
+    "errors": [
+      "CIM-AUTH-LINE-BREAK"
+    ],
+    "warnings": [],
+    "note": "§9 output"
+  },
+  "invalid/line-break-in-command.json": {
+    "errors": [
+      "CIM-AUTH-LINE-BREAK"
+    ],
+    "warnings": [],
+    "note": "§9 command"
+  },
+  "invalid/line-break-in-prompt.json": {
+    "errors": [
+      "CIM-AUTH-LINE-BREAK"
+    ],
+    "warnings": [],
+    "note": "§9 prompt"
+  },
+  "invalid/line-break-in-response.json": {
+    "errors": [
+      "CIM-AUTH-LINE-BREAK"
+    ],
+    "warnings": [],
+    "note": "§9 response"
+  },
+  "invalid/line-break-in-copy.json": {
+    "errors": [
+      "CIM-AUTH-LINE-BREAK"
+    ],
+    "warnings": [],
+    "note": "§9 copy (U+2028)"
+  },
+  "invalid/missing-heading.json": {
+    "errors": [
+      "CIM-AUTH-MISSING-FIELD"
+    ],
+    "warnings": [],
+    "note": "§10"
+  },
+  "invalid/no-segments.json": {
+    "errors": [
+      "CIM-AUTH-NO-SEGMENTS"
+    ],
+    "warnings": [],
+    "note": "§10"
+  },
+  "invalid/unknown-anchor.json": {
+    "errors": [
+      "CIM-AUTH-UNKNOWN-ANCHOR"
+    ],
+    "warnings": [],
+    "note": "§11"
+  },
+  "invalid/segment-order.json": {
+    "errors": [
+      "CIM-AUTH-SEGMENT-ORDER"
+    ],
+    "warnings": [],
+    "note": "§11"
+  },
+  "invalid/output-anchor-without-output.json": {
+    "errors": [
+      "CIM-AUTH-OUTPUT-ANCHOR-WITHOUT-OUTPUT"
+    ],
+    "warnings": [],
+    "note": "§11"
+  },
+  "invalid/response-anchor-without-response.json": {
+    "errors": [
+      "CIM-AUTH-RESPONSE-ANCHOR-WITHOUT-RESPONSE"
+    ],
+    "warnings": [],
+    "note": "§11"
+  },
+  "invalid/response-without-prompt.json": {
+    "errors": [
+      "CIM-AUTH-RESPONSE-WITHOUT-PROMPT"
+    ],
+    "warnings": [],
+    "note": "§12"
+  },
+  "invalid/focus-unknown-target.json": {
+    "errors": [
+      "CIM-AUTH-FOCUS-UNKNOWN-TARGET"
+    ],
+    "warnings": [],
+    "note": "§13"
+  },
+  "invalid/focus-cross-beat.json": {
+    "errors": [
+      "CIM-AUTH-FOCUS-CROSS-BEAT"
+    ],
+    "warnings": [],
+    "note": "§13"
+  },
+  "invalid/focus-references-future-output.json": {
+    "errors": [
+      "CIM-AUTH-FOCUS-FUTURE-OUTPUT"
+    ],
+    "warnings": [],
+    "note": "§13"
+  },
+  "invalid/reference-not-https.json": {
+    "errors": [
+      "CIM-AUTH-REFERENCE-URL"
+    ],
+    "warnings": [],
+    "note": "§15"
+  },
+  "invalid/reference-relative-url.json": {
+    "errors": [
+      "CIM-AUTH-REFERENCE-URL"
+    ],
+    "warnings": [],
+    "note": "§15"
+  },
+  "invalid/reference-generic-label.json": {
+    "errors": [
+      "CIM-AUTH-REFERENCE-LABEL"
+    ],
+    "warnings": [],
+    "note": "§15 (case-insensitive)"
+  },
+  "invalid/unknown-risk-level.json": {
+    "errors": [
+      "CIM-AUTH-UNKNOWN-RISK-LEVEL"
+    ],
+    "warnings": [],
+    "note": "§18"
+  },
+  "invalid/risk-level-none.json": {
+    "errors": [
+      "CIM-AUTH-UNKNOWN-RISK-LEVEL"
+    ],
+    "warnings": [],
+    "note": "§18 no authored none"
+  },
+  "invalid/risk-label-present.json": {
+    "errors": [
+      "CIM-AUTH-UNKNOWN-FIELD"
+    ],
+    "warnings": [],
+    "note": "§18 label removed"
+  },
+  "invalid/risk-missing-level.json": {
+    "errors": [
+      "CIM-AUTH-MISSING-FIELD"
+    ],
+    "warnings": [],
+    "note": "§18"
+  },
+  "valid/prompt-overrides-only.json": {
+    "errors": [],
+    "warnings": [],
+    "note": "§4 every beat overrides"
+  },
+  "valid/rate-range-bounds.json": {
+    "errors": [],
+    "warnings": [],
+    "note": "A2R §11 inclusive bound"
+  },
+  "valid/command-only-beat.json": {
+    "errors": [],
+    "warnings": [],
+    "note": "A2R §3 command is the last phase"
+  },
+  "valid/minimal-optionals.json": {
+    "errors": [],
+    "warnings": [],
+    "note": "§4-§7, §10, §18 optional fields omitted"
+  },
+  "valid/trailing-whitespace-and-copy.json": {
+    "errors": [],
+    "warnings": [],
+    "note": "§7, §9, §17"
+  },
+  "lint/lint-focus-breadth.json": {
+    "errors": [],
+    "warnings": [
+      "CIM-AUTH-LINT-FOCUS-BREADTH"
+    ],
+    "note": "§13"
+  },
+  "lint/lint-tone-density.json": {
+    "errors": [],
+    "warnings": [
+      "CIM-AUTH-LINT-TONE-DENSITY"
+    ],
+    "note": "§20"
+  },
+  "lint/lint-blank-lines-excluded.json": {
+    "errors": [],
+    "warnings": [
+      "CIM-AUTH-LINT-TONE-DENSITY"
+    ],
+    "note": "§20 blanks excluded: 2/4 non-blank warns; 2/12 with blanks would not"
+  }
+}

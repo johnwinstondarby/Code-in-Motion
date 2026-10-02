@@ -21,7 +21,7 @@ The selected renderer owns opaque state. Presentation metadata describes the exp
 ```json
 {
   "schema": "localis.cim/v2",
-  "engine_min": "1.0.0",
+  "engine_min": "0.2.0",
   "experience_version": "1.0.0",
   "id": "git-repository-practice",
   "renderer": "console/v1",
@@ -223,7 +223,7 @@ The runtime diagnostic namespace remains `CIM-EXP-*`.
 A v2 experience is loadable only when:
 
 1. the engine recognizes `localis.cim/v2`;
-2. `engine_min` is satisfied;
+2. `engine_min` is satisfied: the running engine's version is at least `engine_min`, which names the minimum compatible engine capability level independent of package/release identity. This is checked at the experience-loading boundary before Runtime receives the document (AUTHORING-TO-RUNTIME-v1 §7);
 3. structural validation succeeds;
 4. runtime semantic validation succeeds;
 5. renderer resolution succeeds;

@@ -10,6 +10,10 @@ This directory holds the normative architecture and public contracts for Code in
 - [`CIM-SPEC.md`](CIM-SPEC.md) — canonical session semantics, commands, transitions, playback intent, dwell, scrub, renderer lifecycle, commentary, deep links, reduced motion, and fault settlement
 - [`RENDERER-CONTRACT.md`](RENDERER-CONTRACT.md) — exact v1 renderer context, capability facades, timing authority, immutability, conformance surface, canonicalization, and renderer-interface acceptance tests
 - [`EXPERIENCE-SCHEMA.md`](EXPERIENCE-SCHEMA.md) — `localis.cim/v1` runtime experience contract, reserved `initial` boundary, authored dwell, and neutral synthetic fixture
+- [`EXPERIENCE-SCHEMA-v2.md`](EXPERIENCE-SCHEMA-v2.md) — `localis.cim/v2` runtime experience contract: presentation metadata, beat grouping, generated `--sNN` step identifiers, and structured commentary (`anchor`, `evidence`, `risk`)
+- [`AUTHORING-JSON-v1.md`](AUTHORING-JSON-v1.md) — `localis.cim/authoring/v1` lesson-level authoring language (v1.0 candidate)
+- [`AUTHORING-TO-RUNTIME-v1.md`](AUTHORING-TO-RUNTIME-v1.md) — deterministic, fail-closed compilation from authoring v1 to `localis.cim/v2`
+- [`renderers/CONSOLE-RENDERER-v1.md`](renderers/CONSOLE-RENDERER-v1.md) — renderer-owned `console/v1` configuration and state contract
 - [`EVENTS.md`](EVENTS.md) — `localis.cim.event/v1` semantic event envelope, ordering, event catalog, telemetry, evidence, and replay rules
 - [`FAULTS.md`](FAULTS.md) — v1 fault ownership, recovery classes, error-code namespaces, restoration anchors, and fallback outcomes
 - [`adr/`](adr/) — Architecture Decision Records preserving cross-component decisions and rejected alternatives
