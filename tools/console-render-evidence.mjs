@@ -17,8 +17,18 @@ import { createRendererAbortCapability, createRendererClockCapability } from '..
 import { createRendererContext } from '../src/runtime/renderer-context.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+// Oracle lineage. Each supersession of committed evidence is recorded here and emitted into the
+// evidence file, so the provenance of the current oracle is reviewable from the repository alone.
+export const CONSOLE_EVIDENCE_LINEAGE = Object.freeze([
+  Object.freeze({
+    supersedes_evidence_sha256: 'b8403bb7b7d649419485c654f90982c4bfe9b8b08ae4b032d6c4fa53556688d0',
+    superseded_at_commit: 'd208800704f8e9e7111c38fe1123013107fd7f1a',
+    reason: 'R42 approved presentational refinement D1-D3 (cursor, ready line, title-bar data-risk) from the console/v1 visual-DOM audit; state contract unchanged; V1-V3 accepted.'
+  })
+]);
+
 export const CONSOLE_EVIDENCE_BUILDS = Object.freeze([
-  Object.freeze({ experience: 'experiences/git/git-repository-practice.json', evidence: 'harness/evidence/console-v1/git-repository-practice.json' })
+  Object.freeze({ experience: 'experiences/git/git-repository-practice.json', evidence: 'harness/evidence/console-v1/git-repository-practice.json', lineage: CONSOLE_EVIDENCE_LINEAGE })
 ]);
 
 const inertScheduler = () => ({
@@ -44,7 +54,7 @@ export async function settleDirect(renderer, experience, stepId, sequence) {
   abort.controller.close();
 }
 
-export async function buildConsoleEvidence(experienceText) {
+export async function buildConsoleEvidence(experienceText, lineage = []) {
   const experience = ingestExperience(JSON.parse(experienceText));
   const boundaries = [];
   const ids = ['initial', ...experience.steps.map((s) => s.id)];
@@ -62,6 +72,7 @@ export async function buildConsoleEvidence(experienceText) {
     experience_id: experience.id,
     experience_version: experience.experience_version,
     experience_sha256: createHash('sha256').update(experienceText, 'utf8').digest('hex'),
+    lineage: lineage.map((entry) => ({ ...entry })),
     boundaries
   };
   return `${JSON.stringify(evidence, null, 2)}\n`;
@@ -69,7 +80,7 @@ export async function buildConsoleEvidence(experienceText) {
 
 async function main(mode) {
   for (const build of CONSOLE_EVIDENCE_BUILDS) {
-    const text = await buildConsoleEvidence(await readFile(resolve(ROOT, build.experience), 'utf8'));
+    const text = await buildConsoleEvidence(await readFile(resolve(ROOT, build.experience), 'utf8'), build.lineage);
     const target = resolve(ROOT, build.evidence);
     if (mode === '--write') { await writeFile(target, text, 'utf8'); console.log(`Wrote ${build.evidence}.`); continue; }
     let committed = null;

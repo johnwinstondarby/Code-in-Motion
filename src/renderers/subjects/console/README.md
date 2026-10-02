@@ -25,7 +25,7 @@ The contract has two enforcement points, and `tests/console-renderer-validation.
 
 ```text
 section[data-cim-renderer=console/v1][data-step]
-  header[data-role=titlebar]
+  header[data-role=titlebar][data-risk]?             data-risk mirrors the badge (D3)
     span[data-role=title]
     span[data-role=risk-badge][data-risk]?          only when the last entry has a risk
   div[data-role=transcript]
@@ -35,13 +35,18 @@ section[data-cim-renderer=console/v1][data-step]
         span[data-role=prompt]
         span[data-role=prompt-separator]
         span[data-role=command]
+        span[data-role=cursor][aria-hidden=true]?       only when this command is pending (D1)
         button[data-role=copy][type=button][data-copy][aria-label]
       div[data-role=output-line][data-tone][data-output-id]?[data-focused=true]?[data-awaiting-response=true]?
         span[data-role=output-text]
+        span[data-role=cursor][aria-hidden=true]?       only on an awaiting interactive prompt (D1)
         span[data-role=response-separator] + span[data-role=response]   only on a revealed response line
+    div[data-role=ready-line]?                          when the last command is complete, or at initial (D2)
+      span[data-role=prompt] + span[data-role=prompt-separator]   omitted only without any prompt
+      span[data-role=cursor][aria-hidden=true]
 ```
 
-Canonical evidence for this structure is committed under `harness/evidence/console-v1/` and gated by `check:console-render-evidence`. Any change to stable output must regenerate that evidence (`npm run evidence:console`) as a reviewed change.
+Exactly one cursor exists per state, positioned by CONSOLE-RENDERER-v1 §4.7. Canonical evidence for this structure is committed under `harness/evidence/console-v1/` and gated by `check:console-render-evidence`. Its `lineage` records each approved supersession: the current oracle supersedes the slice-2 evidence (`b8403bb7…`, protected at `d208800`) via the D1–D3 refinement. Any change to stable output must regenerate that evidence (`npm run evidence:console`) as a reviewed change.
 
 ## Planned slices
 

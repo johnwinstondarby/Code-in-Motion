@@ -41,7 +41,25 @@ function element(document, localName, attributes = [], children = []) {
   return node;
 }
 
-function commandLine(document, entry, prompt) {
+// D1 (visual-DOM audit): one cursor per state, at a position derived from state alone.
+function cursor(document) {
+  return element(document, 'span', [['data-role', 'cursor'], ['aria-hidden', 'true']]);
+}
+
+// The cursor's position, a pure function of the transcript (CONSOLE-RENDERER-v1 §4.7):
+//   'ready'    empty transcript, or the last entry is complete (output revealed and not
+//              awaiting, or a response is present)
+//   'awaiting' the last entry's interactive prompt awaits its response
+//   'command'  the last entry has no revealed output; its command is pending (V2 limitation)
+export function cursorPlacement(transcript) {
+  if (transcript.length === 0) return 'ready';
+  const last = transcript[transcript.length - 1];
+  if (last.awaiting_response === true) return 'awaiting';
+  if (last.output !== undefined || last.response !== undefined) return 'ready';
+  return 'command';
+}
+
+function commandLine(document, entry, prompt, withCursor) {
   const children = [];
   if (entry.risk !== undefined) {
     children.push(element(document, 'span', [['data-role', 'risk-mark'], ['data-risk', entry.risk], ['aria-hidden', 'true']]));
@@ -49,6 +67,7 @@ function commandLine(document, entry, prompt) {
   children.push(element(document, 'span', [['data-role', 'prompt']], [prompt]));
   children.push(element(document, 'span', [['data-role', 'prompt-separator'], ['aria-hidden', 'true']], [PROMPT_SEPARATOR]));
   children.push(element(document, 'span', [['data-role', 'command']], [entry.command]));
+  if (withCursor) children.push(cursor(document));
   // §4.4: inert copy control. It carries the resolved value as data; the renderer performs no
   // clipboard write or announcement. A Player-level handler owns both.
   children.push(element(document, 'button', [
@@ -67,6 +86,7 @@ function outputLine(document, line, focused, interactive) {
   const children = [element(document, 'span', [['data-role', 'output-text']], [line.text])];
   if (interactive?.awaiting) {
     attributes.push(['data-awaiting-response', 'true']);
+    if (interactive.withCursor) children.push(cursor(document));
   } else if (interactive?.response !== undefined) {
     children.push(element(document, 'span', [['data-role', 'response-separator'], ['aria-hidden', 'true']], [RESPONSE_SEPARATOR]));
     children.push(element(document, 'span', [['data-role', 'response']], [interactive.response]));
@@ -74,14 +94,14 @@ function outputLine(document, line, focused, interactive) {
   return element(document, 'div', attributes, children);
 }
 
-function transcriptEntry(document, entry, config, focus) {
+function transcriptEntry(document, entry, config, focus, placement) {
   const prompt = entry.prompt ?? config.prompt;
-  const children = [commandLine(document, entry, prompt)];
+  const children = [commandLine(document, entry, prompt, placement === 'command')];
   if (entry.output !== undefined) {
     const last = entry.output.length - 1;
     entry.output.forEach((line, index) => {
       const interactive = index === last && (entry.awaiting_response === true || entry.response !== undefined)
-        ? { awaiting: entry.awaiting_response === true, response: entry.response }
+        ? { awaiting: entry.awaiting_response === true, response: entry.response, withCursor: placement === 'awaiting' }
         : null;
       children.push(outputLine(document, line, line.id !== undefined && focus.has(line.id), interactive));
     });
@@ -91,19 +111,42 @@ function transcriptEntry(document, entry, config, focus) {
   return element(document, 'div', attributes, children);
 }
 
+// D2 (visual-DOM audit): the fresh prompt that follows a completed command, and the opening
+// prompt. V3: it uses the last entry's effective prompt, or renderer_config.prompt at initial.
+function readyLine(document, prompt) {
+  const children = [];
+  if (prompt !== undefined) {
+    children.push(element(document, 'span', [['data-role', 'prompt']], [prompt]));
+    children.push(element(document, 'span', [['data-role', 'prompt-separator'], ['aria-hidden', 'true']], [PROMPT_SEPARATOR]));
+  }
+  children.push(cursor(document));
+  return element(document, 'div', [['data-role', 'ready-line']], children);
+}
+
 function buildStableOutput(document, state, config, stepId) {
-  const lastRisk = state.transcript.length > 0 ? state.transcript[state.transcript.length - 1].risk : undefined;
+  const transcript = state.transcript;
+  const last = transcript.length > 0 ? transcript[transcript.length - 1] : undefined;
+  const lastRisk = last?.risk;
   const titleChildren = [element(document, 'span', [['data-role', 'title']], [config.title ?? ''])];
   if (lastRisk !== undefined) {
     titleChildren.push(element(document, 'span', [['data-role', 'risk-badge'], ['data-risk', lastRisk]], [CONSOLE_RISK_LABELS[lastRisk]]));
   }
+  // D3 (visual-DOM audit): the title bar carries the current risk so its tint needs no :has().
+  const headerAttributes = [['data-role', 'titlebar']];
+  if (lastRisk !== undefined) headerAttributes.push(['data-risk', lastRisk]);
+
   const focus = new Set(state.focus);
+  const placement = cursorPlacement(transcript);
+  const lines = transcript.map((entry, index) =>
+    transcriptEntry(document, entry, config, focus, index === transcript.length - 1 ? placement : null));
+  if (placement === 'ready') lines.push(readyLine(document, last === undefined ? config.prompt : (last.prompt ?? config.prompt)));
+
   return element(document, 'section', [
     ['data-cim-renderer', CONSOLE_RENDERER_ID],
     ['data-step', stepId]
   ], [
-    element(document, 'header', [['data-role', 'titlebar']], titleChildren),
-    element(document, 'div', [['data-role', 'transcript']], state.transcript.map((entry) => transcriptEntry(document, entry, config, focus)))
+    element(document, 'header', headerAttributes, titleChildren),
+    element(document, 'div', [['data-role', 'transcript']], lines)
   ]);
 }
 

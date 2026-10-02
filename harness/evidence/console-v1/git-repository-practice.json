@@ -4,82 +4,89 @@
   "experience_id": "git-repository-practice",
   "experience_version": "1.0.0",
   "experience_sha256": "a77e2527c4b1feb0fbfae671d98dbd008c4f2e623bd5edddddf5aad9ff1fd005",
+  "lineage": [
+    {
+      "supersedes_evidence_sha256": "b8403bb7b7d649419485c654f90982c4bfe9b8b08ae4b032d6c4fa53556688d0",
+      "superseded_at_commit": "d208800704f8e9e7111c38fe1123013107fd7f1a",
+      "reason": "R42 approved presentational refinement D1-D3 (cursor, ready line, title-bar data-risk) from the console/v1 visual-DOM audit; state contract unchanged; V1-V3 accepted."
+    }
+  ],
   "boundaries": [
     {
       "step": "initial",
-      "render_digest": "sha256:4eda61333ed657f3105e0d3f3fdbffb6223985f222c3a39b3873d4ec7754d52e"
+      "render_digest": "sha256:f15a11b1194702c61f7471613387c387f3b4bd63b7f1d0e9f3cfa0bb4d051ed2"
     },
     {
       "step": "check-status--s01",
-      "render_digest": "sha256:f02333f1c1d157f6b7a513852e0cb787d5bdf74637f5b680773c5adec7c2640e"
+      "render_digest": "sha256:b24adf0ae1ba66893876747861f5adfac329e6ba8f6104eb912a13267d7db98b"
     },
     {
       "step": "check-status--s02",
-      "render_digest": "sha256:2f2b02c4eb5053d46d3a963fe035008e66c9f1517f4916a4ea7ecbe572f58bba"
+      "render_digest": "sha256:46be7ccc39e66075cd02e22161799e20611c4372b6cfe2e48be336fd5a8a17cc"
     },
     {
       "step": "stage-hunk--s01",
-      "render_digest": "sha256:569e29fa721cc2a3aba67bd590045eac8da37d9f5ef14c7eac86650f6d27b89b"
+      "render_digest": "sha256:cb112f137b1840318a30ca9e1b64c033315e53c2f85e4fea22a13ad057961478"
     },
     {
       "step": "stage-hunk--s02",
-      "render_digest": "sha256:d100455d4aa58b096a0b5b1b1c584d56af0aa8f581bb4c714d17b9b9891c7a06"
+      "render_digest": "sha256:3ef7601639ba1a1af7ee507c7908bd21c0100e162765ddd96c6cb3564af215fd"
     },
     {
       "step": "stage-hunk--s03",
-      "render_digest": "sha256:c55745f7f1b870a5dda7d010c98ef6b29ed0c7dfee98b2b0123ae226e9b33ab3"
+      "render_digest": "sha256:d5f893d6cd2cfd27d8d60bc82219687e9d7e28296d908e7bdcfad28dd620131a"
     },
     {
       "step": "stage-hunk--s04",
-      "render_digest": "sha256:b67506a8c1e759bf049a7654161496b58d6e91b9f6058236f70fd45605bd2766"
+      "render_digest": "sha256:b6783308f2b72892a7345f98226a6f0844bd94c796a8c58aa81ed5b3b4dde109"
     },
     {
       "step": "review-staged--s01",
-      "render_digest": "sha256:df00d0f6fc95f0cd528386830bc7f2ba43d377354e93428b45c2970d41880c40"
+      "render_digest": "sha256:4f8035ca0b66171e8b19dd6742b453291dd64bbd78a9c5e7a83f77307302838f"
     },
     {
       "step": "review-staged--s02",
-      "render_digest": "sha256:00648e40ab1634c24f4182addff8f298d974e7816b09ac830e3d44be90e212a8"
+      "render_digest": "sha256:08768bb1c96736a20eab33fd46e6d6c2733fb9044cf984e27d49ad3221cfcc33"
     },
     {
       "step": "commit--s01",
-      "render_digest": "sha256:cc80bd04febebc99e21d9d73a1e0edf28779e827c2cec0b5c98d4ecbef47d11a"
+      "render_digest": "sha256:a97370008ca651bbbd6d8d0b9b6db53fcf4225db4a4f253c236157896e5dfbfd"
     },
     {
       "step": "commit--s02",
-      "render_digest": "sha256:5a0facfd8faa245bb3b333ceb72918efe0068dd11643f82180577ce5dfebba55"
+      "render_digest": "sha256:f972b4a0284e7bc3d96c87bc9b8169ab5f4949aa4b008cfd5a3c9e45836954aa"
     },
     {
       "step": "push--s01",
-      "render_digest": "sha256:8632b2065b1b33ff3aaf46d04e9661506eb53ad3dd4feb93573d0faee86c0096"
+      "render_digest": "sha256:1b4a5be5a934d5dd176fe767256c6c32e86ab876b4522c2269cd5ea1f8809386"
     },
     {
       "step": "push--s02",
-      "render_digest": "sha256:aa75315635c9267ed38a4028f28606d6790ac582cbb5eccff4317c7fa74db626"
+      "render_digest": "sha256:ac9a4872e3e42f5d1afd906bd781010ed8211ac4562eef775a9992cfb0e4e440"
     },
     {
       "step": "discard-commit--s01",
-      "render_digest": "sha256:93f6da33c040b1b66958fe88884c64ca3e8f7daca4cfce996e3b1b01270938f9"
+      "render_digest": "sha256:c83a4e3ef9545d4ec764056a2dfc912086f00b5b086deeaef4afbc14ce8ce513"
     },
     {
       "step": "discard-commit--s02",
-      "render_digest": "sha256:07b0e3994717a867627f1a93a9b4a887151798e104ef7f7db743aa6cbabf2703"
+      "render_digest": "sha256:000e09066719126886ff59a874968c5332008daf77c6e530afb39473482d9eed"
     },
     {
       "step": "find-in-reflog--s01",
-      "render_digest": "sha256:16a373caae242f9a7a52b74010eb1c1d15daccf1c24d14e383b34606fe74d1e2"
+      "render_digest": "sha256:b282dbc1abee002e333e2a686a0a834a542b9530dc6da06244e447eed365ffad"
     },
     {
       "step": "find-in-reflog--s02",
-      "render_digest": "sha256:19e5ecce4990afcafd284188c2957a150836480225724ff17f06be7edf401a7e"
+      "render_digest": "sha256:b395c61b3d4a2c1695a9d6c1726027f230fa601fe11ea16d45717ea505cfbb2f"
     },
     {
       "step": "recover-from-reflog--s01",
-      "render_digest": "sha256:779a09bee1cacad2d101e10638959910f90e6f18a7fc7da8ad6dbf068854b339"
+      "render_digest": "sha256:82b8392fccd27790fde756d5a6cf9ff1c5e39dca983a126f2aa3677a2ce007d9"
     },
     {
       "step": "recover-from-reflog--s02",
-      "render_digest": "sha256:004a192e493cbe3b6297d6ce2567562edff72d718f5dcf65c3a98148bf39e7af"
+      "render_digest": "sha256:c9343d8ae1149ddc281911b58ceeccfc29788dedd1d17a4c124bb173f16100ea"
     }
   ]
 }
