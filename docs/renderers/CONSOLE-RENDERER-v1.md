@@ -21,8 +21,8 @@ renderer_config = { title?, prompt? }
 
 | Field | Meaning |
 |---|---|
-| `title` | Console title-bar text, for example `git — localis/handbook`. If absent, the title bar shows no title text. |
-| `prompt` | Experience-level prompt. Required unless every transcript entry carries its own `prompt`. |
+| `title` | Console title-bar text (a string), for example `git — localis/handbook`. If absent, the title bar shows no title text. |
+| `prompt` | Experience-level prompt: a non-empty single line. Required unless every transcript entry carries its own `prompt`. |
 
 Both values are invariant across boundaries. The renderer defines no step-level `renderer_config` for `console/v1`; a step-level configuration object is a renderer validation failure.
 
@@ -40,17 +40,19 @@ Both keys are required. No other keys are permitted.
 | Field | Required | Meaning |
 |---|---|---|
 | `beat` | yes | Authored beat identifier that produced the entry. |
-| `prompt` | no | The beat's prompt override. When absent, `renderer_config.prompt` applies. |
-| `command` | yes | Displayed command text. Single line. |
-| `copy` | yes | The exact clipboard value for the command, already resolved by the compiler (the authored `copy`, else the command). |
+| `prompt` | no | The beat's prompt override: a non-empty single line. When absent, `renderer_config.prompt` applies. |
+| `command` | yes | Displayed command text: a non-empty single line. |
+| `copy` | yes | The exact clipboard value for the command, already resolved by the compiler (the authored `copy`, else the command): a non-empty single line. |
 | `typing` | no | Present only as `false`: the command appears without typing animation. |
 | `risk` | no | `free-to-undo`, `leaves-a-trace`, or `cannot-be-undone`. Drives the persistent historical gutter mark. |
-| `output` | no | Present once the entry's output is revealed: an ordered array of `{ id?, text, tone }`. |
+| `output` | no | Present once the entry's output is revealed: a non-empty ordered array of `{ id?, text, tone }`. Absent, never empty, when there is nothing to show. |
 | `awaiting_response` | no | Present only as `true`: an interactive prompt (the last output line) awaits its simulated response. |
-| `response` | no | The simulated response, present once revealed. |
+| `response` | no | The simulated response, present once revealed: a non-empty single line. |
+
+A *single line* contains no tab, CR, LF, U+2028, or U+2029, matching the authoring Console-text rule (AUTHORING-JSON-v1 §9).
 
 Each output line has:
-- `text`: a single line with no tabs. Leading and internal spaces are significant.
+- `text`: a single line, possibly empty for a blank Console line. Leading and internal spaces are significant.
 - `tone`: one of `normal`, `dim`, `accent`, `added`, `removed`, `warning`.
 - `id`: optional, lowercase kebab case.
 

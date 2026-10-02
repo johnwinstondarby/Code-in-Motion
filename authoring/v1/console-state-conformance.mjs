@@ -24,7 +24,8 @@ export function consoleStateViolations(document) {
   if (document?.renderer !== 'console/v1') v('$.renderer', 'must be console/v1');
   const config = document?.renderer_config ?? {};
   exact(config, CONFIG_KEYS, [], '$.renderer_config');
-  for (const k of CONFIG_KEYS) if (k in config && typeof config[k] !== 'string') v(`$.renderer_config.${k}`, 'must be a string');
+  if ('title' in config && typeof config.title !== 'string') v('$.renderer_config.title', 'must be a string');
+  if ('prompt' in config && !isLine(config.prompt)) v('$.renderer_config.prompt', 'must be a non-empty single line');
 
   const checkState = (state, at) => {
     if (!exact(state, STATE_KEYS, STATE_KEYS, at)) return;
