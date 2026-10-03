@@ -10,6 +10,8 @@ This record maps each ADR 0047 Verification family to the committed proof and to
 
 Playback rate changes presentation timing only. Source time remains authoritative for semantic event timestamps and operational deadlines. Renderer contexts do not expose rate.
 
+This PR implements and verifies Runtime playback rate. Learner-facing Transport exposure is deferred: Host retains `setPlaybackRate` through `HOST_RETAINED_RUNTIME_KEYS` and the `host-live-reduced-motion-composition` assertions prove that `setPlaybackRate` is absent from the live CiM facade.
+
 ## Verification traceability
 
 | ADR 0047 family | Committed proof | Evidence | Mutation evidence |

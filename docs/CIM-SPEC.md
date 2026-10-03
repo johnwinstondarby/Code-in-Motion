@@ -232,7 +232,7 @@ An accepted change to a different rate takes effect immediately. It preserves co
 
 `playback.started` reports the effective rate in force when playback begins. Each accepted change to a different rate emits the `playback.rate_changed` evidence defined by `EVENTS.md`.
 
-Transport access to rate control is a narrow capability under ADR 0008. It is not general scheduler or clock authority. Renderers never receive the rate value.
+Learner-facing rate control reaches Runtime only through a narrow Transport capability under ADR 0008, never through general scheduler or clock authority. That capability is not yet implemented: the Host retains `setPlaybackRate` (`HOST_RETAINED_RUNTIME_KEYS`) and does not expose it on the live CiM facade. Exposure is a separate slice. Renderers never receive the rate value.
 
 See ADR 0047.
 
