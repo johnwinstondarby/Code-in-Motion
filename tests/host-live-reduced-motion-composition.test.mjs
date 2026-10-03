@@ -183,7 +183,8 @@ test('Runtime public contract and Host live facade partition stay exact', () => 
     new Set([...HOST_LIVE_CIM_INSTANCE_KEYS, ...HOST_RETAINED_RUNTIME_KEYS]),
     new Set(CIM_INSTANCE_PUBLIC_KEYS)
   );
-  assert.deepEqual(HOST_RETAINED_RUNTIME_KEYS, ['adoptReducedMotion']);
+  // setPlaybackRate is retained until the Transport narrow-capability slice (ADR 0047 Decision 7).
+  assert.deepEqual(HOST_RETAINED_RUNTIME_KEYS, ['adoptReducedMotion', 'setPlaybackRate']);
 });
 
 test('live Host construction returns the exact frozen facade and retains adoption privately', async () => {
@@ -196,6 +197,8 @@ test('live Host construction returns the exact frozen facade and retains adoptio
   assert.deepEqual(Object.keys(instance), HOST_LIVE_CIM_INSTANCE_KEYS);
   assert.equal('adoptReducedMotion' in instance, false);
   assert.equal(graphContainsKey(instance, 'adoptReducedMotion'), false);
+  assert.equal('setPlaybackRate' in instance, false);
+  assert.equal(graphContainsKey(instance, 'setPlaybackRate'), false);
   assert.equal(typeof instance.initialize, 'function');
   assert.equal(typeof instance.dispose, 'function');
 
