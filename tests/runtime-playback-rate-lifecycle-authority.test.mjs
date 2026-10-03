@@ -161,6 +161,8 @@ test('initialization-in-progress rejects rate changes and lifecycle abort acknow
       assert.equal(disposalSettled, false);
 
       time.advance(1);
+      await flush();
+      assert.equal(disposalSettled, true, 'lifecycle abort acknowledgement deadline settles exactly at 1000 source ms');
       const snapshot = await disposal;
       assert.equal(snapshot.canonical.status, 'disposed');
 
@@ -229,6 +231,8 @@ test('active recovery rejects rate changes and lifecycle abort acknowledgement s
       assert.equal(disposalSettled, false);
 
       time.advance(1);
+      await flush();
+      assert.equal(disposalSettled, true, 'lifecycle abort acknowledgement deadline settles exactly at 1000 source ms');
       const snapshot = await disposal;
       assert.equal(snapshot.canonical.status, 'disposed');
 
