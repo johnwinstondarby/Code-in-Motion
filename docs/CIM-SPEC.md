@@ -89,6 +89,7 @@ Runtime must represent at least:
 
 ```text
 playbackIntent
+playbackRate
 transitionId
 transitionPhase
 dwellRemainingMs
@@ -96,6 +97,8 @@ activeAbortState
 ```
 
 `playbackIntent` distinguishes continuous playback from discrete navigation.
+
+`playbackRate` is the effective learner-facing presentation rate. It is Runtime-owned operational presentation state, outside Core state and outside canonical renderer evidence. A validated `localis.cim/v2` experience initializes it from `presentation.default_playback_rate`; a `localis.cim/v1` experience initializes it to 1.0.
 
 `transitionPhase` reports only lifecycle state that Runtime can prove:
 
@@ -107,13 +110,13 @@ settled
 
 V1 does not define a Runtime-owned fractional transition-progress value. Renderer implementations own transition duration and do not expose a shared normalized progress signal. Runtime therefore does not infer renderer progress from elapsed time.
 
-`dwellRemainingMs` is the Runtime-owned resumable timing quantity because authored dwell duration and injected-clock accounting are both owned by Runtime.
+`dwellRemainingMs` is the Runtime-owned resumable timing quantity because authored dwell duration and presentation-time accounting are both owned by Runtime. It is measured in presentation milliseconds.
 
 Operational transition state does not independently define canonical semantic position.
 
 Runtime determines activity-status changes from these operational facts and requests the corresponding canonical status through `Core.setStatus(nextStatus)`.
 
-See ADR 0010.
+See ADR 0010 and ADR 0047.
 
 ### 3.3 Status values
 
@@ -167,6 +170,7 @@ seek(stepId)
 home()
 end()
 restart()
+setPlaybackRate(rate)
 ```
 
 Marker selection, commentary-entry selection, deep-link resolution, and committed scrub navigation resolve through the same semantic command rules rather than defining independent movement semantics.
@@ -213,6 +217,24 @@ replay
 ```
 
 The source does not change command semantics.
+
+### 5.3 `setPlaybackRate(rate)`
+
+`setPlaybackRate(rate)` changes the effective Runtime presentation rate. The value must be a finite number from 0.5 through 2.0 inclusive. Runtime rejects out-of-range, non-finite, and non-number values synchronously and does not clamp them.
+
+After successful initialization, a rate change is accepted while the instance is commandable: idle before first playback, playing, paused, during an in-flight transition, and during authored dwell. It is rejected during initialization, active renderer recovery, faulted state, disposal in progress, and after disposal through the existing command-rejection semantics.
+
+A rejected or invalid rate command changes no Runtime or Core state and emits no `playback.rate_changed`. While the semantic event stream remains open, the normal `command.rejected` evidence may still be emitted. After terminal disposal the stream is closed.
+
+Setting the rate already in force is an accepted `no_change` result and emits no `playback.rate_changed`.
+
+An accepted change to a different rate takes effect immediately. It preserves continuous-playback intent, canonical semantic position, Core state, `transitionId`, and `transitionPhase`, and emits no `step.changed` by itself. If presentation work is armed, Runtime re-anchors presentation time at the source-time instant of the change and re-arms only the remaining presentation interval at the new rate. If no presentation work is armed, including while paused, Runtime records the new rate and schedules nothing.
+
+`playback.started` reports the effective rate in force when playback begins. Each accepted change to a different rate emits the `playback.rate_changed` evidence defined by `EVENTS.md`.
+
+Transport access to rate control is a narrow capability under ADR 0008. It is not general scheduler or clock authority. Renderers never receive the rate value.
+
+See ADR 0047.
 
 ## 6. Command Semantics at Stable Boundaries
 
@@ -360,25 +382,42 @@ Stale scheduler callbacks or renderer completions associated with a cancelled tr
 
 Renderer implementations own transition duration. Runtime does not inspect a generic shared transition-duration field.
 
-Renderers must use the injected CiM clock/scheduler for semantically significant animation timing.
+CiM distinguishes two timing domains:
 
-An experience step may provide optional `dwell_ms`. Runtime consumes this value only after that step commits as the result of continuous playback and before beginning the following transition.
+- **Source time** is the injected Runtime scheduler. It measures machine/operational time.
+- **Presentation time** is learner-facing lesson time. At effective rate `r`, one presentation millisecond elapses in `1/r` source milliseconds.
 
-Rules:
+Runtime keeps the injected scheduler as the source-time authority and derives exactly one presentation scheduler from it. Renderer transition clocks and authored dwell use the presentation scheduler. Renderer abort/dispose acknowledgement deadlines, fault and operational deadlines, lifecycle deadlines, and semantic event timestamps remain on source time.
+
+Renderers must use their injected transition-scoped clock/scheduler for semantically significant animation timing. Renderer timing constants are presentation milliseconds. Renderers do not receive `playbackRate` and do not perform independent rate scaling.
+
+An experience step may provide optional `dwell_ms`. Runtime consumes this value as presentation milliseconds only after that step commits as the result of continuous playback and before beginning the following transition.
+
+Playback-rate rules:
+
+- changing rate changes when presentation work occurs in source time, never which semantic work occurs;
+- an accepted mid-flight change re-anchors presentation `now()` at the source-time instant of the change and re-arms only the remaining presentation interval at the new rate;
+- transition identity, semantic position, frame sequence, and stable renderer output are preserved across a rate change;
+- `onFrame` remains paced by the source frame clock but receives presentation `now()`;
+- any future learner-facing timed presentation, including timed Explanation reveal or scrolling animation, must use the same presentation scheduler rather than defining its own rate scaling.
+
+Dwell and pause rules:
 
 - absent `dwell_ms` means zero authored dwell;
 - direct navigation and deep-link initialization discard dwell for that arrival;
 - an explicit `play()` from an already-committed navigated-to boundary begins the following transition immediately;
-- reduced motion preserves authored dwell after continuous-playback commits even when renderer animation is suppressed or shortened;
-- `pause()` during dwell freezes the exact `dwellRemainingMs` value and cancels its active source-scheduler handle;
-- source time may advance arbitrarily while paused without reducing `dwellRemainingMs`;
-- `play()` resumes a paused dwell by scheduling only the preserved remainder;
+- reduced motion preserves authored dwell after continuous-playback commits even when renderer animation is suppressed or shortened; rate still scales that dwell;
+- `pause()` during dwell freezes the exact presentation-time `dwellRemainingMs` value and cancels its active source-scheduler handle;
+- pausing an in-flight renderer transition freezes its presentation clock and preserves the exact remaining presentation interval;
+- source time may advance arbitrarily while paused without reducing `dwellRemainingMs` or advancing renderer presentation `now()`;
+- `setPlaybackRate(rate)` while paused records the new effective rate and arms no work;
+- `play()` resumes a paused transition or dwell using only the preserved presentation remainder at the rate then in force;
 - navigation during dwell cancels the remaining dwell and clears playback intent;
 - if site configuration clamps authored dwell, deterministic replay records the effective runtime configuration.
 
 If continuous playback commits the final semantic step and that step has non-zero `dwell_ms`, Runtime consumes the final dwell, emits `dwell.completed`, then clears playback intent and emits `playback.stopped` with `details.reason: "at_end"`. No following transition is scheduled. With zero final-step dwell, the `at_end` stop follows final-step settlement directly.
 
-See ADR 0006 and ADR 0010.
+See ADR 0006, ADR 0010, and ADR 0047.
 
 ## 9. Commit Rule
 
@@ -740,7 +779,14 @@ The synthetic harness must prove at least:
 25. scrub emits one seek only on commit;
 26. multiple-instance isolation;
 27. terminal disposal from idle, paused transition, dwell, initialization, active recovery, and faulted states, including explicit initialization/recovery cancellation evidence, honored renderer-cancellation evidence, bounded abort and renderer-dispose acknowledgement, stale-work prevention, final event-stream closure, recoverable-fault cleanup, fallback-fault preservation, and renderer-dispose failure containment;
-28. deterministic replay from scenario, seed, versions, validated experience, runtime configuration, commands, and virtual clock.
+28. deterministic replay from scenario, seed, versions, validated experience, runtime configuration, commands, and virtual clock;
+29. playback-rate dilation at 0.5×, 1×, and 2× with identical semantic/frame sequences and canonical boundary evidence;
+30. mid-flight playback-rate changes across renderer phases and dwell preserve exact presentation remainder, semantic position, and transition identity;
+31. playback-rate changes while paused arm no work and resume the preserved presentation remainder at the current rate;
+32. playback-rate lifecycle/range rejection changes no Runtime or Core state and emits no `playback.rate_changed`;
+33. source-time renderer acknowledgement deadlines and semantic event timestamps are unchanged by playback rate;
+34. recorded effective playback-start rate and accepted rate changes are sufficient for independent replay to reproduce the original presentation schedule;
+35. renderer context/facade reachability remains unchanged and exposes no playback-rate value.
 
 ## 21. Non-Goals for v1
 
