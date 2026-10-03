@@ -38,6 +38,10 @@ import {
   closeRuntimeRender
 } from './render-transition.mjs';
 import {
+  assertPlaybackRate,
+  createPresentationScheduler
+} from './presentation-scheduler.mjs';
+import {
   RENDERER_ABORT_ACK_TIMEOUT_MS,
   RENDERER_ABORT_TIMEOUT_FAULT_CODE,
   RENDERER_DISPOSE_ACK_TIMEOUT_MS,
@@ -47,6 +51,7 @@ import {
 
 const RENDERER_TRANSITION_FAULT_CODE = 'CIM-RND-004';
 const RENDERER_RESTORATION_FAULT_CODE = 'CIM-RND-006';
+const PLAYBACK_RATE_COMMAND = 'setPlaybackRate';
 const INITIALIZATION_SOURCE_SET = new Set([
   COMMAND_SOURCE.HOST,
   COMMAND_SOURCE.DEEP_LINK,
@@ -61,6 +66,8 @@ class CiMInstance {
   #renderer;
   #rendererRoot;
   #scheduler;
+  #presentationScheduler;
+  #presentationControl;
   #reducedMotion;
   #correlation;
   #eventControl;
@@ -99,7 +106,11 @@ class CiMInstance {
       experienceVersion: envelope.experienceVersion,
       stepIds: envelope.stepIds
     });
-    const operational = createOperationalState();
+    const operational = createOperationalState(envelope.defaultPlaybackRate);
+    const presentation = createPresentationScheduler({
+      sourceScheduler: clock,
+      initialRate: envelope.defaultPlaybackRate
+    });
     const correlation = createRuntimeCorrelation();
     const eventStream = createRuntimeEventStream({ instanceId, clock });
 
@@ -110,6 +121,8 @@ class CiMInstance {
     this.#renderer = renderer;
     this.#rendererRoot = rendererRoot;
     this.#scheduler = clock;
+    this.#presentationScheduler = presentation.scheduler;
+    this.#presentationControl = presentation.control;
     this.#reducedMotion = reducedMotion;
     this.#correlation = correlation;
     this.#eventControl = eventStream.control;
@@ -147,6 +160,7 @@ class CiMInstance {
     assertRenderer(this.#renderer);
     assertRendererRoot(this.#rendererRoot);
     assertScheduler(this.#scheduler);
+    assertScheduler(this.#presentationScheduler);
 
     let resolveInitializationDone;
     this.#initializationDone = new Promise((resolve) => {
@@ -243,6 +257,93 @@ class CiMInstance {
 
   restart(source = COMMAND_SOURCE.HOST) {
     return this.#submitNavigation({ command: NAVIGATION_COMMAND.RESTART }, source);
+  }
+
+  setPlaybackRate(rate, sourceInput = COMMAND_SOURCE.HOST) {
+    const nextRate = assertPlaybackRate(rate);
+    const source = assertSource(sourceInput);
+    const commandId = this.#correlation.nextCommandId();
+    const canonical = this.#session.read.snapshot();
+
+    if (canonical.status === SESSION_STATUS.DISPOSED || this.#disposed) {
+      return this.#rejectCommand(
+        commandId,
+        PLAYBACK_RATE_COMMAND,
+        source,
+        canonical.currentStepId,
+        NAVIGATION_REASON.DISPOSED
+      );
+    }
+    if (!this.#initialized || this.#initializing || this.#disposing || this.#recovering) {
+      return this.#rejectCommand(
+        commandId,
+        PLAYBACK_RATE_COMMAND,
+        source,
+        canonical.currentStepId,
+        NAVIGATION_REASON.INVALID_STATE
+      );
+    }
+    if (canonical.status === SESSION_STATUS.FAULTED) {
+      return this.#rejectCommand(
+        commandId,
+        PLAYBACK_RATE_COMMAND,
+        source,
+        canonical.currentStepId,
+        NAVIGATION_REASON.FAULTED
+      );
+    }
+
+    const fromRate = this.#operational.playbackRate;
+    if (nextRate === fromRate) {
+      return commandOutcome({
+        commandId,
+        command: PLAYBACK_RATE_COMMAND,
+        result: COMMAND_RESULT.NO_CHANGE,
+        fromStepId: canonical.currentStepId,
+        toStepId: canonical.currentStepId,
+        transitionId: this.#operational.transitionId
+      });
+    }
+
+    const transitionPhase = this.#operational.transitionPhase;
+    const transitionId = transitionPhase === TRANSITION_PHASE.IN_FLIGHT
+      ? this.#operational.transitionId
+      : null;
+
+    this.#presentationControl.setRate(nextRate);
+    this.#operational.playbackRate = nextRate;
+
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.COMMAND_ACCEPTED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: commandId,
+      from_step: canonical.currentStepId,
+      to_step: canonical.currentStepId,
+      details: detailsForCommand(PLAYBACK_RATE_COMMAND, source)
+    });
+    this.#eventControl.emit({
+      component: EVENT_COMPONENT.RUNTIME,
+      event: EVENT_NAME.PLAYBACK_RATE_CHANGED,
+      result: EVENT_RESULT.SUCCESS,
+      command_id: commandId,
+      ...(transitionId === null ? {} : { transition_id: transitionId }),
+      step_id: canonical.currentStepId,
+      details: {
+        from_rate: fromRate,
+        to_rate: nextRate,
+        transition_phase: transitionPhase
+      }
+    });
+
+    return commandOutcome({
+      commandId,
+      command: PLAYBACK_RATE_COMMAND,
+      result: COMMAND_RESULT.SUCCESS,
+      fromStepId: canonical.currentStepId,
+      toStepId: canonical.currentStepId,
+      transitionId
+    });
   }
 
   adoptReducedMotion(reducedMotion) {
@@ -471,7 +572,7 @@ class CiMInstance {
       result: EVENT_RESULT.SUCCESS,
       command_id: commandId,
       from_step: canonical.currentStepId,
-      details: { source }
+      details: { source, playback_rate: this.#operational.playbackRate }
     });
 
     let record;
@@ -642,7 +743,7 @@ class CiMInstance {
     try {
       task = beginRuntimeRender({
         renderer: this.#renderer,
-        scheduler: this.#scheduler,
+        scheduler: this.#presentationScheduler,
         rendererConfig: this.#rendererConfig,
         reducedMotion: this.#reducedMotion,
         transitionId,
@@ -964,7 +1065,7 @@ class CiMInstance {
     const toBoundary = this.#boundaryData.get(toStepId);
     const task = beginRuntimeRender({
       renderer: this.#renderer,
-      scheduler: this.#scheduler,
+      scheduler: this.#presentationScheduler,
       rendererConfig: this.#rendererConfig,
       reducedMotion: this.#reducedMotion,
       transitionId,
@@ -1263,7 +1364,7 @@ class CiMInstance {
       const boundary = this.#boundaryData.get(anchor);
       const task = beginRuntimeRender({
         renderer: this.#renderer,
-        scheduler: this.#scheduler,
+        scheduler: this.#presentationScheduler,
         rendererConfig: this.#rendererConfig,
         reducedMotion: this.#reducedMotion,
         transitionId: recoveryTransitionId,
@@ -1622,7 +1723,7 @@ class CiMInstance {
   }
 
   #armDwell(record, delayMs) {
-    record.handle = this.#scheduler.schedule.call(this.#scheduler, () => {
+    record.handle = this.#presentationScheduler.schedule.call(this.#presentationScheduler, () => {
       if (this.#activeDwell !== record || record.paused) return;
       this.#activeDwell = null;
       this.#operational.dwellRemainingMs = 0;
@@ -1643,7 +1744,7 @@ class CiMInstance {
     if (!record || record.paused) return this.#operational.dwellRemainingMs;
 
     const remaining = this.#dwellRemaining(record);
-    if (record.handle !== null) this.#scheduler.cancel.call(this.#scheduler, record.handle);
+    if (record.handle !== null) this.#presentationScheduler.cancel.call(this.#presentationScheduler, record.handle);
     record.handle = null;
     record.remainingMs = remaining;
     record.startedAt = null;
@@ -1670,7 +1771,7 @@ class CiMInstance {
     }
 
     const remaining = this.#dwellRemaining(record);
-    if (record.handle !== null) this.#scheduler.cancel.call(this.#scheduler, record.handle);
+    if (record.handle !== null) this.#presentationScheduler.cancel.call(this.#presentationScheduler, record.handle);
     this.#activeDwell = null;
     this.#operational.dwellRemainingMs = 0;
     this.#eventControl.emit({
@@ -1691,9 +1792,9 @@ class CiMInstance {
   }
 
   #readSchedulerNow() {
-    const now = this.#scheduler.now.call(this.#scheduler);
+    const now = this.#presentationScheduler.now.call(this.#presentationScheduler);
     if (!Number.isFinite(now) || now < 0) {
-      throw new RangeError('CiMInstance scheduler.now() must return a finite non-negative number.');
+      throw new RangeError('CiMInstance presentation scheduler.now() must return a finite non-negative number.');
     }
     return now;
   }

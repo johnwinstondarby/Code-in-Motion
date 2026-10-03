@@ -29,7 +29,8 @@ export const HOST_LIVE_CIM_INSTANCE_OPTIONS_KEYS = Object.freeze([
 ]);
 
 export const HOST_RETAINED_RUNTIME_KEYS = Object.freeze([
-  'adoptReducedMotion'
+  'adoptReducedMotion',
+  'setPlaybackRate'
 ]);
 
 export const HOST_LIVE_CIM_INSTANCE_KEYS = Object.freeze([

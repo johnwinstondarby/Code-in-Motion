@@ -98,6 +98,7 @@ test('CiMInstance initial snapshot separates Core canonical state from Runtime o
     playbackIntent: false,
     transitionId: null,
     transitionPhase: 'idle',
+    playbackRate: 1,
     dwellRemainingMs: 0,
     activeAbortState: null
   });
