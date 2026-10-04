@@ -52,9 +52,10 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0042`](0042-stateful-wordpress-lifecycle-differential-gate.md) | Stateful WordPress Lifecycle Differential Gate | 2026-09-21 | Accepted for R34 |
 | [`0043`](0043-site-reduced-motion-floor-policy.md) | Site Reduced-Motion Floor Policy | 2026-09-21 | Accepted for R34 |
 | [`0044`](0044-wordpress-production-surface-composition.md) | WordPress Production Surface Composition | 2026-09-22 | Accepted |
-| [`0045`](0045-wordpress-presentation-and-theme-boundary.md) | WordPress Presentation and Theme Boundary | 2026-09-23 | Accepted |
+| [`0045`](0045-wordpress-presentation-and-theme-boundary.md) | WordPress Presentation and Theme Boundary | 2026-09-23 | Accepted; amended by 0048 Part C |
 | [`0046`](0046-session-and-shell-experience-selection.md) | Session and Shell Experience Selection | 2026-10-02 | Accepted (decision); implementation after RC#2 |
 | [`0047`](0047-playback-rate-and-presentation-time-dilation.md) | Playback Rate and Presentation-Time Dilation | 2026-10-02 | Accepted (R41 F6) |
+| [`0048`](0048-teaching-first-presentation-and-authored-limn.md) | Teaching-First Console Presentation and Authored Limn Emphasis | 2026-10-03 | Accepted |
 
 ## Owns
 
