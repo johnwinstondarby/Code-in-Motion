@@ -224,6 +224,35 @@ Scrub commit uses `source: "scrub"` and produces exactly one semantic `seek()` c
 
 Continuous playback intent begins.
 
+Required details include:
+
+```text
+details.source
+details.playback_rate
+```
+
+`details.playback_rate` is the effective Runtime playback rate in force when playback begins. It may differ from authored `presentation.default_playback_rate` when `setPlaybackRate(rate)` was accepted before `play()`.
+
+### `playback.rate_changed`
+
+Reports an accepted change to a different effective Runtime playback rate.
+
+Required fields and details are:
+
+```text
+command_id
+step_id
+details.from_rate
+details.to_rate
+details.transition_phase
+```
+
+When `details.transition_phase` is `in_flight`, the event also includes the active `transition_id`. When no transition is in flight, including authored dwell, `transition_id` is omitted.
+
+The event is emitted only after a valid `setPlaybackRate(rate)` changes the effective rate. A same-rate no-op emits no `playback.rate_changed`. A rejected or invalid rate command emits no `playback.rate_changed`.
+
+`timestamp_ms` remains source time under §2. Playback-rate dilation never changes semantic event timestamps.
+
 ### `playback.paused`
 
 Learner-controlled time is paused.
@@ -557,9 +586,13 @@ effective runtime configuration
 command sequence
 command source where semantically relevant
 command timing on the virtual clock
+effective playback rate at playback start
+accepted playback-rate changes and their source-time/semantic position
 ```
 
 Replay reissues commands through normal runtime interfaces.
+
+For playback-rate reconstruction, `playback.started.details.playback_rate` supplies the effective rate at playback start and each subsequent `playback.rate_changed` supplies the accepted new rate, source-time timestamp, semantic boundary, and transition phase. Replay applies those recorded inputs through normal Runtime commands; semantic events remain observation rather than a control channel.
 
 The resulting semantic event stream and evidence are compared with expected or recorded results.
 
@@ -574,6 +607,7 @@ command.received                optional
 command.accepted
 command.rejected
 playback.started
+playback.rate_changed
 playback.paused
 playback.resumed
 playback.stopped
@@ -619,6 +653,10 @@ The harness must be able to assert that:
 
 - command order is deterministic;
 - all semantic timestamps come from the injected clock;
+- `playback.started` records the effective playback rate in force at playback start;
+- accepted playback-rate changes emit exactly one `playback.rate_changed` with source-time timestamp, semantic position, from/to rates, transition phase, and `transition_id` only while a transition is in flight;
+- playback-rate no-op, invalid, and rejected commands emit no `playback.rate_changed`;
+- recorded playback-start rate and rate-change inputs are sufficient for independent replay to reproduce the source-time presentation schedule and canonical boundary evidence;
 - `initial` is represented consistently rather than as `null`;
 - transition start precedes settlement or cancellation;
 - honored renderer aborts produce required `renderer.cancelled` evidence and stale cancelled transitions cannot settle successfully;

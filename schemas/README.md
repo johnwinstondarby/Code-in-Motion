@@ -16,6 +16,12 @@ JSON Schema owns structural constraints such as required fields, identifier shap
 
 The fixture gate requires each invalid fixture to produce exactly its intended distinct `CIM-EXP-*` code rather than passing because of unrelated extra failures.
 
+## R42 QA records
+
+- [`R42-RUNTIME-SCHEMA-V2-QA.md`](R42-RUNTIME-SCHEMA-V2-QA.md) — runtime-schema v2 validation and authority-boundary evidence
+- [`R42-AUTHORING-COMPILER-QA.md`](R42-AUTHORING-COMPILER-QA.md) — Authoring v1 compiler, determinism, diagnostics, and Console-state conformance
+- [`R42-PLAYBACK-RATE-QA.md`](R42-PLAYBACK-RATE-QA.md) — ADR 0047 playback-rate verification traceability and mutation evidence
+
 ## Owns
 
 - `localis.cim/v1` experience schema

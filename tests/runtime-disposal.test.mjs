@@ -115,6 +115,7 @@ test('idle disposal is terminal, idempotent, and closes semantic evidence after 
     playbackIntent: false,
     transitionId: null,
     transitionPhase: 'idle',
+    playbackRate: 1,
     dwellRemainingMs: 0,
     activeAbortState: null
   });

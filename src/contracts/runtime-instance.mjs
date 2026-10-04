@@ -12,5 +12,6 @@ export const CIM_INSTANCE_PUBLIC_KEYS = Object.freeze([
   'adoptReducedMotion',
   'dispose',
   'pause',
-  'play'
+  'play',
+  'setPlaybackRate'
 ]);
