@@ -180,6 +180,8 @@ test('R9 WordPress page host composes three isolated instances over one shared E
   const ports = roots.map((entry) => host.commands(entry.root));
   assert.equal(ports.every((port) => port !== null && Object.isFrozen(port)), true);
   assert.equal(new Set(ports).size, 3);
+  assert.deepEqual(roots.map((entry) => entry.state()), [null, null, null]);
+  for (const entry of roots) assert.equal(host.present(entry.root), true);
   assert.deepEqual(roots.map((entry) => entry.state()), ['ready', 'ready', 'ready']);
   assert.deepEqual(renderers.map((entry) => entry.renders), [
     [{ node: 'A', stepId: 'initial' }],

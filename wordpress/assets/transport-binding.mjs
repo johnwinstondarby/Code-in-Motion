@@ -34,6 +34,9 @@ export const WORDPRESS_TRANSPORT_BUTTON_LABELS = Object.freeze({
   end: 'End',
   restart: 'Restart'
 });
+export const WORDPRESS_CONSOLE_EXPLANATION_CONTROL_ORDER = Object.freeze([
+  ...WORDPRESS_TRANSPORT_VISIBLE_CONTROL_ORDER, 'restart'
+]);
 const PRESENTATION_REFRESH_MS = 50;
 
 function fail(message) {
@@ -107,7 +110,7 @@ function restoreTabIndex(root, previousTabIndex) {
   else root.setAttribute('tabindex', previousTabIndex);
 }
 
-function createControlSurface(root) {
+function createControlSurface(root, visibleControlOrder) {
   const document = root.ownerDocument;
   const container = document.createElement('div');
   container.setAttribute('data-cim-transport-controls', '');
@@ -121,7 +124,7 @@ function createControlSurface(root) {
     button.setAttribute('data-cim-control', key);
     controls[key] = button;
   }
-  for (const key of WORDPRESS_TRANSPORT_VISIBLE_CONTROL_ORDER) {
+  for (const key of visibleControlOrder) {
     container.appendChild(controls[key]);
   }
 
@@ -195,6 +198,14 @@ function cleanupAfterConstructionFailure({
 }
 
 export function createWordPressTransportBinding(optionsInput) {
+  return createBinding(optionsInput, WORDPRESS_TRANSPORT_VISIBLE_CONTROL_ORDER);
+}
+
+export function createConsoleExplanationTransportBinding(optionsInput) {
+  return createBinding(optionsInput, WORDPRESS_CONSOLE_EXPLANATION_CONTROL_ORDER);
+}
+
+function createBinding(optionsInput, visibleControlOrder) {
   assertPlainObject(optionsInput, 'WordPress Transport binding options');
   assertExactKeys(
     optionsInput,
@@ -224,7 +235,7 @@ export function createWordPressTransportBinding(optionsInput) {
       labels: WORDPRESS_TRANSPORT_BUTTON_LABELS
     });
 
-    controlSurface = createControlSurface(root);
+    controlSurface = createControlSurface(root, visibleControlOrder);
 
     function cancelPresentationRefresh() {
       if (refreshTimer === null) return;

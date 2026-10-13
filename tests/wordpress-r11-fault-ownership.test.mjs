@@ -131,6 +131,8 @@ test('R11 validation failure preserves CIM-EXP ownership while a healthy sibling
 
   assert.deepEqual(await host.mount(), { mounted: 1, fallback: 1 });
   assert.equal(bad.state(), 'fallback');
+  assert.equal(good.state(), null);
+  assert.equal(host.present(good.root), true);
   assert.equal(good.state(), 'ready');
   assert.equal(evidence.records.length, 1);
   assert.equal(evidence.records[0].code, 'CIM-EXP-001');
@@ -158,6 +160,8 @@ test('R11 delivery failure never inherits an Experience code from error text', a
 
   assert.deepEqual(await host.mount(), { mounted: 1, fallback: 1 });
   assert.equal(bad.state(), 'fallback');
+  assert.equal(good.state(), null);
+  assert.equal(host.present(good.root), true);
   assert.equal(good.state(), 'ready');
   assert.equal(evidence.records.length, 1);
   assert.equal(evidence.records[0].code, 'CIM-HST-001');

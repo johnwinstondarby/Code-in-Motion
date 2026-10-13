@@ -6,8 +6,14 @@ import {
   createSyntheticRenderer,
   SYNTHETIC_RENDERER_ID
 } from '../../src/renderers/subjects/synthetic/renderer.mjs';
+import { createConsoleRenderer } from '../../src/renderers/subjects/console/renderer.mjs';
+import { CONSOLE_RENDERER_ID } from '../../src/renderers/subjects/console/validate-console-input.mjs';
 
 const REGISTRATIONS = Object.freeze([
+  Object.freeze({
+    id: CONSOLE_RENDERER_ID,
+    create: () => createConsoleRenderer()
+  }),
   Object.freeze({
     id: GIT_RENDERER_ID,
     create: () => createGitRenderer()

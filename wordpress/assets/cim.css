@@ -2,8 +2,137 @@
   min-height: 1px;
 }
 
+.cim:not([data-cim-state="ready"]) [data-cim-renderer-root],
+.cim:not([data-cim-state="ready"]) [data-cim-player],
+.cim:not([data-cim-state="ready"]) [data-cim-transport-controls] {
+  display: none;
+}
+
 .cim[data-cim-state="ready"] .cim-fallback {
   display: none;
+}
+
+/* ADR 0048 Part A: fixed teaching-first presentation; no theme interface. */
+.cim [data-cim-player="console-explanation"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-pane] {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  padding: 1rem;
+  background: #000000;
+  border: 1px solid #323a4a;
+  border-radius: 0.25rem;
+  text-align: left;
+  font: inherit;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-pane="console"],
+.cim [data-cim-player="console-explanation"] [data-cim-renderer="console/v1"],
+.cim [data-cim-player="console-explanation"] [data-cim-renderer="console/v1"] * {
+  color: #7CB7FF;
+  background: #000000;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  text-transform: none;
+}
+
+.cim [data-cim-renderer="console/v1"] [data-role="transcript"] {
+  overflow: auto;
+  max-height: 32rem;
+  white-space: pre;
+}
+
+/* Copy is admitted with its Player-owned behavior in the later content checkpoint. */
+.cim [data-cim-renderer="console/v1"] [data-role="copy"] { display: none; }
+
+.cim [data-cim-renderer="console/v1"] [data-role="titlebar"] {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-renderer="console/v1"] [data-tone="dim"],
+.cim [data-cim-player="console-explanation"] [data-cim-renderer="console/v1"] [data-tone="dim"] * {
+  color: #6F93C2;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"],
+.cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] * {
+  color: #E6E9EF;
+  background: #000000;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-transform: none;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-player-title] {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-player-description],
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-entry] p {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-viewport] {
+  max-height: 32rem;
+  overflow: auto;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-entry] {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  border: 1px solid #323a4a;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-entry][aria-current="step"] {
+  border-color: #FFFFFF;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] a {
+  display: block;
+  margin-top: 0.25rem;
+  text-decoration: underline;
+}
+
+.cim [data-cim-player="console-explanation"] p,
+.cim [data-cim-renderer="console/v1"] [data-role="transcript"] { user-select: text; }
+
+.cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] button {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #A9B1BD;
+  border-radius: 0.25rem;
+  color: #A9B1BD;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.cim [data-cim-player="console-explanation"] :focus-visible,
+.cim [data-cim-renderer="console/v1"] [data-focused="true"] {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+.cim [data-cim-player="console-explanation"] [data-risk="free-to-undo"] { color: #7BD88F; }
+.cim [data-cim-player="console-explanation"] [data-risk="leaves-a-trace"] { color: #F2B35B; }
+.cim [data-cim-player="console-explanation"] [data-risk="cannot-be-undone"] { color: #FF7A7A; }
+
+.cim [data-cim-player="console-explanation"] [hidden] { display: none; }
+
+@media (max-width: 48rem) {
+  .cim [data-cim-player="console-explanation"] { grid-template-columns: minmax(0, 1fr); }
 }
 
 /*

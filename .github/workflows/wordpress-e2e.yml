@@ -105,7 +105,10 @@ jobs:
         env:
           CIM_WP_BASE_URL: http://localhost:8888
           CIM_WP_LAYOUT: source
-        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-git-basic-cycle.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs tests/e2e/wordpress-fault-matrix.spec.mjs --reporter=line
+        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-git-basic-cycle.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs tests/e2e/wordpress-fault-matrix.spec.mjs tests/e2e/wordpress-player-mvp.spec.mjs --reporter=line
+
+      - name: Prove ADR 0049 Player mutation guards
+        run: node tools/check-wordpress-player-mutations.mjs --work-directory=${{ runner.temp }}/cim-player-mutations
 
       - name: Stop wp-env
         if: always()
@@ -273,7 +276,7 @@ jobs:
           if (inventory.schema !== 'localis.cim/wordpress-renderer-inventory/v1') {
             throw new Error('R32 installed renderer inventory schema mismatch.');
           }
-          if (inventory.renderers.map((entry) => entry.id).join(',') !== 'git/v1,synthetic/v1') {
+          if (inventory.renderers.map((entry) => entry.id).join(',') !== 'console/v1,git/v1,synthetic/v1') {
             throw new Error('R32 installed renderer inventory membership mismatch.');
           }
           NODE
@@ -291,7 +294,7 @@ jobs:
             bootstrap: 'present',
             experience_registry: 'available',
             renderer_inventory: 'available',
-            renderer_count: 2,
+            renderer_count: 3,
             version_consistency: 'consistent'
           };
           for (const [key, value] of Object.entries(expected)) {

@@ -14,7 +14,7 @@ import {
 } from '../wordpress/assets/renderer-registry.mjs';
 
 test('R32 canonical WordPress renderer registry is ordered, frozen, and factory-backed', () => {
-  assert.deepEqual(WORDPRESS_RENDERER_IDS, ['git/v1', 'synthetic/v1']);
+  assert.deepEqual(WORDPRESS_RENDERER_IDS, ['console/v1', 'git/v1', 'synthetic/v1']);
   assert.equal(Object.isFrozen(WORDPRESS_RENDERER_IDS), true);
 
   const registry = createWordPressRendererRegistry();
@@ -34,7 +34,7 @@ test('R32 generated renderer inventory is exact inert ID-only data', async () =>
   assert.equal(source, rendererInventorySource(WORDPRESS_RENDERER_IDS));
   assert.deepEqual(Reflect.ownKeys(data), ['schema', 'renderers']);
   assert.equal(data.schema, 'localis.cim/wordpress-renderer-inventory/v1');
-  assert.deepEqual(data.renderers, [{ id: 'git/v1' }, { id: 'synthetic/v1' }]);
+  assert.deepEqual(data.renderers, [{ id: 'console/v1' }, { id: 'git/v1' }, { id: 'synthetic/v1' }]);
   for (const entry of data.renderers) {
     assert.deepEqual(Reflect.ownKeys(entry), ['id']);
   }

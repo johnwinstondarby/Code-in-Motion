@@ -2,6 +2,9 @@
   "schema": "localis.cim/wordpress-renderer-inventory/v1",
   "renderers": [
     {
+      "id": "console/v1"
+    },
+    {
       "id": "git/v1"
     },
     {

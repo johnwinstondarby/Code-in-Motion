@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { freezeValidatedExperience } from '../src/experience/freeze-validated-experience.mjs';
+import { createPlayerContent } from '../src/host/player-content.mjs';
 import {
   WORDPRESS_CLOCK_FACTORY_KEYS,
   WORDPRESS_ENTRY_RESOLVER_KEYS,
@@ -33,6 +34,60 @@ function experienceFixture(id = 'wordpress-host-experience') {
     ]
   });
 }
+
+test('ADR 0049 Player content is exact, frozen, legacy-capable and aligned', () => {
+  const experience = experienceFixture();
+  const content = createPlayerContent(experience, ['initial', 'step-01']);
+  assert.deepEqual(Object.keys(content), ['rendererId', 'title', 'description', 'boundaryIds', 'entries']);
+  assert.equal(content.rendererId, 'synthetic/v1');
+  assert.equal(content.title, null);
+  assert.equal(content.description, null);
+  for (const value of [content, content.boundaryIds, content.entries, content.entries[0], content.entries[0].links]) {
+    assert.equal(Object.isFrozen(value), true);
+  }
+  assert.deepEqual(Object.keys(content.entries[0]), ['stepId', 'text', 'links']);
+  for (const ids of [[], ['initial'], ['initial', 'other'], ['other', 'step-01']]) {
+    assert.throws(() => createPlayerContent(experience, ids), /align exactly/);
+  }
+});
+
+test('ADR 0049 mount withholds ready; admission is idempotent and disposal wins', async () => {
+  const root = rootHarness();
+  const host = createWordPressLiveHost(hostOptions({ roots: [root.root] }).options);
+  assert.equal(host.present(root.root), false);
+  assert.equal(host.playerContent(root.root), null);
+  await host.mount();
+  assert.equal(root.state(), null);
+  const content = host.playerContent(root.root);
+  assert.equal(content.rendererId, 'synthetic/v1');
+  assert.equal(host.present(root.root), true);
+  const writes = root.writes.length;
+  assert.equal(host.present(root.root), true);
+  assert.equal(root.writes.length, writes);
+  const pending = host.disposeRoot(root.root);
+  assert.equal(host.playerContent(root.root), null);
+  assert.equal(host.commands(root.root), null);
+  assert.equal(host.observations(root.root), null);
+  assert.equal(host.present(root.root), false);
+  assert.equal(root.state(), 'fallback');
+  await pending;
+  assert.equal(host.present(root.root), false);
+  await host.dispose();
+});
+
+test('ADR 0049 synchronous disposal during presentation cannot resurrect ready', async () => {
+  const root = rootHarness();
+  const host = createWordPressLiveHost(hostOptions({ roots: [root.root] }).options);
+  await host.mount();
+  const setAttribute = root.root.setAttribute;
+  root.root.setAttribute = (name, value) => {
+    if (name === 'data-cim-state' && value === 'ready') void host.disposeRoot(root.root);
+    setAttribute(name, value);
+  };
+  assert.equal(host.present(root.root), false);
+  assert.equal(root.state(), 'fallback');
+  await host.dispose();
+});
 
 function clockFixture() {
   let now = 0;
@@ -266,6 +321,8 @@ test('WordPress live Host surface and dependency capability contracts are exact 
   assert.equal(Object.isFrozen(result), true);
   assert.deepEqual(Object.keys(result), WORDPRESS_MOUNT_RESULT_KEYS);
   assert.deepEqual(result, { mounted: 1, fallback: 0 });
+  assert.equal(root.state(), null);
+  assert.equal(host.present(root.root), true);
   assert.equal(root.state(), 'ready');
   assert.equal(recording.mountCalls(), 1);
 
@@ -286,7 +343,11 @@ test('one WordPress page host shares exactly one reduced-motion source across mu
   assert.equal(media.queryCalls(), 1);
   assert.equal(media.addCalls(), 1);
   assert.equal(media.listenerCount(), 1);
+  assert.equal(first.state(), null);
+  assert.equal(host.present(first.root), true);
   assert.equal(first.state(), 'ready');
+  assert.equal(second.state(), null);
+  assert.equal(host.present(second.root), true);
   assert.equal(second.state(), 'ready');
 
   await host.dispose();
@@ -346,6 +407,8 @@ test('experience load failure is isolated to one WordPress root and uses CIM-HST
 
   assert.deepEqual(await host.mount(), { mounted: 1, fallback: 1 });
   assert.equal(bad.state(), 'fallback');
+  assert.equal(good.state(), null);
+  assert.equal(host.present(good.root), true);
   assert.equal(good.state(), 'ready');
   assert.equal(diagnostics.records.length, 1);
   assert.equal(diagnostics.records[0].code, 'CIM-HST-001');
@@ -365,6 +428,8 @@ test('duplicate explicit instance identity fails only the duplicate invocation',
   const host = createWordPressLiveHost(source.options);
 
   assert.deepEqual(await host.mount(), { mounted: 1, fallback: 1 });
+  assert.equal(first.state(), null);
+  assert.equal(host.present(first.root), true);
   assert.equal(first.state(), 'ready');
   assert.equal(second.state(), 'fallback');
   assert.equal(diagnostics.records.length, 1);
@@ -437,7 +502,7 @@ test('Runtime initialization failure is cleaned up before the WordPress root set
   await host.dispose();
 });
 
-test('ready projection failure disposes the initialized instance and restores fallback projection', async () => {
+test('presentation failure can roll back without changing the settled mount outcome', async () => {
   const root = rootHarness({ instanceId: 'ready-failure', failReadyOnce: true });
   const recording = rendererFixture();
   const diagnostics = diagnosticsHarness();
@@ -448,10 +513,13 @@ test('ready projection failure disposes the initialized instance and restores fa
   });
   const host = createWordPressLiveHost(source.options);
 
-  assert.deepEqual(await host.mount(), { mounted: 0, fallback: 1 });
+  const initialized = await host.mount();
+  assert.deepEqual(initialized, { mounted: 1, fallback: 0 });
+  assert.throws(() => host.present(root.root), /ready projection failed/);
+  await host.disposeRoot(root.root);
   assert.equal(root.state(), 'fallback');
   assert.equal(recording.disposeCalls(), 1);
-  assert.equal(diagnostics.records.some((record) => record.operation === 'ready_projection'), true);
+  assert.deepEqual(initialized, { mounted: 1, fallback: 0 });
 
   await host.dispose();
 });
@@ -624,6 +692,8 @@ test('WordPress live Host initializes directly at a resolved deep-link boundary'
   const host = createWordPressLiveHost(source.options);
 
   assert.deepEqual(await host.mount(), { mounted: 1, fallback: 0 });
+  assert.equal(root.state(), null);
+  assert.equal(host.present(root.root), true);
   assert.equal(root.state(), 'ready');
   assert.equal(recording.contexts.length, 1);
   assert.equal(recording.contexts[0].stepId, 'step-01');
@@ -645,6 +715,8 @@ test('invalid WordPress deep-link resolution records CIM-HST-002 and opens at in
   const host = createWordPressLiveHost(source.options);
 
   assert.deepEqual(await host.mount(), { mounted: 1, fallback: 0 });
+  assert.equal(root.state(), null);
+  assert.equal(host.present(root.root), true);
   assert.equal(root.state(), 'ready');
   assert.equal(recording.contexts[0].stepId, 'initial');
   assert.equal(diagnostics.records.length, 1);

@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.1.10
+Stable tag: 0.1.11
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,7 +13,7 @@ WordPress host, runtime bindings, and controls for Code in Motion experiences.
 
 Code in Motion supplies the WordPress host, runtime bindings, transport controls, and release packaging required to mount CiM experiences from WordPress content.
 
-Version 0.1.10 assigns a distinct release identity to the RC#1 candidate following release reproducibility hardening, with no additional product-scope change.
+Version 0.1.11 adds the Console-Explanation Player foundation with atomic readiness and fixed teaching-first presentation. Production v2 experience registration remains closed.
 
 == Installation ==
 
@@ -41,6 +41,10 @@ If any of these checks fail, preserve the fallback text and report the failed st
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.1.11 =
+* Add Console-Explanation Player composition, Commentary, mode-dependent Restart, and atomic presentation admission.
+* Add fixed teaching-first pane presentation while retaining legacy composition and the closed v2 experience gate.
 
 = 0.1.10 =
 * Assigns a distinct release identity to the RC#1 candidate following release reproducibility hardening.

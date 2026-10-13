@@ -134,6 +134,8 @@ test('R10 disposeRoot revokes only one mounted root and is single-shot', async (
   assert.equal(host.commands(first.root), null);
   assert.equal(host.commands(second.root), secondPort);
   assert.equal(first.state(), 'fallback');
+  assert.equal(second.state(), null);
+  assert.equal(host.present(second.root), true);
   assert.equal(second.state(), 'ready');
   assert.equal(await firstDispose, true);
   assert.equal(renderers[0].disposeCalls(), 1);

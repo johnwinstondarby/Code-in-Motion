@@ -1,12 +1,12 @@
 {
   "schema": "localis.cim/wordpress-release-info/v1",
-  "stable_tag": "0.1.10",
+  "stable_tag": "0.1.11",
   "tested_up_to": "7.1",
   "current_release": {
-    "version": "0.1.10",
+    "version": "0.1.11",
     "notes": [
-      "Assigns a distinct release identity to the RC#1 candidate following release reproducibility hardening.",
-      "Carries the 0.1.9 product scope forward without additional product changes."
+      "Add Console-Explanation Player composition, Commentary, mode-dependent Restart, and atomic presentation admission.",
+      "Add fixed teaching-first pane presentation while retaining legacy composition and the closed v2 experience gate."
     ]
   },
   "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"
