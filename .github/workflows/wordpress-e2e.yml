@@ -276,7 +276,7 @@ jobs:
           if (inventory.schema !== 'localis.cim/wordpress-renderer-inventory/v1') {
             throw new Error('R32 installed renderer inventory schema mismatch.');
           }
-          if (inventory.renderers.map((entry) => entry.id).join(',') !== 'git/v1,synthetic/v1') {
+          if (inventory.renderers.map((entry) => entry.id).join(',') !== 'console/v1,git/v1,synthetic/v1') {
             throw new Error('R32 installed renderer inventory membership mismatch.');
           }
           NODE
@@ -294,7 +294,7 @@ jobs:
             bootstrap: 'present',
             experience_registry: 'available',
             renderer_inventory: 'available',
-            renderer_count: 2,
+            renderer_count: 3,
             version_consistency: 'consistent'
           };
           for (const [key, value] of Object.entries(expected)) {
