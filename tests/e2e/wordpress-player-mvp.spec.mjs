@@ -3,6 +3,9 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { resolve, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { THEME_PRESETS } from '../../wordpress/assets/theme-presets.mjs';
+
+test.use({ colorScheme: 'dark', browserName: process.env.CIM_PLAYER_BROWSER ?? 'chromium' });
 
 // Test-only production-component composition. No fixture enters the release registry.
 const repository = fileURLToPath(new URL('../../', import.meta.url));
@@ -110,6 +113,114 @@ async function open(page, suffix = '') {
   await page.goto(origin + '/fixture' + suffix);
   await page.waitForFunction(() => !!window.playerTest);
 }
+
+test('learner themes render complete palettes without altering canonical state or Console DOM', async ({ page }) => {
+  await open(page);
+  const roots = page.locator('.cim');
+  const first = roots.first();
+  await first.locator('[data-cim-control="end"]').click();
+  const before = await page.evaluate(() => ({
+    canonical: playerTest.host.observations(playerTest.roots[0]).snapshot().canonical,
+    renderer: playerTest.roots[0].querySelector('[data-cim-renderer="console/v1"]').innerHTML
+  }));
+  await page.addStyleTag({content: 'body { --cim-console-text: red; --cim-console-background: magenta; --cim-explanation-prose: yellow; --cim-wayfinding: red; } select { color:red; background:magenta }'});
+  const rgb = hex => 'rgb(' + [1,3,5].map(index => parseInt(hex.slice(index,index+2),16)).join(', ') + ')';
+  await expect(first.getByLabel('Theme', {exact:true})).toHaveCount(1);
+  expect(await first.locator('[data-cim-theme-select] option').allTextContents()).toEqual(['Localis','High Contrast','Light']);
+  for (const [id,{colors}] of Object.entries(THEME_PRESETS)) {
+    await first.getByLabel('Theme',{exact:true}).selectOption(id);
+    for (const root of [first,roots.nth(1)]) {
+      await expect(root).toHaveAttribute('data-cim-theme',id);
+      await expect(root.getByLabel('Theme',{exact:true})).toHaveValue(id);
+      await expect(root).toHaveCSS('background-color',rgb(colors['frame-background']));
+      await expect(root.locator('[data-cim-pane="console"]')).toHaveCSS('background-color',rgb(colors['console-background']));
+      await expect(root.locator('[data-cim-pane="console"]')).toHaveCSS('color',rgb(colors['console-text']));
+      await expect(root.locator('[data-cim-player-description]')).toHaveCSS('color',rgb(colors['explanation-prose']));
+      await expect(root.locator('[data-cim-player-title]')).toHaveCSS('color',rgb(colors['explanation-heading']));
+      await expect(root.getByLabel('Theme',{exact:true})).toHaveCSS('color',rgb(colors['control-text']));
+    }
+    await expect(first.locator('[data-cim-beat-heading]').first()).toHaveCSS('color',rgb(colors.wayfinding));
+    await expect(first.locator('[data-role="risk-badge"]')).toHaveCSS('color',rgb(colors['risk-final']));
+    await expect(first.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveCSS('border-color',rgb(colors.wayfinding));
+    if (process.env.CIM_THEME_SCREENSHOT_DIRECTORY) await first.screenshot({path:resolve(process.env.CIM_THEME_SCREENSHOT_DIRECTORY,`player-theme-${id}.png`)});
+  }
+  const after = await page.evaluate(() => ({
+    canonical: playerTest.host.observations(playerTest.roots[0]).snapshot().canonical,
+    renderer: playerTest.roots[0].querySelector('[data-cim-renderer="console/v1"]').innerHTML
+  }));
+  expect(after).toEqual(before);
+});
+
+test('learner themes retain the explicit choice across reload and ignore device changes', async ({ page }) => {
+  await open(page);
+  await page.locator('.cim').first().getByLabel('Theme',{exact:true}).selectOption('light');
+  expect(await page.evaluate(() => localStorage.getItem('cim.learnerTheme'))).toBe('light');
+  await page.reload(); await page.waitForFunction(() => !!window.playerTest);
+  await page.emulateMedia({contrast:'more',colorScheme:'dark'});
+  await expect(page.locator('.cim').first()).toHaveAttribute('data-cim-theme','light');
+  await expect(page.locator('.cim').nth(1)).toHaveAttribute('data-cim-theme','light');
+});
+
+test('learner themes follow device preference changes until an explicit choice and hide in forced colors', async ({ page }) => {
+  await page.emulateMedia({colorScheme:'light'});
+  await open(page);
+  const root=page.locator('.cim').first();
+  await expect(root).toHaveAttribute('data-cim-theme','light');
+  await page.emulateMedia({colorScheme:'dark'});
+  await expect(root).toHaveAttribute('data-cim-theme','localis');
+  await page.emulateMedia({colorScheme:'light',contrast:'more'});
+  await expect(root).toHaveAttribute('data-cim-theme','high-contrast');
+  expect(await page.evaluate(() => localStorage.getItem('cim.learnerTheme'))).toBeNull();
+  await root.getByLabel('Theme',{exact:true}).selectOption('localis');
+  await expect(root).toHaveAttribute('data-cim-theme','localis');
+  await root.getByLabel('Theme',{exact:true}).selectOption('light');
+  await page.emulateMedia({forcedColors:'active'});
+  await expect(root.locator('[data-cim-theme-control]')).toHaveJSProperty('hidden',true);
+  await expect(root.getByLabel('Theme',{exact:true})).toBeHidden();
+  await expect(root.locator('[data-cim-pane="console"]')).not.toHaveCSS('color','rgb(26, 75, 140)');
+  await page.emulateMedia({forcedColors:'none'});
+  await expect(root.getByLabel('Theme',{exact:true})).toBeVisible();
+  await expect(root).toHaveAttribute('data-cim-theme','light');
+});
+
+test('learner themes unavailable storage keeps an in-memory choice for siblings and remount', async ({ page }) => {
+  await page.addInitScript(() => Object.defineProperty(window,'localStorage',{get(){throw new Error('storage blocked');}}));
+  await open(page);
+  await page.locator('.cim').first().getByLabel('Theme',{exact:true}).selectOption('light');
+  await page.emulateMedia({contrast:'more'});
+  await expect(page.locator('.cim').nth(1)).toHaveAttribute('data-cim-theme','light');
+  await page.evaluate(async () => {
+    const {createWordPressPlayerBinding}=await import('/wordpress/assets/player-binding.mjs');
+    const root=playerTest.roots[0];
+    playerTest.bindings[0].dispose();
+    playerTest.bindings[0]=createWordPressPlayerBinding({root,commandPort:playerTest.host.commands(root),observationPort:playerTest.host.observations(root),content:playerTest.host.playerContent(root),onError:e=>playerTest.errors.push(String(e))});
+  });
+  await expect(page.locator('.cim').first().getByLabel('Theme',{exact:true})).toHaveValue('light');
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+});
+
+test('learner themes invalid persisted ID falls back to current device preferences', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('cim.learnerTheme','unknown'));
+  await page.emulateMedia({colorScheme:'light'});
+  await open(page);
+  await expect(page.locator('.cim').first()).toHaveAttribute('data-cim-theme','light');
+  await page.emulateMedia({colorScheme:'dark',contrast:'more'});
+  await expect.poll(() => page.evaluate(() => matchMedia('(prefers-contrast: more)').matches)).toBe(true);
+  await expect(page.locator('.cim').first()).toHaveAttribute('data-cim-theme','high-contrast');
+});
+
+test('learner themes disposed selectors are inert and leave sibling controls functional', async ({ page }) => {
+  await open(page);
+  await page.evaluate(() => {
+    window.staleThemeSelect=playerTest.roots[0].querySelector('[data-cim-theme-select]');
+    playerTest.bindings[0].dispose();
+    staleThemeSelect.value='light';staleThemeSelect.dispatchEvent(new Event('change'));
+  });
+  await expect(page.locator('.cim').first()).not.toHaveAttribute('data-cim-theme',/./);
+  await expect(page.locator('.cim').nth(1).getByLabel('Theme',{exact:true})).toHaveValue('localis');
+  await page.locator('.cim').nth(1).getByLabel('Theme',{exact:true}).selectOption('high-contrast');
+  await expect(page.locator('.cim').nth(1)).toHaveAttribute('data-cim-theme','high-contrast');
+});
 
 test('atomic readiness, two panes, fixed colors and native opening content', async ({ page }) => {
   await open(page);

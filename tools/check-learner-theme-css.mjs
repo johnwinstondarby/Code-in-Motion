@@ -1,0 +1,10 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { generateThemeCSS } from '../wordpress/assets/theme-presets.mjs';
+const path = new URL('../wordpress/assets/cim.css', import.meta.url);
+const source = await readFile(path, 'utf8');
+const pattern = /\/\* learner-theme-presets:start \*\/[\s\S]*?\/\* learner-theme-presets:end \*\//;
+if (!pattern.test(source)) throw new Error('Missing learner palette declaration block.');
+const expected = '/* learner-theme-presets:start */\n' + generateThemeCSS() + '\n/* learner-theme-presets:end */';
+if (process.argv.includes('--write')) await writeFile(path, source.replace(pattern, expected));
+else if (source.match(pattern)[0] !== expected) throw new Error('Learner theme CSS differs from tested palette values.');
+console.log('PASS: learner theme CSS matches the complete palette source.');
