@@ -58,6 +58,24 @@ test('pane hold construction rolls back all partially installed listeners', () =
   assert.equal(h.pane.count(), 0); assert.equal(h.document.count(), 0);
 });
 
+test('pre-existing pointer presence acquires a hold before any pointer event', () => {
+  const h = harness(); h.pane.matches = selector => selector === ':hover';
+  const binding = createPaneHoldBinding(h.options);
+  assert.deepEqual([...h.holds], ['pointer']);
+  assert.equal(h.refreshes(),0);
+  binding.dispose();
+});
+
+test('selection outside a pane does not acquire its selection hold', () => {
+  const h = harness();
+  h.document.getSelection = () => ({isCollapsed:false, rangeCount:1,
+    getRangeAt:() => ({intersectsNode:() => false})});
+  const binding = createPaneHoldBinding(h.options);
+  h.document.emit('selectionchange');
+  assert.equal(h.holds.has('selection'),false);
+  binding.dispose();
+});
+
 test('pane hold disposal becomes inert immediately and remains retryable', () => {
   const h = harness(); const binding = createPaneHoldBinding(h.options);
   h.pane.failRemove = 'pointerenter';

@@ -63,10 +63,13 @@
 }
 
 /* Retain the renderer title and consequence badge while its transcript follows. */
-.cim [data-cim-console-viewport] [data-role="titlebar"] {
+.cim [data-cim-player="console-explanation"] [data-cim-console-viewport] [data-role="titlebar"] {
   position: sticky;
   top: 0;
   z-index: 1;
+  background: #000000;
+  margin-bottom: 0;
+  padding-bottom: 1rem;
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-pane="console"] [data-cim-console-resume] {

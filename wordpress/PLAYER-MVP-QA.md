@@ -48,7 +48,7 @@ The protected Browser E2E workflow runs these checks alongside existing real Wor
 | Remove renderer, Player, or Transport withholding | Browser pre-ready/frame-sampling case |
 | Open v2 production registration | Existing experience-registry gate suite |
 
-All 15 original mutations and 13 viewport/hold mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
+All 15 original mutations and 16 viewport/hold mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
 
 ## Known issue: authored indent and wrapped continuation can coincide
 
@@ -73,3 +73,9 @@ ADR 0050 amends Commentary follow/scroll contracts. A stable Player-owned Consol
 Deliberate navigation may reposition both views without silently resetting learner follow ownership. Holds do not block an explicitly requested navigation. Immediate scrolling, one-pixel bottom tolerance, unchanged renderer DOM/evidence, and the closed production v2 registry remain protected.
 
 The six new browser cases prove actual renderer replacement, newest content in both panes, every hold reason in both panes, overlapping holds, independent scroll ownership, pending labels, button/manual resume, sibling isolation, offscreen-link focus without ownership, and stale-listener withdrawal. Headless policy/geometry tests protect validation, contraction, acknowledgement, successful movement, and explicit repositioning. Pane hold listeners and the renderer observer are disposed with the Player; listener installation rollback and retryable teardown are separately exercised.
+
+## Review follow-up
+
+PR #76 review adds an opaque black sticky-title surface including its lower gap, with a geometry/hit-testing browser proof. Selection isolation and pre-existing pointer presence now have dedicated browser and headless proofs plus mutation guards. The protected browser suite has 15 normal cases and the existing expected wrap-collision failure; the mutation runner catches 31 guarded breakages.
+
+Master Visuals v3 corrects the WordPress transport status: 0.1.11 ships Start, Previous, Play/Pause, Next, End, and Restart in Console-Explanation mode; the timeline, Playback Rate slider, and beat progress remain targets. The Part A color follow-up must replace the discussed Console line's white outline with a background band and review keyboard focus-ring treatment against the grammar, including a forced-colors fallback. These changes remain outside the pane-follow PR. Pointer-rest behavior should be checked on page 3227 during live installation.

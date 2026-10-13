@@ -485,3 +485,86 @@ test('offscreen link focus scrolls natively without claiming viewport ownership'
   await expect.poll(() => atBottom(viewport)).toBe(true);
   expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
 });
+
+test('pinned Console title and its lower gap cover scrolling transcript text', async ({ page }) => {
+  await open(page);
+  await page.mouse.move(0,0);
+  await revealBoundary(page,18);
+  const title = page.locator('.cim').first().locator('[data-role="titlebar"]');
+  const evidence = await title.evaluate(node => {
+    const style = getComputedStyle(node);
+    const box = node.getBoundingClientRect();
+    const padding = parseFloat(style.paddingBottom);
+    const gapY = box.bottom - padding / 2;
+    const hit = document.elementFromPoint(box.left + box.width / 2,gapY);
+    const transcript = node.nextElementSibling;
+    const range = document.createRange(); range.selectNodeContents(transcript);
+    return {background:style.backgroundColor, margin:parseFloat(style.marginBottom),padding,
+      titleOwnsGap:hit === node || node.contains(hit),
+      transcriptBehindGap:[...range.getClientRects()].some(rect => rect.top < gapY && rect.bottom > gapY)};
+  });
+  expect(evidence.transcriptBehindGap).toBe(true);
+  expect(evidence.background).toBe('rgb(0, 0, 0)');
+  expect(evidence.margin).toBe(0);
+  expect(evidence.padding).toBe(16);
+  expect(evidence.titleOwnsGap).toBe(true);
+});
+
+test('selection holds only the intersected pane while its peer follows', async ({ page }) => {
+  await open(page); await page.mouse.move(0,0);
+  await revealBoundary(page,10);
+  const root = page.locator('.cim').first();
+  const consoleViewport = root.locator('[data-cim-console-viewport]');
+  const explanation = root.locator('[data-cim-commentary-viewport]');
+  await expect.poll(() => atBottom(consoleViewport)).toBe(true);
+  await expect.poll(() => atBottom(explanation)).toBe(true);
+  await explanation.evaluate(node => {
+    const text = node.querySelector('p').firstChild;
+    const range = document.createRange(); range.setStart(text,0); range.setEnd(text,4);
+    document.getSelection().removeAllRanges(); document.getSelection().addRange(range);
+  });
+  const heldTop = await explanation.evaluate(node => node.scrollTop);
+  await revealBoundary(page,11);
+  await expect(root.locator('[data-cim-commentary-resume]')).toBeVisible();
+  expect(await explanation.evaluate(node => node.scrollTop)).toBe(heldTop);
+  await expect.poll(() => atBottom(consoleViewport)).toBe(true);
+  await expect(root.locator('[data-cim-console-resume]')).toBeHidden();
+  await page.evaluate(() => document.getSelection().removeAllRanges());
+  await expect.poll(() => atBottom(explanation)).toBe(true);
+
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+});
+
+test('pointer already present at pane binding construction holds new output', async ({ page }) => {
+  await open(page);
+  const root = page.locator('.cim').first();
+  const viewport = root.locator('[data-cim-console-viewport]');
+  await revealBoundary(page,10);
+  await viewport.hover();
+  const initial = await viewport.evaluate(async node => {
+    const {createPaneHoldBinding} = await import('/wordpress/assets/pane-hold-binding.mjs');
+    const {createConsoleFollowController} = await import('/wordpress/assets/console-follow-controller.mjs');
+    const {createCommentaryScrollBinding} = await import('/src/commentary/scroll-binding.mjs');
+    const pane = node.closest('[data-cim-pane]');
+    const indicator = document.createElement('button'); indicator.type = 'button'; pane.appendChild(indicator);
+    const follow = createConsoleFollowController({readContent:() => node.querySelector('[data-role="transcript"]').textContent});
+    const scroll = createCommentaryScrollBinding({viewport:node,indicator,follow,
+      newerStepsLabel:'New output below',scrollIntent:Object.freeze({read:() => false})});
+    // The pointer is stationary throughout construction; no new pointerenter is dispatched.
+    const holds = createPaneHoldBinding({pane,follow,refresh:() => scroll.refresh()});
+    window.initialPointerProof = {follow,scroll,holds,indicator};
+    return {hovered:pane.matches(':hover'),held:follow.read().held};
+  });
+  expect(initial).toEqual({hovered:true,held:true});
+  const top = await viewport.evaluate(node => node.scrollTop);
+  await appendConsoleOutput(viewport);
+  const held = await page.evaluate(() => initialPointerProof.scroll.refresh());
+  expect(held.held).toBe(true);
+  expect(held.newerStepsAvailable).toBe(true);
+  expect(await viewport.evaluate(node => node.scrollTop)).toBe(top);
+  await page.mouse.move(0,0);
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+  await page.evaluate(() => {
+    initialPointerProof.holds.dispose(); initialPointerProof.scroll.dispose(); initialPointerProof.indicator.remove();
+  });
+});

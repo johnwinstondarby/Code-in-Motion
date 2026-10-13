@@ -47,7 +47,10 @@ const mutations = [
   ['skip deliberate viewport navigation', player, 'scroll.reposition(top);', '// deliberate navigation omitted', browserArgs],
   ['focus scrolling claims ownership', 'src/commentary/scroll-binding.mjs', 'const learnerScrolling = scrollIntent.read();', 'const learnerScrolling = true;', browserArgs],
   ['ignore native wheel intent', 'wordpress/assets/pane-scroll-intent.mjs', "[viewport, 'wheel', mark]", "[viewport, 'wheel', () => {}]", browserArgs],
-  ['skip scroll intent listener withdrawal', 'wordpress/assets/pane-scroll-intent.mjs', 'target.removeEventListener(type, listener);', '// listener retained', ['--test','tests/pane-hold-binding.test.mjs']]
+  ['skip scroll intent listener withdrawal', 'wordpress/assets/pane-scroll-intent.mjs', 'target.removeEventListener(type, listener);', '// listener retained', ['--test','tests/pane-hold-binding.test.mjs']],
+  ['expose transcript behind pinned title', css, '  margin-bottom: 0;\n  padding-bottom: 1rem;', '  margin-bottom: 1rem;\n  padding-bottom: 0;', browserArgs],
+  ['selection holds peer pane', 'wordpress/assets/pane-hold-binding.mjs', 'selection.getRangeAt(index).intersectsNode(pane)', 'true', browserArgs],
+  ['ignore initial pointer presence', 'wordpress/assets/pane-hold-binding.mjs', "if (pane.matches(':hover')) follow.hold('pointer');", '// initial pointer ignored', browserArgs]
 ];
 
 async function run(args) {
@@ -88,7 +91,10 @@ for (const [name, file, from, to, args] of mutations) {
       name === 'skip renderer observer disposal' ? 'root teardown' :
       name === 'skip deliberate viewport navigation' ? 'deliberate navigation repositions' : 'atomic readiness';
     const focusedGrep = name === 'focus scrolling claims ownership' ? 'offscreen link focus' :
-      name === 'ignore native wheel intent' ? 'Console scroll ownership' : grep;
+      name === 'ignore native wheel intent' ? 'Console scroll ownership' :
+      name === 'expose transcript behind pinned title' ? 'pinned Console title' :
+      name === 'selection holds peer pane' ? 'selection holds only' :
+      name === 'ignore initial pointer presence' ? 'pointer already present' : grep;
     const result = await run(args === browserArgs ? [...args, '--grep', focusedGrep] : args);
     await writeFile(resolve(work, name.replaceAll(' ', '-') + '.log'), result.output);
     if (result.code === 0 || !/not ok|failed|✖/.test(result.output)) {
