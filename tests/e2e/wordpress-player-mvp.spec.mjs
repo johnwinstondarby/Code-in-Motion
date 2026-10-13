@@ -626,6 +626,9 @@ test('beat markers capture final destinations while Commentary retains individua
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','stage-hunk--s02');
   await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
   await root.locator('[data-cim-control="next"]').click();
+  await expect.poll(() => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId)).toBe('stage-hunk--s04');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
+  await root.locator('[data-cim-control="next"]').click();
   await expect(root.locator('[data-cim-beat-progress]')).toHaveText('3 / 8 · Review what is staged');
   await expect.poll(() => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId)).toBe('review-staged--s02');
   expect(await page.evaluate(() => playerTest.sources)).toEqual(['marker','commentary']);

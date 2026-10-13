@@ -254,7 +254,7 @@ When transition or dwell work is active, pause semantics follow §7 and §8.
 
 ### 6.3 `next()`
 
-For v1, `next()` resolves to the immediately following semantic boundary. For v2, manual Next resolves by authored beat: initial selects the first beat's final boundary; a segment within a beat selects the following beat's final boundary, clamping to the last beat's final boundary. Canonical settlement remains at individual generated boundaries. Automatic playback still visits every segment. See AUTHORING-TO-RUNTIME-v1 §4 and ADR 0051.
+For v1, `next()` resolves to the immediately following semantic boundary. For v2, manual Next resolves by authored beat: initial selects the first beat's final boundary; an incomplete beat selects its own final boundary; a completed beat selects the following beat's final boundary. Canonical settlement remains at individual generated boundaries. Automatic playback still visits every segment. See AUTHORING-TO-RUNTIME-v1 §4 and ADR 0051.
 
 At the final step, it is **accepted with no movement**:
 

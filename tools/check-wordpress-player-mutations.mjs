@@ -21,6 +21,7 @@ const browserArgs = [resolve(ROOT, 'node_modules/@playwright/test/cli.js'), 'tes
 const hostArgs = ['--test', 'tests/wordpress-live-host.test.mjs'];
 const beatArgs = ['--test','tests/beat-consumers.test.mjs','tests/wordpress-beat-binding.test.mjs'];
 const mutations = [
+  ["skip unfinished beat", "src/core/boundary-model.mjs", "(advance ? 1 : 0)", "1", beatArgs],
   ["disable manual beat navigation", "src/core/boundary-model.mjs", "if (beatFinalIndices !== null) {", "if (false) {", beatArgs],
   ["deep link selects first segment", "src/host/wordpress-deep-link.mjs", "?.finalStepId", "?.boundaryIds[0]", beatArgs],
   ["progress follows reveal frontier", "wordpress/assets/beat-binding.mjs", "beatByBoundary.get(canonical.currentStepId)", "beatByBoundary.get(canonical.revealFrontier)", browserArgs],

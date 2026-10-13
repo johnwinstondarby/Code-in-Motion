@@ -153,7 +153,8 @@ export function createBoundaryModel(stepIds, beatFinalStepIds = null) {
         }
         if (beatFinalIndices !== null) {
           const currentBeat = currentIndex === 0 ? -1 : beatFinalIndices.findIndex(index => index >= currentIndex);
-          const destination = beatFinalIndices[Math.min(currentBeat + 1, beatFinalIndices.length - 1)];
+          const advance = currentBeat === -1 || currentIndex === beatFinalIndices[currentBeat];
+          const destination = beatFinalIndices[Math.min(currentBeat + (advance ? 1 : 0), beatFinalIndices.length - 1)];
           return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, boundaryIds[destination]);
         }
         return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, boundaryIds[currentIndex + 1]);

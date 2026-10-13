@@ -48,7 +48,7 @@ The protected Browser E2E workflow runs these checks alongside existing real Wor
 | Remove renderer, Player, or Transport withholding | Browser pre-ready/frame-sampling case |
 | Open v2 production registration | Existing experience-registry gate suite |
 
-All 15 original mutations, 16 viewport/hold mutations, and six beat-consumer mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
+All 15 original mutations, 16 viewport/hold mutations, and seven beat-consumer mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
 
 ## Known issue: authored indent and wrapped continuation can coincide
 
@@ -88,4 +88,8 @@ Five added browser cases cover headings/progress/reset, button and keyboard navi
 
 Production v2 registration remains closed. Engine compatibility, complete anchor/evidence/risk semantics, copy, timeline scrubbing, rate controls, color/limn work, and wrapping collision remain deferred. Pane follow and holds have shipped through ADR 0050; beat consumers are implemented here rather than deferred. No release-version change or live installation is part of this checkpoint.
 
-Six additional mutation guards break manual beat navigation, final-boundary deep-link mapping, committed-beat progress, marker destination, immutable marker targeting, and listener withdrawal. All 37 guarded breakages must be caught after a passing baseline.
+Seven additional mutation guards break manual beat navigation, final-boundary deep-link mapping, committed-beat progress, marker destination, immutable marker targeting, and listener withdrawal. All 38 guarded breakages must be caught after a passing baseline.
+
+PR #77 review decision: Next finishes an incomplete beat, then advances after completion. Core matrix and Runtime/browser proofs cover both presses; the additional mutation guard catches skipping an unfinished beat.
+
+Accepted Part A styling direction: Console stays #000000. Explanation adopts Localis near-black #171B22, prose #A8B3C2, bright headings #E8ECF2, IBM Plex Sans 500 prose, Catamaran 700 headings, mono controls, site borders and 8px corners. Teal #5AC4C8 beat kickers serve wayfinding. Font fallbacks remain available and the plugin need not load fonts. Implementation belongs to the later Part A pass.

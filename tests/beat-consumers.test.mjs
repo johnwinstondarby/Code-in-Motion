@@ -55,7 +55,8 @@ test('Core beat navigation uses final boundaries while retaining segment seek an
   for (const [index,beat] of beats.entries()) {
     for (const boundary of beat.boundaryIds) {
       const next = model.resolve(boundary,null,{command:'next'});
-      assert.equal(next.toStepId,beats[Math.min(index+1,beats.length-1)].finalStepId);
+      const destination = boundary === beat.finalStepId ? beats[Math.min(index+1,beats.length-1)] : beat;
+      assert.equal(next.toStepId,destination.finalStepId);
       assert.equal(model.resolve(boundary,ids[1],{command:'next'}).toStepId,next.toStepId);
       const previous = model.resolve(boundary,null,{command:'previous'});
       assert.equal(previous.toStepId,index === 0 ? 'initial' : beats[index-1].finalStepId);
@@ -100,9 +101,14 @@ test('Runtime preserves Next and Previous command identity and individual Commen
   const next = await h.instance.next('transport');
   assert.equal(next.command,'next'); assert.equal(next.toStepId,beats[0].finalStepId);
   await h.instance.seek('stage-hunk--s02','commentary');
+  const finish = await h.instance.next('transport');
+  assert.equal(finish.command,'next'); assert.equal(finish.toStepId,'stage-hunk--s04');
+  const advance = await h.instance.next('transport');
+  assert.equal(advance.toStepId,'review-staged--s02');
+  await h.instance.seek('stage-hunk--s02','commentary');
   const previous = await h.instance.previous('transport');
   assert.equal(previous.command,'previous'); assert.equal(previous.toStepId,beats[0].finalStepId);
-  assert.equal(h.instance.read.snapshot().canonical.revealFrontier,'stage-hunk--s02');
+  assert.equal(h.instance.read.snapshot().canonical.revealFrontier,'review-staged--s02');
   await h.instance.restart('transport');
   assert.equal(h.instance.read.snapshot().canonical.revealFrontier,'initial');
   assert.ok(h.events.some(event => event.details?.source === 'commentary'));
