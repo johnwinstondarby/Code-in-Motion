@@ -122,6 +122,20 @@ async function open(page, suffix = '') {
   await page.waitForFunction(() => !!window.playerTest);
 }
 
+// Browser emulation can update prefers-contrast without notifying existing MQLs.
+// Keep native objects/values and supply the missing OS-style notification only.
+async function observeContrastQueries(page) {
+  await page.addInitScript(()=>{
+    const match=window.matchMedia.bind(window);window.testContrastQueries=[];
+    window.matchMedia=query=>{const result=match(query);if(query==='(prefers-contrast: more)') testContrastQueries.push(result);return result;};
+  });
+}
+async function updateContrastPreference(page,options) {
+  await page.emulateMedia(options);
+  await expect.poll(()=>page.evaluate(()=>matchMedia('(prefers-contrast: more)').matches)).toBe(options.contrast==='more');
+  await page.evaluate(()=>{for(const query of [...testContrastQueries]) query.dispatchEvent(new Event('change'));});
+}
+
 test('production v2 admission uses registry loader bootstrap and final beat deep links alongside legacy',async({page})=>{
   const errors=[];page.on('console',async message=>{if(message.type()==='error') errors.push(...await Promise.all(message.args().map(argument=>argument.jsonValue().catch(()=>null))));});
   await page.goto(origin+'/production#cim/git-repository-practice/stage-hunk');
@@ -235,13 +249,14 @@ test('learner themes retain the explicit choice across reload and ignore device 
 });
 
 test('learner themes follow device preference changes until an explicit choice and hide in forced colors', async ({ page }) => {
+  await observeContrastQueries(page);
   await page.emulateMedia({colorScheme:'light'});
   await open(page);
   const root=page.locator('.cim').first();
   await expect(root).toHaveAttribute('data-cim-theme','light');
   await page.emulateMedia({colorScheme:'dark'});
   await expect(root).toHaveAttribute('data-cim-theme','localis');
-  await page.emulateMedia({colorScheme:'light',contrast:'more'});
+  await updateContrastPreference(page,{colorScheme:'light',contrast:'more'});
   await expect(root).toHaveAttribute('data-cim-theme','high-contrast');
   expect(await page.evaluate(() => localStorage.getItem('cim.learnerTheme'))).toBeNull();
   await root.getByLabel('Theme',{exact:true}).selectOption('localis');
@@ -273,12 +288,12 @@ test('learner themes unavailable storage keeps an in-memory choice for siblings 
 });
 
 test('learner themes invalid persisted ID falls back to current device preferences', async ({ page }) => {
+  await observeContrastQueries(page);
   await page.addInitScript(() => localStorage.setItem('cim.learnerTheme','unknown'));
   await page.emulateMedia({colorScheme:'light'});
   await open(page);
   await expect(page.locator('.cim').first()).toHaveAttribute('data-cim-theme','light');
-  await page.emulateMedia({colorScheme:'dark',contrast:'more'});
-  await expect.poll(() => page.evaluate(() => matchMedia('(prefers-contrast: more)').matches)).toBe(true);
+  await updateContrastPreference(page,{colorScheme:'dark',contrast:'more'});
   await expect(page.locator('.cim').first()).toHaveAttribute('data-cim-theme','high-contrast');
 });
 
