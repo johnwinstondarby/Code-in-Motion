@@ -1,4 +1,5 @@
 import { COMMAND_SOURCE } from '../contracts/events.mjs';
+import { readExperienceBeats } from '../experience/beat-groups.mjs';
 
 export const WORDPRESS_DEEP_LINK_RESOLVER_KEYS = Object.freeze(['resolve']);
 
@@ -62,14 +63,17 @@ export function resolveWordPressDeepLink(fragment, experienceId, experience) {
   const target = parseCiMDeepLinkFragment(fragment);
   if (target === null || target.experienceId !== experienceId) return null;
 
-  const validBoundary = target.stepId === 'initial' ||
-    experience.steps.some((step) => step && step.id === target.stepId);
+  const beats = readExperienceBeats(experience);
+  const resolvedStepId = target.stepId === 'initial' ? 'initial' : beats.length > 0
+    ? beats.find(beat => beat.id === target.stepId)?.finalStepId
+    : experience.steps.find(step => step && step.id === target.stepId)?.id;
+  const validBoundary = resolvedStepId !== undefined;
   if (!validBoundary) {
     fail('CiM deep-link target is not a known semantic boundary: ' + target.stepId + '.');
   }
 
   return Object.freeze({
-    stepId: target.stepId,
+    stepId: resolvedStepId,
     source: COMMAND_SOURCE.DEEP_LINK
   });
 }

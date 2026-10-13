@@ -1,4 +1,5 @@
 // ADR 0049: instructional data only; renderer state never crosses this seam.
+import { readExperienceBeats } from '../experience/beat-groups.mjs';
 export function createPlayerContent(experience, canonicalBoundaryIds) {
   const boundaryIds = Object.freeze([...canonicalBoundaryIds]);
   const entries = Object.freeze(experience.steps.map((step) => Object.freeze({
@@ -16,6 +17,7 @@ export function createPlayerContent(experience, canonicalBoundaryIds) {
     title: experience.presentation?.title ?? null,
     description: experience.presentation?.description ?? null,
     boundaryIds,
-    entries
+    entries,
+    beats: readExperienceBeats(experience)
   });
 }

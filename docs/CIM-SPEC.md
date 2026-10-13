@@ -254,7 +254,7 @@ When transition or dwell work is active, pause semantics follow §7 and §8.
 
 ### 6.3 `next()`
 
-At a stable boundary, `next()` resolves to the immediately following semantic boundary.
+For v1, `next()` resolves to the immediately following semantic boundary. For v2, manual Next resolves by authored beat: initial selects the first beat's final boundary; a segment within a beat selects the following beat's final boundary, clamping to the last beat's final boundary. Canonical settlement remains at individual generated boundaries. Automatic playback still visits every segment. See AUTHORING-TO-RUNTIME-v1 §4 and ADR 0051.
 
 At the final step, it is **accepted with no movement**:
 
@@ -267,7 +267,7 @@ Boundary exhaustion is not a command rejection.
 
 ### 6.4 `previous()`
 
-At an authored step, `previous()` resolves to the immediately preceding semantic boundary. From `step-01`, it resolves to `initial`.
+For v1, `previous()` resolves to the immediately preceding semantic boundary. From `step-01`, it resolves to `initial`. For v2, stable Previous selects the preceding authored beat's final boundary, or initial from any segment of the first beat. Pending-transition cancellation retains §7.3 for both schemas.
 
 At `initial`, it is accepted with no movement:
 
@@ -361,7 +361,7 @@ If `pause()` preserved an authored dwell interval, `play()` resumes the exact re
 
 A navigation command clears continuous playback intent, cancels the active animated transition, and resolves through absolute non-animated rendering.
 
-For an in-flight transition from committed B to target C:
+For a v1 in-flight transition from committed B to target C:
 
 ```text
 next()       -> cancel animation, render C absolutely, commit C
@@ -372,7 +372,7 @@ end()        -> cancel animation, render final absolutely, commit final
 restart()    -> cancel animation, render initial absolutely, reset reveal state
 ```
 
-The mid-transition `previous()` case is accepted with `result: "no_change"` because B is already the committed boundary. A second `previous()` from stable B moves to the preceding boundary.
+The mid-transition `previous()` case is accepted with `result: "no_change"` because B is already the committed boundary. A second `previous()` from stable B resolves according to §6.4. For v2, Next cancels the active transition and selects its destination by beat from committed B according to §6.3; it does not substitute the pending segment C for that destination. Other cancellation and absolute-rendering rules remain unchanged.
 
 A navigation command supersedes the active transition. Runtime does not replay the cancelled transition after the new destination settles.
 
@@ -625,11 +625,19 @@ Continuous arbitrary-time renderer scrubbing is outside v1. See ADR 0007.
 
 ## 15. Deep Linking
 
-Stable semantic boundaries use:
+v1 stable semantic boundaries use:
 
 ```text
 #cim/{experience-id}/{step-id}
 ```
+
+v2 public links use authored beats as defined in AUTHORING-TO-RUNTIME-v1 §12:
+
+```text
+#cim/{experience-id}/{beat-id}
+```
+
+A public beat ID resolves to that beat's final canonical boundary. Generated v2 segment IDs are internal identities and are rejected as public targets. Legacy v1 links retain direct step lookup. ADR 0051 extends WordPress mount-time resolution; live fragment synchronization and share-link controls remain separate work.
 
 The reserved initial boundary is addressable as:
 

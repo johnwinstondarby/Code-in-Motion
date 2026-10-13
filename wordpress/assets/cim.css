@@ -138,6 +138,16 @@
   border: 1px solid #323a4a;
 }
 
+.cim [data-cim-player="console-explanation"] [data-cim-beat-heading] {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.cim [data-cim-beat-controls] { flex-basis: 100%; }
+.cim [data-cim-beat-progress] { display: block; margin-bottom: 0.5rem; }
+.cim [data-cim-beat-markers] { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.cim [data-cim-beat-marker][aria-current="step"] { border-width: 2px; }
+
 .cim [data-cim-player="console-explanation"] [data-cim-commentary-entry][aria-current="step"] {
   border-color: #FFFFFF;
 }

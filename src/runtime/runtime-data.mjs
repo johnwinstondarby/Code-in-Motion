@@ -1,6 +1,7 @@
 import {
   INITIAL_BOUNDARY_ID
 } from '../contracts/session.mjs';
+import { readExperienceBeats } from '../experience/beat-groups.mjs';
 import {
   COMMAND_SOURCE_VALUES
 } from '../contracts/events.mjs';
@@ -137,6 +138,8 @@ export function readExperienceEnvelope(experience) {
     rendererConfig,
     defaultPlaybackRate,
     stepIds: Object.freeze(stepIds),
+    beatFinalStepIds: schema === 'localis.cim/v2'
+      ? Object.freeze(readExperienceBeats(experience).map(beat => beat.finalStepId)) : null,
     boundaries
   };
 }

@@ -30,3 +30,7 @@ No authoring path may bypass validation. This component must not inspect opaque 
 ## Verification
 
 Tests cover invalid schema, duplicate step IDs, missing required state, unsupported versions, malformed structured links, and deterministic error reporting.
+
+## Structural beat grouping
+
+`beat-groups.mjs` reads only validated frozen v2 grouping metadata and presentation beat count. It validates contiguous ordinals/segments and final boundaries, then returns immutable structural groups for Runtime and Host. It never interprets renderer state or configuration. v1 has no groups.

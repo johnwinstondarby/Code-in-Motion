@@ -104,7 +104,8 @@ class CiMInstance {
       instanceId,
       experienceId: envelope.experienceId,
       experienceVersion: envelope.experienceVersion,
-      stepIds: envelope.stepIds
+      stepIds: envelope.stepIds,
+      beatFinalStepIds: envelope.beatFinalStepIds
     });
     const operational = createOperationalState(envelope.defaultPlaybackRate);
     const presentation = createPresentationScheduler({

@@ -48,7 +48,7 @@ The protected Browser E2E workflow runs these checks alongside existing real Wor
 | Remove renderer, Player, or Transport withholding | Browser pre-ready/frame-sampling case |
 | Open v2 production registration | Existing experience-registry gate suite |
 
-All 15 original mutations and 16 viewport/hold mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
+All 15 original mutations, 16 viewport/hold mutations, and six beat-consumer mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
 
 ## Known issue: authored indent and wrapped continuation can coincide
 
@@ -64,7 +64,7 @@ For the subsequent viewport checkpoint, temporary pointer/focus/selection holds 
 
 This is a candidate, not a deployed release or a new designation of the historical RC#1 artifact. Its exact head must pass Verify CiM contracts, WordPress Floor QA, WordPress Browser E2E, and WordPress Playground PR Preview before release admission.
 
-The Git data used by the browser fixture is test-only and is not admitted to production. Beat-aware consumers, v2 Commentary anchor/evidence/risk semantics, independent Console viewport follow and pane holds, engine compatibility/registration, and operational copy remain later checkpoints under the accepted v2 gate. ADR 0048 Parts B and C remain deferred.
+The Git data used by the browser fixture is test-only and is not admitted to production. Independent pane follow/holds and beat consumers are covered by the checkpoints below. v2 Commentary anchor/evidence/risk semantics, engine compatibility/registration, and operational copy remain later checkpoints under the accepted v2 gate. ADR 0048 Parts B and C remain deferred.
 
 ## Independent pane follow and holds checkpoint
 
@@ -79,3 +79,13 @@ The six new browser cases prove actual renderer replacement, newest content in b
 PR #76 review adds an opaque black sticky-title surface including its lower gap, with a geometry/hit-testing browser proof. Selection isolation and pre-existing pointer presence now have dedicated browser and headless proofs plus mutation guards. The protected browser suite has 15 normal cases and the existing expected wrap-collision failure; the mutation runner catches 31 guarded breakages.
 
 Master Visuals v3 corrects the WordPress transport status: 0.1.11 ships Start, Previous, Play/Pause, Next, End, and Restart in Console-Explanation mode; the timeline, Playback Rate slider, and beat progress remain targets. The Part A color follow-up must replace the discussed Console line's white outline with a background band and review keyboard focus-ring treatment against the grammar, including a forced-colors fallback. These changes remain outside the pane-follow PR. Pointer-rest behavior should be checked on page 3227 during live installation.
+
+## Beat consumers checkpoint (ADR 0051)
+
+Authored headings group segment Explanation entries. Progress follows the current committed beat, including backward movement below the reveal frontier. One native marker per beat seeks the captured final boundary with marker provenance. Manual Previous/Next use beat-final destinations; continuous playback and Commentary selection still visit individual segments. Incoming public v2 beat links select final boundaries before admission; generated segment links are rejected. Legacy step links and navigation remain unchanged.
+
+Five added browser cases cover headings/progress/reset, button and keyboard navigation, captured marker targets, internal Commentary selection, incoming beat links, v1 fallback, sibling isolation, and teardown. Four headless binding cases protect validation before DOM changes, construction rollback, retryable listener withdrawal, and synchronous/asynchronous failures. The complete browser suite now has 20 normal cases plus the known expected wrap failure.
+
+Production v2 registration remains closed. Engine compatibility, complete anchor/evidence/risk semantics, copy, timeline scrubbing, rate controls, color/limn work, and wrapping collision remain deferred. Pane follow and holds have shipped through ADR 0050; beat consumers are implemented here rather than deferred. No release-version change or live installation is part of this checkpoint.
+
+Six additional mutation guards break manual beat navigation, final-boundary deep-link mapping, committed-beat progress, marker destination, immutable marker targeting, and listener withdrawal. All 37 guarded breakages must be caught after a passing baseline.

@@ -12,7 +12,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0002`](0002-control-vs-observation.md) | Control Versus Observation | 2026-09-12 | Accepted |
 | [`0003`](0003-absolute-state-rendering.md) | Absolute-State Rendering | 2026-09-12 | Accepted |
 | [`0004`](0004-authoring-ingestion.md) | Authoring and Experience Ingestion | 2026-09-12 | Accepted |
-| [`0005`](0005-semantic-navigation-and-abort.md) | Semantic Navigation and In-Flight Transition Handling | 2026-09-12 | Accepted |
+| [`0005`](0005-semantic-navigation-and-abort.md) | Semantic Navigation and In-Flight Transition Handling | 2026-09-12 | Accepted; amended by 0051 |
 | [`0006`](0006-transition-pacing-and-dwell.md) | Transition Pacing and Dwell Ownership | 2026-09-12 | Accepted |
 | [`0007`](0007-semantic-scrub-contract.md) | Semantic Scrub Contract | 2026-09-12 | Accepted |
 | [`0008`](0008-shared-contracts-and-privileged-core-control.md) | Shared Contracts and Privileged Core Control | 2026-09-13 | Accepted |
@@ -56,8 +56,9 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0046`](0046-session-and-shell-experience-selection.md) | Session and Shell Experience Selection | 2026-10-02 | Accepted (decision); implementation after RC#2 |
 | [`0047`](0047-playback-rate-and-presentation-time-dilation.md) | Playback Rate and Presentation-Time Dilation | 2026-10-02 | Accepted (R41 F6) |
 | [`0048`](0048-teaching-first-presentation-and-authored-limn.md) | Teaching-First Console Presentation and Authored Limn Emphasis | 2026-10-03 | Accepted |
-| [`0049`](0049-wordpress-console-explanation-player-composition.md) | WordPress Console-Explanation Player Composition | 2026-10-05 | Accepted |
+| [`0049`](0049-wordpress-console-explanation-player-composition.md) | WordPress Console-Explanation Player Composition | 2026-10-05 | Accepted; amended by 0051 |
 | [`0050`](0050-independent-player-pane-follow-and-holds.md) | Independent Player Pane Follow and Holds | 2026-10-12 | Accepted |
+| [`0051`](0051-player-beat-navigation-and-presentation.md) | Player Beat Navigation and Presentation | 2026-10-13 | Accepted |
 
 ## Owns
 

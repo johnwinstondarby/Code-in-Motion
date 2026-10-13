@@ -279,3 +279,7 @@ Checkpoint 6 verification proves terminal disposal from idle, paused transition,
 Checkpoint 7 verification proves default and targeted entry, pre-mount target validation, exact one-render target state and context, entry provenance and reveal-frontier settlement, restart reset, dwell exclusion, final-entry `play()` behavior, targeted-render failure cleanup, disposal-time entry cancellation, reentrant-disposal commit prevention, and isolation when two instances share one frozen experience object.
 
 Checkpoint 8 verification proves exact frozen adoption results, boolean-only validation, pre-initialization adoption, no stable rerender or observational mutation, future-context sampling, captured active and paused contexts, dwell preservation, recovery preservation, terminal rejection, and absence of Accessibility or browser-observation authority.
+
+## ADR 0051 beat navigation
+
+Runtime derives v2 beat-final IDs through the structural Experience reader and supplies them to Core. Next and Previous preserve command identity and provenance. Automatic playback, including reduced motion, still visits every generated segment. Seek and Commentary can still address individual boundaries; Home, End, Restart, reveal policy, and lifecycle rejection retain their contracts.

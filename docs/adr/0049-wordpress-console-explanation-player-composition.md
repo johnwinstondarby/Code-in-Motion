@@ -890,3 +890,7 @@ After ADR 0049 lands:
 4. The production registration bridge introduces explicit engine identity, enforces engine_min, proves incompatible-version rejection, and then opens the v2 registration gate.
 5. git-repository-practice enters the production experience registry only after those requirements are green.
 6. Issue #4 closes Player-level Console copy behavior before RC#2.
+
+## Amendment by ADR 0051
+
+[ADR 0051](0051-player-beat-navigation-and-presentation.md) extends Decision 5 with an exact frozen `beats` projection for authored headings, progress, and one marker per beat. Legacy roots receive an empty frozen array. Commentary entries retain their original exact shape. This checkpoint supplies beat navigation and mount-time public beat links while the production v2 admission gate remains closed.

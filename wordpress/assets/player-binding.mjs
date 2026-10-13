@@ -8,6 +8,7 @@ import { createCommentaryScrollBinding } from '../../src/commentary/scroll-bindi
 import { createConsoleFollowController } from './console-follow-controller.mjs';
 import { createPaneHoldBinding } from './pane-hold-binding.mjs';
 import { createPaneScrollIntent } from './pane-scroll-intent.mjs';
+import { createWordPressBeatBinding } from './beat-binding.mjs';
 import { createConsoleExplanationTransportBinding, createWordPressTransportBinding } from './transport-binding.mjs';
 
 export const WORDPRESS_PLAYER_MODES = Object.freeze({ 'console/v1': 'console-explanation' });
@@ -33,6 +34,7 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
   let disposed = false;
   let disposalComplete = false;
   let player = null;
+  let beatBinding = null;
 
   function element(tag, attribute, value = '') {
     const node = document.createElement(tag);
@@ -88,18 +90,28 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     const indicator = element('button', 'data-cim-commentary-resume');
     indicator.type = 'button';
     indicator.hidden = true;
+    const beatByBoundary = new Map(content.beats.flatMap(beat => beat.boundaryIds.map(id => [id,beat])));
+    const beatSections = new Map(content.beats.map(beat => {
+      const section = element('section','data-cim-beat-section',beat.id); section.hidden = true;
+      const heading = element('h3','data-cim-beat-heading',beat.id);
+      heading.textContent = `${beat.ordinal} ${beat.heading}`;
+      section.appendChild(heading); viewport.appendChild(section);
+      return [beat.id,section];
+    }));
     const controls = Object.freeze(content.entries.map((entry, index) => {
       const entryRoot = element('div', 'data-cim-commentary-entry');
       entryRoot.hidden = true;
       const select = document.createElement('button');
       select.type = 'button';
-      select.textContent = `Step ${index + 1}`;
+      const beat = beatByBoundary.get(entry.stepId);
+      select.textContent = beat === undefined ? `Step ${index + 1}` : 'Show in Console';
+      if (beat !== undefined) select.setAttribute('aria-label',`Show ${beat.heading} explanation ${index - content.entries.findIndex(item => item.stepId === beat.boundaryIds[0]) + 1} in Console`);
       const text = document.createElement('p');
       const links = Object.freeze(entry.links.map(() => document.createElement('a')));
       entryRoot.appendChild(select);
       entryRoot.appendChild(text);
       for (const link of links) entryRoot.appendChild(link);
-      viewport.appendChild(entryRoot);
+      (beat === undefined ? viewport : beatSections.get(beat.id)).appendChild(entryRoot);
       return Object.freeze({ root: entryRoot, text, select, links });
     }));
     explanationPane.appendChild(viewport);
@@ -128,10 +140,14 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
         Promise.resolve(pending).then(outcome => {
           if (disposed || !['success', 'no_change'].includes(outcome?.result)) return;
           native.refresh();
+          refreshBeatSections();
+          beatBinding?.refresh();
           const current = presentation.read().currentStepId;
           const active = controls.find(control => control.root.getAttribute('data-cim-step-id') === current)?.root;
-          const top = active === undefined ? 0 : Math.max(0,
-            active.getBoundingClientRect().top - viewport.getBoundingClientRect().top + viewport.scrollTop);
+          const section = active?.closest('[data-cim-beat-section]');
+          const destination = section?.querySelector('[data-cim-commentary-entry]') === active ? section : active;
+          const top = destination === undefined ? 0 : Math.max(0,
+            destination.getBoundingClientRect().top - viewport.getBoundingClientRect().top + viewport.scrollTop);
           scroll.reposition(top);
           consoleScroll.reposition();
         }).catch(onError);
@@ -149,6 +165,11 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
         return pending;
       }
     });
+    function refreshBeatSections() {
+      for (const section of beatSections.values()) {
+        section.hidden = ![...section.querySelectorAll('[data-cim-commentary-entry]')].some(entry => !entry.hidden);
+      }
+    }
     disposers.push(() => native.dispose());
     const follow = createCommentaryFollowController({ presentation });
     const explanationIntent = createPaneScrollIntent({viewport});
@@ -187,10 +208,17 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     observer.observe(rendererRoot, { subtree: true, childList: true, characterData: true });
     const transport = createConsoleExplanationTransportBinding({ root, commandPort: playerCommands, observationPort });
     disposers.push(() => transport.dispose());
+    if (content.beats.length > 0) {
+      beatBinding = createWordPressBeatBinding({root,beats:content.beats,boundaryIds:content.boundaryIds,
+        observation,seek:playerCommands.seek,onError});
+      disposers.push(() => beatBinding.dispose());
+    }
 
     function refresh() {
       if (disposed) return;
       native.refresh();
+      refreshBeatSections();
+      beatBinding?.refresh();
       // CSS withholds geometry until presentation admission; do not acknowledge follow early.
       refreshViewports();
       timer = view.setTimeout(() => {

@@ -339,8 +339,12 @@ The WordPress production checkpoint adds verification for:
 - full repository verification on Node 20 and Node 22.
 ## ADR 0049 presentation admission
 
-`playerContent(root)` returns an exact frozen instructional projection with `rendererId`, `title`, `description`, `boundaryIds`, and `entries`. Legacy roots receive the same projection with null presentation metadata when absent. Entries contain only `stepId`, `text`, and structured `links`; renderer state and configuration stay opaque. Projection construction rejects any mismatch with canonical boundary order.
+`playerContent(root)` returns an exact frozen instructional projection with `rendererId`, `title`, `description`, `boundaryIds`, `entries`, and `beats`. Legacy roots receive the same projection with null presentation metadata when absent. Entries contain only `stepId`, `text`, and structured `links`; renderer state and configuration stay opaque. Projection construction rejects any mismatch with canonical boundary order.
 
 `present(root)` returns false for an unavailable, detached, or disposing/disposed root and true after successful presentation admission. Repeated admission is idempotent. Disposal withdraws all projections synchronously and wins every presentation race.
 
 The settled `{ mounted, fallback }` result describes initialization, not subsequent composition. Required-binding failure disposes the root and presents fallback in either mode. Before admission, renderer, Player, and Transport are withheld with `display: none`; fallback remains available.
+
+## ADR 0051 beat consumers
+
+The structural `beats` projection is a frozen array of exact `{ id, ordinal, heading, finalStepId, boundaryIds }` groups; each boundary array is frozen. v1 returns an empty array. Grouping never reads subject state. Incoming v2 public beat links resolve to final boundaries; generated segment IDs are not public targets. Initial and legacy direct step links retain their contracts.
