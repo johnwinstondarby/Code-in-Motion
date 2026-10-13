@@ -1,4 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+
+const lesson=JSON.parse(readFileSync(new URL('../../experiences/git/git-repository-practice.json',import.meta.url),'utf8'));
 
 const base=process.env.CIM_WP_BASE_URL ?? 'http://127.0.0.1:8888';
 test.use({colorScheme:'dark',reducedMotion:'reduce'});
@@ -23,7 +26,7 @@ test('registered WordPress v2 lesson presents full Player consumers while legacy
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','stage-hunk--s04');
   await root.locator('[data-cim-control="end"]').click();
   await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(18);
-  await expect(root.locator('[data-cim-commentary-risk]:visible')).toHaveCount(8);
+  await expect(root.locator('[data-cim-commentary-risk]:visible')).toHaveCount(lesson.steps.filter(step=>step.commentary.risk).length);
   await expect(root.locator('[data-cim-risk-guidance]').last()).toBeVisible();
   await root.getByLabel('Theme',{exact:true}).selectOption('light');
   await expect(root.locator('[data-cim-pane="console"]')).toHaveCSS('background-color','rgb(246, 248, 251)');
