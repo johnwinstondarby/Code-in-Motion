@@ -567,4 +567,30 @@
   --cim-focus: #3F4A5A;
   --cim-pane-focus: #1F2937;
 }
+
+@media (forced-colors: active) {
+  .cim:has(> [data-cim-player="console-explanation"]),
+  .cim[data-cim-theme]:has(> [data-cim-player="console-explanation"]) {
+    --cim-console-background: Canvas;
+    --cim-console-text: CanvasText;
+    --cim-console-quiet: CanvasText;
+    --cim-limn: Highlight;
+    --cim-risk-free: CanvasText;
+    --cim-risk-trace: CanvasText;
+    --cim-risk-final: CanvasText;
+    --cim-explanation-background: Canvas;
+    --cim-explanation-prose: CanvasText;
+    --cim-explanation-heading: CanvasText;
+    --cim-wayfinding: LinkText;
+    --cim-explanation-control: CanvasText;
+    --cim-structural-border: CanvasText;
+    --cim-frame-background: Canvas;
+    --cim-frame-text: CanvasText;
+    --cim-control-text: CanvasText;
+    --cim-control-border: CanvasText;
+    --cim-control-hover: Canvas;
+    --cim-focus: Highlight;
+    --cim-pane-focus: Highlight;
+  }
+}
 /* learner-theme-presets:end */

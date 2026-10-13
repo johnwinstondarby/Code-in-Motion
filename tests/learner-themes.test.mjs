@@ -94,6 +94,20 @@ test('learner themes roll back partially installed media listeners', () => {
   assert.throws(() => coordinator.subscribe(() => {}), /install failed/);
   assert.ok([...f.queries.values()].every(query => query.listeners.size === 0));
 });
+test('learner themes resample device values on notification when existing query objects are stale', () => {
+  const current = new Map(); const objects = [];
+  const view = {localStorage:{getItem:()=>null},matchMedia(query) {
+    const result = {matches:current.get(query) ?? false,listeners:new Set(),
+      addEventListener(type,listener){this.listeners.add(listener);},
+      removeEventListener(type,listener){this.listeners.delete(listener);}};
+    objects.push({query,result}); return result;
+  }};
+  const coordinator=createLearnerThemeCoordinator(view); const states=[];
+  const off=coordinator.subscribe(state=>states.push(state.theme));
+  current.set(contrastQuery,true);
+  for(const listener of objects.find(item=>item.query===lightQuery).result.listeners) listener();
+  assert.equal(states.at(-1),'high-contrast');off();
+});
 
 class Element {
   constructor(document) { this.ownerDocument=document; this.children=[]; this.attributes=new Map(); this.listeners=new Set(); }

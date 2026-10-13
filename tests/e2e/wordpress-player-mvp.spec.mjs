@@ -5,7 +5,7 @@ import { resolve, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { THEME_PRESETS } from '../../wordpress/assets/theme-presets.mjs';
 
-test.use({ colorScheme: 'dark' });
+test.use({ colorScheme: 'dark', browserName: process.env.CIM_PLAYER_BROWSER ?? 'chromium' });
 
 // Test-only production-component composition. No fixture enters the release registry.
 const repository = fileURLToPath(new URL('../../', import.meta.url));
@@ -172,13 +172,15 @@ test('learner themes follow device preference changes until an explicit choice a
   await expect(root).toHaveAttribute('data-cim-theme','high-contrast');
   expect(await page.evaluate(() => localStorage.getItem('cim.learnerTheme'))).toBeNull();
   await root.getByLabel('Theme',{exact:true}).selectOption('localis');
+  await expect(root).toHaveAttribute('data-cim-theme','localis');
+  await root.getByLabel('Theme',{exact:true}).selectOption('light');
   await page.emulateMedia({forcedColors:'active'});
   await expect(root.locator('[data-cim-theme-control]')).toHaveJSProperty('hidden',true);
   await expect(root.getByLabel('Theme',{exact:true})).toBeHidden();
-  await expect(root.locator('[data-cim-pane="console"]')).not.toHaveCSS('color','rgb(124, 183, 255)');
+  await expect(root.locator('[data-cim-pane="console"]')).not.toHaveCSS('color','rgb(26, 75, 140)');
   await page.emulateMedia({forcedColors:'none'});
   await expect(root.getByLabel('Theme',{exact:true})).toBeVisible();
-  await expect(root).toHaveAttribute('data-cim-theme','localis');
+  await expect(root).toHaveAttribute('data-cim-theme','light');
 });
 
 test('learner themes unavailable storage keeps an in-memory choice for siblings and remount', async ({ page }) => {
@@ -202,7 +204,8 @@ test('learner themes invalid persisted ID falls back to current device preferenc
   await page.emulateMedia({colorScheme:'light'});
   await open(page);
   await expect(page.locator('.cim').first()).toHaveAttribute('data-cim-theme','light');
-  await page.emulateMedia({contrast:'more'});
+  await page.emulateMedia({colorScheme:'dark',contrast:'more'});
+  await expect.poll(() => page.evaluate(() => matchMedia('(prefers-contrast: more)').matches)).toBe(true);
   await expect(page.locator('.cim').first()).toHaveAttribute('data-cim-theme','high-contrast');
 });
 

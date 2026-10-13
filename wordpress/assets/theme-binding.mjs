@@ -16,9 +16,13 @@ export function createLearnerThemeCoordinator(view) {
   const forced = media('(forced-colors: active)');
   const subscribers = new Set();
   const withdrawals = [];
+  // Read fresh query results on notification; some browser bridges retain stale
+  // matches on existing MediaQueryList objects after device emulation changes.
   const read = () => Object.freeze({
-    theme: resolveLearnerTheme({ explicit, contrast: contrast.matches, light: light.matches }),
-    forcedColors: forced.matches
+    theme: resolveLearnerTheme({ explicit,
+      contrast: media('(prefers-contrast: more)').matches,
+      light: media('(prefers-color-scheme: light)').matches }),
+    forcedColors: media('(forced-colors: active)').matches
   });
   function publish() {
     const snapshot = read();
@@ -54,7 +58,7 @@ export function createLearnerThemeCoordinator(view) {
   return Object.freeze({
     read,
     choose(theme) {
-      if (!isThemeId(theme) || forced.matches) return;
+      if (!isThemeId(theme) || media('(forced-colors: active)').matches) return;
       explicit = theme;
       try { view.localStorage.setItem(LEARNER_THEME_STORAGE_KEY, theme); } catch { /* Keep the in-memory choice. */ }
       publish();

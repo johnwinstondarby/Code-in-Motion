@@ -35,8 +35,15 @@ export function resolveLearnerTheme({ explicit, contrast = false, light = false 
 
 export function generateThemeCSS() {
   const root = '.cim:has(> [data-cim-player="console-explanation"])';
-  return Object.entries(THEME_PRESETS).map(([id, { colors }]) => {
+  const presets = Object.entries(THEME_PRESETS).map(([id, { colors }]) => {
     const selector = id === 'localis' ? root : `.cim[data-cim-theme="${id}"]:has(> [data-cim-player="console-explanation"])`;
     return selector + ' {\n' + Object.entries(colors).map(([role, value]) => `  --cim-${role}: ${value};`).join('\n') + '\n}';
   }).join('\n\n');
+  const system = Object.keys(common).map(role => {
+    const value = role.endsWith('background') || role === 'control-hover' ? 'Canvas'
+      : ['focus', 'pane-focus', 'limn'].includes(role) ? 'Highlight'
+      : role === 'wayfinding' ? 'LinkText' : 'CanvasText';
+    return `    --cim-${role}: ${value};`;
+  }).join('\n');
+  return presets + '\n\n@media (forced-colors: active) {\n  ' + root + ',\n  .cim[data-cim-theme]:has(> [data-cim-player="console-explanation"]) {\n' + system + '\n  }\n}';
 }

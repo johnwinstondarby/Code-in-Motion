@@ -29,6 +29,7 @@ const mutations = [
   ['theme skip select withdrawal', 'wordpress/assets/theme-binding.mjs', "select.removeEventListener('change', change);", 'void change;', themeArgs],
   ['theme skip media withdrawal', 'wordpress/assets/theme-binding.mjs', "query.removeEventListener('change', listener)", 'void listener', themeArgs],
   ['theme omit sibling publication', 'wordpress/assets/theme-binding.mjs', 'of subscribers)', 'of [...subscribers].slice(0, 1))', themeArgs],
+  ['theme retain stale device values', 'wordpress/assets/theme-binding.mjs', "contrast: media('(prefers-contrast: more)').matches,", 'contrast: contrast.matches,', themeArgs],
   ['theme show menu under forced colors', 'wordpress/assets/theme-binding.mjs', 'label.hidden = snapshot.forcedColors;', 'label.hidden = false;', browserArgs],
   ["skip unfinished beat", "src/core/boundary-model.mjs", "(advance ? 1 : 0)", "1", beatArgs],
   ["disable manual beat navigation", "src/core/boundary-model.mjs", "if (beatFinalIndices !== null) {", "if (false) {", beatArgs],
