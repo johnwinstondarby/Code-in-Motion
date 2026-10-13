@@ -168,6 +168,8 @@ Authoring JSON v1 §20 already says "if everything calls for attention, nothing 
 
 ### Relationship to ADR 0045
 
+**Learner-preset amendment:** [ADR 0052](0052-learner-theme-presets.md) activates complete, instance-scoped internal palette properties for Console-Explanation learner presets ahead of Part C. It supersedes the timing of the property prohibition below for those roots, adds risk/frame/control/focus roles, and introduces no author palette/schema surface. Each root declares every role; fallback and ancestor palette inheritance remain forbidden. Part C's author validation/versioned interface remains deferred; author palettes will affect only the lesson's Localis preset.
+
 21. **Part A stays within ADR 0045. Part C amends ADR 0045's custom-property implementation boundary for all CiM instances, and exposes configurable palette authoring only through `localis.cim/v3`.**
 
     **Part A stays inside ADR 0045's fixed-presentation model.** It changes only the values `cim.css` declares (backgrounds, text, muted, and risk colors). `cim.css` remains the sole presentation authority (0045 Decision 1), and Part A introduces no theme interface. Part A uses ordinary literal declarations and introduces **no** `--cim-*` custom properties, preserving ADR 0045 Decision 8 until Part C governs that seam.

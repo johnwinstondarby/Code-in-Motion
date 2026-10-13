@@ -20,7 +20,16 @@ const browserArgs = [resolve(ROOT, 'node_modules/@playwright/test/cli.js'), 'tes
   'tests/e2e/wordpress-player-mvp.spec.mjs', '--reporter=line', '--timeout=10000', '--output=' + resolve(work, 'browser-results')];
 const hostArgs = ['--test', 'tests/wordpress-live-host.test.mjs'];
 const beatArgs = ['--test','tests/beat-consumers.test.mjs','tests/wordpress-beat-binding.test.mjs'];
+const themeArgs = ['--test','tests/learner-themes.test.mjs'];
 const mutations = [
+  ['theme drop light role', 'wordpress/assets/theme-presets.mjs', "'console-text': '#1A4B8C',", '', themeArgs],
+  ['theme break persistence', 'wordpress/assets/theme-binding.mjs', 'view.localStorage.setItem(LEARNER_THEME_STORAGE_KEY, theme);', 'void theme;', themeArgs],
+  ['theme discard in-memory choice', 'wordpress/assets/theme-binding.mjs', 'explicit = theme;', 'explicit = null;', themeArgs],
+  ['theme device overrides explicit choice', 'wordpress/assets/theme-presets.mjs', 'if (isThemeId(explicit)) return explicit;', 'if (false) return explicit;', themeArgs],
+  ['theme skip select withdrawal', 'wordpress/assets/theme-binding.mjs', "select.removeEventListener('change', change);", 'void change;', themeArgs],
+  ['theme skip media withdrawal', 'wordpress/assets/theme-binding.mjs', "query.removeEventListener('change', listener)", 'void listener', themeArgs],
+  ['theme omit sibling publication', 'wordpress/assets/theme-binding.mjs', 'of subscribers)', 'of [...subscribers].slice(0, 1))', themeArgs],
+  ['theme show menu under forced colors', 'wordpress/assets/theme-binding.mjs', 'label.hidden = snapshot.forcedColors;', 'label.hidden = false;', browserArgs],
   ["skip unfinished beat", "src/core/boundary-model.mjs", "(advance ? 1 : 0)", "1", beatArgs],
   ["disable manual beat navigation", "src/core/boundary-model.mjs", "if (beatFinalIndices !== null) {", "if (false) {", beatArgs],
   ["deep link selects first segment", "src/host/wordpress-deep-link.mjs", "?.finalStepId", "?.boundaryIds[0]", beatArgs],
@@ -74,7 +83,7 @@ async function run(args) {
 }
 
 // A failing baseline must never count as successful mutation detection.
-for (const args of [beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
+for (const args of [themeArgs, beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
   const result = await run(args);
   if (result.code !== 0) throw new Error('Mutation baseline failed:\n' + result.output);
 }
@@ -99,7 +108,7 @@ for (const [name, file, from, to, args] of mutations) {
       name === 'release Console hold resumes ownership' ? 'Console scroll ownership' :
       name === 'skip renderer observer disposal' ? 'root teardown' :
       name === 'skip deliberate viewport navigation' ? 'deliberate navigation repositions' : 'atomic readiness';
-    const focusedGrep = name === 'progress follows reveal frontier' ? 'authored beat headings' :
+    const focusedGrep = name.startsWith('theme ') ? 'learner themes' : name === 'progress follows reveal frontier' ? 'authored beat headings' :
       ['markers select first segment','markers trust mutable DOM identity'].includes(name) ? 'beat markers capture' :
       name === 'focus scrolling claims ownership' ? 'offscreen link focus' :
       name === 'ignore native wheel intent' ? 'Console scroll ownership' :

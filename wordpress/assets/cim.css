@@ -24,8 +24,8 @@
   min-width: 0;
   margin: 0;
   padding: 1rem;
-  background: #000000;
-  border: 1px solid #323a4a;
+  background: var(--cim-console-background);
+  border: 1px solid var(--cim-structural-border);
   border-radius: 8px;
   text-align: left;
   font: inherit;
@@ -34,8 +34,8 @@
 .cim [data-cim-player="console-explanation"] [data-cim-pane="console"],
 .cim [data-cim-player="console-explanation"] [data-cim-renderer="console/v1"],
 .cim [data-cim-player="console-explanation"] [data-cim-renderer="console/v1"] * {
-  color: #7CB7FF;
-  background: #000000;
+  color: var(--cim-console-text);
+  background: var(--cim-console-background);
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 0.9375rem;
   line-height: 1.5;
@@ -67,14 +67,14 @@
   position: sticky;
   top: 0;
   z-index: 1;
-  background: #000000;
+  background: var(--cim-console-background);
   margin-bottom: 0;
   padding-bottom: 1rem;
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-pane="console"] [data-cim-console-resume] {
   padding: 0.5rem 0.75rem;
-  border: 1px solid #7CB7FF;
+  border: 1px solid var(--cim-console-text);
   border-radius: 0.25rem;
   cursor: pointer;
 }
@@ -101,13 +101,13 @@
 
 .cim [data-cim-player="console-explanation"] [data-cim-renderer="console/v1"] [data-tone="dim"],
 .cim [data-cim-player="console-explanation"] [data-cim-renderer="console/v1"] [data-tone="dim"] * {
-  color: #6F93C2;
+  color: var(--cim-console-quiet);
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"],
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] * {
-  color: #A8B3C2;
-  background: #171B22;
+  color: var(--cim-explanation-prose);
+  background: var(--cim-explanation-background);
   font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-weight: 500;
   text-transform: none;
@@ -115,7 +115,7 @@
 
 .cim [data-cim-player="console-explanation"] [data-cim-player-title] {
   margin: 0 0 0.75rem;
-  color: #E8ECF2;
+  color: var(--cim-explanation-heading);
   font-family: "Catamaran", "IBM Plex Sans", system-ui, sans-serif;
   font-size: 1.125rem;
   font-weight: 700;
@@ -142,13 +142,13 @@
 .cim [data-cim-player="console-explanation"] [data-cim-commentary-entry] {
   margin: 0 0 1rem;
   padding: 0.75rem;
-  border: 1px solid #323a4a;
+  border: 1px solid var(--cim-structural-border);
   border-radius: 8px;
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-beat-heading] {
   margin: 0 0 0.75rem;
-  color: #5AC4C8;
+  color: var(--cim-wayfinding);
   font-family: "Catamaran", "IBM Plex Sans", system-ui, sans-serif;
   font-weight: 700;
   font-size: 1rem;
@@ -160,7 +160,7 @@
 .cim [data-cim-beat-marker][aria-current="step"] { border-width: 2px; }
 
 .cim [data-cim-player="console-explanation"] [data-cim-commentary-entry][aria-current="step"] {
-  border-color: #5AC4C8;
+  border-color: var(--cim-wayfinding);
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] a {
@@ -174,9 +174,9 @@
 
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] button {
   padding: 0.5rem 0.75rem;
-  border: 1px solid #A9B1BD;
+  border: 1px solid var(--cim-explanation-control);
   border-radius: 8px;
-  color: #A9B1BD;
+  color: var(--cim-explanation-control);
   font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 0.9375rem;
   cursor: pointer;
@@ -184,13 +184,13 @@
 
 .cim [data-cim-player="console-explanation"] :focus-visible,
 .cim [data-cim-renderer="console/v1"] [data-focused="true"] {
-  outline: 2px solid #FFFFFF;
+  outline: 2px solid var(--cim-pane-focus);
   outline-offset: 2px;
 }
 
-.cim [data-cim-player="console-explanation"] [data-risk="free-to-undo"] { color: #7BD88F; }
-.cim [data-cim-player="console-explanation"] [data-risk="leaves-a-trace"] { color: #F2B35B; }
-.cim [data-cim-player="console-explanation"] [data-risk="cannot-be-undone"] { color: #FF7A7A; }
+.cim [data-cim-player="console-explanation"] [data-risk="free-to-undo"] { color: var(--cim-risk-free); }
+.cim [data-cim-player="console-explanation"] [data-risk="leaves-a-trace"] { color: var(--cim-risk-trace); }
+.cim [data-cim-player="console-explanation"] [data-risk="cannot-be-undone"] { color: var(--cim-risk-final); }
 
 .cim [data-cim-player="console-explanation"] [hidden] { display: none; }
 
@@ -426,19 +426,19 @@
 
 /* Console-Explanation owns its dark frame and Transport; legacy Git stays light. */
 .cim[data-cim-state="ready"]:has(> [data-cim-player="console-explanation"]) {
-  color: #A8B3C2;
-  background: #171B22;
+  color: var(--cim-frame-text);
+  background: var(--cim-frame-background);
 }
 
 .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] {
-  color: #A8B3C2;
+  color: var(--cim-frame-text);
   font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 
 .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"] {
-  color: #E8ECF2;
-  background: #171B22;
-  border-color: #A8B3C2;
+  color: var(--cim-control-text);
+  background: var(--cim-frame-background);
+  border-color: var(--cim-control-border);
   border-radius: 8px;
 }
 
@@ -446,23 +446,23 @@
 .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:active,
 .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"],
 .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"]:is(:hover, :focus, :focus-visible, :active) {
-  background: #323A4A;
+  background: var(--cim-control-hover);
 }
 
 .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"],
 .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:is(:hover, :focus, :focus-visible, :active) {
-  color: #E8ECF2;
-  border-color: #A8B3C2;
+  color: var(--cim-control-text);
+  border-color: var(--cim-control-border);
 }
 
 .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:focus,
 .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:focus-visible {
-  outline: 2px solid #A8B3C2;
+  outline: 2px solid var(--cim-focus);
   outline-offset: 2px;
 }
 
 .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] [data-cim-beat-marker][aria-current="step"] {
-  border-color: #5AC4C8;
+  border-color: var(--cim-wayfinding);
 }
 
 @media (forced-colors: active) {
@@ -470,3 +470,101 @@
     outline-color: Highlight;
   }
 }
+
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-theme-control] {
+  color: var(--cim-frame-text);
+  font: inherit;
+}
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-theme-select] {
+  box-sizing: border-box;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--cim-control-text);
+  background: var(--cim-frame-background);
+  border: 1px solid var(--cim-control-border);
+  border-radius: 8px;
+  font: inherit;
+  color-scheme: dark;
+}
+.cim[data-cim-theme="light"] [data-cim-theme-select] { color-scheme: light; }
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-theme-select]:focus-visible {
+  outline: 2px solid var(--cim-focus);
+  outline-offset: 2px;
+}
+.cim [data-cim-theme-control][hidden] { display: none; }
+@media (forced-colors: active) {
+  .cim [data-cim-theme-control] { display: none; }
+  .cim:has(> [data-cim-player="console-explanation"]) [data-cim-theme-select]:focus-visible { outline-color: Highlight; }
+}
+
+/* learner-theme-presets:start */
+.cim:has(> [data-cim-player="console-explanation"]) {
+  --cim-console-background: #000000;
+  --cim-console-text: #7CB7FF;
+  --cim-console-quiet: #6F93C2;
+  --cim-limn: #FFFFFF;
+  --cim-risk-free: #7BD88F;
+  --cim-risk-trace: #F2B35B;
+  --cim-risk-final: #FF7A7A;
+  --cim-explanation-background: #171B22;
+  --cim-explanation-prose: #A8B3C2;
+  --cim-explanation-heading: #E8ECF2;
+  --cim-wayfinding: #5AC4C8;
+  --cim-explanation-control: #A9B1BD;
+  --cim-structural-border: #323A4A;
+  --cim-frame-background: #171B22;
+  --cim-frame-text: #A8B3C2;
+  --cim-control-text: #E8ECF2;
+  --cim-control-border: #A8B3C2;
+  --cim-control-hover: #323A4A;
+  --cim-focus: #A8B3C2;
+  --cim-pane-focus: #FFFFFF;
+}
+
+.cim[data-cim-theme="high-contrast"]:has(> [data-cim-player="console-explanation"]) {
+  --cim-console-background: #000000;
+  --cim-console-text: #82C4FF;
+  --cim-console-quiet: #8DB4E2;
+  --cim-limn: #FFFFFF;
+  --cim-risk-free: #8CFFA0;
+  --cim-risk-trace: #FF9F43;
+  --cim-risk-final: #FF8A8A;
+  --cim-explanation-background: #000000;
+  --cim-explanation-prose: #FFFFFF;
+  --cim-explanation-heading: #FFFFFF;
+  --cim-wayfinding: #7FECEF;
+  --cim-explanation-control: #FFFFFF;
+  --cim-structural-border: #A9B1BD;
+  --cim-frame-background: #000000;
+  --cim-frame-text: #FFFFFF;
+  --cim-control-text: #FFFFFF;
+  --cim-control-border: #FFFFFF;
+  --cim-control-hover: #171B22;
+  --cim-focus: #FFFFFF;
+  --cim-pane-focus: #FFFFFF;
+}
+
+.cim[data-cim-theme="light"]:has(> [data-cim-player="console-explanation"]) {
+  --cim-console-background: #F6F8FB;
+  --cim-console-text: #1A4B8C;
+  --cim-console-quiet: #4A6890;
+  --cim-limn: #000000;
+  --cim-risk-free: #1E6E35;
+  --cim-risk-trace: #7A4E00;
+  --cim-risk-final: #A8231C;
+  --cim-explanation-background: #FFFFFF;
+  --cim-explanation-prose: #344050;
+  --cim-explanation-heading: #111827;
+  --cim-wayfinding: #0B6B6F;
+  --cim-explanation-control: #3F4A5A;
+  --cim-structural-border: #C9D2DE;
+  --cim-frame-background: #EEF2F7;
+  --cim-frame-text: #1F2937;
+  --cim-control-text: #1F2937;
+  --cim-control-border: #6E7A8C;
+  --cim-control-hover: #DCE3ED;
+  --cim-focus: #3F4A5A;
+  --cim-pane-focus: #1F2937;
+}
+/* learner-theme-presets:end */

@@ -9,6 +9,7 @@ import { createConsoleFollowController } from './console-follow-controller.mjs';
 import { createPaneHoldBinding } from './pane-hold-binding.mjs';
 import { createPaneScrollIntent } from './pane-scroll-intent.mjs';
 import { createWordPressBeatBinding } from './beat-binding.mjs';
+import { createWordPressThemeBinding } from './theme-binding.mjs';
 import { createConsoleExplanationTransportBinding, createWordPressTransportBinding } from './transport-binding.mjs';
 
 export const WORDPRESS_PLAYER_MODES = Object.freeze({ 'console/v1': 'console-explanation' });
@@ -208,6 +209,8 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     observer.observe(rendererRoot, { subtree: true, childList: true, characterData: true });
     const transport = createConsoleExplanationTransportBinding({ root, commandPort: playerCommands, observationPort });
     disposers.push(() => transport.dispose());
+    const themeBinding = createWordPressThemeBinding({ root, onError });
+    disposers.push(() => themeBinding.dispose());
     if (content.beats.length > 0) {
       beatBinding = createWordPressBeatBinding({root,beats:content.beats,boundaryIds:content.boundaryIds,
         observation,seek:playerCommands.seek,onError});

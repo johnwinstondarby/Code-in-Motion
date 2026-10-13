@@ -1,5 +1,9 @@
 # WordPress Player MVP candidate
 
+## Learner themes checkpoint (PR #78, ADR 0052)
+
+Console-Explanation Players offer Localis, High Contrast and Light through one native Theme select. Complete root-scoped palette declarations are generated from tested preset values; Localis preserves PR #77. Choice is shared across sibling Players and saved when storage permits. Explicit memory wins even on storage failure. Device contrast/light settings apply and update only without explicit choice. Forced colors hides the menu and retains the underlying preference. Binding/disposal and media-listener cleanup are transactional/retryable. Headless and browser proofs check contrast, hostile ancestors, canonical/renderer invariance, synchronization, reload, device changes, storage failure, remount and stale controls. Author palette integration remains deferred to Part C and will affect only Localis. Engine identity, the closed v2 gate, release version and live installation are unchanged.
+
 This checkpoint implements ADR 0049 and ADR 0048 Part A as the Player foundation for plugin 0.1.11. It follows the ADR-only merge `23fedb735dde81419f7efee49307599a634f71e4` after all four protected workflows passed on the accepted ADR head.
 
 ## Scope

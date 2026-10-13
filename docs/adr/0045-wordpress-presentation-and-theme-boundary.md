@@ -44,6 +44,8 @@ A future release may deliberately expose visual configuration. R38 should preser
 
 8. Current release CSS values remain ordinary CiM-owned declarations. R38 does not introduce inheritable `--cim-*` custom properties merely as private implementation details because their presence would create a practical external override seam before that seam is governed.
 
+   Amendment: ADR 0052 permits complete, root-declared internal properties and a native learner preset menu for Console-Explanation Players ahead of author theming. This supersedes the learner-control prohibition in Decision 6 and property timing in Decision 8 for those roots. CSS remains the styling authority; ancestor inheritance, free color inputs, public CSS override APIs and author palette/schema changes are not introduced. Legacy Git remains unchanged.
+
 9. A future governed release may promote a selected subset of the internal semantic vocabulary to a documented theme interface. Such a change must define scope, fallback values, inheritance, compatibility, isolation, and browser evidence at the time the interface is introduced.
 
 10. Ordinary host-theme inheritance and realistic global theme rules must not silently determine CiM-owned presentation. Browser evidence must exercise dark surrounding surfaces and hostile host foreground/background declarations.
