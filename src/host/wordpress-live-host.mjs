@@ -1,4 +1,5 @@
 import { createReducedMotionPreferenceSource } from '../accessibility/reduced-motion-preference-source.mjs';
+import { createPlayerContent } from './player-content.mjs';
 import { FAULT_COMPONENT, FAULT_RECOVERY_CLASS } from '../contracts/faults.mjs';
 import {
   HOST_DIAGNOSTIC_KEYS,
@@ -16,7 +17,7 @@ export const WORDPRESS_LIVE_HOST_OPTIONS_KEYS = Object.freeze([
   'diagnostics'
 ]);
 
-export const WORDPRESS_LIVE_HOST_KEYS = Object.freeze(['mount', 'commands', 'observations', 'disposeRoot', 'dispose']);
+export const WORDPRESS_LIVE_HOST_KEYS = Object.freeze(['mount', 'commands', 'observations', 'playerContent', 'present', 'disposeRoot', 'dispose']);
 export const WORDPRESS_EXPERIENCE_LOADER_KEYS = Object.freeze(['load']);
 export const WORDPRESS_RENDERER_RESOLVER_KEYS = Object.freeze(['resolve']);
 export const WORDPRESS_CLOCK_FACTORY_KEYS = Object.freeze(['create']);
@@ -399,6 +400,8 @@ export function createWordPressLiveHost(optionsInput) {
   const mountedRecords = [];
   const commandPorts = new Map();
   const observationPorts = new Map();
+  const playerContents = new Map();
+  const presentedRoots = new Set();
   const rootDisposePromises = new Map();
 
   function isDisposing() {
@@ -483,8 +486,8 @@ export function createWordPressLiveHost(optionsInput) {
         return false;
       }
 
-      stage = 'ready_projection';
-      projectState(root, 'ready');
+      stage = 'player_content_projection';
+      const content = createPlayerContent(experience, instance.read.boundaryIds());
       if (isDisposing()) {
         projectFallback(root, report, instanceId);
         await cleanupInstance(instance, report, instanceId, 'late_instance_cleanup');
@@ -493,11 +496,13 @@ export function createWordPressLiveHost(optionsInput) {
 
       commandPorts.set(root, createCommandPort(instance));
       observationPorts.set(root, createObservationPort(instance));
+      playerContents.set(root, content);
       mountedRecords.push({ root, instanceId, experienceId, instance });
       return true;
     } catch (error) {
       commandPorts.delete(root);
       observationPorts.delete(root);
+      playerContents.delete(root);
       await cleanupInstance(instance, report, instanceId, 'failed_mount_cleanup');
       projectFallback(root, report, instanceId);
       const structuredExperienceFault = stage === 'experience_load'
@@ -592,11 +597,33 @@ export function createWordPressLiveHost(optionsInput) {
   }
 
   function commands(root) {
+    if (root?.isConnected === false) return null;
     return commandPorts.get(root) ?? null;
   }
 
   function observations(root) {
+    if (root?.isConnected === false) return null;
     return observationPorts.get(root) ?? null;
+  }
+
+  function playerContent(root) {
+    if (root?.isConnected === false) return null;
+    return playerContents.get(root) ?? null;
+  }
+
+  function present(root) {
+    if (isDisposing() || !commandPorts.has(root) || rootDisposePromises.has(root) ||
+        root.isConnected === false) return false;
+    if (presentedRoots.has(root)) return true;
+    projectState(root, 'ready');
+    // A host DOM adapter can synchronously initiate disposal during projection.
+    if (isDisposing() || !commandPorts.has(root) || rootDisposePromises.has(root)) {
+      const record = mountedRecords.find((candidate) => candidate.root === root);
+      projectFallback(root, report, record.instanceId);
+      return false;
+    }
+    presentedRoots.add(root);
+    return true;
   }
 
   function startRecordDisposal(record) {
@@ -605,6 +632,8 @@ export function createWordPressLiveHost(optionsInput) {
 
     commandPorts.delete(record.root);
     observationPorts.delete(record.root);
+    playerContents.delete(record.root);
+    presentedRoots.delete(record.root);
     projectFallback(record.root, report, record.instanceId);
 
     let pending;
@@ -680,7 +709,7 @@ export function createWordPressLiveHost(optionsInput) {
     return disposePromise;
   }
 
-  const host = { mount, commands, observations, disposeRoot, dispose };
+  const host = { mount, commands, observations, playerContent, present, disposeRoot, dispose };
   assertExactKeys(host, WORDPRESS_LIVE_HOST_KEYS, 'WordPress live Host');
   return Object.freeze(host);
 }

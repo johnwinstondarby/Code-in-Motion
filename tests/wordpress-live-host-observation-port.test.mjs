@@ -110,6 +110,8 @@ test('R36 WordPress Host exposes a root-scoped frozen observation port only whil
   assert.equal(host.observations({}), null);
 
   assert.deepEqual(await host.mount(), { mounted: 1, fallback: 0 });
+  assert.equal(root.state(), null);
+  assert.equal(host.present(root.root), true);
   assert.equal(root.state(), 'ready');
 
   const observation = host.observations(root.root);

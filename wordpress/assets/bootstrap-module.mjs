@@ -15,7 +15,7 @@ import {
 import { WORDPRESS_EXPERIENCE_REGISTRY } from './experience-registry.generated.mjs';
 import { createWordPressRendererRegistry } from './renderer-registry.mjs';
 import { createWordPressRootLifecycleBinding } from './root-lifecycle-binding.mjs';
-import { createWordPressTransportBinding } from './transport-binding.mjs';
+import { createWordPressPlayerBinding } from './player-binding.mjs';
 
 const experienceAssets = new Map(
   WORDPRESS_EXPERIENCE_REGISTRY.map(({ id, asset }) => [id, asset])
@@ -167,22 +167,28 @@ async function mountPageHost() {
   for (const root of roots) {
     const commandPort = host.commands(root);
     if (commandPort === null) continue;
-    mountedRoots.push(root);
     const observationPort = host.observations(root);
-    if (observationPort === null) {
-      reportBootstrapError(
-        root,
-        'transport_bind',
-        new Error('WordPress Host observation port is unavailable for a mounted root.')
-      );
-      continue;
-    }
-
     try {
-      const binding = createWordPressTransportBinding({ root, commandPort, observationPort });
+      const content = host.playerContent(root);
+      if (observationPort === null || content === null) {
+        throw new Error('WordPress Host presentation capabilities are unavailable.');
+      }
+      const binding = createWordPressPlayerBinding({
+        root, commandPort, observationPort, content,
+        onError(error) {
+          reportBootstrapError(root, 'player_refresh', error);
+          disposeDetachedRoot(root);
+        }
+      });
       transportBindings.set(root, binding);
+      if (!host.present(root)) throw new Error('WordPress presentation admission failed.');
+      mountedRoots.push(root);
     } catch (error) {
-      reportBootstrapError(root, 'transport_bind', error);
+      disposeTransportBinding(root, 'failed_player_dispose');
+      await host.disposeRoot(root).catch((cleanupError) => {
+        reportBootstrapError(root, 'failed_root_dispose', cleanupError);
+      });
+      reportBootstrapError(root, 'player_bind', error);
     }
   }
 

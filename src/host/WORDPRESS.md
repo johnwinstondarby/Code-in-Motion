@@ -64,7 +64,7 @@ A root is projected to:
 data-cim-state="ready"
 ```
 
-only after its live Host instance initializes successfully.
+only when WordPress calls `present(root)` after successful initialization and all required production bindings have completed. `mount()` alone does not admit live presentation.
 
 Failure or disposal projects:
 
@@ -106,6 +106,8 @@ The returned Host surface is exact and frozen:
 mount
 commands
 observations
+playerContent
+present
 disposeRoot
 dispose
 ```
@@ -137,7 +139,7 @@ snapshot
 
 The snapshot comes from the same retained Runtime instance that owns the root command projection. The observation port exposes no command, identity, event, initialization, reduced-motion adoption, or disposal authority. Host remains Transport-agnostic. The outer composition layer may grant this snapshot-only projection to Transport presentation logic.
 
-`disposeRoot(root)` is the root-scoped terminal disposal capability. For a successfully mounted root it synchronously removes the command and observation projections, projects fallback, and starts disposal of that root's live Host façade. Repeated calls for that root return the identical disposal promise. An unknown or failed root resolves `false` and changes no mounted instance. Root-scoped disposal leaves sibling roots and the page-owned reduced-motion source active. Later page-wide `dispose()` reuses already-started root disposal work and does not dispose the same live façade twice.
+`disposeRoot(root)` is the root-scoped terminal disposal capability. For a successfully mounted root it synchronously removes the command, observation, and Player-content projections, projects fallback, and starts disposal of that root's live Host façade. Repeated calls for that root return the identical disposal promise. An unknown or failed root resolves `false` and changes no mounted instance. Root-scoped disposal leaves sibling roots and the page-owned reduced-motion source active. Later page-wide `dispose()` reuses already-started root disposal work and does not dispose the same live façade twice.
 
 ## Mount Lifecycle
 
@@ -149,8 +151,8 @@ resolve renderer
 create clock
 createLiveHostCiMInstance(...)
 initialize()
-project ready
-project command and observation capabilities
+construct aligned Player content
+project command, observation, and Player-content capabilities
 ```
 
 One failed root projects fallback and does not prevent later roots from mounting.
@@ -171,7 +173,7 @@ A page with no CiM roots returns:
 
 without creating a reduced-motion source.
 
-A root never receives a command or observation capability before successful initialization and readiness projection. If a later construction-stage failure occurs, any provisional command or observation projection is removed before the root settles to fallback.
+A root never receives a command or observation capability before successful initialization. If a later construction-stage failure occurs, any provisional command or observation projection is removed before the root settles to fallback.
 
 ## Reduced-Motion Ownership
 
@@ -270,3 +272,11 @@ A hand-written HTML fixture may test the JavaScript adapter in isolation, but it
 A WordPress PHP plugin or browser bootstrap binds concrete implementations of the injected capabilities, emits the required invocation markup, resolves the existing deep-link grammar, composes Host with command-only Transport controls and root-lifecycle observation, and enqueues the CiM JavaScript/CSS assets. That packaging layer must preserve this module's exact capability and markup contracts rather than embedding Runtime policy in shortcode, block, or template code.
 
 See ADR 0036 for the accepted architecture decision.
+
+## ADR 0049 presentation admission
+
+`playerContent(root)` returns an exact frozen instructional projection with `rendererId`, `title`, `description`, `boundaryIds`, and `entries`. Legacy roots receive the same projection with null presentation metadata when absent. Entries contain only `stepId`, `text`, and structured `links`; renderer state and configuration stay opaque. Projection construction rejects any mismatch with canonical boundary order.
+
+`present(root)` returns false for an unavailable, detached, or disposing/disposed root and true after successful presentation admission. Repeated admission is idempotent. Disposal withdraws all projections synchronously and wins every presentation race.
+
+The settled `{ mounted, fallback }` result describes initialization, not subsequent composition. Required-binding failure disposes the root and presents fallback in either mode. Before admission, renderer, Player, and Transport are withheld with `display: none`; fallback remains available.

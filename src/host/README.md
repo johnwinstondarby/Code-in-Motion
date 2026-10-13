@@ -236,6 +236,11 @@ Its exact frozen public surface is:
 
 ```text
 mount
+commands
+observations
+playerContent
+present
+disposeRoot
 dispose
 ```
 
@@ -252,8 +257,10 @@ resolve renderer
 create clock
 createLiveHostCiMInstance(...)
 initialize() or initialize({ stepId, source: 'deep_link' })
-project data-cim-state="ready"
+construct aligned Player content and expose root-scoped capabilities
 ```
+
+WordPress then composes Transport (legacy), or Player, Commentary, and Transport (Console-Explanation), and calls `present(root)` to admit the complete live surface.
 
 Failure projects `data-cim-state="fallback"` and does not stop later roots from attempting to mount. DOM state reports Host availability only; Runtime remains canonical for semantic state.
 
@@ -330,3 +337,10 @@ The WordPress production checkpoint adds verification for:
 - no-root quiet operation;
 - exact cached mount and disposal promises;
 - full repository verification on Node 20 and Node 22.
+## ADR 0049 presentation admission
+
+`playerContent(root)` returns an exact frozen instructional projection with `rendererId`, `title`, `description`, `boundaryIds`, and `entries`. Legacy roots receive the same projection with null presentation metadata when absent. Entries contain only `stepId`, `text`, and structured `links`; renderer state and configuration stay opaque. Projection construction rejects any mismatch with canonical boundary order.
+
+`present(root)` returns false for an unavailable, detached, or disposing/disposed root and true after successful presentation admission. Repeated admission is idempotent. Disposal withdraws all projections synchronously and wins every presentation race.
+
+The settled `{ mounted, fallback }` result describes initialization, not subsequent composition. Required-binding failure disposes the root and presents fallback in either mode. Before admission, renderer, Player, and Transport are withheld with `display: none`; fallback remains available.
