@@ -78,6 +78,14 @@ Experience, beat, and output identifiers use lowercase kebab case:
 
 `defaultPlaybackRate` is optional and defaults to `1`. It must be a number from 0.5 through 2.0 inclusive.
 
+Optional `presentation.command_window` configures the Player's CLI badge, independently of Console renderer state:
+
+```json
+"command_window": { "cli": { "kind": "bash", "label": "Bash" } }
+```
+
+Recognized kinds are `powershell` (blue), `windows-cli` (red), and `bash` (green, including authored macOS/Linux Bash presentation). The visible non-empty single-line `label` may differ from the kind. This exact configuration is preserved in runtime presentation metadata. Omitting it supplies no badge. Additional keys are rejected.
+
 Playback rate scales authored presentation timing: typing, output reveal, explanation reveal, dwell, and scrolling animation. Interactive controls remain immediate.
 
 > R42 removed `explanationTitle`, `showCopy`, and `showRisk`. They are Player preferences with no runtime representation, so authoring them is now an unknown-field error.

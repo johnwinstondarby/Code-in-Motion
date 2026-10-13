@@ -19,7 +19,9 @@ export function createPlayerContent(experience, canonicalBoundaryIds) {
     boundaryIds,
     entries,
     beats: readExperienceBeats(experience),
-    ...(experience.schema === 'localis.cim/v2' ? { instructions: Object.freeze(experience.steps.map(step =>
+    ...(experience.schema === 'localis.cim/v2' ? {
+      commandWindow: experience.presentation.command_window ? Object.freeze({cli:Object.freeze({...experience.presentation.command_window.cli})}) : null,
+      instructions: Object.freeze(experience.steps.map(step =>
       Object.freeze({
         anchor: step.commentary.anchor ?? null,
         evidence: Object.freeze([...(step.commentary.evidence ?? [])]),

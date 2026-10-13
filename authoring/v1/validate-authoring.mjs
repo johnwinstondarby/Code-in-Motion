@@ -60,7 +60,9 @@ export const DIAGNOSTICS = {
 const FIELDS = {
   root: ['schema', 'id', 'title', 'description', 'subject', 'version', 'console', 'presentation', 'beats'],
   consoleDefaults: ['title', 'prompt'],
-  presentation: ['layout', 'defaultPlaybackRate'],                                  // C1: Player preferences removed
+  presentation: ['layout', 'defaultPlaybackRate', 'command_window'],
+  commandWindow: ['cli'],
+  cli: ['kind', 'label'],
   beat: ['id', 'dwell', 'console', 'explanation', 'risk'],
   console: ['prompt', 'command', 'copy', 'typing', 'output', 'response'],
   output: ['id', 'text', 'tone'],
@@ -166,6 +168,15 @@ export function validate(source) {
   if (need(doc, 'presentation', '$', isObj, 'an object')) {
     const p = doc.presentation;
     fields(p, 'presentation', '$.presentation');
+    if (opt(p, 'command_window', '$.presentation', isObj, 'an object')) {
+      const window = p.command_window;
+      fields(window, 'commandWindow', '$.presentation.command_window');
+      if (need(window, 'cli', '$.presentation.command_window', isObj, 'an object')) {
+        fields(window.cli, 'cli', '$.presentation.command_window.cli');
+        need(window.cli, 'kind', '$.presentation.command_window.cli', value=>['powershell','windows-cli','bash'].includes(value), 'powershell, windows-cli or bash');
+        if (need(window.cli, 'label', '$.presentation.command_window.cli', nonEmpty, 'a non-empty string')) checkConsoleText(window.cli.label, '$.presentation.command_window.cli.label');
+      }
+    }
     if (need(p, 'layout', '$.presentation', isStr, 'a string') && !LAYOUTS.includes(p.layout))
       err('CIM-AUTH-UNKNOWN-LAYOUT', '$.presentation.layout', `Unknown layout "${p.layout}".`);
     if (opt(p, 'defaultPlaybackRate', '$.presentation', (v) => typeof v === 'number' && Number.isFinite(v), 'a finite number')

@@ -13,7 +13,13 @@
     "description": "Eight commands take one change from your editor to GitHub, then undo it and recover it. The console shows what happens; this side explains what it means.",
     "subject": "git",
     "beat_count": 8,
-    "default_playback_rate": 1
+    "default_playback_rate": 1,
+    "command_window": {
+      "cli": {
+        "kind": "bash",
+        "label": "Bash"
+      }
+    }
   },
   "initial_state": {
     "transcript": [],

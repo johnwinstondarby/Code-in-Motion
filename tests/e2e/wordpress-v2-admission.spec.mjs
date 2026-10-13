@@ -6,7 +6,8 @@ const lesson=JSON.parse(readFileSync(new URL('../../experiences/git/git-reposito
 const base=process.env.CIM_WP_BASE_URL ?? 'http://127.0.0.1:8888';
 test.use({colorScheme:'dark',reducedMotion:'reduce'});
 
-test('registered WordPress v2 lesson presents full Player consumers while legacy remains isolated',async({page})=>{
+test('registered WordPress v2 lesson presents full Player consumers while legacy remains isolated',async({page,context})=>{
+  await context.grantPermissions(['clipboard-read','clipboard-write']);
   const requests=[];page.on('request',request=>requests.push(request.url()));
   await page.goto(base+'/?pagename=cim-e2e-v2');
   const root=page.locator('[data-cim-instance="admission-v2"]');
@@ -16,8 +17,13 @@ test('registered WordPress v2 lesson presents full Player consumers while legacy
   expect(requests.some(url=>url.includes('/src/contracts/engine-identity.mjs'))).toBe(true);
   await expect(root.getByLabel('Theme',{exact:true})).toBeVisible();
   await expect(legacy.getByLabel('Theme',{exact:true})).toHaveCount(0);
+  await expect(root.locator('[data-cim-cli="bash"]')).toHaveText('Bash');
+  await expect(legacy.locator('[data-cim-cli]')).toHaveCount(0);
   await root.locator('[data-cim-control="next"]').click();
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','check-status--s02');
+  await root.locator('[data-role="copy"]').first().click();
+  await expect(root.locator('[data-cim-copy-status]')).toHaveText('Copied command: git status');
+  expect(await page.evaluate(()=>navigator.clipboard.readText())).toBe('git status');
   await root.locator('[data-cim-commentary-entry] button').first().click();
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','check-status--s01');
   await root.locator('[data-cim-control="next"]').click();

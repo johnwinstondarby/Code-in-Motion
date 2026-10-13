@@ -23,6 +23,11 @@ import { createConsoleRenderer } from '/src/renderers/subjects/console/renderer.
 import { createWordPressPlayerBinding } from '/wordpress/assets/player-binding.mjs';
 import { createWordPressDeepLinkResolver } from '/src/host/wordpress-deep-link.mjs';
 const rawExperience = await (await fetch('/experiences/git/git-repository-practice.json')).json();
+if (new URL(location.href).searchParams.has('copy-override')) {
+ for (const state of [rawExperience.initial_state,...rawExperience.steps.map(step=>step.state)]) {
+  for (const entry of state.transcript) if (entry.command==='git status') entry.copy='git status --short';
+ }
+}
 if (new URL(location.href).searchParams.has('legacy-console')) {
  rawExperience.schema = 'localis.cim/v1'; delete rawExperience.presentation;
  for (const step of rawExperience.steps) { delete step.beat; delete step.commentary.anchor; delete step.commentary.evidence; delete step.commentary.risk; }
@@ -116,6 +121,78 @@ test.beforeAll(async () => {
   origin = 'http://127.0.0.1:' + server.address().port;
 });
 test.afterAll(async () => { await new Promise(done => server.close(done)); });
+
+for (const [kind, role] of [['powershell','cli-powershell'],['windows-cli','cli-windows'],['bash','cli-bash']]) {
+  test(`CLI and copy: ${kind} badge uses kind colors independently of its label`,async({page})=>{
+    await page.route('**/experiences/git/git-repository-practice.json',async route=>{
+      const response=await route.fetch();const lesson=await response.json();
+      lesson.presentation.command_window={cli:{kind,label:'Custom shell label'}};
+      await route.fulfill({response,json:lesson});
+    });
+    await open(page);const root=page.locator('.cim').first();const badge=root.locator('[data-cim-cli]');
+    await expect(badge).toHaveText('Custom shell label');await expect(badge).toHaveAttribute('data-cim-cli',kind);
+    for(const theme of ['localis','high-contrast','light']) {
+      await root.getByLabel('Theme',{exact:true}).selectOption(theme);
+      const hex=THEME_PRESETS[theme].colors[role];const rgb=`rgb(${[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)).join(', ')})`;
+      await expect(badge).toHaveCSS('color',rgb);
+    }
+    const pane=await root.locator('[data-cim-pane="console"]').boundingBox();const box=await badge.boundingBox();
+    expect(box.y).toBeLessThan(pane.y+60);await expect(badge).toHaveCSS('text-align','right');
+    await expect(badge).toHaveCSS('font-size','20px');
+  });
+}
+
+test('CLI and copy: exact authored override writes plain text without seeking and survives renderer replacement',async({page,context,browserName})=>{
+  test.skip(browserName!=='chromium','Native clipboard permission proof runs in Chromium; binding behavior runs in all engines.');
+  await context.grantPermissions(['clipboard-read','clipboard-write']);
+  await open(page,'?copy-override');const root=page.locator('.cim').first();
+  await root.locator('[data-cim-control="next"]').click();
+  await root.locator('[data-role="copy"]').first().click();
+  await expect(root.locator('[data-cim-copy-status]')).toHaveText('Copied command: git status --short');
+  expect(await page.evaluate(()=>navigator.clipboard.readText())).toBe('git status --short');
+  expect(await page.evaluate(()=>playerTest.sources)).toEqual([]);
+  await root.locator('[data-cim-control="end"]').click();
+  await root.locator('[data-role="copy"]').last().click();
+  const value=await root.locator('[data-role="copy"]').last().getAttribute('data-copy');
+  expect(await page.evaluate(()=>navigator.clipboard.readText())).toBe(value);
+  await page.evaluate(()=>{const textarea=document.createElement('textarea');textarea.id='paste-target';document.body.appendChild(textarea);});
+  await page.locator('#paste-target').focus();await page.keyboard.press('Control+V');
+  await expect(page.locator('#paste-target')).toHaveValue(value);
+});
+
+test('CLI and copy: native drag selection and copy shortcuts leave navigation untouched',async({page,context,browserName})=>{
+  if(browserName==='chromium') await context.grantPermissions(['clipboard-read','clipboard-write']);
+  await open(page);const root=page.locator('.cim').first();await root.locator('[data-cim-control="next"]').click();
+  const command=root.locator('[data-role="command"]').first();const box=await command.boundingBox();
+  await page.mouse.move(box.x+1,box.y+box.height/2);await page.mouse.down();
+  await page.mouse.move(box.x+box.width-1,box.y+box.height/2,{steps:10});await page.mouse.up();
+  expect(await page.evaluate(()=>getSelection().toString())).toBe('git status');
+  await page.evaluate(()=>{
+    window.copyEvents=[];document.addEventListener('copy',event=>copyEvents.push({prevented:event.defaultPrevented,selection:getSelection().toString()}));
+    window.contextCopyEvents=[];document.addEventListener('contextmenu',event=>contextCopyEvents.push(event.defaultPrevented));
+  });
+  await page.keyboard.press('Control+C');
+  await expect.poll(()=>page.evaluate(()=>copyEvents.length)).toBe(1);
+  expect(await page.evaluate(()=>copyEvents[0])).toEqual({prevented:false,selection:'git status'});
+  await command.click({button:'right'});
+  expect(await page.evaluate(()=>contextCopyEvents)).toEqual([false]);
+  for(const key of ['c','C']) expect(await command.evaluate((node,key)=>node.dispatchEvent(new KeyboardEvent('keydown',{key,metaKey:true,bubbles:true,cancelable:true})),key)).toBe(true);
+  expect(await page.evaluate(()=>playerTest.sources)).toEqual([]);
+  await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','check-status--s02');
+  if(browserName==='chromium') expect(await page.evaluate(()=>navigator.clipboard.readText())).toBe('git status');
+});
+
+test('CLI and copy: clipboard denial gives guidance, sibling stays usable and stale controls are inert',async({page})=>{
+  await page.addInitScript(()=>{window.copyWrites=[];Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:value=>{copyWrites.push(value);return Promise.reject(new Error('denied'));}}});});
+  await open(page);const first=page.locator('.cim').first();const second=page.locator('.cim').nth(1);
+  await first.locator('[data-cim-control="next"]').click();await first.locator('[data-role="copy"]').first().click();
+  await expect(first.locator('[data-cim-copy-status]')).toContainText('Could not copy. Select the command text');
+  await page.evaluate(()=>{const stale=playerTest.roots[0].querySelector('[data-role="copy"]');playerTest.bindings[0].dispose();stale.click();});
+  expect(await page.evaluate(()=>copyWrites)).toEqual(['git status']);
+  await second.locator('[data-cim-control="next"]').click();await second.locator('[data-role="copy"]').first().click();
+  await expect(second.locator('[data-cim-copy-status]')).toContainText('Command: git status');
+  expect(await page.evaluate(()=>copyWrites)).toEqual(['git status','git status']);
+});
 
 async function open(page, suffix = '') {
   await page.goto(origin + '/fixture' + suffix);
@@ -385,7 +462,7 @@ test('reveal, Commentary navigation, protected links and Restart stay isolated',
   await expect(first.locator('[data-cim-commentary-entry]:visible')).toHaveCount(18);
   await expect(second.locator('[data-cim-commentary-entry]:visible')).toHaveCount(0);
   await expect(first.locator('[data-role="risk-badge"]')).toHaveCSS('color', 'rgb(255, 122, 122)');
-  await expect(first.locator('[data-role="copy"]').first()).toBeHidden();
+  await expect(first.locator('[data-role="copy"]').first()).toBeVisible();
   await expect(first.locator('[data-cim-commentary-entry] p').first()).toHaveCSS('user-select', 'text');
   await expect(first.locator('[data-cim-commentary-entry] p').first()).toHaveCSS('color', 'rgb(168, 179, 194)');
   await expect(first.locator('[data-cim-beat-heading]').first()).toHaveCSS('color', 'rgb(90, 196, 200)');

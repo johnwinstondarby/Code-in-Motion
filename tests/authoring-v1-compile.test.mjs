@@ -66,7 +66,7 @@ test('A2R §8/§10/§12: experience metadata, renderer mapping, versions, and in
   assert.equal(doc.id, source.id);
   assert.deepEqual(doc.renderer_config, { title: source.console.title, prompt: source.console.prompt });
   assert.deepEqual(doc.presentation, { title: source.title, description: source.description, subject: source.subject,
-    beat_count: 8, default_playback_rate: source.presentation.defaultPlaybackRate });
+    beat_count: 8, default_playback_rate: source.presentation.defaultPlaybackRate, command_window:source.presentation.command_window });
   assert.deepEqual(doc.initial_state, { transcript: [], focus: [] });
 });
 

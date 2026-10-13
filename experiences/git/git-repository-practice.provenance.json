@@ -4,13 +4,13 @@
     "version": "1.0.0"
   },
   "authoring_schema": "localis.cim/authoring/v1",
-  "authoring_semantic_sha256": "e100460c21f1fbaad518aa796907295c9304cf51ed327361a147e94dd83dd76d",
+  "authoring_semantic_sha256": "be1feb584c3f7b18f79d9a4da44ab6f906ccbbd60c0a9c085b15c79b374c38be",
   "runtime_schema": "localis.cim/v2",
   "engine_min": "0.2.0",
   "constants": {
     "intra_beat_dwell_ms": 900,
     "final_beat_dwell_ms": 1600
   },
-  "runtime_sha256": "a77e2527c4b1feb0fbfae671d98dbd008c4f2e623bd5edddddf5aad9ff1fd005",
+  "runtime_sha256": "582cdc3677b30a2dddf0dd82f7f100e3f68380c2f2a4ebc0fa99ca79045111f5",
   "boundaries": 18
 }

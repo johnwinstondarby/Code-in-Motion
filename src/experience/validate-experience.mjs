@@ -19,6 +19,7 @@ const V1_STEP_REQUIRED = Object.freeze(['id','label','commentary','state']);
 const V2_STEP_REQUIRED = Object.freeze(['id','label','beat','commentary','state']);
 const PRESENTATION_KEYS = new Set(['title','description','subject','beat_count','default_playback_rate']);
 const PRESENTATION_REQUIRED = Object.freeze([...PRESENTATION_KEYS]);
+PRESENTATION_KEYS.add('command_window');
 const BEAT_KEYS = new Set(['id','ordinal','heading','segment_ordinal','segment_count','final']);
 const BEAT_REQUIRED = Object.freeze([...BEAT_KEYS]);
 const COMMENTARY_KEYS = new Set(['text','links']);
@@ -44,6 +45,25 @@ function validatePresentation(value, errors) {
   if (!isObject(value)) { addError(errors, 'CIM-EXP-007', path, 'must be an object.'); return; }
   requireKeys(value, PRESENTATION_REQUIRED, path, errors, 'CIM-EXP-007');
   rejectAdditionalKeys(value, PRESENTATION_KEYS, path, errors, 'CIM-EXP-007');
+  if (own(value, 'command_window')) {
+    const window = value.command_window;
+    const windowPath = `${path}.command_window`;
+    if (!isObject(window)) addError(errors, 'CIM-EXP-007', windowPath, 'must be an object.');
+    else {
+      requireKeys(window, ['cli'], windowPath, errors, 'CIM-EXP-007');
+      rejectAdditionalKeys(window, new Set(['cli']), windowPath, errors, 'CIM-EXP-007');
+      if (own(window, 'cli')) {
+        const cli = window.cli;
+        if (!isObject(cli)) addError(errors, 'CIM-EXP-007', `${windowPath}.cli`, 'must be an object.');
+        else {
+          requireKeys(cli, ['kind','label'], `${windowPath}.cli`, errors, 'CIM-EXP-007');
+          rejectAdditionalKeys(cli, new Set(['kind','label']), `${windowPath}.cli`, errors, 'CIM-EXP-007');
+          if (own(cli,'kind') && !['powershell','windows-cli','bash'].includes(cli.kind)) addError(errors,'CIM-EXP-007',`${windowPath}.cli.kind`,'must be powershell, windows-cli or bash.');
+          if (own(cli,'label') && (!requireNonEmptyString(cli.label,`${windowPath}.cli.label`,errors,'CIM-EXP-007') || /[\t\r\n\u2028\u2029]/.test(cli.label))) addError(errors,'CIM-EXP-007',`${windowPath}.cli.label`,'must be a non-empty single line.');
+        }
+      }
+    }
+  }
   for (const key of ['title','description','subject']) if (own(value, key)) requireNonEmptyString(value[key], `${path}.${key}`, errors, 'CIM-EXP-007');
   if (own(value, 'beat_count') && !isPositiveInteger(value.beat_count)) addError(errors, 'CIM-EXP-007', `${path}.beat_count`, 'must be a positive integer.');
   if (own(value, 'default_playback_rate') && (typeof value.default_playback_rate !== 'number' || !Number.isFinite(value.default_playback_rate) || value.default_playback_rate < 0.5 || value.default_playback_rate > 2)) addError(errors, 'CIM-EXP-007', `${path}.default_playback_rate`, 'must be a finite number from 0.5 through 2.0.');

@@ -60,6 +60,8 @@ Required fields:
 - `beat_count`: positive integer count of authored learner-facing beats;
 - `default_playback_rate`: number in the inclusive range 0.5 through 2.0.
 
+Optional `command_window` is a closed object containing `cli`, a closed object with required `kind` (`powershell`, `windows-cli`, or `bash`) and a non-empty single-line `label`. This Player-owned identity controls the Console badge; kind selects its color and label supplies its text independently. It never changes opaque renderer state. See ADR 0054.
+
 Console title, effective default prompt, and other renderer-invariant settings belong in experience-level `renderer_config`, not repeated step state.
 
 ## 6. Step identifiers

@@ -2,6 +2,8 @@
 
 Status: R42 normative candidate, peer-review corrections incorporated
 
+ADR 0054 extends the presentation projection with optional `command_window.cli`: emit the validated authored `kind`, then `label`, in a fixed field order. No renderer configuration/state changes are needed; absent CLI metadata emits no extra presentation key. Compiler determinism and provenance include this authored metadata.
+
 ## 1. Purpose and boundary
 
 This specification defines deterministic compilation from `localis.cim/authoring/v1` source documents into the versioned Code in Motion runtime experience contract consumed by validation and Runtime.

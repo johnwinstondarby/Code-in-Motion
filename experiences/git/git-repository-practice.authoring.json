@@ -11,7 +11,8 @@
   },
   "presentation": {
     "layout": "console-explanation",
-    "defaultPlaybackRate": 1
+    "defaultPlaybackRate": 1,
+    "command_window": { "cli": { "kind": "bash", "label": "Bash" } }
   },
   "beats": [
     {

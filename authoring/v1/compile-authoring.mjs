@@ -218,7 +218,10 @@ export function compileAuthoringSource(sourceText, options = {}) {
       description: source.description,
       subject: source.subject,
       beat_count: source.beats.length,
-      default_playback_rate: source.presentation.defaultPlaybackRate ?? 1
+      default_playback_rate: source.presentation.defaultPlaybackRate ?? 1,
+      ...(source.presentation.command_window ? {command_window: {cli: {
+        kind:source.presentation.command_window.cli.kind, label:source.presentation.command_window.cli.label
+      }}} : {})
     },
     initial_state: { transcript: [], focus: [] },
     steps
