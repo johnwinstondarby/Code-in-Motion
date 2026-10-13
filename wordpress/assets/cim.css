@@ -48,6 +48,16 @@
   white-space: pre;
 }
 
+/* Continuations remain distinct from authored Console lines. Wide aligned output
+ * may lose column alignment when wrapped; scrolling can be governed separately. */
+.cim [data-cim-renderer="console/v1"] [data-role="output-line"],
+.cim [data-cim-renderer="console/v1"] [data-role="command-line"] {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding-inline-start: 2ch;
+  text-indent: -2ch;
+}
+
 /* Copy is admitted with its Player-owned behavior in the later content checkpoint. */
 .cim [data-cim-renderer="console/v1"] [data-role="copy"] { display: none; }
 

@@ -179,3 +179,50 @@ test('narrow layout stacks panes without horizontal page overflow', async ({ pag
   expect(explanationBox.y).toBeGreaterThan(consoleBox.y + consoleBox.height);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
+
+test('Console wraps with hanging continuations and preserves authored leading spaces', async ({ page }) => {
+  await page.setViewportSize({width:390,height:844});
+  await open(page);
+  const evidence = await page.evaluate(() => {
+    const transcript = document.querySelector('[data-role="transcript"]');
+    const measure = (role, text) => {
+      const line = document.createElement('div');
+      line.dataset.role = role;
+      const span = document.createElement('span');
+      span.textContent = text;
+      line.appendChild(span);
+      transcript.appendChild(line);
+      const range = document.createRange();
+      range.selectNodeContents(span);
+      // Preserved spaces can create several rectangles on the same visual row.
+      const visualRows = new Map();
+      for (const rect of range.getClientRects()) {
+        if (rect.width === 0) continue;
+        const key = rect.y.toFixed(2);
+        visualRows.set(key, Math.min(visualRows.get(key) ?? Infinity, rect.x));
+      }
+      const rows = [...visualRows.values()].map(x => ({x}));
+      const style = getComputedStyle(line);
+      range.setStart(span.firstChild, 0);
+      range.setEnd(span.firstChild, Math.min(4,text.length));
+      const result = {text:span.textContent, rows,
+        prefixWidth:range.getBoundingClientRect().width,
+        indent:parseFloat(style.paddingInlineStart),
+        overflow:line.scrollWidth > line.clientWidth};
+      line.remove();
+      return result;
+    };
+    const long = 'to discard changes in working directory ' + 'a'.repeat(120);
+    return {output:measure('output-line',long), command:measure('command-line',long),
+      spaced:measure('output-line','    modified: src/HeaderFix.jsx'),
+      short:measure('output-line','On branch main')};
+  });
+  for (const result of [evidence.output,evidence.command]) {
+    expect(result.rows.length).toBeGreaterThan(1);
+    expect(result.overflow).toBe(false);
+    expect(result.rows[1].x - result.rows[0].x).toBeCloseTo(result.indent,0);
+  }
+  expect(evidence.spaced.text).toBe('    modified: src/HeaderFix.jsx');
+  expect(evidence.spaced.prefixWidth).toBeCloseTo(evidence.spaced.indent * 2,0);
+  expect(evidence.short.rows).toHaveLength(1);
+});
