@@ -36,8 +36,8 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0026`](0026-commentary-local-selection.md) | Commentary-Local Selection | 2026-09-16 | Accepted |
 | [`0027`](0027-commentary-native-presentation-and-entry-navigation.md) | Commentary Native Presentation and Entry Navigation | 2026-09-16 | Accepted |
 | [`0028`](0028-complete-learner-path-harness-composition.md) | Complete Learner Path Harness Composition | 2026-09-16 | Accepted |
-| [`0029`](0029-commentary-follow-suspension-and-newer-steps.md) | Commentary Follow Suspension and Newer-Steps Policy | 2026-09-16 | Accepted |
-| [`0030`](0030-commentary-scroll-follow-binding.md) | Commentary Scroll Follow Binding | 2026-09-16 | Accepted |
+| [`0029`](0029-commentary-follow-suspension-and-newer-steps.md) | Commentary Follow Suspension and Newer-Steps Policy | 2026-09-16 | Accepted; amended by 0050 |
+| [`0030`](0030-commentary-scroll-follow-binding.md) | Commentary Scroll Follow Binding | 2026-09-16 | Accepted; amended by 0050 |
 | [`0031`](0031-reduced-motion-preference-capability.md) | Reduced-Motion Preference Capability | 2026-09-16 | Accepted |
 | [`0032`](0032-host-reduced-motion-runtime-composition.md) | Host Reduced-Motion Runtime Composition | 2026-09-16 | Accepted |
 | [`0033`](0033-reduced-motion-preference-change-observation.md) | Reduced-Motion Preference Change Observation | 2026-09-16 | Accepted |
@@ -57,6 +57,7 @@ ADRs preserve decisions that constrain multiple CiM components or future impleme
 | [`0047`](0047-playback-rate-and-presentation-time-dilation.md) | Playback Rate and Presentation-Time Dilation | 2026-10-02 | Accepted (R41 F6) |
 | [`0048`](0048-teaching-first-presentation-and-authored-limn.md) | Teaching-First Console Presentation and Authored Limn Emphasis | 2026-10-03 | Accepted |
 | [`0049`](0049-wordpress-console-explanation-player-composition.md) | WordPress Console-Explanation Player Composition | 2026-10-05 | Accepted |
+| [`0050`](0050-independent-player-pane-follow-and-holds.md) | Independent Player Pane Follow and Holds | 2026-10-12 | Accepted |
 
 ## Owns
 

@@ -2,6 +2,8 @@
 
 Status: Accepted
 
+Amended by ADR 0050 for temporary holds, pending acknowledgement while held, and the widened follow capability/state. The original decisions below record the checkpoint 4 baseline.
+
 Date: 2026-09-16
 
 ## Context

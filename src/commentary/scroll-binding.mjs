@@ -3,12 +3,13 @@ import {
   COMMENTARY_FOLLOW_STATE_KEYS
 } from './follow-controller.mjs';
 
-export const COMMENTARY_SCROLL_BINDING_KEYS = Object.freeze(['refresh', 'dispose']);
+export const COMMENTARY_SCROLL_BINDING_KEYS = Object.freeze(['refresh', 'reposition', 'dispose']);
 export const COMMENTARY_SCROLL_BINDING_OPTIONS_KEYS = Object.freeze([
   'viewport',
   'indicator',
   'follow',
-  'newerStepsLabel'
+  'newerStepsLabel',
+  'scrollIntent'
 ]);
 
 const END_TOLERANCE_PX = 1;
@@ -100,17 +101,19 @@ function validateFollowState(state) {
   assertFrozenPlainObject(state, 'Commentary follow state');
   assertExactKeys(state, COMMENTARY_FOLLOW_STATE_KEYS, 'Commentary follow state');
   const following = dataValue(state, 'following', 'Commentary follow state');
+  const held = dataValue(state, 'held', 'Commentary follow state');
   const newerStepsAvailable = dataValue(state, 'newerStepsAvailable', 'Commentary follow state');
   const latestVisibleStepId = dataValue(state, 'latestVisibleStepId', 'Commentary follow state');
   if (typeof following !== 'boolean') fail('Commentary follow state.following must be a boolean.');
+  if (typeof held !== 'boolean') fail('Commentary follow state.held must be a boolean.');
   if (typeof newerStepsAvailable !== 'boolean') fail('Commentary follow state.newerStepsAvailable must be a boolean.');
-  if (following && newerStepsAvailable) {
+  if (following && !held && newerStepsAvailable) {
     fail('Commentary follow state cannot report newer steps while following.');
   }
   if (latestVisibleStepId !== null) {
     requireNonEmptyString(latestVisibleStepId, 'Commentary follow state.latestVisibleStepId');
   }
-  return Object.freeze({ following, newerStepsAvailable, latestVisibleStepId });
+  return Object.freeze({ following, held, newerStepsAvailable, latestVisibleStepId });
 }
 
 function readGeometry(viewport) {
@@ -128,7 +131,7 @@ function readGeometry(viewport) {
     fail('Commentary scroll viewport.scrollHeight cannot be less than clientHeight.');
   }
   const maxScrollTop = Math.max(0, scrollHeight - clientHeight);
-  return Object.freeze({ scrollTop, maxScrollTop });
+  return Object.freeze({ scrollTop, maxScrollTop, clientHeight });
 }
 
 function isAtEnd(geometry) {
@@ -160,9 +163,19 @@ export function createCommentaryScrollBinding(optionsInput) {
     dataValue(optionsInput, 'newerStepsLabel', 'Commentary scroll binding options'),
     'Commentary scroll binding options.newerStepsLabel'
   );
+  const scrollIntent = dataValue(optionsInput, 'scrollIntent', 'Commentary scroll binding options');
+  assertFrozenPlainObject(scrollIntent, 'Pane scroll intent');
+  assertExactKeys(scrollIntent, ['read'], 'Pane scroll intent');
+  if (typeof dataValue(scrollIntent, 'read', 'Pane scroll intent') !== 'function') fail('Pane scroll intent.read must be a function.');
 
   let disposalStarted = false;
   let lastAutoScrolledStepId = null;
+  let lastScrollTop = readGeometry(viewport).scrollTop;
+
+  function moveToEnd() {
+    scrollToEnd(viewport);
+    lastScrollTop = readGeometry(viewport).scrollTop;
+  }
 
   function readFollow() {
     return validateFollowState(follow.read());
@@ -196,12 +209,16 @@ export function createCommentaryScrollBinding(optionsInput) {
     const priorHidden = indicator.hidden;
     try {
       applyIndicator(state);
-      if (state.following && state.latestVisibleStepId !== null && state.latestVisibleStepId !== lastAutoScrolledStepId) {
-        scrollToEnd(viewport);
+      if (state.following && !state.held && readGeometry(viewport).clientHeight > 0 &&
+          state.latestVisibleStepId !== null && state.latestVisibleStepId !== lastAutoScrolledStepId) {
+        moveToEnd();
         lastAutoScrolledStepId = state.latestVisibleStepId;
       } else if (state.following && state.latestVisibleStepId === null) {
         lastAutoScrolledStepId = null;
       }
+      // A contracted transcript may clamp the viewport. This is not learner scrolling.
+      const geometry = readGeometry(viewport);
+      if (lastScrollTop > geometry.maxScrollTop) lastScrollTop = geometry.scrollTop;
       return state;
     } catch (error) {
       const rollbackErrors = [];
@@ -217,7 +234,22 @@ export function createCommentaryScrollBinding(optionsInput) {
   const onScroll = () => {
     if (disposalStarted) return;
     const state = readFollow();
-    const atEnd = isAtEnd(readGeometry(viewport));
+    const geometry = readGeometry(viewport);
+    // Own scroll requests and content replacement may dispatch asynchronous scroll events.
+    if (geometry.scrollTop === lastScrollTop ||
+        (lastScrollTop > geometry.maxScrollTop && isAtEnd(geometry))) {
+      lastScrollTop = geometry.scrollTop;
+      projectIndicator(state);
+      return;
+    }
+    const learnerScrolling = scrollIntent.read();
+    if (typeof learnerScrolling !== 'boolean') fail('Pane scroll intent.read must return a boolean.');
+    lastScrollTop = geometry.scrollTop;
+    if (!learnerScrolling) {
+      projectIndicator(state);
+      return;
+    }
+    const atEnd = isAtEnd(geometry);
     let next = state;
     if (atEnd && !state.following) next = validateFollowState(follow.resume());
     else if (!atEnd && state.following) next = validateFollowState(follow.suspend());
@@ -229,7 +261,7 @@ export function createCommentaryScrollBinding(optionsInput) {
     if (disposalStarted || !eligibleClick(event)) return;
     const state = readFollow();
     if (!state.newerStepsAvailable) return;
-    scrollToEnd(viewport);
+    moveToEnd();
     const resumed = validateFollowState(follow.resume());
     lastAutoScrolledStepId = resumed.latestVisibleStepId;
     projectIndicator(resumed);
@@ -255,6 +287,18 @@ export function createCommentaryScrollBinding(optionsInput) {
 
   const binding = {
     refresh,
+    reposition(top) {
+      if (disposalStarted) fail('Commentary scroll binding cannot reposition after disposal begins.');
+      const geometry = readGeometry(viewport);
+      if (top === undefined) top = geometry.maxScrollTop;
+      if (!Number.isFinite(top) || top < 0) fail('Viewport destination must be finite and non-negative.');
+      const state = readFollow();
+      viewport.scrollTo(Object.freeze({ top: Math.min(top, geometry.maxScrollTop), behavior: 'auto' }));
+      lastScrollTop = readGeometry(viewport).scrollTop;
+      lastAutoScrolledStepId = state.latestVisibleStepId;
+      projectIndicator(state);
+      return state;
+    },
     dispose() {
       if (disposalStarted) return;
       const errors = [];

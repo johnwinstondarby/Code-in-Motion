@@ -63,14 +63,14 @@ test('Commentary follow controller and projected state are exact and frozen', ()
 test('Commentary follows by default and tracks the newest visible entry', () => {
   const h = harness(state([]));
   assert.deepEqual(h.controller.read(), {
-    following: true,
+    following: true, held: false,
     newerStepsAvailable: false,
     latestVisibleStepId: null
   });
 
   h.set(state(['step-01']));
   assert.deepEqual(h.controller.read(), {
-    following: true,
+    following: true, held: false,
     newerStepsAvailable: false,
     latestVisibleStepId: 'step-01'
   });
@@ -82,14 +82,14 @@ test('Commentary follows by default and tracks the newest visible entry', () => 
 test('suspension freezes reveal acknowledgement and later reveal raises newer-steps indication', () => {
   const h = harness(state(['step-01']));
   assert.deepEqual(h.controller.suspend(), {
-    following: false,
+    following: false, held: false,
     newerStepsAvailable: false,
     latestVisibleStepId: 'step-01'
   });
 
   h.set(state(['step-01', 'step-02']));
   assert.deepEqual(h.controller.read(), {
-    following: false,
+    following: false, held: false,
     newerStepsAvailable: true,
     latestVisibleStepId: 'step-02'
   });
@@ -113,7 +113,7 @@ test('resume acknowledges the current frontier and clears newer-steps indication
 
   const resumed = h.controller.resume();
   assert.deepEqual(resumed, {
-    following: true,
+    following: true, held: false,
     newerStepsAvailable: false,
     latestVisibleStepId: 'step-03'
   });
@@ -137,14 +137,14 @@ test('Restart-shaped reveal contraction rebases suspended acknowledgement withou
 
   h.set(state([]));
   assert.deepEqual(h.controller.read(), {
-    following: false,
+    following: false, held: false,
     newerStepsAvailable: false,
     latestVisibleStepId: null
   });
 
   h.set(state(['step-01']));
   assert.deepEqual(h.controller.read(), {
-    following: false,
+    following: false, held: false,
     newerStepsAvailable: true,
     latestVisibleStepId: 'step-01'
   });
@@ -221,4 +221,38 @@ test('follow policy owns no DOM navigation Runtime Transport event or renderer a
   ]) {
     assert.equal(key in controller, false);
   }
+});
+
+test('temporary holds preserve following and wait for every hold to release', () => {
+  const h = harness(state(['step-01']));
+  h.controller.hold('pointer');
+  h.controller.hold('focus');
+  h.set(state(['step-01', 'step-02']));
+  assert.deepEqual(h.controller.read(), {following:true, held:true,
+    newerStepsAvailable:true, latestVisibleStepId:'step-02'});
+  assert.equal(h.controller.release('pointer').held, true);
+  assert.equal(h.controller.release('focus').held, false);
+  assert.equal(h.controller.read().following, true);
+  assert.equal(h.controller.read().newerStepsAvailable, false);
+});
+
+test('releasing a selection hold does not resume a learner-owned viewport', () => {
+  const h = harness(state(['step-01']));
+  h.controller.hold('selection');
+  h.set(state(['step-01', 'step-02']));
+  h.controller.suspend();
+  assert.equal(h.controller.release('selection').following, false);
+  assert.equal(h.controller.read().newerStepsAvailable, true);
+  h.controller.resume();
+  assert.equal(h.controller.read().newerStepsAvailable, false);
+});
+
+test('malformed presentation and unknown hold reasons cannot change holds', () => {
+  const h = harness(state(['step-01']));
+  assert.throws(() => h.controller.hold('wheel'), /Unknown/);
+  h.controller.hold('pointer');
+  h.set(null);
+  assert.throws(() => h.controller.release('pointer'), /plain object/);
+  h.set(state(['step-01']));
+  assert.equal(h.controller.read().held, true);
 });

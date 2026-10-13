@@ -5,6 +5,9 @@ import { createCommentaryNavigation } from '../../src/commentary/navigation.mjs'
 import { createCommentaryNativeBinding } from '../../src/commentary/native-binding.mjs';
 import { createCommentaryFollowController } from '../../src/commentary/follow-controller.mjs';
 import { createCommentaryScrollBinding } from '../../src/commentary/scroll-binding.mjs';
+import { createConsoleFollowController } from './console-follow-controller.mjs';
+import { createPaneHoldBinding } from './pane-hold-binding.mjs';
+import { createPaneScrollIntent } from './pane-scroll-intent.mjs';
 import { createConsoleExplanationTransportBinding, createWordPressTransportBinding } from './transport-binding.mjs';
 
 export const WORDPRESS_PLAYER_MODES = Object.freeze({ 'console/v1': 'console-explanation' });
@@ -59,6 +62,13 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     player = element('div', 'data-cim-player', 'console-explanation');
     const consolePane = element('section', 'data-cim-pane', 'console');
     consolePane.setAttribute('aria-label', 'Console');
+    const consoleViewport = element('div', 'data-cim-console-viewport');
+    consoleViewport.tabIndex = 0;
+    consoleViewport.setAttribute('role', 'region');
+    consoleViewport.setAttribute('aria-label', 'Console output');
+    const consoleIndicator = element('button', 'data-cim-console-resume');
+    consoleIndicator.type = 'button';
+    consoleIndicator.hidden = true;
     const explanationPane = element('section', 'data-cim-pane', 'explanation');
     explanationPane.setAttribute('aria-label', 'Explanation');
     if (content.title !== null) {
@@ -72,6 +82,9 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
       explanationPane.appendChild(description);
     }
     const viewport = element('div', 'data-cim-commentary-viewport');
+    viewport.tabIndex = 0;
+    viewport.setAttribute('role', 'region');
+    viewport.setAttribute('aria-label', 'Explanation transcript');
     const indicator = element('button', 'data-cim-commentary-resume');
     indicator.type = 'button';
     indicator.hidden = true;
@@ -94,7 +107,9 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     player.appendChild(consolePane);
     player.appendChild(explanationPane);
     originalParent.insertBefore(player, rendererRoot);
-    consolePane.appendChild(rendererRoot);
+    consoleViewport.appendChild(rendererRoot);
+    consolePane.appendChild(consoleViewport);
+    consolePane.appendChild(consoleIndicator);
 
     const observation = Object.freeze({ snapshot: () => observationPort.snapshot() });
     const reveal = createCommentaryRevealProjection({
@@ -104,8 +119,27 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     const presentation = createCommentaryPresentation({
       selection, observation, entryCount: content.entries.length
     });
+    // Deliberate navigation can reposition held/owned viewports without changing follow ownership.
+    // Preserve the original command return value and provenance.
+    const playerCommands = Object.freeze(Object.fromEntries(Object.entries(commandPort).map(([key, command]) => {
+      if (!['next', 'previous', 'home', 'end', 'restart', 'seek'].includes(key)) return [key, command];
+      return [key, (...args) => {
+        const pending = command(...args);
+        Promise.resolve(pending).then(outcome => {
+          if (disposed || !['success', 'no_change'].includes(outcome?.result)) return;
+          native.refresh();
+          const current = presentation.read().currentStepId;
+          const active = controls.find(control => control.root.getAttribute('data-cim-step-id') === current)?.root;
+          const top = active === undefined ? 0 : Math.max(0,
+            active.getBoundingClientRect().top - viewport.getBoundingClientRect().top + viewport.scrollTop);
+          scroll.reposition(top);
+          consoleScroll.reposition();
+        }).catch(onError);
+        return pending;
+      }];
+    })));
     const navigation = createCommentaryNavigation(Object.freeze({
-      seek: (stepId, source) => commandPort.seek(stepId, source)
+      seek: (stepId, source) => playerCommands.seek(stepId, source)
     }));
     const native = createCommentaryNativeBinding({
       controls, presentation, select: (stepId) => selection.select(stepId),
@@ -117,18 +151,48 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     });
     disposers.push(() => native.dispose());
     const follow = createCommentaryFollowController({ presentation });
+    const explanationIntent = createPaneScrollIntent({viewport});
+    disposers.push(() => explanationIntent.dispose());
     const scroll = createCommentaryScrollBinding({
-      viewport, indicator, follow, newerStepsLabel: 'Newer steps available'
+      viewport, indicator, follow, newerStepsLabel: 'New explanation below',
+      scrollIntent: Object.freeze({read:() => explanationIntent.read()})
     });
     disposers.push(() => scroll.dispose());
-    const transport = createConsoleExplanationTransportBinding({ root, commandPort, observationPort });
+    const consoleFollow = createConsoleFollowController({
+      readContent: () => rendererRoot.querySelector('[data-role="transcript"]')?.textContent ?? ''
+    });
+    const consoleIntent = createPaneScrollIntent({viewport:consoleViewport});
+    disposers.push(() => consoleIntent.dispose());
+    const consoleScroll = createCommentaryScrollBinding({
+      viewport: consoleViewport, indicator: consoleIndicator, follow: consoleFollow,
+      newerStepsLabel: 'New output below',
+      scrollIntent: Object.freeze({read:() => consoleIntent.read()})
+    });
+    disposers.push(() => consoleScroll.dispose());
+    function refreshViewports() {
+      if (!disposed && root.getAttribute('data-cim-state') === 'ready') {
+        scroll.refresh();
+        consoleScroll.refresh();
+      }
+    }
+    for (const [pane, policy] of [[consolePane, consoleFollow], [explanationPane, follow]]) {
+      const holds = createPaneHoldBinding({ pane, follow: policy, refresh: refreshViewports });
+      disposers.push(() => holds.dispose());
+    }
+    const observer = new view.MutationObserver(() => {
+      if (disposed) return;
+      try { refreshViewports(); } catch (error) { onError(error); }
+    });
+    disposers.push(() => observer.disconnect());
+    observer.observe(rendererRoot, { subtree: true, childList: true, characterData: true });
+    const transport = createConsoleExplanationTransportBinding({ root, commandPort: playerCommands, observationPort });
     disposers.push(() => transport.dispose());
 
     function refresh() {
       if (disposed) return;
       native.refresh();
       // CSS withholds geometry until presentation admission; do not acknowledge follow early.
-      if (root.getAttribute('data-cim-state') === 'ready') scroll.refresh();
+      refreshViewports();
       timer = view.setTimeout(() => {
         timer = null;
         try { refresh(); } catch (error) { onError(error); }
