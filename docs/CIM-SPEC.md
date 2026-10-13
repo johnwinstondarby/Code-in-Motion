@@ -676,7 +676,7 @@ Keyboard commands apply only when focus is within the relevant CiM interaction s
 
 ## 17. Experience Validation Boundary
 
-Runtime receives only a validated `localis.cim/v1` experience.
+Runtime receives only a validated supported `localis.cim/v1` or `localis.cim/v2` experience. Loading admission must enforce the explicit engine capability identity and `engine_min` before constructing Runtime (ADR 0053). WordPress currently admits v2 only for the complete Console-Explanation Player mode. Plugin/package release version is not the engine capability version.
 
 Validation occurs before playback and before subject state reaches a renderer.
 

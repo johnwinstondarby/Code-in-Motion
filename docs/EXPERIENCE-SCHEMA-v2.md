@@ -246,6 +246,6 @@ The v2 schema derivation is accepted when:
 - runtime validation of `commentary.evidence` is proven not to inspect opaque state;
 - the 18-boundary Git reference specimen validates;
 - Runtime ingestion accepts and deep-freezes validated v2 without interpreting `presentation`, `beat`, `state`, or `renderer_config`;
-- production WordPress registration rejects `localis.cim/v2` assets until the beat-aware Player, Transport, Commentary, and deep-link consumers land; lifting that gate is a reviewed change to `check:wordpress-experience-registry`;
+- ADR 0053 lifts the temporary production v2 gate after complete Console Player consumers and engine compatibility enforcement land. Registration requires compatible `engine_min`, supported Console Player mode, validated data, renderer resolution and canonical asset correspondence; other WordPress renderer modes remain v1-only;
 - deterministic replay can address every generated semantic boundary;
 - beat-oriented Host/Transport behavior can be implemented from shared grouping metadata alone.

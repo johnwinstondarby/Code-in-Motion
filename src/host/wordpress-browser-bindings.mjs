@@ -1,4 +1,5 @@
 import { ingestExperience } from '../experience/ingest-experience.mjs';
+import { assertWordPressExperienceAdmission } from './wordpress-admission-policy.mjs';
 
 const LOADER_OPTIONS_KEYS = Object.freeze(['fetch', 'experienceUrlFor']);
 const RESOLVER_OPTIONS_KEYS = Object.freeze(['registry']);
@@ -80,6 +81,7 @@ export function createWordPressExperienceLoader(optionsInput) {
       const response = await fetch(url);
       const raw = await readFetchedJson(response);
       const experience = ingestExperience(raw);
+      assertWordPressExperienceAdmission(experience);
       if (experience.id !== experienceId) {
         throw new TypeError(
           `WordPress experience identity mismatch: requested ${experienceId}, received ${String(experience.id)}.`

@@ -42,8 +42,8 @@ test('Gate 1: the committed compiled specimen is byte-identical to a fresh compi
   assert.equal(readFileSync(resolve(ROOT, 'experiences/git/git-repository-practice.provenance.json'), 'utf8'), compiled.provenanceText);
 });
 
-test('Gate 1: the compiled specimen remains closed to WordPress production registration (R42 gate)', () => {
-  assert.ok(!REGISTRABLE_RUNTIME_SCHEMAS.includes(doc.schema));
+test('Gate 1: the compiled specimen is admitted by the reviewed v2 registration bridge', () => {
+  assert.ok(REGISTRABLE_RUNTIME_SCHEMAS.includes(doc.schema));
 });
 
 test('A2R §4/§6: one boundary per segment, contiguous grouping, heading as label, exactly one final per beat', () => {

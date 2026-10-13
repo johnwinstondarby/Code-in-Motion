@@ -36,7 +36,7 @@ jobs:
                 },
                 {
                   "step": "runPHP",
-                  "code": "<?php\nrequire_once '/wordpress/wp-load.php';\n\n$page = get_page_by_path( 'cim-diagnostic', OBJECT, 'page' );\n$post = array(\n    'post_title'   => 'Code in Motion Diagnostic',\n    'post_name'    => 'cim-diagnostic',\n    'post_type'    => 'page',\n    'post_status'  => 'publish',\n    'post_content' => '[cim experience=\\\"synthetic-wordpress\\\"]CiM diagnostic fallback.[/cim]'\n);\n\nif ( $page ) {\n    $post['ID'] = $page->ID;\n}\n\n$result = wp_insert_post( $post, true );\nif ( is_wp_error( $result ) ) {\n    throw new RuntimeException( $result->get_error_message() );\n}\n"
+                  "code": "<?php\nrequire_once '/wordpress/wp-load.php';\n\n$page = get_page_by_path( 'cim-diagnostic', OBJECT, 'page' );\n$post = array(\n    'post_title'   => 'Code in Motion Diagnostic',\n    'post_name'    => 'cim-diagnostic',\n    'post_type'    => 'page',\n    'post_status'  => 'publish',\n    'post_content' => '[cim experience=\\\"git-repository-practice\\\"]CiM diagnostic fallback.[/cim]'\n);\n\nif ( $page ) {\n    $post['ID'] = $page->ID;\n}\n\n$result = wp_insert_post( $post, true );\nif ( is_wp_error( $result ) ) {\n    throw new RuntimeException( $result->get_error_message() );\n}\n"
                 }
               ]
             }

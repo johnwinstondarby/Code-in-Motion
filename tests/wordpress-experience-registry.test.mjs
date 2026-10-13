@@ -33,6 +33,11 @@ test('R30 canonical WordPress Experience registry validates the deployed set', a
         renderer: 'git/v1'
       },
       {
+        id: 'git-repository-practice',
+        asset: 'git-repository-practice.json',
+        renderer: 'console/v1'
+      },
+      {
         id: 'synthetic-wordpress',
         asset: 'synthetic-wordpress.json',
         renderer: 'synthetic/v1'
@@ -139,19 +144,28 @@ async function deploymentRoot(assets) {
   return root;
 }
 
-test('R42 production registration is gated to localis.cim/v1 until beat-aware consumers land', () => {
-  assert.deepEqual([...REGISTRABLE_RUNTIME_SCHEMAS], ['localis.cim/v1']);
+test('ADR 0053 production registration admits recognized v1 and v2 schemas', () => {
+  assert.deepEqual([...REGISTRABLE_RUNTIME_SCHEMAS], ['localis.cim/v1', 'localis.cim/v2']);
   assert.ok(Object.isFrozen(REGISTRABLE_RUNTIME_SCHEMAS));
 });
 
-test('R42 registry rejects a valid, ingestible localis.cim/v2 asset at the production gate', async () => {
+test('ADR 0053 registry admits a compatible validated localis.cim/v2 asset', async () => {
   const v2 = JSON.parse(await readFile(resolve(ROOT, 'schemas', 'fixtures', 'valid', 'compiled-console-v2.json'), 'utf8'));
   const root = await deploymentRoot({ 'compiled-console-v2': v2 });
   try {
-    await assert.rejects(() => loadWordPressExperienceRegistry(root), /not yet open for production registration \(R42 gate/);
+    const result = await loadWordPressExperienceRegistry(root);
+    assert.equal(result.experiences[0].id,'compiled-console-v2');
   } finally {
     await rm(root, { recursive: true, force: true });
   }
+});
+
+test('ADR 0053 registry rejects an incompatible engine minimum before projection generation', async () => {
+  const v2 = JSON.parse(await readFile(resolve(ROOT,'schemas','fixtures','valid','compiled-console-v2.json'),'utf8'));
+  v2.engine_min = '1.0.1';
+  const root = await deploymentRoot({'compiled-console-v2':v2});
+  try { await assert.rejects(()=>loadWordPressExperienceRegistry(root),/CIM-EXP-015/); }
+  finally { await rm(root,{recursive:true,force:true}); }
 });
 
 test('R42 registry gate still admits a valid localis.cim/v1 asset', async () => {

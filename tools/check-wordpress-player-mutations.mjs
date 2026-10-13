@@ -21,7 +21,18 @@ const browserArgs = [resolve(ROOT, 'node_modules/@playwright/test/cli.js'), 'tes
 const hostArgs = ['--test', 'tests/wordpress-live-host.test.mjs'];
 const beatArgs = ['--test','tests/beat-consumers.test.mjs','tests/wordpress-beat-binding.test.mjs'];
 const themeArgs = ['--test','tests/learner-themes.test.mjs'];
+const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpress-live-host.test.mjs'];
 const mutations = [
+  ['v2 bypass loader admission', 'src/host/wordpress-browser-bindings.mjs', 'assertWordPressExperienceAdmission(experience);', 'void experience;', engineArgs],
+  ['v2 bypass registry admission', 'tools/check-wordpress-experience-registry.mjs', 'assertWordPressExperienceAdmission(experience);', 'void experience;', ['--test','tests/wordpress-experience-registry.test.mjs']],
+  ['v2 ignore engine minimum', 'src/experience/engine-compatibility.mjs', 'compareEngineVersions(ENGINE_IDENTITY.version, experience.engine_min) < 0', 'false', engineArgs],
+  ['v2 admit unsupported Player mode', 'src/host/wordpress-admission-policy.mjs', '!WORDPRESS_V2_RENDERERS.includes(experience.renderer)', 'false', engineArgs],
+  ['v2 drop instruction metadata', 'src/host/player-content.mjs', "experience.schema === 'localis.cim/v2' ?", 'false ?', engineArgs],
+  ['v2 drop evidence relationship', 'src/host/player-content.mjs', '...(step.commentary.evidence ?? [])', '', engineArgs],
+  ['v2 drop risk guidance', 'src/host/player-content.mjs', 'guidance:step.commentary.risk.guidance ?? null', 'guidance:null', engineArgs],
+  ['v2 hide anchor phase', player, 'if (instruction?.anchor)', 'if (false)', browserArgs],
+  ['v2 hide risk label', player, "label.textContent = {'free-to-undo':'FREE TO UNDO','leaves-a-trace':'LEAVES A TRACE','cannot-be-undone':'CANNOT BE UNDONE'}[instruction.risk.level];", "label.textContent = 'Risk';", browserArgs],
+  ['v2 bypass hash beat normalization', 'wordpress/assets/bootstrap-module.mjs', 'commandPort.seek(resolution.stepId, COMMAND_SOURCE.DEEP_LINK)', 'commandPort.seek(target.stepId, COMMAND_SOURCE.DEEP_LINK)', browserArgs],
   ['theme drop light role', 'wordpress/assets/theme-presets.mjs', "'console-text': '#1A4B8C',", '', themeArgs],
   ['theme break persistence', 'wordpress/assets/theme-binding.mjs', 'view.localStorage.setItem(LEARNER_THEME_STORAGE_KEY, theme);', 'void theme;', themeArgs],
   ['theme discard in-memory choice', 'wordpress/assets/theme-binding.mjs', 'explicit = theme;', 'explicit = null;', themeArgs],
@@ -53,7 +64,7 @@ const mutations = [
   ['remove renderer withholding', css, '.cim:not([data-cim-state="ready"]) [data-cim-renderer-root],', '.cim:not([data-cim-state="ready"]) [data-cim-missing-renderer],', browserArgs],
   ['remove Player withholding', css, '.cim:not([data-cim-state="ready"]) [data-cim-player],', '.cim:not([data-cim-state="ready"]) [data-cim-missing-player],', browserArgs],
   ['remove Transport withholding', css, '.cim:not([data-cim-state="ready"]) [data-cim-transport-controls] {', '.cim:not([data-cim-state="ready"]) [data-cim-missing-transport] {', browserArgs],
-  ['open v2 production registration', 'tools/check-wordpress-experience-registry.mjs', "Object.freeze(['localis.cim/v1'])", "Object.freeze(['localis.cim/v1', 'localis.cim/v2'])", ['--test','tests/wordpress-experience-registry.test.mjs']],
+  ['close v2 production registration', 'tools/check-wordpress-experience-registry.mjs', "Object.freeze(['localis.cim/v1', 'localis.cim/v2'])", "Object.freeze(['localis.cim/v1'])", ['--test','tests/wordpress-experience-registry.test.mjs']],
   ['skip Console follow refresh', player, 'consoleScroll.refresh();', '// Console refresh omitted', browserArgs],
   ['remove pointer hold', 'wordpress/assets/pane-hold-binding.mjs', "() => set('pointer', true)", '() => {}', browserArgs],
   ['remove focus hold', 'wordpress/assets/pane-hold-binding.mjs', "() => set('focus', true)", '() => {}', browserArgs],
@@ -84,7 +95,7 @@ async function run(args) {
 }
 
 // A failing baseline must never count as successful mutation detection.
-for (const args of [themeArgs, beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
+for (const args of [engineArgs, themeArgs, beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
   const result = await run(args);
   if (result.code !== 0) throw new Error('Mutation baseline failed:\n' + result.output);
 }
@@ -109,7 +120,7 @@ for (const [name, file, from, to, args] of mutations) {
       name === 'release Console hold resumes ownership' ? 'Console scroll ownership' :
       name === 'skip renderer observer disposal' ? 'root teardown' :
       name === 'skip deliberate viewport navigation' ? 'deliberate navigation repositions' : 'atomic readiness';
-    const focusedGrep = name.startsWith('theme ') ? 'learner themes' : name === 'progress follows reveal frontier' ? 'authored beat headings' :
+    const focusedGrep = name.startsWith('v2 ') ? 'production v2|instructional consumers' : name.startsWith('theme ') ? 'learner themes' : name === 'progress follows reveal frontier' ? 'authored beat headings' :
       ['markers select first segment','markers trust mutable DOM identity'].includes(name) ? 'beat markers capture' :
       name === 'focus scrolling claims ownership' ? 'offscreen link focus' :
       name === 'ignore native wheel intent' ? 'Console scroll ownership' :

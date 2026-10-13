@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import { freezeValidatedExperience } from '../src/experience/freeze-validated-experience.mjs';
 import { createPlayerContent } from '../src/host/player-content.mjs';
+import { createWordPressExperienceLoader } from '../src/host/wordpress-browser-bindings.mjs';
 import {
   WORDPRESS_CLOCK_FACTORY_KEYS,
   WORDPRESS_ENTRY_RESOLVER_KEYS,
@@ -51,6 +52,18 @@ test('ADR 0049 Player content is exact, frozen, legacy-capable and aligned', () 
   for (const ids of [[], ['initial'], ['initial', 'other'], ['other', 'step-01']]) {
     assert.throws(() => createPlayerContent(experience, ids), /align exactly/);
   }
+});
+
+test('incompatible engine requirements stop before renderer resolution, clock creation and Runtime construction',async()=>{
+  const root=rootHarness();let resolved=0;let clocks=0;
+  const raw=structuredClone(experienceFixture());raw.engine_min='1.0.1';
+  const loader=createWordPressExperienceLoader({fetch:async()=>({ok:true,json:async()=>raw}),experienceUrlFor:()=>'/future.json'});
+  const h=hostOptions({roots:[root.root],load:loader.load,resolve:()=>{resolved++;return rendererFixture().renderer;},create:()=>{clocks++;return clockFixture();}});
+  const host=createWordPressLiveHost(h.options);
+  assert.deepEqual(await host.mount(),{mounted:0,fallback:1});
+  assert.equal(resolved,0);assert.equal(clocks,0);assert.equal(host.commands(root.root),null);
+  assert.equal(h.diagnostics.records[0].code,'CIM-EXP-015');assert.equal(h.diagnostics.records[0].component,'experience');
+  await host.dispose();
 });
 
 test('ADR 0049 mount withholds ready; admission is idempotent and disposal wins', async () => {

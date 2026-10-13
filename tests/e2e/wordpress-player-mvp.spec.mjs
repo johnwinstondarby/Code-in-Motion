@@ -86,9 +86,17 @@ window.playerTest = {host, roots, bindings, errors, frames, preReady, sources, r
 sampling = false;
 </script>`;
 
+const productionFixture = `<!doctype html><link rel="stylesheet" href="/wordpress/assets/cim.css">
+<div class="cim" data-cim-experience="git-repository-practice" data-cim-instance="production-v2"><div data-cim-renderer-root></div><div class="cim-fallback">Lesson unavailable.</div></div>
+<div class="cim" data-cim-experience="git-basic-cycle" data-cim-instance="production-legacy"><div data-cim-renderer-root></div><div class="cim-fallback">Legacy lesson unavailable.</div></div>
+<script type="module" src="/wordpress/assets/bootstrap-module.mjs"></script>`;
+
 test.beforeAll(async () => {
   server = createServer(async (request, response) => {
     const pathname = new URL(request.url, 'http://localhost').pathname;
+    if (pathname === '/production') {
+      response.setHeader('Content-Type','text/html');response.end(productionFixture);return;
+    }
     if (pathname === '/fixture') {
       response.setHeader('Content-Type', 'text/html');
       response.end(fixture);
@@ -113,6 +121,85 @@ async function open(page, suffix = '') {
   await page.goto(origin + '/fixture' + suffix);
   await page.waitForFunction(() => !!window.playerTest);
 }
+
+// Browser emulation can update prefers-contrast without notifying existing MQLs.
+// Keep native objects/values and supply the missing OS-style notification only.
+async function observeContrastQueries(page) {
+  await page.addInitScript(()=>{
+    const match=window.matchMedia.bind(window);window.testContrastQueries=[];
+    window.matchMedia=query=>{const result=match(query);if(query==='(prefers-contrast: more)') testContrastQueries.push(result);return result;};
+  });
+}
+async function updateContrastPreference(page,options) {
+  await page.emulateMedia(options);
+  await expect.poll(()=>page.evaluate(()=>matchMedia('(prefers-contrast: more)').matches)).toBe(options.contrast==='more');
+  await page.evaluate(()=>{for(const query of [...testContrastQueries]) query.dispatchEvent(new Event('change'));});
+}
+
+test('production v2 admission uses registry loader bootstrap and final beat deep links alongside legacy',async({page})=>{
+  const errors=[];page.on('console',async message=>{if(message.type()==='error') errors.push(...await Promise.all(message.args().map(argument=>argument.jsonValue().catch(()=>null))));});
+  await page.goto(origin+'/production#cim/git-repository-practice/stage-hunk');
+  const root=page.locator('[data-cim-instance="production-v2"]');
+  const legacy=page.locator('[data-cim-instance="production-legacy"]');
+  await expect(root).toHaveAttribute('data-cim-state','ready');
+  await expect(legacy).toHaveAttribute('data-cim-state','ready');
+  await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','stage-hunk--s04');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
+  await expect(root.getByLabel('Theme',{exact:true})).toBeVisible();
+  await expect(legacy.getByLabel('Theme',{exact:true})).toHaveCount(0);
+  await root.locator('[data-cim-control="next"]').click();
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('3 / 8 · Review what is staged');
+  await page.evaluate(()=>{location.hash='#cim/git-repository-practice/check-status';});
+  await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','check-status--s02');
+  await page.evaluate(()=>{location.hash='#cim/git-repository-practice/stage-hunk';});
+  await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','stage-hunk--s04');
+  await page.evaluate(()=>{location.hash='#cim/git-repository-practice/stage-hunk--s03';});
+  await expect.poll(()=>errors.some(record=>record?.code==='CIM-HST-002' && record?.operation==='deep_link_hashchange')).toBe(true);
+  await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','stage-hunk--s04');
+});
+
+test('production v2 admission rejects incompatible engine minimum locally before any Console construction',async({page})=>{
+  const errors=[];page.on('console',async message=>{if(message.type()==='error') errors.push(...await Promise.all(message.args().map(argument=>argument.jsonValue().catch(()=>null))));});
+  await page.route('**/wordpress/experiences/git-repository-practice.json*',async route=>{
+    const response=await route.fetch();const lesson=await response.json();lesson.engine_min='1.0.1';
+    await route.fulfill({response,json:lesson});
+  });
+  await page.goto(origin+'/production');
+  const root=page.locator('[data-cim-instance="production-v2"]');
+  await expect(root).toHaveAttribute('data-cim-state','fallback');
+  await expect(root.locator('[data-cim-player]')).toHaveCount(0);
+  await expect(root.locator('[data-cim-renderer-root] > *')).toHaveCount(0);
+  await expect(root.locator('.cim-fallback')).toBeVisible();
+  await expect(page.locator('[data-cim-instance="production-legacy"]')).toHaveAttribute('data-cim-state','ready');
+  await expect.poll(()=>errors.some(record=>record?.code==='CIM-EXP-015')).toBe(true);
+});
+
+test('v2 instructional consumers preserve phase evidence risk guidance ordering and renderer-owned focus',async({page})=>{
+  await open(page);
+  const root=page.locator('.cim').first();
+  await expect(root.locator('[data-cim-commentary-risk]:visible')).toHaveCount(0);
+  await root.locator('[data-cim-control="end"]').click();
+  const lesson=await page.evaluate(async()=>await(await fetch('/experiences/git/git-repository-practice.json')).json());
+  await expect(root.locator('[data-cim-commentary-risk]:visible')).toHaveCount(lesson.steps.filter(step=>step.commentary.risk).length);
+  for(const step of lesson.steps) {
+    const entry=root.locator(`[data-cim-commentary-entry][data-cim-step-id="${step.id}"]`);
+    await expect(entry).toHaveAttribute('data-cim-commentary-anchor',step.commentary.anchor);
+    if(step.commentary.evidence) await expect(entry).toHaveAttribute('data-cim-commentary-evidence',JSON.stringify(step.commentary.evidence));
+    else await expect(entry).not.toHaveAttribute('data-cim-commentary-evidence',/./);
+    if(step.commentary.risk) {
+      await expect(entry.locator('[data-cim-commentary-risk]')).toHaveAttribute('data-cim-commentary-risk',step.commentary.risk.level);
+      await expect(entry.locator('[data-cim-commentary-risk] [data-risk]')).toHaveText({'free-to-undo':'FREE TO UNDO','leaves-a-trace':'LEAVES A TRACE','cannot-be-undone':'CANNOT BE UNDONE'}[step.commentary.risk.level]);
+      if(step.commentary.risk.guidance) await expect(entry.locator('[data-cim-risk-guidance]')).toHaveText(step.commentary.risk.guidance);
+      expect(await entry.evaluate(node=>{
+        const children=[...node.children];const prose=children.findIndex(child=>child.tagName==='P');
+        const risk=children.findIndex(child=>child.hasAttribute('data-cim-commentary-risk'));
+        const link=children.findIndex(child=>child.tagName==='A');return prose<risk && (link<0 || risk<link);
+      })).toBe(true);
+    }
+    await entry.locator('button').click();
+    await expect.poll(()=>root.locator('[data-role="output-line"][data-focused="true"]').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('data-output-id')))).toEqual(step.commentary.evidence??[]);
+  }
+});
 
 test('learner themes render complete palettes without altering canonical state or Console DOM', async ({ page }) => {
   await open(page);
@@ -162,13 +249,14 @@ test('learner themes retain the explicit choice across reload and ignore device 
 });
 
 test('learner themes follow device preference changes until an explicit choice and hide in forced colors', async ({ page }) => {
+  await observeContrastQueries(page);
   await page.emulateMedia({colorScheme:'light'});
   await open(page);
   const root=page.locator('.cim').first();
   await expect(root).toHaveAttribute('data-cim-theme','light');
   await page.emulateMedia({colorScheme:'dark'});
   await expect(root).toHaveAttribute('data-cim-theme','localis');
-  await page.emulateMedia({colorScheme:'light',contrast:'more'});
+  await updateContrastPreference(page,{colorScheme:'light',contrast:'more'});
   await expect(root).toHaveAttribute('data-cim-theme','high-contrast');
   expect(await page.evaluate(() => localStorage.getItem('cim.learnerTheme'))).toBeNull();
   await root.getByLabel('Theme',{exact:true}).selectOption('localis');
@@ -200,12 +288,12 @@ test('learner themes unavailable storage keeps an in-memory choice for siblings 
 });
 
 test('learner themes invalid persisted ID falls back to current device preferences', async ({ page }) => {
+  await observeContrastQueries(page);
   await page.addInitScript(() => localStorage.setItem('cim.learnerTheme','unknown'));
   await page.emulateMedia({colorScheme:'light'});
   await open(page);
   await expect(page.locator('.cim').first()).toHaveAttribute('data-cim-theme','light');
-  await page.emulateMedia({colorScheme:'dark',contrast:'more'});
-  await expect.poll(() => page.evaluate(() => matchMedia('(prefers-contrast: more)').matches)).toBe(true);
+  await updateContrastPreference(page,{colorScheme:'dark',contrast:'more'});
   await expect(page.locator('.cim').first()).toHaveAttribute('data-cim-theme','high-contrast');
 });
 

@@ -6,6 +6,10 @@
       "asset": "git-basic-cycle.json"
     },
     {
+      "id": "git-repository-practice",
+      "asset": "git-repository-practice.json"
+    },
+    {
       "id": "synthetic-wordpress",
       "asset": "synthetic-wordpress.json"
     }

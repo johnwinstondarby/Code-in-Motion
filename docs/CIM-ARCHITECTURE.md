@@ -24,7 +24,7 @@ This document defines component ownership, dependency direction, composition rul
 10. Renderers own transition duration. Runtime owns authored dwell scheduling during continuous playback.
 11. Pause preserves in-flight transition or dwell. Discrete navigation clears playback intent and resolves deterministically to a stable semantic boundary.
 12. V1 scrub is a transport-local preview followed by one semantic seek on commit.
-13. All generated and hand-authored experience inputs converge on validated `localis.cim/v1` before runtime initialization.
+13. All generated and hand-authored experience inputs converge on the shared validated v1/v2 runtime ingestion path and engine compatibility admission before runtime initialization (ADR 0053).
 14. Experience-authored content is untrusted data and cannot inject executable page content.
 15. The synthetic harness may observe production behavior and inject documented dependencies, but production code never imports harness code.
 16. Telemetry is observational. Replay reissues recorded inputs and compares resulting evidence.
@@ -378,12 +378,12 @@ Every mount receives a unique `instanceId`. Mutable runtime state, event sequenc
 
 ## 13. Experience Ingestion
 
-CiM has one runtime experience contract: `localis.cim/v1`.
+CiM has one shared runtime ingestion path supporting explicit `localis.cim/v1` and `localis.cim/v2` contracts. Structural/semantic validation is separate from engine compatibility admission; both precede Runtime construction. WordPress additionally requires a complete v2 Player mode (currently Console only). Engine capability identity is independent of package/release identity; see ADR 0053.
 
 ```text
 Human-authored .cim -> parser -----+
                                    |
-Localis subject source -> generator+--> localis.cim/v1 validation -> runtime
+Localis subject source -> generator+--> v1/v2 validation -> engine admission -> runtime
 ```
 
 The engine never receives an unvalidated alternate authoring representation.
@@ -457,7 +457,7 @@ Before shared architecture changes merge:
 - semantic position is independent from state digest;
 - renderer lifecycle responsibilities are documented;
 - commentary reveal behavior is documented;
-- experience ingestion converges on one validated schema;
+- experience ingestion converges on one validation path branching on explicit supported schema identity, followed by engine admission;
 - deep-link and multi-instance behavior are documented;
 - fault ownership and fallback boundaries are documented;
 - telemetry and replay remain observational;

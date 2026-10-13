@@ -1,7 +1,8 @@
 import { COMMAND_SOURCE } from '../../src/contracts/events.mjs';
 import {
   createWordPressDeepLinkResolver,
-  parseCiMDeepLinkFragment
+  parseCiMDeepLinkFragment,
+  resolveWordPressDeepLink
 } from '../../src/host/wordpress-deep-link.mjs';
 import {
   createWordPressLiveHost,
@@ -112,9 +113,10 @@ function reportDeepLinkError(root, operation, error) {
 }
 
 async function applyLocationDeepLink() {
+  const fragment = window.location.hash;
   let target;
   try {
-    target = parseCiMDeepLinkFragment(window.location.hash);
+    target = parseCiMDeepLinkFragment(fragment);
   } catch (error) {
     reportDeepLinkError(null, 'deep_link_hashchange', error);
     return;
@@ -125,11 +127,15 @@ async function applyLocationDeepLink() {
   for (const root of roots) {
     const experienceId = root.getAttribute('data-cim-experience');
     if (typeof experienceId !== 'string' || experienceId.trim() !== target.experienceId) continue;
-    const commandPort = host.commands(root);
-    if (commandPort === null) continue;
+    if (host.commands(root) === null) continue;
 
     try {
-      const outcome = await commandPort.seek(target.stepId, COMMAND_SOURCE.DEEP_LINK);
+      const experience = await experienceLoader.load(experienceId.trim());
+      if (disposalStarted || window.location.hash !== fragment || root.isConnected === false) return;
+      const resolution = resolveWordPressDeepLink(fragment, experienceId.trim(), experience);
+      const commandPort = host.commands(root);
+      if (commandPort === null || resolution === null) continue;
+      const outcome = await commandPort.seek(resolution.stepId, COMMAND_SOURCE.DEEP_LINK);
       if (outcome && outcome.result === 'rejected') {
         reportDeepLinkError(root, 'deep_link_hashchange', new Error(
           'CiM deep-link target was rejected: ' + target.stepId
