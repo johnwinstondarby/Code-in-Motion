@@ -191,3 +191,7 @@ Core verification now covers:
 - an explicit near-miss documenting that static analysis does not detect renamed Runtime delegation.
 
 The integration gate is the full branch `npm run verify` matrix before merge.
+
+## ADR 0051 directional beat navigation
+
+Core optionally receives ordered beat-final step IDs from Runtime. They must partition the canonical boundary sequence. v2 manual Next and Previous resolve beat-final destinations while pending Previous cancellation and boundary exhaustion retain their existing outcomes. Core consumes no Experience metadata or subject state. v1 keeps one-boundary navigation; canonical snapshots are unchanged.

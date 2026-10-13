@@ -19,7 +19,16 @@ const css = 'wordpress/assets/cim.css';
 const browserArgs = [resolve(ROOT, 'node_modules/@playwright/test/cli.js'), 'test',
   'tests/e2e/wordpress-player-mvp.spec.mjs', '--reporter=line', '--timeout=10000', '--output=' + resolve(work, 'browser-results')];
 const hostArgs = ['--test', 'tests/wordpress-live-host.test.mjs'];
+const beatArgs = ['--test','tests/beat-consumers.test.mjs','tests/wordpress-beat-binding.test.mjs'];
 const mutations = [
+  ["skip unfinished beat", "src/core/boundary-model.mjs", "(advance ? 1 : 0)", "1", beatArgs],
+  ["disable manual beat navigation", "src/core/boundary-model.mjs", "if (beatFinalIndices !== null) {", "if (false) {", beatArgs],
+  ["deep link selects first segment", "src/host/wordpress-deep-link.mjs", "?.finalStepId", "?.boundaryIds[0]", beatArgs],
+  ["progress follows reveal frontier", "wordpress/assets/beat-binding.mjs", "beatByBoundary.get(canonical.currentStepId)", "beatByBoundary.get(canonical.revealFrontier)", browserArgs],
+  ["markers select first segment", "wordpress/assets/beat-binding.mjs", "seek(beat.finalStepId,'marker')", "seek(beat.boundaryIds[0],'marker')", browserArgs],
+  ["markers trust mutable DOM identity", "wordpress/assets/beat-binding.mjs", "seek(beat.finalStepId,'marker')", "seek(button.getAttribute('data-cim-beat-marker'),'marker')", browserArgs],
+  ["skip beat listener withdrawal", "wordpress/assets/beat-binding.mjs", "button.removeEventListener('click',listener);", "// listener retained", beatArgs],
+
   ['remove Player mapping', player, "{ 'console/v1': 'console-explanation' }", '{}', browserArgs],
   ['route Console through legacy', player, "return Object.hasOwn(WORDPRESS_PLAYER_MODES, rendererId)", 'return false', browserArgs],
   ['expose legacy Restart', transport, "  'next',\n  'end'\n]);", "  'next',\n  'end',\n  'restart'\n]);", ['--test','tests/wordpress-production-transport-composition.test.mjs']],
@@ -65,7 +74,7 @@ async function run(args) {
 }
 
 // A failing baseline must never count as successful mutation detection.
-for (const args of [hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
+for (const args of [beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
   const result = await run(args);
   if (result.code !== 0) throw new Error('Mutation baseline failed:\n' + result.output);
 }
@@ -90,7 +99,9 @@ for (const [name, file, from, to, args] of mutations) {
       name === 'release Console hold resumes ownership' ? 'Console scroll ownership' :
       name === 'skip renderer observer disposal' ? 'root teardown' :
       name === 'skip deliberate viewport navigation' ? 'deliberate navigation repositions' : 'atomic readiness';
-    const focusedGrep = name === 'focus scrolling claims ownership' ? 'offscreen link focus' :
+    const focusedGrep = name === 'progress follows reveal frontier' ? 'authored beat headings' :
+      ['markers select first segment','markers trust mutable DOM identity'].includes(name) ? 'beat markers capture' :
+      name === 'focus scrolling claims ownership' ? 'offscreen link focus' :
       name === 'ignore native wheel intent' ? 'Console scroll ownership' :
       name === 'expose transcript behind pinned title' ? 'pinned Console title' :
       name === 'selection holds peer pane' ? 'selection holds only' :

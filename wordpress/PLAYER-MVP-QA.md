@@ -48,7 +48,7 @@ The protected Browser E2E workflow runs these checks alongside existing real Wor
 | Remove renderer, Player, or Transport withholding | Browser pre-ready/frame-sampling case |
 | Open v2 production registration | Existing experience-registry gate suite |
 
-All 15 original mutations and 16 viewport/hold mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
+All 15 original mutations, 16 viewport/hold mutations, and seven beat-consumer mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
 
 ## Known issue: authored indent and wrapped continuation can coincide
 
@@ -64,7 +64,7 @@ For the subsequent viewport checkpoint, temporary pointer/focus/selection holds 
 
 This is a candidate, not a deployed release or a new designation of the historical RC#1 artifact. Its exact head must pass Verify CiM contracts, WordPress Floor QA, WordPress Browser E2E, and WordPress Playground PR Preview before release admission.
 
-The Git data used by the browser fixture is test-only and is not admitted to production. Beat-aware consumers, v2 Commentary anchor/evidence/risk semantics, independent Console viewport follow and pane holds, engine compatibility/registration, and operational copy remain later checkpoints under the accepted v2 gate. ADR 0048 Parts B and C remain deferred.
+The Git data used by the browser fixture is test-only and is not admitted to production. Independent pane follow/holds and beat consumers are covered by the checkpoints below. v2 Commentary anchor/evidence/risk semantics, engine compatibility/registration, and operational copy remain later checkpoints under the accepted v2 gate. ADR 0048 Parts B and C remain deferred.
 
 ## Independent pane follow and holds checkpoint
 
@@ -79,3 +79,19 @@ The six new browser cases prove actual renderer replacement, newest content in b
 PR #76 review adds an opaque black sticky-title surface including its lower gap, with a geometry/hit-testing browser proof. Selection isolation and pre-existing pointer presence now have dedicated browser and headless proofs plus mutation guards. The protected browser suite has 15 normal cases and the existing expected wrap-collision failure; the mutation runner catches 31 guarded breakages.
 
 Master Visuals v3 corrects the WordPress transport status: 0.1.11 ships Start, Previous, Play/Pause, Next, End, and Restart in Console-Explanation mode; the timeline, Playback Rate slider, and beat progress remain targets. The Part A color follow-up must replace the discussed Console line's white outline with a background band and review keyboard focus-ring treatment against the grammar, including a forced-colors fallback. These changes remain outside the pane-follow PR. Pointer-rest behavior should be checked on page 3227 during live installation.
+
+## Beat consumers checkpoint (ADR 0051)
+
+Authored headings group segment Explanation entries. Progress follows the current committed beat, including backward movement below the reveal frontier. One native marker per beat seeks the captured final boundary with marker provenance. Manual Previous/Next use beat-final destinations; continuous playback and Commentary selection still visit individual segments. Incoming public v2 beat links select final boundaries before admission; generated segment links are rejected. Legacy step links and navigation remain unchanged.
+
+Five added browser cases cover headings/progress/reset, button and keyboard navigation, captured marker targets, internal Commentary selection, incoming beat links, v1 fallback, sibling isolation, and teardown. Four headless binding cases protect validation before DOM changes, construction rollback, retryable listener withdrawal, and synchronous/asynchronous failures. The complete browser suite now has 20 normal cases plus the known expected wrap failure.
+
+Production v2 registration remains closed. Engine compatibility, complete anchor/evidence/risk semantics, copy, timeline scrubbing, rate controls, color/limn work, and wrapping collision remain deferred. Pane follow and holds have shipped through ADR 0050; beat consumers are implemented here rather than deferred. No release-version change or live installation is part of this checkpoint.
+
+Seven additional mutation guards break manual beat navigation, final-boundary deep-link mapping, committed-beat progress, marker destination, immutable marker targeting, and listener withdrawal. All 38 guarded breakages must be caught after a passing baseline.
+
+PR #77 review decision: Next finishes an incomplete beat, then advances after completion. Core matrix and Runtime/browser proofs cover both presses; the additional mutation guard catches skipping an unfinished beat.
+
+Implemented session #8 styling checkpoint on INSPIRE: Console stays #000000. Explanation adopts Localis near-black #171B22, prose #A8B3C2, bright title headings #E8ECF2, IBM Plex Sans 500 prose, Catamaran 700 headings, mono controls, #323A4A borders and 8px corners. Teal #5AC4C8 beat kickers serve wayfinding and mark the current entry border. Font fallbacks remain available; the plugin does not load fonts. Existing browser proofs now check these computed styles under hostile host styling. The screenshot from the standalone browser fixture uses system fallbacks; installed Localis fonts and pointer-rest behavior still need live verification. Navigation, renderer evidence, production v2 registration and release version are unchanged. The broader background-band/limn and focus-ring grammar checkpoint remains pending.
+
+The next session #8 pass gives only the Console-Explanation Player's ready outer frame and Transport the dark palette. Structural `:has(> [data-cim-player="console-explanation"])` selectors scope this CSS without adding Host or renderer attributes. Legacy Git retains its light presentation. Transport uses IBM Plex Mono fallbacks, bright labels, 8px corners, near-black resting controls and #323A4A hover/playback surfaces. Teal marks the current beat border; neutral #A8B3C2 outlines keyboard focus, with system Highlight in forced colors. Browser evidence covers Play/Pause, hover, focus, forced colors and a neighboring legacy instance. The suite now has 21 ordinary cases plus the declared expected wrap failure. Explanation `strong` text retains weight 700. Plugin font loading, live installation and the Console background-band/limn checkpoint remain pending.

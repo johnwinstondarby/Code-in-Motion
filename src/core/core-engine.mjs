@@ -113,7 +113,7 @@ function snapshot(state) {
   });
 }
 
-export function createCoreEngine({ instanceId, experienceId, experienceVersion, stepIds } = {}) {
+export function createCoreEngine({ instanceId, experienceId, experienceVersion, stepIds, beatFinalStepIds = null } = {}) {
   const state = {
     instanceId: requireNonEmptyString(instanceId, 'instanceId'),
     experienceId: requireNonEmptyString(experienceId, 'experienceId'),
@@ -124,7 +124,7 @@ export function createCoreEngine({ instanceId, experienceId, experienceVersion, 
     revealFrontier: INITIAL_BOUNDARY_ID,
     error: null
   };
-  const boundaries = createBoundaryModel(stepIds);
+  const boundaries = createBoundaryModel(stepIds, beatFinalStepIds);
   const boundaryIds = boundaries.boundaryIds();
   const boundaryIndex = new Map(boundaryIds.map((stepId, index) => [stepId, index]));
 

@@ -19,12 +19,12 @@ Authoring JSON v1 §20 already says "if everything calls for attention, nothing 
 ### Part A: Teaching-first presentation (stylesheet; no contract change)
 
 1. **Principle.** The Console and Explanation never imitate shell coloring. Color and motion are reserved for teaching information: the authored emphasis (Part B), focus, and risk.
-2. **Backgrounds.** Both the Console pane and the Explanation pane use a black background, `#000000`.
+2. **Backgrounds.** The Console uses pure black, `#000000`. The session #8 Localis styling amendment gives Explanation a near-black `#171B22` surface, structural borders `#323A4A`, and 8px pane and entry corners.
 3. **Console text.** The prompt, commands, output, and responses use one light blue, `#7CB7FF` (10.07:1 on black, AAA). The prompt has no separate color. Pure blue `#0000FF` is excluded: at 2.44:1 it fails WCAG.
 4. **De-emphasis.** Lines authored with tone `dim` render in a muted blue, `#6F93C2` (6.63:1, AA). Quieting secondary material is consistent with the principle.
 4a. **Output tones render plain blue.** `accent`, `added`, `removed`, and `warning` keep their semantic values in authored and compiled data, but carry no permanent hue: they render in console blue (`#7CB7FF`). Focus, limn, and risk are the only visual emphasis.
 4b. **Tone must be redundant with text.** Because no hue will carry a tone's meaning, every line with a non-normal tone must state that meaning in its own text (such as a diff `+` or `-`, or `modified:`) or under its section header line (such as `Untracked files:`). Under that rule, removing hue removes no information for any user, including screen-reader users. `console/v1` output lines carry `data-tone` but no accessible label, so this redundancy is what makes plain blue safe. An experience that cannot satisfy it requires an accessible tone representation in renderer DOM. That is a CONSOLE-RENDERER §4 refinement, adopted through reviewed evidence regeneration with lineage (§7), not by CSS.
-5. **Explanation prose.** Off-white `#E6E9EF` (17.27:1, AAA), with secondary text in `#A9B1BD` (9.71:1, AAA). Blue for what the machine shows and off-white for what it means keeps the panes distinct without decorative color.
+5. **Explanation prose.** The session #8 Localis styling amendment uses softer prose `#A8B3C2`, bright title headings `#E8ECF2`, and teal beat kickers `#5AC4C8` for wayfinding on `#171B22`. Prose declares IBM Plex Sans at weight 500, headings Catamaran at weight 700, and controls a monospace stack. System fallbacks remain available; the plugin does not fetch fonts. Current entries use the teal border while keyboard focus retains its white outline. These Player styles change no authored content, renderer DOM, navigation, or public theming interface.
 6. **Risk remains colored.** Risk is teaching information, not simulation. The badge and gutter marks keep their color, all AAA on black:
 
    | Level | Color | Contrast |
@@ -34,6 +34,8 @@ Authoring JSON v1 §20 already says "if everything calls for attention, nothing 
    | CANNOT BE UNDONE | `#FF7A7A` | 8.32:1 |
 
 7. **Canonical evidence.** Part A is CSS only, keyed to existing attributes (`data-role`, `data-tone`, `data-risk`, `data-focused`). For experiences satisfying Decision 4b, which includes the Git specimen, it changes no renderer DOM, so the protected `console/v1` digests do not move.
+
+7a. **Player frame and Transport.** The session #8 amendment extends the near-black surface to the ready Console-Explanation outer frame and resting Transport buttons. Transport uses bright #E8ECF2 labels, #A8B3C2 borders/focus outlines, IBM Plex Mono fallbacks and 8px corners; hover and playback use #323A4A. The current beat border uses #5AC4C8. Forced colors uses the system Highlight focus outline. These styles are structurally scoped to the Console-Explanation Player; legacy Git presentation stays unchanged. No new Host/renderer attributes or public theming tokens are introduced. Console line-emphasis and pane focus grammar remain separate work.
 
 ### Part B: Authored limn emphasis (Authoring v2, `console/v2`)
 

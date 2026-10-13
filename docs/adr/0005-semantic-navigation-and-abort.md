@@ -117,3 +117,7 @@ The harness must prove:
 - mid-transition `previous()` produces accepted `no_change` when the source boundary is already committed;
 - destination commit occurs only after successful stable settlement;
 - renderer failure before settlement leaves the last committed stable boundary recoverable.
+
+## Amendment by ADR 0051
+
+[ADR 0051](0051-player-beat-navigation-and-presentation.md) changes v2 manual Next and Previous destinations to authored beat-final boundaries. Pending Previous cancellation, canonical segment settlement, playback, and v1 navigation remain unchanged.

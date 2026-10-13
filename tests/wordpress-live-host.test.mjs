@@ -38,10 +38,12 @@ function experienceFixture(id = 'wordpress-host-experience') {
 test('ADR 0049 Player content is exact, frozen, legacy-capable and aligned', () => {
   const experience = experienceFixture();
   const content = createPlayerContent(experience, ['initial', 'step-01']);
-  assert.deepEqual(Object.keys(content), ['rendererId', 'title', 'description', 'boundaryIds', 'entries']);
+  assert.deepEqual(Object.keys(content), ['rendererId', 'title', 'description', 'boundaryIds', 'entries', 'beats']);
   assert.equal(content.rendererId, 'synthetic/v1');
   assert.equal(content.title, null);
   assert.equal(content.description, null);
+  assert.deepEqual(content.beats, []);
+  assert.equal(Object.isFrozen(content.beats), true);
   for (const value of [content, content.boundaryIds, content.entries, content.entries[0], content.entries[0].links]) {
     assert.equal(Object.isFrozen(value), true);
   }

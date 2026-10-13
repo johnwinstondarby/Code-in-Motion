@@ -26,7 +26,7 @@
   padding: 1rem;
   background: #000000;
   border: 1px solid #323a4a;
-  border-radius: 0.25rem;
+  border-radius: 8px;
   text-align: left;
   font: inherit;
 }
@@ -106,15 +106,22 @@
 
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"],
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] * {
-  color: #E6E9EF;
-  background: #000000;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #A8B3C2;
+  background: #171B22;
+  font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 500;
   text-transform: none;
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-player-title] {
   margin: 0 0 0.75rem;
+  color: #E8ECF2;
+  font-family: "Catamaran", "IBM Plex Sans", system-ui, sans-serif;
   font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] strong {
   font-weight: 700;
 }
 
@@ -136,10 +143,24 @@
   margin: 0 0 1rem;
   padding: 0.75rem;
   border: 1px solid #323a4a;
+  border-radius: 8px;
 }
 
+.cim [data-cim-player="console-explanation"] [data-cim-beat-heading] {
+  margin: 0 0 0.75rem;
+  color: #5AC4C8;
+  font-family: "Catamaran", "IBM Plex Sans", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.cim [data-cim-beat-controls] { flex-basis: 100%; }
+.cim [data-cim-beat-progress] { display: block; margin-bottom: 0.5rem; }
+.cim [data-cim-beat-markers] { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.cim [data-cim-beat-marker][aria-current="step"] { border-width: 2px; }
+
 .cim [data-cim-player="console-explanation"] [data-cim-commentary-entry][aria-current="step"] {
-  border-color: #FFFFFF;
+  border-color: #5AC4C8;
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] a {
@@ -154,8 +175,9 @@
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] button {
   padding: 0.5rem 0.75rem;
   border: 1px solid #A9B1BD;
-  border-radius: 0.25rem;
+  border-radius: 8px;
   color: #A9B1BD;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 0.9375rem;
   cursor: pointer;
 }
@@ -399,5 +421,52 @@
 
   .cim [data-cim-transport-controls] button[type="button"] {
     flex: 1 1 calc(50% - 0.5rem);
+  }
+}
+
+/* Console-Explanation owns its dark frame and Transport; legacy Git stays light. */
+.cim[data-cim-state="ready"]:has(> [data-cim-player="console-explanation"]) {
+  color: #A8B3C2;
+  background: #171B22;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] {
+  color: #A8B3C2;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"] {
+  color: #E8ECF2;
+  background: #171B22;
+  border-color: #A8B3C2;
+  border-radius: 8px;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:hover,
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:active,
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"],
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"]:is(:hover, :focus, :focus-visible, :active) {
+  background: #323A4A;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"],
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:is(:hover, :focus, :focus-visible, :active) {
+  color: #E8ECF2;
+  border-color: #A8B3C2;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:focus,
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:focus-visible {
+  outline: 2px solid #A8B3C2;
+  outline-offset: 2px;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] [data-cim-beat-marker][aria-current="step"] {
+  border-color: #5AC4C8;
+}
+
+@media (forced-colors: active) {
+  .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:focus-visible {
+    outline-color: Highlight;
   }
 }

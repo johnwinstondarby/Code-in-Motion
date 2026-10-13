@@ -103,11 +103,19 @@ function sameBoundaryResolution(command, stepId) {
   );
 }
 
-export function createBoundaryModel(stepIds) {
+export function createBoundaryModel(stepIds, beatFinalStepIds = null) {
   const authoredStepIds = requireStepIds(stepIds);
   const boundaryIds = Object.freeze([INITIAL_BOUNDARY_ID, ...authoredStepIds]);
   const indexById = new Map(boundaryIds.map((stepId, index) => [stepId, index]));
   const finalStepId = authoredStepIds[authoredStepIds.length - 1];
+  let beatFinalIndices = null;
+  if (beatFinalStepIds !== null) {
+    if (!Array.isArray(beatFinalStepIds) || beatFinalStepIds.length === 0) throw new TypeError('Beat final boundaries must be a non-empty array.');
+    beatFinalIndices = beatFinalStepIds.map(id => indexById.get(id));
+    if (beatFinalIndices.some((index, offset) => !Number.isSafeInteger(index) || index < 1 ||
+        (offset > 0 && index <= beatFinalIndices[offset - 1])) ||
+        beatFinalIndices.at(-1) !== boundaryIds.length - 1) throw new TypeError('Beat final boundaries must partition the canonical sequence.');
+  }
 
   function requireKnownBoundary(stepId, name) {
     if (!indexById.has(stepId)) {
@@ -143,6 +151,12 @@ export function createBoundaryModel(stepIds) {
         if (currentIndex === boundaryIds.length - 1) {
           return resolution(request.command, COMMAND_RESULT.NO_CHANGE, fromStepId, fromStepId, NAVIGATION_REASON.AT_END);
         }
+        if (beatFinalIndices !== null) {
+          const currentBeat = currentIndex === 0 ? -1 : beatFinalIndices.findIndex(index => index >= currentIndex);
+          const advance = currentBeat === -1 || currentIndex === beatFinalIndices[currentBeat];
+          const destination = beatFinalIndices[Math.min(currentBeat + (advance ? 1 : 0), beatFinalIndices.length - 1)];
+          return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, boundaryIds[destination]);
+        }
         return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, boundaryIds[currentIndex + 1]);
 
       case NAVIGATION_COMMAND.PREVIOUS:
@@ -151,6 +165,11 @@ export function createBoundaryModel(stepIds) {
         }
         if (currentIndex === 0) {
           return resolution(request.command, COMMAND_RESULT.NO_CHANGE, fromStepId, fromStepId, NAVIGATION_REASON.AT_START);
+        }
+        if (beatFinalIndices !== null) {
+          const currentBeat = beatFinalIndices.findIndex(index => index >= currentIndex);
+          const destination = currentBeat === 0 ? 0 : beatFinalIndices[currentBeat - 1];
+          return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, boundaryIds[destination]);
         }
         return resolution(request.command, COMMAND_RESULT.SUCCESS, fromStepId, boundaryIds[currentIndex - 1]);
 

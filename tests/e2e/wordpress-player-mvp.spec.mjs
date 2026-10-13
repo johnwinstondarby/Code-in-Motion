@@ -10,15 +10,21 @@ let server;
 let origin;
 const fixture = `<!doctype html><link rel="stylesheet" href="/wordpress/assets/cim.css">
 <style>body {background:#111;color:#ddd} section {background:magenta;color:yellow} p {color:red}</style>
-<div class="cim" data-cim-experience="player-test" data-cim-instance="first"><div data-cim-renderer-root></div><div class="cim-fallback">Fallback</div></div>
-<div class="cim" data-cim-experience="player-test" data-cim-instance="second"><div data-cim-renderer-root></div><div class="cim-fallback">Fallback</div></div>
+<div class="cim" data-cim-experience="git-repository-practice" data-cim-instance="first"><div data-cim-renderer-root></div><div class="cim-fallback">Fallback</div></div>
+<div class="cim" data-cim-experience="git-repository-practice" data-cim-instance="second"><div data-cim-renderer-root></div><div class="cim-fallback">Fallback</div></div>
 <script type="module">
 import { createWordPressLiveHost } from '/src/host/wordpress-live-host.mjs';
 import { createWordPressClockFactory } from '/src/host/wordpress-browser-bindings.mjs';
 import { freezeValidatedExperience } from '/src/experience/freeze-validated-experience.mjs';
 import { createConsoleRenderer } from '/src/renderers/subjects/console/renderer.mjs';
 import { createWordPressPlayerBinding } from '/wordpress/assets/player-binding.mjs';
-const experience = freezeValidatedExperience(await (await fetch('/experiences/git/git-repository-practice.json')).json());
+import { createWordPressDeepLinkResolver } from '/src/host/wordpress-deep-link.mjs';
+const rawExperience = await (await fetch('/experiences/git/git-repository-practice.json')).json();
+if (new URL(location.href).searchParams.has('legacy-console')) {
+ rawExperience.schema = 'localis.cim/v1'; delete rawExperience.presentation;
+ for (const step of rawExperience.steps) { delete step.beat; delete step.commentary.anchor; delete step.commentary.evidence; delete step.commentary.risk; }
+}
+const experience = freezeValidatedExperience(rawExperience);
 const errors = [];
 const sources = [];
 const rendererObservers = new Set();
@@ -35,7 +41,7 @@ const host = createWordPressLiveHost({document,
  experienceLoader: Object.freeze({load: async () => experience}),
  rendererResolver: Object.freeze({resolve: async () => createConsoleRenderer()}),
  clockFactory: createWordPressClockFactory({now: () => performance.now(), setTimeout, clearTimeout, requestAnimationFrame, cancelAnimationFrame}),
- entryResolver: Object.freeze({resolve: () => null}), diagnostics: Object.freeze({report: record => errors.push(record)})});
+ entryResolver: createWordPressDeepLinkResolver({readFragment:() => location.hash}), diagnostics: Object.freeze({report: record => errors.push(record)})});
 const roots = [...document.querySelectorAll('.cim')];
 const bindings = [];
 const frames = [];
@@ -119,9 +125,57 @@ test('atomic readiness, two panes, fixed colors and native opening content', asy
   await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(0);
   await expect(root.locator('.cim-fallback')).toBeHidden();
   await expect(root.locator('[data-cim-pane="console"]')).toHaveCSS('color', 'rgb(124, 183, 255)');
-  await expect(root.locator('[data-cim-player-title]')).toHaveCSS('color', 'rgb(230, 233, 239)');
-  await expect(root.locator('[data-cim-pane="explanation"]')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
+  await expect(root.locator('[data-cim-pane="console"]')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
+  await expect(root.locator('[data-cim-player-title]')).toHaveCSS('color', 'rgb(232, 236, 242)');
+  await expect(root.locator('[data-cim-player-title]')).toHaveCSS('font-family', /Catamaran/);
+  await expect(root.locator('[data-cim-pane="explanation"]')).toHaveCSS('background-color', 'rgb(23, 27, 34)');
+  await expect(root.locator('[data-cim-player-description]')).toHaveCSS('color', 'rgb(168, 179, 194)');
+  await expect(root.locator('[data-cim-player-description]')).toHaveCSS('font-family', /IBM Plex Sans/);
+  await expect(root.locator('[data-cim-player-description]')).toHaveCSS('font-weight', '500');
+  await expect(root.locator('[data-cim-pane="explanation"]')).toHaveCSS('border-radius', '8px');
   await expect(root.locator('[data-cim-control="restart"]')).toBeVisible();
+});
+
+test('dark Player frame and Transport preserve keyboard focus and legacy presentation', async ({ page }) => {
+  await open(page);
+  const root = page.locator('.cim').first();
+  const next = root.locator('[data-cim-control="next"]');
+  const playback = root.locator('[data-cim-control="playback"]');
+  await expect(root).toHaveCSS('background-color', 'rgb(23, 27, 34)');
+  await expect(root.locator('[data-cim-transport-controls]')).toHaveCSS('color', 'rgb(168, 179, 194)');
+  await expect(next).toHaveCSS('background-color', 'rgb(23, 27, 34)');
+  await expect(next).toHaveCSS('color', 'rgb(232, 236, 242)');
+  await expect(next).toHaveCSS('border-radius', '8px');
+  await expect(next).toHaveCSS('font-family', /IBM Plex Mono/);
+  await next.hover();
+  await expect(next).toHaveCSS('background-color', 'rgb(50, 58, 74)');
+  await page.mouse.move(0, 0);
+  await next.focus();
+  await expect(next).toHaveCSS('outline-color', 'rgb(168, 179, 194)');
+  await expect(next).toHaveCSS('outline-width', '2px');
+  await playback.click();
+  await expect(playback).toHaveAttribute('data-cim-action', 'pause');
+  await expect(playback).toHaveCSS('color', 'rgb(232, 236, 242)');
+  await expect(playback).toHaveCSS('background-color', 'rgb(50, 58, 74)');
+  await playback.click();
+  await next.click();
+  await expect(root.locator('[data-cim-beat-marker][aria-current="step"]')).toHaveCSS('border-color', 'rgb(90, 196, 200)');
+  await page.emulateMedia({ forcedColors: 'active' });
+  await next.focus();
+  await expect(next).toHaveCSS('outline-style', 'solid');
+  await expect(next).toHaveCSS('outline-width', '2px');
+  await page.emulateMedia({ forcedColors: 'none' });
+  // A neighboring legacy instance must not acquire the Console Player palette.
+  await page.evaluate(() => {
+    const legacy = document.createElement('div');
+    legacy.id = 'legacy-presentation-proof';
+    legacy.className = 'cim';
+    legacy.dataset.cimState = 'ready';
+    legacy.innerHTML = '<div data-cim-renderer="git/v1"></div><div data-cim-transport-controls><button type="button">Next</button></div>';
+    document.body.appendChild(legacy);
+  });
+  await expect(page.locator('#legacy-presentation-proof')).toHaveCSS('background-color', 'rgb(244, 246, 248)');
+  await expect(page.locator('#legacy-presentation-proof button')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
 });
 
 test('reveal, Commentary navigation, protected links and Restart stay isolated', async ({ page }) => {
@@ -134,6 +188,10 @@ test('reveal, Commentary navigation, protected links and Restart stay isolated',
   await expect(first.locator('[data-role="risk-badge"]')).toHaveCSS('color', 'rgb(255, 122, 122)');
   await expect(first.locator('[data-role="copy"]').first()).toBeHidden();
   await expect(first.locator('[data-cim-commentary-entry] p').first()).toHaveCSS('user-select', 'text');
+  await expect(first.locator('[data-cim-commentary-entry] p').first()).toHaveCSS('color', 'rgb(168, 179, 194)');
+  await expect(first.locator('[data-cim-beat-heading]').first()).toHaveCSS('color', 'rgb(90, 196, 200)');
+  await expect(first.locator('[data-cim-beat-heading]').first()).toHaveCSS('font-weight', '700');
+  await expect(first.locator('[data-cim-commentary-entry]').first()).toHaveCSS('border-radius', '8px');
   if (process.env.CIM_PLAYER_SCREENSHOT) await first.screenshot({path:process.env.CIM_PLAYER_SCREENSHOT});
   await first.locator('[data-cim-commentary-entry] button').first().click();
   await expect(first.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id', 'check-status--s01');
@@ -567,4 +625,105 @@ test('pointer already present at pane binding construction holds new output', as
   await page.evaluate(() => {
     initialPointerProof.holds.dispose(); initialPointerProof.scroll.dispose(); initialPointerProof.indicator.remove();
   });
+});
+
+test('authored beat headings progress and button keyboard navigation use eight beats', async ({ page }) => {
+  await open(page);
+  const root = page.locator('.cim').first();
+  const progress = root.locator('[data-cim-beat-progress]');
+  const position = () => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId);
+  await expect(root.locator('[data-cim-beat-marker]')).toHaveCount(8);
+  await expect(root.locator('[data-cim-beat-heading]:visible')).toHaveCount(0);
+  await expect(progress).toHaveText('Start · 8 beats');
+  await root.locator('[data-cim-control="next"]').click();
+  await expect.poll(position).toBe('check-status--s02');
+  await expect(root.locator('[data-cim-beat-heading]:visible')).toHaveText(['1 Check the repository state']);
+  await expect(progress).toHaveText('1 / 8 · Check the repository state');
+  await root.locator('[data-cim-control="next"]').click();
+  await expect.poll(position).toBe('stage-hunk--s04');
+  await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(6);
+  await root.locator('[data-cim-control="previous"]').click();
+  await expect.poll(position).toBe('check-status--s02');
+  await expect(progress).toHaveText('1 / 8 · Check the repository state');
+  await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(6);
+  await root.focus(); await page.keyboard.press('ArrowRight');
+  await expect.poll(position).toBe('stage-hunk--s04');
+  await page.keyboard.press('ArrowLeft');
+  await expect.poll(position).toBe('check-status--s02');
+  expect(await page.evaluate(() => playerTest.sources)).toEqual([]); // Next remains Next, not a substituted seek.
+  await root.locator('[data-cim-control="end"]').click();
+  await expect(root.locator('[data-cim-beat-heading]:visible')).toHaveCount(8);
+  await expect(progress).toHaveText('8 / 8 · Recover the commit');
+  expect(await root.locator('[data-cim-commentary-entry] button').allTextContents()).not.toContain('Step 18');
+  await root.locator('[data-cim-control="home"]').click();
+  await expect(progress).toHaveText('Start · 8 beats');
+  await expect(root.locator('[data-cim-beat-heading]:visible')).toHaveCount(8);
+  await root.locator('[data-cim-control="restart"]').click();
+  await expect(root.locator('[data-cim-beat-heading]:visible')).toHaveCount(0);
+  await expect(progress).toHaveText('Start · 8 beats');
+  await expect(page.locator('.cim').nth(1).locator('[data-cim-beat-progress]')).toHaveText('Start · 8 beats');
+});
+
+test('beat markers capture final destinations while Commentary retains individual segments', async ({ page }) => {
+  await open(page);
+  const root = page.locator('.cim').first();
+  const marker = root.locator('[data-cim-beat-marker="stage-hunk"]');
+  await marker.evaluate(node => node.setAttribute('data-cim-beat-marker','tampered'));
+  await root.locator('[data-cim-beat-marker="tampered"]').focus();
+  await page.keyboard.press('Space');
+  await expect(root.locator('[data-cim-control="playback"]')).toHaveText('Play');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
+  await expect.poll(() => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId)).toBe('stage-hunk--s04');
+  await root.locator('[data-cim-commentary-entry][data-cim-step-id="stage-hunk--s02"] button').click();
+  await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','stage-hunk--s02');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
+  await root.locator('[data-cim-control="next"]').click();
+  await expect.poll(() => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId)).toBe('stage-hunk--s04');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
+  await root.locator('[data-cim-control="next"]').click();
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('3 / 8 · Review what is staged');
+  await expect.poll(() => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId)).toBe('review-staged--s02');
+  expect(await page.evaluate(() => playerTest.sources)).toEqual(['marker','commentary']);
+});
+
+test('public beat deep links mount directly at final boundaries before presentation admission', async ({ page }) => {
+  await open(page,'#cim/git-repository-practice/stage-hunk');
+  for (const root of await page.locator('.cim').all()) {
+    await expect(root).toHaveAttribute('data-cim-state','ready');
+    await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
+    await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(6);
+    await expect(root.locator('[data-cim-beat-marker][aria-current="step"]')).toHaveAttribute('data-cim-beat-marker','stage-hunk');
+  }
+  expect(await page.evaluate(() => playerTest.roots.every(root => playerTest.host.observations(root).snapshot().canonical.currentStepId === 'stage-hunk--s04'))).toBe(true);
+  expect(await page.evaluate(() => playerTest.frames.every(frame => !frame.ready || (frame.player && frame.transport)))).toBe(true);
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+  await page.locator('.cim').first().locator('[data-cim-control="next"]').click();
+  await expect(page.locator('.cim').first().locator('[data-cim-beat-progress]')).toHaveText('3 / 8 · Review what is staged');
+  await expect(page.locator('.cim').nth(1).locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
+});
+
+test('deep links reject public v2 segment IDs and preserve legacy direct step links', async ({ page }) => {
+  await open(page,'#cim/git-repository-practice/stage-hunk--s02');
+  await expect(page.locator('.cim').first().locator('[data-cim-beat-progress]')).toHaveText('Start · 8 beats');
+  expect(await page.evaluate(() => playerTest.errors.every(error => error.code === 'CIM-HST-002'))).toBe(true);
+  expect(await page.evaluate(() => playerTest.errors.length)).toBe(2);
+  await open(page,'?legacy-console#cim/git-repository-practice/stage-hunk--s02');
+  await expect(page.locator('[data-cim-beat-controls]')).toHaveCount(0);
+  await expect(page.locator('.cim').first().locator('[data-cim-commentary-entry]:visible')).toHaveCount(4);
+  await expect(page.locator('.cim').first().locator('[data-cim-commentary-entry] button').first()).toHaveText('Step 1');
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+  await page.locator('.cim').first().locator('[data-cim-control="next"]').click();
+  await expect.poll(() => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId)).toBe('stage-hunk--s03');
+});
+
+test('disposed beat markers lose their listeners and preserve sibling controls', async ({ page }) => {
+  await open(page);
+  await page.evaluate(() => {
+    const stale = playerTest.roots[0].querySelector('[data-cim-beat-marker="commit"]');
+    playerTest.bindings[0].dispose(); stale.click();
+  });
+  expect(await page.evaluate(() => playerTest.sources)).toEqual([]);
+  await expect(page.locator('.cim').first().locator('[data-cim-beat-controls]')).toHaveCount(0);
+  await expect(page.locator('.cim').nth(1).locator('[data-cim-beat-marker]')).toHaveCount(8);
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
 });
