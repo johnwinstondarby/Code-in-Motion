@@ -5,10 +5,11 @@ import {
 } from './presentation.mjs';
 import { COMMENTARY_LINK_KEYS } from './reveal-projection.mjs';
 
-export const COMMENTARY_FOLLOW_CONTROLLER_KEYS = Object.freeze(['read', 'suspend', 'resume']);
+export const COMMENTARY_FOLLOW_CONTROLLER_KEYS = Object.freeze(['read', 'suspend', 'resume', 'hold', 'release']);
 export const COMMENTARY_FOLLOW_OPTIONS_KEYS = Object.freeze(['presentation']);
 export const COMMENTARY_FOLLOW_STATE_KEYS = Object.freeze([
   'following',
+  'held',
   'newerStepsAvailable',
   'latestVisibleStepId'
 ]);
@@ -153,9 +154,10 @@ function validatePresentationState(state) {
   };
 }
 
-function freezeState(following, newerStepsAvailable, latestVisibleStepId) {
+function freezeState(following, newerStepsAvailable, latestVisibleStepId, held) {
   return Object.freeze({
     following,
+    held,
     newerStepsAvailable,
     latestVisibleStepId
   });
@@ -167,6 +169,7 @@ export function createCommentaryFollowController(optionsInput) {
   const presentation = validatePresentation(dataValue(optionsInput, 'presentation', 'Commentary follow options'));
 
   let following = true;
+  const holds = new Set();
   let acknowledgedFrontierIndex = null;
 
   function readFresh() {
@@ -180,15 +183,16 @@ export function createCommentaryFollowController(optionsInput) {
       acknowledgedFrontierIndex = fresh.latestVisibleIndex;
     }
 
-    if (following) {
+    if (following && holds.size === 0) {
       acknowledgedFrontierIndex = fresh.latestVisibleIndex;
-      return freezeState(true, false, fresh.latestVisibleStepId);
+      return freezeState(true, false, fresh.latestVisibleStepId, false);
     }
 
     return freezeState(
-      false,
+      following,
       fresh.latestVisibleIndex > acknowledgedFrontierIndex,
-      fresh.latestVisibleStepId
+      fresh.latestVisibleStepId,
+      holds.size > 0
     );
   }
 
@@ -204,13 +208,14 @@ export function createCommentaryFollowController(optionsInput) {
       }
       if (following) {
         following = false;
-        acknowledgedFrontierIndex = fresh.latestVisibleIndex;
-        return freezeState(false, false, fresh.latestVisibleStepId);
+        if (holds.size === 0) acknowledgedFrontierIndex = fresh.latestVisibleIndex;
+        return freezeState(false, fresh.latestVisibleIndex > acknowledgedFrontierIndex, fresh.latestVisibleStepId, holds.size > 0);
       }
       return freezeState(
         false,
         fresh.latestVisibleIndex > acknowledgedFrontierIndex,
-        fresh.latestVisibleStepId
+        fresh.latestVisibleStepId,
+        holds.size > 0
       );
     },
 
@@ -218,7 +223,22 @@ export function createCommentaryFollowController(optionsInput) {
       const fresh = readFresh();
       following = true;
       acknowledgedFrontierIndex = fresh.latestVisibleIndex;
-      return freezeState(true, false, fresh.latestVisibleStepId);
+      return freezeState(true, false, fresh.latestVisibleStepId, holds.size > 0);
+    },
+
+    hold(reason) {
+      if (!['pointer', 'focus', 'selection'].includes(reason)) fail('Unknown Commentary hold reason.');
+      // Validate and acknowledge the pre-hold frontier before adding the first hold.
+      projectFresh();
+      holds.add(reason);
+      return projectFresh();
+    },
+
+    release(reason) {
+      if (!['pointer', 'focus', 'selection'].includes(reason)) fail('Unknown Commentary hold reason.');
+      readFresh();
+      holds.delete(reason);
+      return projectFresh();
     }
   };
 

@@ -34,7 +34,23 @@ const mutations = [
   ['remove renderer withholding', css, '.cim:not([data-cim-state="ready"]) [data-cim-renderer-root],', '.cim:not([data-cim-state="ready"]) [data-cim-missing-renderer],', browserArgs],
   ['remove Player withholding', css, '.cim:not([data-cim-state="ready"]) [data-cim-player],', '.cim:not([data-cim-state="ready"]) [data-cim-missing-player],', browserArgs],
   ['remove Transport withholding', css, '.cim:not([data-cim-state="ready"]) [data-cim-transport-controls] {', '.cim:not([data-cim-state="ready"]) [data-cim-missing-transport] {', browserArgs],
-  ['open v2 production registration', 'tools/check-wordpress-experience-registry.mjs', "Object.freeze(['localis.cim/v1'])", "Object.freeze(['localis.cim/v1', 'localis.cim/v2'])", ['--test','tests/wordpress-experience-registry.test.mjs']]
+  ['open v2 production registration', 'tools/check-wordpress-experience-registry.mjs', "Object.freeze(['localis.cim/v1'])", "Object.freeze(['localis.cim/v1', 'localis.cim/v2'])", ['--test','tests/wordpress-experience-registry.test.mjs']],
+  ['skip Console follow refresh', player, 'consoleScroll.refresh();', '// Console refresh omitted', browserArgs],
+  ['remove pointer hold', 'wordpress/assets/pane-hold-binding.mjs', "() => set('pointer', true)", '() => {}', browserArgs],
+  ['remove focus hold', 'wordpress/assets/pane-hold-binding.mjs', "() => set('focus', true)", '() => {}', browserArgs],
+  ['remove selection hold', 'wordpress/assets/pane-hold-binding.mjs', "() => set('selection', selectionHeld())", '() => {}', browserArgs],
+  ['scroll while held', 'src/commentary/scroll-binding.mjs', 'state.following && !state.held &&', 'state.following &&', browserArgs],
+  ['release Commentary hold resumes ownership', 'src/commentary/follow-controller.mjs', 'holds.delete(reason);', 'holds.delete(reason); following = true;', ['--test','tests/commentary-follow-policy.test.mjs']],
+  ['release Console hold resumes ownership', 'wordpress/assets/console-follow-controller.mjs', 'holds.delete(reason);', 'holds.delete(reason); following = true;', browserArgs],
+  ['skip pane hold listener withdrawal', 'wordpress/assets/pane-hold-binding.mjs', 'target.removeEventListener(type, listener);', '// listener retained', ['--test','tests/pane-hold-binding.test.mjs']],
+  ['skip renderer observer disposal', player, 'disposers.push(() => observer.disconnect());', '// observer retained', browserArgs],
+  ['skip deliberate viewport navigation', player, 'scroll.reposition(top);', '// deliberate navigation omitted', browserArgs],
+  ['focus scrolling claims ownership', 'src/commentary/scroll-binding.mjs', 'const learnerScrolling = scrollIntent.read();', 'const learnerScrolling = true;', browserArgs],
+  ['ignore native wheel intent', 'wordpress/assets/pane-scroll-intent.mjs', "[viewport, 'wheel', mark]", "[viewport, 'wheel', () => {}]", browserArgs],
+  ['skip scroll intent listener withdrawal', 'wordpress/assets/pane-scroll-intent.mjs', 'target.removeEventListener(type, listener);', '// listener retained', ['--test','tests/pane-hold-binding.test.mjs']],
+  ['expose transcript behind pinned title', css, '  margin-bottom: 0;\n  padding-bottom: 1rem;', '  margin-bottom: 1rem;\n  padding-bottom: 0;', browserArgs],
+  ['selection holds peer pane', 'wordpress/assets/pane-hold-binding.mjs', 'selection.getRangeAt(index).intersectsNode(pane)', 'true', browserArgs],
+  ['ignore initial pointer presence', 'wordpress/assets/pane-hold-binding.mjs', "if (pane.matches(':hover')) follow.hold('pointer');", '// initial pointer ignored', browserArgs]
 ];
 
 async function run(args) {
@@ -68,8 +84,18 @@ for (const [name, file, from, to, args] of mutations) {
     await writeFile(path, changed);
     const grep = name === 'remove Commentary provenance' ? 'reveal, Commentary' :
       name === 'skip Commentary disposal' ? 'root teardown' :
-      name === 'leave partial Player active' ? 'admission failure' : 'atomic readiness';
-    const result = await run(args === browserArgs ? [...args, '--grep', grep] : args);
+      name === 'leave partial Player active' ? 'admission failure' :
+      name === 'skip Console follow refresh' ? 'pane follow survives' :
+      ['remove pointer hold','remove focus hold','remove selection hold','scroll while held'].includes(name) ? 'Console pointer focus' :
+      name === 'release Console hold resumes ownership' ? 'Console scroll ownership' :
+      name === 'skip renderer observer disposal' ? 'root teardown' :
+      name === 'skip deliberate viewport navigation' ? 'deliberate navigation repositions' : 'atomic readiness';
+    const focusedGrep = name === 'focus scrolling claims ownership' ? 'offscreen link focus' :
+      name === 'ignore native wheel intent' ? 'Console scroll ownership' :
+      name === 'expose transcript behind pinned title' ? 'pinned Console title' :
+      name === 'selection holds peer pane' ? 'selection holds only' :
+      name === 'ignore initial pointer presence' ? 'pointer already present' : grep;
+    const result = await run(args === browserArgs ? [...args, '--grep', focusedGrep] : args);
     await writeFile(resolve(work, name.replaceAll(' ', '-') + '.log'), result.output);
     if (result.code === 0 || !/not ok|failed|✖/.test(result.output)) {
       throw new Error('Mutation was not caught by protected assertions: ' + name);
@@ -77,4 +103,4 @@ for (const [name, file, from, to, args] of mutations) {
     console.log('CAUGHT: ' + name);
   } finally { await writeFile(path, original); }
 }
-console.log('PASS: all 15 ADR 0049 guarded mutations were detected. Evidence: ' + work);
+console.log('PASS: all ' + mutations.length + ' Player guarded mutations were detected. Evidence: ' + work);

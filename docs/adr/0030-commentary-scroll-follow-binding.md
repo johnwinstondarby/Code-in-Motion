@@ -2,6 +2,8 @@
 
 Status: Accepted
 
+Amended by ADR 0050 for held movement, native scroll attribution, and deliberate viewport repositioning. The original decisions below record the checkpoint 5 baseline.
+
 Date: 2026-09-16
 
 ## Context

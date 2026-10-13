@@ -21,6 +21,15 @@ import { createWordPressPlayerBinding } from '/wordpress/assets/player-binding.m
 const experience = freezeValidatedExperience(await (await fetch('/experiences/git/git-repository-practice.json')).json());
 const errors = [];
 const sources = [];
+const rendererObservers = new Set();
+const BrowserMutationObserver = window.MutationObserver;
+window.MutationObserver = class extends BrowserMutationObserver {
+ observe(target, options) {
+  super.observe(target, options);
+  if (target.matches?.('[data-cim-renderer-root]')) rendererObservers.add(this);
+ }
+ disconnect() { super.disconnect(); rendererObservers.delete(this); }
+};
 const host = createWordPressLiveHost({document,
  matchMedia: q => window.matchMedia(q),
  experienceLoader: Object.freeze({load: async () => experience}),
@@ -64,7 +73,7 @@ for (const root of roots) {
   errors.push(String(e));
  }
 }
-window.playerTest = {host, roots, bindings, errors, frames, preReady, sources};
+window.playerTest = {host, roots, bindings, errors, frames, preReady, sources, rendererObservers};
 sampling = false;
 </script>`;
 
@@ -168,6 +177,7 @@ test('root teardown restores renderer position and preserves sibling Player', as
   await expect(page.locator('.cim').first().locator('[data-cim-player]')).toHaveCount(0);
   await expect(page.locator('.cim').nth(1)).toHaveAttribute('data-cim-state', 'ready');
   await expect(page.locator('.cim').nth(1).locator('[data-cim-player]')).toHaveCount(1);
+  expect(await page.evaluate(() => playerTest.rendererObservers.size)).toBe(1);
 });
 
 test('narrow layout stacks panes without horizontal page overflow', async ({ page }) => {
@@ -254,4 +264,307 @@ test('known issue: continuation must begin beyond authored indentation', async (
   expect(evidence.rows.length).toBeGreaterThan(1);
   test.fail(true, 'Fixed 2ch continuation collides with two authored spaces; awaiting Console renderer review.');
   expect(evidence.rows[1]).toBeGreaterThan(evidence.firstTextX + 0.5);
+});
+
+async function atBottom(viewport) {
+  return viewport.evaluate(node => node.scrollHeight - node.clientHeight - node.scrollTop <= 1);
+}
+
+async function revealBoundary(page, index) {
+  await page.evaluate(async index => {
+    const root = playerTest.roots[0];
+    await playerTest.host.commands(root).seek(playerTest.host.playerContent(root).boundaryIds[index], 'transport');
+  }, index);
+  await expect(page.locator('.cim').first().locator('[data-cim-commentary-entry]:visible')).toHaveCount(index);
+}
+
+async function appendConsoleOutput(viewport) {
+  await viewport.evaluate(node => {
+    const transcript = node.querySelector('[data-role="transcript"]');
+    for (let index = 0; index < 8; index += 1) {
+      const line = document.createElement('div');
+      line.dataset.role = 'output-line';
+      line.textContent = 'Additional presentation output ' + transcript.children.length;
+      transcript.appendChild(line);
+    }
+  });
+}
+
+test('pane follow survives real renderer replacement and keeps both newest views visible', async ({ page }) => {
+  await open(page);
+  await page.mouse.move(0, 0);
+  await revealBoundary(page, 10);
+  const root = page.locator('.cim').first();
+  const consoleViewport = root.locator('[data-cim-console-viewport]');
+  const explanationViewport = root.locator('[data-cim-commentary-viewport]');
+  const originalViewport = await consoleViewport.elementHandle();
+  await expect.poll(() => atBottom(consoleViewport)).toBe(true);
+  await expect.poll(() => atBottom(explanationViewport)).toBe(true);
+  await revealBoundary(page, 18);
+  expect(await originalViewport.evaluate(node => node === playerTest.roots[0].querySelector('[data-cim-console-viewport]'))).toBe(true);
+  await expect.poll(() => atBottom(consoleViewport)).toBe(true);
+  await expect.poll(() => atBottom(explanationViewport)).toBe(true);
+  await expect(root.locator('[data-cim-console-resume]')).toBeHidden();
+  await expect(root.locator('[data-cim-commentary-resume]')).toBeHidden();
+  const viewportBox = await consoleViewport.boundingBox();
+  const badgeBox = await root.locator('[data-role="risk-badge"]').boundingBox();
+  expect(badgeBox.y).toBeGreaterThanOrEqual(viewportBox.y);
+  expect(badgeBox.y + badgeBox.height).toBeLessThanOrEqual(viewportBox.y + viewportBox.height);
+  await expect(page.locator('.cim').nth(1).locator('[data-cim-commentary-entry]:visible')).toHaveCount(0);
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+});
+
+test('Console pointer focus and selection holds catch up without taking scroll ownership', async ({ page }) => {
+  await open(page);
+  await page.mouse.move(0, 0);
+  await revealBoundary(page, 10);
+  const root = page.locator('.cim').first();
+  const viewport = root.locator('[data-cim-console-viewport]');
+  const resume = root.locator('[data-cim-console-resume]');
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+  const before = await viewport.evaluate(node => node.scrollTop);
+  await viewport.hover();
+  await appendConsoleOutput(viewport);
+  await expect(resume).toHaveText('New output below');
+  await expect(resume).toBeVisible();
+  expect(await viewport.evaluate(node => node.scrollTop)).toBe(before);
+  await page.mouse.move(0, 0);
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+  await expect(resume).toBeHidden();
+
+  await viewport.evaluate(node => node.focus({preventScroll:true}));
+  const focusedTop = await viewport.evaluate(node => node.scrollTop);
+  await appendConsoleOutput(viewport);
+  await expect(resume).toBeVisible();
+  expect(await viewport.evaluate(node => node.scrollTop)).toBe(focusedTop);
+  await viewport.evaluate(node => node.blur());
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+
+  await viewport.evaluate(node => {
+    const text = node.querySelector('[data-role="output-text"]').firstChild;
+    const range = document.createRange();
+    range.setStart(text, 0); range.setEnd(text, Math.min(4,text.length));
+    const selection = document.getSelection(); selection.removeAllRanges(); selection.addRange(range);
+  });
+  const selectedTop = await viewport.evaluate(node => node.scrollTop);
+  await appendConsoleOutput(viewport);
+  await expect(resume).toBeVisible();
+  expect(await viewport.evaluate(node => node.scrollTop)).toBe(selectedTop);
+  await page.evaluate(() => document.getSelection().removeAllRanges());
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+});
+
+test('Explanation overlapping holds and pane-owned scrolling remain independent', async ({ page }) => {
+  await open(page);
+  await page.mouse.move(0, 0);
+  await revealBoundary(page, 10);
+  const root = page.locator('.cim').first();
+  const explanation = root.locator('[data-cim-commentary-viewport]');
+  const consoleViewport = root.locator('[data-cim-console-viewport]');
+  const resume = root.locator('[data-cim-commentary-resume]');
+  await expect.poll(() => atBottom(explanation)).toBe(true);
+  await explanation.hover();
+  await explanation.evaluate(node => node.focus({preventScroll:true}));
+  const heldTop = await explanation.evaluate(node => node.scrollTop);
+  await revealBoundary(page, 11);
+  await expect(resume).toHaveText('New explanation below');
+  await expect(resume).toBeVisible();
+  expect(await explanation.evaluate(node => node.scrollTop)).toBe(heldTop);
+  await page.mouse.move(0, 0);
+  expect(await explanation.evaluate(node => node.scrollTop)).toBe(heldTop);
+  await explanation.evaluate(node => node.blur());
+  await expect.poll(() => atBottom(explanation)).toBe(true);
+
+  await explanation.evaluate(node => {
+    const text = node.querySelector('p').firstChild;
+    const range = document.createRange(); range.setStart(text,0); range.setEnd(text,4);
+    document.getSelection().removeAllRanges(); document.getSelection().addRange(range);
+  });
+  const selectionTop = await explanation.evaluate(node => node.scrollTop);
+  await revealBoundary(page, 12);
+  await expect(resume).toBeVisible();
+  expect(await explanation.evaluate(node => node.scrollTop)).toBe(selectionTop);
+  await page.evaluate(() => document.getSelection().removeAllRanges());
+  await expect.poll(() => atBottom(explanation)).toBe(true);
+
+  await explanation.hover();
+  await page.mouse.wheel(0, -500);
+  await expect.poll(() => explanation.evaluate(node => node.scrollTop)).toBeLessThan(selectionTop);
+  await page.mouse.move(0, 0);
+  const ownedTop = await explanation.evaluate(node => node.scrollTop);
+  await revealBoundary(page, 13);
+  await expect(resume).toBeVisible();
+  expect(await explanation.evaluate(node => node.scrollTop)).toBe(ownedTop);
+  await expect.poll(() => atBottom(consoleViewport)).toBe(true);
+  await resume.click();
+  await expect.poll(() => atBottom(explanation)).toBe(true);
+  await expect(resume).toBeHidden();
+  await page.mouse.move(0, 0);
+  await resume.evaluate(node => node.blur());
+  await revealBoundary(page, 14);
+  await expect.poll(() => atBottom(explanation)).toBe(true);
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+});
+
+test('Console scroll ownership waits for explicit return and stale pane listeners are withdrawn', async ({ page }) => {
+  await open(page);
+  await page.mouse.move(0, 0);
+  await revealBoundary(page, 10);
+  const root = page.locator('.cim').first();
+  const viewport = root.locator('[data-cim-console-viewport]');
+  const resume = root.locator('[data-cim-console-resume]');
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+  await viewport.hover();
+  await page.mouse.wheel(0, -500);
+  await expect.poll(() => atBottom(viewport)).toBe(false);
+  await page.mouse.move(0, 0);
+  const ownedTop = await viewport.evaluate(node => node.scrollTop);
+  await appendConsoleOutput(viewport);
+  await expect(resume).toBeVisible();
+  expect(await viewport.evaluate(node => node.scrollTop)).toBe(ownedTop);
+  // Manual return to the newest content is explicit learner action.
+  await viewport.hover();
+  await page.mouse.wheel(0, 100000);
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+  await expect(resume).toBeHidden();
+  await page.mouse.move(0, 0);
+  await appendConsoleOutput(viewport);
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+  await page.evaluate(() => {
+    const staleViewport = playerTest.roots[0].querySelector('[data-cim-console-viewport]');
+    const staleButton = playerTest.roots[0].querySelector('[data-cim-console-resume]');
+    playerTest.bindings[0].dispose();
+    staleViewport.scrollTo = () => { throw new Error('stale listener moved disposed pane'); };
+    staleViewport.dispatchEvent(new Event('pointerenter'));
+    staleViewport.dispatchEvent(new Event('scroll'));
+    staleButton.click();
+    document.dispatchEvent(new Event('selectionchange'));
+  });
+  await expect(page.locator('.cim').nth(1).locator('[data-cim-player]')).toHaveCount(1);
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+});
+
+test('deliberate navigation repositions both held panes while preserving Commentary provenance', async ({ page }) => {
+  await open(page);
+  await page.mouse.move(0, 0);
+  await revealBoundary(page, 18);
+  const root = page.locator('.cim').first();
+  const consoleViewport = root.locator('[data-cim-console-viewport]');
+  const explanation = root.locator('[data-cim-commentary-viewport]');
+  await explanation.evaluate(node => node.focus({preventScroll:true}));
+  await root.locator('[data-cim-commentary-entry] button').first().click();
+  await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','check-status--s01');
+  await expect.poll(() => explanation.evaluate(node => node.scrollTop)).toBe(0);
+  await expect.poll(() => atBottom(consoleViewport)).toBe(true);
+  expect(await page.evaluate(() => playerTest.sources)).toEqual(['commentary']);
+  await root.locator('[data-cim-control="end"]').click();
+  await expect.poll(() => atBottom(explanation)).toBe(true);
+  await expect.poll(() => atBottom(consoleViewport)).toBe(true);
+  await root.locator('[data-cim-control="restart"]').click();
+  await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(0);
+  expect(await explanation.evaluate(node => node.scrollTop)).toBe(0);
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+});
+
+test('offscreen link focus scrolls natively without claiming viewport ownership', async ({ page }) => {
+  await open(page);
+  await page.mouse.move(0,0);
+  await revealBoundary(page,10);
+  const root = page.locator('.cim').first();
+  const viewport = root.locator('[data-cim-commentary-viewport]');
+  const link = root.locator('[data-cim-commentary-entry] a').first();
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+  await link.focus(); // Browser may scroll to expose the focused link.
+  await expect.poll(() => atBottom(viewport)).toBe(false);
+  const focusedTop = await viewport.evaluate(node => node.scrollTop);
+  await revealBoundary(page,11);
+  await expect(root.locator('[data-cim-commentary-resume]')).toBeVisible();
+  expect(await viewport.evaluate(node => node.scrollTop)).toBe(focusedTop);
+  await link.evaluate(node => node.blur());
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+});
+
+test('pinned Console title and its lower gap cover scrolling transcript text', async ({ page }) => {
+  await open(page);
+  await page.mouse.move(0,0);
+  await revealBoundary(page,18);
+  const title = page.locator('.cim').first().locator('[data-role="titlebar"]');
+  const evidence = await title.evaluate(node => {
+    const style = getComputedStyle(node);
+    const box = node.getBoundingClientRect();
+    const padding = parseFloat(style.paddingBottom);
+    const gapY = box.bottom - padding / 2;
+    const hit = document.elementFromPoint(box.left + box.width / 2,gapY);
+    const transcript = node.nextElementSibling;
+    const range = document.createRange(); range.selectNodeContents(transcript);
+    return {background:style.backgroundColor, margin:parseFloat(style.marginBottom),padding,
+      titleOwnsGap:hit === node || node.contains(hit),
+      transcriptBehindGap:[...range.getClientRects()].some(rect => rect.top < gapY && rect.bottom > gapY)};
+  });
+  expect(evidence.transcriptBehindGap).toBe(true);
+  expect(evidence.background).toBe('rgb(0, 0, 0)');
+  expect(evidence.margin).toBe(0);
+  expect(evidence.padding).toBe(16);
+  expect(evidence.titleOwnsGap).toBe(true);
+});
+
+test('selection holds only the intersected pane while its peer follows', async ({ page }) => {
+  await open(page); await page.mouse.move(0,0);
+  await revealBoundary(page,10);
+  const root = page.locator('.cim').first();
+  const consoleViewport = root.locator('[data-cim-console-viewport]');
+  const explanation = root.locator('[data-cim-commentary-viewport]');
+  await expect.poll(() => atBottom(consoleViewport)).toBe(true);
+  await expect.poll(() => atBottom(explanation)).toBe(true);
+  await explanation.evaluate(node => {
+    const text = node.querySelector('p').firstChild;
+    const range = document.createRange(); range.setStart(text,0); range.setEnd(text,4);
+    document.getSelection().removeAllRanges(); document.getSelection().addRange(range);
+  });
+  const heldTop = await explanation.evaluate(node => node.scrollTop);
+  await revealBoundary(page,11);
+  await expect(root.locator('[data-cim-commentary-resume]')).toBeVisible();
+  expect(await explanation.evaluate(node => node.scrollTop)).toBe(heldTop);
+  await expect.poll(() => atBottom(consoleViewport)).toBe(true);
+  await expect(root.locator('[data-cim-console-resume]')).toBeHidden();
+  await page.evaluate(() => document.getSelection().removeAllRanges());
+  await expect.poll(() => atBottom(explanation)).toBe(true);
+
+  expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+});
+
+test('pointer already present at pane binding construction holds new output', async ({ page }) => {
+  await open(page);
+  const root = page.locator('.cim').first();
+  const viewport = root.locator('[data-cim-console-viewport]');
+  await revealBoundary(page,10);
+  await viewport.hover();
+  const initial = await viewport.evaluate(async node => {
+    const {createPaneHoldBinding} = await import('/wordpress/assets/pane-hold-binding.mjs');
+    const {createConsoleFollowController} = await import('/wordpress/assets/console-follow-controller.mjs');
+    const {createCommentaryScrollBinding} = await import('/src/commentary/scroll-binding.mjs');
+    const pane = node.closest('[data-cim-pane]');
+    const indicator = document.createElement('button'); indicator.type = 'button'; pane.appendChild(indicator);
+    const follow = createConsoleFollowController({readContent:() => node.querySelector('[data-role="transcript"]').textContent});
+    const scroll = createCommentaryScrollBinding({viewport:node,indicator,follow,
+      newerStepsLabel:'New output below',scrollIntent:Object.freeze({read:() => false})});
+    // The pointer is stationary throughout construction; no new pointerenter is dispatched.
+    const holds = createPaneHoldBinding({pane,follow,refresh:() => scroll.refresh()});
+    window.initialPointerProof = {follow,scroll,holds,indicator};
+    return {hovered:pane.matches(':hover'),held:follow.read().held};
+  });
+  expect(initial).toEqual({hovered:true,held:true});
+  const top = await viewport.evaluate(node => node.scrollTop);
+  await appendConsoleOutput(viewport);
+  const held = await page.evaluate(() => initialPointerProof.scroll.refresh());
+  expect(held.held).toBe(true);
+  expect(held.newerStepsAvailable).toBe(true);
+  expect(await viewport.evaluate(node => node.scrollTop)).toBe(top);
+  await page.mouse.move(0,0);
+  await expect.poll(() => atBottom(viewport)).toBe(true);
+  await page.evaluate(() => {
+    initialPointerProof.holds.dispose(); initialPointerProof.scroll.dispose(); initialPointerProof.indicator.remove();
+  });
 });

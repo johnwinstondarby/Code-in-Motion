@@ -19,7 +19,7 @@ This checkpoint implements ADR 0049 and ADR 0048 Part A as the Player foundation
 
 `npm run verify` includes the new Host proofs and existing production fences, legacy Transport tests, instance-isolation tests, content freshness, and protected Console renderer evidence.
 
-`tests/e2e/wordpress-player-mvp.spec.mjs` serves a test-only composition outside the release registry and exercises the actual Host, Runtime, Console renderer, Commentary stack, Transport binding, and stylesheet. Its five browser cases cover:
+`tests/e2e/wordpress-player-mvp.spec.mjs` serves a test-only composition outside the release registry and exercises the actual Host, Runtime, Console renderer, Commentary stack, Transport binding, and stylesheet. Its original five browser cases cover:
 
 1. Pre-ready withholding, frame-sampled admission, two panes, metadata, no initial authored Commentary, hostile host colors, and Restart visibility.
 2. Revealed prefix, high-water history on backward navigation, Commentary seek provenance, protected native links, selectable text, Restart, fixed risk color, and two-instance isolation.
@@ -48,7 +48,7 @@ The protected Browser E2E workflow runs these checks alongside existing real Wor
 | Remove renderer, Player, or Transport withholding | Browser pre-ready/frame-sampling case |
 | Open v2 production registration | Existing experience-registry gate suite |
 
-All 15 mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
+All 15 original mutations and 16 viewport/hold mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
 
 ## Known issue: authored indent and wrapped continuation can coincide
 
@@ -65,3 +65,17 @@ For the subsequent viewport checkpoint, temporary pointer/focus/selection holds 
 This is a candidate, not a deployed release or a new designation of the historical RC#1 artifact. Its exact head must pass Verify CiM contracts, WordPress Floor QA, WordPress Browser E2E, and WordPress Playground PR Preview before release admission.
 
 The Git data used by the browser fixture is test-only and is not admitted to production. Beat-aware consumers, v2 Commentary anchor/evidence/risk semantics, independent Console viewport follow and pane holds, engine compatibility/registration, and operational copy remain later checkpoints under the accepted v2 gate. ADR 0048 Parts B and C remain deferred.
+
+## Independent pane follow and holds checkpoint
+
+ADR 0050 amends Commentary follow/scroll contracts. A stable Player-owned Console viewport survives renderer replacement. Console presentation text changes, including partial typing/output, drive its independent follow policy. Explanation follows the canonical revealed Commentary prefix. Native pointer presence, pane focus, and non-collapsed selection intersecting a pane are overlapping temporary holds. They pause movement; only scrolling away suspends following. Deliberate return to the bottom or that pane's pending button explicitly resumes. The labels are New output below and New explanation below.
+
+Deliberate navigation may reposition both views without silently resetting learner follow ownership. Holds do not block an explicitly requested navigation. Immediate scrolling, one-pixel bottom tolerance, unchanged renderer DOM/evidence, and the closed production v2 registry remain protected.
+
+The six new browser cases prove actual renderer replacement, newest content in both panes, every hold reason in both panes, overlapping holds, independent scroll ownership, pending labels, button/manual resume, sibling isolation, offscreen-link focus without ownership, and stale-listener withdrawal. Headless policy/geometry tests protect validation, contraction, acknowledgement, successful movement, and explicit repositioning. Pane hold listeners and the renderer observer are disposed with the Player; listener installation rollback and retryable teardown are separately exercised.
+
+## Review follow-up
+
+PR #76 review adds an opaque black sticky-title surface including its lower gap, with a geometry/hit-testing browser proof. Selection isolation and pre-existing pointer presence now have dedicated browser and headless proofs plus mutation guards. The protected browser suite has 15 normal cases and the existing expected wrap-collision failure; the mutation runner catches 31 guarded breakages.
+
+Master Visuals v3 corrects the WordPress transport status: 0.1.11 ships Start, Previous, Play/Pause, Next, End, and Restart in Console-Explanation mode; the timeline, Playback Rate slider, and beat progress remain targets. The Part A color follow-up must replace the discussed Console line's white outline with a background band and review keyboard focus-ring treatment against the grammar, including a forced-colors fallback. These changes remain outside the pane-follow PR. Pointer-rest behavior should be checked on page 3227 during live installation.

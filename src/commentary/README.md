@@ -244,125 +244,31 @@ Refresh owns only Commentary presentation fields and is transactional. Failed DO
 
 Checkpoint 3 receives no complete `CiMInstance`, Transport surface, renderer authority, Core control, or semantic event-emission capability.
 
-## Checkpoint 4: follow suspension and newer-steps policy
+## Checkpoint 4 follow suspension and temporary holds
 
-Checkpoint 4 adds headless Commentary-local follow policy without browser scroll geometry or DOM authority.
+ADR 0050 amends ADR 0029. Construction still receives exactly `{ presentation }`, whose frozen capability contains only `read`. Every operation validates fresh presentation before changing policy.
 
-Construction receives exactly one frozen checkpoint 3 capability:
+The exact frozen follow surface is `read`, `suspend`, `resume`, `hold`, and `release`. State contains exactly `following`, `held`, `newerStepsAvailable`, and `latestVisibleStepId`. `following` begins true; `held` begins false. The latest identity is the final visible entry or null.
 
-```text
-presentation
-```
+Hold reasons are exactly `pointer`, `focus`, and `selection`. Acquisition is idempotent per reason. Holds preserve follow mode but pause acknowledgement and movement. New reveals while held may raise pending content. Releasing the last hold catches up only while still following. It never resumes a learner-owned viewport.
 
-`presentation` contains only:
+The first unheld suspension records the fresh frontier. Suspension during a hold preserves its pending baseline; repeated suspension does not acknowledge later content. Explicit resume acknowledges fresh content even if held, while future reveals still respect holds. Backward canonical navigation does not fabricate pending content; Restart-shaped contraction rebases acknowledgement without forcing follow on.
 
-```text
-read
-```
+This policy owns no DOM, scroll geometry, navigation, Runtime, Transport, renderer, or event authority.
 
-The exact frozen checkpoint 4 public surface is:
+## Checkpoint 5 native scroll follow binding
 
-```text
-read
-suspend
-resume
-```
+ADR 0050 amends ADR 0030. Construction receives exactly `viewport`, `indicator`, `follow`, `newerStepsLabel`, and `scrollIntent`. The last is a frozen read-only capability reporting native learner scroll intent. Follow is the exact frozen amended checkpoint 4 capability. The native button retains `type=button` and a text label. The viewport provides only native listener/scroll mechanics and geometry.
 
-Each operation validates a fresh checkpoint 3 presentation before changing local follow state. The projected state contains exactly:
+The exact frozen binding surface is `refresh`, `reposition`, and `dispose`. The binding installs one viewport scroll listener and one indicator click listener. WordPress separately owns pane pointer/focus/selection listeners; this binding installs no synthetic keyboard or drag handlers.
 
-```text
-following
-newerStepsAvailable
-latestVisibleStepId
-```
+`maxScrollTop = max(0, scrollHeight - clientHeight)` and `scrollTop >= maxScrollTop - 1` determine the newest position. Actual learner movement away suspends following. Deliberate return to that position resumes. Unchanged-position events from new content or own scrolling, and contraction/clamping, never change ownership.
 
-`following` begins `true`. `latestVisibleStepId` is the final currently visible Commentary entry, or `null` when no authored Commentary is visible.
+Refresh moves once per new content identity only while following and unheld. A held refresh does not record an automatic scroll, so releasing the last hold catches up without requiring another reveal. Pending content exposes the native resume control. Activation scrolls first and resumes only after successful movement. Default-prevented clicks yield.
 
-While following, every valid fresh projection acknowledges the current reveal frontier and `newerStepsAvailable` remains false.
+`reposition(top)` is a mechanical destination supplied by WordPress for deliberate navigation. It validates finite non-negative geometry, clamps to the available range, uses the bottom when omitted, and records the resulting own scroll. It does not change follow ownership or semantic state.
 
-The first `suspend()` transition records the current visible frontier as the local suspension baseline. Later reveal advancement while suspended sets `newerStepsAvailable` to true. Calling `suspend()` again while already suspended does not acknowledge those newer entries and therefore does not clear the indication.
-
-`resume()` re-enables following, acknowledges the current visible frontier, and clears `newerStepsAvailable`.
-
-Backward canonical navigation does not create a newer-step indication because checkpoint 1 high-water reveal history remains unchanged.
-
-A Restart-shaped reveal contraction rebases the suspended acknowledgement frontier to the contracted visible prefix without forcing follow mode back on. New commentary revealed after that reset can therefore raise `newerStepsAvailable` again while the learner remains suspended.
-
-Malformed fresh presentation state fails closed before local follow state changes.
-
-Checkpoint 4 does not read scroll offsets, infer scroll-away geometry, install scroll listeners, issue `scrollIntoView`, choose smooth scrolling, perform semantic navigation, emit semantic events, or normalize Runtime command outcomes.
-
-## Checkpoint 5: native scroll follow binding
-
-Checkpoint 5 connects checkpoint 4 follow policy to native Commentary viewport geometry and a native newer-steps button. It adds DOM mechanics without widening semantic authority.
-
-Construction receives exactly:
-
-```text
-viewport
-indicator
-follow
-newerStepsLabel
-```
-
-`follow` is the exact frozen checkpoint 4 capability:
-
-```text
-read
-suspend
-resume
-```
-
-`viewport` supplies the scroll listener, `scrollTo()`, and native `scrollTop`, `scrollHeight`, and `clientHeight` geometry. `indicator` must identify a native `button[type="button"]`.
-
-The exact frozen public surface is:
-
-```text
-refresh
-dispose
-```
-
-The binding installs exactly one viewport `scroll` listener and one indicator `click` listener. It installs no pointer-drag or synthetic keyboard listener.
-
-### Follow geometry
-
-The bottom position is:
-
-```text
-maxScrollTop = max(0, scrollHeight - clientHeight)
-```
-
-The viewport counts as returned to the newest position when:
-
-```text
-scrollTop >= maxScrollTop - 1 CSS pixel
-```
-
-The fixed one-CSS-pixel tolerance accommodates fractional browser layout values without creating a larger heuristic follow zone.
-
-When the learner scrolls away from the bottom while follow is active, the binding calls checkpoint 4 `suspend()`. Merely revealing newer Commentary while suspended never changes the viewport.
-
-When the learner manually returns to the bottom, the binding calls `resume()`. Manual return is therefore sufficient to restore follow mode and clear the newer-steps indication.
-
-### Autoscroll and newer-steps activation
-
-While follow is active, `refresh()` scrolls to the current bottom once for each new `latestVisibleStepId`. Repeated refresh of the same semantic frontier does not issue another scroll.
-
-While follow is suspended, a later reveal is represented only by checkpoint 4 `newerStepsAvailable`. The native indicator is shown and the viewport stays where the learner left it.
-
-Indicator activation first scrolls the viewport to the current bottom and only then calls `resume()`. A scroll failure therefore leaves follow suspended rather than acknowledging Commentary that the learner did not reach.
-
-Checkpoint 5 uses immediate native scrolling:
-
-```text
-behavior = auto
-```
-
-It introduces no smooth-scroll or reduced-motion policy. The native button receives its learner-facing name through `textContent`; browser keyboard activation remains native.
-
-Malformed follow state or invalid viewport geometry fails closed before follow-policy mutation. Indicator writes are transactional. Partial listener installation is rolled back. Disposal removes only the two checkpoint-owned listeners, is idempotent after success, and remains retryable after listener-removal failure.
-
-Checkpoint 5 receives no semantic navigation, Runtime, Transport, renderer, Commentary presentation, or semantic event-emission authority.
+All scrolling uses immediate `behavior: auto`. Geometry and fresh state validate before mutation; indicator writes remain transactional. Partial construction rolls back listeners. Disposal remains scoped, idempotent after success, and retryable after listener-removal failure. No Runtime, Transport, renderer, semantic event, navigation, or full presentation authority is injected.
 
 ## Interaction ownership
 

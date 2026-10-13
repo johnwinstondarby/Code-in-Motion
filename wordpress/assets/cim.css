@@ -48,6 +48,37 @@
   white-space: pre;
 }
 
+/* The Player viewport survives renderer replacement during typing and seeking. */
+.cim [data-cim-console-viewport],
+.cim [data-cim-commentary-viewport] {
+  max-height: 32rem;
+  overflow: auto;
+  overflow-anchor: none;
+  scroll-behavior: auto;
+}
+
+.cim [data-cim-console-viewport] [data-role="transcript"] {
+  max-height: none;
+  overflow: visible;
+}
+
+/* Retain the renderer title and consequence badge while its transcript follows. */
+.cim [data-cim-player="console-explanation"] [data-cim-console-viewport] [data-role="titlebar"] {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #000000;
+  margin-bottom: 0;
+  padding-bottom: 1rem;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-pane="console"] [data-cim-console-resume] {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #7CB7FF;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
 /* Continuations remain distinct from authored Console lines. Wide aligned output
  * may lose column alignment when wrapped; scrolling can be governed separately. */
 .cim [data-cim-renderer="console/v1"] [data-role="output-line"],

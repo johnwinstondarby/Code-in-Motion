@@ -124,7 +124,7 @@ function harness(initialIds = [], geometry = {}) {
     viewport,
     indicator,
     follow,
-    newerStepsLabel: 'Newer steps'
+    newerStepsLabel: 'Newer steps', scrollIntent:Object.freeze({read:() => true})
   });
   return {
     follow,
@@ -184,7 +184,7 @@ test('learner scrolling away from the bottom suspends follow without fabricating
   h.viewport.emit('scroll');
 
   assert.deepEqual(h.follow.read(), {
-    following: false,
+    following: false, held: false,
     newerStepsAvailable: false,
     latestVisibleStepId: 'step-01'
   });
@@ -305,25 +305,25 @@ test('invalid scroll geometry fails closed before changing follow state', () => 
 test('binding requires the exact frozen checkpoint 4 follow capability and an accessible native button label', () => {
   const viewport = new FakeViewport();
   const indicator = new FakeButton();
-  const state = Object.freeze({ following: true, newerStepsAvailable: false, latestVisibleStepId: null });
-  const widened = Object.freeze({ read: () => state, suspend: () => state, resume: () => state, seek() {} });
+  const state = Object.freeze({ following: true, held: false, newerStepsAvailable: false, latestVisibleStepId: null });
+  const widened = Object.freeze({ read: () => state, suspend: () => state, resume: () => state, hold: () => state, release: () => state, seek() {} });
 
   assert.throws(
-    () => createCommentaryScrollBinding({ viewport, indicator, follow: widened, newerStepsLabel: 'Newer steps' }),
+    () => createCommentaryScrollBinding({ viewport, indicator, follow: widened, newerStepsLabel: 'Newer steps', scrollIntent:Object.freeze({read:() => true}) }),
     /must contain exactly: read, suspend, resume/
   );
   assert.throws(
     () => createCommentaryScrollBinding({
       viewport,
       indicator,
-      follow: { read: () => state, suspend: () => state, resume: () => state },
-      newerStepsLabel: 'Newer steps'
+      follow: { read: () => state, suspend: () => state, resume: () => state, hold: () => state, release: () => state },
+      newerStepsLabel: 'Newer steps', scrollIntent:Object.freeze({read:() => true})
     }),
     /must be frozen/
   );
-  const exact = Object.freeze({ read: () => state, suspend: () => state, resume: () => state });
+  const exact = Object.freeze({ read: () => state, suspend: () => state, resume: () => state, hold: () => state, release: () => state });
   assert.throws(
-    () => createCommentaryScrollBinding({ viewport, indicator, follow: exact, newerStepsLabel: '' }),
+    () => createCommentaryScrollBinding({ viewport, indicator, follow: exact, newerStepsLabel: '', scrollIntent:Object.freeze({read:() => true}) }),
     /must be a non-empty string/
   );
 });
@@ -331,11 +331,11 @@ test('binding requires the exact frozen checkpoint 4 follow capability and an ac
 test('malformed follow state fails closed before indicator or scroll mutation', () => {
   const viewport = new FakeViewport({ scrollHeight: 300, clientHeight: 100 });
   const indicator = new FakeButton();
-  const malformed = Object.freeze({ following: true, newerStepsAvailable: true, latestVisibleStepId: 'step-01' });
-  const follow = Object.freeze({ read: () => malformed, suspend: () => malformed, resume: () => malformed });
+  const malformed = Object.freeze({ following: true, held: false, newerStepsAvailable: true, latestVisibleStepId: 'step-01' });
+  const follow = Object.freeze({ read: () => malformed, suspend: () => malformed, resume: () => malformed, hold: () => malformed, release: () => malformed });
 
   assert.throws(
-    () => createCommentaryScrollBinding({ viewport, indicator, follow, newerStepsLabel: 'Newer steps' }),
+    () => createCommentaryScrollBinding({ viewport, indicator, follow, newerStepsLabel: 'Newer steps', scrollIntent:Object.freeze({read:() => true}) }),
     /cannot report newer steps while following/
   );
   assert.equal(viewport.scrollCalls.length, 0);
@@ -349,11 +349,11 @@ test('construction rolls back a partially installed listener set', () => {
   const viewport = new FakeViewport();
   const indicator = new FakeButton();
   indicator.failAddType = 'click';
-  const state = Object.freeze({ following: true, newerStepsAvailable: false, latestVisibleStepId: null });
-  const follow = Object.freeze({ read: () => state, suspend: () => state, resume: () => state });
+  const state = Object.freeze({ following: true, held: false, newerStepsAvailable: false, latestVisibleStepId: null });
+  const follow = Object.freeze({ read: () => state, suspend: () => state, resume: () => state, hold: () => state, release: () => state });
 
   assert.throws(
-    () => createCommentaryScrollBinding({ viewport, indicator, follow, newerStepsLabel: 'Newer steps' }),
+    () => createCommentaryScrollBinding({ viewport, indicator, follow, newerStepsLabel: 'Newer steps', scrollIntent:Object.freeze({read:() => true}) }),
     /add click failed/
   );
   assert.equal(viewport.listenerCount('scroll'), 0);
@@ -387,4 +387,54 @@ test('scroll binding owns no navigation Runtime Transport renderer or semantic e
   for (const key of ['seek', 'play', 'pause', 'marker', 'runtime', 'transport', 'renderer', 'events', 'emit', 'snapshot']) {
     assert.equal(key in binding, false);
   }
+});
+
+test('held follow waits without acknowledging a scroll and catches up on release', () => {
+  const h = harness(['step-01'], {scrollHeight:300, clientHeight:100});
+  h.follow.hold('selection');
+  h.viewport.scrollCalls.length = 0;
+  h.viewport.scrollHeight = 420;
+  h.set(['step-01', 'step-02']);
+  h.binding.refresh();
+  h.viewport.emit('scroll'); // delayed layout event with unchanged scrollTop
+  assert.equal(h.follow.read().following, true);
+  assert.equal(h.follow.read().held, true);
+  assert.equal(h.viewport.scrollCalls.length, 0);
+  assert.equal(h.indicator.hidden, false);
+  h.follow.release('selection');
+  h.binding.refresh();
+  assert.equal(h.viewport.scrollTop, 320);
+  assert.equal(h.indicator.hidden, true);
+});
+
+test('programmatic and contraction scroll events never take learner ownership', () => {
+  const h = harness(['step-01'], {scrollHeight:300, clientHeight:100});
+  h.viewport.emit('scroll');
+  assert.equal(h.follow.read().following, true);
+  h.viewport.scrollHeight = 100;
+  h.viewport.scrollTop = 0;
+  h.set([]);
+  h.viewport.emit('scroll');
+  assert.equal(h.follow.read().following, true);
+});
+
+test('deliberate repositioning moves held owned viewports without resuming follow', () => {
+  const h = harness(['step-01'], {scrollHeight:300, clientHeight:100});
+  h.viewport.scrollTop = 80;
+  h.viewport.emit('scroll');
+  h.follow.hold('focus');
+  h.binding.reposition(500);
+  assert.equal(h.viewport.scrollTop, 200);
+  h.viewport.emit('scroll');
+  assert.equal(h.follow.read().following, false);
+  assert.equal(h.follow.read().held, true);
+  assert.throws(() => h.binding.reposition(-1), /non-negative/);
+});
+
+test('pre-ready zero geometry does not acknowledge automatic movement before admission', () => {
+  const h = harness(['step-01'], {scrollHeight:0, clientHeight:0});
+  assert.equal(h.viewport.scrollCalls.length, 0);
+  h.viewport.scrollHeight = 300; h.viewport.clientHeight = 100;
+  h.binding.refresh();
+  assert.equal(h.viewport.scrollTop, 200);
 });
