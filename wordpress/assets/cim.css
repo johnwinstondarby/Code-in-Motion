@@ -26,7 +26,7 @@
   padding: 1rem;
   background: #000000;
   border: 1px solid #323a4a;
-  border-radius: 0.25rem;
+  border-radius: 8px;
   text-align: left;
   font: inherit;
 }
@@ -106,15 +106,22 @@
 
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"],
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] * {
-  color: #E6E9EF;
-  background: #000000;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #A8B3C2;
+  background: #171B22;
+  font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 500;
   text-transform: none;
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-player-title] {
   margin: 0 0 0.75rem;
+  color: #E8ECF2;
+  font-family: "Catamaran", "IBM Plex Sans", system-ui, sans-serif;
   font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] strong {
   font-weight: 700;
 }
 
@@ -136,10 +143,14 @@
   margin: 0 0 1rem;
   padding: 0.75rem;
   border: 1px solid #323a4a;
+  border-radius: 8px;
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-beat-heading] {
   margin: 0 0 0.75rem;
+  color: #5AC4C8;
+  font-family: "Catamaran", "IBM Plex Sans", system-ui, sans-serif;
+  font-weight: 700;
   font-size: 1rem;
 }
 
@@ -149,7 +160,7 @@
 .cim [data-cim-beat-marker][aria-current="step"] { border-width: 2px; }
 
 .cim [data-cim-player="console-explanation"] [data-cim-commentary-entry][aria-current="step"] {
-  border-color: #FFFFFF;
+  border-color: #5AC4C8;
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] a {
@@ -164,8 +175,9 @@
 .cim [data-cim-player="console-explanation"] [data-cim-pane="explanation"] button {
   padding: 0.5rem 0.75rem;
   border: 1px solid #A9B1BD;
-  border-radius: 0.25rem;
+  border-radius: 8px;
   color: #A9B1BD;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 0.9375rem;
   cursor: pointer;
 }

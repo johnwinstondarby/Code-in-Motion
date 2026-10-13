@@ -125,8 +125,14 @@ test('atomic readiness, two panes, fixed colors and native opening content', asy
   await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(0);
   await expect(root.locator('.cim-fallback')).toBeHidden();
   await expect(root.locator('[data-cim-pane="console"]')).toHaveCSS('color', 'rgb(124, 183, 255)');
-  await expect(root.locator('[data-cim-player-title]')).toHaveCSS('color', 'rgb(230, 233, 239)');
-  await expect(root.locator('[data-cim-pane="explanation"]')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
+  await expect(root.locator('[data-cim-pane="console"]')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
+  await expect(root.locator('[data-cim-player-title]')).toHaveCSS('color', 'rgb(232, 236, 242)');
+  await expect(root.locator('[data-cim-player-title]')).toHaveCSS('font-family', /Catamaran/);
+  await expect(root.locator('[data-cim-pane="explanation"]')).toHaveCSS('background-color', 'rgb(23, 27, 34)');
+  await expect(root.locator('[data-cim-player-description]')).toHaveCSS('color', 'rgb(168, 179, 194)');
+  await expect(root.locator('[data-cim-player-description]')).toHaveCSS('font-family', /IBM Plex Sans/);
+  await expect(root.locator('[data-cim-player-description]')).toHaveCSS('font-weight', '500');
+  await expect(root.locator('[data-cim-pane="explanation"]')).toHaveCSS('border-radius', '8px');
   await expect(root.locator('[data-cim-control="restart"]')).toBeVisible();
 });
 
@@ -140,6 +146,10 @@ test('reveal, Commentary navigation, protected links and Restart stay isolated',
   await expect(first.locator('[data-role="risk-badge"]')).toHaveCSS('color', 'rgb(255, 122, 122)');
   await expect(first.locator('[data-role="copy"]').first()).toBeHidden();
   await expect(first.locator('[data-cim-commentary-entry] p').first()).toHaveCSS('user-select', 'text');
+  await expect(first.locator('[data-cim-commentary-entry] p').first()).toHaveCSS('color', 'rgb(168, 179, 194)');
+  await expect(first.locator('[data-cim-beat-heading]').first()).toHaveCSS('color', 'rgb(90, 196, 200)');
+  await expect(first.locator('[data-cim-beat-heading]').first()).toHaveCSS('font-weight', '700');
+  await expect(first.locator('[data-cim-commentary-entry]').first()).toHaveCSS('border-radius', '8px');
   if (process.env.CIM_PLAYER_SCREENSHOT) await first.screenshot({path:process.env.CIM_PLAYER_SCREENSHOT});
   await first.locator('[data-cim-commentary-entry] button').first().click();
   await expect(first.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id', 'check-status--s01');
