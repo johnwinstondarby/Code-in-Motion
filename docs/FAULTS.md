@@ -92,6 +92,8 @@ A successfully settled restart may clear an active `recover` record while resett
 | WordPress page-owned reduced-motion source or page-host teardown fails | Host / WordPress adapter | Local diagnostic | Per-instance Runtime disposal remains authoritative | Page teardown continues; page-host disposal may reject after already-started instance disposal | `CIM-HST-004` |
 | Unsupported schema | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus diagnostic | `CIM-EXP-001` |
 | Invalid/incomplete experience | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus validation diagnostic | `CIM-EXP-002` |
+| Unsatisfied or invalid engine minimum | Experience loading admission | Fallback before renderer/Runtime construction | No runtime session required | Static fallback plus engine identity/minimum diagnostic | `CIM-EXP-015` |
+| v2 WordPress renderer mode lacks complete Player consumers | Experience loading admission | Fallback before renderer/Runtime construction | No runtime session required | Static fallback plus unsupported Player-mode diagnostic | `CIM-EXP-016` |
 | Duplicate step ID | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus duplicate-ID diagnostic | `CIM-EXP-003` |
 | Reserved step ID `initial` used by author | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus reserved-ID diagnostic | `CIM-EXP-004` |
 | Invalid `dwell_ms` | Experience validator | Fallback before initialization | No runtime session required | Static fallback plus field diagnostic | `CIM-EXP-005` |

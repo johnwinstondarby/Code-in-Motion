@@ -1,5 +1,9 @@
 # WordPress Player MVP candidate
 
+## Engine identity and v2 admission checkpoint (ADR 0053)
+
+The explicit engine capability identity is `localis.cim/engine@1.0.0`, independent of plugin 0.1.11. Browser loading and deployment registration share admission checks; incompatible minima fail with CIM-EXP-015 before renderer/clock/Runtime construction. v2 is admitted only through the complete Console Player; other v2 renderer modes fail CIM-EXP-016. The canonical Git reference lesson is now registered. The Player carries and presents every phase/evidence/risk field, with risk guidance between prose and links, immutable ID relationships, unchanged renderer-owned focus and no opaque-state inspection. Source-bootstrap proofs and protected source/ZIP WordPress proofs cover actual admission, healthy legacy siblings and version fallback. This supersedes the historical closed-gate notes below. Live installation remains pending.
+
 ## Learner themes checkpoint (PR #78, ADR 0052)
 
 Console-Explanation Players offer Localis, High Contrast and Light through one native Theme select. Complete root-scoped palette declarations are generated from tested preset values; Localis preserves PR #77. Choice is shared across sibling Players and saved when storage permits. Explicit memory wins even on storage failure. Device contrast/light settings apply and update only without explicit choice. Forced colors hides the menu and retains the underlying preference. Binding/disposal and media-listener cleanup are transactional/retryable. Headless and browser proofs check contrast, hostile ancestors, canonical/renderer invariance, synchronization, reload, device changes, storage failure, remount and stale controls. Author palette integration remains deferred to Part C and will affect only Localis. Engine identity, the closed v2 gate, release version and live installation are unchanged.

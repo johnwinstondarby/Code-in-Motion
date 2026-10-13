@@ -107,6 +107,13 @@ jobs:
           CIM_WP_LAYOUT: source
         run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-git-basic-cycle.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs tests/e2e/wordpress-fault-matrix.spec.mjs tests/e2e/wordpress-player-mvp.spec.mjs --reporter=line
 
+      - name: Prove registered v2 admission in source WordPress
+        env:
+          CIM_WP_BASE_URL: http://localhost:8888
+        run: |
+          npm run --silent wp-env -- run cli wp post create --post_type=page --post_status=publish --post_name=cim-e2e-v2 --post_title='CiM v2 admission' --post_content='[cim experience="git-repository-practice" instance="admission-v2"]V2 fallback.[/cim][cim experience="git-basic-cycle" instance="admission-legacy"]Legacy fallback.[/cim]'
+          npx playwright test tests/e2e/wordpress-v2-admission.spec.mjs --reporter=line
+
       - name: Prove ADR 0049 Player mutation guards
         run: node tools/check-wordpress-player-mutations.mjs --work-directory=${{ runner.temp }}/cim-player-mutations
 
@@ -261,7 +268,7 @@ jobs:
           ADMIN_INVENTORY="$ADMIN_INVENTORY" node --input-type=module <<'NODE'
           const inventory = JSON.parse(process.env.ADMIN_INVENTORY);
           if (inventory.status !== 'available') throw new Error('R31 installed inventory unavailable.');
-          if (!Array.isArray(inventory.experiences) || inventory.experiences.length !== 2) {
+          if (!Array.isArray(inventory.experiences) || inventory.experiences.length !== 3) {
             throw new Error('R31 installed inventory count mismatch.');
           }
           if (inventory.experiences.some((entry) => entry.present !== true || entry.source !== 'release')) {
@@ -390,6 +397,13 @@ jobs:
           tests/e2e/wordpress-zip-install.spec.mjs
           tests/e2e/wordpress-playback-reduced-motion.spec.mjs
           --reporter=line
+
+      - name: Prove registered v2 admission from installed ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" run cli wp post create --post_type=page --post_status=publish --post_name=cim-e2e-v2 --post_title='CiM v2 admission' --post_content='[cim experience="git-repository-practice" instance="admission-v2"]V2 fallback.[/cim][cim experience="git-basic-cycle" instance="admission-legacy"]Legacy fallback.[/cim]'
+          CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-v2-admission.spec.mjs --reporter=line
 
       - name: Prove R33 state-free deactivate and uninstall lifecycle
         shell: bash
@@ -1093,7 +1107,7 @@ jobs:
       - name: Verify learner presets in selected browser
         env:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
-        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs --grep 'learner themes' --reporter=line
+        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs --grep 'learner themes|production v2|instructional consumers' --reporter=line
 
       - name: Stop R20 browser environment
         if: always()

@@ -498,6 +498,20 @@
   .cim:has(> [data-cim-player="console-explanation"]) [data-cim-theme-select]:focus-visible { outline-color: Highlight; }
 }
 
+/* v2 instructional presentation; no renderer DOM changes. */
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-phase],
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-evidence-label] {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--cim-explanation-control);
+  font-size: 0.875rem;
+}
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-risk] {
+  margin: 0.75rem 0;
+}
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-risk] [data-risk] {
+  font-weight: 700;
+}
 /* learner-theme-presets:start */
 .cim:has(> [data-cim-player="console-explanation"]) {
   --cim-console-background: #000000;

@@ -110,7 +110,33 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
       const text = document.createElement('p');
       const links = Object.freeze(entry.links.map(() => document.createElement('a')));
       entryRoot.appendChild(select);
+      const instruction = content.instructions?.[index];
+      if (instruction?.anchor) {
+        entryRoot.setAttribute('data-cim-commentary-anchor', instruction.anchor);
+        const phase = element('span', 'data-cim-commentary-phase');
+        phase.textContent = {command:'Command',output:'Output',response:'Response'}[instruction.anchor];
+        entryRoot.appendChild(phase);
+        select.setAttribute('aria-label', `Show ${beat?.heading ?? entry.stepId} ${instruction.anchor} in Console`);
+      }
+      if (instruction?.evidence.length) {
+        entryRoot.setAttribute('data-cim-commentary-evidence', JSON.stringify(instruction.evidence));
+        const evidence = element('span','data-cim-commentary-evidence-label');
+        evidence.textContent = `Related ${instruction.anchor === 'response' ? 'response' : 'output'}: ${instruction.evidence.length} ${instruction.evidence.length === 1 ? 'line' : 'lines'}`;
+        entryRoot.appendChild(evidence);
+      }
       entryRoot.appendChild(text);
+      if (instruction?.risk) {
+        const risk = element('div','data-cim-commentary-risk',instruction.risk.level);
+        const label = element('span','data-risk',instruction.risk.level);
+        label.textContent = {'free-to-undo':'FREE TO UNDO','leaves-a-trace':'LEAVES A TRACE','cannot-be-undone':'CANNOT BE UNDONE'}[instruction.risk.level];
+        risk.appendChild(label);
+        if (instruction.risk.guidance) {
+          const guidance = element('p','data-cim-risk-guidance');
+          guidance.textContent = instruction.risk.guidance;
+          risk.appendChild(guidance);
+        }
+        entryRoot.appendChild(risk);
+      }
       for (const link of links) entryRoot.appendChild(link);
       (beat === undefined ? viewport : beatSections.get(beat.id)).appendChild(entryRoot);
       return Object.freeze({ root: entryRoot, text, select, links });

@@ -3,6 +3,7 @@ import { dirname, extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { ingestExperience } from '../src/experience/ingest-experience.mjs';
+import { assertWordPressExperienceAdmission } from '../src/host/wordpress-admission-policy.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const REGISTRY_RELATIVE_PATH = 'wordpress/experiences/registry.json';
@@ -12,13 +13,13 @@ const REGISTRY_SCHEMA = 'localis.cim/wordpress-experience-registry/v1';
 const REGISTRY_KEYS = Object.freeze(['schema', 'experiences']);
 const ENTRY_KEYS = Object.freeze(['id', 'asset']);
 const IDENTIFIER_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-// R42 production gate: localis.cim/v2 ingests correctly, but production registration stays
-// closed until the beat-aware Player, Transport, Commentary, and deep-link consumers land.
-// Opening it is a reviewed change to this set, not a side effect of registering an asset.
-export const REGISTRABLE_RUNTIME_SCHEMAS = Object.freeze(['localis.cim/v1']);
+// ADR 0053: compatible v2 is admitted after its complete Player consumers land.
+// This schema whitelist is independent of per-asset engine compatibility checks.
+export const REGISTRABLE_RUNTIME_SCHEMAS = Object.freeze(['localis.cim/v1', 'localis.cim/v2']);
 const ASSET_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*\.json$/;
 const CANONICAL_PROJECTIONS = Object.freeze(new Map([
-  ['git-basic-cycle', 'experiences/git/git-basic-cycle.json']
+  ['git-basic-cycle', 'experiences/git/git-basic-cycle.json'],
+  ['git-repository-practice', 'experiences/git/git-repository-practice.json']
 ]));
 const LEGACY_DEPLOYMENT_IDENTIFIERS = Object.freeze([
   'EXPERIENCE' + '_PATHS',
@@ -117,7 +118,7 @@ async function validateDeploymentEntry(root, experienceDirectory, entry) {
   const assetText = await readRequiredText(assetPath, 'registered Experience asset ' + entry.asset);
   const raw = parseJson(assetText, 'registered Experience asset ' + entry.asset);
   let experience;
-  try { experience = ingestExperience(raw); }
+  try { experience = ingestExperience(raw); assertWordPressExperienceAdmission(experience); }
   catch (error) {
     fail('registered Experience asset ' + entry.asset +
       ' failed production ingestion: ' + error.message);

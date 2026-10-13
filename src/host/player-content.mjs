@@ -18,6 +18,13 @@ export function createPlayerContent(experience, canonicalBoundaryIds) {
     description: experience.presentation?.description ?? null,
     boundaryIds,
     entries,
-    beats: readExperienceBeats(experience)
+    beats: readExperienceBeats(experience),
+    ...(experience.schema === 'localis.cim/v2' ? { instructions: Object.freeze(experience.steps.map(step =>
+      Object.freeze({
+        anchor: step.commentary.anchor ?? null,
+        evidence: Object.freeze([...(step.commentary.evidence ?? [])]),
+        risk: step.commentary.risk ? Object.freeze({level:step.commentary.risk.level,
+          guidance:step.commentary.risk.guidance ?? null}) : null
+      }))) } : {})
   });
 }
