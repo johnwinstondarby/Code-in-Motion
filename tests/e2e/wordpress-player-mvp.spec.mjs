@@ -226,3 +226,32 @@ test('Console wraps with hanging continuations and preserves authored leading sp
   expect(evidence.spaced.prefixWidth).toBeCloseTo(evidence.spaced.indent * 2,0);
   expect(evidence.short.rows).toHaveLength(1);
 });
+
+test('known issue: continuation must begin beyond authored indentation', async ({ page }) => {
+  await page.setViewportSize({width:390,height:844});
+  await open(page);
+  const root = page.locator('.cim').first();
+  await root.locator('[data-cim-control="end"]').click();
+  const line = root.locator('[data-role="output-line"]').filter({hasText:'to discard changes in working directory'}).first();
+  const evidence = await line.locator('[data-role="output-text"]').evaluate(span => {
+    const text = span.firstChild;
+    const firstNonSpace = text.textContent.search(/\S/);
+    const range = document.createRange();
+    range.selectNodeContents(span);
+    const visualRows = new Map();
+    for (const rect of range.getClientRects()) {
+      if (rect.width === 0) continue;
+      const key = rect.y.toFixed(2);
+      visualRows.set(key, Math.min(visualRows.get(key) ?? Infinity, rect.x));
+    }
+    range.setStart(text, firstNonSpace);
+    range.setEnd(text, firstNonSpace + 1);
+    return {firstNonSpace, firstTextX:range.getBoundingClientRect().x,
+      rows:[...visualRows.values()]};
+  });
+  // Fixture/setup failures must remain unexpected failures.
+  expect(evidence.firstNonSpace).toBe(2);
+  expect(evidence.rows.length).toBeGreaterThan(1);
+  test.fail(true, 'Fixed 2ch continuation collides with two authored spaces; awaiting Console renderer review.');
+  expect(evidence.rows[1]).toBeGreaterThan(evidence.firstTextX + 0.5);
+});

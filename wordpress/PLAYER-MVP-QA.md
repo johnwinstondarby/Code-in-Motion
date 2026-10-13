@@ -50,6 +50,16 @@ The protected Browser E2E workflow runs these checks alongside existing real Wor
 
 All 15 mutations must be detected. The protected Browser E2E workflow runs this mutation gate.
 
+## Known issue: authored indent and wrapped continuation can coincide
+
+The wrapping fix merged in PR #74 preserves authored whitespace and gives continuation rows a fixed 2ch indent from the line box. It does not measure that indent relative to the first non-space character. The Git restore guidance line begins with two authored spaces, so its continuation can align with the first row's visible text and resemble a separate authored line. Deeper fixed indentation would move the collision rather than eliminate it for arbitrary authored indentation.
+
+This is recorded for the next Console renderer review and does not block independent pane follow/holds. The options to review are a subtle continuation cue that does not depend on columns, or renderer markup separating leading whitespace so continuation indentation can be relative to the text start. The latter changes renderer DOM and requires reviewed oracle regeneration with lineage; no oracle change is authorized by recording this issue.
+
+The browser case `known issue: continuation must begin beyond authored indentation` is an expected failure measuring continuation position against the first non-space character of the real Git guidance line. It pins the unresolved requirement without turning the protected suite red. An eventual implementation that satisfies it must remove the expected-failure annotation.
+
+For the subsequent viewport checkpoint, temporary pointer/focus/selection holds pause automatic movement without suspending follow mode. Learner scrolling away establishes viewport ownership and suspends following until explicit resume. ADRs 0029 and 0030 must state this distinction.
+
 ## Release boundary
 
 This is a candidate, not a deployed release or a new designation of the historical RC#1 artifact. Its exact head must pass Verify CiM contracts, WordPress Floor QA, WordPress Browser E2E, and WordPress Playground PR Preview before release admission.
