@@ -423,3 +423,50 @@
     flex: 1 1 calc(50% - 0.5rem);
   }
 }
+
+/* Console-Explanation owns its dark frame and Transport; legacy Git stays light. */
+.cim[data-cim-state="ready"]:has(> [data-cim-player="console-explanation"]) {
+  color: #A8B3C2;
+  background: #171B22;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] {
+  color: #A8B3C2;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"] {
+  color: #E8ECF2;
+  background: #171B22;
+  border-color: #A8B3C2;
+  border-radius: 8px;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:hover,
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:active,
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"],
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"]:is(:hover, :focus, :focus-visible, :active) {
+  background: #323A4A;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"],
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"][data-cim-control="playback"][data-cim-action="pause"]:is(:hover, :focus, :focus-visible, :active) {
+  color: #E8ECF2;
+  border-color: #A8B3C2;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:focus,
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:focus-visible {
+  outline: 2px solid #A8B3C2;
+  outline-offset: 2px;
+}
+
+.cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] [data-cim-beat-marker][aria-current="step"] {
+  border-color: #5AC4C8;
+}
+
+@media (forced-colors: active) {
+  .cim:has(> [data-cim-player="console-explanation"]) [data-cim-transport-controls] button[type="button"]:focus-visible {
+    outline-color: Highlight;
+  }
+}

@@ -35,6 +35,8 @@ Authoring JSON v1 §20 already says "if everything calls for attention, nothing 
 
 7. **Canonical evidence.** Part A is CSS only, keyed to existing attributes (`data-role`, `data-tone`, `data-risk`, `data-focused`). For experiences satisfying Decision 4b, which includes the Git specimen, it changes no renderer DOM, so the protected `console/v1` digests do not move.
 
+7a. **Player frame and Transport.** The session #8 amendment extends the near-black surface to the ready Console-Explanation outer frame and resting Transport buttons. Transport uses bright #E8ECF2 labels, #A8B3C2 borders/focus outlines, IBM Plex Mono fallbacks and 8px corners; hover and playback use #323A4A. The current beat border uses #5AC4C8. Forced colors uses the system Highlight focus outline. These styles are structurally scoped to the Console-Explanation Player; legacy Git presentation stays unchanged. No new Host/renderer attributes or public theming tokens are introduced. Console line-emphasis and pane focus grammar remain separate work.
+
 ### Part B: Authored limn emphasis (Authoring v2, `console/v2`)
 
 8. **What a limn is.** A limn is a brief white outline (`#FFFFFF`) around an authored word or phrase, which then fades back to plain text. Its behavior (outline, fade, residual, and timing) is a single Player-owned style applied identically everywhere; only its color is configurable (Part C, `theme.console.limn`). Authors identify only *what* to limn, never how it looks.

@@ -136,6 +136,48 @@ test('atomic readiness, two panes, fixed colors and native opening content', asy
   await expect(root.locator('[data-cim-control="restart"]')).toBeVisible();
 });
 
+test('dark Player frame and Transport preserve keyboard focus and legacy presentation', async ({ page }) => {
+  await open(page);
+  const root = page.locator('.cim').first();
+  const next = root.locator('[data-cim-control="next"]');
+  const playback = root.locator('[data-cim-control="playback"]');
+  await expect(root).toHaveCSS('background-color', 'rgb(23, 27, 34)');
+  await expect(root.locator('[data-cim-transport-controls]')).toHaveCSS('color', 'rgb(168, 179, 194)');
+  await expect(next).toHaveCSS('background-color', 'rgb(23, 27, 34)');
+  await expect(next).toHaveCSS('color', 'rgb(232, 236, 242)');
+  await expect(next).toHaveCSS('border-radius', '8px');
+  await expect(next).toHaveCSS('font-family', /IBM Plex Mono/);
+  await next.hover();
+  await expect(next).toHaveCSS('background-color', 'rgb(50, 58, 74)');
+  await page.mouse.move(0, 0);
+  await next.focus();
+  await expect(next).toHaveCSS('outline-color', 'rgb(168, 179, 194)');
+  await expect(next).toHaveCSS('outline-width', '2px');
+  await playback.click();
+  await expect(playback).toHaveAttribute('data-cim-action', 'pause');
+  await expect(playback).toHaveCSS('color', 'rgb(232, 236, 242)');
+  await expect(playback).toHaveCSS('background-color', 'rgb(50, 58, 74)');
+  await playback.click();
+  await next.click();
+  await expect(root.locator('[data-cim-beat-marker][aria-current="step"]')).toHaveCSS('border-color', 'rgb(90, 196, 200)');
+  await page.emulateMedia({ forcedColors: 'active' });
+  await next.focus();
+  await expect(next).toHaveCSS('outline-style', 'solid');
+  await expect(next).toHaveCSS('outline-width', '2px');
+  await page.emulateMedia({ forcedColors: 'none' });
+  // A neighboring legacy instance must not acquire the Console Player palette.
+  await page.evaluate(() => {
+    const legacy = document.createElement('div');
+    legacy.id = 'legacy-presentation-proof';
+    legacy.className = 'cim';
+    legacy.dataset.cimState = 'ready';
+    legacy.innerHTML = '<div data-cim-renderer="git/v1"></div><div data-cim-transport-controls><button type="button">Next</button></div>';
+    document.body.appendChild(legacy);
+  });
+  await expect(page.locator('#legacy-presentation-proof')).toHaveCSS('background-color', 'rgb(244, 246, 248)');
+  await expect(page.locator('#legacy-presentation-proof button')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+});
+
 test('reveal, Commentary navigation, protected links and Restart stay isolated', async ({ page }) => {
   await open(page);
   const first = page.locator('.cim').first();
