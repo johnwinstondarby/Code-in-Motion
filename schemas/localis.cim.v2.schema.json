@@ -37,7 +37,17 @@
         "description": { "type": "string", "minLength": 1 },
         "subject": { "type": "string", "minLength": 1 },
         "beat_count": { "type": "integer", "minimum": 1 },
-        "default_playback_rate": { "type": "number", "minimum": 0.5, "maximum": 2.0 }
+        "default_playback_rate": { "type": "number", "minimum": 0.5, "maximum": 2.0 },
+        "command_window": {
+          "type": "object", "additionalProperties": false, "required": ["cli"],
+          "properties": { "cli": {
+            "type": "object", "additionalProperties": false, "required": ["kind", "label"],
+            "properties": {
+              "kind": { "enum": ["powershell", "windows-cli", "bash"] },
+              "label": { "type": "string", "minLength": 1, "pattern": "^[^\\t\\r\\n\\u2028\\u2029]+$" }
+            }
+          } }
+        }
       }
     },
     "beat": {

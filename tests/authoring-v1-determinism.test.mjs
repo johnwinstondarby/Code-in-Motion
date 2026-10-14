@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { compileAuthoringSource } from '../authoring/v1/compile-authoring.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCE_PATH = resolve(ROOT, 'experiences/git/git-repository-practice.authoring.json');
+const SOURCE_PATH = resolve(ROOT, 'tests/fixtures/authoring-v1-compat/git-repository-practice.authoring.json');
 const lfText = readFileSync(SOURCE_PATH, 'utf8').replace(/\r\n/g, '\n');
 const reference = compileAuthoringSource(lfText);
 

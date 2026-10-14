@@ -10,6 +10,7 @@ import { createPaneHoldBinding } from './pane-hold-binding.mjs';
 import { createPaneScrollIntent } from './pane-scroll-intent.mjs';
 import { createWordPressBeatBinding } from './beat-binding.mjs';
 import { createWordPressThemeBinding } from './theme-binding.mjs';
+import { createConsoleCopyBinding } from './console-copy-binding.mjs';
 import { createConsoleExplanationTransportBinding, createWordPressTransportBinding } from './transport-binding.mjs';
 
 export const WORDPRESS_PLAYER_MODES = Object.freeze({ 'console/v1': 'console-explanation' });
@@ -65,6 +66,11 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     player = element('div', 'data-cim-player', 'console-explanation');
     const consolePane = element('section', 'data-cim-pane', 'console');
     consolePane.setAttribute('aria-label', 'Console');
+    if (content.commandWindow?.cli) {
+      const badge = element('div', 'data-cim-cli', content.commandWindow.cli.kind);
+      badge.textContent = content.commandWindow.cli.label;
+      consolePane.appendChild(badge);
+    }
     const consoleViewport = element('div', 'data-cim-console-viewport');
     consoleViewport.tabIndex = 0;
     consoleViewport.setAttribute('role', 'region');
@@ -149,6 +155,12 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     consoleViewport.appendChild(rendererRoot);
     consolePane.appendChild(consoleViewport);
     consolePane.appendChild(consoleIndicator);
+    const copyStatus = element('p', 'data-cim-copy-status');
+    copyStatus.setAttribute('role', 'status');
+    copyStatus.setAttribute('aria-live', 'polite');
+    copyStatus.setAttribute('aria-atomic', 'true');
+    consolePane.appendChild(copyStatus);
+    disposers.push(createConsoleCopyBinding({viewport:consoleViewport,status:copyStatus}).dispose);
 
     const observation = Object.freeze({ snapshot: () => observationPort.snapshot() });
     const reveal = createCommentaryRevealProjection({

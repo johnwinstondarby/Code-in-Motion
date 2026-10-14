@@ -9,7 +9,7 @@ import { AuthoringCompilationError, assertGeneratedIdentifiers, compileAuthoring
 import { DIAGNOSTICS as AUTHORING_DIAGNOSTICS } from '../authoring/v1/validate-authoring.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const specimen = () => JSON.parse(readFileSync(resolve(ROOT, 'experiences/git/git-repository-practice.authoring.json'), 'utf8'));
+const specimen = () => JSON.parse(readFileSync(resolve(ROOT, 'tests/fixtures/authoring-v1-compat/git-repository-practice.authoring.json'), 'utf8'));
 const seen = new Set();
 
 function expectFailure(run, code) {
@@ -37,7 +37,7 @@ test('fails on authoring validation errors and carries CIM-AUTH-* causes', () =>
 });
 
 test('fails on duplicate keys rather than compiling a silently truncated document', () => {
-  const text = readFileSync(resolve(ROOT, 'experiences/git/git-repository-practice.authoring.json'), 'utf8')
+  const text = readFileSync(resolve(ROOT, 'tests/fixtures/authoring-v1-compat/git-repository-practice.authoring.json'), 'utf8')
     .replace('"command": "git status",', '"command": "git reset --hard HEAD~1",\n        "command": "git status",');
   const error = expectFailure(() => compileAuthoringSource(text), 'CIM-COMP-AUTHORING-INVALID');
   assert.ok(error.diagnostics[0].causes.some((c) => c.id === 'CIM-AUTH-DUPLICATE-KEY'));

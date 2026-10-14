@@ -41,7 +41,7 @@ Authoring JSON v1 §20 already says "if everything calls for attention, nothing 
 
 8. **What a limn is.** A limn is a brief white outline (`#FFFFFF`) around an authored word or phrase, which then fades back to plain text. Its behavior (outline, fade, residual, and timing) is a single Player-owned style applied identically everywhere; only its color is configurable (Part C, `theme.console.limn`). Authors identify only *what* to limn, never how it looks.
 
-9. **Schema.** A new authoring version, `localis.cim/authoring/v2`, adds one optional field to Explanation segments:
+9. **Schema.** A new authoring version, `localis.cim/authoring/v3`, adds one optional field to Explanation segments:
 
    ```json
    {

@@ -1,5 +1,15 @@
 # WordPress Player MVP candidate
 
+## Issue #4: CLI identity and Console copy (ADR 0054)
+
+Engine capability identity is now `localis.cim/engine@1.0.1`; the registered CLI-bearing lesson requires 1.0.1. Compiler 1.0.1 enforces this feature floor without rewriting the minima of older lessons. The plugin release remains 0.1.11 until RC#2.
+
+The Console Player presents authored CLI identity in the upper-right of the pane and supplies clipboard behavior for existing renderer Copy buttons. Every CLI kind uses secondary Console text in every learner preset; red and green remain risk colors. The label supplies the CLI identity. The registered lesson explicitly names Bash. Missing CLI metadata remains compatible, and legacy Git Players are unchanged. Copy writes the exact authored `data-copy` value and announces that complete value only on success. Clipboard failure gives native-selection guidance. It never seeks, intercepts native copy events, rewrites selection, or inspects renderer state; pending announcements and stale controls are revoked at disposal.
+
+Headless tests exercise authoring/runtime validation, deterministic metadata and immutable content, exact writes, denial/unavailable API, pending completion order and cleanup. Player browser cases cover all kinds under all themes, native drag selection, Ctrl+C, unprevented Cmd+C keyboard/context-menu events, authored override, real clipboard paste into a text field, renderer replacement, and sibling isolation. Chromium proves native clipboard read/write permissions; Firefox and WebKit cover native copy events and clipboard failure. Source and installed ZIP WordPress proofs assert the real Bash badge and actual Copy control. The known wrap collision remains an expected failure. Live installation and RC#2 remain pending.
+
+Frozen authoring/v1 is byte-identical to its pre-PR state. CLI metadata is accepted only under authoring/v2, which freezes upon PR #80 merge; limn is reserved for authoring/v3. A scrolling regression proves that Copy buttons do not peek out below the pinned title.
+
 ## Engine identity and v2 admission checkpoint (ADR 0053)
 
 The explicit engine capability identity is `localis.cim/engine@1.0.0`, independent of plugin 0.1.11. Browser loading and deployment registration share admission checks; incompatible minima fail with CIM-EXP-015 before renderer/clock/Runtime construction. v2 is admitted only through the complete Console Player; other v2 renderer modes fail CIM-EXP-016. The canonical Git reference lesson is now registered. The Player carries and presents every phase/evidence/risk field, with risk guidance between prose and links, immutable ID relationships, unchanged renderer-owned focus and no opaque-state inspection. Source-bootstrap proofs and protected source/ZIP WordPress proofs cover actual admission, healthy legacy siblings and version fallback. This supersedes the historical closed-gate notes below. Live installation remains pending.

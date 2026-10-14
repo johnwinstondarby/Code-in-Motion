@@ -7,7 +7,14 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { AuthoringCompilationError, compileAuthoringSource } from '../authoring/v1/compile-authoring.mjs';
+import { AuthoringCompilationError, compileAuthoringSource as compileV1 } from '../authoring/v1/compile-authoring.mjs';
+import { AuthoringCompilationError as V2CompilationError, compileAuthoringSource as compileV2 } from '../authoring/v2/compile-authoring.mjs';
+
+export function compileAuthoringSource(text, options) {
+  let schema;
+  try { schema = JSON.parse(text).schema; } catch { /* versioned compiler reports malformed input */ }
+  return (schema === 'localis.cim/authoring/v2' ? compileV2 : compileV1)(text, options);
+}
 import { consoleStateViolations } from '../authoring/v1/console-state-conformance.mjs';
 import { evidenceCorrespondenceViolations } from '../authoring/v1/evidence-conformance.mjs';
 import { DIAGNOSTICS as AUTHORING_DIAGNOSTICS, validate as validateAuthoring } from '../authoring/v1/validate-authoring.mjs';
@@ -104,7 +111,7 @@ async function main(argv) {
 const invokedPath = process.argv[1] ? pathToFileURL(resolve(process.argv[1])).href : null;
 if (invokedPath === import.meta.url) {
   main(process.argv.slice(2)).catch((error) => {
-    if (error instanceof AuthoringCompilationError) {
+    if (error instanceof AuthoringCompilationError || error instanceof V2CompilationError) {
       for (const d of error.diagnostics) {
         console.error(`${d.code} ${d.path}: ${d.message}`);
         for (const cause of d.causes ?? []) console.error(`  ${cause.id ?? cause.code} ${cause.path}: ${cause.message}`);

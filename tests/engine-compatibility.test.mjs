@@ -11,7 +11,7 @@ import { wordPressPlayerMode } from '../wordpress/assets/player-binding.mjs';
 
 const raw=JSON.parse(await readFile(new URL('../experiences/git/git-repository-practice.json',import.meta.url),'utf8'));
 test('engine identity is an explicit frozen capability identity independent of release metadata',()=>{
-  assert.deepEqual(ENGINE_IDENTITY,{id:'localis.cim/engine',version:'1.0.0',schemas:['localis.cim/v1','localis.cim/v2']});
+  assert.deepEqual(ENGINE_IDENTITY,{id:'localis.cim/engine',version:'1.0.1',schemas:['localis.cim/v1','localis.cim/v2']});
   assert.ok(Object.isFrozen(ENGINE_IDENTITY));assert.ok(Object.isFrozen(ENGINE_IDENTITY.schemas));
 });
 test('engine semantic version precedence is numeric, prerelease-aware and ignores build metadata',()=>{
@@ -29,13 +29,13 @@ test('engine admission preserves existing v1 minimum and compiled v2 minimum',()
   }
 });
 test('engine admission rejects newer requirements and carries a structured pre-runtime fault',()=>{
-  for(const min of ['1.0.1','1.1.0','2.0.0','2.0.0-alpha','1.0.0-01']) assert.throws(()=>assertEngineCompatibility({...raw,engine_min:min}),error=>{
+  for(const min of ['1.0.2','1.1.0','2.0.0','2.0.0-alpha','1.0.0-01']) assert.throws(()=>assertEngineCompatibility({...raw,engine_min:min}),error=>{
     assert.equal(error.code,'CIM-EXP-015');assert.equal(error.fault.component,'experience');assert.ok(Object.isFrozen(error.fault));return true;
   });
 });
 test('engine rejection is not cached and loader can retry a compatible asset',async()=>{
   let count=0;
-  const loader=createWordPressExperienceLoader({fetch:async()=>({ok:true,json:async()=>({...raw,engine_min:++count===1?'1.0.1':'0.2.0'})}),experienceUrlFor:()=>'/lesson.json'});
+  const loader=createWordPressExperienceLoader({fetch:async()=>({ok:true,json:async()=>({...raw,engine_min:++count===1?'1.0.2':'0.2.0'})}),experienceUrlFor:()=>'/lesson.json'});
   const first=loader.load(raw.id);assert.equal(loader.load(raw.id),first);
   await assert.rejects(first,error=>error.code==='CIM-EXP-015');
   const result=await loader.load(raw.id);assert.equal(result.engine_min,'0.2.0');assert.equal(count,2);

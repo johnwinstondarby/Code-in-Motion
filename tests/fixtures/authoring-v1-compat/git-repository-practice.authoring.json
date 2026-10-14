@@ -1,0 +1,461 @@
+{
+  "schema": "localis.cim/authoring/v1",
+  "id": "git-repository-practice",
+  "title": "Git Repository Practice",
+  "description": "Eight commands take one change from your editor to GitHub, then undo it and recover it. The console shows what happens; this side explains what it means.",
+  "subject": "git",
+  "version": "1.0.0",
+  "console": {
+    "title": "git — localis/handbook",
+    "prompt": "~/localis/handbook (main) $"
+  },
+  "presentation": {
+    "layout": "console-explanation",
+    "defaultPlaybackRate": 1
+  },
+  "beats": [
+    {
+      "id": "check-status",
+      "dwell": 4000,
+      "console": {
+        "command": "git status",
+        "typing": true,
+        "output": [
+          {
+            "text": "On branch main",
+            "tone": "normal"
+          },
+          {
+            "id": "status-up-to-date",
+            "text": "Your branch is up to date with 'origin/main'.",
+            "tone": "normal"
+          },
+          {
+            "text": "",
+            "tone": "normal"
+          },
+          {
+            "text": "Changes not staged for commit:",
+            "tone": "normal"
+          },
+          {
+            "text": "  (use \"git add <file>...\" to update what will be committed)",
+            "tone": "dim"
+          },
+          {
+            "text": "  (use \"git restore <file>...\" to discard changes in working directory)",
+            "tone": "dim"
+          },
+          {
+            "id": "status-modified",
+            "text": "        modified:   src/HeaderFix.jsx",
+            "tone": "warning"
+          },
+          {
+            "text": "",
+            "tone": "normal"
+          },
+          {
+            "text": "Untracked files:",
+            "tone": "normal"
+          },
+          {
+            "text": "  (use \"git add <file>...\" to include in what will be committed)",
+            "tone": "dim"
+          },
+          {
+            "id": "status-untracked",
+            "text": "        src/NewCanary.jsx",
+            "tone": "warning"
+          },
+          {
+            "text": "",
+            "tone": "normal"
+          },
+          {
+            "text": "no changes added to commit (use \"git add\" and/or \"git commit -a\")",
+            "tone": "dim"
+          }
+        ]
+      },
+      "explanation": {
+        "heading": "Check the repository state",
+        "segments": [
+          {
+            "at": "command",
+            "text": "git status reads the repository and reports what has changed. It never modifies anything, so it is always safe to run."
+          },
+          {
+            "at": "output",
+            "text": "HeaderFix.jsx has edits that are not staged, and NewCanary.jsx is new and untracked. Only the edit to HeaderFix.jsx belongs in this lesson's commit.",
+            "focus": [
+              "status-modified",
+              "status-untracked"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "label": "Git status documentation",
+            "url": "https://git-scm.com/docs/git-status"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stage-hunk",
+      "dwell": 5000,
+      "console": {
+        "command": "git add -p -- src/HeaderFix.jsx",
+        "typing": true,
+        "output": [
+          {
+            "text": "diff --git a/src/HeaderFix.jsx b/src/HeaderFix.jsx",
+            "tone": "dim"
+          },
+          {
+            "text": "index 3f2c1a9..8d04e7b 100644",
+            "tone": "dim"
+          },
+          {
+            "text": "--- a/src/HeaderFix.jsx",
+            "tone": "dim"
+          },
+          {
+            "text": "+++ b/src/HeaderFix.jsx",
+            "tone": "dim"
+          },
+          {
+            "text": "@@ -15,3 +15,3 @@ export function HeaderFix(props) {",
+            "tone": "normal"
+          },
+          {
+            "text": "   const rows = props.rows;",
+            "tone": "normal"
+          },
+          {
+            "id": "hunk-removed",
+            "text": "-  const scope = 'col';",
+            "tone": "removed"
+          },
+          {
+            "id": "hunk-added",
+            "text": "+  const scope = props.scope ?? 'col';",
+            "tone": "added"
+          },
+          {
+            "text": "   return (",
+            "tone": "normal"
+          },
+          {
+            "id": "hunk-prompt",
+            "text": "(1/1) Stage this hunk [y,n,q,a,d,e,?]?",
+            "tone": "normal"
+          }
+        ],
+        "response": "y"
+      },
+      "explanation": {
+        "heading": "Stage one change at a time",
+        "segments": [
+          {
+            "at": "command",
+            "text": "The -p (patch) option presents the file's changes one hunk at a time, so you decide exactly what goes into the next commit."
+          },
+          {
+            "at": "output",
+            "text": "This hunk replaces the hard-coded scope with a prop that falls back to the old value.",
+            "focus": [
+              "hunk-removed",
+              "hunk-added"
+            ]
+          },
+          {
+            "at": "output",
+            "text": "Git now waits for a decision about this hunk.",
+            "focus": [
+              "hunk-prompt"
+            ]
+          },
+          {
+            "at": "response",
+            "text": "Answering y adds this hunk to the index. The file on disk is unchanged, and nothing is committed yet."
+          }
+        ],
+        "references": [
+          {
+            "label": "Git add documentation",
+            "url": "https://git-scm.com/docs/git-add"
+          }
+        ]
+      },
+      "risk": {
+        "level": "free-to-undo",
+        "guidance": "git restore --staged src/HeaderFix.jsx removes the hunk from the index again."
+      }
+    },
+    {
+      "id": "review-staged",
+      "dwell": 3500,
+      "console": {
+        "command": "git diff --cached --stat",
+        "typing": true,
+        "output": [
+          {
+            "id": "stat-file",
+            "text": " src/HeaderFix.jsx | 2 +-",
+            "tone": "normal"
+          },
+          {
+            "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+            "tone": "dim"
+          }
+        ]
+      },
+      "explanation": {
+        "heading": "Review what is staged",
+        "segments": [
+          {
+            "at": "command",
+            "text": "--cached compares the index with the last commit, so this is exactly what the next commit will contain."
+          },
+          {
+            "at": "output",
+            "text": "One file, one line replaced. NewCanary.jsx is not included, because it was never staged.",
+            "focus": [
+              "stat-file"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "label": "Git diff documentation",
+            "url": "https://git-scm.com/docs/git-diff"
+          }
+        ]
+      }
+    },
+    {
+      "id": "commit",
+      "dwell": 4000,
+      "console": {
+        "command": "git commit -m \"Scope table headers explicitly\"",
+        "typing": true,
+        "output": [
+          {
+            "id": "commit-created",
+            "text": "[main 7a3c91d] Scope table headers explicitly",
+            "tone": "normal"
+          },
+          {
+            "text": " 1 file changed, 1 insertion(+), 1 deletion(-)",
+            "tone": "dim"
+          }
+        ]
+      },
+      "explanation": {
+        "heading": "Record the commit",
+        "segments": [
+          {
+            "at": "command",
+            "text": "The staged change becomes a permanent snapshot with a message describing why it was made."
+          },
+          {
+            "at": "output",
+            "text": "Commit 7a3c91d now exists on main, but only on this machine until it is pushed.",
+            "focus": [
+              "commit-created"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "label": "Git commit documentation",
+            "url": "https://git-scm.com/docs/git-commit"
+          }
+        ]
+      },
+      "risk": {
+        "level": "leaves-a-trace",
+        "guidance": "git revert 7a3c91d undoes the change by recording a new commit."
+      }
+    },
+    {
+      "id": "push",
+      "dwell": 4000,
+      "console": {
+        "command": "git push",
+        "typing": true,
+        "output": [
+          {
+            "text": "To github.com:localis/handbook.git",
+            "tone": "dim"
+          },
+          {
+            "id": "push-range",
+            "text": "   a1b2c3d..7a3c91d  main -> main",
+            "tone": "normal"
+          }
+        ]
+      },
+      "explanation": {
+        "heading": "Publish to the remote",
+        "segments": [
+          {
+            "at": "command",
+            "text": "push sends your new commits to origin so other people can pull them."
+          },
+          {
+            "at": "output",
+            "text": "origin/main moved from a1b2c3d to 7a3c91d. Others can now fetch this commit.",
+            "focus": [
+              "push-range"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "label": "Git push documentation",
+            "url": "https://git-scm.com/docs/git-push"
+          }
+        ]
+      },
+      "risk": {
+        "level": "leaves-a-trace",
+        "guidance": "Once others may have the commit, undo it with git revert rather than rewriting history."
+      }
+    },
+    {
+      "id": "discard-commit",
+      "dwell": 5000,
+      "console": {
+        "command": "git reset --hard HEAD~1",
+        "typing": true,
+        "output": [
+          {
+            "id": "reset-moved",
+            "text": "HEAD is now at a1b2c3d Add conformance canary",
+            "tone": "normal"
+          }
+        ]
+      },
+      "explanation": {
+        "heading": "Discard the last commit",
+        "segments": [
+          {
+            "at": "command",
+            "text": "reset --hard moves main back one commit and overwrites both the index and the working tree to match it."
+          },
+          {
+            "at": "output",
+            "text": "Local main is back at a1b2c3d. Commit 7a3c91d is no longer on main, though origin/main still points to it because it was pushed. Any uncommitted work would have been lost for good.",
+            "focus": [
+              "reset-moved"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "label": "Git reset documentation",
+            "url": "https://git-scm.com/docs/git-reset"
+          }
+        ]
+      },
+      "risk": {
+        "level": "cannot-be-undone",
+        "guidance": "Run git status first, and stash or commit any work you want to keep."
+      }
+    },
+    {
+      "id": "find-in-reflog",
+      "dwell": 4500,
+      "console": {
+        "command": "git reflog",
+        "typing": true,
+        "output": [
+          {
+            "text": "a1b2c3d (HEAD -> main) HEAD@{0}: reset: moving to HEAD~1",
+            "tone": "normal"
+          },
+          {
+            "id": "reflog-lost-commit",
+            "text": "7a3c91d (origin/main) HEAD@{1}: commit: Scope table headers explicitly",
+            "tone": "normal"
+          },
+          {
+            "text": "a1b2c3d HEAD@{2}: commit: Add conformance canary",
+            "tone": "normal"
+          }
+        ]
+      },
+      "explanation": {
+        "heading": "Find the lost commit",
+        "segments": [
+          {
+            "at": "command",
+            "text": "The reflog records every place HEAD has pointed on this machine, including commits no local branch reaches anymore."
+          },
+          {
+            "at": "output",
+            "text": "7a3c91d is one step back in the reflog, so its SHA is available to recover it.",
+            "focus": [
+              "reflog-lost-commit"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "label": "Git reflog documentation",
+            "url": "https://git-scm.com/docs/git-reflog"
+          }
+        ]
+      }
+    },
+    {
+      "id": "recover-from-reflog",
+      "dwell": 6000,
+      "console": {
+        "command": "git reset --hard 7a3c91d",
+        "copy": "git reset --hard <sha-from-your-reflog>",
+        "typing": true,
+        "output": [
+          {
+            "id": "recover-moved",
+            "text": "HEAD is now at 7a3c91d Scope table headers explicitly",
+            "tone": "normal"
+          }
+        ]
+      },
+      "explanation": {
+        "heading": "Recover the commit",
+        "segments": [
+          {
+            "at": "command",
+            "text": "In this lesson, reset --hard is the recovery step: it returns main to 7a3c91d, the commit found in the reflog."
+          },
+          {
+            "at": "output",
+            "text": "The commit is back and main matches origin/main again. Using the command to rescue work does not make it safe: it still overwrites the index and working tree, so uncommitted changes would be lost.",
+            "focus": [
+              "recover-moved"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "label": "Git reset documentation",
+            "url": "https://git-scm.com/docs/git-reset"
+          },
+          {
+            "label": "Git reflog documentation",
+            "url": "https://git-scm.com/docs/git-reflog"
+          }
+        ]
+      },
+      "risk": {
+        "level": "cannot-be-undone",
+        "guidance": "Confirm the target commit in your own reflog and preserve uncommitted work before continuing."
+      }
+    }
+  ]
+}

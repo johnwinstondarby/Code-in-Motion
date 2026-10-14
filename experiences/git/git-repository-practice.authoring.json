@@ -1,5 +1,5 @@
 {
-  "schema": "localis.cim/authoring/v1",
+  "schema": "localis.cim/authoring/v2",
   "id": "git-repository-practice",
   "title": "Git Repository Practice",
   "description": "Eight commands take one change from your editor to GitHub, then undo it and recover it. The console shows what happens; this side explains what it means.",
@@ -11,7 +11,8 @@
   },
   "presentation": {
     "layout": "console-explanation",
-    "defaultPlaybackRate": 1
+    "defaultPlaybackRate": 1,
+    "command_window": { "cli": { "kind": "bash", "label": "Bash" } }
   },
   "beats": [
     {

@@ -18,7 +18,7 @@ export const THEME_PRESETS = Object.freeze({
     'control-border': '#FFFFFF', 'control-hover': '#171B22', 'focus': '#FFFFFF'
   }) }),
   light: Object.freeze({ label: 'Light', colors: Object.freeze({
-    'console-background': '#F6F8FB', 'console-text': '#1A4B8C', 'console-quiet': '#4A6890',
+      'console-background': '#F6F8FB', 'console-text': '#1A4B8C', 'console-quiet': '#4A6890',
     'limn': '#000000', 'risk-free': '#1E6E35', 'risk-trace': '#7A4E00', 'risk-final': '#A8231C',
     'explanation-background': '#FFFFFF', 'explanation-prose': '#344050', 'explanation-heading': '#111827',
     'wayfinding': '#0B6B6F', 'explanation-control': '#3F4A5A', 'structural-border': '#C9D2DE',
