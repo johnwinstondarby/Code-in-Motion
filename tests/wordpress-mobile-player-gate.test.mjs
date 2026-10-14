@@ -33,7 +33,7 @@ test('mobile boot never reads the module URL and replaces every Player with a de
   });
   for (const root of roots) {
     assert.equal(root.state, 'desktop-required');
-    assert.match(root.textContent, /desktop or laptop/);
+    assert.equal(root.textContent, 'The interactive Player needs a desktop or laptop with a wider window. Widen this window and reload, or open the lesson on a larger screen.');
   }
   assert.equal(observed.childList, true);
   roots.push(makeRoot());

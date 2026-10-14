@@ -1,15 +1,13 @@
 {
   "schema": "localis.cim/wordpress-release-info/v1",
-  "stable_tag": "0.2.0",
+  "stable_tag": "0.2.1",
   "tested_up_to": "7.1",
   "current_release": {
-    "version": "0.2.0",
+    "version": "0.2.1",
     "notes": [
-      "Add the Console-Explanation Player with beat navigation, independent pane following, learner themes, authored CLI labels and native command copying.",
-      "Admit the compatible v2 Git Repository Practice lesson under engine 1.0.1 checks. Preserve older Git Players.",
-      "Remove related-line count wording while retaining phase labels, risk guidance and evidence highlighting.",
-      "Preserve frozen authoring/v1; CLI metadata uses authoring/v2, frozen at PR #80 merge. Limn is reserved for authoring/v3.",
-      "Known items: wrap continuation collision; authored limn deferred; white shared by keyboard focus and limn; Copy-button sizing requires live phone verification."
+      "Do not load any interactive Player on screens up to 767 CSS pixels or touch-only devices, including landscape phones and iPads. Show a wider-window notice before fetching Player modules or lesson data.",
+      "Preserve desktop and laptop Player behavior, all learner themes, command Copy and engine localis.cim/engine@1.0.1.",
+      "Known items: wrap continuation collision; authored limn deferred (authoring/v3); white shared by keyboard focus and limn; site fonts still require confirmation."
     ]
   },
   "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"

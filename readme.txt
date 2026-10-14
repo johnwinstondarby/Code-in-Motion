@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -41,6 +41,11 @@ If any of these checks fail, preserve the fallback text and report the failed st
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.2.1 =
+* Do not load any interactive Player on screens up to 767 CSS pixels or touch-only devices, including landscape phones and iPads. Show a wider-window notice before fetching Player modules or lesson data.
+* Preserve desktop and laptop Player behavior, all learner themes, command Copy and engine localis.cim/engine@1.0.1.
+* Known items: wrap continuation collision; authored limn deferred (authoring/v3); white shared by keyboard focus and limn; site fonts still require confirmation.
 
 = 0.2.0 =
 * Add the Console-Explanation Player with beat navigation, independent pane following, learner themes, authored CLI labels and native command copying.
@@ -93,6 +98,9 @@ Report defects and release issues at https://github.com/johnwinstondarby/Code-in
 * Initial WordPress release with deterministic packaging, upgrade-safe versioned assets, and the synthetic diagnostic Experience.
 
 == Upgrade Notice ==
+
+= 0.2.1 =
+Upgrade from 0.2.0 or 0.1.10 using the reviewed exact ZIP. Keep the exact 0.2.0 ZIP and a fresh page 3227 capture with git-repository-practice for primary rollback. Keep the 0.1.10 hosting backup as a second fallback. Mobile visitors see a wider-window notice; confirm fonts and Player behavior on desktop after installation.
 
 = 0.2.0 =
 Upgrade from live 0.1.10 using the reviewed RC#2 ZIP. Capture page 3227 and retain the 0.1.10 rollback ZIP before installation. The shortcode change to git-repository-practice is a separate cutover. Check site fonts and Copy controls on desktop and a phone after installation.

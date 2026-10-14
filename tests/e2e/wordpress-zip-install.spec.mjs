@@ -17,6 +17,17 @@ function pathOf(url) {
   }
 }
 
+test('installed ZIP blocks every mobile embed before module or lesson requests', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const paths = [];
+  page.on('request', request => paths.push(pathOf(request.url())));
+  await page.goto(`${BASE_URL}/?pagename=cim-e2e`, { waitUntil: 'domcontentloaded' });
+  const root = page.locator('.cim[data-cim-experience="synthetic-wordpress"]');
+  await expect(root).toHaveAttribute('data-cim-state', 'desktop-required');
+  await expect(root).toHaveText('The interactive Player needs a desktop or laptop with a wider window. Widen this window and reload, or open the lesson on a larger screen.');
+  expect(paths.filter(path => path.startsWith(MODULE_PREFIX))).toEqual([]);
+});
+
 test('R15 runs the production path from the freshly installed release ZIP', async ({ page }) => {
   const requested = [];
   const requestFailures = [];

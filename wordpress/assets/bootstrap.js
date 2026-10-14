@@ -7,7 +7,7 @@
       document.querySelectorAll('[data-cim-experience]').forEach((root) => {
         if (root.getAttribute('data-cim-state') === 'desktop-required') return;
         root.setAttribute('data-cim-state', 'desktop-required');
-        root.textContent = 'Open this lesson on a desktop or laptop to use the interactive Player.';
+        root.textContent = 'The interactive Player needs a desktop or laptop with a wider window. Widen this window and reload, or open the lesson on a larger screen.';
       });
     };
     showDesktopNotice();
