@@ -314,13 +314,14 @@ jobs:
           RELEASE_INFO="$(wp_env run cli wp eval 'echo wp_json_encode(localis_cim_read_admin_release_info());' | tail -n 1)"
           RELEASE_INFO="$RELEASE_INFO" EXPECTED_VERSION="$CIM_PLUGIN_VERSION" node --input-type=module <<'NODE'
           const info = JSON.parse(process.env.RELEASE_INFO);
+          const expectedNotes = JSON.parse(await (await import('node:fs/promises')).readFile('wordpress/release/release-info.generated.json','utf8')).current_release.notes;
           if (info.status !== 'available') throw new Error('R33 installed release info unavailable.');
           if (info.stable_tag !== process.env.EXPECTED_VERSION) throw new Error('R33 installed stable tag mismatch.');
           if (info.tested_up_to !== '7.1') throw new Error('R33 installed Tested up to mismatch.');
           if (info.current_release?.version !== process.env.EXPECTED_VERSION) {
             throw new Error('R33 installed current release mismatch.');
           }
-          if (!Array.isArray(info.current_release?.notes) || info.current_release.notes.length !== 2) {
+          if (JSON.stringify(info.current_release?.notes) !== JSON.stringify(expectedNotes)) {
             throw new Error('R33 installed current release notes mismatch.');
           }
           NODE
