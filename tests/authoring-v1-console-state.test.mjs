@@ -9,7 +9,7 @@ import { compileAuthoringSource } from '../authoring/v1/compile-authoring.mjs';
 import { consoleStateViolations } from '../authoring/v1/console-state-conformance.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const doc = compileAuthoringSource(readFileSync(resolve(ROOT, 'experiences/git/git-repository-practice.authoring.json'), 'utf8')).document;
+const doc = compileAuthoringSource(readFileSync(resolve(ROOT, 'tests/fixtures/authoring-v1-compat/git-repository-practice.authoring.json'), 'utf8')).document;
 
 test('compiled specimen state conforms to CONSOLE-RENDERER-v1 at initial and all 18 boundaries', () => {
   assert.deepEqual(consoleStateViolations(doc), []);

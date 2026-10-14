@@ -156,7 +156,6 @@ test('learner theme palettes are complete and all instructional and interactive 
       ['explanation-prose','explanation-background',7],['explanation-heading','explanation-background',7],
       ['explanation-control','explanation-background',4.5],['wayfinding','explanation-background',4.5],['wayfinding','frame-background',4.5],
       ['risk-free','console-background',4.5],['risk-trace','console-background',4.5],['risk-final','console-background',4.5],
-      ['cli-powershell','console-background',4.5],['cli-windows','console-background',4.5],['cli-bash','console-background',4.5],
       ['limn','console-background',3],['limn','console-text',1.5],['frame-text','frame-background',4.5],
       ['control-text','frame-background',4.5],['control-text','control-hover',4.5],
       ['control-border','frame-background',3],['control-border','control-hover',3],

@@ -10,7 +10,7 @@ import { compileAuthoringSource } from '../authoring/v1/compile-authoring.mjs';
 import { evidenceCorrespondenceViolations } from '../authoring/v1/evidence-conformance.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const sourceText = readFileSync(resolve(ROOT, 'experiences/git/git-repository-practice.authoring.json'), 'utf8');
+const sourceText = readFileSync(resolve(ROOT, 'tests/fixtures/authoring-v1-compat/git-repository-practice.authoring.json'), 'utf8');
 const doc = compileAuthoringSource(sourceText).document;
 const authoredSegments = JSON.parse(sourceText).beats.flatMap((beat) => beat.explanation.segments);
 const outputIds = (state) => new Set(state.transcript.flatMap((entry) => (entry.output ?? []).flatMap((line) => (line.id ? [line.id] : []))));

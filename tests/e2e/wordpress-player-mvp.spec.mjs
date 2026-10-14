@@ -122,8 +122,8 @@ test.beforeAll(async () => {
 });
 test.afterAll(async () => { await new Promise(done => server.close(done)); });
 
-for (const [kind, role] of [['powershell','cli-powershell'],['windows-cli','cli-windows'],['bash','cli-bash']]) {
-  test(`CLI and copy: ${kind} badge uses kind colors independently of its label`,async({page})=>{
+for (const [kind, role] of [['powershell','console-quiet'],['windows-cli','console-quiet'],['bash','console-quiet']]) {
+  test(`CLI and copy: ${kind} badge uses neutral secondary Console text independently of kind and label`,async({page})=>{
     await page.route('**/experiences/git/git-repository-practice.json',async route=>{
       const response=await route.fetch();const lesson=await response.json();
       lesson.presentation.command_window={cli:{kind,label:'Custom shell label'}};
@@ -842,6 +842,28 @@ test('pinned Console title and its lower gap cover scrolling transcript text', a
   expect(evidence.margin).toBe(0);
   expect(evidence.padding).toBe(16);
   expect(evidence.titleOwnsGap).toBe(true);
+});
+
+test('Copy button edge stays covered when its command scrolls behind the pinned title',async({page})=>{
+  await open(page);await revealBoundary(page,18);await page.mouse.move(0,0);
+  const viewport=page.locator('.cim').first().locator('[data-cim-console-viewport]');
+  const result=await viewport.evaluate(view=>{
+    const title=view.querySelector('[data-role="titlebar"]');
+    const button=view.querySelector('[data-role="copy"]');
+    const command=button.parentElement.querySelector('[data-role="command"]');
+    view.scrollTop=0;
+    const range=document.createRange();range.selectNodeContents(command);
+    const textBox=[...range.getClientRects()].at(-1);
+    const lineHeight=parseFloat(getComputedStyle(command).lineHeight);
+    const buttonHeight=button.getBoundingClientRect().height;
+    view.scrollTop += textBox.bottom-title.getBoundingClientRect().bottom+1;
+    const pinned=title.getBoundingClientRect();const box=button.getBoundingClientRect();
+    const x=box.left+box.width/2;
+    return {buttonHeight,lineHeight,edgeCovered:box.bottom<=pinned.bottom,
+      visibleEdge:[1,2,3,4,5].some(offset=>document.elementFromPoint(x,pinned.bottom+offset)?.closest('[data-role="copy"]')===button)};
+  });
+  expect(result.buttonHeight).toBeLessThanOrEqual(result.lineHeight);
+  expect(result.edgeCovered).toBe(true);expect(result.visibleEdge).toBe(false);
 });
 
 test('selection holds only the intersected pane while its peer follows', async ({ page }) => {

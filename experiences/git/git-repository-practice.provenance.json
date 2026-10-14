@@ -3,8 +3,8 @@
     "id": "localis.cim/authoring-compiler",
     "version": "1.0.1"
   },
-  "authoring_schema": "localis.cim/authoring/v1",
-  "authoring_semantic_sha256": "be1feb584c3f7b18f79d9a4da44ab6f906ccbbd60c0a9c085b15c79b374c38be",
+  "authoring_schema": "localis.cim/authoring/v2",
+  "authoring_semantic_sha256": "f623a7897fd8b269d95989a4fd67a4bb0fa5c7d9334e4cb0ca39859a9ad87a01",
   "runtime_schema": "localis.cim/v2",
   "engine_min": "1.0.1",
   "constants": {

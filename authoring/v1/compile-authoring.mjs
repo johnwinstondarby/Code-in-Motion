@@ -9,11 +9,10 @@
 import { createHash } from 'node:crypto';
 
 import { validateExperience } from '../../src/experience/validate-experience.mjs';
-import { compareEngineVersions } from '../../src/experience/engine-compatibility.mjs';
 import { SCHEMA_ID as AUTHORING_SCHEMA, validate as validateAuthoring } from './validate-authoring.mjs';
 
 export const COMPILER_ID = 'localis.cim/authoring-compiler';
-export const COMPILER_VERSION = '1.0.1';
+export const COMPILER_VERSION = '1.0.0';
 export const RUNTIME_SCHEMA_TARGET = 'localis.cim/v2';
 
 // Normative compilation constants (A2R §11) and compiler configuration (A2R §7). engineMin is the
@@ -22,8 +21,7 @@ export const COMPILATION_CONSTANTS = Object.freeze({
   intraBeatDwellMs: 900,
   finalBeatDwellMs: 1600,
   maxSegmentsPerBeat: 99,
-  engineMin: '0.2.0',
-  cliEngineMin: '1.0.1'
+  engineMin: '0.2.0'
 });
 
 // Fixed renderer mapping (A2R §12). subject never participates in renderer selection.
@@ -145,7 +143,7 @@ function commentaryFor(beat, segment, isFinal) {
  */
 export function compileAuthoringSource(sourceText, options = {}) {
   const target = options.target ?? RUNTIME_SCHEMA_TARGET;
-  let engineMin = options.engineMin ?? COMPILATION_CONSTANTS.engineMin;
+  const engineMin = options.engineMin ?? COMPILATION_CONSTANTS.engineMin;
   const rendererMap = options.rendererMap ?? RENDERER_BY_LAYOUT;
   const runtimeValidator = options.runtimeValidator ?? validateExperience;
 
@@ -164,14 +162,6 @@ export function compileAuthoringSource(sourceText, options = {}) {
     fail('CIM-COMP-AUTHORING-INVALID', '$', `${authoringErrors.length} authoring validation error(s).`, authoringErrors);
   }
   const source = JSON.parse(sourceText);
-  if (source.presentation.command_window) {
-    if (options.engineMin === undefined) engineMin = COMPILATION_CONSTANTS.cliEngineMin;
-    else {
-      let order;
-      try { order = compareEngineVersions(engineMin, COMPILATION_CONSTANTS.cliEngineMin); } catch { /* malformed versions fail runtime validation below */ }
-      if (order < 0) fail('CIM-COMP-RUNTIME-INVALID', '$.engine_min', 'CLI identity requires engine 1.0.1 or later.');
-    }
-  }
 
   const renderer = rendererMap[source.presentation.layout];
   if (renderer === undefined) fail('CIM-COMP-RENDERER-MAPPING', '$.presentation.layout', `No renderer mapping for layout ${JSON.stringify(source.presentation.layout)}.`);
@@ -228,10 +218,7 @@ export function compileAuthoringSource(sourceText, options = {}) {
       description: source.description,
       subject: source.subject,
       beat_count: source.beats.length,
-      default_playback_rate: source.presentation.defaultPlaybackRate ?? 1,
-      ...(source.presentation.command_window ? {command_window: {cli: {
-        kind:source.presentation.command_window.cli.kind, label:source.presentation.command_window.cli.label
-      }}} : {})
+      default_playback_rate: source.presentation.defaultPlaybackRate ?? 1
     },
     initial_state: { transcript: [], focus: [] },
     steps

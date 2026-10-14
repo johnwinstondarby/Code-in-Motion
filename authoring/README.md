@@ -1,5 +1,7 @@
 # Authoring and Ingestion Adapters
 
+Frozen [authoring/v1](v1/README.md) remains supported unchanged. [Authoring/v2](v2/README.md) adds optional CLI identity and freezes upon PR #80 merge. ADR 0048 Part B reserves authoring/v3 for limn. The compiler CLI dispatches by explicit source schema; versions never silently absorb later fields.
+
 ## Purpose
 
 This directory contains tools that convert human-authored or generated source material into the validated CiM runtime experience contract.

@@ -22,9 +22,12 @@ const hostArgs = ['--test', 'tests/wordpress-live-host.test.mjs'];
 const beatArgs = ['--test','tests/beat-consumers.test.mjs','tests/wordpress-beat-binding.test.mjs'];
 const themeArgs = ['--test','tests/learner-themes.test.mjs'];
 const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpress-live-host.test.mjs'];
-const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs'];
+const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs','tests/frozen-authoring-v1.test.mjs'];
 const mutations = [
-  ['copy CLI minimum underdeclared','authoring/v1/compile-authoring.mjs','engineMin = COMPILATION_CONSTANTS.cliEngineMin','engineMin = COMPILATION_CONSTANTS.engineMin',copyArgs],
+  ['copy badge reuses risk color',css,'  color: var(--cim-console-quiet);','  color: var(--cim-risk-free);',browserArgs],
+  ['copy tall button edge',css,'  padding: 0 0.35rem;\n  font-size: 0.8em;','  padding: 0.2rem 0.5rem;\n  font-size: 1em;',browserArgs],
+  ['copy frozen v1 altered','authoring/v1/validate-authoring.mjs',"presentation: ['layout', 'defaultPlaybackRate']","presentation: ['layout', 'defaultPlaybackRate', 'command_window']",copyArgs],
+  ['copy CLI minimum underdeclared','authoring/v2/compile-authoring.mjs','engineMin = COMPILATION_CONSTANTS.cliEngineMin','engineMin = COMPILATION_CONSTANTS.engineMin',copyArgs],
   ['copy writes altered value','wordpress/assets/console-copy-binding.mjs','writeText(value)','writeText(value + " altered")',copyArgs],
   ['copy reports failed write as success','wordpress/assets/console-copy-binding.mjs','Could not copy. Select','Copied command. Select',copyArgs],
   ['copy ignores disposal','wordpress/assets/console-copy-binding.mjs','if (disposed || event.defaultPrevented)','if (event.defaultPrevented)',copyArgs],
@@ -130,7 +133,7 @@ for (const [name, file, from, to, args] of mutations) {
       name === 'release Console hold resumes ownership' ? 'Console scroll ownership' :
       name === 'skip renderer observer disposal' ? 'root teardown' :
       name === 'skip deliberate viewport navigation' ? 'deliberate navigation repositions' : 'atomic readiness';
-    const focusedGrep = name.startsWith('copy ') ? 'CLI and copy' : name.startsWith('v2 ') ? 'production v2|instructional consumers' : name.startsWith('theme ') ? 'learner themes' : name === 'progress follows reveal frontier' ? 'authored beat headings' :
+    const focusedGrep = name.startsWith('copy ') ? 'CLI and copy|Copy button edge' : name.startsWith('v2 ') ? 'production v2|instructional consumers' : name.startsWith('theme ') ? 'learner themes' : name === 'progress follows reveal frontier' ? 'authored beat headings' :
       ['markers select first segment','markers trust mutable DOM identity'].includes(name) ? 'beat markers capture' :
       name === 'focus scrolling claims ownership' ? 'offscreen link focus' :
       name === 'ignore native wheel intent' ? 'Console scroll ownership' :

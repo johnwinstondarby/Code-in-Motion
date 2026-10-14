@@ -1,6 +1,5 @@
 // Fixed presentation roles. This is not an author palette or public CSS API.
 const common = {
-  'cli-powershell': '#7CB7FF', 'cli-windows': '#FF7A7A', 'cli-bash': '#7BD88F',
   'console-background': '#000000', 'console-text': '#7CB7FF', 'console-quiet': '#6F93C2',
   'limn': '#FFFFFF', 'risk-free': '#7BD88F', 'risk-trace': '#F2B35B', 'risk-final': '#FF7A7A',
   'explanation-background': '#171B22', 'explanation-prose': '#A8B3C2', 'explanation-heading': '#E8ECF2',
@@ -19,8 +18,7 @@ export const THEME_PRESETS = Object.freeze({
     'control-border': '#FFFFFF', 'control-hover': '#171B22', 'focus': '#FFFFFF'
   }) }),
   light: Object.freeze({ label: 'Light', colors: Object.freeze({
-    'cli-powershell': '#1A4B8C', 'cli-windows': '#A8231C', 'cli-bash': '#1E6E35',
-    'console-background': '#F6F8FB', 'console-text': '#1A4B8C', 'console-quiet': '#4A6890',
+      'console-background': '#F6F8FB', 'console-text': '#1A4B8C', 'console-quiet': '#4A6890',
     'limn': '#000000', 'risk-free': '#1E6E35', 'risk-trace': '#7A4E00', 'risk-final': '#A8231C',
     'explanation-background': '#FFFFFF', 'explanation-prose': '#344050', 'explanation-heading': '#111827',
     'wayfinding': '#0B6B6F', 'explanation-control': '#3F4A5A', 'structural-border': '#C9D2DE',

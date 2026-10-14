@@ -11,7 +11,7 @@ import { ingestExperience } from '../src/experience/ingest-experience.mjs';
 import { REGISTRABLE_RUNTIME_SCHEMAS } from '../tools/check-wordpress-experience-registry.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCE_PATH = resolve(ROOT, 'experiences/git/git-repository-practice.authoring.json');
+const SOURCE_PATH = resolve(ROOT, 'tests/fixtures/authoring-v1-compat/git-repository-practice.authoring.json');
 const sourceText = readFileSync(SOURCE_PATH, 'utf8');
 const source = JSON.parse(sourceText);
 const compiled = compileAuthoringSource(sourceText);
@@ -38,8 +38,8 @@ test('Gate 1: compiled output passes the production runtime validator with zero 
 });
 
 test('Gate 1: the committed compiled specimen is byte-identical to a fresh compilation', () => {
-  assert.equal(readFileSync(resolve(ROOT, 'experiences/git/git-repository-practice.json'), 'utf8'), compiled.text);
-  assert.equal(readFileSync(resolve(ROOT, 'experiences/git/git-repository-practice.provenance.json'), 'utf8'), compiled.provenanceText);
+  assert.equal(readFileSync(resolve(ROOT, 'tests/fixtures/authoring-v1-compat/git-repository-practice.json'), 'utf8'), compiled.text);
+  assert.equal(readFileSync(resolve(ROOT, 'tests/fixtures/authoring-v1-compat/git-repository-practice.provenance.json'), 'utf8'), compiled.provenanceText);
 });
 
 test('Gate 1: the compiled specimen is admitted by the reviewed v2 registration bridge', () => {
@@ -61,12 +61,12 @@ test('A2R §4/§6: one boundary per segment, contiguous grouping, heading as lab
 
 test('A2R §8/§10/§12: experience metadata, renderer mapping, versions, and initial state', () => {
   assert.equal(doc.renderer, RENDERER_BY_LAYOUT['console-explanation']);
-  assert.equal(doc.engine_min, COMPILATION_CONSTANTS.cliEngineMin);
+  assert.equal(doc.engine_min, COMPILATION_CONSTANTS.engineMin);
   assert.equal(doc.experience_version, source.version);
   assert.equal(doc.id, source.id);
   assert.deepEqual(doc.renderer_config, { title: source.console.title, prompt: source.console.prompt });
   assert.deepEqual(doc.presentation, { title: source.title, description: source.description, subject: source.subject,
-    beat_count: 8, default_playback_rate: source.presentation.defaultPlaybackRate, command_window:source.presentation.command_window });
+    beat_count: 8, default_playback_rate: source.presentation.defaultPlaybackRate });
   assert.deepEqual(doc.initial_state, { transcript: [], focus: [] });
 });
 

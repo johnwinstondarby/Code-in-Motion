@@ -93,7 +93,10 @@
 .cim [data-cim-player="console-explanation"] [data-role="copy"] {
   display: inline-block;
   margin-inline-start: 1rem;
-  padding: 0.2rem 0.5rem;
+  padding: 0 0.35rem;
+  font-size: 0.8em;
+  line-height: 1;
+  vertical-align: baseline;
   border: 1px solid var(--cim-control-border);
   border-radius: 4px;
   cursor: pointer;
@@ -107,10 +110,8 @@
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
+  color: var(--cim-console-quiet);
 }
-.cim [data-cim-cli="powershell"] { color: var(--cim-cli-powershell) !important; }
-.cim [data-cim-cli="windows-cli"] { color: var(--cim-cli-windows) !important; }
-.cim [data-cim-cli="bash"] { color: var(--cim-cli-bash) !important; }
 
 .cim [data-cim-renderer="console/v1"] [data-role="titlebar"] {
   display: flex;
@@ -534,9 +535,6 @@
 }
 /* learner-theme-presets:start */
 .cim:has(> [data-cim-player="console-explanation"]) {
-  --cim-cli-powershell: #7CB7FF;
-  --cim-cli-windows: #FF7A7A;
-  --cim-cli-bash: #7BD88F;
   --cim-console-background: #000000;
   --cim-console-text: #7CB7FF;
   --cim-console-quiet: #6F93C2;
@@ -560,9 +558,6 @@
 }
 
 .cim[data-cim-theme="high-contrast"]:has(> [data-cim-player="console-explanation"]) {
-  --cim-cli-powershell: #7CB7FF;
-  --cim-cli-windows: #FF7A7A;
-  --cim-cli-bash: #7BD88F;
   --cim-console-background: #000000;
   --cim-console-text: #82C4FF;
   --cim-console-quiet: #8DB4E2;
@@ -586,9 +581,6 @@
 }
 
 .cim[data-cim-theme="light"]:has(> [data-cim-player="console-explanation"]) {
-  --cim-cli-powershell: #1A4B8C;
-  --cim-cli-windows: #A8231C;
-  --cim-cli-bash: #1E6E35;
   --cim-console-background: #F6F8FB;
   --cim-console-text: #1A4B8C;
   --cim-console-quiet: #4A6890;
@@ -614,9 +606,6 @@
 @media (forced-colors: active) {
   .cim:has(> [data-cim-player="console-explanation"]),
   .cim[data-cim-theme]:has(> [data-cim-player="console-explanation"]) {
-    --cim-cli-powershell: CanvasText;
-    --cim-cli-windows: CanvasText;
-    --cim-cli-bash: CanvasText;
     --cim-console-background: Canvas;
     --cim-console-text: CanvasText;
     --cim-console-quiet: CanvasText;
