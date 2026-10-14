@@ -32,6 +32,8 @@ test('registered WordPress v2 lesson presents full Player consumers while legacy
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','stage-hunk--s04');
   await root.locator('[data-cim-control="end"]').click();
   await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(18);
+  await expect(root.locator('[data-cim-commentary-evidence-label]')).toHaveCount(0);
+  await expect(root).not.toContainText(/Related (output|response): \d+ lines?/);
   await expect(root.locator('[data-cim-commentary-risk]:visible')).toHaveCount(lesson.steps.filter(step=>step.commentary.risk).length);
   await expect(root.locator('[data-cim-risk-guidance]').last()).toBeVisible();
   await root.getByLabel('Theme',{exact:true}).selectOption('light');

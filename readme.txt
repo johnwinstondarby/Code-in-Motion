@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.1.11
+Stable tag: 0.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,7 +13,7 @@ WordPress host, runtime bindings, and controls for Code in Motion experiences.
 
 Code in Motion supplies the WordPress host, runtime bindings, transport controls, and release packaging required to mount CiM experiences from WordPress content.
 
-Version 0.1.11 adds the Console-Explanation Player foundation with atomic readiness and fixed teaching-first presentation. Production v2 experience registration remains closed.
+Version 0.2.0 adds the complete Console-Explanation Player, learner themes, native command copying and the compatible v2 Git lesson. Engine compatibility is checked before Player construction; older Git Players remain unchanged.
 
 == Installation ==
 
@@ -41,6 +41,13 @@ If any of these checks fail, preserve the fallback text and report the failed st
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.2.0 =
+* Add the Console-Explanation Player with beat navigation, independent pane following, learner themes, authored CLI labels and native command copying.
+* Admit the compatible v2 Git Repository Practice lesson under engine 1.0.1 checks. Preserve older Git Players.
+* Remove related-line count wording while retaining phase labels, risk guidance and evidence highlighting.
+* Preserve frozen authoring/v1; CLI metadata uses authoring/v2, frozen at PR #80 merge. Limn is reserved for authoring/v3.
+* Known items: wrap continuation collision; authored limn deferred; white shared by keyboard focus and limn; Copy-button sizing requires live phone verification.
 
 = 0.1.11 =
 * Add Console-Explanation Player composition, Commentary, mode-dependent Restart, and atomic presentation admission.
@@ -84,3 +91,8 @@ Report defects and release issues at https://github.com/johnwinstondarby/Code-in
 
 = 0.1.0 =
 * Initial WordPress release with deterministic packaging, upgrade-safe versioned assets, and the synthetic diagnostic Experience.
+
+== Upgrade Notice ==
+
+= 0.2.0 =
+Upgrade from live 0.1.10 using the reviewed RC#2 ZIP. Capture page 3227 and retain the 0.1.10 rollback ZIP before installation. The shortcode change to git-repository-practice is a separate cutover. Check site fonts and Copy controls on desktop and a phone after installation.

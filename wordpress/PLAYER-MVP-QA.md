@@ -1,5 +1,11 @@
 # WordPress Player MVP candidate
 
+## RC#2: 0.2.0 candidate
+
+Johann approved removing the visible related-line count. Explanation still retains its evidence ID relationship and Show in Console focuses those exact output lines. Command/Output/Response phase labels and risk guidance remain. Browser assertions reject both the old label element and related-output/response wording; a mutation guard proves accidental reinstatement fails.
+
+RC#2 keeps engine 1.0.1, advances plugin metadata to 0.2.0, and pins the upgrade origin to the RC#1 0.1.10 release commit rather than intervening 0.1.11 development heads. Protected CI installs the exact checksummed 0.2.0 ZIP, tests warm-cache upgrading, and rehearses plugin/page rollback in under 60 seconds. Live capture and delivery evidence are recorded separately; no live installation, shortcode change, merge or tag is included.
+
 ## Issue #4: CLI identity and Console copy (ADR 0054)
 
 Engine capability identity is now `localis.cim/engine@1.0.1`; the registered CLI-bearing lesson requires 1.0.1. Compiler 1.0.1 enforces this feature floor without rewriting the minima of older lessons. The plugin release remains 0.1.11 until RC#2.

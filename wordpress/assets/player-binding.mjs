@@ -126,9 +126,6 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
       }
       if (instruction?.evidence.length) {
         entryRoot.setAttribute('data-cim-commentary-evidence', JSON.stringify(instruction.evidence));
-        const evidence = element('span','data-cim-commentary-evidence-label');
-        evidence.textContent = `Related ${instruction.anchor === 'response' ? 'response' : 'output'}: ${instruction.evidence.length} ${instruction.evidence.length === 1 ? 'line' : 'lines'}`;
-        entryRoot.appendChild(evidence);
       }
       entryRoot.appendChild(text);
       if (instruction?.risk) {

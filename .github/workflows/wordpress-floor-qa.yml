@@ -155,6 +155,7 @@ jobs:
           release_info_json="$(npm run --silent wp-env -- run cli wp eval 'echo wp_json_encode(localis_cim_read_admin_release_info());' | tail -n 1)"
           RELEASE_INFO_JSON="$release_info_json" EXPECTED_PLUGIN_VERSION="$expected_plugin_version" node --input-type=module <<'NODE'
           const info = JSON.parse(process.env.RELEASE_INFO_JSON);
+          const expectedNotes = JSON.parse(await (await import('node:fs/promises')).readFile('wordpress/release/release-info.generated.json','utf8')).current_release.notes;
           if (info.status !== 'available') throw new Error('R33 source release info unavailable.');
           if (info.stable_tag !== process.env.EXPECTED_PLUGIN_VERSION) {
             throw new Error('R33 source stable tag mismatch.');
@@ -163,7 +164,7 @@ jobs:
           if (info.current_release?.version !== process.env.EXPECTED_PLUGIN_VERSION) {
             throw new Error('R33 source current release mismatch.');
           }
-          if (!Array.isArray(info.current_release?.notes) || info.current_release.notes.length !== 2) {
+          if (JSON.stringify(info.current_release?.notes) !== JSON.stringify(expectedNotes)) {
             throw new Error('R33 source current release notes mismatch.');
           }
           if (info.support_uri !== 'https://github.com/johnwinstondarby/Code-in-Motion/issues') {

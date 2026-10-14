@@ -24,6 +24,7 @@ const themeArgs = ['--test','tests/learner-themes.test.mjs'];
 const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpress-live-host.test.mjs'];
 const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs','tests/frozen-authoring-v1.test.mjs'];
 const mutations = [
+  ['v2 related-lines label returns',player,"entryRoot.setAttribute('data-cim-commentary-evidence', JSON.stringify(instruction.evidence));","entryRoot.setAttribute('data-cim-commentary-evidence', JSON.stringify(instruction.evidence));\n        const label = element('span','data-cim-commentary-evidence-label'); label.textContent = 'Related output: 1 line'; entryRoot.appendChild(label);",browserArgs],
   ['copy badge reuses risk color',css,'  color: var(--cim-console-quiet);','  color: var(--cim-risk-free);',browserArgs],
   ['copy tall button edge',css,'  padding: 0 0.35rem;\n  font-size: 0.8em;','  padding: 0.2rem 0.5rem;\n  font-size: 1em;',browserArgs],
   ['copy frozen v1 altered','authoring/v1/validate-authoring.mjs',"presentation: ['layout', 'defaultPlaybackRate']","presentation: ['layout', 'defaultPlaybackRate', 'command_window']",copyArgs],
