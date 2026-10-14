@@ -30,15 +30,17 @@ Before cutover:
 
 1. Verify the delivered kit checksums and refresh/compare the live content with the snapshot. If it changed, capture again before installation.
 2. Pre-stage the rollback ZIP, raw content, checksum file, PHP restore helper and rollback script on the host, outside public web access. Confirm real WP-CLI/server access and open the current page in a browser. Uploading or logging in is preparation, outside the recovery timer.
-3. Record the host-specific WordPress root and kit paths. Keep the old ZIP locally too. Do not rely on downloading an expiring GitHub artifact during recovery.
+3. Record the host-specific WordPress root, kit paths and authorized WordPress editor login with unfiltered_html. The restore helper checks that capability before any content write so WordPress cannot strip the captured scripts. If host policy prevents exact raw HTML restoration, settle and time that path before cutover. Keep the old ZIP locally too. Do not rely on downloading an expiring GitHub artifact during recovery.
 
 Recovery, target under 60 seconds:
 
-1. Run `bash rollback.sh /absolute/kit/path /absolute/wordpress/root`.
+1. Run `bash rollback.sh /absolute/kit/path /absolute/wordpress/root authorized-editor-login`.
 2. The script verifies kit checksums, reinstalls/activates 0.1.10, restores the complete captured page content through `wp_update_post`, verifies byte identity and version, and flushes object cache. It does not uninstall the plugin or delete settings.
 3. Reload page 3227 and confirm the old Git Player and old shortcode. Purge any separate page/CDN cache through the site's normal cache control if needed.
 
 Protected CI rehearses plugin downgrade plus exact raw page restoration and requires the timed operation to finish within 60 seconds, then checks restored prior modules and shortcode in a browser. This demonstrates the prepared procedure in isolated WordPress. Actual live host timing and any page/CDN-cache purge must be confirmed before cutover; no live rollback has been executed during candidate preparation.
+
+The helper uses real WP-CLI's documented file arguments rather than putting the large page body in a shell argument. [WP-CLI eval-file documentation](https://developer.wordpress.org/cli/commands/eval-file/).
 
 ## Known items shipping as-is
 

@@ -654,11 +654,11 @@ jobs:
           npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli bash -lc '
             set -euo pipefail
             PAGE_ID=$(wp post list --post_type=page --name=cim-e2e-r16 --field=ID)
-            wp eval-file wp-content/r16-artifact/prepare-page.php "$PAGE_ID"
+            wp --user=admin eval-file wp-content/r16-artifact/prepare-page.php "$PAGE_ID"
             wp eval-file wp-content/r16-artifact/capture-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
             wp post update "$PAGE_ID" --post_content="[cim experience=\"git-repository-practice\"]RC2 cutover rehearsal.[/cim]"
             wp plugin install wp-content/r16-artifact/code-in-motion-0.1.10.zip --force --activate
-            wp eval-file wp-content/r16-artifact/restore-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
+            wp --user=admin eval-file wp-content/r16-artifact/restore-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
             test "$(wp plugin get code-in-motion --field=version)" = "0.1.10"
             wp cache flush
           '
