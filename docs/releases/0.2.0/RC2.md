@@ -14,6 +14,8 @@ Plugin/package/header/stable-tag/implementation versions and generated release i
 
 Build twice with pinned Node 22.23.2 from a clean committed candidate. Preserve the exact ZIP and its SHA-256. Protected CI installs that checksummed file, preserves it as `rc2-installed-zip`, and exercises the v2 Player on it. The delivery ZIP must compare byte-for-byte with that CI artifact before review readiness is reported.
 
+Candidate ZIP SHA-256: `03c2d6cf273109b37df147a54a530efb86799630ed25e85d01750e1c291344a2` (84 staged files). Local pinned builds reproduced identical bytes twice. The final candidate build and preserved installed-ZIP CI artifact must retain this checksum.
+
 Upgrade tests explicitly start at the RC#1 0.1.10 release commit `57499893fec330769baef8d514a41a38a0b17e02`, skip intervening 0.1.11 development heads, and land on 0.2.0. The live site's installed plugin and release metadata were read-only verified as 0.1.10. The reconstructed RC#1 ZIP has SHA-256 `1ffc7d6bded21262b00fbd18163b5cb7d68d7cc3658981a0a649a8aaddeb93c1`. It is built from the official RC#1 commit, never from later 0.1.10 development work. Full byte identity with an original server-side archive is not claimed.
 
 The delivery record accompanies the release with candidate head/tree, both archive checksums, page snapshot checksum, CI links and timed rollback evidence. Private operational captures live in the delivered rollback kit, not the plugin ZIP.
