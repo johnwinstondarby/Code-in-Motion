@@ -23,13 +23,14 @@ const beatArgs = ['--test','tests/beat-consumers.test.mjs','tests/wordpress-beat
 const themeArgs = ['--test','tests/learner-themes.test.mjs'];
 const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpress-live-host.test.mjs'];
 const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs','tests/frozen-authoring-v1.test.mjs'];
+const limnArgs = ['--test','tests/console-line-limn.test.mjs'];
 const mutations = [
   ['limn command target omitted','wordpress/assets/console-line-limn.mjs',"instruction.anchor === 'command'",'false',browserArgs],
   ['limn response target omitted','wordpress/assets/console-line-limn.mjs',"instruction.anchor === 'response'",'false',browserArgs],
   ['limn evidence target omitted','wordpress/assets/console-line-limn.mjs','evidence.has(node.getAttribute(\'data-output-id\'))','false',browserArgs],
   ['limn fade ends too early','wordpress/assets/console-line-limn.mjs','}, 1200);','}, 100);',browserArgs],
   ['limn ignores reduced motion','wordpress/assets/console-line-limn.mjs',"view.matchMedia('(prefers-reduced-motion: reduce)').matches ||","false ||",browserArgs],
-  ['limn retains emphasis after navigation','wordpress/assets/console-line-limn.mjs','stepId !== activeStep','false',browserArgs],
+  ['limn retains emphasis after navigation','wordpress/assets/console-line-limn.mjs','stepId !== activeStep','false',limnArgs],
   ['limn skips disposal cleanup','wordpress/assets/console-line-limn.mjs','dispose() { disposed = true; clear(); }','dispose() { disposed = true; }',browserArgs],
   ['mobile gate bypassed','wordpress/assets/bootstrap.js','if (window.matchMedia(mobileQuery).matches)', 'if (false)', ['--test','tests/wordpress-mobile-player-gate.test.mjs']],
   ['mobile notice misleading','wordpress/assets/bootstrap.js','Widen this window and reload, or open the lesson on a larger screen.', 'Open this lesson on a laptop.', ['--test','tests/wordpress-mobile-player-gate.test.mjs']],
@@ -119,7 +120,7 @@ async function run(args) {
 }
 
 // A failing baseline must never count as successful mutation detection.
-for (const args of [copyArgs, engineArgs, themeArgs, beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
+for (const args of [limnArgs, copyArgs, engineArgs, themeArgs, beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
   const result = await run(args);
   if (result.code !== 0) throw new Error('Mutation baseline failed:\n' + result.output);
 }
