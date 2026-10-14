@@ -405,6 +405,16 @@ jobs:
           npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" run cli wp post create --post_type=page --post_status=publish --post_name=cim-e2e-v2 --post_title='CiM v2 admission' --post_content='[cim experience="git-repository-practice" instance="admission-v2"]V2 fallback.[/cim][cim experience="git-basic-cycle" instance="admission-legacy"]Legacy fallback.[/cim]'
           CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-v2-admission.spec.mjs --reporter=line
 
+      - name: Preserve the exact installed RC2 ZIP
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: rc2-installed-zip
+          path: |
+            ${{ runner.temp }}/cim-r15-artifact/code-in-motion-*.zip
+            ${{ runner.temp }}/cim-r15-artifact/code-in-motion-*.sha256
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Prove R33 state-free deactivate and uninstall lifecycle
         shell: bash
         run: |
@@ -501,7 +511,7 @@ jobs:
           set -euo pipefail
           npm run build:wordpress
           mkdir -p "${CIM_R16_ARTIFACT_DIR}"
-          node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}"
+          node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}" --prior-ref 57499893fec330769baef8d514a41a38a0b17e02 --prior-version 0.1.10
 
           CURRENT_VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
           PRIOR_VERSION="$(node -p "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).prior.version" "${CIM_R16_ARTIFACT_DIR}/upgrade-pair.json")"
@@ -632,6 +642,42 @@ jobs:
           INSTALLED_COUNT="$(wp_env run cli bash -lc 'find wp-content/plugins/code-in-motion -type f | wc -l' | grep -E '^[0-9]+$' | tail -n 1)"
           test "${INSTALLED_COUNT}" = "${CIM_R16_CURRENT_FILE_COUNT}"
           echo "PASS: R16 N -> N+1 replacement preserved activation (${VERSION}, ${INSTALLED_COUNT} files)."
+
+      - name: Rehearse RC2 plugin and page rollback within 60 seconds
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp tools/rc2-restore-page.php "${CIM_R16_ARTIFACT_DIR}/restore-page.php"
+          cp tools/rc2-capture-page.php "${CIM_R16_ARTIFACT_DIR}/capture-page.php"
+          cp tools/rc2-prepare-rollback-rehearsal.php "${CIM_R16_ARTIFACT_DIR}/prepare-page.php"
+          ROLLBACK_STARTED=$(date +%s)
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli bash -lc '
+            set -euo pipefail
+            PAGE_ID=$(wp post list --post_type=page --name=cim-e2e-r16 --field=ID)
+            wp eval-file wp-content/r16-artifact/prepare-page.php "$PAGE_ID"
+            wp eval-file wp-content/r16-artifact/capture-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
+            wp post update "$PAGE_ID" --post_content="[cim experience=\"git-repository-practice\"]RC2 cutover rehearsal.[/cim]"
+            wp plugin install wp-content/r16-artifact/code-in-motion-0.1.10.zip --force --activate
+            wp eval-file wp-content/r16-artifact/restore-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
+            test "$(wp plugin get code-in-motion --field=version)" = "0.1.10"
+            wp cache flush
+          '
+          ROLLBACK_SECONDS=$(( $(date +%s) - ROLLBACK_STARTED ))
+          test "${ROLLBACK_SECONDS}" -lt 60
+          printf 'RC2 rollback rehearsal: %s seconds (0.2.0 -> 0.1.10, exact page restore).\n' "${ROLLBACK_SECONDS}" | tee "${CIM_R16_ARTIFACT_DIR}/rollback-timing.txt"
+          CIM_WP_BASE_URL=http://localhost:8891 npx playwright test tests/e2e/wordpress-rollback.spec.mjs --reporter=line
+
+      - name: Preserve RC2 upgrade and rollback proof
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: rc2-upgrade-rollback-evidence
+          path: |
+            ${{ runner.temp }}/cim-r16-artifact/*.zip
+            ${{ runner.temp }}/cim-r16-artifact/*.sha256
+            ${{ runner.temp }}/cim-r16-artifact/upgrade-pair.json
+            ${{ runner.temp }}/cim-r16-artifact/rollback-timing.txt
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Stop isolated R16 environment
         if: always()

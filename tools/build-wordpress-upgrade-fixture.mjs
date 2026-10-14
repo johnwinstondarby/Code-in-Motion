@@ -32,13 +32,21 @@ export function selectPriorReleaseCandidate(candidates, currentVersion) {
   }
   fail('no prior release version exists in first-parent history.');
 }
-async function findPriorRelease(currentVersion) {
-  const shas = git(['rev-list', '--first-parent', 'HEAD'])
+async function findPriorRelease(currentVersion, { priorRef, priorVersion } = {}, root = ROOT) {
+  const history=args=>git(args,{cwd:root});
+  if (priorRef) {
+    const sha=history(['rev-parse',`${priorRef}^{commit}`]).trim();
+    history(['merge-base','--is-ancestor',sha,'HEAD']);
+    const version=JSON.parse(history(['show',sha+':package.json'])).version;
+    if (version !== priorVersion || version === currentVersion) fail('pinned prior release version does not match '+priorVersion+'.');
+    return Object.freeze({sha,version});
+  }
+  const shas = history(['rev-list', '--first-parent', 'HEAD'])
     .trim().split(/\r?\n/).filter(Boolean);
   const candidates = [];
   for (const sha of shas) {
     let source;
-    try { source = git(['show', sha + ':package.json']); }
+    try { source = history(['show', sha + ':package.json']); }
     catch { continue; }
     let version;
     try { version = JSON.parse(source).version; }
@@ -49,20 +57,20 @@ async function findPriorRelease(currentVersion) {
   }
   return selectPriorReleaseCandidate(candidates, currentVersion);
 }
-export async function resolveWordPressUpgradePair(root = ROOT) {
+export async function resolveWordPressUpgradePair(root = ROOT, options = {}) {
   const currentVersion = await readPackageVersion(root);
-  const currentSha = git(['rev-parse', 'HEAD']).trim();
-  const prior = await findPriorRelease(currentVersion);
+  const currentSha = git(['rev-parse', 'HEAD'],{cwd:root}).trim();
+  const prior = await findPriorRelease(currentVersion, options, root);
   return Object.freeze({
     prior,
     current: Object.freeze({ sha: currentSha, version: currentVersion })
   });
 }
-export async function buildPriorWordPressRelease({ artifactDir, root = ROOT }) {
+export async function buildPriorWordPressRelease({ artifactDir, root = ROOT, priorRef, priorVersion }) {
   if (typeof artifactDir !== 'string' || artifactDir.length === 0) {
     fail('artifactDir must be a non-empty path.');
   }
-  const pair = await resolveWordPressUpgradePair(root);
+  const pair = await resolveWordPressUpgradePair(root, {priorRef,priorVersion});
   const tempRoot = await mkdtemp(resolve(tmpdir(), 'cim-wordpress-prior-'));
   const worktree = resolve(tempRoot, 'checkout');
   const outputDir = resolve(artifactDir);
@@ -81,6 +89,7 @@ export async function buildPriorWordPressRelease({ artifactDir, root = ROOT }) {
   } finally {
     try { git(['worktree', 'remove', '--force', worktree], { cwd: root }); }
     catch {}
+    if (!resolve(tempRoot).startsWith(resolve(tmpdir(),'cim-wordpress-prior-'))) fail('unsafe temporary cleanup path.');
     await rm(tempRoot, { recursive: true, force: true });
   }
   console.log('PASS: WordPress upgrade pair (' +
@@ -89,8 +98,9 @@ export async function buildPriorWordPressRelease({ artifactDir, root = ROOT }) {
   return pair;
 }
 function parseArgs(args) {
+  if (args.length === 6 && args[0]==='--artifact-dir' && args[2]==='--prior-ref' && args[4]==='--prior-version') return {artifactDir:args[1],priorRef:args[3],priorVersion:args[5]};
   if (args.length === 2 && args[0] === '--artifact-dir' && args[1]) return { artifactDir: args[1] };
-  fail('usage: node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir <path>');
+  fail('usage: node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir <path> [--prior-ref <commit> --prior-version <version>]');
 }
 const invokedPath = process.argv[1] ? pathToFileURL(resolve(process.argv[1])).href : null;
 if (invokedPath === import.meta.url) {

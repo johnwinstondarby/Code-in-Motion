@@ -257,10 +257,13 @@ test('v2 instructional consumers preserve phase evidence risk guidance ordering 
   await expect(root.locator('[data-cim-commentary-risk]:visible')).toHaveCount(0);
   await root.locator('[data-cim-control="end"]').click();
   const lesson=await page.evaluate(async()=>await(await fetch('/experiences/git/git-repository-practice.json')).json());
+  await expect(root.locator('[data-cim-commentary-evidence-label]')).toHaveCount(0);
+  await expect(root).not.toContainText(/Related (output|response): \d+ lines?/);
   await expect(root.locator('[data-cim-commentary-risk]:visible')).toHaveCount(lesson.steps.filter(step=>step.commentary.risk).length);
   for(const step of lesson.steps) {
     const entry=root.locator(`[data-cim-commentary-entry][data-cim-step-id="${step.id}"]`);
     await expect(entry).toHaveAttribute('data-cim-commentary-anchor',step.commentary.anchor);
+    await expect(entry.locator('[data-cim-commentary-phase]')).toHaveText({command:'Command',output:'Output',response:'Response'}[step.commentary.anchor]);
     if(step.commentary.evidence) await expect(entry).toHaveAttribute('data-cim-commentary-evidence',JSON.stringify(step.commentary.evidence));
     else await expect(entry).not.toHaveAttribute('data-cim-commentary-evidence',/./);
     if(step.commentary.risk) {

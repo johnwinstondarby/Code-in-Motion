@@ -520,8 +520,7 @@
 }
 
 /* v2 instructional presentation; no renderer DOM changes. */
-.cim [data-cim-player="console-explanation"] [data-cim-commentary-phase],
-.cim [data-cim-player="console-explanation"] [data-cim-commentary-evidence-label] {
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-phase] {
   display: block;
   margin-top: 0.5rem;
   color: var(--cim-explanation-control);
