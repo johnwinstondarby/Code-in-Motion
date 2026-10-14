@@ -43,8 +43,8 @@ export function createConsoleLineLimn({ rendererRoot, viewport, onError }) {
     viewport.scrollTop = Math.max(0, viewport.scrollTop + top - viewportTop - headerHeight - 8);
     const request = generation;
     frame = view.requestAnimationFrame(() => {
-      frame = null;
       if (disposed || request !== generation) return;
+      frame = null;
       try {
         const reduced = view.matchMedia('(prefers-reduced-motion: reduce)').matches ||
           new URL(view.location.href).searchParams.get('cim-motion-policy') === 'reduce' ||
@@ -52,8 +52,8 @@ export function createConsoleLineLimn({ rendererRoot, viewport, onError }) {
             .some(script => script.getAttribute('data-cim-motion-policy') === 'reduce');
         for (const target of targets) target.setAttribute('data-cim-line-limn', reduced ? 'steady' : 'flash');
         if (!reduced) timer = view.setTimeout(() => {
-          timer = null;
           if (disposed || request !== generation) return;
+          timer = null;
           for (const target of targets) target.setAttribute('data-cim-line-limn', 'quiet');
         }, 1200);
       } catch (error) { clear(); onError(error); }
