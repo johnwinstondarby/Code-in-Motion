@@ -25,6 +25,8 @@ const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpr
 const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs','tests/frozen-authoring-v1.test.mjs'];
 const limnArgs = ['--test','tests/console-line-limn.test.mjs'];
 const mutations = [
+  ['limn outline clips outside line',css,'outline-offset: -3px;','outline-offset: 1px;',browserArgs],
+  ['limn initial background stays quiet',css,'var(--cim-limn) 24%','var(--cim-console-quiet) 18%',browserArgs],
   ['limn command target omitted','wordpress/assets/console-line-limn.mjs',"instruction.anchor === 'command'",'false',browserArgs],
   ['limn response target omitted','wordpress/assets/console-line-limn.mjs',"instruction.anchor === 'response'",'false',browserArgs],
   ['limn evidence target omitted','wordpress/assets/console-line-limn.mjs','evidence.has(node.getAttribute(\'data-output-id\'))','false',browserArgs],

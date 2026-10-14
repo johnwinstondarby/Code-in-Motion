@@ -265,7 +265,6 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
       if (disposed) return;
       native.refresh();
       lineLimn.refresh(presentation.read().currentStepId);
-      lineLimn.refresh(presentation.read().currentStepId);
       refreshBeatSections();
       beatBinding?.refresh();
       // CSS withholds geometry until presentation admission; do not acknowledge follow early.

@@ -212,26 +212,36 @@
 .cim [data-cim-player="console-explanation"] [data-cim-line-limn] {
   background: color-mix(in srgb, var(--cim-console-quiet) 18%, var(--cim-console-background));
   outline: 1px solid var(--cim-console-quiet);
-  outline-offset: 1px;
+  outline-offset: -3px;
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-line-limn="flash"] {
-  animation: cim-line-limn 1200ms ease-out;
+  animation: cim-line-limn 1200ms linear;
 }
 
 .cim [data-cim-player="console-explanation"] [data-cim-line-limn="steady"] {
-  outline: 2px solid var(--cim-limn);
+  outline: 3px solid var(--cim-limn);
 }
 
 @keyframes cim-line-limn {
-  from { outline: 2px solid var(--cim-limn); }
-  to { outline: 1px solid var(--cim-console-quiet); }
+  0%, 40% {
+    outline: 3px solid var(--cim-limn);
+    background: color-mix(in srgb, var(--cim-limn) 24%, var(--cim-console-background));
+  }
+  80% {
+    outline: 3px solid var(--cim-console-quiet);
+    background: color-mix(in srgb, var(--cim-console-quiet) 18%, var(--cim-console-background));
+  }
+  100% {
+    outline: 1px solid var(--cim-console-quiet);
+    background: color-mix(in srgb, var(--cim-console-quiet) 18%, var(--cim-console-background));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cim [data-cim-player="console-explanation"] [data-cim-line-limn="flash"] {
     animation: none;
-    outline: 2px solid var(--cim-limn);
+    outline: 3px solid var(--cim-limn);
   }
 }
 

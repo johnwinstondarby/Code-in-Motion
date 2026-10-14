@@ -269,6 +269,38 @@ test('line limn: all 18 Show entries target command, evidence or response after 
   await expect(page.locator('.cim').nth(1).locator('[data-cim-line-limn]')).toHaveCount(0);
 });
 
+test('line limn: strong inset cue remains visible on all four sides in every theme', async ({page}) => {
+  await open(page); const root=page.locator('.cim').first();
+  await root.locator('[data-cim-control="next"]').click();
+  const show=root.locator('[data-cim-commentary-anchor="command"] button').first();
+  for(const theme of ['localis','high-contrast','light']) {
+    await root.locator('[data-cim-theme-select]').selectOption(theme);
+    await show.click(); const line=root.locator('[data-cim-line-limn="flash"]');
+    await expect(line).toHaveCount(1);
+    const read=()=>line.evaluate(node=>{
+      const animation=node.getAnimations()[0]; animation.pause(); animation.currentTime=200;
+      const style=getComputedStyle(node),box=node.getBoundingClientRect();
+      const pane=node.closest('[data-cim-console-viewport]').getBoundingClientRect();
+      const width=parseFloat(style.outlineWidth),offset=parseFloat(style.outlineOffset);
+      const edge=width+offset;
+      const flash={width,offset,color:style.outlineColor,background:style.backgroundColor,
+        left:box.left-edge,right:box.right+edge,top:box.top-edge,bottom:box.bottom+edge,
+        paneLeft:pane.left,paneRight:pane.right,paneTop:pane.top,paneBottom:pane.bottom};
+      animation.currentTime=600; flash.midWidth=parseFloat(getComputedStyle(node).outlineWidth);
+      animation.currentTime=1199; flash.quietBackground=getComputedStyle(node).backgroundColor;
+      return flash;
+    });
+    const cue=await read();
+    expect(cue.width).toBe(3); expect(cue.offset).toBeLessThanOrEqual(-cue.width);
+    expect(cue.color).toBe(theme==='light'?'rgb(0, 0, 0)':'rgb(255, 255, 255)');
+    expect(cue.background).not.toBe(cue.quietBackground); expect(cue.midWidth).toBe(3);
+    expect(cue.left).toBeGreaterThanOrEqual(cue.paneLeft);
+    expect(cue.right).toBeLessThanOrEqual(cue.paneRight);
+    expect(cue.top).toBeGreaterThanOrEqual(cue.paneTop);
+    expect(cue.bottom).toBeLessThanOrEqual(cue.paneBottom);
+  }
+});
+
 test('line limn: repeated clicks restart the cue, theme colors adapt and navigation clears it', async ({page}) => {
   await open(page); const root=page.locator('.cim').first();
   await root.locator('[data-cim-control="next"]').click();

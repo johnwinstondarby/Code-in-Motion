@@ -262,3 +262,7 @@ Keyboard and pane focus use distinct neutral theme colors instead of limn white.
     - v1 and v2 instances use the fixed ADR 0048 palette;
     - v3 instances use the validated `presentation.theme`;
     - no documented page-CSS theming selector exists.
+
+### 0.2.2 review correction: visible whole-line cue
+
+The outline is drawn inside each line (negative offset), so the scrolling viewport cannot clip its sides. A three-pixel limn outline and 24% limn background tint hold for 480 ms, then fade to the quiet band over the remaining 720 ms; outline thickness stays three pixels until the final 240 ms. Reduced motion keeps the inset outline steady. Browser geometry and sampled animation checks cover visibility in every theme.
