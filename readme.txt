@@ -100,7 +100,7 @@ Report defects and release issues at https://github.com/johnwinstondarby/Code-in
 == Upgrade Notice ==
 
 = 0.2.1 =
-Upgrade from 0.2.0 or 0.1.10 using the reviewed exact ZIP. Keep the exact 0.2.0 ZIP and a fresh page 3227 capture with git-repository-practice for primary rollback. Keep the 0.1.10 hosting backup as a second fallback. Mobile visitors see a wider-window notice; confirm fonts and Player behavior on desktop after installation.
+Upgrade from 0.2.0 or 0.1.10. Retain the exact 0.2.0 ZIP and current page 3227 capture for rollback; keep the 0.1.10 hosting backup as fallback. Mobile shows a wider-window notice. Confirm fonts on desktop.
 
 = 0.2.0 =
 Upgrade from live 0.1.10 using the reviewed RC#2 ZIP. Capture page 3227 and retain the 0.1.10 rollback ZIP before installation. The shortcode change to git-repository-practice is a separate cutover. Check site fonts and Copy controls on desktop and a phone after installation.
