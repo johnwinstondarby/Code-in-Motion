@@ -1,4 +1,23 @@
 (() => {
+  // Phones (including landscape) and narrow windows get a static fallback.
+  // Check before importing any engine, renderer, lesson or Player modules.
+  const mobileQuery = '(max-width: 767px), (hover: none) and (pointer: coarse)';
+  if (window.matchMedia(mobileQuery).matches) {
+    const showDesktopNotice = () => {
+      document.querySelectorAll('[data-cim-experience]').forEach((root) => {
+        if (root.getAttribute('data-cim-state') === 'desktop-required') return;
+        root.setAttribute('data-cim-state', 'desktop-required');
+        root.textContent = 'Open this lesson on a desktop or laptop to use the interactive Player.';
+      });
+    };
+    showDesktopNotice();
+    new MutationObserver(showDesktopNotice).observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+    return;
+  }
+
   const current = document.currentScript;
   if (!current || typeof current.src !== 'string' || current.src.length === 0) return;
 
