@@ -24,6 +24,9 @@ const themeArgs = ['--test','tests/learner-themes.test.mjs'];
 const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpress-live-host.test.mjs'];
 const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs','tests/frozen-authoring-v1.test.mjs'];
 const mutations = [
+  ['mobile gate bypassed','wordpress/assets/bootstrap.js','if (window.matchMedia(mobileQuery).matches)', 'if (false)', ['--test','tests/wordpress-mobile-player-gate.test.mjs']],
+  ['mobile notice misleading','wordpress/assets/bootstrap.js','Widen this window and reload, or open the lesson on a larger screen.', 'Open this lesson on a laptop.', ['--test','tests/wordpress-mobile-player-gate.test.mjs']],
+  ['mobile late embeds ignored','wordpress/assets/bootstrap.js','new MutationObserver(showDesktopNotice).observe', 'new MutationObserver(() => {}).observe', ['--test','tests/wordpress-mobile-player-gate.test.mjs']],
   ['v2 related-lines label returns',player,"entryRoot.setAttribute('data-cim-commentary-evidence', JSON.stringify(instruction.evidence));","entryRoot.setAttribute('data-cim-commentary-evidence', JSON.stringify(instruction.evidence));\n        const label = element('span','data-cim-commentary-evidence-label'); label.textContent = 'Related output: 1 line'; entryRoot.appendChild(label);",browserArgs],
   ['copy badge reuses risk color',css,'  color: var(--cim-console-quiet);','  color: var(--cim-risk-free);',browserArgs],
   ['copy tall button edge',css,'  padding: 0 0.35rem;\n  font-size: 0.8em;','  padding: 0.2rem 0.5rem;\n  font-size: 1em;',browserArgs],

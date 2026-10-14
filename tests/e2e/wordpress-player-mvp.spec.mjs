@@ -99,6 +99,11 @@ const productionFixture = `<!doctype html><link rel="stylesheet" href="/wordpres
 test.beforeAll(async () => {
   server = createServer(async (request, response) => {
     const pathname = new URL(request.url, 'http://localhost').pathname;
+    if (pathname === '/mobile-gate') {
+      response.setHeader('Content-Type', 'text/html');
+      response.end(productionFixture.replace('type="module" src="/wordpress/assets/bootstrap-module.mjs"', 'src="/wordpress/assets/bootstrap.js"'));
+      return;
+    }
     if (pathname === '/production') {
       response.setHeader('Content-Type','text/html');response.end(productionFixture);return;
     }
@@ -113,7 +118,7 @@ test.beforeAll(async () => {
       if (!target.startsWith(resolve(repository) + '\\')) { response.writeHead(403).end(); return; }
     }
     try {
-      response.setHeader('Content-Type', ({'.mjs':'text/javascript','.json':'application/json','.css':'text/css'})[extname(target)] ?? 'text/plain');
+      response.setHeader('Content-Type', ({'.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.css':'text/css'})[extname(target)] ?? 'text/plain');
       response.end(await readFile(target));
     } catch { response.writeHead(404).end(); }
   });
@@ -121,6 +126,41 @@ test.beforeAll(async () => {
   origin = 'http://127.0.0.1:' + server.address().port;
 });
 test.afterAll(async () => { await new Promise(done => server.close(done)); });
+
+test('mobile policy: narrow screens fetch no Player modules or lessons, including late embeds', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const requests = [];
+  page.on('request', request => requests.push(new URL(request.url()).pathname));
+  await page.goto(origin + '/mobile-gate');
+  await expect(page.locator('[data-cim-state="desktop-required"]')).toHaveCount(2);
+  await expect(page.locator('[data-cim-player]')).toHaveCount(0);
+  await page.evaluate(() => {
+    const root = document.createElement('div');
+    root.setAttribute('data-cim-experience', 'git-basic-cycle');
+    document.body.append(root);
+  });
+  await expect(page.locator('[data-cim-state="desktop-required"]')).toHaveCount(3);
+  expect(requests.filter(path => path.endsWith('.mjs') || path.endsWith('.json'))).toEqual([]);
+});
+
+test('mobile policy: landscape touch-only devices do not load the Player', async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 844, height: 390 }, hasTouch: true });
+  try {
+    const page = await context.newPage();
+    await page.goto(origin + '/mobile-gate');
+    await expect(page.locator('[data-cim-state="desktop-required"]')).toHaveCount(2);
+    await expect(page.locator('[data-cim-player]')).toHaveCount(0);
+  } finally {
+    await context.close();
+  }
+});
+
+test('mobile policy: desktop still initializes the production Player', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(origin + '/mobile-gate');
+  await expect(page.locator('[data-cim-player="console-explanation"]')).toHaveCount(1);
+  await expect(page.locator('[data-cim-state="desktop-required"]')).toHaveCount(0);
+});
 
 for (const [kind, role] of [['powershell','console-quiet'],['windows-cli','console-quiet'],['bash','console-quiet']]) {
   test(`CLI and copy: ${kind} badge uses neutral secondary Console text independently of kind and label`,async({page})=>{
