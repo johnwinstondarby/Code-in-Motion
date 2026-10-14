@@ -5,7 +5,7 @@ const common = {
   'explanation-background': '#171B22', 'explanation-prose': '#A8B3C2', 'explanation-heading': '#E8ECF2',
   'wayfinding': '#5AC4C8', 'explanation-control': '#A9B1BD', 'structural-border': '#323A4A',
   'frame-background': '#171B22', 'frame-text': '#A8B3C2', 'control-text': '#E8ECF2',
-  'control-border': '#A8B3C2', 'control-hover': '#323A4A', 'focus': '#A8B3C2', 'pane-focus': '#FFFFFF'
+  'control-border': '#A8B3C2', 'control-hover': '#323A4A', 'focus': '#A8B3C2', 'pane-focus': '#A8B3C2'
 };
 export const THEME_PRESETS = Object.freeze({
   localis: Object.freeze({ label: 'Localis', colors: Object.freeze(common) }),
@@ -15,7 +15,7 @@ export const THEME_PRESETS = Object.freeze({
     'explanation-background': '#000000', 'explanation-prose': '#FFFFFF', 'explanation-heading': '#FFFFFF',
     'wayfinding': '#7FECEF', 'explanation-control': '#FFFFFF', 'structural-border': '#A9B1BD',
     'frame-background': '#000000', 'frame-text': '#FFFFFF', 'control-text': '#FFFFFF',
-    'control-border': '#FFFFFF', 'control-hover': '#171B22', 'focus': '#FFFFFF'
+    'control-border': '#FFFFFF', 'control-hover': '#171B22', 'focus': '#8DB4E2', 'pane-focus': '#8DB4E2'
   }) }),
   light: Object.freeze({ label: 'Light', colors: Object.freeze({
       'console-background': '#F6F8FB', 'console-text': '#1A4B8C', 'console-quiet': '#4A6890',

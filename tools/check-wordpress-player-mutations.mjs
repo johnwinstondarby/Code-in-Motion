@@ -24,6 +24,13 @@ const themeArgs = ['--test','tests/learner-themes.test.mjs'];
 const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpress-live-host.test.mjs'];
 const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs','tests/frozen-authoring-v1.test.mjs'];
 const mutations = [
+  ['limn command target omitted','wordpress/assets/console-line-limn.mjs',"instruction.anchor === 'command'",'false',browserArgs],
+  ['limn response target omitted','wordpress/assets/console-line-limn.mjs',"instruction.anchor === 'response'",'false',browserArgs],
+  ['limn evidence target omitted','wordpress/assets/console-line-limn.mjs','evidence.has(node.getAttribute(\'data-output-id\'))','false',browserArgs],
+  ['limn fade ends too early','wordpress/assets/console-line-limn.mjs','}, 1200);','}, 100);',browserArgs],
+  ['limn ignores reduced motion','wordpress/assets/console-line-limn.mjs',"view.matchMedia('(prefers-reduced-motion: reduce)').matches ||","false ||",browserArgs],
+  ['limn retains emphasis after navigation','wordpress/assets/console-line-limn.mjs','stepId !== activeStep','false',browserArgs],
+  ['limn skips disposal cleanup','wordpress/assets/console-line-limn.mjs','dispose() { disposed = true; clear(); }','dispose() { disposed = true; }',browserArgs],
   ['mobile gate bypassed','wordpress/assets/bootstrap.js','if (window.matchMedia(mobileQuery).matches)', 'if (false)', ['--test','tests/wordpress-mobile-player-gate.test.mjs']],
   ['mobile notice misleading','wordpress/assets/bootstrap.js','Widen this window and reload, or open the lesson on a larger screen.', 'Open this lesson on a laptop.', ['--test','tests/wordpress-mobile-player-gate.test.mjs']],
   ['mobile late embeds ignored','wordpress/assets/bootstrap.js','new MutationObserver(showDesktopNotice).observe', 'new MutationObserver(() => {}).observe', ['--test','tests/wordpress-mobile-player-gate.test.mjs']],
@@ -137,7 +144,7 @@ for (const [name, file, from, to, args] of mutations) {
       name === 'release Console hold resumes ownership' ? 'Console scroll ownership' :
       name === 'skip renderer observer disposal' ? 'root teardown' :
       name === 'skip deliberate viewport navigation' ? 'deliberate navigation repositions' : 'atomic readiness';
-    const focusedGrep = name.startsWith('copy ') ? 'CLI and copy|Copy button edge' : name.startsWith('v2 ') ? 'production v2|instructional consumers' : name.startsWith('theme ') ? 'learner themes' : name === 'progress follows reveal frontier' ? 'authored beat headings' :
+    const focusedGrep = name.startsWith('limn ') ? 'line limn' : name.startsWith('copy ') ? 'CLI and copy|Copy button edge' : name.startsWith('v2 ') ? 'production v2|instructional consumers' : name.startsWith('theme ') ? 'learner themes' : name === 'progress follows reveal frontier' ? 'authored beat headings' :
       ['markers select first segment','markers trust mutable DOM identity'].includes(name) ? 'beat markers capture' :
       name === 'focus scrolling claims ownership' ? 'offscreen link focus' :
       name === 'ignore native wheel intent' ? 'Console scroll ownership' :

@@ -1,6 +1,6 @@
 # ADR 0048: Teaching-First Console Presentation and Authored Limn Emphasis
 
-Status: Accepted. Part A lands with the visual stylesheet (roadmap step 11, before RC#2). Parts B and C are implemented after RC#2.
+Status: Accepted. Part A lands with the visual stylesheet (roadmap step 11, before RC#2). Parts B and C are deferred after the MVP. The 0.2.2 learner-action whole-line cue is described below.
 
 Date: 2026-10-03
 
@@ -37,7 +37,15 @@ Authoring JSON v1 §20 already says "if everything calls for attention, nothing 
 
 7a. **Player frame and Transport.** The session #8 amendment extends the near-black surface to the ready Console-Explanation outer frame and resting Transport buttons. Transport uses bright #E8ECF2 labels, #A8B3C2 borders/focus outlines, IBM Plex Mono fallbacks and 8px corners; hover and playback use #323A4A. The current beat border uses #5AC4C8. Forced colors uses the system Highlight focus outline. These styles are structurally scoped to the Console-Explanation Player; legacy Git presentation stays unchanged. No new Host/renderer attributes or public theming tokens are introduced. Console line-emphasis and pane focus grammar remain separate work.
 
-### Part B: Authored limn emphasis (Authoring v2, `console/v2`)
+### 0.2.2 amendment: whole-line learner-action cue
+
+Show in Console lights up the whole relevant command line, linked output lines, or response-containing prompt line. Empty evidence lists on command and response entries are resolved from the entry's phase and beat, not from new authored metadata. The cue starts after seek repositioning and a Console-only scroll puts the first target below the pinned title.
+
+A single bright outline uses the theme's limn color (white in Localis and High Contrast, black in Light), fades for 1,200 wall-clock milliseconds, then settles to a quiet focus band while the segment stays current. Repeat clicks restart it. This learner action plays even when the lesson is paused; playback rate does not change its duration. Reduced motion uses a steady outline without animation. Deliberate navigation, disposal and stale requests clear/withdraw the cue. Normal playback gains no new flash.
+
+Keyboard and pane focus use distinct neutral theme colors instead of limn white. This supersedes the white keyboard outline in Decision 5 and the former line-level white evidence outlines. It changes Player presentation only: renderer canonical output, lesson formats and frozen authoring/v1 and v2 are unchanged. No authoring/v3 or console/v2 feature ships in this amendment. The approved 18-phrase draft remains deferred with Part B, not cancelled. Part C reserves a subsequent authoring/v4 so it cannot widen frozen v3 later.
+
+### Part B: Authored limn emphasis — deferred (Authoring v3, `console/v2`)
 
 8. **What a limn is.** A limn is a brief white outline (`#FFFFFF`) around an authored word or phrase, which then fades back to plain text. Its behavior (outline, fade, residual, and timing) is a single Player-owned style applied identically everywhere; only its color is configurable (Part C, `theme.console.limn`). Authors identify only *what* to limn, never how it looks.
 
@@ -94,15 +102,15 @@ Authoring JSON v1 §20 already says "if everything calls for attention, nothing 
     - **No authored timing.** Authors never control limn duration. A future change to the 1,200 ms standard is a renderer-owned presentation constant.
 
 14. **Versioning.**
-    - Authoring v1 remains valid, and the compiler accepts both v1 and v2 sources.
+    - Frozen authoring v1 and v2 remain valid and unchanged; Part B adds v3 only when that deferred checkpoint is implemented.
     - `console/v1` remains the renderer for v1 experiences, and its oracle stays protected.
     - Part B alone changes no runtime schema, because Console state is opaque to Core. Part C does: the compiled palette needs a home in a closed runtime `presentation` object, which requires a new runtime schema version, `localis.cim/v3` (Decision 19).
-    - Authoring v1 sources continue to compile to `localis.cim/v2`, byte-identically to today. Authoring v2 sources compile to `localis.cim/v3`.
+    - Authoring v1 and v2 sources continue to compile byte-identically to their existing runtime output. Deferred Part B v3 sources use `console/v2` without widening runtime v2; deferred Part C reserves authoring/v4 and runtime v3. Each authoring version freezes once and is never widened later.
     - `console/v2` receives its own canonical evidence file, beginning with a recompiled Git specimen.
 
-### Part C: Configurable palette (Authoring v2, `localis.cim/v3`)
+### Part C: Configurable palette — deferred (Authoring v4 reserved, `localis.cim/v3`)
 
-15. **Authoring shape.** Authoring v2 adds an optional `presentation.theme`, owned per experience:
+15. **Authoring shape.** Authoring v4 will add an optional `presentation.theme`, owned per experience:
 
     ```json
     "presentation": {
@@ -144,7 +152,7 @@ Authoring JSON v1 §20 already says "if everything calls for attention, nothing 
     - **Arithmetic.** Contrast uses the WCAG 2.x relative-luminance formula. Thresholds compare unrounded ratios.
 
 19. **Compiled output is complete.** The compiler resolves every theme to the full seven-color palette, with defaults filled in, and emits it as `presentation.theme` in `localis.cim/v3`. Field order is fixed and colors are uppercase, so equal palettes compile byte-identically.
-    - Authoring v2 always compiles to `localis.cim/v3` with a complete palette, whether or not a theme was authored.
+    - Authoring v4 will compile to `localis.cim/v3` with a complete palette, whether or not a theme was authored.
     - Runtime and Player therefore consume one frozen, complete object and implement no per-field fallback. Replay has one canonical presentation configuration.
     - `localis.cim/v3` is `localis.cim/v2` plus a required, closed `presentation.theme`.
     - Runtime validation checks completeness, the hex format, and the Decision 18 thresholds again at ingestion. Even a hand-assembled v3 document cannot carry an unreadable palette into production.

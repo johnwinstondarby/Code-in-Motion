@@ -1,13 +1,14 @@
 {
   "schema": "localis.cim/wordpress-release-info/v1",
-  "stable_tag": "0.2.1",
+  "stable_tag": "0.2.2",
   "tested_up_to": "7.1",
   "current_release": {
-    "version": "0.2.1",
+    "version": "0.2.2",
     "notes": [
-      "Do not load any interactive Player on screens up to 767 CSS pixels or touch-only devices, including landscape phones and iPads. Show a wider-window notice before fetching Player modules or lesson data.",
-      "Preserve desktop and laptop Player behavior, all learner themes, command Copy and engine localis.cim/engine@1.0.1.",
-      "Known items: wrap continuation collision; authored limn deferred (authoring/v3); white shared by keyboard focus and limn; site fonts still require confirmation."
+      "Show in Console lights up the whole command, related output lines or response line after scrolling. Repeat clicks restart the 1.2-second cue even while playback is paused.",
+      "Use theme-aware limn color, steady emphasis for reduced motion, and a quiet focus band afterward. Reserve limn color for learner emphasis instead of keyboard focus.",
+      "Preserve mobile blocking, lesson formats, engine 1.0.1 and renderer canonical output. Authored phrase-level limn remains deferred.",
+      "Known items: wrap continuation collision; authored limn (authoring/v3); author palettes; optional Match device; scripted rollback needs hosting access."
     ]
   },
   "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"
