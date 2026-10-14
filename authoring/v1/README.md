@@ -24,7 +24,7 @@ Commands:
 | Final boundary dwell when `dwell` is absent | 1600 ms | A2R §11 |
 | Maximum segments per beat | 99 | A2R §6 |
 | Renderer for `console-explanation` | `console/v1` (canonical) | A2R §12; CONSOLE-RENDERER-v1 |
-| `engine_min` | `0.2.0` | A2R §7: minimum compatible engine, independent of release identity |
+| `engine_min` | `0.2.0`, or `1.0.1` with CLI metadata | A2R §7 and ADR 0054: minimum compatible engine, independent of release identity |
 
 ## Console state format
 

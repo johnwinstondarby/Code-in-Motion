@@ -1,6 +1,6 @@
 {
   "schema": "localis.cim/v2",
-  "engine_min": "0.2.0",
+  "engine_min": "1.0.1",
   "experience_version": "1.0.0",
   "id": "git-repository-practice",
   "renderer": "console/v1",

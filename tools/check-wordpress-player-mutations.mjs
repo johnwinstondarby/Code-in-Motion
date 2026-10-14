@@ -24,6 +24,7 @@ const themeArgs = ['--test','tests/learner-themes.test.mjs'];
 const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpress-live-host.test.mjs'];
 const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs'];
 const mutations = [
+  ['copy CLI minimum underdeclared','authoring/v1/compile-authoring.mjs','engineMin = COMPILATION_CONSTANTS.cliEngineMin','engineMin = COMPILATION_CONSTANTS.engineMin',copyArgs],
   ['copy writes altered value','wordpress/assets/console-copy-binding.mjs','writeText(value)','writeText(value + " altered")',copyArgs],
   ['copy reports failed write as success','wordpress/assets/console-copy-binding.mjs','Could not copy. Select','Copied command. Select',copyArgs],
   ['copy ignores disposal','wordpress/assets/console-copy-binding.mjs','if (disposed || event.defaultPrevented)','if (event.defaultPrevented)',copyArgs],

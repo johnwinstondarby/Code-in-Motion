@@ -23,5 +23,11 @@ test('invalid CLI configuration is rejected by authoring and runtime validation'
 test('omitted CLI metadata stays optional and no renderer state is inspected',()=>{
   const specimen=structuredClone(source);delete specimen.presentation.command_window;
   const experience=ingestExperience(compileAuthoringSource(JSON.stringify(specimen)).document);
+  assert.equal(experience.engine_min,'0.2.0');
   assert.equal(createPlayerContent(experience,['initial',...experience.steps.map(step=>step.id)]).commandWindow,null);
+});
+test('CLI metadata declares its actual engine minimum and cannot compile with an older requested engine',()=>{
+  assert.equal(compileAuthoringSource(JSON.stringify(source)).document.engine_min,'1.0.1');
+  for(const engineMin of ['0.2.0','1.0.0','1.0.1-alpha']) assert.throws(()=>compileAuthoringSource(JSON.stringify(source),{engineMin}),/CLI identity requires engine 1.0.1/);
+  assert.equal(compileAuthoringSource(JSON.stringify(source),{engineMin:'2.0.0'}).document.engine_min,'2.0.0');
 });

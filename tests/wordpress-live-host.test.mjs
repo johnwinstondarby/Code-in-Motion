@@ -56,7 +56,7 @@ test('ADR 0049 Player content is exact, frozen, legacy-capable and aligned', () 
 
 test('incompatible engine requirements stop before renderer resolution, clock creation and Runtime construction',async()=>{
   const root=rootHarness();let resolved=0;let clocks=0;
-  const raw=structuredClone(experienceFixture());raw.engine_min='1.0.1';
+  const raw=structuredClone(experienceFixture());raw.engine_min='1.0.2';
   const loader=createWordPressExperienceLoader({fetch:async()=>({ok:true,json:async()=>raw}),experienceUrlFor:()=>'/future.json'});
   const h=hostOptions({roots:[root.root],load:loader.load,resolve:()=>{resolved++;return rendererFixture().renderer;},create:()=>{clocks++;return clockFixture();}});
   const host=createWordPressLiveHost(h.options);

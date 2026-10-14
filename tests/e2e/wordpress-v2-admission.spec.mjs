@@ -43,7 +43,7 @@ test('registered WordPress v2 lesson presents full Player consumers while legacy
 test('WordPress v2 engine rejection preserves static fallback and healthy legacy sibling',async({page})=>{
   const errors=[];page.on('console',async message=>{if(message.type()==='error') errors.push(...await Promise.all(message.args().map(argument=>argument.jsonValue().catch(()=>null))));});
   await page.route('**/wordpress/experiences/git-repository-practice.json*',async route=>{
-    const response=await route.fetch();const lesson=await response.json();lesson.engine_min='1.0.1';
+    const response=await route.fetch();const lesson=await response.json();lesson.engine_min='1.0.2';
     await route.fulfill({response,json:lesson});
   });
   await page.goto(base+'/?pagename=cim-e2e-v2');

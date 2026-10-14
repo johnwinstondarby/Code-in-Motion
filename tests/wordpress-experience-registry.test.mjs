@@ -162,7 +162,7 @@ test('ADR 0053 registry admits a compatible validated localis.cim/v2 asset', asy
 
 test('ADR 0053 registry rejects an incompatible engine minimum before projection generation', async () => {
   const v2 = JSON.parse(await readFile(resolve(ROOT,'schemas','fixtures','valid','compiled-console-v2.json'),'utf8'));
-  v2.engine_min = '1.0.1';
+  v2.engine_min = '1.0.2';
   const root = await deploymentRoot({'compiled-console-v2':v2});
   try { await assert.rejects(()=>loadWordPressExperienceRegistry(root),/CIM-EXP-015/); }
   finally { await rm(root,{recursive:true,force:true}); }

@@ -238,7 +238,7 @@ test('production v2 admission uses registry loader bootstrap and final beat deep
 test('production v2 admission rejects incompatible engine minimum locally before any Console construction',async({page})=>{
   const errors=[];page.on('console',async message=>{if(message.type()==='error') errors.push(...await Promise.all(message.args().map(argument=>argument.jsonValue().catch(()=>null))));});
   await page.route('**/wordpress/experiences/git-repository-practice.json*',async route=>{
-    const response=await route.fetch();const lesson=await response.json();lesson.engine_min='1.0.1';
+    const response=await route.fetch();const lesson=await response.json();lesson.engine_min='1.0.2';
     await route.fulfill({response,json:lesson});
   });
   await page.goto(origin+'/production');

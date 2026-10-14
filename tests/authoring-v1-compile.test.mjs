@@ -61,7 +61,7 @@ test('A2R §4/§6: one boundary per segment, contiguous grouping, heading as lab
 
 test('A2R §8/§10/§12: experience metadata, renderer mapping, versions, and initial state', () => {
   assert.equal(doc.renderer, RENDERER_BY_LAYOUT['console-explanation']);
-  assert.equal(doc.engine_min, COMPILATION_CONSTANTS.engineMin);
+  assert.equal(doc.engine_min, COMPILATION_CONSTANTS.cliEngineMin);
   assert.equal(doc.experience_version, source.version);
   assert.equal(doc.id, source.id);
   assert.deepEqual(doc.renderer_config, { title: source.console.title, prompt: source.console.prompt });
