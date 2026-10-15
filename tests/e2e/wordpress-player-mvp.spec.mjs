@@ -404,11 +404,11 @@ test('production v2 admission uses registry loader bootstrap and final beat deep
   await expect(root).toHaveAttribute('data-cim-state','ready');
   await expect(legacy).toHaveAttribute('data-cim-state','ready');
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','stage-hunk--s04');
-  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 Â· Stage one change at a time');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
   await expect(root.getByLabel('Theme',{exact:true})).toBeVisible();
   await expect(legacy.getByLabel('Theme',{exact:true})).toHaveCount(0);
   await root.locator('[data-cim-control="next"]').click();
-  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('3 / 8 Â· Review what is staged');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('3 / 8 · Review what is staged');
   await page.evaluate(()=>{location.hash='#cim/git-repository-practice/check-status';});
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','check-status--s02');
   await page.evaluate(()=>{location.hash='#cim/git-repository-practice/stage-hunk';});
@@ -1118,17 +1118,17 @@ test('authored beat headings progress and button keyboard navigation use eight b
   const position = () => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId);
   await expect(root.locator('[data-cim-beat-marker]')).toHaveCount(8);
   await expect(root.locator('[data-cim-beat-heading]:visible')).toHaveCount(0);
-  await expect(progress).toHaveText('Start Â· 8 beats');
+  await expect(progress).toHaveText('Start · 8 beats');
   await root.locator('[data-cim-control="next"]').click();
   await expect.poll(position).toBe('check-status--s02');
   await expect(root.locator('[data-cim-beat-heading]:visible')).toHaveText(['1 Check the repository state']);
-  await expect(progress).toHaveText('1 / 8 Â· Check the repository state');
+  await expect(progress).toHaveText('1 / 8 · Check the repository state');
   await root.locator('[data-cim-control="next"]').click();
   await expect.poll(position).toBe('stage-hunk--s04');
   await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(6);
   await root.locator('[data-cim-control="previous"]').click();
   await expect.poll(position).toBe('check-status--s02');
-  await expect(progress).toHaveText('1 / 8 Â· Check the repository state');
+  await expect(progress).toHaveText('1 / 8 · Check the repository state');
   await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(6);
   await root.focus(); await page.keyboard.press('ArrowRight');
   await expect.poll(position).toBe('stage-hunk--s04');
@@ -1137,15 +1137,15 @@ test('authored beat headings progress and button keyboard navigation use eight b
   expect(await page.evaluate(() => playerTest.sources)).toEqual([]); // Next remains Next, not a substituted seek.
   await root.locator('[data-cim-control="end"]').click();
   await expect(root.locator('[data-cim-beat-heading]:visible')).toHaveCount(8);
-  await expect(progress).toHaveText('8 / 8 Â· Recover the commit');
+  await expect(progress).toHaveText('8 / 8 · Recover the commit');
   expect(await root.locator('[data-cim-commentary-entry] button').allTextContents()).not.toContain('Step 18');
   await root.locator('[data-cim-control="home"]').click();
-  await expect(progress).toHaveText('Start Â· 8 beats');
+  await expect(progress).toHaveText('Start · 8 beats');
   await expect(root.locator('[data-cim-beat-heading]:visible')).toHaveCount(8);
   await root.locator('[data-cim-control="restart"]').click();
   await expect(root.locator('[data-cim-beat-heading]:visible')).toHaveCount(0);
-  await expect(progress).toHaveText('Start Â· 8 beats');
-  await expect(page.locator('.cim').nth(1).locator('[data-cim-beat-progress]')).toHaveText('Start Â· 8 beats');
+  await expect(progress).toHaveText('Start · 8 beats');
+  await expect(page.locator('.cim').nth(1).locator('[data-cim-beat-progress]')).toHaveText('Start · 8 beats');
 });
 
 test('beat markers capture final destinations while Commentary retains individual segments', async ({ page }) => {
@@ -1156,16 +1156,16 @@ test('beat markers capture final destinations while Commentary retains individua
   await root.locator('[data-cim-beat-marker="tampered"]').focus();
   await page.keyboard.press('Space');
   await expect(root.locator('[data-cim-control="playback"]')).toHaveText('Play');
-  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 Â· Stage one change at a time');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
   await expect.poll(() => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId)).toBe('stage-hunk--s04');
   await root.locator('[data-cim-commentary-entry][data-cim-step-id="stage-hunk--s02"] button').click();
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','stage-hunk--s02');
-  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 Â· Stage one change at a time');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
   await root.locator('[data-cim-control="next"]').click();
   await expect.poll(() => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId)).toBe('stage-hunk--s04');
-  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 Â· Stage one change at a time');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
   await root.locator('[data-cim-control="next"]').click();
-  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('3 / 8 Â· Review what is staged');
+  await expect(root.locator('[data-cim-beat-progress]')).toHaveText('3 / 8 · Review what is staged');
   await expect.poll(() => page.evaluate(() => playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId)).toBe('review-staged--s02');
   expect(await page.evaluate(() => playerTest.sources)).toEqual(['marker','commentary']);
 });
@@ -1174,7 +1174,7 @@ test('public beat deep links mount directly at final boundaries before presentat
   await open(page,'#cim/git-repository-practice/stage-hunk');
   for (const root of await page.locator('.cim').all()) {
     await expect(root).toHaveAttribute('data-cim-state','ready');
-    await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 Â· Stage one change at a time');
+    await expect(root.locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
     await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(6);
     await expect(root.locator('[data-cim-beat-marker][aria-current="step"]')).toHaveAttribute('data-cim-beat-marker','stage-hunk');
   }
@@ -1182,13 +1182,13 @@ test('public beat deep links mount directly at final boundaries before presentat
   expect(await page.evaluate(() => playerTest.frames.every(frame => !frame.ready || (frame.player && frame.transport)))).toBe(true);
   expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
   await page.locator('.cim').first().locator('[data-cim-control="next"]').click();
-  await expect(page.locator('.cim').first().locator('[data-cim-beat-progress]')).toHaveText('3 / 8 Â· Review what is staged');
-  await expect(page.locator('.cim').nth(1).locator('[data-cim-beat-progress]')).toHaveText('2 / 8 Â· Stage one change at a time');
+  await expect(page.locator('.cim').first().locator('[data-cim-beat-progress]')).toHaveText('3 / 8 · Review what is staged');
+  await expect(page.locator('.cim').nth(1).locator('[data-cim-beat-progress]')).toHaveText('2 / 8 · Stage one change at a time');
 });
 
 test('deep links reject public v2 segment IDs and preserve legacy direct step links', async ({ page }) => {
   await open(page,'#cim/git-repository-practice/stage-hunk--s02');
-  await expect(page.locator('.cim').first().locator('[data-cim-beat-progress]')).toHaveText('Start Â· 8 beats');
+  await expect(page.locator('.cim').first().locator('[data-cim-beat-progress]')).toHaveText('Start · 8 beats');
   expect(await page.evaluate(() => playerTest.errors.every(error => error.code === 'CIM-HST-002'))).toBe(true);
   expect(await page.evaluate(() => playerTest.errors.length)).toBe(2);
   await open(page,'?legacy-console#cim/git-repository-practice/stage-hunk--s02');
