@@ -753,7 +753,8 @@ test('Console wraps with hanging continuations and preserves authored leading sp
     expect(result.rows[1].x - result.rows[0].x).toBeCloseTo(result.indent,0);
   }
   expect(evidence.spaced.text).toBe('    modified: src/HeaderFix.jsx');
-  expect(evidence.spaced.prefixWidth).toBeCloseTo(evidence.spaced.indent * 2,0);
+  // WebKit rounds each preserved space to device pixels independently of ch.
+  expect(Math.abs(evidence.spaced.prefixWidth - evidence.spaced.indent * 2)).toBeLessThan(1.5);
   expect(evidence.short.rows).toHaveLength(1);
 });
 
