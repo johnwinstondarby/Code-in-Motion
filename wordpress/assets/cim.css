@@ -101,7 +101,7 @@
 .cim [data-cim-player="console-explanation"] [data-role="command-line"],
 .cim [data-cim-player="console-explanation"] [data-role="output-line"] {
   box-sizing: border-box;
-  border-inline: 5px solid transparent;
+  border-inline: 6px solid transparent;
 }
 .cim [data-cim-player="console-explanation"] [data-role="command-line"] > span,
 .cim [data-cim-player="console-explanation"] [data-role="output-line"] > span {

@@ -29,7 +29,7 @@ test('registered WordPress v2 lesson presents full Player consumers while legacy
   await expect(root.locator('[data-role="command-line"][data-cim-line-limn="steady"]')).toHaveCount(1);
   await expect(legacy.locator('[data-cim-line-limn]')).toHaveCount(0);
   await expect(root.locator('[data-cim-line-limn] [data-role="prompt"]')).toHaveCSS('background-color','rgba(0, 0, 0, 0)');
-  await expect(root.locator('[data-cim-line-limn]')).toHaveCSS('border-left-width','5px');
+  await expect(root.locator('[data-cim-line-limn]')).toHaveCSS('border-left-width','6px');
   expect(requests.some(url=>url.endsWith('/wordpress/assets/console-wrap-binding.mjs'))).toBe(true);
   expect(requests.some(url=>url.endsWith('/wordpress/assets/console-line-limn.mjs'))).toBe(true);
   await root.locator('[data-cim-control="next"]').click();

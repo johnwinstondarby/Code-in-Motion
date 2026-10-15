@@ -29,7 +29,7 @@ const mutations = [
   ['limn dim text loses flash contrast',css,'  color: var(--cim-console-text);\n}\n\n@keyframes','  color: var(--cim-console-quiet);\n}\n\n@keyframes',browserArgs],
   ['limn quiet tint loses dim contrast',css,'var(--cim-console-quiet) 12%','var(--cim-console-quiet) 18%',browserArgs],
   ['limn text hides cue band',css,'  background: transparent;\n}\n\n/* The renderer supplies','  background: var(--cim-console-background);\n}\n\n/* The renderer supplies',browserArgs],
-  ['limn box overlaps text',css,'border-inline: 5px solid transparent','border-inline: 0 solid transparent',browserArgs],
+  ['limn box overlaps text',css,'border-inline: 6px solid transparent','border-inline: 0 solid transparent',browserArgs],
   ['wrap fixed indentation returns','wordpress/assets/console-wrap-binding.mjs','`${spaces + 2}ch`','`2ch`',wrapArgs],
   ['wrap skips disposal cleanup','wordpress/assets/console-wrap-binding.mjs','dispose() {','dispose() { return;',wrapArgs],
   ['limn outline clips outside line',css,'outline-offset: -3px;','outline-offset: 1px;',browserArgs],

@@ -6,7 +6,7 @@ The Player must distinguish a soft-wrapped continuation from a new authored line
 
 The existing renderer-change observer refreshes layout before pane follow geometry. A small disposable Player binding projects only a presentation custom property and restores its previous value when disposed. Renderer source, canonical output, authoring schemas, lesson bytes and engine identity do not change. This resolves the known collision recorded in ADR 0050; its former expected-failure browser proof now must pass.
 
-Text spans use transparent backgrounds so the line cue is visible behind them. Transparent 5px side borders provide a gutter beyond the 3px inset outline, preventing contact with the first glyph without changing authored whitespace. Copy remains a separate control with its existing appearance and exact value. The legacy Git Player is outside this scope.
+Text spans use transparent backgrounds so the line cue is visible behind them. Transparent 6px side borders provide a gutter beyond the 3px inset outline, preventing contact with the first glyph without changing authored whitespace. Copy remains a separate control with its existing appearance and exact value. The legacy Git Player is outside this scope.
 
 Retain all three theme palettes, keyboard focus, reduced-motion handling, cue timing and mobile admission. Browser geometry proofs cover multiple indents and all themes; mutation guards reject opaque text backgrounds, absent gutters, fixed continuation indentation and missed disposal cleanup.
 

@@ -2,7 +2,7 @@
 
 Candidate only: hold merge, tag and live installation for Daisy review. Live remains 0.2.2.
 
-The whole-line cue now paints behind text spans, with transparent five-pixel side gutters separating the first glyph from the inset outline. The settled band uses a quiet 12% tint; dim text temporarily uses the normal Console text color during the brighter flash to preserve at least 4.5:1 contrast in all three themes. The existing limn colors, 480 ms hold, 1.2-second total cue, repeat behavior, quiet settling and reduced-motion policy remain.
+The whole-line cue now paints behind text spans, with transparent six-pixel side gutters separating the first glyph from the inset outline. The settled band uses a quiet 12% tint; dim text temporarily uses the normal Console text color during the brighter flash to preserve at least 4.5:1 contrast in all three themes. The existing limn colors, 480 ms hold, 1.2-second total cue, repeat behavior, quiet settling and reduced-motion policy remain.
 
 Wrapped continuations start two character cells beyond the rendered line's authored leading spaces. Player-only layout reads rendered text and projects a CSS custom property; it never changes that text, copy payloads, lessons, engine state or renderer source/canonical output. Layout refreshes before pane following after renderer changes and restores prior styles on disposal. The previously expected-failure collision case is now required to pass.
 
