@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.1
+Stable tag: 0.2.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -41,6 +41,12 @@ If any of these checks fail, preserve the fallback text and report the failed st
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.2.2 =
+* Show in Console lights up the whole command, related output lines or response line after scrolling. Repeat clicks restart the 1.2-second cue even while playback is paused.
+* Use theme-aware limn color, steady emphasis for reduced motion, and a quiet focus band afterward. Reserve limn color for learner emphasis instead of keyboard focus.
+* Preserve mobile blocking, lesson formats, engine 1.0.1 and renderer canonical output. Authored phrase-level limn remains deferred.
+* Known items: wrap continuation collision; authored limn (authoring/v3); author palettes; optional Match device; scripted rollback needs hosting access.
 
 = 0.2.1 =
 * Do not load any interactive Player on screens up to 767 CSS pixels or touch-only devices, including landscape phones and iPads. Show a wider-window notice before fetching Player modules or lesson data.
@@ -98,6 +104,9 @@ Report defects and release issues at https://github.com/johnwinstondarby/Code-in
 * Initial WordPress release with deterministic packaging, upgrade-safe versioned assets, and the synthetic diagnostic Experience.
 
 == Upgrade Notice ==
+
+= 0.2.2 =
+Show in Console now emphasizes the whole matching line or lines. No lesson or page edits are required. Retain the reviewed 0.2.1 ZIP for rollback and clear WordPress.com caches after replacement. Mobile blocking is unchanged.
 
 = 0.2.1 =
 Upgrade from 0.2.0 or 0.1.10. Retain the exact 0.2.0 ZIP and current page 3227 capture for rollback; keep the 0.1.10 hosting backup as fallback. Mobile shows a wider-window notice. Confirm fonts on desktop.

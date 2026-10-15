@@ -493,6 +493,8 @@ jobs:
             prior_ref: '57499893fec330769baef8d514a41a38a0b17e02'
           - prior_version: '0.2.0'
             prior_ref: 'd2db88e90951ad957924d710e49e8a6bff96b3c6'
+          - prior_version: '0.2.1'
+            prior_ref: '4c53f2c75663b43133273cdee99ee38cc2ff148c'
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -521,8 +523,8 @@ jobs:
           npm run build:wordpress
           mkdir -p "${CIM_R16_ARTIFACT_DIR}"
           node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}" --prior-ref "${{ matrix.prior_ref }}" --prior-version "${{ matrix.prior_version }}"
-          node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}/rollback" --prior-ref d2db88e90951ad957924d710e49e8a6bff96b3c6 --prior-version 0.2.0
-          echo '03c2d6cf273109b37df147a54a530efb86799630ed25e85d01750e1c291344a2  code-in-motion-0.2.0.zip' | (cd "${CIM_R16_ARTIFACT_DIR}/rollback" && sha256sum --check)
+          node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}/rollback" --prior-ref 4c53f2c75663b43133273cdee99ee38cc2ff148c --prior-version 0.2.1
+          echo 'ce33160cfb85c8384bbfbe5e3f4ec779f7c490ab9ee9d6ed6b990a7e214da74e  code-in-motion-0.2.1.zip' | (cd "${CIM_R16_ARTIFACT_DIR}/rollback" && sha256sum --check)
 
           CURRENT_VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
           PRIOR_VERSION="$(node -p "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).prior.version" "${CIM_R16_ARTIFACT_DIR}/upgrade-pair.json")"
@@ -654,7 +656,7 @@ jobs:
           test "${INSTALLED_COUNT}" = "${CIM_R16_CURRENT_FILE_COUNT}"
           echo "PASS: R16 N -> N+1 replacement preserved activation (${VERSION}, ${INSTALLED_COUNT} files)."
 
-      - name: Rehearse 0.2.1 rollback to exact 0.2.0 and captured page within 60 seconds
+      - name: Rehearse rollback to exact live 0.2.1 and captured page within 60 seconds
         shell: bash
         run: |
           set -euo pipefail
@@ -669,20 +671,20 @@ jobs:
             wp --user=admin eval-file wp-content/r16-artifact/prepare-page.php "$PAGE_ID"
             wp eval-file wp-content/r16-artifact/capture-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
             wp post update "$PAGE_ID" --post_content="[cim experience=\"git-repository-practice\"]RC2 cutover rehearsal.[/cim]"
-            wp plugin install wp-content/r16-artifact/rollback/code-in-motion-0.2.0.zip --force --activate
+            wp plugin install wp-content/r16-artifact/rollback/code-in-motion-0.2.1.zip --force --activate
             wp --user=admin eval-file wp-content/r16-artifact/restore-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
-            test "$(wp plugin get code-in-motion --field=version)" = "0.2.0"
+            test "$(wp plugin get code-in-motion --field=version)" = "0.2.1"
             wp cache flush
           '
           ROLLBACK_SECONDS=$(( $(date +%s) - ROLLBACK_STARTED ))
           test "${ROLLBACK_SECONDS}" -lt 60
-          printf '0.2.1 rollback rehearsal: %s seconds (0.2.1 -> 0.2.0, exact page restore).\n' "${ROLLBACK_SECONDS}" | tee "${CIM_R16_ARTIFACT_DIR}/rollback-timing.txt"
+          printf 'Release rollback rehearsal: %s seconds (candidate -> live 0.2.1, exact page restore).\n' "${ROLLBACK_SECONDS}" | tee "${CIM_R16_ARTIFACT_DIR}/rollback-timing.txt"
           CIM_WP_BASE_URL=http://localhost:8891 npx playwright test tests/e2e/wordpress-rollback.spec.mjs --reporter=line
 
       - name: Preserve RC2 upgrade and rollback proof
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: release-0.2.1-upgrade-${{ matrix.prior_version }}-rollback-evidence
+          name: release-${{ env.CIM_R16_CURRENT_VERSION }}-upgrade-${{ matrix.prior_version }}-rollback-evidence
           path: |
             ${{ runner.temp }}/cim-r16-artifact/*.zip
             ${{ runner.temp }}/cim-r16-artifact/*.sha256
@@ -1167,7 +1169,7 @@ jobs:
       - name: Verify learner presets in selected browser
         env:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
-        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs --grep 'learner themes|production v2|instructional consumers|CLI and copy|Copy button edge' --reporter=line
+        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs --grep 'learner themes|production v2|instructional consumers|CLI and copy|Copy button edge|line limn' --reporter=line
 
       - name: Stop R20 browser environment
         if: always()

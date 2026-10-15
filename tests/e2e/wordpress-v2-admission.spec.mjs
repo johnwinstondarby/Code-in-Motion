@@ -26,10 +26,15 @@ test('registered WordPress v2 lesson presents full Player consumers while legacy
   expect(await page.evaluate(()=>navigator.clipboard.readText())).toBe('git status');
   await root.locator('[data-cim-commentary-entry] button').first().click();
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','check-status--s01');
+  await expect(root.locator('[data-role="command-line"][data-cim-line-limn="steady"]')).toHaveCount(1);
+  await expect(legacy.locator('[data-cim-line-limn]')).toHaveCount(0);
+  expect(requests.some(url=>url.endsWith('/wordpress/assets/console-line-limn.mjs'))).toBe(true);
   await root.locator('[data-cim-control="next"]').click();
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','check-status--s02');
   await root.locator('[data-cim-control="next"]').click();
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','stage-hunk--s04');
+  await root.locator('[data-cim-commentary-anchor="response"] button').first().click();
+  await expect(root.locator('[data-cim-line-limn="steady"] [data-role="response"]')).toHaveText('y');
   await root.locator('[data-cim-control="end"]').click();
   await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(18);
   await expect(root.locator('[data-cim-commentary-evidence-label]')).toHaveCount(0);

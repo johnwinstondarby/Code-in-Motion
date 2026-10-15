@@ -11,6 +11,7 @@ import { createPaneScrollIntent } from './pane-scroll-intent.mjs';
 import { createWordPressBeatBinding } from './beat-binding.mjs';
 import { createWordPressThemeBinding } from './theme-binding.mjs';
 import { createConsoleCopyBinding } from './console-copy-binding.mjs';
+import { createConsoleLineLimn } from './console-line-limn.mjs';
 import { createConsoleExplanationTransportBinding, createWordPressTransportBinding } from './transport-binding.mjs';
 
 export const WORDPRESS_PLAYER_MODES = Object.freeze({ 'console/v1': 'console-explanation' });
@@ -37,6 +38,7 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
   let disposalComplete = false;
   let player = null;
   let beatBinding = null;
+  let limnRequest = 0;
 
   function element(tag, attribute, value = '') {
     const node = document.createElement(tag);
@@ -158,6 +160,8 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     copyStatus.setAttribute('aria-atomic', 'true');
     consolePane.appendChild(copyStatus);
     disposers.push(createConsoleCopyBinding({viewport:consoleViewport,status:copyStatus}).dispose);
+    const lineLimn = createConsoleLineLimn({ rendererRoot, viewport: consoleViewport, onError });
+    disposers.push(() => lineLimn.dispose());
 
     const observation = Object.freeze({ snapshot: () => observationPort.snapshot() });
     const reveal = createCommentaryRevealProjection({
@@ -196,8 +200,13 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     const native = createCommentaryNativeBinding({
       controls, presentation, select: (stepId) => selection.select(stepId),
       navigate: (stepId) => {
+        const request = ++limnRequest;
         const pending = navigation.seek(stepId);
-        Promise.resolve(pending).catch(onError);
+        Promise.resolve(pending).then(outcome => {
+          if (disposed || request !== limnRequest || !['success','no_change'].includes(outcome?.result)) return;
+          const index = content.entries.findIndex(entry => entry.stepId === stepId);
+          lineLimn.show({ beatId: beatByBoundary.get(stepId)?.id, instruction: content.instructions?.[index], stepId });
+        }).catch(onError);
         return pending;
       }
     });
@@ -255,6 +264,7 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
     function refresh() {
       if (disposed) return;
       native.refresh();
+      lineLimn.refresh(presentation.read().currentStepId);
       refreshBeatSections();
       beatBinding?.refresh();
       // CSS withholds geometry until presentation admission; do not acknowledge follow early.

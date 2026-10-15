@@ -239,6 +239,126 @@ async function open(page, suffix = '') {
   await page.waitForFunction(() => !!window.playerTest);
 }
 
+test('line limn: all 18 Show entries target command, evidence or response after scrolling while paused', async ({page}) => {
+  await open(page);
+  const root = page.locator('.cim').first();
+  await root.locator('[data-cim-control="end"]').click();
+  const entries = await root.locator('[data-cim-commentary-entry]').evaluateAll(nodes => nodes.map(node => ({
+    id: node.getAttribute('data-cim-step-id'), anchor: node.getAttribute('data-cim-commentary-anchor'),
+    evidence: JSON.parse(node.getAttribute('data-cim-commentary-evidence') ?? '[]')
+  })));
+  expect(entries).toHaveLength(18);
+  for (const entry of entries) {
+    await root.locator(`[data-cim-commentary-entry][data-cim-step-id="${entry.id}"] button`).first().click();
+    const limned = root.locator('[data-cim-line-limn="flash"]');
+    await expect(limned).toHaveCount(entry.anchor === 'output' ? entry.evidence.length : 1);
+    const facts = await limned.evaluateAll(nodes => nodes.map(node => ({
+      role: node.getAttribute('data-role'), output:node.getAttribute('data-output-id'),
+      response:!!node.querySelector('[data-role="response"]'),
+      top:node.getBoundingClientRect().top,
+      paneTop:node.closest('[data-cim-console-viewport]').getBoundingClientRect().top,
+      header:node.closest('[data-cim-renderer]').querySelector('[data-role="titlebar"]').getBoundingClientRect().height
+    })));
+    if (entry.anchor === 'command') expect(facts[0].role).toBe('command-line');
+    if (entry.anchor === 'output') expect(facts.map(fact=>fact.output)).toEqual(entry.evidence);
+    if (entry.anchor === 'response') expect(facts[0].response).toBe(true);
+    expect(facts[0].top).toBeGreaterThanOrEqual(facts[0].paneTop + facts[0].header - 1);
+    await expect(root.getByRole('button', {name:'Play',exact:true})).toBeVisible();
+  }
+  await expect(root.locator('[data-cim-line-limn="quiet"]')).toHaveCount(1,{timeout:3000});
+  await expect(page.locator('.cim').nth(1).locator('[data-cim-line-limn]')).toHaveCount(0);
+});
+
+test('line limn: strong inset cue remains visible on all four sides in every theme', async ({page}) => {
+  await open(page); const root=page.locator('.cim').first();
+  await root.locator('[data-cim-control="next"]').click();
+  const show=root.locator('[data-cim-commentary-anchor="command"] button').first();
+  for(const theme of ['localis','high-contrast','light']) {
+    await root.locator('[data-cim-theme-select]').selectOption(theme);
+    await show.click(); const line=root.locator('[data-cim-line-limn="flash"]');
+    await expect(line).toHaveCount(1);
+    const read=()=>line.evaluate(node=>{
+      const animation=node.getAnimations()[0]; animation.pause();
+      try {
+      animation.currentTime=200;
+      const style=getComputedStyle(node),box=node.getBoundingClientRect();
+      const pane=node.closest('[data-cim-console-viewport]').getBoundingClientRect();
+      const width=parseFloat(style.outlineWidth),offset=parseFloat(style.outlineOffset);
+      const edge=width+offset;
+      const flash={width,offset,color:style.outlineColor,background:style.backgroundColor,
+        left:box.left-edge,right:box.right+edge,top:box.top-edge,bottom:box.bottom+edge,
+        paneLeft:pane.left,paneRight:pane.right,paneTop:pane.top,paneBottom:pane.bottom};
+      animation.currentTime=600; flash.midWidth=parseFloat(getComputedStyle(node).outlineWidth);
+      animation.currentTime=1199; flash.quietBackground=getComputedStyle(node).backgroundColor;
+      return flash;
+      } finally { animation.cancel(); }
+    });
+    const cue=await read();
+    expect(cue.width).toBe(3); expect(cue.offset).toBeLessThanOrEqual(-cue.width);
+    expect(cue.color).toBe(theme==='light'?'rgb(0, 0, 0)':'rgb(255, 255, 255)');
+    expect(cue.background).not.toBe(cue.quietBackground); expect(cue.midWidth).toBe(3);
+    expect(cue.left).toBeGreaterThanOrEqual(cue.paneLeft);
+    expect(cue.right).toBeLessThanOrEqual(cue.paneRight);
+    expect(cue.top).toBeGreaterThanOrEqual(cue.paneTop);
+    expect(cue.bottom).toBeLessThanOrEqual(cue.paneBottom);
+  }
+});
+
+test('line limn: repeated clicks restart the cue, theme colors adapt and navigation clears it', async ({page}) => {
+  await open(page); const root=page.locator('.cim').first();
+  await root.locator('[data-cim-control="next"]').click();
+  const show=root.locator('[data-cim-commentary-anchor="command"] button').first();
+  for(const [theme,color] of [['localis','rgb(255, 255, 255)'],['high-contrast','rgb(255, 255, 255)'],['light','rgb(0, 0, 0)']]) {
+    await root.locator('[data-cim-theme-select]').selectOption(theme);
+    await show.click(); await expect(root.locator('[data-cim-line-limn="flash"]')).toHaveCount(1);
+    expect(await root.locator('[data-cim-player]').evaluate(node=>getComputedStyle(node).getPropertyValue('--cim-limn').trim())).toBe(theme==='light'?'#000000':'#FFFFFF');
+    await page.waitForTimeout(800);
+    await show.click();
+    await page.waitForTimeout(600);
+    await expect(root.locator('[data-cim-line-limn="flash"]')).toHaveCount(1);
+    const elapsed = await root.locator('[data-cim-line-limn="flash"]').evaluate(node=>node.getAnimations()[0]?.currentTime);
+    expect(elapsed).toBeGreaterThan(400);
+    expect(elapsed).toBeLessThan(1000);
+    await expect(root.locator('[data-cim-line-limn="quiet"]')).toHaveCount(1,{timeout:2000});
+    expect(await root.locator('[data-cim-line-limn="quiet"]').evaluate(node=>getComputedStyle(node).outlineColor)).not.toBe(color);
+  }
+  await root.locator('[data-cim-control="next"]').click();
+  await expect(root.locator('[data-cim-line-limn]')).toHaveCount(0);
+});
+
+test('line limn: reduced motion stays steady and disposal clears emphasis', async ({page}) => {
+  await page.emulateMedia({reducedMotion:'reduce'}); await open(page);
+  const root=page.locator('.cim').first();
+  await root.locator('[data-cim-control="next"]').click();
+  await root.locator('[data-cim-commentary-anchor="command"] button').first().click();
+  await expect(root.locator('[data-cim-line-limn="steady"]')).toHaveCount(1);
+  expect(await root.locator('[data-cim-line-limn="steady"]').evaluate(node=>getComputedStyle(node).animationName)).toBe('none');
+  await page.waitForTimeout(1400);
+  await expect(root.locator('[data-cim-line-limn="steady"]')).toHaveCount(1);
+  await page.evaluate(()=>playerTest.bindings[0].dispose());
+  await expect(root.locator('[data-cim-line-limn]')).toHaveCount(0);
+  expect(await page.evaluate(()=>playerTest.errors)).toEqual([]);
+});
+
+test('line limn: site-forced reduced motion stays steady without animation', async ({page}) => {
+  await open(page,'?cim-motion-policy=reduce'); const root=page.locator('.cim').first();
+  await root.locator('[data-cim-control="next"]').click();
+  await root.locator('[data-cim-commentary-anchor="command"] button').first().click();
+  await expect(root.locator('[data-cim-line-limn="steady"]')).toHaveCount(1);
+  expect(await root.locator('[data-cim-line-limn="steady"]').evaluate(node=>getComputedStyle(node).animationName)).toBe('none');
+});
+
+test('line limn: disposal cancels a running cue without changing renderer canonical markup', async ({page}) => {
+  await open(page); const root=page.locator('.cim').first();
+  await root.locator('[data-cim-control="next"]').click();
+  await root.locator('[data-cim-commentary-anchor="command"] button').first().click();
+  await expect(root.locator('[data-cim-line-limn="flash"]')).toHaveCount(1);
+  await page.evaluate(()=>playerTest.bindings[0].dispose());
+  await page.waitForTimeout(1400);
+  await expect(root.locator('[data-cim-line-limn]')).toHaveCount(0);
+  expect(await page.evaluate(()=>playerTest.errors)).toEqual([]);
+});
+
 // Browser emulation can update prefers-contrast without notifying existing MQLs.
 // Keep native objects/values and supply the missing OS-style notification only.
 async function observeContrastQueries(page) {

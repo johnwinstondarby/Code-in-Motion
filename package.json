@@ -1,6 +1,6 @@
 {
   "name": "code-in-motion",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Reusable Localis platform for learner-controlled technical process experiences.",
   "private": true,
   "type": "module",
