@@ -284,8 +284,12 @@ test('line limn: strong inset cue remains visible on all four sides in every the
       const style=getComputedStyle(node),box=node.getBoundingClientRect();
       const pane=node.closest('[data-cim-console-viewport]').getBoundingClientRect();
       const width=parseFloat(style.outlineWidth),offset=parseFloat(style.outlineOffset);
+      const prompt=node.querySelector('[data-role="prompt"]');
+      const range=document.createRange(); range.setStart(prompt.firstChild,0); range.setEnd(prompt.firstChild,1);
+      const textLeft=range.getBoundingClientRect().left;
+      const backgrounds=[...node.querySelectorAll(':scope > span')].map(span=>getComputedStyle(span).backgroundColor);
       const edge=width+offset;
-      const flash={width,offset,color:style.outlineColor,background:style.backgroundColor,
+      const flash={width,offset,textGap:textLeft-box.left,backgrounds,color:style.outlineColor,background:style.backgroundColor,
         left:box.left-edge,right:box.right+edge,top:box.top-edge,bottom:box.bottom+edge,
         paneLeft:pane.left,paneRight:pane.right,paneTop:pane.top,paneBottom:pane.bottom};
       animation.currentTime=600; flash.midWidth=parseFloat(getComputedStyle(node).outlineWidth);
@@ -295,12 +299,31 @@ test('line limn: strong inset cue remains visible on all four sides in every the
     });
     const cue=await read();
     expect(cue.width).toBe(3); expect(cue.offset).toBeLessThanOrEqual(-cue.width);
+    expect(cue.textGap).toBeGreaterThan(cue.width + 1);
+    expect(cue.backgrounds.every(color=>color==='rgba(0, 0, 0, 0)')).toBe(true);
     expect(cue.color).toBe(theme==='light'?'rgb(0, 0, 0)':'rgb(255, 255, 255)');
     expect(cue.background).not.toBe(cue.quietBackground); expect(cue.midWidth).toBe(3);
     expect(cue.left).toBeGreaterThanOrEqual(cue.paneLeft);
     expect(cue.right).toBeLessThanOrEqual(cue.paneRight);
     expect(cue.top).toBeGreaterThanOrEqual(cue.paneTop);
     expect(cue.bottom).toBeLessThanOrEqual(cue.paneBottom);
+  }
+});
+
+test('line limn: tint retains readable dim text in flash and quiet across themes',async({page})=>{
+  await open(page);const root=page.locator('.cim').first();await root.locator('[data-cim-control="end"]').click();
+  for(const theme of ['localis','high-contrast','light']) {
+    await root.locator('[data-cim-theme-select]').selectOption(theme);
+    const ratios=await root.locator('[data-role="output-line"][data-tone="dim"]').first().evaluate(line=>{
+      const canvas=document.createElement('canvas');canvas.width=canvas.height=1;const ctx=canvas.getContext('2d');
+      const rgb=color=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=color;ctx.fillRect(0,0,1,1);return [...ctx.getImageData(0,0,1,1).data].slice(0,3);};
+      const lum=rgb=>rgb.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+      const ratio=()=>{const a=lum(rgb(getComputedStyle(line.querySelector('[data-role="output-text"]')).color)),b=lum(rgb(getComputedStyle(line).backgroundColor));return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);};
+      line.setAttribute('data-cim-line-limn','flash');const animation=line.getAnimations()[0];animation.pause();
+      try {animation.currentTime=200;const flash=ratio();line.setAttribute('data-cim-line-limn','quiet');return {flash,quiet:ratio()};}
+      finally {animation.cancel();line.removeAttribute('data-cim-line-limn');}
+    });
+    expect(ratios.flash).toBeGreaterThanOrEqual(4.5);expect(ratios.quiet).toBeGreaterThanOrEqual(4.5);
   }
 });
 

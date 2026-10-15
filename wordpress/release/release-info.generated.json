@@ -1,14 +1,13 @@
 {
   "schema": "localis.cim/wordpress-release-info/v1",
-  "stable_tag": "0.2.2",
+  "stable_tag": "0.2.3",
   "tested_up_to": "7.1",
   "current_release": {
-    "version": "0.2.2",
+    "version": "0.2.3",
     "notes": [
-      "Show in Console lights up the whole command, related output lines or response line after scrolling. Repeat clicks restart the 1.2-second cue even while playback is paused.",
-      "Use theme-aware limn color, steady emphasis for reduced motion, and a quiet focus band afterward. Reserve limn color for learner emphasis instead of keyboard focus.",
-      "Preserve mobile blocking, lesson formats, engine 1.0.1 and renderer canonical output. Authored phrase-level limn remains deferred.",
-      "Known items: wrap continuation collision; authored limn (authoring/v3); author palettes; optional Match device; scripted rollback needs hosting access."
+      "Show the whole-line emphasis band behind Console text and keep its inset outline clear of the first character.",
+      "Preserve engine 1.0.1, frozen lesson formats, renderer canonical output, learner themes and mobile blocking.",
+      "Known follow-ups: wrap continuation collision; authored phrase-level limn (authoring/v3), author palettes, optional Match device, and authenticated hosting access for scripted rollback."
     ]
   },
   "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"
