@@ -278,7 +278,9 @@ test('line limn: strong inset cue remains visible on all four sides in every the
     await show.click(); const line=root.locator('[data-cim-line-limn="flash"]');
     await expect(line).toHaveCount(1);
     const read=()=>line.evaluate(node=>{
-      const animation=node.getAnimations()[0]; animation.pause(); animation.currentTime=200;
+      const animation=node.getAnimations()[0]; animation.pause();
+      try {
+      animation.currentTime=200;
       const style=getComputedStyle(node),box=node.getBoundingClientRect();
       const pane=node.closest('[data-cim-console-viewport]').getBoundingClientRect();
       const width=parseFloat(style.outlineWidth),offset=parseFloat(style.outlineOffset);
@@ -289,6 +291,7 @@ test('line limn: strong inset cue remains visible on all four sides in every the
       animation.currentTime=600; flash.midWidth=parseFloat(getComputedStyle(node).outlineWidth);
       animation.currentTime=1199; flash.quietBackground=getComputedStyle(node).backgroundColor;
       return flash;
+      } finally { animation.cancel(); }
     });
     const cue=await read();
     expect(cue.width).toBe(3); expect(cue.offset).toBeLessThanOrEqual(-cue.width);
