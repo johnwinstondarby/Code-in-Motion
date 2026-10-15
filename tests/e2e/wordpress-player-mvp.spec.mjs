@@ -757,7 +757,7 @@ test('Console wraps with hanging continuations and preserves authored leading sp
   expect(evidence.short.rows).toHaveLength(1);
 });
 
-test('known issue: continuation must begin beyond authored indentation', async ({ page }) => {
+test('Console continuation begins beyond authored indentation', async ({ page }) => {
   await page.setViewportSize({width:390,height:844});
   await open(page);
   const root = page.locator('.cim').first();
@@ -782,8 +782,29 @@ test('known issue: continuation must begin beyond authored indentation', async (
   // Fixture/setup failures must remain unexpected failures.
   expect(evidence.firstNonSpace).toBe(2);
   expect(evidence.rows.length).toBeGreaterThan(1);
-  test.fail(true, 'Fixed 2ch continuation collides with two authored spaces; awaiting Console renderer review.');
   expect(evidence.rows[1]).toBeGreaterThan(evidence.firstTextX + 0.5);
+});
+
+test('Console continuation geometry updates for multiple authored indents and cleans up', async ({page})=>{
+  await page.setViewportSize({width:390,height:844}); await open(page);
+  const root=page.locator('.cim').first(); await root.locator('[data-cim-control="end"]').click();
+  for(const spaces of [0,2,4,8]) {
+    const text=' '.repeat(spaces)+'continuation '+ 'word '.repeat(25);
+    await root.locator('[data-role="output-text"]').first().evaluate((span,text)=>span.textContent=text,text);
+    const line=root.locator('[data-role="output-line"]').first();
+    await expect.poll(()=>line.evaluate(node=>node.style.getPropertyValue('--cim-continuation-indent'))).toBe(`${spaces+2}ch`);
+    const positions=await line.locator('[data-role="output-text"]').evaluate(span=>{
+      const text=span.firstChild,range=document.createRange(),first=text.textContent.search(/\S/);
+      range.setStart(text,first);range.setEnd(text,first+1);const x=range.getBoundingClientRect().x;
+      range.selectNodeContents(span);const rows=new Map();for(const r of range.getClientRects())if(r.width)rows.set(r.y,Math.min(rows.get(r.y)??Infinity,r.x));
+      return {x,rows:[...rows.values()],text:span.textContent,background:getComputedStyle(span).backgroundColor};
+    });
+    expect(positions.text).toBe(text);expect(positions.rows.length).toBeGreaterThan(1);
+    expect(positions.rows[1]).toBeGreaterThan(positions.x+0.5);
+    expect(positions.background).toBe('rgba(0, 0, 0, 0)');
+  }
+  await page.evaluate(()=>playerTest.bindings[0].dispose());
+  expect(await root.locator('[data-role="output-line"]').first().evaluate(node=>node.style.getPropertyValue('--cim-continuation-indent'))).toBe('');
 });
 
 async function atBottom(viewport) {
