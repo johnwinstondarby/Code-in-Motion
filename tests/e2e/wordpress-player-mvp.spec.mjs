@@ -753,8 +753,10 @@ test('Console wraps with hanging continuations and preserves authored leading sp
     expect(result.rows[1].x - result.rows[0].x).toBeCloseTo(result.indent,0);
   }
   expect(evidence.spaced.text).toBe('    modified: src/HeaderFix.jsx');
-  // WebKit rounds each preserved space to device pixels independently of ch.
-  expect(Math.abs(evidence.spaced.prefixWidth - evidence.spaced.indent * 2)).toBeLessThan(1.5);
+  // Four preserved spaces occupy between three and five character widths.
+  // ch measures the zero glyph; WebKit rounds space advances separately.
+  expect(evidence.spaced.prefixWidth).toBeGreaterThan(evidence.spaced.indent * 1.5);
+  expect(evidence.spaced.prefixWidth).toBeLessThan(evidence.spaced.indent * 2.5);
   expect(evidence.short.rows).toHaveLength(1);
 });
 
