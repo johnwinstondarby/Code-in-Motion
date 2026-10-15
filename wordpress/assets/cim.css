@@ -14,7 +14,6 @@
 
 /* ADR 0048 Part A: fixed teaching-first presentation; no theme interface. */
 .cim [data-cim-player="console-explanation"] {
-  --cim-continuation-indent: 2ch;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1rem;
@@ -88,12 +87,6 @@
   overflow-wrap: anywhere;
   padding-inline-start: 2ch;
   text-indent: -2ch;
-}
-
-.cim [data-cim-player="console-explanation"] [data-role="command-line"],
-.cim [data-cim-player="console-explanation"] [data-role="output-line"] {
-  padding-inline-start: var(--cim-continuation-indent);
-  text-indent: calc(-1 * var(--cim-continuation-indent));
 }
 
 /* Keep the cue visible behind text and clear of the first character.
