@@ -24,9 +24,16 @@ const themeArgs = ['--test','tests/learner-themes.test.mjs'];
 const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpress-live-host.test.mjs'];
 const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs','tests/frozen-authoring-v1.test.mjs'];
 const limnArgs = ['--test','tests/console-line-limn.test.mjs'];
+const wrapArgs = ['--test','tests/console-wrap-binding.test.mjs'];
 const mutations = [
+  ['limn dim text loses flash contrast',css,'  color: var(--cim-console-text);\n}\n\n@keyframes','  color: var(--cim-console-quiet);\n}\n\n@keyframes',browserArgs],
+  ['limn quiet tint loses dim contrast',css,'var(--cim-console-quiet) 12%','var(--cim-console-quiet) 18%',browserArgs],
+  ['limn text hides cue band',css,'  background: transparent;\n}\n\n/* The renderer supplies','  background: var(--cim-console-background);\n}\n\n/* The renderer supplies',browserArgs],
+  ['limn box overlaps text',css,'border-inline: 5px solid transparent','border-inline: 0 solid transparent',browserArgs],
+  ['wrap fixed indentation returns','wordpress/assets/console-wrap-binding.mjs','`${spaces + 2}ch`','`2ch`',wrapArgs],
+  ['wrap skips disposal cleanup','wordpress/assets/console-wrap-binding.mjs','dispose() {','dispose() { return;',wrapArgs],
   ['limn outline clips outside line',css,'outline-offset: -3px;','outline-offset: 1px;',browserArgs],
-  ['limn initial background stays quiet',css,'var(--cim-limn) 24%','var(--cim-console-quiet) 18%',browserArgs],
+  ['limn initial background stays quiet',css,'var(--cim-limn) 24%','var(--cim-console-quiet) 12%',browserArgs],
   ['limn command target omitted','wordpress/assets/console-line-limn.mjs',"instruction.anchor === 'command'",'false',browserArgs],
   ['limn response target omitted','wordpress/assets/console-line-limn.mjs',"instruction.anchor === 'response'",'false',browserArgs],
   ['limn evidence target omitted','wordpress/assets/console-line-limn.mjs','evidence.has(node.getAttribute(\'data-output-id\'))','false',browserArgs],
@@ -122,7 +129,7 @@ async function run(args) {
 }
 
 // A failing baseline must never count as successful mutation detection.
-for (const args of [limnArgs, copyArgs, engineArgs, themeArgs, beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
+for (const args of [wrapArgs, limnArgs, copyArgs, engineArgs, themeArgs, beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
   const result = await run(args);
   if (result.code !== 0) throw new Error('Mutation baseline failed:\n' + result.output);
 }

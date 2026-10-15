@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.2
+Stable tag: 0.2.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -41,6 +41,12 @@ If any of these checks fail, preserve the fallback text and report the failed st
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.2.3 =
+* Show the whole-line emphasis band behind Console text and keep its inset outline clear of the first character.
+* Place wrapped continuations two character cells beyond authored leading spaces, preserving the original text and command Copy value.
+* Preserve engine 1.0.1, frozen lesson formats, renderer canonical output, learner themes and mobile blocking.
+* Known follow-ups: authored phrase-level limn (authoring/v3), author palettes, optional Match device, and authenticated hosting access for scripted rollback.
 
 = 0.2.2 =
 * Show in Console lights up the whole command, related output lines or response line after scrolling. Repeat clicks restart the 1.2-second cue even while playback is paused.
@@ -104,6 +110,9 @@ Report defects and release issues at https://github.com/johnwinstondarby/Code-in
 * Initial WordPress release with deterministic packaging, upgrade-safe versioned assets, and the synthetic diagnostic Experience.
 
 == Upgrade Notice ==
+
+= 0.2.3 =
+Console emphasis and wrapped lines are easier to read. No lesson or page edits are required. Keep the exact 0.2.2 ZIP for rollback and clear hosting caches after replacement. Mobile blocking is unchanged.
 
 = 0.2.2 =
 Show in Console now emphasizes the whole matching line or lines. No lesson or page edits are required. Retain the reviewed 0.2.1 ZIP for rollback and clear WordPress.com caches after replacement. Mobile blocking is unchanged.

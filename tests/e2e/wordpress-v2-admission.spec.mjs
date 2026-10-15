@@ -28,6 +28,9 @@ test('registered WordPress v2 lesson presents full Player consumers while legacy
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','check-status--s01');
   await expect(root.locator('[data-role="command-line"][data-cim-line-limn="steady"]')).toHaveCount(1);
   await expect(legacy.locator('[data-cim-line-limn]')).toHaveCount(0);
+  await expect(root.locator('[data-cim-line-limn] [data-role="prompt"]')).toHaveCSS('background-color','rgba(0, 0, 0, 0)');
+  await expect(root.locator('[data-cim-line-limn]')).toHaveCSS('border-left-width','5px');
+  expect(requests.some(url=>url.endsWith('/wordpress/assets/console-wrap-binding.mjs'))).toBe(true);
   expect(requests.some(url=>url.endsWith('/wordpress/assets/console-line-limn.mjs'))).toBe(true);
   await root.locator('[data-cim-control="next"]').click();
   await expect(root.locator('[data-cim-commentary-entry][aria-current="step"]')).toHaveAttribute('data-cim-step-id','check-status--s02');
@@ -37,6 +40,8 @@ test('registered WordPress v2 lesson presents full Player consumers while legacy
   await expect(root.locator('[data-cim-line-limn="steady"] [data-role="response"]')).toHaveText('y');
   await root.locator('[data-cim-control="end"]').click();
   await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(18);
+  const wrapped=root.locator('[data-role="output-line"]').filter({hasText:'to discard changes in working directory'}).first();
+  await expect.poll(()=>wrapped.evaluate(line=>line.style.getPropertyValue('--cim-continuation-indent'))).toBe('4ch');
   await expect(root.locator('[data-cim-commentary-evidence-label]')).toHaveCount(0);
   await expect(root).not.toContainText(/Related (output|response): \d+ lines?/);
   await expect(root.locator('[data-cim-commentary-risk]:visible')).toHaveCount(lesson.steps.filter(step=>step.commentary.risk).length);

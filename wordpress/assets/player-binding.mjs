@@ -12,6 +12,7 @@ import { createWordPressBeatBinding } from './beat-binding.mjs';
 import { createWordPressThemeBinding } from './theme-binding.mjs';
 import { createConsoleCopyBinding } from './console-copy-binding.mjs';
 import { createConsoleLineLimn } from './console-line-limn.mjs';
+import { createConsoleWrapBinding } from './console-wrap-binding.mjs';
 import { createConsoleExplanationTransportBinding, createWordPressTransportBinding } from './transport-binding.mjs';
 
 export const WORDPRESS_PLAYER_MODES = Object.freeze({ 'console/v1': 'console-explanation' });
@@ -235,8 +236,11 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
       scrollIntent: Object.freeze({read:() => consoleIntent.read()})
     });
     disposers.push(() => consoleScroll.dispose());
+    const consoleWrap = createConsoleWrapBinding({rendererRoot});
+    disposers.push(() => consoleWrap.dispose());
     function refreshViewports() {
       if (!disposed && root.getAttribute('data-cim-state') === 'ready') {
+        consoleWrap.refresh();
         scroll.refresh();
         consoleScroll.refresh();
       }

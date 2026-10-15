@@ -14,6 +14,7 @@
 
 /* ADR 0048 Part A: fixed teaching-first presentation; no theme interface. */
 .cim [data-cim-player="console-explanation"] {
+  --cim-continuation-indent: 2ch;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1rem;
@@ -87,6 +88,24 @@
   overflow-wrap: anywhere;
   padding-inline-start: 2ch;
   text-indent: -2ch;
+}
+
+.cim [data-cim-player="console-explanation"] [data-role="command-line"],
+.cim [data-cim-player="console-explanation"] [data-role="output-line"] {
+  padding-inline-start: var(--cim-continuation-indent);
+  text-indent: calc(-1 * var(--cim-continuation-indent));
+}
+
+/* Keep the cue visible behind text and clear of the first character.
+ * Transparent side gutters sit inside the line box, beyond its inset outline. */
+.cim [data-cim-player="console-explanation"] [data-role="command-line"],
+.cim [data-cim-player="console-explanation"] [data-role="output-line"] {
+  box-sizing: border-box;
+  border-inline: 5px solid transparent;
+}
+.cim [data-cim-player="console-explanation"] [data-role="command-line"] > span,
+.cim [data-cim-player="console-explanation"] [data-role="output-line"] > span {
+  background: transparent;
 }
 
 /* The renderer supplies inert controls; the Console Player owns clipboard writes. */
@@ -210,7 +229,7 @@
 
 .cim [data-cim-player="console-explanation"] [data-focused="true"],
 .cim [data-cim-player="console-explanation"] [data-cim-line-limn] {
-  background: color-mix(in srgb, var(--cim-console-quiet) 18%, var(--cim-console-background));
+  background: color-mix(in srgb, var(--cim-console-quiet) 12%, var(--cim-console-background));
   outline: 1px solid var(--cim-console-quiet);
   outline-offset: -3px;
 }
@@ -223,6 +242,12 @@
   outline: 3px solid var(--cim-limn);
 }
 
+/* A bright cue must not reduce dim output text below readable contrast. */
+.cim [data-cim-player="console-explanation"] [data-cim-renderer="console/v1"] [data-cim-line-limn="flash"][data-tone="dim"],
+.cim [data-cim-player="console-explanation"] [data-cim-renderer="console/v1"] [data-cim-line-limn="flash"][data-tone="dim"] * {
+  color: var(--cim-console-text);
+}
+
 @keyframes cim-line-limn {
   0%, 40% {
     outline: 3px solid var(--cim-limn);
@@ -230,11 +255,11 @@
   }
   80% {
     outline: 3px solid var(--cim-console-quiet);
-    background: color-mix(in srgb, var(--cim-console-quiet) 18%, var(--cim-console-background));
+    background: color-mix(in srgb, var(--cim-console-quiet) 12%, var(--cim-console-background));
   }
   100% {
     outline: 1px solid var(--cim-console-quiet);
-    background: color-mix(in srgb, var(--cim-console-quiet) 18%, var(--cim-console-background));
+    background: color-mix(in srgb, var(--cim-console-quiet) 12%, var(--cim-console-background));
   }
 }
 
