@@ -160,7 +160,7 @@ for (const [name, file, from, to, args] of mutations) {
       name === 'ignore initial pointer presence' ? 'pointer already present' : grep;
     const result = await run(args === browserArgs ? [...args, '--grep', focusedGrep] : args);
     await writeFile(resolve(work, name.replaceAll(' ', '-') + '.log'), result.output);
-    if (result.code === 0 || !/not ok|failed|âœ–/.test(result.output)) {
+    if (result.code === 0 || !/not ok|failed|\u2716/.test(result.output)) {
       throw new Error('Mutation was not caught by protected assertions: ' + name);
     }
     console.log('CAUGHT: ' + name);
