@@ -823,6 +823,17 @@ async function atBottom(viewport) {
   return viewport.evaluate(node => node.scrollHeight - node.clientHeight - node.scrollTop <= 1);
 }
 
+// Wheel input can continue scrolling after Playwright's wheel promise resolves.
+// Capture learner-owned position only after native scrolling has gone quiet.
+async function settlePaneScroll(viewport) {
+  await viewport.evaluate(node=>new Promise(resolve=>{
+    let timer;
+    const done=()=>{node.removeEventListener('scroll',changed);resolve();};
+    const changed=()=>{clearTimeout(timer);timer=setTimeout(done,150);};
+    node.addEventListener('scroll',changed);changed();
+  }));
+}
+
 async function revealBoundary(page, index) {
   await page.evaluate(async index => {
     const root = playerTest.roots[0];
@@ -945,6 +956,7 @@ test('Explanation overlapping holds and pane-owned scrolling remain independent'
   await page.mouse.wheel(0, -500);
   await expect.poll(() => explanation.evaluate(node => node.scrollTop)).toBeLessThan(selectionTop);
   await page.mouse.move(0, 0);
+  await settlePaneScroll(explanation);
   const ownedTop = await explanation.evaluate(node => node.scrollTop);
   await revealBoundary(page, 13);
   await expect(resume).toBeVisible();
@@ -972,6 +984,7 @@ test('Console scroll ownership waits for explicit return and stale pane listener
   await page.mouse.wheel(0, -500);
   await expect.poll(() => atBottom(viewport)).toBe(false);
   await page.mouse.move(0, 0);
+  await settlePaneScroll(viewport);
   const ownedTop = await viewport.evaluate(node => node.scrollTop);
   await appendConsoleOutput(viewport);
   await expect(resume).toBeVisible();
