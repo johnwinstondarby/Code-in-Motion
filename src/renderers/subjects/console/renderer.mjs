@@ -70,7 +70,7 @@ export function cursorPlacement(transcript) {
   return 'command';
 }
 
-function commandLine(document, entry, prompt, withCursor) {
+function commandLine(document, entry, prompt, withCursor, copyReady = true) {
   const children = [];
   if (entry.risk !== undefined) {
     children.push(element(document, 'span', [['data-role', 'risk-mark'], ['data-risk', entry.risk], ['aria-hidden', 'true']]));
@@ -81,7 +81,7 @@ function commandLine(document, entry, prompt, withCursor) {
   if (withCursor) children.push(cursor(document));
   // §4.4: inert copy control. It carries the resolved value as data; the renderer performs no
   // clipboard write or announcement. A Player-level handler owns both.
-  children.push(element(document, 'button', [
+  if (copyReady) children.push(element(document, 'button', [
     ['type', 'button'],
     ['data-role', 'copy'],
     ['data-copy', entry.copy],
@@ -105,9 +105,9 @@ function outputLine(document, line, focused, interactive) {
   return element(document, 'div', attributes, children);
 }
 
-function transcriptEntry(document, entry, config, focus, placement) {
+function transcriptEntry(document, entry, config, focus, placement, copyReady = true) {
   const prompt = entry.prompt ?? config.prompt;
-  const children = [commandLine(document, entry, prompt, placement === 'command')];
+  const children = [commandLine(document, entry, prompt, placement === 'command', copyReady)];
   if (entry.output !== undefined) {
     const last = entry.output.length - 1;
     entry.output.forEach((line, index) => {
@@ -134,7 +134,7 @@ function readyLine(document, prompt) {
   return element(document, 'div', [['data-role', 'ready-line']], children);
 }
 
-function buildOutput(document, state, config, stepId, placementOverride) {
+function buildOutput(document, state, config, stepId, placementOverride, copyReady = true) {
   const transcript = state.transcript;
   const last = transcript.length > 0 ? transcript[transcript.length - 1] : undefined;
   const lastRisk = last?.risk;
@@ -149,7 +149,7 @@ function buildOutput(document, state, config, stepId, placementOverride) {
   const focus = new Set(state.focus);
   const placement = placementOverride === undefined ? cursorPlacement(transcript) : placementOverride;
   const lines = transcript.map((entry, index) =>
-    transcriptEntry(document, entry, config, focus, index === transcript.length - 1 ? placement : null));
+    transcriptEntry(document, entry, config, focus, index === transcript.length - 1 ? placement : null, index !== transcript.length - 1 || copyReady));
   if (placement === 'ready') lines.push(readyLine(document, last === undefined ? config.prompt : (last.prompt ?? config.prompt)));
 
   return element(document, 'section', [
@@ -302,7 +302,7 @@ export function createConsoleRenderer() {
           return;
         }
         const { state: partial, placement } = frames[index];
-        root.replaceChildren(buildOutput(document, partial, config, context.stepId, placement));
+        root.replaceChildren(buildOutput(document, partial, config, context.stepId, placement, partial.transcript.at(-1).command === state.transcript.at(-1).command));
         arm(index + 1);
       };
       const arm = (index) => {

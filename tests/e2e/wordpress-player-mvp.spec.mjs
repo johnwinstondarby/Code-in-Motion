@@ -1235,3 +1235,57 @@ test('disposed beat markers lose their listeners and preserve sibling controls',
   await expect(page.locator('.cim').nth(1).locator('[data-cim-beat-marker]')).toHaveCount(8);
   expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
 });
+
+
+test('GA pacing: Play stops at each beat, resumes after reading, and Next still completes an unfinished beat', async ({page}) => {
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await open(page);
+  const root=page.locator('.cim').first();
+  const position=()=>page.evaluate(()=>playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId);
+  const play=root.locator('[data-cim-control="playback"]');
+  for (const last of ['check-status--s02','stage-hunk--s04']) {
+    await play.click();
+    await expect.poll(position,{timeout:15000}).toBe(last);
+    await expect(play).toHaveText('Play');
+    await page.waitForTimeout(1200);
+    expect(await position()).toBe(last);
+  }
+  await page.evaluate(()=>playerTest.host.commands(playerTest.roots[0]).seek('stage-hunk--s02','commentary'));
+  await root.locator('[data-cim-control="next"]').click();
+  await expect.poll(position).toBe('stage-hunk--s04');
+  expect(await page.evaluate(()=>playerTest.errors)).toEqual([]);
+});
+
+test('GA layout: stable panes, early advice, unclipped risk badges and complete-command Copy in every theme', async ({page},testInfo) => {
+  await page.setViewportSize({width:1410,height:838});
+  await open(page);
+  const root=page.locator('.cim').first();
+  const play=root.locator('[data-cim-control="playback"]');
+  const initial=await root.locator('[data-cim-console-viewport]').boundingBox();
+  await play.click();
+  await expect(root.locator('[data-role="command"]').last()).not.toHaveText('git status');
+  await expect(root.locator('[data-role="copy"]')).toHaveCount(0);
+  await expect(root.locator('[data-role="command"]').last()).toHaveText('git status');
+  await expect(root.locator('[data-role="copy"]').first()).toBeVisible();
+  await expect(play).toHaveText('Play',{timeout:15000});
+  for (const theme of ['localis','high-contrast','light']) {
+    await root.locator('[data-cim-theme-select]').selectOption(theme);
+    for (const id of ['discard-commit--s01','recover-from-reflog--s01']) {
+      await page.evaluate(id=>playerTest.host.commands(playerTest.roots[0]).seek(id,'commentary'),id);
+      const current=root.locator('[data-cim-commentary-entry][aria-current="step"]');
+      await expect(current).toContainText('Before copying:');
+      const geometry=await root.evaluate(node=>{
+        const viewport=node.querySelector('[data-cim-console-viewport]');
+        const badge=node.querySelector('[data-role="titlebar"] [data-role="risk-badge"]') ?? node.querySelector('[data-role="titlebar"] [data-risk]');
+        const control=node.querySelector('[data-cim-control="playback"]').getBoundingClientRect();
+        const b=badge.getBoundingClientRect(),v=viewport.getBoundingClientRect();
+        return {badgeClearance:v.left+viewport.clientWidth-b.right,badgeFits:b.left>=v.left&&b.right<=v.left+viewport.clientWidth,controlBeforePane:control.bottom<=v.top,height:v.height};
+      });
+      expect(geometry.badgeFits).toBe(true);
+      expect(geometry.badgeClearance).toBeGreaterThanOrEqual(8);
+      expect(geometry.controlBeforePane).toBe(true);
+      expect(Math.abs(geometry.height-initial.height)).toBeLessThan(1);
+    }
+    await root.screenshot({path:testInfo.outputPath('preview-'+theme+'.png')});
+  }
+});

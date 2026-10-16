@@ -12,7 +12,7 @@ export function createConsoleWrapBinding({rendererRoot}) {
       for (const line of lines()) {
         if (!originals.has(line)) originals.set(line,line.style.getPropertyValue(property));
         const spaces = line.textContent.match(/^ */)[0].length;
-        const indent = `${spaces + 2}ch`;
+        const indent = `${Math.min(spaces + 2, 12)}ch`;
         if (line.style.getPropertyValue(property) !== indent) line.style.setProperty(property,indent);
       }
     },

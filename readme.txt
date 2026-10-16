@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.4
+Stable tag: 0.2.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -41,6 +41,14 @@ If any of these checks fail, preserve the fallback text and report the failed st
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.2.5 =
+* Pause v2 playback after each complete beat; press Play to continue. Manual Next still completes an unfinished beat before advancing.
+* Keep transport above stable reading panes, protect risk badges from scrollbars and theme the scrollbars.
+* Show Copy only after command typing completes, reserve its space, align the final prompt and cap continuation indentation.
+* Show preservation advice with both destructive command explanations, before copying.
+* Preserve engine 1.0.1, frozen authoring formats, legacy continuous playback, mobile notice and scoped asset loading.
+* Deferred: per-phrase limn, author palettes, Match device and SSH. Verify site fonts again after installation.
 
 = 0.2.4 =
 * Wrap Console continuations beyond authored indentation while preserving text, Copy values and whole-line emphasis.
@@ -115,6 +123,9 @@ Report defects and release issues at https://github.com/johnwinstondarby/Code-in
 * Initial WordPress release with deterministic packaging, upgrade-safe versioned assets, and the synthetic diagnostic Experience.
 
 == Upgrade Notice ==
+
+= 0.2.5 =
+V2 playback pauses after each beat for reading. Continue with Play or navigate with Next. Desktop layout and Copy refinements; no page-content changes. Roll back through wp-admin with the exact 0.2.4 ZIP and clear hosting caches.
 
 = 0.2.4 =
 Fixes wrapped-line indentation and removes CiM requests from pages without lessons. No page edits are required. Keep the exact reviewed 0.2.3 ZIP for rollback and clear hosting caches after replacement. Verify zero CiM requests on /journey-of-a-token/ and desktop Player/mobile notice on page 3227.

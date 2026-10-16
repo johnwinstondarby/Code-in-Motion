@@ -689,3 +689,43 @@
   }
 }
 /* learner-theme-presets:end */
+
+/* 0.2.5: reserve reading space and keep controls at the top of the Player. */
+.cim:has(> [data-cim-player="console-explanation"]) {
+  display: flex;
+  flex-direction: column;
+}
+.cim:has(> [data-cim-player="console-explanation"]) > [data-cim-transport-controls] {
+  order: -1;
+  margin: 0 0 1rem;
+}
+.cim [data-cim-player="console-explanation"] [data-cim-console-viewport],
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-viewport] {
+  box-sizing: border-box;
+  height: min(32rem, 45vh);
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cim-structural-border) var(--cim-console-background);
+}
+.cim [data-cim-player="console-explanation"] [data-cim-console-viewport] {
+  padding-inline-end: 0.75rem;
+}
+.cim [data-cim-player="console-explanation"] [data-role="titlebar"] {
+  flex-wrap: wrap;
+}
+.cim [data-cim-player="console-explanation"] [data-role="ready-line"] {
+  box-sizing: border-box;
+  border-inline: 6px solid transparent;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.cim [data-cim-player="console-explanation"] [data-role="command-line"] {
+  position: relative;
+  padding-inline-end: 4.5rem;
+}
+.cim [data-cim-player="console-explanation"] [data-role="copy"] {
+  position: absolute;
+  inset-inline-end: 0;
+  bottom: 0.2em;
+  margin-inline-start: 0;
+}

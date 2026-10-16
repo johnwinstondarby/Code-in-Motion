@@ -289,7 +289,10 @@ function createBinding(optionsInput, visibleControlOrder) {
       playbackPresentation
     });
 
-    root.appendChild(controlSurface.container);
+    const player = visibleControlOrder === WORDPRESS_CONSOLE_EXPLANATION_CONTROL_ORDER
+      ? root.querySelector('[data-cim-player="console-explanation"]') : null;
+    if (player) root.insertBefore(controlSurface.container, player);
+    else root.appendChild(controlSurface.container);
   } catch (error) {
     const cleanupErrors = cleanupAfterConstructionFailure({
       root,

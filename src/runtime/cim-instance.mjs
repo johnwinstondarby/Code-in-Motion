@@ -63,6 +63,7 @@ class CiMInstance {
   #session;
   #rendererConfig;
   #boundaryData;
+  #beatFinalStepIds;
   #renderer;
   #rendererRoot;
   #scheduler;
@@ -119,6 +120,7 @@ class CiMInstance {
     this.#session = core.session;
     this.#rendererConfig = envelope.rendererConfig;
     this.#boundaryData = envelope.boundaries;
+    this.#beatFinalStepIds = new Set(envelope.beatFinalStepIds ?? []);
     this.#renderer = renderer;
     this.#rendererRoot = rendererRoot;
     this.#scheduler = clock;
@@ -1052,6 +1054,10 @@ class CiMInstance {
     this.#emitStepChanged(record, before, after);
 
     if (!this.#operational.playbackIntent) return;
+    if (this.#beatFinalStepIds.has(after.currentStepId)) {
+      this.#stopPlayback(record.commandId, this.#nextBoundaryId(after.currentStepId) === null ? 'at_end' : 'beat_end', record.source);
+      return;
+    }
     const boundary = this.#boundaryData.get(after.currentStepId);
     if (boundary.dwellMs > 0) {
       this.#startDwell(record.commandId, record.source, after.currentStepId, boundary.dwellMs);
