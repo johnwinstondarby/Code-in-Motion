@@ -125,7 +125,7 @@ The next session #8 pass gives only the Console-Explanation Player's ready outer
 
 ## 0.2.5 GA candidate acceptance
 
-Scope: Johann's approved punch list only. Git-in-Motion stays Bash-only, with no PowerShell variants or notes. Keep the 0.2.4 authored lesson, pane geometry, transport placement, Start/End/Restart/Previous, seeks, markers, deep links and Show behavior.
+Scope: Johann's approved punch list only. Git-in-Motion stays Bash-only, with no PowerShell variants or notes. Keep 0.2.4 transport placement, Start/End/Restart/Previous, seeks, markers, deep links and Show behavior; add only the approved lesson reminders and fixed pane height.
 
 ADR 0058 stops v2 Play at every beat's final segment. Check all eight boundaries with normal and reduced motion, Play available and progress unchanged while waiting, automatic segment progression within beats, resuming with Play and Next, and existing incomplete-beat Next completion. Headless and browser coverage must both pass.
 
@@ -134,3 +134,5 @@ Force Console overflow and check each risk badge's right edge against the scroll
 Approved scope exception: preserve unchanged Explanation text and link-label nodes during refresh. This prevents Firefox from clearing a learner selection and releasing its scroll hold. Both full-suite Firefox regressions and a destructive-refresh mutation guard cover it. No navigation or lesson-content change.
 
 Second approved scope exception: preserve the unchanged Resume indicator label. Rebuilding it on each refresh cancels native button clicks in Linux WebKit. The same label is retained until its value changes; scrolling and navigation semantics are unchanged. The complete Linux WebKit browser suite and a destructive-label mutation guard cover the fix.
+
+Johann subsequently approved keeping the two reviewed “Before copying:” sentences and fixed pane height min(32rem, 45vh). These additions are included alongside the approved selection and Resume preservation fixes. Transport placement retains 0.2.4 behavior. End catches up to the transcript bottom with the shorter panes.

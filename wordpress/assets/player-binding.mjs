@@ -189,7 +189,7 @@ export function createWordPressPlayerBinding({ root, commandPort, observationPor
           const destination = section?.querySelector('[data-cim-commentary-entry]') === active ? section : active;
           const top = destination === undefined ? 0 : Math.max(0,
             destination.getBoundingClientRect().top - viewport.getBoundingClientRect().top + viewport.scrollTop);
-          scroll.reposition(top);
+          scroll.reposition(key === 'end' ? undefined : top);
           consoleScroll.reposition();
         }).catch(onError);
         return pending;

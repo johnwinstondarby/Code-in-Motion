@@ -4,7 +4,7 @@ Hold merge, tag and installation until Daisy reviews the exact head and ZIP. Liv
 
 V2 Play animates every segment through the current beat and stops at its final boundary, before another dwell or transition. Play continues through the following beat; mid-beat Pause/resume remains available. Next retains incomplete-beat completion before advancing. Legacy v1 stays continuous. ADR 0058 supersedes only ADR 0051's continuous-v2 policy; no schema or frozen authoring-format change.
 
-Scope is limited to Johann�s approved GA punch list: badge clearance, beat-end reading stops, themed scrollbars, completed-command Copy timing and placement, final-prompt gutter alignment, and a 12ch continuation cap. Pane geometry, transport placement and navigation retain 0.2.4 behavior. Git-in-Motion remains Bash-only; authored lesson text, compiled lesson, Console state and Copy values are unchanged. No PowerShell variants or notes are added.
+Scope is limited to Johann�s approved GA punch list: badge clearance, beat-end reading stops, themed scrollbars, completed-command Copy timing and placement, final-prompt gutter alignment, and a 12ch continuation cap. Transport placement and navigation retain 0.2.4 behavior. Git-in-Motion remains Bash-only; Console state and Copy values are unchanged. No PowerShell variants or notes are added.
 
 Headless tests cover every beat and both Play and Next. Browser tests repeat all eight beat stops, resume with both controls, and verify unchanged progress while waiting, with normal and reduced motion. Badge geometry is tested against an actually overflowing Console in all three themes and all three risk states. New guards remove badge clearance and beat stopping independently and must fail.
 
@@ -19,3 +19,5 @@ Deferred: per-phrase limn, author palettes, Match device and SSH. Browser screen
 Approved scope exception: preserve unchanged Explanation text and link-label nodes during refresh. This prevents Firefox from clearing a learner selection and releasing its scroll hold. Both full-suite Firefox regressions and a destructive-refresh mutation guard cover it. No navigation or lesson-content change.
 
 Second approved scope exception: preserve the unchanged Resume indicator label. Rebuilding it on each refresh cancels native button clicks in Linux WebKit. The same label is retained until its value changes; scrolling and navigation semantics are unchanged. The complete Linux WebKit browser suite and a destructive-label mutation guard cover the fix.
+
+Johann subsequently approved keeping the two reviewed “Before copying:” sentences and fixed pane height min(32rem, 45vh). These additions are included alongside the approved selection and Resume preservation fixes. Transport placement retains 0.2.4 behavior. End catches up to the transcript bottom with the shorter panes.

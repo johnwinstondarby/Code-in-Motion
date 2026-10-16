@@ -8,7 +8,7 @@
       "Pause v2 playback after each complete beat; press Play to continue. Manual Next still completes an unfinished beat before advancing.",
       "Protect all risk badges from scrollbars and theme both reading-pane scrollbars.",
       "Show Copy only after command typing completes, reserve its space, align the final prompt and cap continuation indentation.",
-      "Keep Git-in-Motion Bash-only, with authored lesson text and existing navigation unchanged.",
+      "Keep Git-in-Motion Bash-only, add the two approved Before copying reminders, and use the approved fixed reading-pane height.",
       "Preserve Explanation selections and native Resume-button clicks during unchanged text refreshes, including Firefox and WebKit.",
       "Preserve engine 1.0.1, frozen authoring formats, legacy continuous playback, mobile notice and scoped asset loading.",
       "Deferred: per-phrase limn, author palettes, Match device and SSH. Verify site fonts again after installation."

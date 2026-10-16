@@ -694,6 +694,7 @@
 .cim [data-cim-player="console-explanation"] [data-cim-console-viewport],
 .cim [data-cim-player="console-explanation"] [data-cim-commentary-viewport] {
   box-sizing: border-box;
+  height: min(32rem, 45vh);
   scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: var(--cim-structural-border) var(--cim-console-background);
