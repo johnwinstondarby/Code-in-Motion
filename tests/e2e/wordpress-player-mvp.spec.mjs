@@ -1343,7 +1343,7 @@ test('GA layout: wrapped commands keep Copy beside their final text line and rea
 });
 
 
-test('Explanation preserves selected text nodes across unchanged refreshes',async({page})=>{
+test('Explanation preserves selected text nodes and stable Resume labels across refreshes',async({page})=>{
   await open(page);await page.mouse.move(0,0);await revealBoundary(page,10);
   const pane=page.locator('.cim').first().locator('[data-cim-commentary-viewport]');
   const selected=await pane.evaluate(node=>{
@@ -1355,4 +1355,9 @@ test('Explanation preserves selected text nodes across unchanged refreshes',asyn
   await revealBoundary(page,11);await page.waitForTimeout(150);
   expect(await pane.evaluate(node=>node.querySelector('p').firstChild===window.selectedExplanationNode)).toBe(true);
   expect(await page.evaluate(()=>document.getSelection().toString())).toBe(selected);
+  const resume=page.locator('.cim').first().locator('[data-cim-commentary-resume]');
+  await expect(resume).toBeVisible();
+  await resume.evaluate(node=>{window.resumeLabelNode=node.firstChild;});
+  await page.waitForTimeout(150);
+  expect(await resume.evaluate(node=>node.firstChild===window.resumeLabelNode)).toBe(true);
 });

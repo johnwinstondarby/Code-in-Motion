@@ -26,6 +26,7 @@ const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-c
 const limnArgs = ['--test','tests/console-line-limn.test.mjs'];
 const wrapArgs = ['--test','tests/console-wrap-binding.test.mjs'];
 const mutations = [
+  ['unchanged Resume label rebuilt','src/commentary/scroll-binding.mjs','if (indicator.textContent !== newerStepsLabel) indicator.textContent = newerStepsLabel;',"indicator.textContent = ''; indicator.textContent = newerStepsLabel;",[...browserArgs,'--grep','Explanation preserves selected text nodes']],
   ['unchanged Explanation text rebuilt','src/commentary/native-binding.mjs','if (control.text.textContent !== entry.text) control.text.textContent = entry.text;',"control.text.textContent = ''; control.text.textContent = entry.text;",[...browserArgs,'--grep','Explanation preserves selected text nodes']],
   ['risk scrollbar clearance removed',css,'  padding-inline-end: 0.75rem;','  padding-inline-end: 0;', [...browserArgs,'--grep','GA layout']],
   ['v2 beat stop bypassed','src/runtime/cim-instance.mjs','if (this.#beatFinalStepIds.has(after.currentStepId))','if (false)',beatArgs],

@@ -17,3 +17,5 @@ After review and separate installation, clear hosting caches and make a fresh de
 Deferred: per-phrase limn, author palettes, Match device and SSH. Browser screenshots are local production-component previews, not live evidence.
 
 Approved scope exception: preserve unchanged Explanation text and link-label nodes during refresh. This prevents Firefox from clearing a learner selection and releasing its scroll hold. Both full-suite Firefox regressions and a destructive-refresh mutation guard cover it. No navigation or lesson-content change.
+
+Second approved scope exception: preserve the unchanged Resume indicator label. Rebuilding it on each refresh cancels native button clicks in Linux WebKit. The same label is retained until its value changes; scrolling and navigation semantics are unchanged. The complete Linux WebKit browser suite and a destructive-label mutation guard cover the fix.
