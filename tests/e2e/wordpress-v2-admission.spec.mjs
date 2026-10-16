@@ -82,10 +82,5 @@ test('WordPress installed v2 playback stops for reading and resumes at the next 
     await page.waitForTimeout(1200);
     await expect(current).toHaveAttribute('data-cim-step-id',id);
   }
-  const order=await root.evaluate(node=>{
-    const controls=node.querySelector('[data-cim-transport-controls]');
-    const player=node.querySelector('[data-cim-player]');
-    return Boolean(controls.compareDocumentPosition(player)&Node.DOCUMENT_POSITION_FOLLOWING);
-  });
-  expect(order).toBe(true);
+
 });

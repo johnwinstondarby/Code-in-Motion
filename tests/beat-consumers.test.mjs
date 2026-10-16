@@ -161,3 +161,18 @@ test('reading stop applies when Play begins inside a beat and manual navigation 
   assert.equal(h.instance.read.snapshot().operational.playbackIntent,false);
   await h.instance.dispose();
 });
+
+
+test('Next continues from every beat reading stop without restarting playback',async()=>{
+  for(const reducedMotion of [false,true]) {
+    const h=runtime({reducedMotion});await h.instance.initialize();await h.instance.play('transport');
+    for(let count=0;count<100&&h.instance.read.snapshot().canonical.currentStepId!==beats[0].finalStepId;count+=1)await h.flush();
+    assert.equal(h.instance.read.snapshot().operational.playbackIntent,false);
+    for(const beat of beats.slice(1)) {
+      await h.instance.next('transport');await h.flush();
+      assert.equal(h.instance.read.snapshot().canonical.currentStepId,beat.finalStepId);
+      assert.equal(h.instance.read.snapshot().operational.playbackIntent,false);
+    }
+    await h.instance.dispose();
+  }
+});

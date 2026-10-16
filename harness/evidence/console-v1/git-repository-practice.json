@@ -3,7 +3,7 @@
   "renderer": "console/v1",
   "experience_id": "git-repository-practice",
   "experience_version": "1.0.0",
-  "experience_sha256": "8321d392561fe80d4139e903e4a234889d719ac4e7777f20a6fe32b7d0a5f35c",
+  "experience_sha256": "584b038bd7db701131beb0191d9eea877965491683e58bd5036a3a54aa164c84",
   "lineage": [
     {
       "supersedes_evidence_sha256": "b8403bb7b7d649419485c654f90982c4bfe9b8b08ae4b032d6c4fa53556688d0",

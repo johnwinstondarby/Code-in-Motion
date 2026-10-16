@@ -44,9 +44,10 @@ Report defects and release issues at https://github.com/johnwinstondarby/Code-in
 
 = 0.2.5 =
 * Pause v2 playback after each complete beat; press Play to continue. Manual Next still completes an unfinished beat before advancing.
-* Keep transport above stable reading panes, protect risk badges from scrollbars and theme the scrollbars.
+* Protect all risk badges from scrollbars and theme both reading-pane scrollbars.
 * Show Copy only after command typing completes, reserve its space, align the final prompt and cap continuation indentation.
-* Show preservation advice with both destructive command explanations, before copying.
+* Keep Git-in-Motion Bash-only, with authored lesson text and existing navigation unchanged.
+* Preserve Explanation selections during unchanged text refreshes, including Firefox.
 * Preserve engine 1.0.1, frozen authoring formats, legacy continuous playback, mobile notice and scoped asset loading.
 * Deferred: per-phrase limn, author palettes, Match device and SSH. Verify site fonts again after installation.
 

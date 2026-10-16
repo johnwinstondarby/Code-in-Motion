@@ -1246,55 +1246,85 @@ test('disposed beat markers lose their listeners and preserve sibling controls',
 });
 
 
-test('GA pacing: Play stops at each beat, resumes after reading, and Next still completes an unfinished beat', async ({page}) => {
-  await page.emulateMedia({reducedMotion:'reduce'});
+for(const motion of ['reduce','no-preference']) test(`GA pacing: every beat waits and both Play and Next continue (${motion})`,async({page})=>{
+  test.setTimeout(90000);
+  await page.clock.install();
+  await page.emulateMedia({reducedMotion:motion});
   await open(page);
   const root=page.locator('.cim').first();
+  const ids=['check-status--s02','stage-hunk--s04','review-staged--s02','commit--s02','push--s02','discard-commit--s02','find-in-reflog--s02','recover-from-reflog--s02'];
   const position=()=>page.evaluate(()=>playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId);
   const play=root.locator('[data-cim-control="playback"]');
-  for (const last of ['check-status--s02','stage-hunk--s04']) {
+  const advance=async()=>{for(let i=0;i<120;i+=1)await page.clock.fastForward(1000);};
+  for(const id of ids) {
     await play.click();
-    await expect.poll(position,{timeout:15000}).toBe(last);
+    await advance();
+    expect(await position()).toBe(id);
     await expect(play).toHaveText('Play');
-    await page.waitForTimeout(1200);
-    expect(await position()).toBe(last);
+    const progress=await root.locator('[data-cim-beat-progress]').textContent();
+    await page.clock.fastForward(5000);
+    expect(await position()).toBe(id);
+    await expect(root.locator('[data-cim-beat-progress]')).toHaveText(progress);
   }
-  await page.evaluate(()=>playerTest.host.commands(playerTest.roots[0]).seek('stage-hunk--s02','commentary'));
-  await root.locator('[data-cim-control="next"]').click();
-  await expect.poll(position).toBe('stage-hunk--s04');
+  await root.locator('[data-cim-control="restart"]').click();
+  await play.click();await advance();
+  expect(await position()).toBe(ids[0]);
+  for(const id of ids.slice(1)) {
+    await root.locator('[data-cim-control="next"]').click();
+    await expect.poll(position).toBe(id);
+    await page.clock.fastForward(5000);
+    expect(await position()).toBe(id);
+    await expect(play).toHaveText('Play');
+  }
   expect(await page.evaluate(()=>playerTest.errors)).toEqual([]);
 });
 
-test('GA layout: stable panes, early advice, unclipped risk badges and complete-command Copy in every theme', async ({page},testInfo) => {
+test('GA layout: overflowing risk badges clear the scrollbar in every theme and risk state; Copy waits for complete typing',async({page},testInfo)=>{
   await page.setViewportSize({width:1410,height:838});
   await open(page);
   const root=page.locator('.cim').first();
   const play=root.locator('[data-cim-control="playback"]');
-  const initial=await root.locator('[data-cim-console-viewport]').boundingBox();
   await play.click();
   await expect(root.locator('[data-role="command"]').last()).not.toHaveText('git status');
   await expect(root.locator('[data-role="copy"]')).toHaveCount(0);
   await expect(root.locator('[data-role="command"]').last()).toHaveText('git status');
   await expect(root.locator('[data-role="copy"]').first()).toBeVisible();
   await expect(play).toHaveText('Play',{timeout:15000});
-  for (const theme of ['localis','high-contrast','light']) {
+  for(const theme of ['localis','high-contrast','light']) {
     await root.locator('[data-cim-theme-select]').selectOption(theme);
-    for (const id of ['discard-commit--s01','recover-from-reflog--s01']) {
+    for(const [id,risk] of [['stage-hunk--s04','free-to-undo'],['push--s02','leaves-a-trace'],['discard-commit--s02','cannot-be-undone']]) {
       await page.evaluate(id=>playerTest.host.commands(playerTest.roots[0]).seek(id,'commentary'),id);
-      const current=root.locator('[data-cim-commentary-entry][aria-current="step"]');
-      await expect(current).toContainText('Before copying:');
+      // Shorten only the test viewport to force a real scrollbar for every risk state.
+      await root.locator('[data-cim-console-viewport]').evaluate(node=>node.style.maxHeight='8rem');
       const geometry=await root.evaluate(node=>{
         const viewport=node.querySelector('[data-cim-console-viewport]');
-        const badge=node.querySelector('[data-role="titlebar"] [data-role="risk-badge"]') ?? node.querySelector('[data-role="titlebar"] [data-risk]');
-        const control=node.querySelector('[data-cim-control="playback"]').getBoundingClientRect();
+        viewport.scrollTop=viewport.scrollHeight;
+        const badge=node.querySelector('[data-role="risk-badge"]');
         const b=badge.getBoundingClientRect(),v=viewport.getBoundingClientRect();
-        return {badgeClearance:v.left+viewport.clientWidth-b.right,badgeFits:b.left>=v.left&&b.right<=v.left+viewport.clientWidth,controlBeforePane:control.bottom<=v.top,height:v.height};
+        return {risk:badge.dataset.risk,overflow:viewport.scrollHeight>viewport.clientHeight,clearance:v.left+viewport.clientWidth-b.right,leftFits:b.left>=v.left};
       });
-      expect(geometry.badgeFits).toBe(true);
-      expect(geometry.badgeClearance).toBeGreaterThanOrEqual(8);
-      expect(geometry.controlBeforePane).toBe(true);
-      expect(Math.abs(geometry.height-initial.height)).toBeLessThan(1);
+      expect(geometry.risk).toBe(risk);
+      expect(geometry.overflow).toBe(true);
+      expect(geometry.leftFits).toBe(true);
+      expect(geometry.clearance).toBeGreaterThanOrEqual(8);
     }
+    await root.locator('[data-cim-console-viewport]').evaluate(node=>node.style.removeProperty('max-height'));
     await root.screenshot({path:testInfo.outputPath('preview-'+theme+'.png')});
   }
+});
+
+
+test('GA layout: wrapped commands keep Copy beside their final text line and ready prompts align',async({page})=>{
+  await page.setViewportSize({width:850,height:900});await open(page);
+  await page.evaluate(()=>playerTest.host.commands(playerTest.roots[0]).seek('review-staged--s02','commentary'));
+  const geometry=await page.locator('.cim').first().evaluate(node=>{
+    const line=[...node.querySelectorAll('[data-role="command-line"]')].find(n=>n.querySelector('[data-role="command"]').textContent==='git diff --cached --stat');
+    const text=line.querySelector('[data-role="command"]');
+    const rects=[...text.getClientRects()],last=rects.at(-1);
+    const button=line.querySelector('[data-role="copy"]').getBoundingClientRect();
+    const prompt=node.querySelector('[data-role="ready-line"] [data-role="prompt"]').getBoundingClientRect();
+    const commandPrompt=node.querySelector('[data-role="command-line"] [data-role="prompt"]').getBoundingClientRect();
+    return {wrapped:line.getBoundingClientRect().height>parseFloat(getComputedStyle(line).lineHeight)*1.5,sameLine:(button.top+button.bottom)/2>=last.top&&(button.top+button.bottom)/2<=last.bottom,clear:button.left>=last.right-1,aligned:Math.abs(prompt.left-commandPrompt.left)<1};
+  });
+  expect(geometry).toEqual({wrapped:true,sameLine:true,clear:true,aligned:true});
 });

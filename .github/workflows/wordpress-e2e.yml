@@ -1179,7 +1179,7 @@ jobs:
       - name: Verify learner presets in selected browser
         env:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
-        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs --grep 'learner themes|production v2|instructional consumers|CLI and copy|Copy button edge|line limn|Console wraps|Console continuation|GA pacing|GA layout' --reporter=line
+        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs --reporter=line
 
       - name: Stop R20 browser environment
         if: always()

@@ -690,19 +690,10 @@
 }
 /* learner-theme-presets:end */
 
-/* 0.2.5: reserve reading space and keep controls at the top of the Player. */
-.cim:has(> [data-cim-player="console-explanation"]) {
-  display: flex;
-  flex-direction: column;
-}
-.cim:has(> [data-cim-player="console-explanation"]) > [data-cim-transport-controls] {
-  order: -1;
-  margin: 0 0 1rem;
-}
+/* 0.2.5: keep risk labels clear and use themed scrollbars. */
 .cim [data-cim-player="console-explanation"] [data-cim-console-viewport],
 .cim [data-cim-player="console-explanation"] [data-cim-commentary-viewport] {
   box-sizing: border-box;
-  height: min(32rem, 45vh);
   scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: var(--cim-structural-border) var(--cim-console-background);
@@ -716,8 +707,6 @@
 .cim [data-cim-player="console-explanation"] [data-role="ready-line"] {
   box-sizing: border-box;
   border-inline: 6px solid transparent;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
 }
 .cim [data-cim-player="console-explanation"] [data-role="command-line"] {
   position: relative;

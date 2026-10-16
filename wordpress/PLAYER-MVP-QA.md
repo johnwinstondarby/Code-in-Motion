@@ -125,6 +125,10 @@ The next session #8 pass gives only the Console-Explanation Player's ready outer
 
 ## 0.2.5 GA candidate acceptance
 
-ADR 0058 changes v2 autoplay to a reading stop at every completed beat. Verify Play resumes through the following beat; paused mid-beat playback resumes within that beat; reduced motion stops at the same boundaries. Next still completes an unfinished beat before advancing. Legacy v1 continuous playback stays unchanged.
+Scope: Johann's approved punch list only. Git-in-Motion stays Bash-only, with no PowerShell variants or notes. Keep the 0.2.4 authored lesson, pane geometry, transport placement, Start/End/Restart/Previous, seeks, markers, deep links and Show behavior.
 
-Check transport before the panes in DOM/tab order and visually, stable reading height at laptop sizes, End reaching the final Explanation bottom, all risk labels clear of the scrollbar, themed scrollbars, Copy absent during partial typing and available at completion without a separate wrapped row, final prompt gutter alignment, and capped deep indentation. Test all three themes. Destructive command explanations must show preservation advice before the Copy button appears. These are candidate criteria; production acceptance is pending reviewed installation.
+ADR 0058 stops v2 Play at every beat's final segment. Check all eight boundaries with normal and reduced motion, Play available and progress unchanged while waiting, automatic segment progression within beats, resuming with Play and Next, and existing incomplete-beat Next completion. Headless and browser coverage must both pass.
+
+Force Console overflow and check each risk badge's right edge against the scroller content edge in every theme and risk state. Check themed thin scrollbars, Copy absent while typing and present when complete with its authored value, Copy beside the end of wrapped commands, final-prompt alignment and capped deep indentation. Run full verification, all three Player browsers, mutation guards including new badge/pacing guards, installed-ZIP and upgrade/rollback checks on the exact candidate head. Hold merge/tag/install for Daisy. After installation repeat the approved live list, mobile notice, fonts and zero CiM assets on pages without a Player.
+
+Approved scope exception: preserve unchanged Explanation text and link-label nodes during refresh. This prevents Firefox from clearing a learner selection and releasing its scroll hold. Both full-suite Firefox regressions and a destructive-refresh mutation guard cover it. No navigation or lesson-content change.

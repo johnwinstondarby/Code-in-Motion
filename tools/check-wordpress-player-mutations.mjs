@@ -26,8 +26,8 @@ const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-c
 const limnArgs = ['--test','tests/console-line-limn.test.mjs'];
 const wrapArgs = ['--test','tests/console-wrap-binding.test.mjs'];
 const mutations = [
+  ['unchanged Explanation text rebuilt','src/commentary/native-binding.mjs','if (control.text.textContent !== entry.text) control.text.textContent = entry.text;',"control.text.textContent = ''; control.text.textContent = entry.text;",[...browserArgs,'--grep','Explanation overlapping|selection holds only']],
   ['risk scrollbar clearance removed',css,'  padding-inline-end: 0.75rem;','  padding-inline-end: 0;', [...browserArgs,'--grep','GA layout']],
-  ['early preservation advice removed','experiences/git/git-repository-practice.json','Before copying:','', [...browserArgs,'--grep','GA layout']],
   ['v2 beat stop bypassed','src/runtime/cim-instance.mjs','if (this.#beatFinalStepIds.has(after.currentStepId))','if (false)',beatArgs],
   ['continuation cap removed','wordpress/assets/console-wrap-binding.mjs','Math.min(spaces + 2, 12)','spaces + 2',wrapArgs],
   ['typing exposes Copy','src/renderers/subjects/console/renderer.mjs','if (copyReady) children.push','if (true) children.push',[...browserArgs,'--grep','GA layout']],
@@ -117,7 +117,7 @@ const mutations = [
   ['release Console hold resumes ownership', 'wordpress/assets/console-follow-controller.mjs', 'holds.delete(reason);', 'holds.delete(reason); following = true;', browserArgs],
   ['skip pane hold listener withdrawal', 'wordpress/assets/pane-hold-binding.mjs', 'target.removeEventListener(type, listener);', '// listener retained', ['--test','tests/pane-hold-binding.test.mjs']],
   ['skip renderer observer disposal', player, 'disposers.push(() => observer.disconnect());', '// observer retained', browserArgs],
-  ['skip deliberate viewport navigation', player, "scroll.reposition(key === 'end' ? undefined : top);", '// deliberate navigation omitted', browserArgs],
+  ['skip deliberate viewport navigation', player, 'scroll.reposition(top);', '// deliberate navigation omitted', browserArgs],
   ['focus scrolling claims ownership', 'src/commentary/scroll-binding.mjs', 'const learnerScrolling = scrollIntent.read();', 'const learnerScrolling = true;', browserArgs],
   ['ignore native wheel intent', 'wordpress/assets/pane-scroll-intent.mjs', "[viewport, 'wheel', mark]", "[viewport, 'wheel', () => {}]", browserArgs],
   ['skip scroll intent listener withdrawal', 'wordpress/assets/pane-scroll-intent.mjs', 'target.removeEventListener(type, listener);', '// listener retained', ['--test','tests/pane-hold-binding.test.mjs']],
