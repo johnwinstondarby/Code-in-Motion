@@ -1,13 +1,14 @@
 {
   "schema": "localis.cim/wordpress-release-info/v1",
-  "stable_tag": "0.2.3",
+  "stable_tag": "0.2.4",
   "tested_up_to": "7.1",
   "current_release": {
-    "version": "0.2.3",
+    "version": "0.2.4",
     "notes": [
-      "Show the whole-line emphasis band behind Console text and keep its inset outline clear of the first character.",
-      "Preserve engine 1.0.1, frozen lesson formats, renderer canonical output, learner themes and mobile blocking.",
-      "Known follow-ups: wrap continuation collision; authored phrase-level limn (authoring/v3), author palettes, optional Match device, and authenticated hosting access for scripted rollback."
+      "Wrap Console continuations beyond authored indentation while preserving text, Copy values and whole-line emphasis.",
+      "Load CiM assets only on pages that use it; keep template/builder shortcode fallback and explicit site opt-in/out. Empty pages import no Player modules.",
+      "Preserve engine 1.0.1, frozen authoring formats, learner themes, legacy Player and mobile notice.",
+      "Deferred: per-phrase limn (authoring/v3), author palettes, Match device and authenticated hosting access for scripted rollback."
     ]
   },
   "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"

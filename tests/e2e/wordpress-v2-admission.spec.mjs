@@ -38,6 +38,9 @@ test('registered WordPress v2 lesson presents full Player consumers while legacy
   await root.locator('[data-cim-commentary-anchor="response"] button').first().click();
   await expect(root.locator('[data-cim-line-limn="steady"] [data-role="response"]')).toHaveText('y');
   await root.locator('[data-cim-control="end"]').click();
+  const indentedOutput = root.locator('[data-role="output-line"]').filter({hasText:'to discard changes in working directory'}).first();
+  await expect.poll(()=>indentedOutput.evaluate(node=>node.style.getPropertyValue('--cim-continuation-indent'))).toBe('4ch');
+  expect(requests.some(url=>url.endsWith('/wordpress/assets/console-wrap-binding.mjs'))).toBe(true);
   await expect(root.locator('[data-cim-commentary-entry]:visible')).toHaveCount(18);
   await expect(root.locator('[data-cim-commentary-evidence-label]')).toHaveCount(0);
   await expect(root).not.toContainText(/Related (output|response): \d+ lines?/);
