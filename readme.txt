@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.3
+Stable tag: 0.2.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -41,6 +41,12 @@ If any of these checks fail, preserve the fallback text and report the failed st
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.2.4 =
+* Wrap Console continuations beyond authored indentation while preserving text, Copy values and whole-line emphasis.
+* Load CiM assets only on pages that use it; keep template/builder shortcode fallback and explicit site opt-in/out. Empty pages import no Player modules.
+* Preserve engine 1.0.1, frozen authoring formats, learner themes, legacy Player and mobile notice.
+* Deferred: per-phrase limn (authoring/v3), author palettes, Match device and authenticated hosting access for scripted rollback.
 
 = 0.2.3 =
 * Show the whole-line emphasis band behind Console text and keep its inset outline clear of the first character.
@@ -109,6 +115,9 @@ Report defects and release issues at https://github.com/johnwinstondarby/Code-in
 * Initial WordPress release with deterministic packaging, upgrade-safe versioned assets, and the synthetic diagnostic Experience.
 
 == Upgrade Notice ==
+
+= 0.2.4 =
+Fixes wrapped-line indentation and removes CiM requests from pages without lessons. No page edits are required. Keep the exact reviewed 0.2.3 ZIP for rollback and clear hosting caches after replacement. Verify zero CiM requests on /journey-of-a-token/ and desktop Player/mobile notice on page 3227.
 
 = 0.2.3 =
 Console emphasis is easier to read. No lesson or page edits are required. Keep the exact 0.2.2 ZIP for rollback and clear hosting caches after replacement. Mobile blocking is unchanged.
