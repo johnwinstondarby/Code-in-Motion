@@ -1328,3 +1328,18 @@ test('GA layout: wrapped commands keep Copy beside their final text line and rea
   });
   expect(geometry).toEqual({wrapped:true,sameLine:true,clear:true,aligned:true});
 });
+
+
+test('Explanation preserves selected text nodes across unchanged refreshes',async({page})=>{
+  await open(page);await page.mouse.move(0,0);await revealBoundary(page,10);
+  const pane=page.locator('.cim').first().locator('[data-cim-commentary-viewport]');
+  const selected=await pane.evaluate(node=>{
+    const text=node.querySelector('p').firstChild;window.selectedExplanationNode=text;
+    const range=document.createRange();range.setStart(text,0);range.setEnd(text,4);
+    const selection=document.getSelection();selection.removeAllRanges();selection.addRange(range);
+    return text.textContent.slice(0,4);
+  });
+  await revealBoundary(page,11);await page.waitForTimeout(150);
+  expect(await pane.evaluate(node=>node.querySelector('p').firstChild===window.selectedExplanationNode)).toBe(true);
+  expect(await page.evaluate(()=>document.getSelection().toString())).toBe(selected);
+});
