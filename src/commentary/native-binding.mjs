@@ -263,10 +263,10 @@ function applyState(controls, state) {
     setAttribute(control.root, 'data-cim-selected', entry.selected ? 'true' : 'false');
     if (entry.active) setAttribute(control.root, 'aria-current', 'step');
     else control.root.removeAttribute('aria-current');
-    control.text.textContent = entry.text;
+    if (control.text.textContent !== entry.text) control.text.textContent = entry.text;
     entry.links.forEach((linkData, linkOffset) => {
       const link = control.links[linkOffset];
-      link.textContent = linkData.label;
+      if (link.textContent !== linkData.label) link.textContent = linkData.label;
       setAttribute(link, 'href', linkData.href);
       setAttribute(link, 'data-cim-link-id', linkData.id);
     });

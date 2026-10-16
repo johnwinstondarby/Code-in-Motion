@@ -182,7 +182,7 @@ export function createCommentaryScrollBinding(optionsInput) {
   }
 
   function applyIndicator(state) {
-    indicator.textContent = newerStepsLabel;
+    if (indicator.textContent !== newerStepsLabel) indicator.textContent = newerStepsLabel;
     indicator.hidden = !state.newerStepsAvailable;
   }
 

@@ -115,16 +115,21 @@ test('Runtime preserves Next and Previous command identity and individual Commen
   await h.instance.dispose();
 });
 
-test('continuous playback still visits every generated boundary with reduced-motion policy preserved', async () => {
-  const h = runtime(); await h.instance.initialize(); await h.instance.play('transport');
-  for (let count=0;count<100 && h.instance.read.snapshot().canonical.currentStepId !== ids.at(-1);count+=1) await h.flush();
-  assert.deepEqual(h.renders,ids);
-  await h.instance.dispose();
-  const reduced = runtime({reducedMotion:true}); await reduced.instance.initialize(); await reduced.instance.play('transport');
-  for (let count=0;count<100 && reduced.instance.read.snapshot().canonical.currentStepId !== ids.at(-1);count+=1) await reduced.flush();
-  assert.deepEqual(reduced.renders,ids);
-  assert.ok(reduced.reducedFlags.every(flag => flag === true));
-  await reduced.instance.dispose();
+test('v2 playback stops after each complete beat and resumes through every segment', async () => {
+  for (const reducedMotion of [false,true]) {
+    const h = runtime({reducedMotion}); await h.instance.initialize();
+    for (const beat of beats) {
+      await h.instance.play('transport');
+      for (let count=0;count<100 && h.instance.read.snapshot().canonical.currentStepId !== beat.finalStepId;count+=1) await h.flush();
+      assert.equal(h.instance.read.snapshot().canonical.currentStepId,beat.finalStepId);
+      assert.equal(h.instance.read.snapshot().operational.playbackIntent,false);
+      await h.flush();
+      assert.equal(h.instance.read.snapshot().canonical.currentStepId,beat.finalStepId);
+    }
+    assert.deepEqual(h.renders,ids);
+    if (reducedMotion) assert.ok(h.reducedFlags.every(flag=>flag===true));
+    await h.instance.dispose();
+  }
 });
 
 test('public v2 beat links resolve final boundaries and reject internal segment IDs while v1 stays direct', () => {
@@ -137,4 +142,37 @@ test('public v2 beat links resolve final boundaries and reject internal segment 
   const legacy = changed(e => {e.schema='localis.cim/v1';delete e.presentation;for (const step of e.steps) delete step.beat;});
   assert.deepEqual(readExperienceBeats(legacy),[]);
   assert.equal(resolveWordPressDeepLink(`#cim/${legacy.id}/stage-hunk--s02`,legacy.id,legacy).stepId,'stage-hunk--s02');
+});
+
+
+test('reading stop applies when Play begins inside a beat and manual navigation cancels it', async () => {
+  const h=runtime(); await h.instance.initialize();
+  await h.instance.seek('stage-hunk--s02','commentary');
+  await h.instance.play('transport');
+  for(let count=0;count<100 && h.instance.read.snapshot().canonical.currentStepId!=='stage-hunk--s04';count+=1) await h.flush();
+  assert.equal(h.instance.read.snapshot().canonical.currentStepId,'stage-hunk--s04');
+  assert.equal(h.instance.read.snapshot().operational.playbackIntent,false);
+  const stops=h.events.filter(event=>event.event==='playback.stopped');
+  assert.ok(stops.some(event=>event.details?.reason==='beat_end'));
+  await h.instance.play('transport');
+  await h.instance.home('transport');
+  for(let count=0;count<3;count+=1) await h.flush();
+  assert.equal(h.instance.read.snapshot().canonical.currentStepId,'initial');
+  assert.equal(h.instance.read.snapshot().operational.playbackIntent,false);
+  await h.instance.dispose();
+});
+
+
+test('Next continues from every beat reading stop without restarting playback',async()=>{
+  for(const reducedMotion of [false,true]) {
+    const h=runtime({reducedMotion});await h.instance.initialize();await h.instance.play('transport');
+    for(let count=0;count<100&&h.instance.read.snapshot().canonical.currentStepId!==beats[0].finalStepId;count+=1)await h.flush();
+    assert.equal(h.instance.read.snapshot().operational.playbackIntent,false);
+    for(const beat of beats.slice(1)) {
+      await h.instance.next('transport');await h.flush();
+      assert.equal(h.instance.read.snapshot().canonical.currentStepId,beat.finalStepId);
+      assert.equal(h.instance.read.snapshot().operational.playbackIntent,false);
+    }
+    await h.instance.dispose();
+  }
 });

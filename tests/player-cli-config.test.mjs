@@ -20,7 +20,7 @@ test('v2 output is invariant under authored key order and preserves runtime Cons
   assert.equal(compileAuthoringSource(JSON.stringify(reverse(source))).text,compiled.text);
   const legacy=JSON.parse(readFileSync(new URL('./fixtures/authoring-v1-compat/git-repository-practice.authoring.json',import.meta.url),'utf8'));
   const before=compileV1(JSON.stringify(legacy)).document;
-  assert.deepEqual(compiled.document.steps,before.steps);assert.deepEqual(compiled.document.initial_state,before.initial_state);
+  assert.deepEqual(compiled.document.steps.map(step=>step.state),before.steps.map(step=>step.state));assert.deepEqual(compiled.document.initial_state,before.initial_state);
 });
 for(const kind of ['powershell','windows-cli','bash']) test(`CLI ${kind} compiles independent visible text and immutable Player configuration`,()=>{
   const specimen=structuredClone(source);specimen.presentation.command_window={cli:{kind,label:'A custom shell'}};

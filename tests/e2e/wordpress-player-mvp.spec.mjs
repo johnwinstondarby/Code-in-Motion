@@ -203,7 +203,16 @@ test('CLI and copy: exact authored override writes plain text without seeking an
 test('CLI and copy: native drag selection and copy shortcuts leave navigation untouched',async({page,context,browserName})=>{
   if(browserName==='chromium') await context.grantPermissions(['clipboard-read','clipboard-write']);
   await open(page);const root=page.locator('.cim').first();await root.locator('[data-cim-control="next"]').click();
-  const command=root.locator('[data-role="command"]').first();const box=await command.boundingBox();
+  const command=root.locator('[data-role="command"]').first();
+  // Follow may have scrolled this earlier command outside the shorter reading pane.
+  // Center explicitly: native nearest scrolling can leave text under the sticky titlebar.
+  await command.evaluate(node=>node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
+  await expect.poll(()=>command.evaluate(node=>{
+    const box=node.getBoundingClientRect(), y=box.y+box.height/2;
+    return node.contains(document.elementFromPoint(box.x+1,y)) &&
+      node.contains(document.elementFromPoint(box.right-1,y));
+  })).toBe(true);
+  const box=await command.boundingBox();
   await page.mouse.move(box.x+1,box.y+box.height/2);await page.mouse.down();
   await page.mouse.move(box.x+box.width-1,box.y+box.height/2,{steps:10});await page.mouse.up();
   expect(await page.evaluate(()=>getSelection().toString())).toBe('git status');
@@ -814,6 +823,17 @@ async function atBottom(viewport) {
   return viewport.evaluate(node => node.scrollHeight - node.clientHeight - node.scrollTop <= 1);
 }
 
+// Wheel input can continue scrolling after Playwright's wheel promise resolves.
+// Capture learner-owned position only after native scrolling has gone quiet.
+async function settlePaneScroll(viewport) {
+  await viewport.evaluate(node=>new Promise(resolve=>{
+    let timer;
+    const done=()=>{node.removeEventListener('scroll',changed);resolve();};
+    const changed=()=>{clearTimeout(timer);timer=setTimeout(done,150);};
+    node.addEventListener('scroll',changed);changed();
+  }));
+}
+
 async function revealBoundary(page, index) {
   await page.evaluate(async index => {
     const root = playerTest.roots[0];
@@ -936,6 +956,7 @@ test('Explanation overlapping holds and pane-owned scrolling remain independent'
   await page.mouse.wheel(0, -500);
   await expect.poll(() => explanation.evaluate(node => node.scrollTop)).toBeLessThan(selectionTop);
   await page.mouse.move(0, 0);
+  await settlePaneScroll(explanation);
   const ownedTop = await explanation.evaluate(node => node.scrollTop);
   await revealBoundary(page, 13);
   await expect(resume).toBeVisible();
@@ -963,13 +984,18 @@ test('Console scroll ownership waits for explicit return and stale pane listener
   await page.mouse.wheel(0, -500);
   await expect.poll(() => atBottom(viewport)).toBe(false);
   await page.mouse.move(0, 0);
+  await settlePaneScroll(viewport);
   const ownedTop = await viewport.evaluate(node => node.scrollTop);
   await appendConsoleOutput(viewport);
   await expect(resume).toBeVisible();
   expect(await viewport.evaluate(node => node.scrollTop)).toBe(ownedTop);
   // Manual return to the newest content is explicit learner action.
   await viewport.hover();
-  await page.mouse.wheel(0, 100000);
+  // Firefox caps one wheel event to roughly one viewport; return with real wheel gestures.
+  for (let attempt = 0; attempt < 8 && !await atBottom(viewport); attempt++) {
+    await page.mouse.wheel(0, 100000);
+    await settlePaneScroll(viewport);
+  }
   await expect.poll(() => atBottom(viewport)).toBe(true);
   await expect(resume).toBeHidden();
   await page.mouse.move(0, 0);
@@ -1234,4 +1260,108 @@ test('disposed beat markers lose their listeners and preserve sibling controls',
   await expect(page.locator('.cim').first().locator('[data-cim-beat-controls]')).toHaveCount(0);
   await expect(page.locator('.cim').nth(1).locator('[data-cim-beat-marker]')).toHaveCount(8);
   expect(await page.evaluate(() => playerTest.errors)).toEqual([]);
+});
+
+
+for(const motion of ['reduce','no-preference']) test(`GA pacing: every beat waits and both Play and Next continue (${motion})`,async({page})=>{
+  test.setTimeout(90000);
+  await page.clock.install();
+  await page.emulateMedia({reducedMotion:motion});
+  await open(page);
+  const root=page.locator('.cim').first();
+  const ids=['check-status--s02','stage-hunk--s04','review-staged--s02','commit--s02','push--s02','discard-commit--s02','find-in-reflog--s02','recover-from-reflog--s02'];
+  const position=()=>page.evaluate(()=>playerTest.host.observations(playerTest.roots[0]).snapshot().canonical.currentStepId);
+  const play=root.locator('[data-cim-control="playback"]');
+  const advance=async()=>{for(let i=0;i<120;i+=1)await page.clock.fastForward(1000);};
+  for(const id of ids) {
+    await play.click();
+    await advance();
+    expect(await position()).toBe(id);
+    await expect(play).toHaveText('Play');
+    const progress=await root.locator('[data-cim-beat-progress]').textContent();
+    await page.clock.fastForward(5000);
+    expect(await position()).toBe(id);
+    await expect(root.locator('[data-cim-beat-progress]')).toHaveText(progress);
+  }
+  await root.locator('[data-cim-control="restart"]').click();
+  await play.click();await advance();
+  expect(await position()).toBe(ids[0]);
+  for(const id of ids.slice(1)) {
+    await root.locator('[data-cim-control="next"]').click();
+    await expect.poll(position).toBe(id);
+    await page.clock.fastForward(5000);
+    expect(await position()).toBe(id);
+    await expect(play).toHaveText('Play');
+  }
+  expect(await page.evaluate(()=>playerTest.errors)).toEqual([]);
+});
+
+test('GA layout: overflowing risk badges clear the scrollbar in every theme and risk state; Copy waits for complete typing',async({page},testInfo)=>{
+  await page.setViewportSize({width:1410,height:838});
+  await open(page);
+  const root=page.locator('.cim').first();
+  const play=root.locator('[data-cim-control="playback"]');
+  await play.click();
+  await expect(root.locator('[data-role="command"]').last()).not.toHaveText('git status');
+  await expect(root.locator('[data-role="copy"]')).toHaveCount(0);
+  await expect(root.locator('[data-role="command"]').last()).toHaveText('git status');
+  await expect(root.locator('[data-role="copy"]').first()).toBeVisible();
+  await expect(play).toHaveText('Play',{timeout:15000});
+  for(const theme of ['localis','high-contrast','light']) {
+    await root.locator('[data-cim-theme-select]').selectOption(theme);
+    for(const [id,risk] of [['stage-hunk--s04','free-to-undo'],['push--s02','leaves-a-trace'],['discard-commit--s02','cannot-be-undone']]) {
+      await page.evaluate(id=>playerTest.host.commands(playerTest.roots[0]).seek(id,'commentary'),id);
+      // Shorten only the test viewport to force a real scrollbar for every risk state.
+      await root.locator('[data-cim-console-viewport]').evaluate(node=>node.style.maxHeight='8rem');
+      const geometry=await root.evaluate(node=>{
+        const viewport=node.querySelector('[data-cim-console-viewport]');
+        viewport.scrollTop=viewport.scrollHeight;
+        const badge=node.querySelector('[data-role="risk-badge"]');
+        const b=badge.getBoundingClientRect(),v=viewport.getBoundingClientRect();
+        return {risk:badge.dataset.risk,overflow:viewport.scrollHeight>viewport.clientHeight,clearance:v.left+viewport.clientWidth-b.right,leftFits:b.left>=v.left};
+      });
+      expect(geometry.risk).toBe(risk);
+      expect(geometry.overflow).toBe(true);
+      expect(geometry.leftFits).toBe(true);
+      expect(geometry.clearance).toBeGreaterThanOrEqual(8);
+    }
+    await root.locator('[data-cim-console-viewport]').evaluate(node=>node.style.removeProperty('max-height'));
+    await root.screenshot({path:testInfo.outputPath('preview-'+theme+'.png')});
+  }
+});
+
+
+test('GA layout: wrapped commands keep Copy beside their final text line and ready prompts align',async({page})=>{
+  await page.setViewportSize({width:850,height:900});await open(page);
+  await page.evaluate(()=>playerTest.host.commands(playerTest.roots[0]).seek('review-staged--s02','commentary'));
+  const geometry=await page.locator('.cim').first().evaluate(node=>{
+    const line=[...node.querySelectorAll('[data-role="command-line"]')].find(n=>n.querySelector('[data-role="command"]').textContent==='git diff --cached --stat');
+    const text=line.querySelector('[data-role="command"]');
+    const rects=[...text.getClientRects()],last=rects.at(-1);
+    const button=line.querySelector('[data-role="copy"]').getBoundingClientRect();
+    const prompt=node.querySelector('[data-role="ready-line"] [data-role="prompt"]').getBoundingClientRect();
+    const commandPrompt=node.querySelector('[data-role="command-line"] [data-role="prompt"]').getBoundingClientRect();
+    return {wrapped:line.getBoundingClientRect().height>parseFloat(getComputedStyle(line).lineHeight)*1.5,sameLine:(button.top+button.bottom)/2>=last.top&&(button.top+button.bottom)/2<=last.bottom,clear:button.left>=last.right-1,aligned:Math.abs(prompt.left-commandPrompt.left)<1};
+  });
+  expect(geometry).toEqual({wrapped:true,sameLine:true,clear:true,aligned:true});
+});
+
+
+test('Explanation preserves selected text nodes and stable Resume labels across refreshes',async({page})=>{
+  await open(page);await page.mouse.move(0,0);await revealBoundary(page,10);
+  const pane=page.locator('.cim').first().locator('[data-cim-commentary-viewport]');
+  const selected=await pane.evaluate(node=>{
+    const text=node.querySelector('p').firstChild;window.selectedExplanationNode=text;
+    const range=document.createRange();range.setStart(text,0);range.setEnd(text,4);
+    const selection=document.getSelection();selection.removeAllRanges();selection.addRange(range);
+    return text.textContent.slice(0,4);
+  });
+  await revealBoundary(page,11);await page.waitForTimeout(150);
+  expect(await pane.evaluate(node=>node.querySelector('p').firstChild===window.selectedExplanationNode)).toBe(true);
+  expect(await page.evaluate(()=>document.getSelection().toString())).toBe(selected);
+  const resume=page.locator('.cim').first().locator('[data-cim-commentary-resume]');
+  await expect(resume).toBeVisible();
+  await resume.evaluate(node=>{window.resumeLabelNode=node.firstChild;});
+  await page.waitForTimeout(150);
+  expect(await resume.evaluate(node=>node.firstChild===window.resumeLabelNode)).toBe(true);
 });

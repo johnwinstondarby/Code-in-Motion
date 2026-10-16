@@ -67,3 +67,20 @@ test('WordPress v2 engine rejection preserves static fallback and healthy legacy
   await expect(page.locator('[data-cim-instance="admission-legacy"]')).toHaveAttribute('data-cim-state','ready');
   await expect.poll(()=>errors.some(record=>record?.code==='CIM-EXP-015')).toBe(true);
 });
+
+
+test('WordPress installed v2 playback stops for reading and resumes at the next beat',async({page})=>{
+  await page.goto(base+'/?pagename=cim-e2e-v2');
+  const root=page.locator('[data-cim-instance="admission-v2"]');
+  await expect(root).toHaveAttribute('data-cim-state','ready');
+  const play=root.locator('[data-cim-control="playback"]');
+  const current=root.locator('[data-cim-commentary-entry][aria-current="step"]');
+  for(const id of ['check-status--s02','stage-hunk--s04']) {
+    await play.click();
+    await expect(current).toHaveAttribute('data-cim-step-id',id,{timeout:15000});
+    await expect(play).toHaveText('Play');
+    await page.waitForTimeout(1200);
+    await expect(current).toHaveAttribute('data-cim-step-id',id);
+  }
+
+});

@@ -345,7 +345,7 @@
         "segments": [
           {
             "at": "command",
-            "text": "reset --hard moves main back one commit and overwrites both the index and the working tree to match it."
+            "text": "Before copying: run git status and stash or commit any work you want to keep. reset --hard moves main back one commit and overwrites both the index and the working tree to match it."
           },
           {
             "at": "output",
@@ -432,7 +432,7 @@
         "segments": [
           {
             "at": "command",
-            "text": "In this lesson, reset --hard is the recovery step: it returns main to 7a3c91d, the commit found in the reflog."
+            "text": "Before copying: confirm the target in your own reflog and preserve uncommitted work. In this lesson, reset --hard is the recovery step: it returns main to 7a3c91d, the commit found in the reflog."
           },
           {
             "at": "output",

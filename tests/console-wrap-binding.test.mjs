@@ -26,3 +26,10 @@ test('continuation disposal restores prior presentation and prevents later write
   assert.equal(nodes[0].style.getPropertyValue('--cim-continuation-indent'),'');
   assert.equal(nodes[1].style.getPropertyValue('--cim-continuation-indent'),'7ch');
 });
+
+test('extreme indentation is capped without altering authored spaces',()=>{
+  const node=line(' '.repeat(100)+'text');
+  createConsoleWrapBinding({rendererRoot:{querySelectorAll:()=>[node]}}).refresh();
+  assert.equal(node.style.getPropertyValue('--cim-continuation-indent'),'12ch');
+  assert.equal(node.textContent,' '.repeat(100)+'text');
+});
