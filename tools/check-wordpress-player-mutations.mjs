@@ -118,7 +118,7 @@ const mutations = [
   ['release Console hold resumes ownership', 'wordpress/assets/console-follow-controller.mjs', 'holds.delete(reason);', 'holds.delete(reason); following = true;', browserArgs],
   ['skip pane hold listener withdrawal', 'wordpress/assets/pane-hold-binding.mjs', 'target.removeEventListener(type, listener);', '// listener retained', ['--test','tests/pane-hold-binding.test.mjs']],
   ['skip renderer observer disposal', player, 'disposers.push(() => observer.disconnect());', '// observer retained', browserArgs],
-  ['skip deliberate viewport navigation', player, 'scroll.reposition(top);', '// deliberate navigation omitted', browserArgs],
+  ['skip deliberate viewport navigation', player, "scroll.reposition(key === 'end' ? undefined : top);", '// deliberate navigation omitted', browserArgs],
   ['focus scrolling claims ownership', 'src/commentary/scroll-binding.mjs', 'const learnerScrolling = scrollIntent.read();', 'const learnerScrolling = true;', browserArgs],
   ['ignore native wheel intent', 'wordpress/assets/pane-scroll-intent.mjs', "[viewport, 'wheel', mark]", "[viewport, 'wheel', () => {}]", browserArgs],
   ['skip scroll intent listener withdrawal', 'wordpress/assets/pane-scroll-intent.mjs', 'target.removeEventListener(type, listener);', '// listener retained', ['--test','tests/pane-hold-binding.test.mjs']],
