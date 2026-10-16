@@ -1163,6 +1163,10 @@ jobs:
             --post_name='cim-e2e-r9' \
             --post_content="${r9_content}"
 
+      - name: Create isolated asset-scope fixtures
+        shell: bash
+        run: npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" run cli wp eval "$(cat tests/fixtures/wordpress-asset-scope-setup.php)"
+
       - name: Run R20 browser-family smoke suite
         env:
           CIM_WP_BASE_URL: http://localhost:8894

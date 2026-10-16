@@ -36,7 +36,7 @@ The shortcode emits one canonical `.cim[data-cim-experience]` invocation root, a
 
 ## Asset path
 
-`code-in-motion.php` enqueues `assets/bootstrap.js` and `assets/cim.css` through `wp_enqueue_script()` and `wp_enqueue_style()`. The external bootstrap loads the module entry. No executable CiM source is emitted into shortcode or Admin Console content or through WordPress inline-script APIs.
+`code-in-motion.php` registers `assets/bootstrap.js` and `assets/cim.css` on front-end requests, then enqueues them only for a queried singular post containing `[cim]`, an explicit `localis_cim_should_enqueue` opt-in, or an actually rendered shortcode. The filter also honors explicit suppression in the shortcode path. Late template/builder embeds receive footer assets through the same handles. A deferred bootstrap finding no invocation roots returns before importing the Player module graph. The external bootstrap loads the module entry. No executable CiM source is emitted into shortcode or Admin Console content or through WordPress inline-script APIs.
 
 ## Verification boundary
 

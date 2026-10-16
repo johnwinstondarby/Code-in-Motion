@@ -25,6 +25,9 @@ const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpr
 const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs','tests/frozen-authoring-v1.test.mjs'];
 const limnArgs = ['--test','tests/console-line-limn.test.mjs'];
 const mutations = [
+  ['registration enqueues script','wordpress/code-in-motion.php','wp_register_script(','wp_enqueue_script(',['--test','tests/wordpress-asset-scope.test.mjs']],
+  ['registration enqueues style','wordpress/code-in-motion.php','wp_register_style(','wp_enqueue_style(',['--test','tests/wordpress-asset-scope.test.mjs']],
+  ['empty page imports Player modules','wordpress/assets/bootstrap.js',"  if (!document.querySelector('[data-cim-experience]')) return;",'  // empty-page guard removed',['--test','tests/wordpress-empty-page-bootstrap.test.mjs']],
   ['limn dim text loses flash contrast',css,'  color: var(--cim-console-text);\n}\n\n@keyframes','  color: var(--cim-console-quiet);\n}\n\n@keyframes',browserArgs],
   ['limn quiet tint loses dim contrast',css,'var(--cim-console-quiet) 12%','var(--cim-console-quiet) 18%',browserArgs],
   ['limn text hides cue band',css,'  background: transparent;\n}\n\n/* The renderer supplies','  background: var(--cim-console-background);\n}\n\n/* The renderer supplies',browserArgs],

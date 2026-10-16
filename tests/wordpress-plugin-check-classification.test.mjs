@@ -9,7 +9,7 @@ import {
 
 const FIXTURE_LOG_PREFIX = '[fixture] ';
 
-test('R21 accepts only the approved global-enqueue warning codes', () => {
+test('R39 rejects the formerly accepted global-enqueue warnings', () => {
   const source = [
     'FILE: wordpress/assets/cim.css',
     JSON.stringify([
@@ -40,16 +40,10 @@ test('R21 accepts only the approved global-enqueue warning codes', () => {
 
   const classified = classifyPluginCheckFindings(findings);
   assert.equal(classified.failures.length, 0);
-  assert.equal(classified.review.length, 0);
-  assert.equal(classified.accepted.length, 2);
-  assert.equal(
-    classified.accepted.every((finding) =>
-      !/\b\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?\b/.test(finding.rationale)
-    ),
-    true
-  );
+  assert.equal(classified.review.length, 2);
+  assert.equal(classified.accepted.length, 0);
 
-  assert.doesNotThrow(() => assertPluginCheckReleaseGate(source, FIXTURE_LOG_PREFIX));
+  assert.throws(() => assertPluginCheckReleaseGate(source, FIXTURE_LOG_PREFIX), /0 FAIL, 2 REVIEW, 0 ACCEPTED EXCEPTION/);
 });
 
 test('R21 rejects every Plugin Check error', () => {
@@ -90,4 +84,11 @@ test('R21 leaves an unclassified warning in REVIEW and fails the gate', () => {
     () => assertPluginCheckReleaseGate(source, FIXTURE_LOG_PREFIX),
     /0 FAIL, 1 REVIEW, 0 ACCEPTED EXCEPTION/
   );
+});
+
+ test('R39 accepts only the exact Plugin Check no-findings response',()=>{
+  assert.throws(()=>parsePluginCheckReport('  '),/report must not be empty/);
+  assert.deepEqual(parsePluginCheckReport('Success: Checks complete. No errors found.\n'),[]);
+  assert.doesNotThrow(()=>assertPluginCheckReleaseGate('Success: Checks complete. No errors found.',FIXTURE_LOG_PREFIX));
+  assert.throws(()=>parsePluginCheckReport('Success: Checks complete. No errors found.\nUnexpected warning'),/unexpected report line/);
 });

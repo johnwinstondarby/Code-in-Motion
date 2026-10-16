@@ -45,7 +45,7 @@ test('desktop boot retains the existing module entry path', () => {
   let readEntry = false;
   runInNewContext(source, {
     window: { matchMedia() { return { matches: false }; } },
-    document: { get currentScript() { readEntry = true; return null; } },
+    document: { querySelector() { return {}; }, get currentScript() { readEntry = true; return null; } },
     MutationObserver: class { constructor() { assert.fail('desktop must not install the mobile observer'); } }
   });
   assert.equal(readEntry, true);

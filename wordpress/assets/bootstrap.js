@@ -18,6 +18,9 @@
     return;
   }
 
+  // Deferred execution sees the parsed document. No embed means no module graph.
+  if (!document.querySelector('[data-cim-experience]')) return;
+
   const current = document.currentScript;
   if (!current || typeof current.src !== 'string' || current.src.length === 0) return;
 

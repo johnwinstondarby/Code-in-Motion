@@ -2,16 +2,8 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const ACCEPTED_EXCEPTIONS = new Map([
-  [
-    'EnqueuedStylesScope',
-    'CiM keeps the stable stylesheet available across frontend contexts so Host rendering does not depend on shortcode-presence prediction.'
-  ],
-  [
-    'EnqueuedScriptsScope',
-    'CiM keeps the stable bootstrap available across frontend contexts so Host startup does not depend on shortcode-presence prediction.'
-  ]
-]);
+// R39 withdraws the historical global-enqueue exceptions.
+const ACCEPTED_EXCEPTIONS = new Map();
 
 const SEMVER_LITERAL_PATTERN = /\b\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?\b/;
 
@@ -21,6 +13,9 @@ function fail(message) {
 
 export function parsePluginCheckReport(source) {
   if (typeof source !== 'string') fail('report source must be a string.');
+
+  if (source.trim().length === 0) fail('report must not be empty.');
+  if (source.trim() === 'Success: Checks complete. No errors found.') return Object.freeze([]);
 
   const lines = source.split(/\r?\n/);
   const findings = [];

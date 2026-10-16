@@ -40,6 +40,45 @@ function pathOf(url) {
   }
 }
 
+test('asset scope: pages without CiM fetch no plugin files on desktop or mobile', async ({page}) => {
+  for (const width of [1400, 390]) {
+    await page.setViewportSize({width, height:900});
+    const requests = [];
+    const listener = request => requests.push(pathOf(request.url()));
+    page.on('request', listener);
+    await page.goto(`${BASE_URL}/?pagename=cim-assets-plain`, {waitUntil:'networkidle'});
+    await expect(page.locator('[data-cim-experience]')).toHaveCount(0);
+    expect(requests.filter(path => path.includes(PLUGIN_PREFIX))).toEqual([]);
+    page.off('request', listener);
+  }
+});
+
+test('asset scope: shortcode blocks and late template embeds load with deduplicated assets', async ({page}) => {
+  await page.setViewportSize({width:1400, height:900});
+  for (const [slug, count] of [['cim-assets-block',1], ['cim-assets-late',2]]) {
+    await page.goto(`${BASE_URL}/?pagename=${slug}`, {waitUntil:'networkidle'});
+    await expect(page.locator('[data-cim-experience][data-cim-state="ready"]')).toHaveCount(count);
+    await expect(page.locator('script[src*="/wordpress/assets/bootstrap.js"]')).toHaveCount(1);
+    await expect(page.locator('link[href*="/wordpress/assets/cim.css"]')).toHaveCount(1);
+  }
+});
+
+test('asset scope: explicit filter can force assets or suppress even rendered shortcodes', async ({page}) => {
+  await page.setViewportSize({width:1400, height:900});
+  const observed = observePage(page);
+  await page.goto(`${BASE_URL}/?pagename=cim-assets-force`, {waitUntil:'networkidle'});
+  await expect(page.locator('[data-cim-experience]')).toHaveCount(0);
+  const forced = observed.requested.map(pathOf).filter(path=>path.includes(PLUGIN_PREFIX));
+  expect(forced).toContain(`${PLUGIN_PREFIX}wordpress/assets/bootstrap.js`);
+  expect(forced).toContain(`${PLUGIN_PREFIX}wordpress/assets/cim.css`);
+  expect(forced.filter(path=>path.endsWith('.mjs') || path.endsWith('.json'))).toEqual([]);
+  observed.requested.length = 0;
+  await page.goto(`${BASE_URL}/?pagename=cim-assets-suppress`, {waitUntil:'networkidle'});
+  await expect(page.locator('[data-cim-experience]')).toHaveCount(1);
+  await expect(page.locator('.cim-fallback')).toContainText('Suppressed fallback.');
+  expect(observed.requested.map(pathOf).filter(path=>path.includes(PLUGIN_PREFIX))).toEqual([]);
+});
+
 test.beforeAll(async ({ browser }) => {
   console.log(
     `R20 browser: ${browser.browserType().name()} ${browser.version()}; Playwright 1.63.0`

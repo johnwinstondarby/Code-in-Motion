@@ -44,10 +44,10 @@ function localis_cim_get_motion_policy() {
 }
 
 /**
- * Enqueue the external CiM browser entry and stylesheet.
+ * Register the external CiM browser entry and stylesheet.
  */
-function localis_cim_enqueue_assets() {
-	wp_enqueue_script(
+function localis_cim_register_assets() {
+	wp_register_script(
 		LOCALIS_CIM_SCRIPT_HANDLE,
 		plugin_dir_url( __FILE__ ) . 'assets/bootstrap.js',
 		array(),
@@ -58,14 +58,31 @@ function localis_cim_enqueue_assets() {
 		)
 	);
 
-	wp_enqueue_style(
+	wp_register_style(
 		LOCALIS_CIM_STYLE_HANDLE,
 		plugin_dir_url( __FILE__ ) . 'assets/cim.css',
 		array(),
 		LOCALIS_CIM_PLUGIN_VERSION
 	);
 }
-add_action( 'wp_enqueue_scripts', 'localis_cim_enqueue_assets' );
+add_action( 'wp_enqueue_scripts', 'localis_cim_register_assets', 10 );
+
+/** Enqueue registered assets, including shortcode calls before the normal hook. */
+function localis_cim_enqueue_now() {
+	localis_cim_register_assets();
+	wp_enqueue_script( LOCALIS_CIM_SCRIPT_HANDLE );
+	wp_enqueue_style( LOCALIS_CIM_STYLE_HANDLE );
+}
+
+/** Predict embeds in the queried post; builders can explicitly opt in or out. */
+function localis_cim_maybe_enqueue_assets() {
+	$post  = is_singular() ? get_queried_object() : null;
+	$needs = $post instanceof WP_Post && has_shortcode( $post->post_content, 'cim' );
+	if ( (bool) apply_filters( 'localis_cim_should_enqueue', $needs, $post ) ) {
+		localis_cim_enqueue_now();
+	}
+}
+add_action( 'wp_enqueue_scripts', 'localis_cim_maybe_enqueue_assets', 20 );
 
 /**
  * Project the site motion policy onto CiM's external bootstrap script.
@@ -132,6 +149,13 @@ function localis_cim_shortcode( $atts, $content = null ) {
 	}
 	if ( '' !== $instance_id && ! localis_cim_is_identifier( $instance_id ) ) {
 		return '';
+	}
+
+	// A rendered shortcode is authoritative even outside the main post content.
+	// Honor explicit suppression here too, so the filter is a real opt-out.
+	$post = is_singular() ? get_queried_object() : null;
+	if ( (bool) apply_filters( 'localis_cim_should_enqueue', true, $post ) ) {
+		localis_cim_enqueue_now();
 	}
 
 	$instance_attribute = '';
