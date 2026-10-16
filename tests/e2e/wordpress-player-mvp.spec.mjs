@@ -991,7 +991,11 @@ test('Console scroll ownership waits for explicit return and stale pane listener
   expect(await viewport.evaluate(node => node.scrollTop)).toBe(ownedTop);
   // Manual return to the newest content is explicit learner action.
   await viewport.hover();
-  await page.mouse.wheel(0, 100000);
+  // Firefox caps one wheel event to roughly one viewport; return with real wheel gestures.
+  for (let attempt = 0; attempt < 8 && !await atBottom(viewport); attempt++) {
+    await page.mouse.wheel(0, 100000);
+    await settlePaneScroll(viewport);
+  }
   await expect.poll(() => atBottom(viewport)).toBe(true);
   await expect(resume).toBeHidden();
   await page.mouse.move(0, 0);
