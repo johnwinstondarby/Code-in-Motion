@@ -203,7 +203,10 @@ test('CLI and copy: exact authored override writes plain text without seeking an
 test('CLI and copy: native drag selection and copy shortcuts leave navigation untouched',async({page,context,browserName})=>{
   if(browserName==='chromium') await context.grantPermissions(['clipboard-read','clipboard-write']);
   await open(page);const root=page.locator('.cim').first();await root.locator('[data-cim-control="next"]').click();
-  const command=root.locator('[data-role="command"]').first();const box=await command.boundingBox();
+  const command=root.locator('[data-role="command"]').first();
+  // Follow may have scrolled this earlier command outside the shorter reading pane.
+  await command.scrollIntoViewIfNeeded();
+  const box=await command.boundingBox();
   await page.mouse.move(box.x+1,box.y+box.height/2);await page.mouse.down();
   await page.mouse.move(box.x+box.width-1,box.y+box.height/2,{steps:10});await page.mouse.up();
   expect(await page.evaluate(()=>getSelection().toString())).toBe('git status');
