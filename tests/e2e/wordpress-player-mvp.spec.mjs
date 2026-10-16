@@ -205,7 +205,13 @@ test('CLI and copy: native drag selection and copy shortcuts leave navigation un
   await open(page);const root=page.locator('.cim').first();await root.locator('[data-cim-control="next"]').click();
   const command=root.locator('[data-role="command"]').first();
   // Follow may have scrolled this earlier command outside the shorter reading pane.
-  await command.scrollIntoViewIfNeeded();
+  // Center explicitly: native nearest scrolling can leave text under the sticky titlebar.
+  await command.evaluate(node=>node.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
+  await expect.poll(()=>command.evaluate(node=>{
+    const box=node.getBoundingClientRect(), y=box.y+box.height/2;
+    return node.contains(document.elementFromPoint(box.x+1,y)) &&
+      node.contains(document.elementFromPoint(box.right-1,y));
+  })).toBe(true);
   const box=await command.boundingBox();
   await page.mouse.move(box.x+1,box.y+box.height/2);await page.mouse.down();
   await page.mouse.move(box.x+box.width-1,box.y+box.height/2,{steps:10});await page.mouse.up();
