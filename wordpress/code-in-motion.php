@@ -47,7 +47,7 @@ function localis_cim_get_motion_policy() {
  * Register the external CiM browser entry and stylesheet.
  */
 function localis_cim_register_assets() {
-	wp_enqueue_script(
+	wp_register_script(
 		LOCALIS_CIM_SCRIPT_HANDLE,
 		plugin_dir_url( __FILE__ ) . 'assets/bootstrap.js',
 		array(),
@@ -58,7 +58,7 @@ function localis_cim_register_assets() {
 		)
 	);
 
-	wp_enqueue_style(
+	wp_register_style(
 		LOCALIS_CIM_STYLE_HANDLE,
 		plugin_dir_url( __FILE__ ) . 'assets/cim.css',
 		array(),
