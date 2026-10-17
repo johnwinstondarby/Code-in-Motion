@@ -1,3 +1,4 @@
+import { get } from 'node:http';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdtemp, mkdir, rm, symlink } from 'node:fs/promises';
@@ -7,6 +8,7 @@ import { spawnSync } from 'node:child_process';
 import { compileLesson, createLessonPack, createPortableArchive, MAX_AUTHORING_BYTES } from '../tools/lesson-pack-archive.mjs';
 import { lessonPackUrlFor, readBoundedLesson, MAX_LESSON_BYTES } from '../wordpress/assets/lesson-pack-loading.mjs';
 import { createWordPressExperienceLoader } from '../src/host/wordpress-browser-bindings.mjs';
+import { validatePackLesson } from '../wordpress/assets/lesson-pack-validation.mjs';
 import { checkPackLesson } from '../wordpress/assets/lesson-pack-admin.mjs';
 import { startLessonPreview } from '../tools/lesson-preview-server.mjs';
 import { resolveLearnerTheme } from '../wordpress/assets/theme-presets.mjs';
@@ -133,6 +135,13 @@ test('local preview reads edits on refresh without writing a build and refuses u
  const {server,url}=await startLessonPreview(file);t.after(()=>new Promise(done=>server.close(done)));
  assert.equal((await fetch(url)).status,200);let lesson=await(await fetch(url+'/lesson.json')).json();assert.equal(lesson.id,'cim-local-preview');
  const revised=own();revised.title='Edited without install';await writeFile(file,JSON.stringify(revised));lesson=await(await fetch(url+'/lesson.json')).json();assert.equal(lesson.presentation.title,revised.title);
+ assert.equal((await fetch(url,{method:'POST'})).status,405);
+ const foreignHost=await new Promise((done,reject)=>get(url,{headers:{Host:'elsewhere.test'}},r=>{r.resume();done(r.statusCode);}).on('error',reject));assert.equal(foreignHost,403);
  assert.equal((await fetch(url+'/package.json')).status,404);assert.equal((await fetch(url+'/lesson.json',{headers:{Origin:'https://elsewhere.test'}})).status,403);
  await writeFile(file,'{');const failed=await fetch(url+'/lesson.json');assert.equal(failed.status,422);assert.ok((await failed.json()).error);
+});
+
+test('shared pack preflight rejects schema defects before delegating to any loader',()=>{
+ const valid=compileLesson(JSON.stringify(own())).document;assert.equal(validatePackLesson(valid).id,valid.id);
+ for(const mutate of[d=>{delete d.presentation;},d=>{d.steps.at(-1).state={};}]){const bad=structuredClone(valid);mutate(bad);assert.throws(()=>validatePackLesson(bad));}
 });

@@ -36,6 +36,10 @@ const mutations=[
  ['invalid UTF-8 fails closed',reader,'fatal: true','fatal: false'],
  ['existing schema gate','wordpress/assets/lesson-pack-validation.mjs','const experience = ingestExperience(raw);','const experience = raw;'],
  ['preflight every renderer state','wordpress/assets/lesson-pack-validation.mjs','assertConsoleRendererInput(step.state, experience.renderer_config ?? null, step.renderer_config ?? null);','void step;'],
+ ['preview Host check','tools/lesson-preview-server.mjs','request.headers.host !== new URL(origin).host','false'],
+ ['preview Origin check','tools/lesson-preview-server.mjs',"request.headers.origin && request.headers.origin !== origin",'false'],
+ ['preview file allowlist','tools/lesson-preview-server.mjs','const file = assets.get(path);',"const file = resolve(root, '.' + path);"],
+ ['preview read only methods','tools/lesson-preview-server.mjs',"request.method !== 'GET' && request.method !== 'HEAD'",'false'],
  ['Admin performs actual admission','wordpress/assets/lesson-pack-admin.mjs','await loader.load(id);','void loader;']
 ];
 const args=['--test','tests/lesson-packs.test.mjs'];
