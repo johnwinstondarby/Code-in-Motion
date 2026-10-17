@@ -249,7 +249,7 @@ function localis_cim_read_admin_inventory() {
 	return array(
 		'status'      => 'available',
 		'schema'      => $registry['schema'],
-		'experiences' => $experiences,
+		'experiences' => array_merge( $experiences, array_values( cim_read_lesson_packs()['lessons'] ) ),
 	);
 }
 
@@ -658,6 +658,9 @@ function localis_cim_render_admin_console() {
 	}
 
 	echo '<h2>Experience inventory</h2>';
+	foreach ( cim_read_lesson_packs()['errors'] as $pack_error ) {
+		printf( '<div class="notice notice-error inline"><p>%s</p></div>', esc_html( $pack_error ) );
+	}
 	if ( 'available' !== $inventory['status'] ) {
 		echo '<div class="notice notice-error inline"><p>Experience registry unavailable.</p></div>';
 	} else {

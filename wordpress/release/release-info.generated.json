@@ -1,12 +1,14 @@
 {
   "schema": "localis.cim/wordpress-release-info/v1",
-  "stable_tag": "0.2.6",
+  "stable_tag": "1.0.0",
   "tested_up_to": "7.1",
   "current_release": {
-    "version": "0.2.6",
+    "version": "1.0.0",
     "notes": [
-      "Match each reading-pane scrollbar track to its own background in every learner theme.",
-      "Guard the two approved Before copying sentences in all three lesson copies; lesson content and frozen formats are unchanged."
+      "Package the first public release with install and authoring guides and a non-Git Python starter.",
+      "Compile authored v2 JSON with the standalone tool and install companion lesson packs without rebuilding CiM.",
+      "Keep schema/engine validation and bounded loading for untrusted lesson JSON; reject conflicting IDs and unsafe file locations.",
+      "Default new lessons to Light while preserving legacy lessons, identifiers, frozen formats and learner choices."
     ]
   },
   "support_uri": "https://github.com/johnwinstondarby/Code-in-Motion/issues"

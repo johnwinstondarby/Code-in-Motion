@@ -28,9 +28,9 @@ export const THEME_PRESETS = Object.freeze({
 });
 export const isThemeId = value => typeof value === 'string' && Object.hasOwn(THEME_PRESETS, value);
 
-export function resolveLearnerTheme({ explicit, contrast = false, light = false }) {
+export function resolveLearnerTheme({ explicit, contrast = false, light = false, defaultTheme = 'localis' }) {
   if (isThemeId(explicit)) return explicit;
-  return contrast ? 'high-contrast' : light ? 'light' : 'localis';
+  return contrast ? 'high-contrast' : light ? 'light' : isThemeId(defaultTheme) ? defaultTheme : 'localis';
 }
 
 export function generateThemeCSS() {

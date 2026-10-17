@@ -52,7 +52,7 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
 
       - name: Build WordPress release artifact
-        run: npm run build:wordpress
+        run: npm run build:wordpress && npm run build:authoring
 
       - name: Verify R22 staged release metadata
         run: node tools/check-wordpress-release-metadata.mjs --release-root dist/code-in-motion
@@ -140,6 +140,8 @@ jobs:
           path: |
             dist/code-in-motion-*.zip
             dist/code-in-motion-*.zip.sha256
+            dist/cim-authoring-*.zip
+            dist/cim-authoring-*.zip.sha256
           if-no-files-found: error
           retention-days: 7
 
@@ -161,6 +163,7 @@ jobs:
           set -euo pipefail
           npm ci --ignore-scripts --no-audit --no-fund
           npm run build:wordpress
+          npm run build:authoring
 
           VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
           ZIP_NAME="code-in-motion-${VERSION}.zip"
@@ -169,6 +172,7 @@ jobs:
 
           cp "dist/${ZIP_NAME}" "${EVIDENCE_DIR}/${ZIP_NAME}"
           cp "dist/${ZIP_NAME}.sha256" "${EVIDENCE_DIR}/${ZIP_NAME}.sha256"
+          cp dist/cim-authoring-* "${EVIDENCE_DIR}/"
           git rev-parse HEAD > "${EVIDENCE_DIR}/commit.txt"
           node -p "process.versions.node" > "${EVIDENCE_DIR}/node.txt"
           sha256sum "dist/${ZIP_NAME}" | awk '{print $1}' > "${EVIDENCE_DIR}/zip.sha256"
@@ -189,6 +193,7 @@ jobs:
           set -euo pipefail
           npm ci --ignore-scripts --no-audit --no-fund
           npm run build:wordpress
+          npm run build:authoring
 
       - name: Prove byte-for-byte reproducibility
         shell: bash
@@ -210,6 +215,9 @@ jobs:
           cmp --silent "${FIRST_ZIP}" "${SECOND_ZIP}"
           cmp --silent "${EVIDENCE_DIR}/${ZIP_NAME}.sha256" "dist/${ZIP_NAME}.sha256"
           (cd dist && sha256sum --check "${ZIP_NAME}.sha256")
+          cmp --silent "${EVIDENCE_DIR}/cim-authoring-${VERSION}.zip" "dist/cim-authoring-${VERSION}.zip"
+          cmp --silent "${EVIDENCE_DIR}/cim-authoring-${VERSION}.zip.sha256" "dist/cim-authoring-${VERSION}.zip.sha256"
+          (cd dist && sha256sum --check "cim-authoring-${VERSION}.zip.sha256")
 
           echo "PASS: R14 reproducible release build (commit $(git rev-parse HEAD), Node $(node -p "process.versions.node"), SHA-256 ${SECOND_SHA})."
 

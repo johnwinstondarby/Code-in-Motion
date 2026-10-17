@@ -84,6 +84,9 @@ export function classifyReleasePath(path, version = '0.1.0', registeredAssets = 
     fail('release path is not canonical: ' + path);
   }
 
+  const publicGuides = new Set(['docs/INSTALL.md','docs/AUTHORING-GUIDE.md','docs/AUTHORING-JSON-v1.md','docs/AUTHORING-JSON-v2.md']);
+  if (publicGuides.has(path)) return 'approved-static';
+
   for (const segment of segments) {
     if (DENIED_SEGMENTS.has(segment)) fail('denied development/test path segment: ' + path);
     if (isEnvFile(segment)) fail('environment file is forbidden: ' + path);
@@ -102,6 +105,7 @@ export function classifyReleasePath(path, version = '0.1.0', registeredAssets = 
     'uninstall.php',
     'wordpress/code-in-motion.php',
     'wordpress/admin-console.php',
+    'wordpress/lesson-packs.php',
     'wordpress/assets/bootstrap.js',
     'wordpress/assets/cim.css',
     'wordpress/experiences/registry.json',

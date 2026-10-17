@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+import { readFile, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { compileLesson, createLessonPack, MAX_AUTHORING_BYTES } from './lesson-pack-archive.mjs';
+
+export async function main(args) {
+  const [command, source, ...rest] = args;
+  if (!['init','validate','compile','pack'].includes(command) || !source || (rest.length && !(rest.length===2 && rest[0]==='--out' && rest[1])) || (['init','validate'].includes(command) && rest.length)) {
+    throw new Error('Usage: node tools/cim-author.mjs init lesson.json | validate lesson.json | compile lesson.json --out compiled.json | pack lesson.json --out lesson-pack.zip');
+  }
+  if (command==='init') {
+    const starter = JSON.parse(await readFile(new URL('../experiences/starter/python-first-steps.authoring.json',import.meta.url),'utf8'));
+    starter.id = 'my-first-lesson'; starter.title = 'My first Python lesson';
+    await writeFile(resolve(source), JSON.stringify(starter,null,2)+'\n', {flag:'wx'});
+    console.log('Created '+source+'. Change its id and title before making your own pack.'); return;
+  }
+  const { stat } = await import('node:fs/promises');
+  if ((await stat(resolve(source))).size > MAX_AUTHORING_BYTES) throw new RangeError('Authored lesson exceeds 2 MiB.');
+  const text = await readFile(resolve(source),'utf8');
+  const result = compileLesson(text);
+  if (command==='validate') { console.log('Valid: '+result.document.id+' ('+result.document.steps.length+' segments).'); return; }
+  if (command==='compile') {
+    if (!rest.length) throw new Error('compile requires --out compiled.json');
+    await writeFile(resolve(rest[1]),result.text,{flag:'wx'}); return;
+  }
+  const pack = createLessonPack(text,await readFile(new URL('../LICENSE',import.meta.url),'utf8'));
+  const output = rest[1] ?? 'cim-lesson-'+pack.id+'.zip';
+  await writeFile(resolve(output),pack.zip,{flag:'wx'});
+  await writeFile(resolve(output+'.sha256'),pack.sha256+'  '+output.split(/[\\/]/).at(-1)+'\n',{flag:'wx'});
+  console.log('Created '+output+'\nSHA-256 '+pack.sha256+'\nInstall and activate this lesson-pack ZIP alongside CiM, then use [cim experience="'+pack.id+'"].');
+}
+if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href===import.meta.url) {
+  main(process.argv.slice(2)).catch(error=>{
+    console.error(error.message);
+    for (const diagnostic of error.diagnostics??[]) console.error(`${diagnostic.code} ${diagnostic.path}: ${diagnostic.message}`);
+    process.exitCode=1;
+  });
+}

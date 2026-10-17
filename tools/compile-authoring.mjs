@@ -28,6 +28,12 @@ export const AUTHORING_BUILDS = Object.freeze([
     output: 'experiences/git/git-repository-practice.json',
     provenance: 'experiences/git/git-repository-practice.provenance.json',
     boundaries: 18
+  }),
+  Object.freeze({
+    source: 'experiences/starter/python-first-steps.authoring.json',
+    output: 'experiences/starter/python-first-steps.json',
+    provenance: 'experiences/starter/python-first-steps.provenance.json',
+    boundaries: 5
   })
 ]);
 

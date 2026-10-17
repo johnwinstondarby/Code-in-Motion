@@ -105,7 +105,7 @@ jobs:
         env:
           CIM_WP_BASE_URL: http://localhost:8888
           CIM_WP_LAYOUT: source
-        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-git-basic-cycle.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs tests/e2e/wordpress-fault-matrix.spec.mjs tests/e2e/wordpress-player-mvp.spec.mjs --reporter=line
+        run: npx playwright test tests/e2e/wordpress-synthetic-mount.spec.mjs tests/e2e/wordpress-git-basic-cycle.spec.mjs tests/e2e/wordpress-detached-root.spec.mjs tests/e2e/wordpress-fault-matrix.spec.mjs tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs --reporter=line
 
       - name: Prove registered v2 admission in source WordPress
         env:
@@ -115,7 +115,9 @@ jobs:
           npx playwright test tests/e2e/wordpress-v2-admission.spec.mjs --reporter=line
 
       - name: Prove ADR 0049 Player mutation guards
-        run: node tools/check-wordpress-player-mutations.mjs --work-directory=${{ runner.temp }}/cim-player-mutations
+        run: |
+          node tools/check-wordpress-player-mutations.mjs --work-directory=${{ runner.temp }}/cim-player-mutations
+          node tools/check-lesson-pack-mutations.mjs --work-directory=${{ runner.temp }}/cim-pack-mutations
 
       - name: Stop wp-env
         if: always()
@@ -268,7 +270,7 @@ jobs:
           ADMIN_INVENTORY="$ADMIN_INVENTORY" node --input-type=module <<'NODE'
           const inventory = JSON.parse(process.env.ADMIN_INVENTORY);
           if (inventory.status !== 'available') throw new Error('R31 installed inventory unavailable.');
-          if (!Array.isArray(inventory.experiences) || inventory.experiences.length !== 3) {
+          if (!Array.isArray(inventory.experiences) || inventory.experiences.length !== 4) {
             throw new Error('R31 installed inventory count mismatch.');
           }
           if (inventory.experiences.some((entry) => entry.present !== true || entry.source !== 'release')) {
@@ -406,6 +408,23 @@ jobs:
           npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" run cli wp post create --post_type=page --post_status=publish --post_name=cim-e2e-v2 --post_title='CiM v2 admission' --post_content='[cim experience="git-repository-practice" instance="admission-v2"]V2 fallback.[/cim][cim experience="git-basic-cycle" instance="admission-legacy"]Legacy fallback.[/cim]'
           CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-v2-admission.spec.mjs --reporter=line
 
+      - name: Build standalone tool and install a separately generated lesson pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run build:authoring
+          unzip -q dist/cim-authoring-*.zip -d "${RUNNER_TEMP}/cim-authoring"
+          TOOL="${RUNNER_TEMP}/cim-authoring/cim-authoring-${CIM_PLUGIN_VERSION}"
+          (cd "${TOOL}" && node tools/cim-author.mjs init teacher.json && node tools/cim-author.mjs validate teacher.json && node tools/cim-author.mjs pack teacher.json --out "${CIM_R15_ARTIFACT_DIR}/teacher-pack.zip")
+          wp_env() { npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" "$@"; }
+          wp_env run cli wp plugin install wp-content/r15-artifact/teacher-pack.zip --activate
+          wp_env run cli wp post create --post_type=page --post_status=publish --post_name=cim-pack-proof --post_title='Teacher pack proof' --post_content='[cim experience="my-first-lesson"]Teacher fallback.[/cim]'
+          CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
+          wp_env run cli wp plugin deactivate cim-lesson-my-first-lesson
+          wp_env run cli wp eval 'if (count(cim_read_lesson_packs()["lessons"]) !== 0) { throw new Exception("Deactivated lesson retained"); }'
+          wp_env run cli wp plugin activate cim-lesson-my-first-lesson
+          wp_env run cli wp eval 'if (!isset(cim_read_lesson_packs()["lessons"]["my-first-lesson"])) { throw new Exception("Reactivated lesson missing"); }'
+
       - name: Preserve the exact installed RC2 ZIP
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -434,7 +453,7 @@ jobs:
             echo "R33 expected Code in Motion to be absent after uninstall/delete." >&2
             exit 1
           fi
-          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion'
+          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion; test -f wp-content/plugins/cim-lesson-my-first-lesson/lesson-pack.php'
 
           RESIDUE_AFTER="$(wp_env run cli wp eval '
             global $wpdb;
@@ -495,6 +514,8 @@ jobs:
             prior_ref: 'd2db88e90951ad957924d710e49e8a6bff96b3c6'
           - prior_version: '0.2.1'
             prior_ref: '4c53f2c75663b43133273cdee99ee38cc2ff148c'
+          - prior_version: '0.2.6'
+            prior_ref: 'ca0628768f0e92fec7129d449e1933f0c746026e'
           - prior_version: '0.2.5'
             prior_ref: 'f8651ede895b2e61369f684f50b0c1096afbd282'
           - prior_version: '0.2.4'
@@ -531,8 +552,8 @@ jobs:
           npm run build:wordpress
           mkdir -p "${CIM_R16_ARTIFACT_DIR}"
           node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}" --prior-ref "${{ matrix.prior_ref }}" --prior-version "${{ matrix.prior_version }}"
-          node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}/rollback" --prior-ref f8651ede895b2e61369f684f50b0c1096afbd282 --prior-version 0.2.5
-          echo 'f08e299c1295e26244f282b21390fa70d9ec79d3192233d25b9338460f967a50  code-in-motion-0.2.5.zip' | (cd "${CIM_R16_ARTIFACT_DIR}/rollback" && sha256sum --check)
+          node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}/rollback" --prior-ref ca0628768f0e92fec7129d449e1933f0c746026e --prior-version 0.2.6
+          echo '276a0eaac38015e8522b6ed72dc49a0ea8850b24eaa582dd792a19f866e93d1d  code-in-motion-0.2.6.zip' | (cd "${CIM_R16_ARTIFACT_DIR}/rollback" && sha256sum --check)
 
           CURRENT_VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
           PRIOR_VERSION="$(node -p "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).prior.version" "${CIM_R16_ARTIFACT_DIR}/upgrade-pair.json")"
@@ -622,6 +643,15 @@ jobs:
           test "${INSTALLED_COUNT}" = "${CIM_R16_PRIOR_FILE_COUNT}"
           echo "PASS: R16 N installed active (${VERSION}, ${INSTALLED_COUNT} files)."
 
+      - name: Install independent lesson before upgrade
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/cim-author.mjs init "${CIM_R16_ARTIFACT_DIR}/teacher.json"
+          node tools/cim-author.mjs pack "${CIM_R16_ARTIFACT_DIR}/teacher.json" --out "${CIM_R16_ARTIFACT_DIR}/teacher-pack.zip"
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli wp plugin install wp-content/r16-artifact/teacher-pack.zip --activate
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli wp post create --post_type=page --post_status=publish --post_name=cim-pack-proof --post_title='Pack retained across upgrade' --post_content='[cim experience="my-first-lesson"]Teacher fallback.[/cim]'
+
       - name: Create upgrade diagnostic page
         shell: bash
         run: |
@@ -642,6 +672,9 @@ jobs:
           CIM_R16_PRIOR_VERSION="${CIM_R16_PRIOR_VERSION}" \
           CIM_R16_CURRENT_VERSION="${CIM_R16_CURRENT_VERSION}" \
           npx playwright test tests/e2e/wordpress-upgrade.spec.mjs --reporter=line
+
+      - name: Verify pack retained and displayed after upgrade
+        run: CIM_WP_BASE_URL=http://localhost:8891 npx playwright test tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
 
       - name: Verify N+1 replacement postconditions
         shell: bash
@@ -664,7 +697,7 @@ jobs:
           test "${INSTALLED_COUNT}" = "${CIM_R16_CURRENT_FILE_COUNT}"
           echo "PASS: R16 N -> N+1 replacement preserved activation (${VERSION}, ${INSTALLED_COUNT} files)."
 
-      - name: Rehearse rollback to exact live 0.2.5 and captured page within 60 seconds
+      - name: Rehearse rollback to exact live 0.2.6 and captured page within 60 seconds
         shell: bash
         run: |
           set -euo pipefail
@@ -679,14 +712,16 @@ jobs:
             wp --user=admin eval-file wp-content/r16-artifact/prepare-page.php "$PAGE_ID"
             wp eval-file wp-content/r16-artifact/capture-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
             wp post update "$PAGE_ID" --post_content="[cim experience=\"git-repository-practice\"]RC2 cutover rehearsal.[/cim]"
-            wp plugin install wp-content/r16-artifact/rollback/code-in-motion-0.2.5.zip --force --activate
+            wp plugin install wp-content/r16-artifact/rollback/code-in-motion-0.2.6.zip --force --activate
             wp --user=admin eval-file wp-content/r16-artifact/restore-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
-            test "$(wp plugin get code-in-motion --field=version)" = "0.2.5"
+            test "$(wp plugin get code-in-motion --field=version)" = "0.2.6"
+            test -f wp-content/plugins/cim-lesson-my-first-lesson/lesson-pack.php
+            wp plugin is-active cim-lesson-my-first-lesson
             wp cache flush
           '
           ROLLBACK_SECONDS=$(( $(date +%s) - ROLLBACK_STARTED ))
           test "${ROLLBACK_SECONDS}" -lt 60
-          printf 'Release rollback rehearsal: %s seconds (candidate -> live 0.2.5, exact page restore).\n' "${ROLLBACK_SECONDS}" | tee "${CIM_R16_ARTIFACT_DIR}/rollback-timing.txt"
+          printf 'Release rollback rehearsal: %s seconds (candidate -> live 0.2.6, exact page restore).\n' "${ROLLBACK_SECONDS}" | tee "${CIM_R16_ARTIFACT_DIR}/rollback-timing.txt"
           CIM_WP_BASE_URL=http://localhost:8891 npx playwright test tests/e2e/wordpress-rollback.spec.mjs --reporter=line
 
       - name: Preserve RC2 upgrade and rollback proof
@@ -1181,7 +1216,7 @@ jobs:
       - name: Verify learner presets in selected browser
         env:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
-        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs --reporter=line
+        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs --reporter=line
 
       - name: Stop R20 browser environment
         if: always()

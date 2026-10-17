@@ -7,7 +7,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 export const R22_METADATA = Object.freeze({
   pluginName: 'Code in Motion',
   pluginUri: 'https://github.com/johnwinstondarby/Code-in-Motion',
-  description: 'WordPress host, runtime bindings, and controls for Code in Motion experiences.',
+  description: 'Teach code with learner-controlled Console and Explanation lessons, beat navigation, Copy and companion lesson packs.',
   requiresWordPress: '6.5',
   testedWordPress: '7.1',
   requiresPhp: '7.4',

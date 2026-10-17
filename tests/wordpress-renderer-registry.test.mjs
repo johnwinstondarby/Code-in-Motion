@@ -63,6 +63,7 @@ test('R32 every shipped registered Experience resolves through the production re
   assert.deepEqual(result.experienceBindings, [
     { experienceId: 'git-basic-cycle', rendererId: 'git/v1' },
     { experienceId: 'git-repository-practice', rendererId: 'console/v1' },
+    { experienceId: 'python-first-steps', rendererId: 'console/v1' },
     { experienceId: 'synthetic-wordpress', rendererId: 'synthetic/v1' }
   ]);
 });

@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Code in Motion
  * Plugin URI: https://github.com/johnwinstondarby/Code-in-Motion
- * Description: WordPress host, runtime bindings, and controls for Code in Motion experiences.
- * Version: 0.2.6
+ * Description: Teach code with learner-controlled Console and Explanation lessons, beat navigation, Copy and companion lesson packs.
+ * Version: 1.0.0
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author: Localis

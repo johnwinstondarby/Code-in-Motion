@@ -1,0 +1,27 @@
+{
+  "schema": "localis.cim/authoring/v2",
+  "id": "python-first-steps",
+  "title": "Python: values, names and expressions",
+  "description": "Read three Python expressions. The Console is a demonstration: it displays examples and never runs code on your device.",
+  "subject": "python",
+  "version": "1.0.0",
+  "console": { "title": "Python interactive examples", "prompt": ">>>" },
+  "presentation": { "layout": "console-explanation", "defaultPlaybackRate": 1 },
+  "beats": [
+    {
+      "id": "read-a-value",
+      "console": { "command": "2 + 3", "output": [{ "id": "sum", "text": "5", "tone": "normal" }] },
+      "explanation": { "heading": "Evaluate an expression", "segments": [{ "at": "command", "text": "An expression describes a value. Here Python adds two integers." }, { "at": "output", "text": "The result is the integer five.", "focus": ["sum"] }] }
+    },
+    {
+      "id": "name-a-value",
+      "console": { "command": "count = 5", "output": [] },
+      "explanation": { "heading": "Give a value a name", "segments": [{ "at": "command", "text": "Assignment associates the name count with the value five. Assignment does not print a result." }] }
+    },
+    {
+      "id": "use-the-name",
+      "console": { "command": "count * 2", "output": [{ "id": "product", "text": "10", "tone": "normal" }] },
+      "explanation": { "heading": "Use the value again", "segments": [{ "at": "command", "text": "Python looks up count and multiplies its value by two." }, { "at": "output", "text": "The result is ten. count still refers to five.", "focus": ["product"] }], "references": [{ "label": "Python tutorial: numbers", "url": "https://docs.python.org/3/tutorial/introduction.html#numbers" }] }
+    }
+  ]
+}

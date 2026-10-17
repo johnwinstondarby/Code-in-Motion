@@ -1,0 +1,240 @@
+{
+  "schema": "localis.cim/v2",
+  "engine_min": "0.2.0",
+  "experience_version": "1.0.0",
+  "id": "python-first-steps",
+  "renderer": "console/v1",
+  "renderer_config": {
+    "title": "Python interactive examples",
+    "prompt": ">>>"
+  },
+  "presentation": {
+    "title": "Python: values, names and expressions",
+    "description": "Read three Python expressions. The Console is a demonstration: it displays examples and never runs code on your device.",
+    "subject": "python",
+    "beat_count": 3,
+    "default_playback_rate": 1
+  },
+  "initial_state": {
+    "transcript": [],
+    "focus": []
+  },
+  "steps": [
+    {
+      "id": "read-a-value--s01",
+      "label": "Evaluate an expression",
+      "beat": {
+        "id": "read-a-value",
+        "ordinal": 1,
+        "heading": "Evaluate an expression",
+        "segment_ordinal": 1,
+        "segment_count": 2,
+        "final": false
+      },
+      "commentary": {
+        "text": "An expression describes a value. Here Python adds two integers.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "read-a-value",
+            "command": "2 + 3",
+            "copy": "2 + 3"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "read-a-value--s02",
+      "label": "Evaluate an expression",
+      "beat": {
+        "id": "read-a-value",
+        "ordinal": 1,
+        "heading": "Evaluate an expression",
+        "segment_ordinal": 2,
+        "segment_count": 2,
+        "final": true
+      },
+      "commentary": {
+        "text": "The result is the integer five.",
+        "anchor": "output",
+        "evidence": [
+          "sum"
+        ],
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "read-a-value",
+            "command": "2 + 3",
+            "copy": "2 + 3",
+            "output": [
+              {
+                "id": "sum",
+                "text": "5",
+                "tone": "normal"
+              }
+            ]
+          }
+        ],
+        "focus": [
+          "sum"
+        ]
+      },
+      "dwell_ms": 1600
+    },
+    {
+      "id": "name-a-value--s01",
+      "label": "Give a value a name",
+      "beat": {
+        "id": "name-a-value",
+        "ordinal": 2,
+        "heading": "Give a value a name",
+        "segment_ordinal": 1,
+        "segment_count": 1,
+        "final": true
+      },
+      "commentary": {
+        "text": "Assignment associates the name count with the value five. Assignment does not print a result.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "read-a-value",
+            "command": "2 + 3",
+            "copy": "2 + 3",
+            "output": [
+              {
+                "id": "sum",
+                "text": "5",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "name-a-value",
+            "command": "count = 5",
+            "copy": "count = 5"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 1600
+    },
+    {
+      "id": "use-the-name--s01",
+      "label": "Use the value again",
+      "beat": {
+        "id": "use-the-name",
+        "ordinal": 3,
+        "heading": "Use the value again",
+        "segment_ordinal": 1,
+        "segment_count": 2,
+        "final": false
+      },
+      "commentary": {
+        "text": "Python looks up count and multiplies its value by two.",
+        "anchor": "command",
+        "links": []
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "read-a-value",
+            "command": "2 + 3",
+            "copy": "2 + 3",
+            "output": [
+              {
+                "id": "sum",
+                "text": "5",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "name-a-value",
+            "command": "count = 5",
+            "copy": "count = 5"
+          },
+          {
+            "beat": "use-the-name",
+            "command": "count * 2",
+            "copy": "count * 2"
+          }
+        ],
+        "focus": []
+      },
+      "dwell_ms": 900
+    },
+    {
+      "id": "use-the-name--s02",
+      "label": "Use the value again",
+      "beat": {
+        "id": "use-the-name",
+        "ordinal": 3,
+        "heading": "Use the value again",
+        "segment_ordinal": 2,
+        "segment_count": 2,
+        "final": true
+      },
+      "commentary": {
+        "text": "The result is ten. count still refers to five.",
+        "anchor": "output",
+        "evidence": [
+          "product"
+        ],
+        "links": [
+          {
+            "id": "ref-01",
+            "label": "Python tutorial: numbers",
+            "href": "https://docs.python.org/3/tutorial/introduction.html#numbers"
+          }
+        ]
+      },
+      "state": {
+        "transcript": [
+          {
+            "beat": "read-a-value",
+            "command": "2 + 3",
+            "copy": "2 + 3",
+            "output": [
+              {
+                "id": "sum",
+                "text": "5",
+                "tone": "normal"
+              }
+            ]
+          },
+          {
+            "beat": "name-a-value",
+            "command": "count = 5",
+            "copy": "count = 5"
+          },
+          {
+            "beat": "use-the-name",
+            "command": "count * 2",
+            "copy": "count * 2",
+            "output": [
+              {
+                "id": "product",
+                "text": "10",
+                "tone": "normal"
+              }
+            ]
+          }
+        ],
+        "focus": [
+          "product"
+        ]
+      },
+      "dwell_ms": 1600
+    }
+  ]
+}
