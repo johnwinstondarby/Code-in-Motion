@@ -1,7 +1,8 @@
 import {test,expect} from '@playwright/test';
 import {mkdtemp,readFile,writeFile,rm} from 'node:fs/promises';
 import {resolve} from 'node:path';
-import {startLessonPreview} from '../../tools/lesson-preview-server.mjs';
+import {pathToFileURL} from 'node:url';
+const {startLessonPreview}=await import(pathToFileURL(resolve(process.env.CIM_AUTHORING_ROOT??'.','tools/lesson-preview-server.mjs')).href);
 test.use({browserName:process.env.CIM_PLAYER_BROWSER??'chromium',viewport:{width:1410,height:900}});
 let work,file,server,url;
 test.beforeAll(async()=>{work=await mkdtemp(resolve('../v1-preview-e2e-'));file=resolve(work,'lesson.json');await writeFile(file,await readFile('experiences/starter/python-first-steps.authoring.json'));({server,url}=await startLessonPreview(file));});

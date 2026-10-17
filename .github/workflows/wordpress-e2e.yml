@@ -416,6 +416,7 @@ jobs:
           unzip -q dist/cim-authoring-*.zip -d "${RUNNER_TEMP}/cim-authoring"
           TOOL="${RUNNER_TEMP}/cim-authoring/cim-authoring-${CIM_PLUGIN_VERSION}"
           (cd "${TOOL}" && node tools/cim-author.mjs init teacher.json && node tools/cim-author.mjs validate teacher.json && node tools/cim-author.mjs pack teacher.json --out "${CIM_R15_ARTIFACT_DIR}/teacher-pack.zip")
+          CIM_AUTHORING_ROOT="${TOOL}" npx playwright test tests/e2e/lesson-preview.spec.mjs --reporter=line
           wp_env() { npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" "$@"; }
           wp_env run cli wp plugin install wp-content/r15-artifact/teacher-pack.zip --activate
           wp_env run cli wp post create --post_type=page --post_status=publish --post_name=cim-pack-proof --post_title='Teacher pack proof' --post_content='[cim experience="my-first-lesson"]Teacher fallback.[/cim]'
@@ -433,6 +434,22 @@ jobs:
           wp_env run cli wp eval 'if (count(localis_cim_read_lesson_packs()["lessons"]) !== 0) { throw new Exception("Deactivated lesson retained"); }'
           wp_env run cli wp plugin activate cim-lesson-my-first-lesson
           wp_env run cli wp eval 'if (!isset(localis_cim_read_lesson_packs()["lessons"]["my-first-lesson"])) { throw new Exception("Reactivated lesson missing"); }'
+
+      - name: Prove Admin rejection before a lesson page is opened
+        shell: bash
+        run: |
+          set -euo pipefail
+          TOOL="${RUNNER_TEMP}/cim-authoring/cim-authoring-${CIM_PLUGIN_VERSION}"
+          TOOL_DIR="${TOOL}" node --input-type=module <<'NODE'
+          import {readFile,writeFile} from 'node:fs/promises';
+          const doc=JSON.parse(await readFile(process.env.TOOL_DIR+'/teacher.json','utf8'));doc.id='invalid-lesson';
+          await writeFile(process.env.TOOL_DIR+'/invalid.json',JSON.stringify(doc));
+          NODE
+          (cd "${TOOL}" && node tools/cim-author.mjs pack invalid.json --out "${CIM_R15_ARTIFACT_DIR}/invalid-pack.zip")
+          wp_env() { npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" "$@"; }
+          wp_env run cli wp plugin install wp-content/r15-artifact/invalid-pack.zip --activate
+          wp_env run cli wp eval '$pack=localis_cim_read_lesson_packs()["lessons"]["invalid-lesson"]; $file=WP_PLUGIN_DIR."/cim-lesson-invalid-lesson/".$pack["asset"]; $data=json_decode(file_get_contents($file),true);unset($data["presentation"]);file_put_contents($file,wp_json_encode($data));'
+          CIM_PACK_ADMIN_CHECK=1 CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
 
       - name: Preserve the exact installed RC2 ZIP
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

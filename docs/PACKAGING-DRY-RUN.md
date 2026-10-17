@@ -16,8 +16,9 @@ WordPress / PHP / operating system:
 | Put the Python starter on a draft page; Play, Next, Previous, End, Copy | | |
 | Download/extract the standalone authoring tool; confirm Node | | |
 | Init a lesson, change its ID/title and three beats using only the guide | | |
+| Preview locally; save a typo fix and refresh without installing anything | | |
 | Validate, compile and build the companion plugin ZIP | | |
-| Install/activate it; copy its inventory shortcode to a draft page | | |
+| Install/activate it; wait for Admin Lesson packs Ready, then copy its shortcode | | |
 | Confirm content, references, evidence cue and risk label | | |
 | Revise the lesson version, replace its plugin, see the revision | | |
 | Deactivate/reactivate pack; confirm files and page survive | | |

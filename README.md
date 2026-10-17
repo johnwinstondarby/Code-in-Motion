@@ -16,7 +16,7 @@ Teachers can add their own lessons using the standalone authoring tool and compa
 2. In WordPress 6.5+ (PHP 7.4+), install and activate the ZIP through **Plugins → Add Plugin → Upload Plugin**.
 3. Add a Shortcode block to a draft page: `[cim experience="python-first-steps"]`. Preview on a desktop or laptop, then press Play.
 4. Check **Code in Motion → Static health** if fallback text appears. The install guide explains each check.
-5. To write your own lesson, download the separate authoring-tool ZIP, run `node tools/cim-author.mjs init my-lesson.json`, edit it, then follow the authoring guide to validate, pack, install and preview it.
+5. To write your own lesson, download the separate authoring-tool ZIP, run `node tools/cim-author.mjs init my-lesson.json`, edit it, use `node tools/cim-author.mjs preview my-lesson.json` to see the Player locally, then follow the guide to validate, pack and install it.
 
 Acceptance targets: a working starter on a fresh site in under 15 minutes; an unfamiliar teacher's own three-beat lesson in about 30 minutes. These targets require an actual timed outsider run before v1.0 publication.
 

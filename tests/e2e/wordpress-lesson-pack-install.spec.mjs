@@ -11,3 +11,11 @@ test('installed companion pack mounts through the release plugin and keeps lesso
  await expect(root.getByLabel('Lesson beat progress')).toContainText('3 / 3');
  await expect(root.getByRole('button',{name:'Copy command: count * 2',exact:true})).toBeVisible();
 });
+
+test('WordPress Admin lists healthy and rejected packs before a teacher opens a lesson page',async({page})=>{
+ test.skip(process.env.CIM_PACK_ADMIN_CHECK!=='1','Fresh-install job supplies the deliberately invalid companion fixture.');
+ await page.goto(base+'/wp-login.php');await page.locator('#user_login').fill('admin');await page.locator('#user_pass').fill('password');await page.locator('#wp-submit').click();
+ await page.goto(base+'/wp-admin/admin.php?page=code-in-motion');
+ const good=page.locator('[data-cim-pack-lesson="my-first-lesson"]'),bad=page.locator('[data-cim-pack-lesson="invalid-lesson"]');
+ await expect(good.locator('[data-cim-pack-status]')).toHaveText('Ready');await expect(bad.locator('[data-cim-pack-status]')).toHaveText('Rejected');await expect(bad.locator('[data-cim-pack-reason]')).toContainText('CIM-EXP');await expect(bad.locator('[data-cim-pack-shortcode]')).toContainText('Unavailable');await expect(good.locator('[data-cim-pack-shortcode]')).toContainText('[cim experience=');
+});
