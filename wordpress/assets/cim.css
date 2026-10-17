@@ -697,10 +697,13 @@
   height: min(32rem, 45vh);
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: var(--cim-structural-border) var(--cim-console-background);
 }
 .cim [data-cim-player="console-explanation"] [data-cim-console-viewport] {
+  scrollbar-color: var(--cim-structural-border) var(--cim-console-background);
   padding-inline-end: 0.75rem;
+}
+.cim [data-cim-player="console-explanation"] [data-cim-commentary-viewport] {
+  scrollbar-color: var(--cim-structural-border) var(--cim-explanation-background);
 }
 .cim [data-cim-player="console-explanation"] [data-role="titlebar"] {
   flex-wrap: wrap;

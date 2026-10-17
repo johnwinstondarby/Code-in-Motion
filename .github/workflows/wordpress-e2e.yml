@@ -495,6 +495,8 @@ jobs:
             prior_ref: 'd2db88e90951ad957924d710e49e8a6bff96b3c6'
           - prior_version: '0.2.1'
             prior_ref: '4c53f2c75663b43133273cdee99ee38cc2ff148c'
+          - prior_version: '0.2.5'
+            prior_ref: 'f8651ede895b2e61369f684f50b0c1096afbd282'
           - prior_version: '0.2.4'
             prior_ref: '55027cfa79ddae112545f5de293ce22b9d8cc260'
           - prior_version: '0.2.3'
@@ -529,8 +531,8 @@ jobs:
           npm run build:wordpress
           mkdir -p "${CIM_R16_ARTIFACT_DIR}"
           node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}" --prior-ref "${{ matrix.prior_ref }}" --prior-version "${{ matrix.prior_version }}"
-          node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}/rollback" --prior-ref 55027cfa79ddae112545f5de293ce22b9d8cc260 --prior-version 0.2.4
-          echo 'ef5ffa0675214359fca09a89021ce1a180b129e3000280510d5cec3ea85019e4  code-in-motion-0.2.4.zip' | (cd "${CIM_R16_ARTIFACT_DIR}/rollback" && sha256sum --check)
+          node tools/build-wordpress-upgrade-fixture.mjs --artifact-dir "${CIM_R16_ARTIFACT_DIR}/rollback" --prior-ref f8651ede895b2e61369f684f50b0c1096afbd282 --prior-version 0.2.5
+          echo 'f08e299c1295e26244f282b21390fa70d9ec79d3192233d25b9338460f967a50  code-in-motion-0.2.5.zip' | (cd "${CIM_R16_ARTIFACT_DIR}/rollback" && sha256sum --check)
 
           CURRENT_VERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
           PRIOR_VERSION="$(node -p "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).prior.version" "${CIM_R16_ARTIFACT_DIR}/upgrade-pair.json")"
@@ -662,7 +664,7 @@ jobs:
           test "${INSTALLED_COUNT}" = "${CIM_R16_CURRENT_FILE_COUNT}"
           echo "PASS: R16 N -> N+1 replacement preserved activation (${VERSION}, ${INSTALLED_COUNT} files)."
 
-      - name: Rehearse rollback to exact live 0.2.4 and captured page within 60 seconds
+      - name: Rehearse rollback to exact live 0.2.5 and captured page within 60 seconds
         shell: bash
         run: |
           set -euo pipefail
@@ -677,14 +679,14 @@ jobs:
             wp --user=admin eval-file wp-content/r16-artifact/prepare-page.php "$PAGE_ID"
             wp eval-file wp-content/r16-artifact/capture-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
             wp post update "$PAGE_ID" --post_content="[cim experience=\"git-repository-practice\"]RC2 cutover rehearsal.[/cim]"
-            wp plugin install wp-content/r16-artifact/rollback/code-in-motion-0.2.4.zip --force --activate
+            wp plugin install wp-content/r16-artifact/rollback/code-in-motion-0.2.5.zip --force --activate
             wp --user=admin eval-file wp-content/r16-artifact/restore-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
-            test "$(wp plugin get code-in-motion --field=version)" = "0.2.4"
+            test "$(wp plugin get code-in-motion --field=version)" = "0.2.5"
             wp cache flush
           '
           ROLLBACK_SECONDS=$(( $(date +%s) - ROLLBACK_STARTED ))
           test "${ROLLBACK_SECONDS}" -lt 60
-          printf 'Release rollback rehearsal: %s seconds (candidate -> live 0.2.4, exact page restore).\n' "${ROLLBACK_SECONDS}" | tee "${CIM_R16_ARTIFACT_DIR}/rollback-timing.txt"
+          printf 'Release rollback rehearsal: %s seconds (candidate -> live 0.2.5, exact page restore).\n' "${ROLLBACK_SECONDS}" | tee "${CIM_R16_ARTIFACT_DIR}/rollback-timing.txt"
           CIM_WP_BASE_URL=http://localhost:8891 npx playwright test tests/e2e/wordpress-rollback.spec.mjs --reporter=line
 
       - name: Preserve RC2 upgrade and rollback proof

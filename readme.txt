@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.5
+Stable tag: 0.2.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -41,6 +41,10 @@ If any of these checks fail, preserve the fallback text and report the failed st
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 0.2.6 =
+* Match each reading-pane scrollbar track to its own background in every learner theme.
+* Guard the two approved Before copying sentences in all three lesson copies; lesson content and frozen formats are unchanged.
 
 = 0.2.5 =
 * Pause v2 playback after each complete beat; press Play to continue. Manual Next still completes an unfinished beat before advancing.
@@ -124,6 +128,9 @@ Report defects and release issues at https://github.com/johnwinstondarby/Code-in
 * Initial WordPress release with deterministic packaging, upgrade-safe versioned assets, and the synthetic diagnostic Experience.
 
 == Upgrade Notice ==
+
+= 0.2.6 =
+Fixes the Explanation scrollbar track and guards existing copying reminders. No page edits are required. Retain the exact 0.2.5 ZIP for rollback and clear hosting caches after replacement.
 
 = 0.2.5 =
 V2 playback pauses after each beat for reading. Continue with Play or navigate with Next. Desktop layout and Copy refinements; no page-content changes. Roll back through wp-admin with the exact 0.2.4 ZIP and clear hosting caches.
