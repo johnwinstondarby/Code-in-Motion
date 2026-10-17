@@ -420,6 +420,14 @@ jobs:
           wp_env run cli wp plugin install wp-content/r15-artifact/teacher-pack.zip --activate
           wp_env run cli wp post create --post_type=page --post_status=publish --post_name=cim-pack-proof --post_title='Teacher pack proof' --post_content='[cim experience="my-first-lesson"]Teacher fallback.[/cim]'
           CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
+          TOOL_DIR="${TOOL}" node --input-type=module <<'NODE'
+          import {readFile,writeFile} from 'node:fs/promises';
+          const file=process.env.TOOL_DIR+'/teacher.json',doc=JSON.parse(await readFile(file,'utf8'));
+          doc.title='Revised teacher lesson';doc.version='1.0.1';await writeFile(file,JSON.stringify(doc));
+          NODE
+          (cd "${TOOL}" && node tools/cim-author.mjs pack teacher.json --out "${CIM_R15_ARTIFACT_DIR}/teacher-revised.zip")
+          wp_env run cli wp plugin install wp-content/r15-artifact/teacher-revised.zip --force --activate
+          CIM_PACK_EXPECT_TITLE='Revised teacher lesson' CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
           wp_env run cli wp plugin deactivate cim-lesson-my-first-lesson
           wp_env run cli wp eval 'if (count(cim_read_lesson_packs()["lessons"]) !== 0) { throw new Exception("Deactivated lesson retained"); }'
           wp_env run cli wp plugin activate cim-lesson-my-first-lesson
