@@ -6,19 +6,38 @@ Git in Motion is the first real experience and reference implementation. The syn
 
 ## Development status
 
-The live baseline is 0.2.6. The first public release and its packaging are **v1.0** (SemVer 1.0.0), currently a candidate pending an outsider dry run and independent release review. Engine capability remains 1.0.1 and frozen authoring formats are unchanged. The public Player supports beat-paced reading, three themes, whole-line evidence cues, risk guidance, native Copy, desktop keyboard navigation and a phone fallback notice.
+The first public release and its packaging are **v1.0** (SemVer 1.0.0). Release approval includes publication before an external user evaluation; that evaluation remains planned and has not been performed. Installation on localis.services is a separate step; its live baseline remains 0.2.6 until then. Engine capability remains 1.0.1 and frozen authoring formats are unchanged. The public Player supports beat-paced reading, three themes, whole-line evidence cues, risk guidance, native Copy, desktop keyboard navigation and a phone fallback notice.
 
 Teachers can add their own lessons using the standalone authoring tool and companion lesson-pack plugins, without rebuilding CiM. Read the [install guide](docs/INSTALL.md), [write-your-first-lesson guide](docs/AUTHORING-GUIDE.md) and [packaging decision](docs/adr/0060-packaging-for-teaching-sites.md).
 
 ## Quick start
 
-1. Download and verify the named Code in Motion plugin ZIP from [GitHub Releases](https://github.com/johnwinstondarby/Code-in-Motion/releases). Until v1.0 is published, use the reviewed dry-run candidate; do not assume the automatically generated source archive is installable.
+1. Download and verify the named Code in Motion plugin ZIP from [GitHub Releases](https://github.com/johnwinstondarby/Code-in-Motion/releases). Use the named release asset; GitHub’s automatically generated source archive is not the installable plugin.
 2. In WordPress 6.5+ (PHP 7.4+), install and activate the ZIP through **Plugins → Add Plugin → Upload Plugin**.
 3. Add a Shortcode block to a draft page: `[cim experience="python-first-steps"]`. Preview on a desktop or laptop, then press Play.
-4. Check **Code in Motion → Static health** if fallback text appears. The install guide explains each check.
+4. Open **Code in Motion** in the WordPress sidebar and find **Static health** if fallback text appears. The install guide explains each check.
 5. To write your own lesson, download the separate authoring-tool ZIP, run `node tools/cim-author.mjs init my-lesson.json`, edit it, use `node tools/cim-author.mjs preview my-lesson.json` to see the Player locally, then follow the guide to validate, pack and install it.
 
-Acceptance targets: a working starter on a fresh site in under 15 minutes; an unfamiliar teacher's own three-beat lesson in about 30 minutes. These targets require an actual timed outsider run before v1.0 publication.
+Acceptance targets: a working starter on a fresh site in under 15 minutes; an unfamiliar teacher's own three-beat lesson in about 30 minutes. These are unmeasured targets for the external evaluation planned after publication. Automated checks do not establish how long a new teacher takes.
+
+## Using the public GitHub repository
+
+The public home is [johnwinstondarby/Code-in-Motion](https://github.com/johnwinstondarby/Code-in-Motion). You can read the files without cloning the repository. Teachers normally need the two named assets under [Releases](https://github.com/johnwinstondarby/Code-in-Motion/releases), not a fork or Git checkout. Use tag `1.0.0` to inspect the published v1.0 source; `main` can include later work. Use [Issues](https://github.com/johnwinstondarby/Code-in-Motion/issues) for a reproducible problem, with your CiM, WordPress and PHP versions and the exact error.
+
+| What you want | Where to go | What it is for |
+| --- | --- | --- |
+| Install CiM on a site | Release asset `code-in-motion-1.0.0.zip`; [install guide](docs/INSTALL.md) | Upload through WordPress Plugins. |
+| Write your own lesson | Release asset `cim-authoring-1.0.0.zip`; [authoring guide](docs/AUTHORING-GUIDE.md) | Run the local tool; no repository build required. |
+| Find the editable template | [Python authoring JSON](experiences/starter/python-first-steps.authoring.json) | Read the template; use `init` to make your own editable copy. |
+| Find the authoring commands | [tools/cim-author.mjs](tools/cim-author.mjs) | `init`, `preview`, `validate`, `compile`, `pack`. |
+| Understand the Admin screen | [Admin walkthrough](docs/INSTALL.md#use-the-admin-console) | Find a lesson's shortcode and understand its status. |
+| Check allowed JSON fields | [v2 format](docs/AUTHORING-JSON-v2.md), [v1 field rules](docs/AUTHORING-JSON-v1.md) | References for authors, not files to edit. |
+| Understand companion packs | [pack agreement](docs/LESSON-PACKS-v1.md) | Compatibility, validation, conflicts and pack lifecycle. |
+| Work on WordPress integration | [wordpress/](wordpress/), root [plugin entry](code-in-motion.php), [plugin readme](readme.txt) | Maintainer implementation and metadata. |
+| Work on the engine or tests | [src/](src/), [tests/](tests/), [.github/workflows/](.github/workflows/) | Developer source and verification. |
+| Understand release decisions | [ADR 0060](docs/adr/0060-packaging-for-teaching-sites.md) | Scope, safety boundary and current release policy. |
+
+An `.authoring.json` file is editable lesson source. The neighboring compiled `.json` and copies under `wordpress/experiences/` are generated runtime data. Ordinary lesson authors edit their own source file, build a separate pack, and leave those repository copies alone. The commands and three file stages are explained in the [authoring guide](docs/AUTHORING-GUIDE.md).
 
 ## Building your own version
 
@@ -51,7 +70,8 @@ Code-in-Motion/
 │   ├── faults/            Shared runtime fault taxonomy and evidence shape
 │   ├── telemetry/         Observation, evidence, replay, and analysis interfaces
 │   └── styles/            Shared CiM presentation assets
-├── experiences/           Validated experience data
+├── wordpress/             Plugin Admin, browser host, assets, and bundled lesson copies
+├── experiences/           Editable authoring sources and compiled lesson data
 ├── schemas/               Machine-readable CiM schemas and fixtures
 ├── authoring/             Human and generated authoring adapters
 ├── harness/               Synthetic operations and fault-injection system

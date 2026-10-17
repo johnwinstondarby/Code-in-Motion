@@ -1,6 +1,8 @@
-# v1.0 outsider dry run — not yet performed
+# v1.0 external evaluation — not yet performed
 
-Use a fresh WordPress site and a participant who has never used CiM. Give them only the named candidate ZIPs, their checksums, INSTALL.md and AUTHORING-GUIDE.md. Do not coach them. Record every question or wrong turn as a defect; fix it and repeat the affected steps before accepting packaging.
+Johann approved v1.0 publication before external validation on 2026-10-17. This evaluation is a post-release follow-up, not a publication gate. The 15/30-minute targets remain unmeasured.
+
+Use a fresh WordPress site and a participant who has never used CiM. The participant uses the published release and guides inside its two ZIPs; no additional coaching material. They start with the authoring README and write an original three-beat lesson, rather than retaining the Python starter as their finished work. Record every question, error, wrong turn and assistance, including whether the documentation answered it. Any help given is a finding. Use the actual GitHub download once the release exists; if files are supplied directly, record that as a deviation instead of silently skipping the download test.
 
 Candidate commit:
 Plugin SHA-256:
@@ -32,6 +34,6 @@ Retest results:
 Participant outcome:
 Maintainer acceptance:
 Daisy independent rebuild/review:
-Johann release approval:
+Johann release approval: granted before external evaluation; record final release/tag:
 
-Only after acceptance and the other release gates pass: publish the GitHub Release with both exact ZIPs, hashes, notes and upgrade/rollback instructions. WordPress.org submission is separate.
+The release can be published after technical gates and Johann’s approval, with this evaluation explicitly pending. Review and fix findings afterward; rerun affected teacher steps. Code fixes still need independent review. WordPress.org submission is separate.

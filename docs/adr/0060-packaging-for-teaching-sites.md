@@ -1,6 +1,6 @@
 # ADR 0060: Packaging Code in Motion for teaching sites
 
-Status: Proposed for v1.0, 2026-10-16. Incorporates Daisy's v2 draft and Johann's selected companion-pack path. Public product and packaging version: **v1.0**; SemVer metadata and repository tag: **1.0.0**. This supersedes the draft's 0.3.0 release label, not a frozen format.
+Status: Approved for v1.0; release policy updated by Johann on 2026-10-17. Incorporates Daisy's v2 draft and Johann's selected companion-pack path. Public product and packaging version: **v1.0**; SemVer metadata and repository tag: **1.0.0**. This supersedes the draft's 0.3.0 release label, not a frozen format.
 
 ## Audience and the two answers
 
@@ -9,7 +9,7 @@ Status: Proposed for v1.0, 2026-10-16. Incorporates Daisy's v2 draft and Johann'
 
 ## Scope and practical ease of use
 
-A stranger should install the named plugin ZIP and put the bundled Python lesson on a fresh WordPress page in **under 15 minutes**, using only the release and install guide. A teacher unfamiliar with CiM should create and publish their own three-beat lesson in **about 30 minutes**, using only the authoring tool and guides. These are acceptance targets, not measured claims until a genuine outsider completes the dry run. Every snag is recorded and fixed before publication.
+A stranger should install the named plugin ZIP and put the bundled Python lesson on a fresh WordPress page in **under 15 minutes**, using only the release and install guide. A teacher unfamiliar with CiM should create and publish their own three-beat lesson in **about 30 minutes**, using only the authoring tool and guides. These are acceptance targets, not measured claims until a genuine outsider completes the dry run. Every snag is recorded and reviewed; external evaluation is now a post-publication follow-up.
 
 In scope: current public docs; GPLv3 consistency; a neutral new-lesson default; a non-Git starter; a standalone compiler/lesson-pack tool; a local pack registration path; safe loading, inventory, tests and destructive guards; reproducible plugin/tool artifacts; upgrade/rollback evidence; fresh-site rehearsal and a human outsider run.
 
@@ -50,7 +50,7 @@ GPLv3 is represented by SPDX `GPL-3.0-only` in package metadata and GPLv3 with t
 
 Prepare plugin and authoring-tool ZIPs twice from the same clean commit using pinned Node; compare bytes and hashes. Verify the Git compiler fixture, bundled Python starter, fresh-site installation of a separately generated lesson, malicious-input tests, full unit/browser/mutation suites, Plugin Check and all required CI. Test upgrading from 0.2.6 and rollback to the exact reviewed 0.2.6 ZIP while retaining the separate lesson pack. Preserve that ZIP and fresh page 3227 capture in a private rollback kit. Never package private captures in public artifacts.
 
-An agent's technical rehearsal can find defects but cannot satisfy the requirement for an outsider unfamiliar with CiM. Keep a timed dry-run worksheet and require a real participant's results. The release remains a candidate until that acceptance, fixes, Daisy's independent rebuild/review and Johann's approval. Then publish a GitHub Release with both reproducible ZIPs, checksums, guides, notes and explicit upgrade/rollback sections, from that exact reviewed commit. No WordPress.org submission is implied.
+An agent's technical rehearsal does not count as an outsider evaluation. Johann explicitly approved promoting and publishing v1.0 before external validation and approved the release/documentation review on 2026-10-17. The outsider worksheet remains NOT PERFORMED and becomes post-release follow-up, not a publication gate. Daisy approved the code at 3ed3efe; merged main 86895a9 has the identical tree. This documentation follow-up leaves that code, all lessons and frozen formats unchanged. Publish only after the follow-up's technical checks and reproducible rebuilds pass: tag the final main commit, attach both ZIPs and checksums, include upgrade/rollback notes, and mark the release latest/non-prerelease. Live installation remains a separate subsequent step with its own capture, cache clearing, acceptance and rollback requirements. No WordPress.org submission is implied.
 
 ## Out of scope
 
@@ -67,8 +67,13 @@ The deda6d6 candidate is superseded. Before the outsider run:
 - The authoring ZIP opens with a top-level README linking the first-lesson guide and showing the initial commands.
 - A misspelled shortcode theme falls back to the normal default: existing lessons retain their existing default; new lessons use Light. The Player and teacher fallback remain present.
 
-Regression checks and deliberate mutations cover bundled discovery, repeated discovery, cache reuse/invalidation, nested diagnostics in CLI and preview, the root README and invalid-theme fallback. Browser coverage checks the actual preview error display. Page 3227, frozen formats and all three Git lesson copies remain unchanged. Outsider acceptance, independent review of the new head and final publication approval remain required.
+Regression checks and deliberate mutations cover bundled discovery, repeated discovery, cache reuse/invalidation, nested diagnostics in CLI and preview, the root README and invalid-theme fallback. Browser coverage checks the actual preview error display. Page 3227, frozen formats and all three Git lesson copies remain unchanged. At that review stage, outsider acceptance and final approval were still gates. The 2026-10-17 release-policy decision above supersedes the outsider gate; the run remains unperformed.
 
 The cache also retains plugin discovery metadata: warm public requests do not call WordPress’s header-enumerating `get_plugins()`. Activation options trigger fresh discovery. Opening the Admin Console refreshes installed-plugin discovery so newly installed inactive packs appear immediately.
 
 Uninstall removes the exact inventory transient as well as the existing motion-policy option. The installed-ZIP lifecycle check runs WordPress’s actual uninstall handler rather than deleting files without cleanup, and still verifies every companion-pack file and its activation. No additional persistence residue is permitted.
+
+
+### Documentation and Admin simplicity review, 2026-10-17
+
+The documentation now maps public-repository tasks to files, distinguishes source from installable assets, explains the Admin screen as one page of sections, and traces template → editable JSON → installed pack → page shortcode. Node use is consistently “22 or later”; reproducible release builds remain pinned to 22.23.2. The maintainer's [documentation review](../reviews/v1-documentation-review.md) records Admin friction and the evidence/limits of the review. Admin PHP/UI behavior is unchanged. External usability and the 15/30-minute targets remain unmeasured.

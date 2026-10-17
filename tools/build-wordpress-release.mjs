@@ -39,6 +39,8 @@ const STATIC_STAGE_FILES = Object.freeze([
   Object.freeze({ source: 'docs/AUTHORING-GUIDE.md', destination: 'docs/AUTHORING-GUIDE.md' }),
   Object.freeze({ source: 'docs/AUTHORING-JSON-v1.md', destination: 'docs/AUTHORING-JSON-v1.md' }),
   Object.freeze({ source: 'docs/AUTHORING-JSON-v2.md', destination: 'docs/AUTHORING-JSON-v2.md' }),
+  Object.freeze({ source: 'docs/AUTHORING-TO-RUNTIME-v1.md', destination: 'docs/AUTHORING-TO-RUNTIME-v1.md' }),
+  Object.freeze({ source: 'docs/AUTHORING-TO-RUNTIME-v2.md', destination: 'docs/AUTHORING-TO-RUNTIME-v2.md' }),
   Object.freeze({ source: 'readme.txt', destination: 'readme.txt' }),
   Object.freeze({ source: 'code-in-motion.php', destination: 'code-in-motion.php' }),
   Object.freeze({ source: 'uninstall.php', destination: 'uninstall.php' }),
