@@ -470,6 +470,7 @@ jobs:
             npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" "$@"
           }
 
+          wp_env run cli bash -lc 'cd wp-content/plugins && find cim-lesson-my-first-lesson -type f -print0 | sort -z | xargs -0 sha256sum' | grep -E '^[a-f0-9]{64} ' > "${CIM_R15_ARTIFACT_DIR}/pack-before-uninstall.sha256"
           wp_env run cli wp plugin deactivate code-in-motion
           STATUS="$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^inactive$' | tail -n 1)"
           test "${STATUS}" = "inactive"
@@ -479,7 +480,8 @@ jobs:
             echo "R33 expected Code in Motion to be absent after uninstall/delete." >&2
             exit 1
           fi
-          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion; test -f wp-content/plugins/cim-lesson-my-first-lesson/lesson-pack.php'
+          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion; cd wp-content/plugins && sha256sum --check ../r15-artifact/pack-before-uninstall.sha256'
+          wp_env run cli wp plugin is-active cim-lesson-my-first-lesson
 
           RESIDUE_AFTER="$(wp_env run cli wp eval '
             global $wpdb;
@@ -676,6 +678,7 @@ jobs:
           node tools/cim-author.mjs init "${CIM_R16_ARTIFACT_DIR}/teacher.json"
           node tools/cim-author.mjs pack "${CIM_R16_ARTIFACT_DIR}/teacher.json" --out "${CIM_R16_ARTIFACT_DIR}/teacher-pack.zip"
           npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli wp plugin install wp-content/r16-artifact/teacher-pack.zip --activate
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli bash -lc 'cd wp-content/plugins && find cim-lesson-my-first-lesson -type f -print0 | sort -z | xargs -0 sha256sum' | grep -E '^[a-f0-9]{64} ' > "${CIM_R16_ARTIFACT_DIR}/pack-before.sha256"
           npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli wp post create --post_type=page --post_status=publish --post_name=cim-pack-proof --post_title='Pack retained across upgrade' --post_content='[cim experience="my-first-lesson"]Teacher fallback.[/cim]'
 
       - name: Create upgrade diagnostic page
@@ -700,7 +703,12 @@ jobs:
           npx playwright test tests/e2e/wordpress-upgrade.spec.mjs --reporter=line
 
       - name: Verify pack retained and displayed after upgrade
-        run: CIM_WP_BASE_URL=http://localhost:8891 npx playwright test tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli bash -lc 'cd wp-content/plugins && sha256sum --check ../r16-artifact/pack-before.sha256'
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli wp plugin is-active cim-lesson-my-first-lesson
+          CIM_WP_BASE_URL=http://localhost:8891 npx playwright test tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
 
       - name: Verify N+1 replacement postconditions
         shell: bash
@@ -741,7 +749,7 @@ jobs:
             wp plugin install wp-content/r16-artifact/rollback/code-in-motion-0.2.6.zip --force --activate
             wp --user=admin eval-file wp-content/r16-artifact/restore-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
             test "$(wp plugin get code-in-motion --field=version)" = "0.2.6"
-            test -f wp-content/plugins/cim-lesson-my-first-lesson/lesson-pack.php
+            (cd wp-content/plugins && sha256sum --check ../r16-artifact/pack-before.sha256)
             wp plugin is-active cim-lesson-my-first-lesson
             wp cache flush
           '
