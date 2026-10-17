@@ -21,8 +21,8 @@ Install and authoring guides are included in the ZIP and at https://github.com/j
 
 1. Install the Code in Motion release ZIP through the WordPress Plugins screen or WP-CLI.
 2. Activate Code in Motion.
-3. Add the shortcode shown for the required Experience in the Code in Motion Admin Console to WordPress content.
-4. Publish or update the content and confirm that the Code in Motion panel appears.
+3. Open Code in Motion in the WordPress sidebar. Under Experience inventory (bundled lessons) or Pack lessons (your lessons), copy the lesson shortcode into a page’s Shortcode block. Wait for Ready before using a pack lesson.
+4. Preview the draft page on a desktop or laptop, check the Player, then publish or update it.
 
 The Code in Motion Admin Console reports the active deployment mode, bootstrap-module presence, Experience registry, renderer inventory, version consistency, Experience deployment status, and the supported shortcode for each registered Experience.
 
@@ -37,6 +37,16 @@ Open the Code in Motion Admin Console in WordPress and check these items:
 3. Under Renderer inventory, confirm that the renderer required by the Experience is Registered.
 
 If any of these checks fail, preserve the fallback text and report the failed status together with the Code in Motion version through the project support channel.
+
+= Where is the editable JSON template, and how do I put my lesson on a page? =
+
+Download the separate cim-authoring-1.0.0.zip release asset. Its top-level README points to the authoring guide. The template is experiences/starter/python-first-steps.authoring.json inside that ZIP; run node tools/cim-author.mjs init my-lesson.json to make your editable copy. Use Node.js 22 or later on your computer.
+
+Edit your copy's lesson ID, title, commands, outputs and explanations, then preview, validate and pack it using the included guide. Install the resulting lesson-pack ZIP through WordPress Plugins and activate it alongside CiM. Open Code in Motion, find Pack lessons, wait for Ready, and copy its shortcode to a page's Shortcode block. Preview and publish. Do not upload source JSON to the Media Library or edit generated PHP.
+
+= Is Lesson packs a separate menu? =
+
+No. Code in Motion opens one Admin page. Lesson packs, Pack lessons, Experience inventory and Static health are sections on that page. Experience means lesson. The Admin page checks installations and lists shortcodes; lesson editing happens on your computer.
 
 == Support ==
 
