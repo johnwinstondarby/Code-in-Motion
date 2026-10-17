@@ -1,3 +1,4 @@
+import { validatePackLesson } from './lesson-pack-validation.mjs';
 export const MAX_LESSON_BYTES = 2 * 1024 * 1024;
 
 // A pack cannot replace a bundled lesson. PHP supplies local plugin-file URLs only.
@@ -31,14 +32,6 @@ export async function readBoundedLesson(response, external = false) {
   let offset = 0;
   for (const chunk of chunks) { buffer.set(chunk, offset); offset += chunk.byteLength; }
   const lesson = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(buffer));
-  if (external) {
-    for (const step of Array.isArray(lesson?.steps) ? lesson.steps : []) {
-      for (const link of Array.isArray(step?.commentary?.links) ? step.commentary.links : []) {
-        let url;
-        try { url = new URL(link.href); } catch { throw new TypeError('Lesson-pack links must be absolute HTTP or HTTPS URLs.'); }
-        if (!['http:', 'https:'].includes(url.protocol)) throw new TypeError('Lesson-pack links must use HTTP or HTTPS.');
-      }
-    }
-  }
+  if (external) return validatePackLesson(lesson);
   return lesson;
 }

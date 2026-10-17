@@ -1,6 +1,5 @@
 import { compileAuthoringSource } from '../authoring/v2/compile-authoring.mjs';
-import { ingestExperience } from '../src/experience/ingest-experience.mjs';
-import { assertWordPressExperienceAdmission } from '../src/host/wordpress-admission-policy.mjs';
+import { validatePackLesson } from '../wordpress/assets/lesson-pack-validation.mjs';
 import { createHash } from 'node:crypto';
 
 export const MAX_AUTHORING_BYTES = 2 * 1024 * 1024;
@@ -35,7 +34,7 @@ export function compileLesson(source) {
   const result = compileAuthoringSource(source);
   if (result.document.id.length > 100) throw new RangeError('Lesson ID must be at most 100 characters.');
   if (Buffer.byteLength(result.text,'utf8') > MAX_AUTHORING_BYTES) throw new RangeError('Compiled lesson exceeds 2 MiB; split it into smaller lessons.');
-  assertWordPressExperienceAdmission(ingestExperience(result.document));
+  validatePackLesson(result.document);
   return result;
 }
 

@@ -61,7 +61,7 @@ test('external links are HTTP(S) only without changing legacy runtime link contr
   const lesson=compileLesson(JSON.stringify(own())).document;
   for(const href of ['mailto:a@school.test','/relative','#fragment','javascript:alert(1)']){
     const raw=structuredClone(lesson);raw.steps[0].commentary.links=[{id:'reference',label:'Reference',href}];
-    await assert.rejects(readBoundedLesson(new Response(JSON.stringify(raw)),true),/HTTP/);
+    await assert.rejects(readBoundedLesson(new Response(JSON.stringify(raw)),true),/HTTP|CIM-EXP/);
   }
   assert.equal((await readBoundedLesson(new Response(JSON.stringify(lesson)),true)).id,lesson.id);
 });
@@ -125,7 +125,7 @@ test('Admin validates every active lesson with the actual Player gate before a p
  const valid=compileLesson(JSON.stringify(own())).document;
  const check=raw=>checkPackLesson({id:'my-first-lesson',url:'/pack.json',baseURI:'https://school.test/admin/',fetch:async()=>new Response(JSON.stringify(raw))});
  assert.equal((await check(valid)).status,'Ready');
- for(const mutate of[d=>{delete d.presentation;},d=>{d.engine_min='999.0.0';},d=>{d.id='other';},d=>{d.steps[0].commentary.links=[{id:'x',label:'X',href:'javascript:alert(1)'}];}]){const bad=structuredClone(valid);mutate(bad);const result=await check(bad);assert.equal(result.status,'Rejected');assert.ok(result.reason);}
+ for(const mutate of[d=>{delete d.presentation;},d=>{d.steps.at(-1).state={};},d=>{d.engine_min='999.0.0';},d=>{d.id='other';},d=>{d.steps[0].commentary.links=[{id:'x',label:'X',href:'javascript:alert(1)'}];}]){const bad=structuredClone(valid);mutate(bad);const result=await check(bad);assert.equal(result.status,'Rejected');assert.ok(result.reason);}
 });
 
 test('local preview reads edits on refresh without writing a build and refuses unrelated files',async t=>{

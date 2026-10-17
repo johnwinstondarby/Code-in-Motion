@@ -31,10 +31,11 @@ const mutations=[
  ['same origin requirement',reader,'url.origin !== new URL(document.baseURI).origin','false'],
  ['JSON response path',reader,"!url.pathname.endsWith('.json')",'false'],
  ['conflicting URL rejection',reader,'urls.size !== 1','urls.size === 0'],
- ['pack link protocol check',reader,'if (external) {','if (false) {'],
+ ['pack link protocol check','wordpress/assets/lesson-pack-validation.mjs',"!['http:', 'https:'].includes(url.protocol)",'false'],
  ['malformed JSON fails closed',reader,"const lesson = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(buffer));","let lesson; try { lesson = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(buffer)); } catch { lesson = {}; }"],
  ['invalid UTF-8 fails closed',reader,'fatal: true','fatal: false'],
- ['existing schema gate','src/host/wordpress-browser-bindings.mjs','const experience = ingestExperience(raw);','const experience = raw;'],
+ ['existing schema gate','wordpress/assets/lesson-pack-validation.mjs','const experience = ingestExperience(raw);','const experience = raw;'],
+ ['preflight every renderer state','wordpress/assets/lesson-pack-validation.mjs','assertConsoleRendererInput(step.state, experience.renderer_config ?? null, step.renderer_config ?? null);','void step;'],
  ['Admin performs actual admission','wordpress/assets/lesson-pack-admin.mjs','await loader.load(id);','void loader;']
 ];
 const args=['--test','tests/lesson-packs.test.mjs'];

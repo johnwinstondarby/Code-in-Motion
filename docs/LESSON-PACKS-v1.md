@@ -25,7 +25,7 @@ The manifest is at most 64 KiB. There may be at most 100 installed packs and 100
 
 Only basenames ending `.json` are allowed: no path separators, `../`, absolute paths or remote URLs. Resolving the manifest or lesson file must leave it in its pack's own real directory. Symlinks escaping that directory are rejected, including links to a sibling plugin. Lesson files are readable local JSON of at most 2 MiB. Deactivated packs' manifests and lessons are not read or fetched.
 
-PHP checks size, JSON syntax, matching lesson ID and Console v2 metadata. The Admin Console then validates every eligible active lesson using the same bounded reader, schema ingestion, identity and engine/renderer admission as the Player. Links in external lessons must be absolute HTTP(S); frozen authored v2 remains stricter and allows HTTPS references only. The tool runs that compiler and the same schema/engine admission before preview or packing. No code examples or lesson text are executed.
+PHP checks size, JSON syntax, matching lesson ID and Console v2 metadata. The Admin Console then validates every eligible active lesson using the same bounded reader, schema ingestion, identity, engine/renderer admission and the Console renderer’s own validation of every state as the Player. Links in external lessons must be absolute HTTP(S); frozen authored v2 remains stricter and allows HTTPS references only. The tool runs that compiler and the same schema/engine admission before preview or packing. No code examples or lesson text are executed.
 
 ## Duplicate IDs and rejection
 

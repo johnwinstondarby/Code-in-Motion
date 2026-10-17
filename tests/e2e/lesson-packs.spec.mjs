@@ -27,6 +27,7 @@ test.beforeAll(async()=>{
     if(url.pathname==='/pack.json'){
       res.setHeader('content-type','application/json');const doc=structuredClone(compiled);
       if(kind==='schema') doc.schema='unknown';
+      if(kind==='state') doc.steps.at(-1).state={};
       if(kind==='identity') doc.id='different';
       if(kind==='engine') doc.engine_min='999.0.0';
       if(kind==='link') doc.steps[0].commentary.links=[{id:'unsafe',label:'Unsafe link',href:'javascript:alert(1)'}];
@@ -49,7 +50,7 @@ test('companion lesson uses the production bootstrap, neutral theme and inert te
   await expect(player.getByRole('button',{name:'Copy command: count * 2',exact:true})).toBeVisible();
   await player.screenshot({path:testInfo.outputPath('companion-python.png')});
 });
-for(const kind of ['schema','identity','engine','link','huge','malformed','external'])test('companion lesson fails closed: '+kind,async({page})=>{
+for(const kind of ['schema','state','identity','engine','link','huge','malformed','external'])test('companion lesson fails closed: '+kind,async({page})=>{
   await page.goto(origin+'/?case='+kind);const player=page.locator('.cim');
   await expect(player).toHaveAttribute('data-cim-state','fallback');await expect(player.locator('[data-cim-player]')).toHaveCount(0);await expect(player.locator('.cim-fallback')).toBeVisible();
 });
