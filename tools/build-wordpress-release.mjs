@@ -34,11 +34,17 @@ const ZIP_EXTERNAL_FILE_ATTRIBUTES = (0o100644 << 16) >>> 0;
 
 const STATIC_STAGE_FILES = Object.freeze([
   Object.freeze({ source: 'LICENSE', destination: 'LICENSE' }),
+  Object.freeze({ source: 'docs/LESSON-PACKS-v1.md', destination: 'docs/LESSON-PACKS-v1.md' }),
+  Object.freeze({ source: 'docs/INSTALL.md', destination: 'docs/INSTALL.md' }),
+  Object.freeze({ source: 'docs/AUTHORING-GUIDE.md', destination: 'docs/AUTHORING-GUIDE.md' }),
+  Object.freeze({ source: 'docs/AUTHORING-JSON-v1.md', destination: 'docs/AUTHORING-JSON-v1.md' }),
+  Object.freeze({ source: 'docs/AUTHORING-JSON-v2.md', destination: 'docs/AUTHORING-JSON-v2.md' }),
   Object.freeze({ source: 'readme.txt', destination: 'readme.txt' }),
   Object.freeze({ source: 'code-in-motion.php', destination: 'code-in-motion.php' }),
   Object.freeze({ source: 'uninstall.php', destination: 'uninstall.php' }),
   Object.freeze({ source: 'wordpress/code-in-motion.php', destination: 'wordpress/code-in-motion.php' }),
   Object.freeze({ source: 'wordpress/admin-console.php', destination: 'wordpress/admin-console.php' }),
+  Object.freeze({ source: 'wordpress/lesson-packs.php', destination: 'wordpress/lesson-packs.php' }),
   Object.freeze({ source: 'wordpress/assets/cim.css', destination: 'wordpress/assets/cim.css' })
 ]);
 

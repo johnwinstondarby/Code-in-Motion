@@ -1,6 +1,6 @@
 {
   "name": "code-in-motion",
-  "version": "0.2.6",
+  "version": "1.0.0",
   "description": "Reusable Localis platform for learner-controlled technical process experiences.",
   "private": true,
   "type": "module",
@@ -17,6 +17,8 @@
     "node": ">=20"
   },
   "scripts": {
+    "build:authoring": "node tools/build-authoring-release.mjs",
+    "cim-author": "node tools/cim-author.mjs",
     "build:wordpress": "node tools/build-wordpress-release.mjs",
     "check:schema": "node tools/check-schema-fixtures.mjs",
     "qa:r42-v1-differential": "node tools/r42-v1-differential.mjs",

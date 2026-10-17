@@ -4,7 +4,7 @@ export const LEARNER_THEME_STORAGE_KEY = 'cim.learnerTheme';
 const coordinators = new WeakMap();
 
 // One page preference, shared only by Players on this Window. No Runtime port.
-export function createLearnerThemeCoordinator(view) {
+export function createLearnerThemeCoordinator(view, defaultTheme = 'localis') {
   let explicit = null;
   try {
     const stored = view.localStorage.getItem(LEARNER_THEME_STORAGE_KEY);
@@ -19,7 +19,7 @@ export function createLearnerThemeCoordinator(view) {
   // Read fresh query results on notification; some browser bridges retain stale
   // matches on existing MediaQueryList objects after device emulation changes.
   const read = () => Object.freeze({
-    theme: resolveLearnerTheme({ explicit,
+    theme: resolveLearnerTheme({ explicit, defaultTheme,
       contrast: media('(prefers-contrast: more)').matches,
       light: media('(prefers-color-scheme: light)').matches }),
     forcedColors: media('(forced-colors: active)').matches
@@ -76,7 +76,7 @@ export function createWordPressThemeBinding({ root, onError = () => {} }) {
   const document = root.ownerDocument;
   const view = document.defaultView;
   let coordinator = coordinators.get(view);
-  if (!coordinator) { coordinator = createLearnerThemeCoordinator(view); coordinators.set(view, coordinator); }
+  if (!coordinator) { coordinator = createLearnerThemeCoordinator(view, root.getAttribute('data-cim-default-theme') ?? 'localis'); coordinators.set(view, coordinator); }
   const transport = root.querySelector('[data-cim-transport-controls]');
   if (!transport) throw new TypeError('Theme requires Player controls.');
   const previous = root.getAttribute('data-cim-theme');

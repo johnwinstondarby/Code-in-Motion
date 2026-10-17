@@ -3,17 +3,19 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.6
+Stable tag: 1.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-WordPress host, runtime bindings, and controls for Code in Motion experiences.
+Teach code with learner-controlled Console and Explanation lessons, beat navigation, Copy and companion lesson packs.
 
 == Description ==
 
-Code in Motion supplies the WordPress host, runtime bindings, transport controls, and release packaging required to mount CiM experiences from WordPress content.
+Code in Motion helps teachers put learner-controlled coding demonstrations on their WordPress sites. The Console displays authored commands and output; the running Explanation connects each beat to its meaning. Play pauses for reading at every completed beat. Learners can navigate, copy commands and select Light, High Contrast or the optional Localis palette. Commands are displayed, never executed.
 
-Version 0.2.0 adds the complete Console-Explanation Player, learner themes, native command copying and the compatible v2 Git lesson. Engine compatibility is checked before Player construction; older Git Players remain unchanged.
+A three-beat Python starter and the existing Git lessons are included. Teachers create additional lessons with the standalone v1.0 authoring tool and install generated companion lesson-pack plugins, without forking or rebuilding CiM. Lesson data passes schema, engine and identity checks before the Player opens. Phones show a desktop-required notice.
+
+Install and authoring guides are included in the ZIP and at https://github.com/johnwinstondarby/Code-in-Motion/tree/main/docs. Source and GPLv3 fork instructions are at https://github.com/johnwinstondarby/Code-in-Motion. Fork maintainers support their own distributions.
 
 == Installation ==
 
@@ -41,6 +43,12 @@ If any of these checks fail, preserve the fallback text and report the failed st
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 1.0.0 =
+* Package the first public release with install and authoring guides and a non-Git Python starter.
+* Compile authored v2 JSON with the standalone tool and install companion lesson packs without rebuilding CiM.
+* Keep schema/engine validation and bounded loading for untrusted lesson JSON; reject conflicting IDs and unsafe file locations.
+* Default new lessons to Light while preserving legacy lessons, identifiers, frozen formats and learner choices.
 
 = 0.2.6 =
 * Match each reading-pane scrollbar track to its own background in every learner theme.
@@ -128,6 +136,9 @@ Report defects and release issues at https://github.com/johnwinstondarby/Code-in
 * Initial WordPress release with deterministic packaging, upgrade-safe versioned assets, and the synthetic diagnostic Experience.
 
 == Upgrade Notice ==
+
+= 1.0.0 =
+Retain exact 0.2.6 for rollback, back up the site, replace only CiM and clear hosting caches. Companion lesson-pack plugins survive upgrade, rollback and CiM uninstall. CiM 0.2.6 cannot display packs; restore v1.0 to use them again. No page edits or schema migrations are required.
 
 = 0.2.6 =
 Fixes the Explanation scrollbar track and guards existing copying reminders. No page edits are required. Retain the exact 0.2.5 ZIP for rollback and clear hosting caches after replacement.

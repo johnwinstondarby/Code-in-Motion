@@ -657,7 +657,11 @@ function localis_cim_render_admin_console() {
 		);
 	}
 
+	localis_cim_render_pack_inventory();
 	echo '<h2>Experience inventory</h2>';
+	foreach ( localis_cim_read_lesson_packs()['errors'] as $pack_error ) {
+		printf( '<div class="notice notice-error inline"><p>%s</p></div>', esc_html( $pack_error ) );
+	}
 	if ( 'available' !== $inventory['status'] ) {
 		echo '<div class="notice notice-error inline"><p>Experience registry unavailable.</p></div>';
 	} else {

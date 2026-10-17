@@ -22,7 +22,7 @@ test('PHP asset lifecycle registers inertly, predicts queried content, honors fi
     function is_singular() {global $singular; return $singular;}
     function get_queried_object() {global $post; return $post;}
     function has_shortcode($content,$tag) {return false !== strpos($content,'[cim ');}
-    function apply_filters($name,$value,$post) {global $override; return null === $override ? $value : $override;}
+    define('WP_PLUGIN_DIR', __DIR__); function get_plugins(){throw new Exception('bundled lesson scanned packs');} function apply_filters($name,$value,$post=null) {global $override; return $name !== 'localis_cim_should_enqueue' || null === $override ? $value : $override;}
     function shortcode_atts($defaults,$atts) {return array_merge($defaults,$atts);}
     function esc_attr($text) {return htmlspecialchars($text);}
     function do_shortcode($text) {return $text;}
@@ -46,6 +46,10 @@ test('PHP asset lifecycle registers inertly, predicts queried content, honors fi
     $override=null; $queued=array();
     check(localis_cim_shortcode(array('experience'=>'INVALID'))==='','invalid shortcode accepted');
     check(empty($queued),'invalid shortcode enqueued');
+    check(false === strpos(localis_cim_shortcode(array('experience'=>'git-repository-practice')),'data-cim-default-theme'),'legacy theme default changed');
+    check(false !== strpos(localis_cim_shortcode(array('experience'=>'python-first-steps')),'data-cim-default-theme="light"'),'starter default is not neutral');
+    check(false !== strpos(localis_cim_shortcode(array('experience'=>'python-first-steps','theme'=>'bad')),'data-cim-default-theme="light"'),'mistyped theme lost Player');
+    check(false !== strpos(localis_cim_shortcode(array('experience'=>'git-repository-practice','theme'=>'bad'), 'Teacher fallback'),'Teacher fallback'),'mistyped theme lost fallback');
     echo 'PASS';
   `], {encoding:'utf8'});
   assert.equal(result.status, 0, result.stderr || result.stdout);

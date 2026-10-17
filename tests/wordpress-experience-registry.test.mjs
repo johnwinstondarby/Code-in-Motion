@@ -38,6 +38,11 @@ test('R30 canonical WordPress Experience registry validates the deployed set', a
         renderer: 'console/v1'
       },
       {
+        id: 'python-first-steps',
+        asset: 'python-first-steps.json',
+        renderer: 'console/v1'
+      },
+      {
         id: 'synthetic-wordpress',
         asset: 'synthetic-wordpress.json',
         renderer: 'synthetic/v1'

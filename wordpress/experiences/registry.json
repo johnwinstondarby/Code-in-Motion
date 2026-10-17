@@ -10,6 +10,10 @@
       "asset": "git-repository-practice.json"
     },
     {
+      "id": "python-first-steps",
+      "asset": "python-first-steps.json"
+    },
+    {
       "id": "synthetic-wordpress",
       "asset": "synthetic-wordpress.json"
     }

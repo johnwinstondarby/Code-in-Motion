@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LOCALIS_CIM_PLUGIN_VERSION', '0.2.6' );
+define( 'LOCALIS_CIM_PLUGIN_VERSION', '1.0.0' );
 define( 'LOCALIS_CIM_SCRIPT_HANDLE', 'localis-cim-wordpress' );
 define( 'LOCALIS_CIM_STYLE_HANDLE', 'localis-cim-wordpress' );
 define( 'LOCALIS_CIM_MOTION_POLICY_OPTION', 'localis_cim_motion_policy' );
@@ -121,6 +121,8 @@ function localis_cim_is_identifier( $value ) {
 	return is_string( $value ) && 1 === preg_match( '/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $value );
 }
 
+require_once __DIR__ . '/lesson-packs.php';
+
 /**
  * Render one canonical CiM invocation root.
  *
@@ -136,6 +138,7 @@ function localis_cim_shortcode( $atts, $content = null ) {
 		array(
 			'experience' => '',
 			'instance'   => '',
+			'theme'      => '',
 		),
 		$atts,
 		'cim'
@@ -143,6 +146,8 @@ function localis_cim_shortcode( $atts, $content = null ) {
 
 	$experience_id = is_string( $atts['experience'] ) ? trim( $atts['experience'] ) : '';
 	$instance_id   = is_string( $atts['instance'] ) ? trim( $atts['instance'] ) : '';
+	$theme = is_string( $atts['theme'] ) ? trim( $atts['theme'] ) : '';
+	if ( '' !== $theme && ! in_array( $theme, array( 'localis', 'light', 'high-contrast' ), true ) ) { $theme = ''; }
 
 	if ( ! localis_cim_is_identifier( $experience_id ) ) {
 		return '';
@@ -162,6 +167,15 @@ function localis_cim_shortcode( $atts, $content = null ) {
 	if ( '' !== $instance_id ) {
 		$instance_attribute = sprintf( ' data-cim-instance="%s"', esc_attr( $instance_id ) );
 	}
+	// Bundled lessons never discover or inspect companion packs.
+	$bundled = json_decode( file_get_contents( __DIR__ . '/experiences/registry.json' ), true );
+	$packs = in_array( $experience_id, array_column( $bundled['experiences'], 'id' ), true ) ? array( 'lessons' => array() ) : localis_cim_read_lesson_packs();
+	if ( isset( $packs['lessons'][ $experience_id ] ) ) {
+		$instance_attribute .= sprintf( ' data-cim-pack-url="%s"', esc_url( $packs['lessons'][ $experience_id ]['url'] ) );
+	}
+	// Existing bundled lessons keep their exact markup/default; new lessons start neutral.
+	if ( '' === $theme && ! in_array( $experience_id, array( 'git-basic-cycle', 'git-repository-practice', 'synthetic-wordpress' ), true ) ) { $theme = 'light'; }
+	if ( '' !== $theme ) { $instance_attribute .= sprintf( ' data-cim-default-theme="%s"', esc_attr( $theme ) ); }
 
 	$fallback_content = '';
 	if ( null !== $content && '' !== trim( $content ) ) {

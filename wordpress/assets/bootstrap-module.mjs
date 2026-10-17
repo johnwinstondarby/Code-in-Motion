@@ -14,6 +14,7 @@ import {
   createWordPressRendererResolver
 } from '../../src/host/wordpress-browser-bindings.mjs';
 import { WORDPRESS_EXPERIENCE_REGISTRY } from './experience-registry.generated.mjs';
+import { lessonPackUrlFor, readBoundedLesson } from './lesson-pack-loading.mjs';
 import { createWordPressRendererRegistry } from './renderer-registry.mjs';
 import { createWordPressRootLifecycleBinding } from './root-lifecycle-binding.mjs';
 import { createWordPressPlayerBinding } from './player-binding.mjs';
@@ -22,6 +23,7 @@ const experienceAssets = new Map(
   WORDPRESS_EXPERIENCE_REGISTRY.map(({ id, asset }) => [id, asset])
 );
 const ROOT_SELECTOR = '[data-cim-experience]';
+const packUrls = new Set();
 const moduleUrl = new URL(import.meta.url);
 const forceReducedMotion = moduleUrl.searchParams.get('cim-motion-policy') === 'reduce';
 const matchMedia = createWordPressMotionPolicyMatchMedia(
@@ -37,10 +39,16 @@ function versionedUrl(relativePath) {
 }
 
 const experienceLoader = createWordPressExperienceLoader({
-  fetch: (url) => window.fetch(url, { credentials: 'same-origin' }),
+  fetch: async (url) => {
+    const response = await window.fetch(url, { credentials: 'same-origin' });
+    return { ok: response.ok, status: response.status, json: () => readBoundedLesson(response, packUrls.has(url)) };
+  },
   experienceUrlFor(experienceId) {
     const asset = experienceAssets.get(experienceId);
-    return asset === undefined ? '' : versionedUrl('../experiences/' + asset);
+    if (asset !== undefined) return versionedUrl('../experiences/' + asset);
+    const url = lessonPackUrlFor(document, experienceId);
+    if (url) packUrls.add(url);
+    return url;
   }
 });
 

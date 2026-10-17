@@ -1,0 +1,16 @@
+{
+  "compiler": {
+    "id": "localis.cim/authoring-compiler",
+    "version": "1.0.1"
+  },
+  "authoring_schema": "localis.cim/authoring/v2",
+  "authoring_semantic_sha256": "db80e6b169dc43ec503d2090aa67c5def101034dde0c79205101c0ff99b35f44",
+  "runtime_schema": "localis.cim/v2",
+  "engine_min": "0.2.0",
+  "constants": {
+    "intra_beat_dwell_ms": 900,
+    "final_beat_dwell_ms": 1600
+  },
+  "runtime_sha256": "d3f46f7436c4822b17a99374a7e780b4890aea9d30080becbcbbd7af92478457",
+  "boundaries": 5
+}

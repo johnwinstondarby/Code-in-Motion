@@ -19,7 +19,8 @@ export const REGISTRABLE_RUNTIME_SCHEMAS = Object.freeze(['localis.cim/v1', 'loc
 const ASSET_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*\.json$/;
 const CANONICAL_PROJECTIONS = Object.freeze(new Map([
   ['git-basic-cycle', 'experiences/git/git-basic-cycle.json'],
-  ['git-repository-practice', 'experiences/git/git-repository-practice.json']
+  ['git-repository-practice', 'experiences/git/git-repository-practice.json'],
+  ['python-first-steps', 'experiences/starter/python-first-steps.json']
 ]));
 const LEGACY_DEPLOYMENT_IDENTIFIERS = Object.freeze([
   'EXPERIENCE' + '_PATHS',
