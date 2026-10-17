@@ -11,6 +11,7 @@ await cp(root,sandbox,{recursive:true,filter:path=>!['.git','node_modules','dist
 await symlink(resolve(root,'node_modules'),resolve(sandbox,'node_modules'),process.platform==='win32'?'junction':'dir');
 const php='wordpress/lesson-packs.php',reader='wordpress/assets/lesson-pack-loading.mjs';
 const mutations=[
+ ['teacher lessons before support','wordpress/admin-console.php',/(\techo '<h2>Included lessons<\/h2>';[\s\S]*?\tlocalis_cim_render_pack_inventory\(\);\n)(\techo '<details><summary>Support information<\/summary>';[\s\S]*?\techo '<\/details>';\n)/g, '$2$1'],
  ['bundled scan bypass','wordpress/code-in-motion.php',"in_array( $experience_id, array_column( $bundled['experiences'], 'id' ), true )",'false'],
  ['once per request inventory',php,'if ( null !== $inventory ) { return $inventory; }','if ( false ) { return $inventory; }'],
  ['warm header discovery bypass',php,"$plugins = $reuse_plugins ? $cached['plugins'] : get_plugins();",'$plugins = get_plugins();'],
@@ -55,7 +56,7 @@ const mutations=[
  ['preview read only methods','tools/lesson-preview-server.mjs',"request.method !== 'GET' && request.method !== 'HEAD'",'false'],
  ['Admin performs actual admission','wordpress/assets/lesson-pack-admin.mjs','await loader.load(id);','void loader;']
 ];
-const args=['--test','tests/lesson-packs.test.mjs','tests/wordpress-asset-scope.test.mjs'];
+const args=['--test','tests/lesson-packs.test.mjs','tests/wordpress-asset-scope.test.mjs','tests/wordpress-admin-console.test.mjs'];
 function run(){return spawnSync(process.execPath,args,{cwd:sandbox,encoding:'utf8',timeout:120000});}
 let result=run();await writeFile(resolve(work,'baseline.log'),result.stdout+result.stderr);
 if(result.status!==0)throw Error('Packaging mutation baseline failed: '+result.stdout+result.stderr);

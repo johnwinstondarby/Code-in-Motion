@@ -168,3 +168,25 @@ test('R32 PHP management surface has no renderer execution, Runtime semantics, o
     /if \( ! localis_cim_admin_can_view\(\) \) \{[\s\S]*?wp_die\(/
   );
 });
+
+
+test('teacher Admin puts lessons before initially closed support and retains the settings form', async () => {
+  const { renderTeacherAdmin } = await import('./helpers/teacher-admin-render.mjs');
+  const html = renderTeacherAdmin();
+  const labels = ['Start here', 'Included lessons', 'Lesson packs', 'Pack lessons', 'Support information', 'Static health', 'Host configuration', 'Renderer inventory', 'System', 'Release information'];
+  let previous = -1;
+  for (const label of labels) {
+    const index = html.search(new RegExp('<(?:h[23]|summary)>' + label + '</'));
+    assert.ok(index > previous, label + ' must follow the previous section');
+    previous = index;
+  }
+  assert.match(html, /<details><summary>Support information<\/summary>/);
+  assert.doesNotMatch(html, /<details[^>]*\bopen\b/);
+  const support = html.slice(html.indexOf('<details>'), html.indexOf('</details>'));
+  assert.match(support, /name="action" value="localis_cim_update_motion_policy"/);
+  assert.match(support, /name="_wpnonce"/);
+  assert.match(support, /name="motion_policy"/);
+  assert.match(support, /Save motion policy/);
+  assert.equal((html.match(/<a href="[^"]+docs\//g) ?? []).length, 3);
+  assert.match(html, /&lt;lesson&gt;/);
+});

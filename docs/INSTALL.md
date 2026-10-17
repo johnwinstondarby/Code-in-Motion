@@ -4,10 +4,10 @@ Use WordPress 6.5 or later and PHP 7.4 or later. Learners need a desktop or lapt
 
 ## Have a lesson on a page in under 15 minutes
 
-1. Download `code-in-motion-1.0.0.zip` and its `.sha256` file from the [GitHub release](https://github.com/johnwinstondarby/Code-in-Motion/releases). Use the named plugin ZIP, not GitHub's automatically generated source archive.
+1. Download `code-in-motion-1.0.1.zip` and its `.sha256` file from the [GitHub release](https://github.com/johnwinstondarby/Code-in-Motion/releases). Use the named plugin ZIP, not GitHub's automatically generated source archive.
 2. Verify the ZIP's SHA-256 against its companion file. On Windows use `Get-FileHash`; on macOS use `shasum -a 256`; on Linux use `sha256sum`.
 3. In WordPress, open **Plugins → Add Plugin → Upload Plugin**, choose the ZIP, install and activate it.
-4. Open **Code in Motion** in the administration menu. Static health should show Release deployment, present module root and bootstrap, available Experience/renderer inventories, and consistent plugin version.
+4. Open **Code in Motion** in the administration menu. Expand **Support information**. Static health should show Release deployment, present module root and bootstrap, available Experience/renderer inventories, and consistent plugin version.
 5. Add a page. Insert a **Shortcode block**, paste `[cim experience="python-first-steps"]`, and select Preview.
 6. Press Play. Read the first completed beat, then press Play or Next to continue. Check Previous, End and Copy. Publish the page when satisfied.
 
@@ -21,20 +21,20 @@ Preview the lesson on a draft page before publishing. If a pack uses an existing
 
 ## Use the Admin Console
 
-Log in as a site administrator and choose **Code in Motion** in the WordPress sidebar. This is one page: **Static health**, **Lesson packs**, **Pack lessons** and **Experience inventory** are headings to scroll to, not separate submenu items.
+Log in as a site administrator and choose **Code in Motion** in the WordPress sidebar. This is one page, in this order: **Start here**, **Included lessons**, **Lesson packs**, **Pack lessons**, then **Support information**. These are sections, not separate submenu items. Support information is collapsed initially; focus its summary with Tab and press Enter or Space to expand it. It contains Static health, Host configuration, Renderer inventory, System and Release information. The motion-policy form saves normally from the expanded section.
 
 The Admin Console checks the installation and shows shortcodes. It does not edit JSON, accept a JSON upload, build a pack or publish a page. Prepare a lesson on your computer; install its generated ZIP through WordPress **Plugins**; place its shortcode through WordPress **Pages**.
 
 | Your task | Find this section | What to do / what success looks like |
 | --- | --- | --- |
-| Put an included lesson on a page | Experience inventory | Find `python-first-steps`, check **Present (release)**, then select and copy its Shortcode text. Test it on a draft page. |
+| Put an included lesson on a page | Included lessons | Find `python-first-steps`, check **Present (release)**, then select and copy its Shortcode text. Test it on a draft page. |
 | Put your own lesson on a page | Lesson packs, then Pack lessons | Activate its separate plugin under WordPress Plugins. Wait for the lesson to say **Ready**, then select and copy its shortcode. |
 | Find why your lesson was refused | Lesson packs / Pack lessons | Read Status and Reason. Fix the authored source, rebuild and replace its pack. |
-| Check whether CiM was installed intact | Static health | Expect Release, Present, Available and Consistent as listed in the troubleshooting table below. |
-| Check the installed version or report a problem | System / Release information | Record the plugin, WordPress and PHP versions and the exact error; use the support link. |
-| Reduce animation across your site | Host configuration | Leave **System preference** for normal use, or select **Force reduced motion** and save. This setting does not add lessons or change their content. |
+| Check whether CiM was installed intact | Support information → Static health | Expect Release, Present, Available and Consistent as listed in the troubleshooting table below. |
+| Check the installed version or report a problem | Support information → System / Release information | Record the plugin, WordPress and PHP versions and the exact error; use the support link. |
+| Reduce animation across your site | Support information → Host configuration | Leave **System preference** for normal use, or select **Force reduced motion** and save. This setting does not add lessons or change their content. |
 
-**Experience** means a lesson in the inventory labels. The **Experience inventory** lists bundled lessons; **Pack lessons** lists lessons installed separately. A site with no packs has empty pack tables; that is normal.
+**Experience ID** means the lesson ID in the inventory. The **Included lessons** lists bundled lessons; **Pack lessons** lists lessons installed separately. A site with no packs has empty pack tables; that is normal.
 
 | Pack status | Meaning | Next action |
 | --- | --- | --- |
@@ -63,7 +63,7 @@ Keep the fallback text and check **Code in Motion**:
 | Active module root / Bootstrap module | Present | Replace the plugin with the intact release ZIP. |
 | Experience registry / Renderer inventory | Available | Reinstall the intact ZIP; report the failed check and version. |
 | Plugin version consistency | Consistent | Clear hosting caches and replace the complete plugin ZIP. |
-| Experience inventory / Lesson packs | Present (release) / Ready | Activate the pack; copy the exact shortcode shown. |
+| Included lessons / Lesson packs | Present (release) / Ready | Activate the pack; copy the exact shortcode shown. |
 | Pack errors | None | Correct the reported ID, file location, size or JSON problem, then rebuild. |
 | Renderer | Registered | Pack lessons must use the compiled Console v2 format. |
 
