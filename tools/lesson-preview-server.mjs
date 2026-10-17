@@ -1,3 +1,4 @@
+import { formatAuthoringError } from './authoring-diagnostics.mjs';
 import { createServer } from 'node:http';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { resolve, extname } from 'node:path';
@@ -42,7 +43,7 @@ export async function startLessonPreview(source, { port = 0 } = {}) {
       response.end(await readFile(file));
     } catch (error) {
       response.writeHead(422, { 'content-type': 'application/json' });
-      response.end(JSON.stringify({ error: error.message, diagnostics: error.diagnostics ?? [] }));
+      response.end(JSON.stringify({ error: formatAuthoringError(error) }));
     }
   });
   await new Promise((done, reject) => { server.once('error', reject); server.listen(port, '127.0.0.1', done); });

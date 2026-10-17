@@ -145,3 +145,54 @@ test('shared pack preflight rejects schema defects before delegating to any load
  const valid=compileLesson(JSON.stringify(own())).document;assert.equal(validatePackLesson(valid).id,valid.id);
  for(const mutate of[d=>{delete d.presentation;},d=>{d.steps.at(-1).state={};}]){const bad=structuredClone(valid);mutate(bad);assert.throws(()=>validatePackLesson(bad));}
 });
+
+
+test('pack inventory scans once per request and reuses only an unchanged cross-request snapshot',async(t)=>{
+ const work=await mkdtemp(resolve(root,'../pack-cache-'));t.after(()=>rm(work,{recursive:true,force:true}));
+ const directory=resolve(work,'pack-a');await mkdir(directory);
+ await writeFile(resolve(directory,'main.php'),'<?php /* CiM Lesson Pack: cim.lesson-pack/v1 */');
+ const manifest={schema:'cim.lesson-pack/v1',cim_min:'1.0.0',cim_max_exclusive:'2.0.0',lessons:[{id:'my-first-lesson',file:'lesson.json'}]};
+ const manifestPath=resolve(directory,'cim-lesson-pack.json');
+ await writeFile(manifestPath,JSON.stringify(manifest));await writeFile(resolve(directory,'lesson.json'),compileLesson(JSON.stringify(own())).text);
+ const phpSource=resolve(root,'wordpress/lesson-packs.php').replaceAll('\\','/');
+ const script=`define('ABSPATH',__DIR__);define('WP_PLUGIN_DIR',$argv[1]);define('LOCALIS_CIM_PLUGIN_VERSION','1.0.0');$headers=0;$discoveries=0;$fingerprints=0;
+ function add_action(){}function add_filter(){}function plugins_url($p=''){global $fingerprints;$fingerprints++;return 'https://school.test/plugins'.$p;}
+ function get_plugins(){global $discoveries;$discoveries++;return array('pack-a/main.php'=>array('Name'=>'A'));}
+ function get_file_data($p,$k){global $headers;$headers++;return array('contract'=>'cim.lesson-pack/v1');}
+ function is_plugin_active($p){global $argv;return $argv[2]==='active';}function is_plugin_active_for_network($p){return false;}
+ function get_option($key,$default){global $argv;return $argv[2]==='active'?array('pack-a/main.php'):array();}
+ function get_transient($key){return is_file(WP_PLUGIN_DIR.'/cache')?unserialize(file_get_contents(WP_PLUGIN_DIR.'/cache')):false;}
+ function set_transient($key,$value,$ttl){if($key!=='localis_cim_pack_inventory_v1'||$ttl!==86400)throw new Exception('unexpected cache');file_put_contents(WP_PLUGIN_DIR.'/cache',serialize($value));}
+ require '${phpSource}';$first=localis_cim_read_lesson_packs();$after=$fingerprints;$second=localis_cim_read_lesson_packs();if($fingerprints!==$after)throw new Exception('inventory fingerprint repeated within request');if($first!==$second)throw new Exception('request changed');echo json_encode(array('inventory'=>$first,'headers'=>$headers,'discoveries'=>$discoveries));`;
+ const run=(active='active')=>{const r=spawnSync('php',['-r',script,work,active],{encoding:'utf8'});assert.equal(r.status,0,r.stderr);return JSON.parse(r.stdout);};
+ let result=run();assert.equal(result.headers,1);assert.equal(result.discoveries,1);assert.ok(result.inventory.lessons['my-first-lesson']);
+ result=run();assert.equal(result.headers,0,'warm request read pack headers / rescanned lessons');assert.equal(result.discoveries,0,'warm request enumerated plugin headers');
+ manifest.cim_min='9.0.0';await writeFile(manifestPath,JSON.stringify(manifest));result=run();assert.equal(result.headers,1);assert.match(result.inventory.packs[0].reason,/Incompatible/);
+ manifest.cim_min='1.0.0';await writeFile(manifestPath,JSON.stringify(manifest));assert.ok(run().inventory.lessons['my-first-lesson']);
+ result=run('inactive');assert.equal(result.inventory.packs[0].status,'Inactive');assert.equal(Object.keys(result.inventory.lessons).length,0);
+ assert.ok(run().inventory.lessons['my-first-lesson']);
+ await writeFile(resolve(directory,'lesson.json'),'{}');result=run();assert.equal(result.headers,1);assert.equal(Object.keys(result.inventory.lessons).length,0,'changed lesson reused cached acceptance');
+ await writeFile(resolve(directory,'lesson.json'),compileLesson(JSON.stringify(own())).text);assert.ok(run().inventory.lessons['my-first-lesson']);
+ const outside=resolve(work,'outside.json');await writeFile(outside,compileLesson(JSON.stringify(own())).text);await rm(resolve(directory,'lesson.json'));await symlink(outside,resolve(directory,'lesson.json'));
+ result=run();assert.equal(Object.keys(result.inventory.lessons).length,0,'escaping symlink reused cached acceptance');
+});
+
+test('CLI and preview expose every nested compiler diagnostic once with rule, path and fix',async(t)=>{
+ const work=await mkdtemp(resolve(root,'../pack-diagnostics-'));t.after(()=>rm(work,{recursive:true,force:true}));
+ const source=own();source.unexpected1=true;source.unexpected2=true;source.unexpected3=true;source.unexpected4=true;
+ const text=JSON.stringify(source),file=resolve(work,'lesson.json');await writeFile(file,text);
+ let failure;try{compileLesson(text);}catch(error){failure=error;}
+ const causes=failure.diagnostics.flatMap(d=>d.causes??[]);assert.equal(causes.length,4);
+ const cli=spawnSync(process.execPath,[resolve(root,'tools/cim-author.mjs'),'validate',file],{encoding:'utf8'});assert.equal(cli.status,1);
+ const {server,url}=await startLessonPreview(file);t.after(()=>new Promise(done=>server.close(done)));
+ const response=await fetch(url+'/lesson.json');assert.equal(response.status,422);const data=await response.json();
+ assert.equal(data.error,cli.stderr.trim());
+ for(const cause of causes){for(const output of [cli.stderr,data.error]){assert.ok(output.includes(cause.id??cause.code));assert.ok(output.includes(cause.path));assert.ok(output.includes(cause.message));assert.equal(output.split(cause.path+':').length-1,1);}}
+ const client=await readFile(resolve(root,'tools/lesson-preview-client.mjs'),'utf8');assert.match(client,/status\.textContent/);assert.doesNotMatch(client,/innerHTML/);
+});
+
+test('authoring archive places the getting-started README at its root',async()=>{
+ const builder=await readFile(resolve(root,'tools/build-authoring-release.mjs'),'utf8');
+ assert.match(builder,/files\.set\(resolve\(root,'README\.md'\), readHeadFile\('docs\/AUTHORING-TOOL-README\.md','utf8'\)\)/);
+ const guide=await readFile(resolve(root,'docs/AUTHORING-TOOL-README.md'),'utf8');assert.match(guide,/docs\/AUTHORING-GUIDE\.md/);assert.match(guide,/node tools\/cim-author\.mjs init/);
+});

@@ -147,7 +147,7 @@ function localis_cim_shortcode( $atts, $content = null ) {
 	$experience_id = is_string( $atts['experience'] ) ? trim( $atts['experience'] ) : '';
 	$instance_id   = is_string( $atts['instance'] ) ? trim( $atts['instance'] ) : '';
 	$theme = is_string( $atts['theme'] ) ? trim( $atts['theme'] ) : '';
-	if ( '' !== $theme && ! in_array( $theme, array( 'localis', 'light', 'high-contrast' ), true ) ) { return ''; }
+	if ( '' !== $theme && ! in_array( $theme, array( 'localis', 'light', 'high-contrast' ), true ) ) { $theme = ''; }
 
 	if ( ! localis_cim_is_identifier( $experience_id ) ) {
 		return '';
@@ -167,7 +167,9 @@ function localis_cim_shortcode( $atts, $content = null ) {
 	if ( '' !== $instance_id ) {
 		$instance_attribute = sprintf( ' data-cim-instance="%s"', esc_attr( $instance_id ) );
 	}
-	$packs = localis_cim_read_lesson_packs();
+	// Bundled lessons never discover or inspect companion packs.
+	$bundled = json_decode( file_get_contents( __DIR__ . '/experiences/registry.json' ), true );
+	$packs = in_array( $experience_id, array_column( $bundled['experiences'], 'id' ), true ) ? array( 'lessons' => array() ) : localis_cim_read_lesson_packs();
 	if ( isset( $packs['lessons'][ $experience_id ] ) ) {
 		$instance_attribute .= sprintf( ' data-cim-pack-url="%s"', esc_url( $packs['lessons'][ $experience_id ]['url'] ) );
 	}

@@ -11,15 +11,71 @@ function localis_cim_pack_file( $directory, $name, $limit ) {
 	return is_string( $raw ) && strlen( $raw ) <= $limit ? $raw : false;
 }
 
+/** Exclude access time: reading a lesson must not invalidate its own cache. */
+function localis_cim_pack_stat( $path ) {
+	$stat = @stat( $path );
+	return $stat ? array_intersect_key( $stat, array_flip( array( 'dev', 'ino', 'mode', 'size', 'mtime', 'ctime' ) ) ) : false;
+}
+
+/** Cheap cache identity: manifests are bounded; lesson bodies are never read on a hit.
+ * Include resolved paths and file metadata so replacing a file with an escaping symlink
+ * invalidates acceptance too. Inactive plugins never have their JSON opened.
+ */
+function localis_cim_pack_fingerprint( $plugins ) {
+	$identity = array( LOCALIS_CIM_PLUGIN_VERSION, realpath( WP_PLUGIN_DIR ), plugins_url( '' ), hash_file( 'sha256', __DIR__ . '/experiences/registry.json' ) );
+	foreach ( $plugins as $plugin => $metadata ) {
+		$file = WP_PLUGIN_DIR . '/' . $plugin;
+		$active = is_plugin_active( $plugin ) || is_plugin_active_for_network( $plugin );
+		$directory = realpath( dirname( $file ) );
+		clearstatcache( true, $file );
+		$item = array( $plugin, $metadata, $active, realpath( $file ), localis_cim_pack_stat( $file ) );
+		if ( $active && $directory && dirname( $directory ) === realpath( WP_PLUGIN_DIR ) ) {
+			$raw = localis_cim_pack_file( $directory, 'cim-lesson-pack.json', 65536 );
+			$item[] = $raw;
+			$manifest = is_string( $raw ) ? json_decode( $raw, true ) : null;
+			foreach ( array_slice( is_array( $manifest['lessons'] ?? null ) ? $manifest['lessons'] : array(), 0, 100 ) as $entry ) {
+				$name = is_array( $entry ) ? ( $entry['file'] ?? null ) : null;
+				if ( ! is_string( $name ) || ! preg_match( '/^[a-zA-Z0-9_-]+\.json$/D', $name ) ) { continue; }
+				$path = $directory . '/' . $name;
+				clearstatcache( true, $path );
+				$item[] = array( $name, realpath( $path ), localis_cim_pack_stat( $path ) );
+			}
+		}
+		$identity[] = $item;
+	}
+	return hash( 'sha256', serialize( $identity ) );
+}
+
+/** Once per request, with an expiring cross-request cache on ordinary WordPress too. */
+function localis_cim_read_lesson_packs( $refresh = false ) {
+	static $inventory = null;
+	if ( null !== $inventory ) { return $inventory; }
+	if ( ! function_exists( 'get_plugins' ) ) { require_once ABSPATH . 'wp-admin/includes/plugin.php'; }
+	$cached = function_exists( 'get_transient' ) ? get_transient( 'localis_cim_pack_inventory_v1' ) : false;
+	$activation = function_exists( 'get_option' ) ? array( get_option( 'active_plugins', array() ), function_exists( 'get_site_option' ) ? get_site_option( 'active_sitewide_plugins', array() ) : array() ) : null;
+	// WordPress's default object cache lasts one request: calling get_plugins() on
+	// every cache hit would still reread every plugin header. Retain its metadata too.
+	$reuse_plugins = ! $refresh && null !== $activation && is_array( $cached ) && ( $cached['activation'] ?? null ) === $activation && is_array( $cached['plugins'] ?? null );
+	$plugins = $reuse_plugins ? $cached['plugins'] : get_plugins();
+	$fingerprint = localis_cim_pack_fingerprint( $plugins );
+	if ( is_array( $cached ) && ( $cached['fingerprint'] ?? '' ) === $fingerprint && is_array( $cached['inventory'] ?? null ) ) {
+		$inventory = $cached['inventory']; return $inventory;
+	}
+	if ( $reuse_plugins ) { $plugins = get_plugins(); $fingerprint = localis_cim_pack_fingerprint( $plugins ); }
+	$inventory = localis_cim_scan_lesson_packs( $plugins );
+	if ( function_exists( 'set_transient' ) ) { set_transient( 'localis_cim_pack_inventory_v1', array( 'fingerprint' => $fingerprint, 'inventory' => $inventory, 'plugins' => $plugins, 'activation' => $activation ), 86400 ); }
+	return $inventory;
+}
+
 /** Installed header marker is discovery only. Inactive packs never supply lesson data. */
-function localis_cim_read_lesson_packs() {
+function localis_cim_scan_lesson_packs( $plugins ) {
 	if ( ! function_exists( 'get_plugins' ) ) { require_once ABSPATH . 'wp-admin/includes/plugin.php'; }
 	$registry_file = __DIR__ . '/experiences/registry.json';
 	$registry = is_readable( $registry_file ) ? json_decode( file_get_contents( $registry_file ), true ) : array();
 	$bundled = array_column( $registry['experiences'] ?? array(), 'id' );
 	$lessons = array(); $rows = array(); $packs = array(); $errors = array(); $seen = array();
 	$plugins_root = realpath( WP_PLUGIN_DIR );
-	foreach ( get_plugins() as $plugin => $metadata ) {
+	foreach ( $plugins as $plugin => $metadata ) {
 		$plugin_file = WP_PLUGIN_DIR . '/' . $plugin;
 		$header = get_file_data( $plugin_file, array( 'contract' => 'CiM Lesson Pack' ) );
 		if ( empty( $header['contract'] ) ) { continue; }
@@ -76,7 +132,7 @@ function localis_cim_read_lesson_packs() {
 
 /** Capability-protected Admin Console calls this to expose every installed pack and lesson. */
 function localis_cim_render_pack_inventory() {
-	$inventory = localis_cim_read_lesson_packs();
+	$inventory = localis_cim_read_lesson_packs( true );
 	echo '<h2>Lesson packs</h2><p>Inactive packs are listed without reading their lesson data. Active lessons are checked here using the same validator as the Player. Checking is not acceptance; allow scripts to finish.</p>';
 	echo '<table class="widefat striped"><thead><tr><th>Pack</th><th>Status</th><th>Reason</th></tr></thead><tbody>';
 	foreach ( $inventory['packs'] as $index => $pack ) {

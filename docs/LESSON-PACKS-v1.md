@@ -38,3 +38,12 @@ Admin Console → Lesson packs lists every installed pack, its plugin path, stat
 `node tools/cim-author.mjs preview my-lesson.json` starts a read-only server bound to `127.0.0.1`. Open the printed URL, edit/save JSON and refresh. It compiles in memory and uses the production Player, showing validation errors locally. No ZIP build, WordPress installation, cache clearing or source upload is needed. The preview uses a temporary runtime identity to avoid built-in ID collisions; the authored source and eventual pack ID are unchanged. Only production assets and the compiled preview response are served; arbitrary local files are unavailable. Stop with Ctrl+C.
 
 Packs are separate plugins. CiM upgrades, downgrade to 0.2.6 and CiM uninstall leave their files and activation untouched. CiM 0.2.6 cannot display them. Restoring a compatible CiM makes active packs available again. Only a deliberate pack replacement/deletion changes pack files. Install only generated packs you trust: CiM's JSON boundary cannot make an arbitrary PHP plugin safe.
+
+
+## Discovery cost and cache invalidation
+
+Bundled lessons do not discover packs. External lessons share one inventory per page request. Between requests, CiM reuses a disposable inventory cache for up to 24 hours, checking plugin activation, manifest content and resolved file metadata before reuse. A changed manifest or active-plugin list rebuilds the inventory. Resolved paths are checked again, so replacing a lesson with an escaping symlink invalidates acceptance. A warm request reads bounded manifests, not lesson bodies. Inactive packs' JSON is never read.
+
+Use the authoring tool to rebuild and replace a complete pack; its content-hashed lesson filename and manifest change together. Editing installed JSON in place is unsupported. Pack files are never modified by this cache. Cache data expires automatically and contains derived inventory metadata, not lesson content or learner data.
+
+The cache also retains plugin discovery metadata: warm public requests do not call WordPress’s header-enumerating `get_plugins()`. Activation options trigger fresh discovery. Opening the Admin Console refreshes installed-plugin discovery so newly installed inactive packs appear immediately.

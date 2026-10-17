@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { formatAuthoringError } from './authoring-diagnostics.mjs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -39,8 +40,7 @@ export async function main(args) {
 }
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href===import.meta.url) {
   main(process.argv.slice(2)).catch(error=>{
-    console.error(error.message);
-    for (const diagnostic of error.diagnostics??[]) console.error(`${diagnostic.code} ${diagnostic.path}: ${diagnostic.message}`);
+    console.error(formatAuthoringError(error));
     process.exitCode=1;
   });
 }

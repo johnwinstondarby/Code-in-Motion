@@ -55,3 +55,18 @@ An agent's technical rehearsal can find defects but cannot satisfy the requireme
 ## Out of scope
 
 Per-phrase limn, author palettes, Match device, SSH rollback, a visual editor, WordPress.org submission, and AI-in-Motion. AI-in-Motion follows the packaged v1.0 release.
+
+
+### Review follow-up: scan cost, diagnostics and first-use fixes
+
+The deda6d6 candidate is superseded. Before the outsider run:
+
+- Bundled lesson IDs bypass pack discovery entirely. Other lessons and the Admin Console share one inventory per PHP request. A single expiring WordPress transient (`localis_cim_pack_inventory_v1`, 24 hours) reuses the inventory across requests even without a persistent object-cache service. This is a narrow persistence exception: disposable derived metadata only, never lesson bodies, authoring data, learner state or pack writes. No new updater or network access is introduced.
+- The cache identity covers CiM version, plugin root/site URL, bundled registry, installed plugin metadata, activation including network activation, plugin file metadata, bounded manifest bytes and each referenced lesson's resolved path and file metadata. Changes invalidate the snapshot; deactivated packs are never opened for JSON. Request memoization intentionally observes a consistent snapshot until the next request. Official pack updates replace their content-hashed lesson and manifest together; hand-editing an installed lesson is unsupported. A cache hit checks path resolution and metadata without reading or hashing lesson bodies. Expiry also forces rebuilding.
+- Both CLI and local preview show all nested compiler causes, including rule, JSON path and fix. Frozen compiler behavior and diagnostic formats remain unchanged. Preview presents errors as plain text.
+- The authoring ZIP opens with a top-level README linking the first-lesson guide and showing the initial commands.
+- A misspelled shortcode theme falls back to the normal default: existing lessons retain their existing default; new lessons use Light. The Player and teacher fallback remain present.
+
+Regression checks and deliberate mutations cover bundled discovery, repeated discovery, cache reuse/invalidation, nested diagnostics in CLI and preview, the root README and invalid-theme fallback. Browser coverage checks the actual preview error display. Page 3227, frozen formats and all three Git lesson copies remain unchanged. Outsider acceptance, independent review of the new head and final publication approval remain required.
+
+The cache also retains plugin discovery metadata: warm public requests do not call WordPress’s header-enumerating `get_plugins()`. Activation options trigger fresh discovery. Opening the Admin Console refreshes installed-plugin discovery so newly installed inactive packs appear immediately.
