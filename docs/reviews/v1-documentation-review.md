@@ -12,6 +12,8 @@ Date: 2026-10-17. Scope: Johann's release approval and three documentation needs
 | Node wording | Tool README required exactly 22.23.2 while the guide allowed 22+. | Tool README now says Node.js 22 or later. Build reproducibility still requires the pinned version. |
 | Release policy | Docs still made an outsider run a pre-publication gate. | README/ADR record Johann's decision: publish with external validation pending, with no claimed human timing result. |
 
+The archive-link audit also found that the bundled v2 authoring reference linked to compiler specifications absent from the ZIPs. Both existing AUTHORING-TO-RUNTIME v1/v2 files are now included unchanged, with exact static-file allowlist entries; offline reference links resolve without changing a frozen specification.
+
 ## Admin assessment
 
 The Admin Console supports the necessary v1 tasks with the guide: identify a bundled lesson, copy a shortcode, see every installed pack and rejected lesson, and inspect an installation failure. One site-wide motion selector keeps configuration small; no change is needed for normal lesson use. Empty pack tables are a valid state. Ready/rejection reasons are useful, and a rejected lesson does not remove other valid lessons.

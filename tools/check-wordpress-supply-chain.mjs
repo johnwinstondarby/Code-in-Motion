@@ -84,7 +84,7 @@ export function classifyReleasePath(path, version = '0.1.0', registeredAssets = 
     fail('release path is not canonical: ' + path);
   }
 
-  const publicGuides = new Set(['docs/LESSON-PACKS-v1.md','docs/INSTALL.md','docs/AUTHORING-GUIDE.md','docs/AUTHORING-JSON-v1.md','docs/AUTHORING-JSON-v2.md']);
+  const publicGuides = new Set(['docs/LESSON-PACKS-v1.md','docs/INSTALL.md','docs/AUTHORING-GUIDE.md','docs/AUTHORING-JSON-v1.md','docs/AUTHORING-JSON-v2.md','docs/AUTHORING-TO-RUNTIME-v1.md','docs/AUTHORING-TO-RUNTIME-v2.md']);
   if (publicGuides.has(path)) return 'approved-static';
 
   for (const segment of segments) {
