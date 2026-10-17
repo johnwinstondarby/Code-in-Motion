@@ -31,8 +31,9 @@ The Admin Console checks the installation and shows shortcodes. It does not edit
 | Put your own lesson on a page | Lesson packs, then Pack lessons | Activate its separate plugin under WordPress Plugins. Wait for the lesson to say **Ready**, then select and copy its shortcode. |
 | Find why your lesson was refused | Lesson packs / Pack lessons | Read Status and Reason. Fix the authored source, rebuild and replace its pack. |
 | Check whether CiM was installed intact | Support information → Static health | Expect Release, Present, Available and Consistent as listed in the troubleshooting table below. |
-| Check the installed version or report a problem | Support information → System / Release information | Record the plugin, WordPress and PHP versions and the exact error; use the support link. |
 | Reduce animation across your site | Support information → Host configuration | Leave **System preference** for normal use, or select **Force reduced motion** and save. This setting does not add lessons or change their content. |
+| Check installed display engines | Support information → Renderer inventory | Use this support inventory when investigating a renderer error. |
+| Check the installed version or report a problem | Support information → System / Release information | Record the plugin, WordPress and PHP versions and the exact error; use the support link. |
 
 **Experience ID** means the lesson ID in the inventory. The **Included lessons** lists bundled lessons; **Pack lessons** lists lessons installed separately. A site with no packs has empty pack tables; that is normal.
 

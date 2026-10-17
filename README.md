@@ -13,7 +13,7 @@ Read the [install guide](docs/INSTALL.md) and [write-your-first-lesson guide](do
 1. Download and verify the named Code in Motion plugin ZIP from [GitHub Releases](https://github.com/johnwinstondarby/Code-in-Motion/releases). Use the named release asset; GitHub’s automatically generated source archive is not the installable plugin.
 2. In WordPress 6.5+ (PHP 7.4+), install and activate the ZIP through **Plugins → Add Plugin → Upload Plugin**.
 3. Add a Shortcode block to a draft page: `[cim experience="python-first-steps"]`. Preview on a desktop or laptop, then press Play.
-4. Open **Code in Motion** in the WordPress sidebar and expand **Support information** and find **Static health** if fallback text appears. The install guide explains each check.
+4. Open **Code in Motion** in the WordPress sidebar, expand **Support information**, and find **Static health** if fallback text appears. The install guide explains each check.
 5. To write your own lesson, download the separate authoring-tool ZIP, run `node tools/cim-author.mjs init my-lesson.json`, edit it, use `node tools/cim-author.mjs preview my-lesson.json` to see the Player locally, then follow the guide to validate, pack and install it.
 
 Acceptance targets: a working starter on a fresh site in under 15 minutes; an unfamiliar teacher's own three-beat lesson in about 30 minutes. These are unmeasured targets for the external evaluation planned after publication. Automated checks do not establish how long a new teacher takes.
