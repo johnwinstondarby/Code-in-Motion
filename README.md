@@ -2,7 +2,7 @@
 
 Code in Motion is a WordPress teaching plugin for people who teach coding through step-by-step demonstrations. A learner controls a Console and running Explanation: Play pauses at each completed beat, Next finishes the current beat before advancing, and Copy provides the authored command. Examples are displayed, never executed.
 
-Git in Motion is the first real experience and reference implementation. The synthetic operations harness proves the platform independently of Git, WordPress, and other subject-specific integrations.
+Git lessons and a Python starter are included. Teachers can create demonstrations for other coding subjects with the companion lesson-pack tool.
 
 The v1.0 Player supports beat-paced reading, three themes, evidence cues, risk guidance, Copy and keyboard navigation. Teachers can create lessons with the standalone authoring tool and install companion lesson packs without rebuilding CiM. External evaluation is planned.
 
@@ -16,7 +16,7 @@ Read the [install guide](docs/INSTALL.md) and [write-your-first-lesson guide](do
 4. Open **Code in Motion** in the WordPress sidebar, expand **Support information**, and find **Static health** if fallback text appears. The install guide explains each check.
 5. To write your own lesson, download the separate authoring-tool ZIP, run `node tools/cim-author.mjs init my-lesson.json`, edit it, use `node tools/cim-author.mjs preview my-lesson.json` to see the Player locally, then follow the guide to validate, pack and install it.
 
-Acceptance targets: a working starter on a fresh site in under 15 minutes; an unfamiliar teacher's own three-beat lesson in about 30 minutes. These are unmeasured targets for the external evaluation planned after publication. Automated checks do not establish how long a new teacher takes.
+Acceptance targets: a working starter on a fresh site in under 15 minutes; an unfamiliar teacher's own three-beat lesson in about 30 minutes. These targets have not been measured with a new teacher. Automated checks do not establish how long a new teacher takes.
 
 ## Using the public GitHub repository
 
