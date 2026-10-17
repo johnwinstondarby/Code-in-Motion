@@ -14,7 +14,7 @@ There are three stages: **find a template → edit and preview your source JSON 
 
 ## Part 1: Find the template and create your source
 
-Install Node.js 22 or later; release reproducibility is tested with the pinned version in `.nvmrc`. Download and verify `cim-authoring-1.0.0.zip` from the [GitHub release](https://github.com/johnwinstondarby/Code-in-Motion/releases), extract it, and open a terminal in the extracted `cim-authoring-1.0.0` folder. There is no `npm install` step and no dependency on a checkout of the repository.
+Install Node.js 22 or later; release reproducibility is tested with the pinned version in `.nvmrc`. Download and verify `cim-authoring-1.0.1.zip` from the [GitHub release](https://github.com/johnwinstondarby/Code-in-Motion/releases), extract it, and open a terminal in the extracted `cim-authoring-1.0.1` folder. There is no `npm install` step and no dependency on a checkout of the repository.
 
 ```text
 node tools/cim-author.mjs init my-lesson.json

@@ -2,32 +2,30 @@
 
 Code in Motion is a WordPress teaching plugin for people who teach coding through step-by-step demonstrations. A learner controls a Console and running Explanation: Play pauses at each completed beat, Next finishes the current beat before advancing, and Copy provides the authored command. Examples are displayed, never executed.
 
-Git in Motion is the first real experience and reference implementation. The synthetic operations harness proves the platform independently of Git, WordPress, and other subject-specific integrations.
+Git lessons and a Python starter are included. Teachers can create demonstrations for other coding subjects with the companion lesson-pack tool.
 
-## Development status
+The v1.0 Player supports beat-paced reading, three themes, evidence cues, risk guidance, Copy and keyboard navigation. Teachers can create lessons with the standalone authoring tool and install companion lesson packs without rebuilding CiM. External evaluation is planned.
 
-The first public release and its packaging are **v1.0** (SemVer 1.0.0). Release approval includes publication before an external user evaluation; that evaluation remains planned and has not been performed. Installation on localis.services is a separate step; its live baseline remains 0.2.6 until then. Engine capability remains 1.0.1 and frozen authoring formats are unchanged. The public Player supports beat-paced reading, three themes, whole-line evidence cues, risk guidance, native Copy, desktop keyboard navigation and a phone fallback notice.
-
-Teachers can add their own lessons using the standalone authoring tool and companion lesson-pack plugins, without rebuilding CiM. Read the [install guide](docs/INSTALL.md), [write-your-first-lesson guide](docs/AUTHORING-GUIDE.md) and [packaging decision](docs/adr/0060-packaging-for-teaching-sites.md).
+Read the [install guide](docs/INSTALL.md) and [write-your-first-lesson guide](docs/AUTHORING-GUIDE.md).
 
 ## Quick start
 
 1. Download and verify the named Code in Motion plugin ZIP from [GitHub Releases](https://github.com/johnwinstondarby/Code-in-Motion/releases). Use the named release asset; GitHub’s automatically generated source archive is not the installable plugin.
 2. In WordPress 6.5+ (PHP 7.4+), install and activate the ZIP through **Plugins → Add Plugin → Upload Plugin**.
 3. Add a Shortcode block to a draft page: `[cim experience="python-first-steps"]`. Preview on a desktop or laptop, then press Play.
-4. Open **Code in Motion** in the WordPress sidebar and find **Static health** if fallback text appears. The install guide explains each check.
+4. Open **Code in Motion** in the WordPress sidebar, expand **Support information**, and find **Static health** if fallback text appears. The install guide explains each check.
 5. To write your own lesson, download the separate authoring-tool ZIP, run `node tools/cim-author.mjs init my-lesson.json`, edit it, use `node tools/cim-author.mjs preview my-lesson.json` to see the Player locally, then follow the guide to validate, pack and install it.
 
-Acceptance targets: a working starter on a fresh site in under 15 minutes; an unfamiliar teacher's own three-beat lesson in about 30 minutes. These are unmeasured targets for the external evaluation planned after publication. Automated checks do not establish how long a new teacher takes.
+Acceptance targets: a working starter on a fresh site in under 15 minutes; an unfamiliar teacher's own three-beat lesson in about 30 minutes. These targets have not been measured with a new teacher. Automated checks do not establish how long a new teacher takes.
 
 ## Using the public GitHub repository
 
-The public home is [johnwinstondarby/Code-in-Motion](https://github.com/johnwinstondarby/Code-in-Motion). You can read the files without cloning the repository. Teachers normally need the two named assets under [Releases](https://github.com/johnwinstondarby/Code-in-Motion/releases), not a fork or Git checkout. Use tag `1.0.0` to inspect the published v1.0 source; `main` can include later work. Use [Issues](https://github.com/johnwinstondarby/Code-in-Motion/issues) for a reproducible problem, with your CiM, WordPress and PHP versions and the exact error.
+The public home is [johnwinstondarby/Code-in-Motion](https://github.com/johnwinstondarby/Code-in-Motion). You can read the files without cloning the repository. Teachers normally need the two named assets under [Releases](https://github.com/johnwinstondarby/Code-in-Motion/releases), not a fork or Git checkout. Use tag `1.0.1` to inspect the published v1.0 source; `main` can include later work. Use [Issues](https://github.com/johnwinstondarby/Code-in-Motion/issues) for a reproducible problem, with your CiM, WordPress and PHP versions and the exact error.
 
 | What you want | Where to go | What it is for |
 | --- | --- | --- |
-| Install CiM on a site | Release asset `code-in-motion-1.0.0.zip`; [install guide](docs/INSTALL.md) | Upload through WordPress Plugins. |
-| Write your own lesson | Release asset `cim-authoring-1.0.0.zip`; [authoring guide](docs/AUTHORING-GUIDE.md) | Run the local tool; no repository build required. |
+| Install CiM on a site | Release asset `code-in-motion-1.0.1.zip`; [install guide](docs/INSTALL.md) | Upload through WordPress Plugins. |
+| Write your own lesson | Release asset `cim-authoring-1.0.1.zip`; [authoring guide](docs/AUTHORING-GUIDE.md) | Run the local tool; no repository build required. |
 | Find the editable template | [Python authoring JSON](experiences/starter/python-first-steps.authoring.json) | Read the template; use `init` to make your own editable copy. |
 | Find the authoring commands | [tools/cim-author.mjs](tools/cim-author.mjs) | `init`, `preview`, `validate`, `compile`, `pack`. |
 | Understand the Admin screen | [Admin walkthrough](docs/INSTALL.md#use-the-admin-console) | Find a lesson's shortcode and understand its status. |
@@ -51,78 +49,4 @@ A separately installable fork must rename the plugin directory, header/name and 
 
 CiM and the authoring tool are GPLv3-only (SPDX `GPL-3.0-only`), with the exact [LICENSE](LICENSE) included in the plugin, authoring-tool and generated integration ZIPs. WordPress headers/readme use the matching GPLv3 declaration and GNU license URI. No new “or later” grant is made. Teachers retain rights in their original lesson content.
 
-## Repository map
-
-```text
-Code-in-Motion/
-├── .github/workflows/     Automated contract verification
-├── docs/                  Architecture, specifications, events, faults, and ADRs
-├── src/                   Production runtime modules
-│   ├── contracts/         Dependency-free shared value/interface vocabulary
-│   ├── runtime/           CiMInstance composition and orchestration
-│   ├── core/              Canonical semantic session state and commits
-│   ├── transport/         Learner controls and semantic timeline UI
-│   ├── commentary/        Persistent running commentary projection
-│   ├── accessibility/     Shared accessibility contracts and helpers
-│   ├── renderers/         Renderer interface and implementations
-│   ├── experience/        Experience loading and schema-gated ingestion
-│   ├── host/              Host and WordPress adapter
-│   ├── faults/            Shared runtime fault taxonomy and evidence shape
-│   ├── telemetry/         Observation, evidence, replay, and analysis interfaces
-│   └── styles/            Shared CiM presentation assets
-├── wordpress/             Plugin Admin, browser host, assets, and bundled lesson copies
-├── experiences/           Editable authoring sources and compiled lesson data
-├── schemas/               Machine-readable CiM schemas and fixtures
-├── authoring/             Human and generated authoring adapters
-├── harness/               Synthetic operations and fault-injection system
-├── tests/                 Unit, integration, architecture, and conformance tests
-├── tools/                 Repository contract and boundary verification
-└── examples/              Minimal integration examples
-```
-
-Normative cross-component contracts live under `docs/`, including `CIM-ARCHITECTURE.md`, `CIM-SPEC.md`, `EXPERIENCE-SCHEMA.md`, `EVENTS.md`, `FAULTS.md`, and the ADR set.
-
-## Architectural rules
-
-1. `CiMInstance` owns runtime composition, command sequencing, transition mechanics, and playback intent. Core owns and mutates canonical semantic session state through its documented interface.
-2. Core does not inspect subject-specific renderer state or renderer configuration.
-3. Renderers reproduce stable semantic boundaries from absolute state.
-4. Semantic position is independent from subject-state or render-digest equality.
-5. Control flows through documented interfaces. Observation flows through ordered events.
-6. Production code never imports harness code.
-7. All authoring paths converge on validated `localis.cim/v1` or `localis.cim/v2` data before runtime initialization.
-8. Experience-authored content is untrusted data and cannot inject executable page content.
-9. Semantic timing uses the injected CiM clock rather than renderer-owned wall-clock timing.
-10. The reserved semantic boundary ID `initial` identifies the stable state before `steps[0]`.
-11. Git-specific behavior remains outside the shared engine and core contracts.
-12. Production references to the privileged Core `setStatus` seam originate only from `src/runtime/`; Core may declare the seam but does not derive activity status from Runtime-owned fields.
-13. Cross-component value vocabulary belongs in dependency-free `src/contracts/` rather than creating exceptions to component fences.
-
-## Verification
-
-`npm run verify` runs the repository contract gates:
-
-- the published Draft 2020-12 JSON Schema against valid and invalid fixtures;
-- cross-item semantic checks that JSON Schema does not conveniently express;
-- architecture import-boundary enforcement;
-- the Runtime-only privileged `setStatus` seam rule;
-- Node test suites for schema and boundary behavior.
-
-Ajv is a development/CI-only dependency used to execute the published JSON Schema. It is not a production `src/` dependency. The same `npm run verify` command runs in GitHub Actions for pull requests and pushes to `main`.
-
-## Branch model
-
-Feature branches define their contract, tests, and acceptance conditions before merge. `main` remains releasable. The initial sequence begins with architecture and schema work, followed by renderer interface, core engine, harness core, and the synthetic renderer before Git-specific implementation.
-
-## Documentation convention
-
-Each component directory contains a README defining its boundary. Component READMEs use the same headings:
-
-- Purpose
-- Owns
-- Does not own
-- Allowed dependencies
-- Prohibited dependencies
-- Verification
-
-A code change that crosses one of these boundaries requires an explicit architecture decision rather than an undocumented dependency.
+Developer architecture, repository layout and verification: [Contributing](CONTRIBUTING.md).

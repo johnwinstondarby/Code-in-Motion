@@ -77,3 +77,9 @@ Uninstall removes the exact inventory transient as well as the existing motion-p
 ### Documentation and Admin simplicity review, 2026-10-17
 
 The documentation now maps public-repository tasks to files, distinguishes source from installable assets, explains the Admin screen as one page of sections, and traces template → editable JSON → installed pack → page shortcode. Node use is consistently “22 or later”; reproducible release builds remain pinned to 22.23.2. The maintainer's [documentation review](../reviews/v1-documentation-review.md) records Admin friction and the evidence/limits of the review. Admin PHP/UI behavior is unchanged. External usability and the 15/30-minute targets remain unmeasured.
+
+## 1.0.1 teacher-facing Admin and documentation follow-up
+
+The 1.0.0 release was approved for publication with external evaluation pending. Production installation on localis.services is a separate operation; the recorded live baseline at publication was 0.2.6. These operational details belong here rather than in the teacher README.
+
+1.0.1 moves developer material to CONTRIBUTING.md and presents included lessons and packs before technical support information. A native, initially closed disclosure retains the existing motion-policy form. Identifiers, inventory data, validation, public pages, lessons and frozen formats remain unchanged. Candidate evidence must include reproducible Node 22.23.2 builds, full verification, browser and mutation checks, and pack survival through upgrade from and rollback to exact 1.0.0. Merge, tag and publication remain held for Daisy review and Johann approval. Outside evaluation findings arriving before shipment join this patch; later findings target 1.0.2.
