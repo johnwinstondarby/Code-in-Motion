@@ -25,7 +25,17 @@ const engineArgs = ['--test','tests/engine-compatibility.test.mjs','tests/wordpr
 const copyArgs = ['--test','tests/console-copy-binding.test.mjs','tests/player-cli-config.test.mjs','tests/frozen-authoring-v1.test.mjs'];
 const limnArgs = ['--test','tests/console-line-limn.test.mjs'];
 const wrapArgs = ['--test','tests/console-wrap-binding.test.mjs'];
+const reminderArgs = ['--test', 'tests/git-copy-reminders.test.mjs'];
 const mutations = [
+  ['Explanation track uses Console background', css,
+    '[data-cim-commentary-viewport] {\n  scrollbar-color: var(--cim-structural-border) var(--cim-explanation-background);',
+    '[data-cim-commentary-viewport] {\n  scrollbar-color: var(--cim-structural-border) var(--cim-console-background);',
+    [...browserArgs, '--grep', 'GA layout']],
+  ...['experiences/git/git-repository-practice.authoring.json', 'experiences/git/git-repository-practice.json', 'wordpress/experiences/git-repository-practice.json'].flatMap(file =>
+    [
+      ['discard-commit', 'Before copying: run git status and stash or commit any work you want to keep. '],
+      ['recover-from-reflog', 'Before copying: confirm the target in your own reflog and preserve uncommitted work. ']
+    ].map(([id, sentence]) => [`remove ${id} reminder from ${file}`, file, sentence, '', reminderArgs])),
   ['unchanged Resume label rebuilt','src/commentary/scroll-binding.mjs','if (indicator.textContent !== newerStepsLabel) indicator.textContent = newerStepsLabel;',"indicator.textContent = ''; indicator.textContent = newerStepsLabel;",[...browserArgs,'--grep','Explanation preserves selected text nodes']],
   ['unchanged Explanation text rebuilt','src/commentary/native-binding.mjs','if (control.text.textContent !== entry.text) control.text.textContent = entry.text;',"control.text.textContent = ''; control.text.textContent = entry.text;",[...browserArgs,'--grep','Explanation preserves selected text nodes']],
   ['risk scrollbar clearance removed',css,'  padding-inline-end: 0.75rem;','  padding-inline-end: 0;', [...browserArgs,'--grep','GA layout']],
@@ -139,7 +149,7 @@ async function run(args) {
 }
 
 // A failing baseline must never count as successful mutation detection.
-for (const args of [wrapArgs, limnArgs, copyArgs, engineArgs, themeArgs, beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
+for (const args of [reminderArgs, wrapArgs, limnArgs, copyArgs, engineArgs, themeArgs, beatArgs, hostArgs, browserArgs, ['--test','tests/wordpress-production-transport-composition.test.mjs','tests/wordpress-experience-registry.test.mjs']]) {
   const result = await run(args);
   if (result.code !== 0) throw new Error('Mutation baseline failed:\n' + result.output);
 }
@@ -172,7 +182,7 @@ for (const [name, file, from, to, args] of mutations) {
       name === 'selection holds peer pane' ? 'selection holds only' :
       name === 'ignore initial pointer presence' ? 'pointer already present' : grep;
     const result = await run(args === browserArgs ? [...args, '--grep', focusedGrep] : args);
-    await writeFile(resolve(work, name.replaceAll(' ', '-') + '.log'), result.output);
+    await writeFile(resolve(work, name.replace(/[^a-zA-Z0-9._-]/g, '-') + '.log'), result.output);
     if (result.code === 0 || !/not ok|failed|\u2716/.test(result.output)) {
       throw new Error('Mutation was not caught by protected assertions: ' + name);
     }

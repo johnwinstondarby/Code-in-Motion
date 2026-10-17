@@ -1309,6 +1309,28 @@ test('GA layout: overflowing risk badges clear the scrollbar in every theme and 
   await expect(play).toHaveText('Play',{timeout:15000});
   for(const theme of ['localis','high-contrast','light']) {
     await root.locator('[data-cim-theme-select]').selectOption(theme);
+    const scrollbars = await root.evaluate(node => {
+      const supported = CSS.supports('scrollbar-color', 'red blue');
+      return [['console', '--cim-console-background'], ['commentary', '--cim-explanation-background']].map(([pane, token]) => {
+        const viewport = node.querySelector(`[data-cim-${pane}-viewport]`);
+        const color = getComputedStyle(viewport).scrollbarColor;
+        const probe = document.createElement('span');
+        probe.style.backgroundColor = `var(${token})`;
+        viewport.appendChild(probe);
+        const background = getComputedStyle(probe).backgroundColor;
+        probe.remove();
+        return { pane, supported, color, background };
+      });
+    });
+    for (const { pane, supported, color, background } of scrollbars) {
+      if (!supported || !color) {
+        testInfo.annotations.push({ type: 'scrollbar-color unsupported', description: `${testInfo.project.name || testInfo.config.projects[0].use.browserName}: ${theme} ${pane}; computed scrollbar-color unavailable` });
+        continue;
+      }
+      const colors = color.match(/rgba?\([^)]+\)|#[\da-f]+|[a-z]+/gi);
+      expect(colors, `${theme} ${pane} scrollbar colors`).toHaveLength(2);
+      expect(colors[1], `${theme} ${pane} track must match its own pane background`).toBe(background);
+    }
     for(const [id,risk] of [['stage-hunk--s04','free-to-undo'],['push--s02','leaves-a-trace'],['discard-commit--s02','cannot-be-undone']]) {
       await page.evaluate(id=>playerTest.host.commands(playerTest.roots[0]).seek(id,'commentary'),id);
       // Shorten only the test viewport to force a real scrollbar for every risk state.
