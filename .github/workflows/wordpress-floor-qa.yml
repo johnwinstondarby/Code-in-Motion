@@ -75,11 +75,11 @@ jobs:
           if (inventory.schema !== 'localis.cim/wordpress-experience-registry/v1') {
             throw new Error('R31 source registry schema mismatch.');
           }
-          if (!Array.isArray(inventory.experiences) || inventory.experiences.length !== 3) {
+          if (!Array.isArray(inventory.experiences) || inventory.experiences.length !== 4) {
             throw new Error('R31 source inventory count mismatch.');
           }
           const ids = inventory.experiences.map((entry) => entry.id).sort();
-          if (ids.join(',') !== 'git-basic-cycle,git-repository-practice,synthetic-wordpress') {
+          if (ids.join(',') !== 'git-basic-cycle,git-repository-practice,python-first-steps,synthetic-wordpress') {
             throw new Error('R31 source inventory membership mismatch.');
           }
           if (inventory.experiences.some((entry) => entry.present !== true || entry.source !== 'source')) {

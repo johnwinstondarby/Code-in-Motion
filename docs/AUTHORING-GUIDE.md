@@ -12,6 +12,16 @@ node tools/cim-author.mjs init my-lesson.json
 
 This creates an editable copy of the three-beat Python starter. Keep your `.authoring.json` or `.json` source outside WordPress and under your own version control. The tool's supporting folders are `tools/`, `authoring/`, `src/` and `experiences/starter/`; keep them together when moving the extracted tool.
 
+## Preview while editing
+
+After creating your source, run:
+
+```text
+node tools/cim-author.mjs preview my-lesson.json
+```
+
+Open the printed localhost URL in a desktop browser. Edit/save your JSON and refresh to see the production Player and validation errors. This runs locally and compiles in memory; you do not need to build or install a pack for each edit. Stop with Ctrl+C. Use `--port 8088` if you prefer a fixed port. The final WordPress draft preview still checks the host/theme integration.
+
 ## 1. Plan the beats
 
 Open `my-lesson.json`. Set a unique lowercase, hyphenated `id`, such as `my-python-introduction`, and write a useful title and opening description. Increment the lesson's own `version` when publishing a revision. Do not reuse `python-first-steps` or any other bundled ID. A pack contains one lesson, and its folder name is derived from that lesson's ID.
@@ -94,3 +104,7 @@ To replace a lesson, keep its ID, increment its version, build a new ZIP to a ne
 | Pack disappears after rollback | CiM 0.2.6 predates pack support; files remain and return with v1.0. |
 
 The [v2 reference](AUTHORING-JSON-v2.md) inherits the [v1 field rules](AUTHORING-JSON-v1.md); both remain frozen. The tool bundle includes these references. For a maintained fork rather than ordinary lesson authoring, see [the public repository](https://github.com/johnwinstondarby/Code-in-Motion) and the README's build instructions. Fork maintainers support their own versions. The compiler and generated PHP integration are GPLv3; authors retain rights in their original lesson content.
+
+## Pack agreement and conflicts
+
+The tool writes the fixed PHP template and a `cim.lesson-pack/v1` manifest declaring compatibility with CiM >=1.0.0 and <2.0.0. Keep generated files together; do not edit PHP, manifest paths or compiled JSON. Only active packs' own local JSON is read. Admin Console → Lesson packs checks every eligible lesson and shows each rejection reason before you create a page. Copy a shortcode only after its lesson says Ready. If two active packs use the same lesson ID, neither wins; rename the ID in authored source and rebuild. Display titles may match when IDs differ. See [the declared agreement](LESSON-PACKS-v1.md).

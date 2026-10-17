@@ -167,7 +167,7 @@ function localis_cim_shortcode( $atts, $content = null ) {
 	if ( '' !== $instance_id ) {
 		$instance_attribute = sprintf( ' data-cim-instance="%s"', esc_attr( $instance_id ) );
 	}
-	$packs = cim_read_lesson_packs();
+	$packs = localis_cim_read_lesson_packs();
 	if ( isset( $packs['lessons'][ $experience_id ] ) ) {
 		$instance_attribute .= sprintf( ' data-cim-pack-url="%s"', esc_url( $packs['lessons'][ $experience_id ]['url'] ) );
 	}

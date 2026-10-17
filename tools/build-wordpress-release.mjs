@@ -34,6 +34,7 @@ const ZIP_EXTERNAL_FILE_ATTRIBUTES = (0o100644 << 16) >>> 0;
 
 const STATIC_STAGE_FILES = Object.freeze([
   Object.freeze({ source: 'LICENSE', destination: 'LICENSE' }),
+  Object.freeze({ source: 'docs/LESSON-PACKS-v1.md', destination: 'docs/LESSON-PACKS-v1.md' }),
   Object.freeze({ source: 'docs/INSTALL.md', destination: 'docs/INSTALL.md' }),
   Object.freeze({ source: 'docs/AUTHORING-GUIDE.md', destination: 'docs/AUTHORING-GUIDE.md' }),
   Object.freeze({ source: 'docs/AUTHORING-JSON-v1.md', destination: 'docs/AUTHORING-JSON-v1.md' }),

@@ -13,6 +13,12 @@ test.beforeAll(async()=>{
   compiled=compileLesson(JSON.stringify(source)).document;
   server=createServer(async(req,res)=>{
     const url=new URL(req.url,'http://localhost'),kind=url.searchParams.get('case')??'valid';
+    if(url.pathname==='/admin-good.json'||url.pathname==='/admin-bad.json'){
+      const data=structuredClone(compiled);if(url.pathname==='/admin-bad.json'){data.id='bad-lesson';delete data.presentation;}res.setHeader('content-type','application/json');res.end(JSON.stringify(data));return;
+    }
+    if(url.pathname==='/admin'){
+      res.setHeader('content-type','text/html');res.end('<p>Other site content still works.</p>'+[0,1].map(i=>'<table><tr data-cim-pack-index="'+i+'"><td data-cim-pack-status>Checking</td><td data-cim-pack-reason></td></tr><tr data-cim-pack-lesson="'+(i?'bad-lesson':'my-first-lesson')+'" data-cim-pack-owner="'+i+'" data-cim-pack-check-url="'+(i?'/admin-bad.json':'/admin-good.json')+'"><td data-cim-pack-status>Checking</td><td data-cim-pack-reason></td><td data-cim-pack-shortcode></td></tr></table>').join('')+'<script type="module" src="/wordpress/assets/lesson-pack-admin.mjs"></script>');return;
+    }
     if(url.pathname==='/'){
       const id=kind==='override'?'git-repository-practice':'my-first-lesson';
       const dataUrl=kind==='external'?'https://elsewhere.test/pack.json':'/pack.json?case='+kind;
@@ -51,4 +57,8 @@ test('a pack root cannot override a bundled lesson',async({page})=>{
   const requests=[];page.on('request',r=>requests.push(r.url()));
   await page.goto(origin+'/?case=override');await expect(page.locator('.cim')).toHaveAttribute('data-cim-state','ready');
   expect(requests.filter(url=>url.includes('/pack.json'))).toEqual([]);
+});
+
+test('Admin checks all lessons before preview and exposes rejection without affecting other content',async({page})=>{
+ await page.goto(origin+'/admin');const good=page.locator('[data-cim-pack-lesson="my-first-lesson"]'),bad=page.locator('[data-cim-pack-lesson="bad-lesson"]');await expect(good.locator('[data-cim-pack-status]')).toHaveText('Ready');await expect(bad.locator('[data-cim-pack-status]')).toHaveText('Rejected');await expect(bad.locator('[data-cim-pack-reason]')).toContainText('CIM-EXP');await expect(good.locator('[data-cim-pack-shortcode]')).toContainText('[cim experience=');await expect(bad.locator('[data-cim-pack-shortcode]')).toHaveText('Unavailable: rejected lesson');await expect(page.getByText('Other site content still works.')).toBeVisible();
 });

@@ -11,11 +11,17 @@ await cp(root,sandbox,{recursive:true,filter:path=>!['.git','node_modules','dist
 await symlink(resolve(root,'node_modules'),resolve(sandbox,'node_modules'),process.platform==='win32'?'junction':'dir');
 const php='wordpress/lesson-packs.php',reader='wordpress/assets/lesson-pack-loading.mjs';
 const mutations=[
- ['plugin path boundary',php,'0 !== strpos( $file, $prefix )','false'],
+ ['own folder boundary',php,'dirname( $file ) !== $directory','false'],
+ ['canonical JSON basename',php,"! preg_match( '/^[a-zA-Z0-9_-]+\\.json$/D', $name )",'false'],
+ ['active packs only',php,'if ( ! $active ) {','if ( false ) {'],
  ['bundled lesson protection',php,'in_array( $id, $bundled, true )','false'],
  ['duplicate lesson protection',php,'isset( $seen[ $id ] )','false'],
- ['JSON extension requirement',php,"'.json' !== substr( $file, -5 )",'false'],
- ['PHP 2 MiB limit',php,/2097152|2097153/g,m=>m==='2097152'?'4194304':'4194305'],
+ ['PHP 2 MiB limit',php,'2097152','4194304'],
+ ['manifest size limit',php,'65536','131072'],
+ ['versioned header agreement',php,"'cim.lesson-pack/v1' !== $header['contract']",'false'],
+ ['versioned manifest agreement',php,"( $manifest['schema'] ?? '' ) !== 'cim.lesson-pack/v1'",'false'],
+ ['minimum compatibility',php,"version_compare( LOCALIS_CIM_PLUGIN_VERSION, $manifest['cim_min'], '<' )",'false'],
+ ['maximum compatibility',php,"version_compare( LOCALIS_CIM_PLUGIN_VERSION, $manifest['cim_max_exclusive'], '>=' )",'false'],
  ['metadata identity',php,"( $data['id'] ?? null ) !== $id",'false'],
  ['metadata schema',php,"( $data['schema'] ?? null ) !== 'localis.cim/v2'",'false'],
  ['metadata renderer',php,"( $data['renderer'] ?? null ) !== 'console/v1'",'false'],
@@ -23,9 +29,13 @@ const mutations=[
  ['authored text cannot become PHP','tools/lesson-pack-archive.mjs','Description: Companion lesson data for Code in Motion.','Description: ${result.document.presentation.title}'],
  ['browser 2 MiB limit',reader,'MAX_LESSON_BYTES = 2 *','MAX_LESSON_BYTES = 4 *'],
  ['same origin requirement',reader,'url.origin !== new URL(document.baseURI).origin','false'],
+ ['JSON response path',reader,"!url.pathname.endsWith('.json')",'false'],
  ['conflicting URL rejection',reader,'urls.size !== 1','urls.size === 0'],
  ['pack link protocol check',reader,'if (external) {','if (false) {'],
- ['existing schema gate','src/host/wordpress-browser-bindings.mjs','const experience = ingestExperience(raw);','const experience = raw;']
+ ['malformed JSON fails closed',reader,"const lesson = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(buffer));","let lesson; try { lesson = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(buffer)); } catch { lesson = {}; }"],
+ ['invalid UTF-8 fails closed',reader,'fatal: true','fatal: false'],
+ ['existing schema gate','src/host/wordpress-browser-bindings.mjs','const experience = ingestExperience(raw);','const experience = raw;'],
+ ['Admin performs actual admission','wordpress/assets/lesson-pack-admin.mjs','await loader.load(id);','void loader;']
 ];
 const args=['--test','tests/lesson-packs.test.mjs'];
 function run(){return spawnSync(process.execPath,args,{cwd:sandbox,encoding:'utf8',timeout:120000});}

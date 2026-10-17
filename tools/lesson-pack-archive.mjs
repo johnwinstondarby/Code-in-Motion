@@ -45,10 +45,11 @@ export function createLessonPack(source, license) {
   const digest = createHash('sha256').update(result.text).digest('hex');
   const asset = 'lesson-' + digest + '.json', root = 'cim-lesson-' + id;
   // Only the compiler-validated ID and content hash enter PHP; authored text never enters code.
-  const php = `<?php\n/**\n * Plugin Name: Code in Motion lesson - ${id}\n * Description: Companion lesson data for Code in Motion.\n * Version: ${result.document.experience_version}\n * Requires at least: 6.5\n * Requires PHP: 7.4\n * License: GPLv3\n * License URI: https://www.gnu.org/licenses/gpl-3.0.html\n */\nif ( ! defined( 'ABSPATH' ) ) { exit; }\nadd_filter( 'cim_lesson_packs', static function ( $packs ) {\n\t$packs[] = array( 'id' => '${id}', 'file' => __DIR__ . '/${asset}' );\n\treturn $packs;\n} );\n`;
+  const php = `<?php\n/**\n * Plugin Name: Code in Motion lesson - ${id}\n * Description: Companion lesson data for Code in Motion.\n * Version: ${result.document.experience_version}\n * CiM Lesson Pack: cim.lesson-pack/v1\n * Requires at least: 6.5\n * Requires PHP: 7.4\n * License: GPLv3\n * License URI: https://www.gnu.org/licenses/gpl-3.0.html\n */\nif ( ! defined( 'ABSPATH' ) ) { exit; }\n`;
   const zip = createPortableArchive([
     { path: root + '/lesson-pack.php', data: php },
     { path: root + '/' + asset, data: result.text },
+    { path: root + '/cim-lesson-pack.json', data: JSON.stringify({schema:'cim.lesson-pack/v1',cim_min:'1.0.0',cim_max_exclusive:'2.0.0',lessons:[{id,file:asset}]},null,2)+'\n' },
     { path: root + '/LICENSE', data: license },
     { path: root + '/README.txt', data: `Activate alongside Code in Motion v1.0 or later.\nUse [cim experience="${id}"].\nThis pack survives CiM upgrades, rollbacks and uninstall. Delete this separate plugin only when you want to remove its lesson.\nThe PHP integration is GPLv3. Lesson authors retain rights in their original lesson content.\n` }
   ]);

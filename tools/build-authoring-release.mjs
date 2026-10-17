@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { dirname, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
@@ -21,7 +21,16 @@ async function visit(file) {
   }
 }
 await visit(resolve(root,'tools/cim-author.mjs'));
-for (const file of ['LICENSE','.nvmrc','docs/INSTALL.md','docs/AUTHORING-GUIDE.md','docs/AUTHORING-JSON-v1.md','docs/AUTHORING-JSON-v2.md','experiences/starter/python-first-steps.authoring.json']) files.set(resolve(root,file),readHeadFile(file,'utf8'));
+await visit(resolve(root,'tools/lesson-preview-client.mjs'));
+async function includeRuntime(directory) {
+ for(const entry of await readdir(resolve(root,directory),{withFileTypes:true})) {
+  const file=directory+'/'+entry.name;
+  if(entry.isDirectory()) await includeRuntime(file);
+  else if(/\.(?:mjs|js|css)$/.test(entry.name)) files.set(resolve(root,file),readHeadFile(file,'utf8'));
+ }
+}
+await includeRuntime('src');await includeRuntime('wordpress/assets');
+for (const file of ['LICENSE','.nvmrc','docs/LESSON-PACKS-v1.md','docs/INSTALL.md','docs/AUTHORING-GUIDE.md','docs/AUTHORING-JSON-v1.md','docs/AUTHORING-JSON-v2.md','experiences/starter/python-first-steps.authoring.json']) files.set(resolve(root,file),readHeadFile(file,'utf8'));
 const zip = createPortableArchive([...files].map(([file,data])=>({path:'cim-authoring-'+version+'/'+relative(root,file).replaceAll('\\','/'),data})));
 const name = 'cim-authoring-'+version+'.zip';
 await mkdir(resolve(root,'dist'),{recursive:true});

@@ -15,9 +15,9 @@ The Python starter is a simulated Console demonstration, not a Python interprete
 
 ## Install your own lesson pack
 
-Follow the [authoring guide](AUTHORING-GUIDE.md) to create a companion lesson-pack ZIP. Install and activate it through the same WordPress plugin screen while CiM is active. The pack appears in **Code in Motion → Experience inventory**, with its source marked **lesson pack** and a shortcode to copy. A pack is a plugin: install only packs you made with the official tool or obtained from an author you trust. CiM treats the lesson JSON as untrusted data; it does not make arbitrary third-party PHP plugins safe.
+Follow the [authoring guide](AUTHORING-GUIDE.md) to create a companion lesson-pack ZIP. Install and activate it through the same WordPress plugin screen while CiM is active. The pack appears in **Code in Motion → Lesson packs**, with its status and reason. Wait for **Ready**, then copy its shortcode from **Pack lessons**. A pack is a plugin: install only packs you made with the official tool or obtained from an author you trust. CiM treats the lesson JSON as untrusted data; it does not make arbitrary third-party PHP plugins safe.
 
-Preview the lesson on a draft page before publishing. If a pack uses an existing bundled ID, has a conflicting ID, has invalid JSON, or points outside the plugins directory, the Admin Console reports the problem. Fix the source and rebuild; do not edit generated PHP. Full schema and engine compatibility checks occur when the Player loads. A metadata inventory entry alone is not a complete runtime validation result.
+Preview the lesson on a draft page before publishing. If a pack uses an existing bundled ID, has a conflicting ID, has invalid JSON, or points outside the plugins directory, the Admin Console reports the problem. Fix the source and rebuild; do not edit generated PHP. The Admin Console runs the same schema and engine checks as the Player for every eligible active lesson. Checking is not Ready; rejected lessons show the reason and no shortcode. Public loading repeats validation.
 
 ## Themes and existing sites
 
@@ -35,7 +35,7 @@ Keep the fallback text and check **Code in Motion**:
 | Active module root / Bootstrap module | Present | Replace the plugin with the intact release ZIP. |
 | Experience registry / Renderer inventory | Available | Reinstall the intact ZIP; report the failed check and version. |
 | Plugin version consistency | Consistent | Clear hosting caches and replace the complete plugin ZIP. |
-| Experience inventory | Present (release) or Present (lesson pack) | Activate the pack; copy the exact shortcode shown. |
+| Experience inventory / Lesson packs | Present (release) / Ready | Activate the pack; copy the exact shortcode shown. |
 | Pack errors | None | Correct the reported ID, file location, size or JSON problem, then rebuild. |
 | Renderer | Registered | Pack lessons must use the compiled Console v2 format. |
 

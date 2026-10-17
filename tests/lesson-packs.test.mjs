@@ -1,12 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, writeFile, mkdtemp, mkdir, rm } from 'node:fs/promises';
+import { readFile, writeFile, mkdtemp, mkdir, rm, symlink } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { compileLesson, createLessonPack, createPortableArchive, MAX_AUTHORING_BYTES } from '../tools/lesson-pack-archive.mjs';
 import { lessonPackUrlFor, readBoundedLesson, MAX_LESSON_BYTES } from '../wordpress/assets/lesson-pack-loading.mjs';
 import { createWordPressExperienceLoader } from '../src/host/wordpress-browser-bindings.mjs';
+import { checkPackLesson } from '../wordpress/assets/lesson-pack-admin.mjs';
+import { startLessonPreview } from '../tools/lesson-preview-server.mjs';
 import { resolveLearnerTheme } from '../wordpress/assets/theme-presets.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const starter=await readFile(resolve(root,'experiences/starter/python-first-steps.authoring.json'),'utf8');
@@ -28,10 +30,11 @@ test('companion pack is reproducible, licensed and keeps authored text out of PH
   const a=createLessonPack(JSON.stringify(source),license),b=createLessonPack(JSON.stringify(source),license);
   assert.deepEqual(a.zip,b.zip);const files=entries(a.zip);
   const php=files.get('cim-lesson-my-first-lesson/lesson-pack.php');
-  assert.doesNotMatch(php,/dangerous|alert\(|<script/);assert.match(php,/cim_lesson_packs/);
+  assert.doesNotMatch(php,/dangerous|alert\(|<script/);assert.match(php,/CiM Lesson Pack: cim.lesson-pack\/v1/);assert.doesNotMatch(php,/add_filter|require|include/);
+  const manifest=JSON.parse(files.get('cim-lesson-my-first-lesson/cim-lesson-pack.json'));assert.deepEqual([manifest.schema,manifest.cim_min,manifest.cim_max_exclusive],['cim.lesson-pack/v1','1.0.0','2.0.0']);
   assert.equal(files.get('cim-lesson-my-first-lesson/LICENSE'),license);
   assert.equal([...files.values()].filter(s=>s===a.compiled).length,1);
-  assert.match(php,/lesson-[a-f0-9]{64}\.json/);
+  assert.match(manifest.lessons[0].file,/^lesson-[a-f0-9]{64}\.json$/);
 });
 test('authoring rejects malformed data, unsafe links, oversized input and reserved bundled IDs',()=>{
   assert.throws(()=>compileLesson('{'));
@@ -52,7 +55,7 @@ test('bounded reader rejects declared and streamed oversize, invalid JSON and in
   await assert.rejects(readBoundedLesson(new Response('{}',{headers:{'content-length':'2097153'}})),/2 MiB/);
   await assert.rejects(readBoundedLesson(new Response(' '.repeat(2097153))),/2 MiB/);
   await assert.rejects(readBoundedLesson(new Response('{')));
-  await assert.rejects(readBoundedLesson(new Response(new Uint8Array([0xff]))));
+  await assert.rejects(readBoundedLesson(new Response(new Uint8Array([0x22,0xff,0x22]))));
 });
 test('external links are HTTP(S) only without changing legacy runtime link contracts',async()=>{
   const lesson=compileLesson(JSON.stringify(own())).document;
@@ -83,24 +86,53 @@ test('CLI init/validate/pack works outside the repository and never overwrites a
   assert.equal(run(['validate','my-lesson.json']).status,0);
   const result=run(['pack','my-lesson.json']);assert.equal(result.status,0,result.stderr);
   assert.equal(run(['pack','my-lesson.json']).status,1);
-  assert.equal(entries(await readFile(resolve(work,'cim-lesson-my-first-lesson.zip'))).size,4);
+  assert.equal(entries(await readFile(resolve(work,'cim-lesson-my-first-lesson.zip'))).size,5);
 });
-test('PHP registration rejects unsafe files, conflicting IDs and invalid metadata',async t=>{
-  const work=await mkdtemp(resolve(root,'..','v1-php-'));t.after(()=>rm(work,{recursive:true,force:true}));
-  const plugins=resolve(work,'plugins');await mkdir(plugins);
-  const file=resolve(plugins,'lesson.json');const valid=compileLesson(JSON.stringify(own())).text;await writeFile(file,valid);
-  await writeFile(resolve(work,'outside.json'),valid);
-  const phpSource=resolve(root,'wordpress/lesson-packs.php').replaceAll('\\','/');
-  const run=packs=>{
-    const script=`define('ABSPATH',__DIR__);define('WP_PLUGIN_DIR',$argv[1]);$packs=json_decode($argv[2],true);function apply_filters($name,$value){global $packs;return $packs;}function plugins_url($path){return 'https://school.test/wp-content/plugins'.$path;}require '${phpSource}';echo json_encode(cim_read_lesson_packs());`;
-    const result=spawnSync('php',['-r',script,plugins,JSON.stringify(packs)],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);return JSON.parse(result.stdout);
-  };
-  const entry={id:'my-first-lesson',file};assert.equal(run([entry]).lessons[entry.id].source,'lesson pack');
-  for(const packs of [[{...entry,id:'git-repository-practice'}],[entry,entry],[{...entry,id:'../escape'}],[{...entry,file:resolve(work,'outside.json')}],[{...entry,file:phpSource}]]){const r=run(packs);assert.equal(Object.keys(r.lessons).length,0);assert.ok(r.errors.length);}
-  await writeFile(file,'{');assert.ok(run([entry]).errors.length);
-  const oversized=JSON.parse(valid);oversized.title='x'.repeat(2097153);await writeFile(file,JSON.stringify(oversized));assert.ok(run([entry]).errors.length);
-  await writeFile(resolve(plugins,'lesson.txt'),valid);assert.ok(run([{...entry,file:resolve(plugins,'lesson.txt')}]).errors.length);
-  const bundled=JSON.parse(valid);bundled.id='git-repository-practice';await writeFile(file,JSON.stringify(bundled));assert.ok(run([{...entry,id:bundled.id}]).errors.length);
-  for(const field of ['schema','renderer']){const bad=JSON.parse(valid);bad[field]='unknown';await writeFile(file,JSON.stringify(bad));assert.ok(run([entry]).errors.length);}
-  await writeFile(file,valid.replace('"id": "my-first-lesson"','"id": "mismatch"'));assert.ok(run([entry]).errors.length);
+
+test('PHP discovers versioned active manifests and rejects conflicts, escapes and invalid data',async t=>{
+ const work=await mkdtemp(resolve(root,'../v1-php-'));t.after(()=>rm(work,{recursive:true,force:true}));
+ const plugins=resolve(work,'plugins');await mkdir(plugins);const a=resolve(plugins,'pack-a'),b=resolve(plugins,'pack-b');await mkdir(a);await mkdir(b);
+ const valid=compileLesson(JSON.stringify(own())).text;
+ const normal={schema:'cim.lesson-pack/v1',cim_min:'1.0.0',cim_max_exclusive:'2.0.0',lessons:[{id:'my-first-lesson',file:'lesson.json'}]};
+ const header="<?php\n/**\n * CiM Lesson Pack: cim.lesson-pack/v1\n */";
+ for(const dir of[a,b]){await writeFile(resolve(dir,'main.php'),header);await writeFile(resolve(dir,'lesson.json'),valid);await writeFile(resolve(dir,'cim-lesson-pack.json'),JSON.stringify(normal));}
+ const phpSource=resolve(root,'wordpress/lesson-packs.php').replaceAll('\\','/');
+ function run(active=['pack-a/main.php']){
+  const script=`define('ABSPATH',__DIR__);define('WP_PLUGIN_DIR',$argv[1]);define('LOCALIS_CIM_PLUGIN_VERSION','1.0.0');$active=json_decode($argv[2],true);function add_action(){} function add_filter(){} function get_plugins(){return array('pack-a/main.php'=>array('Name'=>'Pack A'),'pack-b/main.php'=>array('Name'=>'Pack B'));}function get_file_data($file,$keys){$raw=file_get_contents($file);preg_match('/CiM Lesson Pack: ([^\\r\\n]+)/',$raw,$m);return array('contract'=>$m[1]??'');}function is_plugin_active($p){global $active;return in_array($p,$active,true);}function is_plugin_active_for_network($p){return false;}function plugins_url($path){return 'https://school.test/wp-content/plugins'.$path;}require '${phpSource}';echo json_encode(localis_cim_read_lesson_packs());`;
+  const r=spawnSync('php',['-r',script,plugins,JSON.stringify(active)],{encoding:'utf8'});assert.equal(r.status,0,r.stderr);return JSON.parse(r.stdout);
+ }
+ const result=run();assert.equal(result.lessons['my-first-lesson'].source,'lesson pack');assert.equal(result.packs[1].status,'Inactive');
+ assert.equal(Object.keys(run([]).lessons).length,0);
+ const conflict=run(['pack-a/main.php','pack-b/main.php']);assert.equal(Object.keys(conflict.lessons).length,0);assert.equal(conflict.rows.length,2);assert.ok(conflict.rows.every(r=>r.status==='Rejected'&&/no pack wins/.test(r.reason)));
+ const save=async manifest=>writeFile(resolve(a,'cim-lesson-pack.json'),JSON.stringify(manifest));
+ for(const manifest of [{...normal,cim_min:'2.0.0',cim_max_exclusive:'3.0.0'},{...normal,cim_min:'0.9.0',cim_max_exclusive:'1.0.0'},{...normal,schema:'unknown'},{...normal,cim_min:'invalid'},{...normal,lessons:[{id:'my-first-lesson',file:'../pack-b/lesson.json'}]}]){await save(manifest);assert.equal(Object.keys(run().lessons).length,0);assert.ok(run().errors.length);}
+ await save(normal);
+ await writeFile(resolve(a,'main.php'),header.replace('cim.lesson-pack/v1','cim.lesson-pack/v99'));assert.equal(Object.keys(run().lessons).length,0);await writeFile(resolve(a,'main.php'),header);
+ const other={...JSON.parse(valid),id:'second-lesson'};await writeFile(resolve(b,'lesson.json'),JSON.stringify(other));await writeFile(resolve(b,'cim-lesson-pack.json'),JSON.stringify({...normal,lessons:[{id:other.id,file:'lesson.json'}]}));assert.equal(Object.keys(run(['pack-a/main.php','pack-b/main.php']).lessons).length,2);
+ await save(normal);
+ for(const text of ['{',JSON.stringify({...JSON.parse(valid),presentation:{title:'x'.repeat(2097153)}}),valid.replace('"id": "my-first-lesson"','"id": "mismatch"'),valid.replace('localis.cim/v2','unknown'),valid.replace('console/v1','unknown')]){await writeFile(resolve(a,'lesson.json'),text);assert.equal(Object.keys(run().lessons).length,0);assert.ok(run().errors.length);}
+ await writeFile(resolve(a,'lesson.json'),valid);
+ await save({...normal,lessons:[{id:'my-first-lesson',file:'lesson.txt'}]});await writeFile(resolve(a,'lesson.txt'),valid);assert.equal(Object.keys(run().lessons).length,0);
+ await save({...normal,lessons:[{id:'git-repository-practice',file:'lesson.json'}]});await writeFile(resolve(a,'lesson.json'),JSON.stringify({...JSON.parse(valid),id:'git-repository-practice'}));assert.equal(Object.keys(run().lessons).length,0);
+ await writeFile(resolve(a,'lesson.json'),valid);
+ await save({...normal,padding:'x'.repeat(65537)});assert.equal(Object.keys(run().lessons).length,0);
+ await save(normal);await writeFile(resolve(a,'lesson.json'),valid);
+ await writeFile(resolve(b,'lesson.json'),valid);
+ try{await symlink(resolve(b,'lesson.json'),resolve(a,'escape.json'),'file');await save({...normal,lessons:[{id:'my-first-lesson',file:'escape.json'}]});assert.equal(Object.keys(run().lessons).length,0);}catch(error){if(process.platform!=='win32'||error.code!=='EPERM')throw error;t.diagnostic('Windows file-symlink privilege unavailable; Linux CI enforces the symlink case.');}
+});
+
+test('Admin validates every active lesson with the actual Player gate before a page is opened',async()=>{
+ const valid=compileLesson(JSON.stringify(own())).document;
+ const check=raw=>checkPackLesson({id:'my-first-lesson',url:'/pack.json',baseURI:'https://school.test/admin/',fetch:async()=>new Response(JSON.stringify(raw))});
+ assert.equal((await check(valid)).status,'Ready');
+ for(const mutate of[d=>{delete d.presentation;},d=>{d.engine_min='999.0.0';},d=>{d.id='other';},d=>{d.steps[0].commentary.links=[{id:'x',label:'X',href:'javascript:alert(1)'}];}]){const bad=structuredClone(valid);mutate(bad);const result=await check(bad);assert.equal(result.status,'Rejected');assert.ok(result.reason);}
+});
+
+test('local preview reads edits on refresh without writing a build and refuses unrelated files',async t=>{
+ const work=await mkdtemp(resolve(root,'../v1-preview-'));t.after(()=>rm(work,{recursive:true,force:true}));const file=resolve(work,'lesson.json');await writeFile(file,JSON.stringify(own()));
+ const {server,url}=await startLessonPreview(file);t.after(()=>new Promise(done=>server.close(done)));
+ assert.equal((await fetch(url)).status,200);let lesson=await(await fetch(url+'/lesson.json')).json();assert.equal(lesson.id,'cim-local-preview');
+ const revised=own();revised.title='Edited without install';await writeFile(file,JSON.stringify(revised));lesson=await(await fetch(url+'/lesson.json')).json();assert.equal(lesson.presentation.title,revised.title);
+ assert.equal((await fetch(url+'/package.json')).status,404);assert.equal((await fetch(url+'/lesson.json',{headers:{Origin:'https://elsewhere.test'}})).status,403);
+ await writeFile(file,'{');const failed=await fetch(url+'/lesson.json');assert.equal(failed.status,422);assert.ok((await failed.json()).error);
 });

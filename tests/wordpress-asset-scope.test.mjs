@@ -22,7 +22,7 @@ test('PHP asset lifecycle registers inertly, predicts queried content, honors fi
     function is_singular() {global $singular; return $singular;}
     function get_queried_object() {global $post; return $post;}
     function has_shortcode($content,$tag) {return false !== strpos($content,'[cim ');}
-    function apply_filters($name,$value,$post=null) {global $override; return $name !== 'localis_cim_should_enqueue' || null === $override ? $value : $override;}
+    define('WP_PLUGIN_DIR', __DIR__); function get_plugins(){return array();} function apply_filters($name,$value,$post=null) {global $override; return $name !== 'localis_cim_should_enqueue' || null === $override ? $value : $override;}
     function shortcode_atts($defaults,$atts) {return array_merge($defaults,$atts);}
     function esc_attr($text) {return htmlspecialchars($text);}
     function do_shortcode($text) {return $text;}

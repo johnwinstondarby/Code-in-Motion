@@ -2,12 +2,19 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { startLessonPreview } from './lesson-preview-server.mjs';
 import { compileLesson, createLessonPack, MAX_AUTHORING_BYTES } from './lesson-pack-archive.mjs';
 
 export async function main(args) {
   const [command, source, ...rest] = args;
-  if (!['init','validate','compile','pack'].includes(command) || !source || (rest.length && !(rest.length===2 && rest[0]==='--out' && rest[1])) || (['init','validate'].includes(command) && rest.length)) {
-    throw new Error('Usage: node tools/cim-author.mjs init lesson.json | validate lesson.json | compile lesson.json --out compiled.json | pack lesson.json --out lesson-pack.zip');
+  if (!['init','validate','compile','pack','preview'].includes(command) || !source || (rest.length && !(rest.length===2 && rest[0]===(command==='preview'?'--port':'--out') && rest[1])) || (['init','validate'].includes(command) && rest.length)) {
+    throw new Error('Usage: node tools/cim-author.mjs init lesson.json | validate lesson.json | compile lesson.json --out compiled.json | pack lesson.json --out lesson-pack.zip | preview lesson.json --port 8088');
+  }
+  if (command==='preview') {
+    const port=rest.length?Number(rest[1]):0;
+    if(!Number.isInteger(port)||port<0||port>65535) throw new Error('Preview port must be 0 through 65535.');
+    const {url}=await startLessonPreview(resolve(source),{port});
+    console.log('Open '+url+' in your browser. Save JSON and refresh to preview edits. Ctrl+C stops preview.'); return;
   }
   if (command==='init') {
     const starter = JSON.parse(await readFile(new URL('../experiences/starter/python-first-steps.authoring.json',import.meta.url),'utf8'));
