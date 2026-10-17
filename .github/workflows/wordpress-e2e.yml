@@ -475,7 +475,7 @@ jobs:
           STATUS="$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^inactive$' | tail -n 1)"
           test "${STATUS}" = "inactive"
 
-          wp_env run cli wp plugin delete code-in-motion
+          wp_env run cli wp plugin uninstall code-in-motion
           if wp_env run cli wp plugin is-installed code-in-motion >/dev/null 2>&1; then
             echo "R33 expected Code in Motion to be absent after uninstall/delete." >&2
             exit 1

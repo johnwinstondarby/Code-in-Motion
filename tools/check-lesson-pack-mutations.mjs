@@ -22,6 +22,7 @@ const mutations=[
  ['preview detailed diagnostics','tools/lesson-preview-server.mjs','error: formatAuthoringError(error)','error: error.message'],
  ['CLI detailed diagnostics','tools/cim-author.mjs','console.error(formatAuthoringError(error));','console.error(error.message);'],
  ['authoring root README','tools/build-authoring-release.mjs',"files.set(resolve(root,'README.md'), readHeadFile('docs/AUTHORING-TOOL-README.md','utf8'));",''],
+ ['uninstall cache cleanup','uninstall.php',"delete_transient( 'localis_cim_pack_inventory_v1' );",''],
  ['mistyped theme fallback','wordpress/code-in-motion.php',"true ) ) { $theme = ''; }","true ) ) { return ''; }"],
  ['own folder boundary',php,'dirname( $file ) !== $directory','false'],
  ['canonical JSON basename',php,"! preg_match( '/^[a-zA-Z0-9_-]+\\.json$/D', $name )",'false'],

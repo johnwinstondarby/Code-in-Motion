@@ -70,3 +70,5 @@ The deda6d6 candidate is superseded. Before the outsider run:
 Regression checks and deliberate mutations cover bundled discovery, repeated discovery, cache reuse/invalidation, nested diagnostics in CLI and preview, the root README and invalid-theme fallback. Browser coverage checks the actual preview error display. Page 3227, frozen formats and all three Git lesson copies remain unchanged. Outsider acceptance, independent review of the new head and final publication approval remain required.
 
 The cache also retains plugin discovery metadata: warm public requests do not call WordPress’s header-enumerating `get_plugins()`. Activation options trigger fresh discovery. Opening the Admin Console refreshes installed-plugin discovery so newly installed inactive packs appear immediately.
+
+Uninstall removes the exact inventory transient as well as the existing motion-policy option. The installed-ZIP lifecycle check runs WordPress’s actual uninstall handler rather than deleting files without cleanup, and still verifies every companion-pack file and its activation. No additional persistence residue is permitted.

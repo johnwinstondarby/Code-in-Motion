@@ -196,3 +196,10 @@ test('authoring archive places the getting-started README at its root',async()=>
  assert.match(builder,/files\.set\(resolve\(root,'README\.md'\), readHeadFile\('docs\/AUTHORING-TOOL-README\.md','utf8'\)\)/);
  const guide=await readFile(resolve(root,'docs/AUTHORING-TOOL-README.md'),'utf8');assert.match(guide,/docs\/AUTHORING-GUIDE\.md/);assert.match(guide,/node tools\/cim-author\.mjs init/);
 });
+
+
+test('real uninstall removes only CiM motion policy and the disposable inventory cache',()=>{
+ const source=resolve(root,'uninstall.php').replaceAll('\\','/');
+ const script=`define('WP_UNINSTALL_PLUGIN',true);$deleted=array();function delete_option($key){global $deleted;$deleted[]='option:'.$key;}function delete_transient($key){global $deleted;$deleted[]='transient:'.$key;}require '${source}';echo json_encode($deleted);`;
+ const result=spawnSync('php',['-r',script],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);assert.deepEqual(JSON.parse(result.stdout),['option:localis_cim_motion_policy','transient:localis_cim_pack_inventory_v1']);
+});
