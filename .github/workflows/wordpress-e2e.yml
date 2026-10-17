@@ -480,7 +480,7 @@ jobs:
             echo "R33 expected Code in Motion to be absent after uninstall/delete." >&2
             exit 1
           fi
-          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion; cd wp-content/plugins && sha256sum --check ../r15-artifact/pack-before-uninstall.sha256'
+          wp_env run cli bash -lc 'test ! -e wp-content/plugins/code-in-motion; cd wp-content/plugins && sha256sum -c ../r15-artifact/pack-before-uninstall.sha256'
           wp_env run cli wp plugin is-active cim-lesson-my-first-lesson
 
           RESIDUE_AFTER="$(wp_env run cli wp eval '
@@ -706,7 +706,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli bash -lc 'cd wp-content/plugins && sha256sum --check ../r16-artifact/pack-before.sha256'
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli bash -lc 'cd wp-content/plugins && sha256sum -c ../r16-artifact/pack-before.sha256'
           npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli wp plugin is-active cim-lesson-my-first-lesson
           CIM_WP_BASE_URL=http://localhost:8891 npx playwright test tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
 
@@ -749,7 +749,7 @@ jobs:
             wp plugin install wp-content/r16-artifact/rollback/code-in-motion-0.2.6.zip --force --activate
             wp --user=admin eval-file wp-content/r16-artifact/restore-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
             test "$(wp plugin get code-in-motion --field=version)" = "0.2.6"
-            (cd wp-content/plugins && sha256sum --check ../r16-artifact/pack-before.sha256)
+            (cd wp-content/plugins && sha256sum -c ../r16-artifact/pack-before.sha256)
             wp plugin is-active cim-lesson-my-first-lesson
             wp cache flush
           '
