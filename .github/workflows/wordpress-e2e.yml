@@ -760,6 +760,33 @@ jobs:
           printf 'Release rollback rehearsal: %s seconds (candidate -> published 1.0.0, exact page restore).\n' "${ROLLBACK_SECONDS}" | tee "${CIM_R16_ARTIFACT_DIR}/rollback-timing.txt"
           CIM_WP_BASE_URL=http://localhost:8891 npx playwright test tests/e2e/wordpress-rollback.spec.mjs tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
 
+      - name: Rehearse direct production rollback from candidate to exact live 0.2.6
+        if: matrix.prior_version == '0.2.6'
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '276a0eaac38015e8522b6ed72dc49a0ea8850b24eaa582dd792a19f866e93d1d  code-in-motion-0.2.6.zip' | (cd "${CIM_R16_ARTIFACT_DIR}" && sha256sum --check)
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli wp plugin install "wp-content/r16-artifact/code-in-motion-${CIM_R16_CURRENT_VERSION}.zip" --force --activate
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli wp plugin get code-in-motion --field=version | grep -Fx "${CIM_R16_CURRENT_VERSION}"
+          ROLLBACK_STARTED=$(date +%s)
+          npm run --silent wp-env -- --config="${CIM_R16_CONFIG}" run cli bash -lc '
+            set -euo pipefail
+            test "$(wp plugin get code-in-motion --field=version)" = "1.0.1"
+            (cd wp-content/plugins && sha256sum -c ../r16-artifact/pack-before.sha256)
+            wp plugin is-active cim-lesson-my-first-lesson
+            wp plugin install wp-content/r16-artifact/code-in-motion-0.2.6.zip --force --activate
+            PAGE_ID=$(wp post list --post_type=page --name=cim-e2e-r16 --field=ID)
+            wp --user=admin eval-file wp-content/r16-artifact/restore-page.php wp-content/r16-artifact/rollback-content.html "$PAGE_ID"
+            test "$(wp plugin get code-in-motion --field=version)" = "0.2.6"
+            (cd wp-content/plugins && sha256sum -c ../r16-artifact/pack-before.sha256)
+            wp plugin is-active cim-lesson-my-first-lesson
+            wp cache flush
+          '
+          ROLLBACK_SECONDS=$(( $(date +%s) - ROLLBACK_STARTED ))
+          test "${ROLLBACK_SECONDS}" -lt 60
+          printf 'Production rollback rehearsal: %s seconds (1.0.1 -> exact live 0.2.6; pack files and activation retained).\n' "${ROLLBACK_SECONDS}" | tee "${CIM_R16_ARTIFACT_DIR}/production-rollback-timing.txt"
+          CIM_ROLLBACK_VERSION=0.2.6 CIM_WP_BASE_URL=http://localhost:8891 npx playwright test tests/e2e/wordpress-rollback.spec.mjs --reporter=line
+
       - name: Preserve RC2 upgrade and rollback proof
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -769,6 +796,7 @@ jobs:
             ${{ runner.temp }}/cim-r16-artifact/*.sha256
             ${{ runner.temp }}/cim-r16-artifact/upgrade-pair.json
             ${{ runner.temp }}/cim-r16-artifact/rollback-timing.txt
+            ${{ runner.temp }}/cim-r16-artifact/production-rollback-timing.txt
             ${{ runner.temp }}/cim-r16-artifact/rollback/*.zip
             ${{ runner.temp }}/cim-r16-artifact/rollback/*.sha256
           if-no-files-found: error

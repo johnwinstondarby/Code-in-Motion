@@ -187,6 +187,7 @@ test('teacher Admin puts lessons before initially closed support and retains the
   assert.match(support, /name="_wpnonce"/);
   assert.match(support, /name="motion_policy"/);
   assert.match(support, /Save motion policy/);
-  assert.equal((html.match(/<a href="[^"]+docs\//g) ?? []).length, 3);
+  assert.equal((html.match(/<a href="[^"]+blob\/1\.0\.1\/docs\//g) ?? []).length, 3);
+  assert.doesNotMatch(html, /blob\/main\//);
   assert.match(html, /&lt;lesson&gt;/);
 });

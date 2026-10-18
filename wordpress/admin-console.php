@@ -581,7 +581,7 @@ function localis_cim_render_admin_console() {
 	echo '<h1>Code in Motion</h1>';
 	echo '<p>Find a lesson, copy its shortcode, and check lesson-pack status.</p>';
 
-	$guide_root = preg_replace( '~/issues/?$~', '/blob/main/docs/', $release_info['support_uri'] ?? '' );
+	$guide_root = preg_replace( '~/issues/?$~', '/blob/' . rawurlencode( LOCALIS_CIM_PLUGIN_VERSION ) . '/docs/', $release_info['support_uri'] ?? '' );
 	echo '<div class="notice notice-info inline"><h2>Start here</h2>';
 	printf( '<p>Put a lesson on a page: <a href="%s">copy an included lesson shortcode</a>.</p>', esc_url( $guide_root . 'INSTALL.md#have-a-lesson-on-a-page-in-under-15-minutes' ) );
 	printf( '<p>Add your own lesson: <a href="%s">write, preview and install a lesson pack</a>.</p>', esc_url( $guide_root . 'AUTHORING-GUIDE.md#part-1-find-the-template-and-create-your-source' ) );
