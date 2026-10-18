@@ -19,3 +19,23 @@ test('WordPress Admin lists healthy and rejected packs before a teacher opens a 
  const good=page.locator('[data-cim-pack-lesson="my-first-lesson"]'),bad=page.locator('[data-cim-pack-lesson="invalid-lesson"]');
  await expect(good.locator('[data-cim-pack-status]')).toHaveText('Ready');await expect(bad.locator('[data-cim-pack-status]')).toHaveText('Rejected');await expect(bad.locator('[data-cim-pack-reason]')).toContainText('CIM-EXP');await expect(bad.locator('[data-cim-pack-shortcode]')).toContainText('Unavailable');await expect(good.locator('[data-cim-pack-shortcode]')).toContainText('[cim experience=');
 });
+
+
+test('teacher support opens with the keyboard and motion policy still saves', async ({page}) => {
+ test.skip(process.env.CIM_PACK_ADMIN_CHECK !== '1', 'Fresh WordPress installation supplies an authenticated Admin.');
+ await page.goto(base+'/wp-login.php');
+ await page.locator('#user_login').fill('admin'); await page.locator('#user_pass').fill('password'); await page.locator('#wp-submit').click();
+ await page.goto(base+'/wp-admin/admin.php?page=code-in-motion');
+ const support = page.locator('.wrap > details');
+ await expect(support).not.toHaveAttribute('open', '');
+ const summary = support.locator('summary');
+ await summary.focus(); await page.keyboard.press('Enter');
+ await expect(page.getByLabel('Site motion policy')).toBeVisible();
+ await page.getByLabel('Site motion policy').selectOption('reduce');
+ await page.getByRole('button', {name:'Save motion policy'}).click();
+ await page.goto(base+'/wp-admin/admin.php?page=code-in-motion');
+ await summary.focus(); await page.keyboard.press('Space');
+ await expect(page.getByLabel('Site motion policy')).toHaveValue('reduce');
+ await page.getByLabel('Site motion policy').selectOption('system');
+ await page.getByRole('button', {name:'Save motion policy'}).click();
+});

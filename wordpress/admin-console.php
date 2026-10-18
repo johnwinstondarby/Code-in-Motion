@@ -579,23 +579,55 @@ function localis_cim_render_admin_console() {
 
 	echo '<div class="wrap">';
 	echo '<h1>Code in Motion</h1>';
-	echo '<p>Deployment inventory, static artifact health, and host configuration.</p>';
+	echo '<p>Find a lesson, copy its shortcode, and check lesson-pack status.</p>';
 
-	echo '<h2>System</h2>';
+	$guide_root = preg_replace( '~/issues/?$~', '/blob/' . rawurlencode( LOCALIS_CIM_PLUGIN_VERSION ) . '/docs/', $release_info['support_uri'] ?? '' );
+	echo '<div class="notice notice-info inline"><h2>Start here</h2>';
+	printf( '<p>Put a lesson on a page: <a href="%s">copy an included lesson shortcode</a>.</p>', esc_url( $guide_root . 'INSTALL.md#have-a-lesson-on-a-page-in-under-15-minutes' ) );
+	printf( '<p>Add your own lesson: <a href="%s">write, preview and install a lesson pack</a>.</p>', esc_url( $guide_root . 'AUTHORING-GUIDE.md#part-1-find-the-template-and-create-your-source' ) );
+	printf( '<p>Fix a rejected lesson: <a href="%s">read its reason and troubleshoot</a>.</p>', esc_url( $guide_root . 'INSTALL.md#install-your-own-lesson-pack' ) );
+	echo '</div>';
+
+	echo '<h2>Included lessons</h2>';
+	foreach ( localis_cim_read_lesson_packs()['errors'] as $pack_error ) {
+		printf( '<div class="notice notice-error inline"><p>%s</p></div>', esc_html( $pack_error ) );
+	}
+	if ( 'available' !== $inventory['status'] ) {
+		echo '<div class="notice notice-error inline"><p>Experience registry unavailable.</p></div>';
+	} else {
+		echo '<table class="widefat striped">';
+		echo '<thead><tr><th>Experience ID</th><th>Asset</th><th>Deployment status</th><th>Shortcode</th></tr></thead>';
+		echo '<tbody>';
+		foreach ( $inventory['experiences'] as $experience ) {
+			$status = $experience['present']
+				? 'Present (' . $experience['source'] . ')'
+				: 'Missing';
+
+			printf(
+				'<tr><td><code>%1$s</code></td><td><code>%2$s</code></td><td>%3$s</td><td><code>%4$s</code></td></tr>',
+				esc_html( $experience['id'] ),
+				esc_html( $experience['asset'] ),
+				esc_html( $status ),
+				esc_html( $experience['shortcode'] )
+			);
+		}
+		echo '</tbody></table>';
+	}
+
+	localis_cim_render_pack_inventory();
+	echo '<details><summary>Support information</summary>';
+	echo '<h2>Static health</h2>';
 	echo '<table class="widefat striped"><tbody>';
-	localis_cim_admin_info_row( 'Plugin version', LOCALIS_CIM_PLUGIN_VERSION );
-	localis_cim_admin_info_row( 'WordPress version', get_bloginfo( 'version' ) );
-	localis_cim_admin_info_row( 'PHP version', PHP_VERSION );
-	localis_cim_admin_info_row( 'WordPress support floor', $support['requires_wordpress'] ?? '' );
-	localis_cim_admin_info_row( 'PHP support floor', $support['requires_php'] ?? '' );
+	localis_cim_admin_info_row( 'Deployment mode', localis_cim_admin_status_label( $health['deployment_mode'] ) );
+	localis_cim_admin_info_row( 'Active module root', localis_cim_admin_status_label( $health['active_module_root'] ) );
+	localis_cim_admin_info_row( 'Bootstrap module', localis_cim_admin_status_label( $health['bootstrap'] ) );
+	localis_cim_admin_info_row( 'Experience registry', localis_cim_admin_status_label( $health['experience_registry'] ) );
+	localis_cim_admin_info_row( 'Renderer inventory', localis_cim_admin_status_label( $health['renderer_inventory'] ) );
 	localis_cim_admin_info_row(
-		'Registry schema',
-		'available' === $inventory['status'] ? $inventory['schema'] : 'Unavailable'
+		'Registered renderers',
+		null === $health['renderer_count'] ? 'Unavailable' : (string) $health['renderer_count']
 	);
-	localis_cim_admin_info_row(
-		'Registered Experiences',
-		'available' === $inventory['status'] ? (string) count( $inventory['experiences'] ) : 'Unavailable'
-	);
+	localis_cim_admin_info_row( 'Plugin version consistency', localis_cim_admin_status_label( $health['version_consistency'] ) );
 	echo '</tbody></table>';
 
 	echo '<h2>Host configuration</h2>';
@@ -622,18 +654,38 @@ function localis_cim_render_admin_console() {
 	submit_button( 'Save motion policy', 'secondary', 'submit', false );
 	echo '</form>';
 
-	echo '<h2>Static health</h2>';
+	echo '<h2>Renderer inventory</h2>';
+	if ( 'available' !== $renderer_inventory['status'] ) {
+		echo '<div class="notice notice-error inline"><p>Renderer inventory unavailable.</p></div>';
+	} else {
+		echo '<table class="widefat striped">';
+		echo '<thead><tr><th>Renderer ID</th><th>Registration status</th></tr></thead>';
+		echo '<tbody>';
+		foreach ( $renderer_inventory['renderers'] as $renderer ) {
+			printf(
+				'<tr><td><code>%1$s</code></td><td>%2$s</td></tr>',
+				esc_html( $renderer['id'] ),
+				esc_html( localis_cim_admin_status_label( $renderer['status'] ) )
+			);
+		}
+		echo '</tbody></table>';
+	}
+
+	echo '<h2>System</h2>';
 	echo '<table class="widefat striped"><tbody>';
-	localis_cim_admin_info_row( 'Deployment mode', localis_cim_admin_status_label( $health['deployment_mode'] ) );
-	localis_cim_admin_info_row( 'Active module root', localis_cim_admin_status_label( $health['active_module_root'] ) );
-	localis_cim_admin_info_row( 'Bootstrap module', localis_cim_admin_status_label( $health['bootstrap'] ) );
-	localis_cim_admin_info_row( 'Experience registry', localis_cim_admin_status_label( $health['experience_registry'] ) );
-	localis_cim_admin_info_row( 'Renderer inventory', localis_cim_admin_status_label( $health['renderer_inventory'] ) );
+	localis_cim_admin_info_row( 'Plugin version', LOCALIS_CIM_PLUGIN_VERSION );
+	localis_cim_admin_info_row( 'WordPress version', get_bloginfo( 'version' ) );
+	localis_cim_admin_info_row( 'PHP version', PHP_VERSION );
+	localis_cim_admin_info_row( 'WordPress support floor', $support['requires_wordpress'] ?? '' );
+	localis_cim_admin_info_row( 'PHP support floor', $support['requires_php'] ?? '' );
 	localis_cim_admin_info_row(
-		'Registered renderers',
-		null === $health['renderer_count'] ? 'Unavailable' : (string) $health['renderer_count']
+		'Registry schema',
+		'available' === $inventory['status'] ? $inventory['schema'] : 'Unavailable'
 	);
-	localis_cim_admin_info_row( 'Plugin version consistency', localis_cim_admin_status_label( $health['version_consistency'] ) );
+	localis_cim_admin_info_row(
+		'Registered Experiences',
+		'available' === $inventory['status'] ? (string) count( $inventory['experiences'] ) : 'Unavailable'
+	);
 	echo '</tbody></table>';
 
 	echo '<h2>Release information</h2>';
@@ -657,49 +709,7 @@ function localis_cim_render_admin_console() {
 		);
 	}
 
-	localis_cim_render_pack_inventory();
-	echo '<h2>Experience inventory</h2>';
-	foreach ( localis_cim_read_lesson_packs()['errors'] as $pack_error ) {
-		printf( '<div class="notice notice-error inline"><p>%s</p></div>', esc_html( $pack_error ) );
-	}
-	if ( 'available' !== $inventory['status'] ) {
-		echo '<div class="notice notice-error inline"><p>Experience registry unavailable.</p></div>';
-	} else {
-		echo '<table class="widefat striped">';
-		echo '<thead><tr><th>Experience ID</th><th>Asset</th><th>Deployment status</th><th>Shortcode</th></tr></thead>';
-		echo '<tbody>';
-		foreach ( $inventory['experiences'] as $experience ) {
-			$status = $experience['present']
-				? 'Present (' . $experience['source'] . ')'
-				: 'Missing';
-
-			printf(
-				'<tr><td><code>%1$s</code></td><td><code>%2$s</code></td><td>%3$s</td><td><code>%4$s</code></td></tr>',
-				esc_html( $experience['id'] ),
-				esc_html( $experience['asset'] ),
-				esc_html( $status ),
-				esc_html( $experience['shortcode'] )
-			);
-		}
-		echo '</tbody></table>';
-	}
-
-	echo '<h2>Renderer inventory</h2>';
-	if ( 'available' !== $renderer_inventory['status'] ) {
-		echo '<div class="notice notice-error inline"><p>Renderer inventory unavailable.</p></div>';
-	} else {
-		echo '<table class="widefat striped">';
-		echo '<thead><tr><th>Renderer ID</th><th>Registration status</th></tr></thead>';
-		echo '<tbody>';
-		foreach ( $renderer_inventory['renderers'] as $renderer ) {
-			printf(
-				'<tr><td><code>%1$s</code></td><td>%2$s</td></tr>',
-				esc_html( $renderer['id'] ),
-				esc_html( localis_cim_admin_status_label( $renderer['status'] ) )
-			);
-		}
-		echo '</tbody></table>';
-	}
+	echo '</details>';
 
 	echo '</div>';
 }

@@ -3,7 +3,7 @@ Tags: interactive, experience, runtime
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -21,7 +21,7 @@ Install and authoring guides are included in the ZIP and at https://github.com/j
 
 1. Install the Code in Motion release ZIP through the WordPress Plugins screen or WP-CLI.
 2. Activate Code in Motion.
-3. Open Code in Motion in the WordPress sidebar. Under Experience inventory (bundled lessons) or Pack lessons (your lessons), copy the lesson shortcode into a page’s Shortcode block. Wait for Ready before using a pack lesson.
+3. Open Code in Motion in the WordPress sidebar. Under Included lessons (bundled lessons) or Pack lessons (your lessons), copy the lesson shortcode into a page’s Shortcode block. Wait for Ready before using a pack lesson.
 4. Preview the draft page on a desktop or laptop, check the Player, then publish or update it.
 
 The Code in Motion Admin Console reports the active deployment mode, bootstrap-module presence, Experience registry, renderer inventory, version consistency, Experience deployment status, and the supported shortcode for each registered Experience.
@@ -32,27 +32,32 @@ The Code in Motion Admin Console reports the active deployment mode, bootstrap-m
 
 Open the Code in Motion Admin Console in WordPress and check these items:
 
-1. Under Static health, confirm that Deployment mode is Release, Active module root is Present, Bootstrap module is Present, Experience registry is Available, Renderer inventory is Available, and Plugin version consistency is Consistent.
-2. Under Experience inventory, find the Experience used by the shortcode and confirm that its Deployment status is Present (release). Confirm that the shortcode on the page matches the shortcode shown in the inventory.
+1. Expand Support information (Tab to its summary, then Enter or Space). Under Static health, confirm that Deployment mode is Release, Active module root is Present, Bootstrap module is Present, Experience registry is Available, Renderer inventory is Available, and Plugin version consistency is Consistent.
+2. Under Included lessons, find the Experience used by the shortcode and confirm that its Deployment status is Present (release). Confirm that the shortcode on the page matches the shortcode shown in the inventory.
 3. Under Renderer inventory, confirm that the renderer required by the Experience is Registered.
 
 If any of these checks fail, preserve the fallback text and report the failed status together with the Code in Motion version through the project support channel.
 
 = Where is the editable JSON template, and how do I put my lesson on a page? =
 
-Download the separate cim-authoring-1.0.0.zip release asset. Its top-level README points to the authoring guide. The template is experiences/starter/python-first-steps.authoring.json inside that ZIP; run node tools/cim-author.mjs init my-lesson.json to make your editable copy. Use Node.js 22 or later on your computer.
+Download the separate cim-authoring-1.0.1.zip release asset. Its top-level README points to the authoring guide. The template is experiences/starter/python-first-steps.authoring.json inside that ZIP; run node tools/cim-author.mjs init my-lesson.json to make your editable copy. Use Node.js 22 or later on your computer.
 
 Edit your copy's lesson ID, title, commands, outputs and explanations, then preview, validate and pack it using the included guide. Install the resulting lesson-pack ZIP through WordPress Plugins and activate it alongside CiM. Open Code in Motion, find Pack lessons, wait for Ready, and copy its shortcode to a page's Shortcode block. Preview and publish. Do not upload source JSON to the Media Library or edit generated PHP.
 
 = Is Lesson packs a separate menu? =
 
-No. Code in Motion opens one Admin page. Lesson packs, Pack lessons, Experience inventory and Static health are sections on that page. Experience means lesson. The Admin page checks installations and lists shortcodes; lesson editing happens on your computer.
+No. Code in Motion opens one Admin page. Start here, Included lessons, Lesson packs and Pack lessons come first. Support information is collapsed by default and contains Static health, Host configuration, Renderer inventory, System and Release information. Expand it to inspect health checks or save the motion-policy setting. Experience means lesson. The Admin page checks installations and lists shortcodes; lesson editing happens on your computer.
 
 == Support ==
 
 Report defects and release issues at https://github.com/johnwinstondarby/Code-in-Motion/issues.
 
 == Changelog ==
+
+= 1.0.1 =
+* Put included lessons and lesson packs first in the Admin Console, with teacher guide links.
+* Group technical checks and the unchanged motion-policy form under keyboard-accessible, initially collapsed Support information.
+* Simplify the public README and move developer architecture and conventions to CONTRIBUTING.md.
 
 = 1.0.0 =
 * Package the first public release with install and authoring guides and a non-Git Python starter.
