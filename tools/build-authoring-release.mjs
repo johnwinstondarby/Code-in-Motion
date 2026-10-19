@@ -12,6 +12,9 @@ const files = new Map();
 async function visit(file) {
   if(files.has(file)) return;
   const text = readHeadFile(relative(root,file).replaceAll('\\','/'),'utf8'); files.set(file,text);
+  // Imported schemas are data; words such as "from" in their descriptions
+  // must not be mistaken for JavaScript module imports.
+  if (file.endsWith('.json')) return;
   for (const match of text.matchAll(/(?:from\s*|import\s*\()\s*['"]([^'"]+)['"]/g)) {
     if(match[1].startsWith('node:')) continue;
     if(!match[1].startsWith('.')) throw new Error('Authoring release must not need installed packages: '+match[1]);
