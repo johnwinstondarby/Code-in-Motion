@@ -1,0 +1,257 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CiM v2 temporary prototype</title><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet"><style>body{margin:0;background:#0b0e13;color:#e6e9ef;font-family:'IBM Plex Sans',system-ui,sans-serif}#stage{transform-origin:0 0}#toolbar{padding:12px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}select{font:inherit}#viewport{overflow:auto;max-width:100vw}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #f2b35b;outline-offset:2px}
+.transport{background:linear-gradient(135deg,#202937,#151c27);border:1px solid #354153;border-radius:12px;padding:10px 18px;display:flex;flex-direction:column;gap:9px}
+.transport-status{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#c3cdda;font-size:.85em}.transport-kicker{font-size:.8em;letter-spacing:.15em;color:#92a4bc}
+.transport-buttons{display:flex;align-items:center;justify-content:center;gap:30px}.transport-button{background:transparent;border:0;color:#c6d0de;font:inherit;min-width:68px;min-height:64px;padding:4px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;border-radius:8px}.transport-button>span:last-child{font-size:.8em}.transport-button:hover{background:#2c394c;color:#fff}.transport-button.primary{min-width:82px;color:#eff5ff}.play-disc{width:52px;height:52px;border-radius:50%;background:#c6defb;color:#14243b;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px #0004}.primary:hover .play-disc{background:#e1edff}
+.transport-beats{flex-direction:column;gap:8px;padding-top:10px;border-top:1px solid #354153}.beat-list-heading{display:flex;justify-content:space-between;align-items:center;color:#c3cdda;font-size:.85em}.beat-list-items{display:flex;flex-wrap:wrap;gap:6px}.transport-beats button{font:inherit;color:#e6e9ef;background:transparent;border:1px solid #56667c;border-radius:5px;padding:5px 9px;cursor:pointer}.beat-list-heading button{margin-left:6px}.transport-beats button:hover{background:#2c394c}
+
+.transport{position:relative;display:grid;grid-template-columns:minmax(110px,1fr) auto minmax(0,1fr);align-items:center;gap:12px;padding:5px 14px;min-height:60px;border-radius:10px}
+.transport-kicker{font-size:10px;letter-spacing:.12em;white-space:nowrap}.transport-status{display:block;min-width:0;text-align:right;font-size:12px;line-height:1.4;overflow-wrap:anywhere}.transport-buttons{gap:8px}.transport-button{min-width:58px;min-height:58px;padding:2px 6px;gap:3px}.transport-button.primary{min-width:62px}.transport-button>span:last-child{font-size:10px}.play-disc{width:40px;height:40px}.play-disc svg{width:25px;height:25px}.transport-button>svg{width:24px;height:24px}.restart-separated{margin-left:16px;border-left:1px solid #526075;border-radius:0 6px 6px 0;padding-left:18px}
+.transport-beats{position:absolute;right:0;bottom:calc(100% + 8px);z-index:10;width:min(640px,calc(100% - 24px));max-height:270px;overflow:auto;box-sizing:border-box;background:#1b2533;border:1px solid #61748e;border-radius:10px;padding:14px;box-shadow:0 12px 30px #0008}.beat-list-items button[aria-current="step"]{outline:2px solid #c6defb;outline-offset:1px}.beat-list-items button[aria-current="step"]::after{content:' · current';color:#c6defb}.beat-list-heading{margin-bottom:4px}
+</style><div id="toolbar"><strong>CiM v2 · temporary prototype</strong><label>Screen size <select id="size"><option>1366x768</option><option>1536x864</option><option>1920x1080</option></select></label><label>Arrangement <select id="layout"><option value="tabs">Action row + context row</option><option value="band">Diagram band</option><option value="grid">Four-pane grid</option></select></label><label><input type="checkbox" id="fit" checked> Fit to width</label><span id="scale" role="status"></span><span>Placeholder content · simulated media · untick Fit to width to judge true size (scroll if the artboard is wider than the window).</span></div><div id="viewport"><div id="frame"><div id="stage"><div id="app"></div></div></div></div><script>const TEMPLATE="\n\n<div style=\"width: {{w}}px; height: {{h}}px; box-sizing: border-box; padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 10px; background: #0B0E13; color: #E6E9EF; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: {{base}}px; overflow: hidden\">\n\n  <div style=\"display: flex; align-items: center; justify-content: space-between; gap: 16px\">\n    <div style=\"display: flex; align-items: baseline; gap: 12px\">\n      <span style=\"font-weight: 600; font-size: 1.15em\">AI-in-Motion \u00b7 Run Custody</span>\n      <span style=\"color: #A9B1BD\">CiM v2 layout prototype \u00b7 {{w}} \u00d7 {{h}} \u00b7 {{arrangementName}}</span>\n    </div>\n    <span style=\"color: #F2B35B; border: 1px solid #F2B35B; border-radius: 4px; padding: 2px 8px; font-size: 0.85em\">Placeholder content: real commands and output come from the lab capture</span>\n  </div>\n\n  <div style=\"display: grid; grid-template-areas: {{areas}}; grid-template-columns: {{cols}}; grid-template-rows: {{rows}}; gap: 10px; flex: 1; min-height: 0\">\n\n    <div role=\"tablist\" aria-label=\"Action views\" style=\"grid-area: slottabs; display: {{tabsDisplay}}; gap: 6px; align-items: flex-end\">\n      <button id=\"action-tab-console\" role=\"tab\" aria-selected=\"{{consoleSelected}}\" aria-controls=\"action-panel-console\" tabindex=\"{{consoleTabIndex}}\" onClick=\"{{ showConsole }}\" style=\"font: inherit; cursor: pointer; padding: 6px 12px; border-radius: 6px 6px 0 0; border: 1px solid #323A4A; border-bottom: none; background: {{tabConsoleBg}}; color: #E6E9EF; display: flex; align-items: center; gap: 8px\">Console \u2013 CLI<sc-if value=\"{{ consoleMarker }}\" hint-placeholder-val=\"{{ false }}\"><span style=\"display: inline-flex; align-items: center; gap: 4px; color: #7CB7FF; font-size: 0.8em\"><span style=\"width: 7px; height: 7px; border-radius: 50%; background: #7CB7FF\"></span>action here</span></sc-if></button>\n      <button id=\"action-tab-gui\" role=\"tab\" aria-selected=\"{{guiSelected}}\" aria-controls=\"action-panel-gui\" tabindex=\"{{guiTabIndex}}\" onClick=\"{{ showGui }}\" style=\"font: inherit; cursor: pointer; padding: 6px 12px; border-radius: 6px 6px 0 0; border: 1px solid #323A4A; border-bottom: none; background: {{tabGuiBg}}; color: #E6E9EF; display: flex; align-items: center; gap: 8px\">Motion \u2013 GUI<sc-if value=\"{{ guiMarker }}\" hint-placeholder-val=\"{{ false }}\"><span style=\"display: inline-flex; align-items: center; gap: 4px; color: #7CB7FF; font-size: 0.8em\"><span style=\"width: 7px; height: 7px; border-radius: 50%; background: #7CB7FF\"></span>action here</span></sc-if></button>\n    </div>\n\n    <section id=\"action-panel-console\" role=\"{{actionPanelRole}}\" aria-labelledby=\"{{consoleLabelledBy}}\" tabindex=\"0\" aria-label=\"Console pane\" style=\"grid-area: {{consoleArea}}; display: {{consoleDisplay}}; flex-direction: column; min-height: 0; background: #000000; border: 1px solid {{consoleBorder}}; border-radius: 8px; overflow: hidden\">\n      <div style=\"display: flex; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid #1C2230; color: #A9B1BD; font-size: 0.85em\">\n        <span>Console</span><span>Bash \u00b7 {{consoleHost}}</span>\n      </div>\n      <div style=\"flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column-reverse; padding: 10px 12px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 0.92em; line-height: 1.5; color: #7CB7FF\">\n        <div>\n          <sc-for list=\"{{ consoleLines }}\" as=\"line\" hint-placeholder-count=\"4\">\n            <div style=\"white-space: pre-wrap; color: {{line.color}}; outline: {{line.limn}}; outline-offset: 2px; border-radius: 2px\">{{line.text}}</div>\n          </sc-for>\n        </div>\n      </div>\n      <sc-if value=\"{{ consoleWaiting }}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"padding: 7px 12px; border-top: 1px solid #1C2230; color: #A9B1BD; font-size: 0.85em\">Waiting on next Console action</div>\n      </sc-if>\n    </section>\n\n    <section aria-label=\"Engineering pane\" style=\"grid-area: {{diagramArea}}; display: {{diagramDisplay}}; flex-direction: column; min-height: 0; background: #0E1218; border: 1px solid {{diagramBorder}}; border-radius: 8px; overflow: hidden\">\n      <div style=\"display: flex; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid #1C2230; color: #A9B1BD; font-size: 0.85em\">\n        <span>Engineering</span><span style=\"border: 1px solid #6F93C2; color: #A9C8F0; border-radius: 4px; padding: 0 6px\">Diagram \u00b7 modeled</span>\n      </div>\n      <div style=\"position: relative; flex: 1; min-height: 0\">\n        <sc-for list=\"{{ nodes }}\" as=\"n\" hint-placeholder-count=\"8\">\n          <div style=\"position: absolute; left: {{n.left}}; top: {{n.top}}; transform: translate(-50%, -50%); width: 17%; box-sizing: border-box; padding: 5px 6px; border-radius: 6px; border: 2px solid {{n.border}}; background: {{n.bg}}; text-align: center; font-size: 0.8em; line-height: 1.25\">\n            <div style=\"font-weight: 600; color: #E6E9EF\">{{n.label}}</div>\n            <div style=\"color: {{n.statusColor}}; font-size: 0.9em\">{{n.status}}</div>\n          </div>\n        </sc-for>\n        <sc-if value=\"{{ tokenShown }}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"position: absolute; left: {{tokenLeft}}; top: {{tokenTop}}; transform: translate(-50%, -50%); background: #FFFFFF; color: #0B0E13; border-radius: 10px; padding: 2px 8px; font-size: 0.75em; font-weight: 600; white-space: nowrap\">{{tokenLabel}}</div>\n        </sc-if>\n      </div>\n      <div style=\"padding: 7px 12px; border-top: 1px solid #1C2230; color: #A9B1BD; font-size: 0.85em\">{{diagramFooter}}</div>\n    </section>\n\n    <section id=\"action-panel-gui\" role=\"{{actionPanelRole}}\" aria-labelledby=\"{{guiLabelledBy}}\" tabindex=\"0\" aria-label=\"Motion pane\" style=\"grid-area: {{guiArea}}; display: {{guiDisplay}}; flex-direction: column; min-height: 0; background: #0E1218; border: 1px solid {{guiBorder}}; border-radius: 8px; overflow: hidden\">\n      <div style=\"display: flex; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid #1C2230; color: #A9B1BD; font-size: 0.85em\">\n        <span>Motion</span><span style=\"border: 1px solid #A9B1BD; border-radius: 4px; padding: 0 6px\">Placeholder GUI · simulated</span>\n      </div>\n      <div style=\"flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 12px; gap: 10px\">\n        <sc-if value=\"{{ guiFailed }}\" hint-placeholder-val=\"{{ false }}\">\n          <div role=\"status\" style=\"flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 8px; border: 1px dashed #F2B35B; border-radius: 6px; padding: 14px\">\n            <div style=\"display: flex; align-items: center; gap: 8px; color: #F2B35B; font-weight: 600\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#F2B35B\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M12 3 2 21h20L12 3z\"></path><path d=\"M12 10v5\"></path><path d=\"M12 18h.01\"></path></svg>GUI recording unavailable</div>\n            <div style=\"color: #E6E9EF\">Text alternative: {{guiAlt}}</div>\n            <div style=\"color: #A9B1BD; font-size: 0.85em; font-family: 'IBM Plex Mono', monospace\">CIM-PANE-MEDIA-UNAVAILABLE \u00b7 the beat continues without this recording</div>\n          </div>\n        </sc-if>\n        <sc-if value=\"{{ guiFrame }}\" hint-placeholder-val=\"{{ true }}\">\n          <div style=\"flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; background: #151B24; border: 1px solid #262E3B; border-radius: 6px; color: #A9B1BD; text-align: center; padding: 10px\">{{guiScreen}}</div>\n          <div style=\"height: 4px; background: #262E3B; border-radius: 2px; overflow: hidden\"><div style=\"height: 4px; width: {{guiProgress}}; background: #7CB7FF\"></div></div>\n          <div style=\"color: #E6E9EF; font-size: 0.9em\">{{guiCaption}}</div>\n        </sc-if>\n      </div>\n      <sc-if value=\"{{ guiWaiting }}\" hint-placeholder-val=\"{{ false }}\">\n        <div style=\"padding: 7px 12px; border-top: 1px solid #1C2230; color: #A9B1BD; font-size: 0.85em\">Waiting on next GUI action</div>\n      </sc-if>\n    </section>\n\n    <section aria-label=\"Explanation pane\" style=\"grid-area: expl; display: flex; flex-direction: column; min-height: 0; background: #171B22; border: 1px solid #323A4A; border-radius: 8px; overflow: hidden\">\n      <div style=\"padding: 8px 12px; border-bottom: 1px solid #262E3B; color: #E8ECF2; font-weight: 600\">Explanation</div>\n      <div style=\"flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column-reverse; padding: 10px 12px\">\n        <div style=\"display: flex; flex-direction: column; gap: 10px\">\n          <sc-for list=\"{{ explEntries }}\" as=\"e\" hint-placeholder-count=\"3\">\n            <div style=\"border: 1px solid {{e.border}}; border-radius: 6px; padding: 8px 10px\">\n              <div style=\"font-weight: 600; color: #E8ECF2; margin-bottom: 4px\">{{e.title}}</div>\n              <div style=\"color: #C4CCD8; line-height: 1.45\">{{e.text}}</div>\n              <sc-if value=\"{{ e.hasLink }}\" hint-placeholder-val=\"{{ true }}\">\n                <a href=\"{{e.href}}\" target=\"_blank\" rel=\"noopener\" style=\"color: #A9C8F0; text-decoration: underline; font-size: 0.9em\">{{e.linkText}}</a>\n              </sc-if>\n            </div>\n          </sc-for>\n        </div>\n      </div>\n    </section>\n  </div>\n\n  <div class=\"transport\" aria-label=\"Lesson controls\">\n    <span class=\"transport-kicker\">RUN CUSTODY</span>\n    <div class=\"transport-buttons\">\n<button class=\"transport-button\" onClick=\"{{ goPrev }}\" title=\"Previous beat\" aria-label=\"Previous\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 4v16 M19 4 7 12l12 8Z\"></path></svg><span>Previous</span></button><button class=\"transport-button primary\" onClick=\"{{ togglePlay }}\" aria-label=\"{{playLabel}}\" title=\"{{playLabel}}\"><span class=\"play-disc\"><svg viewBox=\"0 0 24 24\" width=\"30\" height=\"30\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"{{playIcon}}\"></path></svg></span><span>{{playLabel}}</span></button><button class=\"transport-button\" onClick=\"{{ goNext }}\" title=\"Complete current beat; press again to advance\" aria-label=\"Next\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M19 4v16 M5 4l12 8L5 20Z\"></path></svg><span>Next</span></button><button class=\"transport-button\" onClick=\"{{ toggleBeatList }}\" aria-label=\"Beats\" title=\"Show or hide the beat list\" aria-expanded=\"{{beatListOpen}}\" aria-controls=\"beat-list\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 6h16 M4 12h16 M4 18h16\"></path></svg><span>Beats</span></button><button class=\"transport-button restart-separated\" onClick=\"{{ restart }}\" title=\"Restart lesson from beat 1\" aria-label=\"Restart\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 7v5h-5 M19.2 12a7.4 7.4 0 1 0-1.8 5.4\"></path></svg><span>Restart</span></button></div>\n    <span class=\"transport-status\" role=\"status\">{{statusText}}</span>\n    <div id=\"beat-list\" class=\"transport-beats\" role=\"region\" aria-label=\"Lesson beat list\" style=\"display: {{beatListDisplay}}\">\n      <div class=\"beat-list-heading\"><span>Jump to a beat \u00b7 playback continues while this panel is open</span><div><button onClick=\"{{ menuStart }}\">Start</button><button onClick=\"{{ menuEnd }}\">End</button><button onClick=\"{{ closeBeatList }}\" aria-label=\"Close beat list\">Close</button></div></div>\n      <div class=\"beat-list-items\"><sc-for list=\"{{ beatButtons }}\" as=\"b\"><button onClick=\"{{ b.jump }}\" aria-current=\"{{b.current}}\" style=\"border-color: {{b.border}}; background: {{b.bg}}\">{{b.label}}</button></sc-for></div>\n    </div>\n  </div>\n</div>\n";
+const mount=document.getElementById('app');let component;
+class DCLogic {constructor(props){this.props=props;} setState(next,cb){Object.assign(this.state,next);draw();if(cb)cb();}}
+function evaluate(expr,scope){return Function('s','with(s){return ('+expr+')}')(scope)}
+function fill(text,scope){return text.replace(/\{\{([\s\S]*?)\}\}/g,(_,expr)=>String(evaluate(expr,scope)??''));}
+function expand(node,scope){
+ if(node.nodeType===3){return document.createTextNode(fill(node.textContent,scope));}
+ if(node.nodeType!==1)return document.createTextNode('');
+ if(node.tagName==='SC-IF'){let f=document.createDocumentFragment();if(evaluate(node.getAttribute('value').replace(/^\s*\{\{|\}\}\s*$/g,''),scope))for(const c of node.childNodes)f.append(expand(c,scope));return f;}
+ if(node.tagName==='SC-FOR'){let f=document.createDocumentFragment();const list=evaluate(node.getAttribute('list').replace(/^\s*\{\{|\}\}\s*$/g,''),scope);for(const item of list){const childScope=Object.assign({},scope,{[node.getAttribute('as')]:item});for(const c of node.childNodes)f.append(expand(c,childScope));}return f;}
+ const out=node.namespaceURI==='http://www.w3.org/2000/svg'?document.createElementNS(node.namespaceURI,node.tagName):document.createElement(node.tagName);
+ for(const a of node.attributes){if(a.name==='onclick'){out._h=evaluate(a.value.replace(/^\s*\{\{|\}\}\s*$/g,''),scope);out.addEventListener('click',e=>out._h&&out._h(e));}else out.setAttribute(a.name,fill(a.value,scope));}
+ for(const c of node.childNodes)out.append(expand(c,scope));return out;
+}
+function morph(a,b){if(a.nodeType!==b.nodeType||a.nodeName!==b.nodeName){a.replaceWith(b);return;}if(a.nodeType===3){if(a.nodeValue!==b.nodeValue)a.nodeValue=b.nodeValue;return;}for(const x of b.attributes){if(a.getAttribute(x.name)!==x.value)a.setAttribute(x.name,x.value);}for(const x of [...a.attributes]){if(!b.hasAttribute(x.name))a.removeAttribute(x.name);}a._h=b._h;const ac=[...a.childNodes],bc=[...b.childNodes];bc.forEach((n,i)=>{if(ac[i])morph(ac[i],n);else a.append(n);});for(let i=bc.length;i<ac.length;i++)ac[i].remove();}
+function draw(){if(!component)return;const t=document.createElement('template');t.innerHTML=TEMPLATE;const next=expand(t.content.firstElementChild,component.renderVals());if(mount.firstElementChild)morph(mount.firstElementChild,next);else mount.append(next);fit();}
+
+const BEATS = [
+  { title: '1 Name the run', host: 'inspire · login',
+    console: { prompt: 'lab@inspire:~/run$ ', cmd: 'export RUN_ID=run-$(date -u +%Y%m%dT%H%M%SZ)-<id>', out: ['[placeholder: the run ID recorded in the lab]'] },
+    diagram: { from: 'login', to: 'login', token: 'run ID', footer: 'The run ID is created on the login shell' },
+    gui: null,
+    expl: 'Every proof starts with a name. The run ID is generated in UTC, so every tool that records this run uses the same identity.' },
+  { title: '2 Pin code', host: 'inspire · login',
+    console: { prompt: 'lab@inspire:~/run$ ', cmd: 'git push origin main && git rev-parse HEAD', out: ['[placeholder: push output]', '[placeholder: commit hash]'] },
+    diagram: { from: 'login', to: 'git', token: 'commit', footer: 'Commit moves from the login shell to the Git server' },
+    gui: null,
+    expl: 'The code is pinned by its commit hash. Later, anyone can fetch exactly this version from the Git server.',
+    link: ['git push reference', 'https://git-scm.com/docs/git-push'] },
+  { title: '3 Submit and fail', host: 'inspire · login',
+    console: null,
+    diagram: { from: 'sched', to: 'gpu', token: 'job', fail: true, footer: 'The scheduler places the job on the GPU node, where it runs out of memory' },
+    gui: { screen: 'GPU memory panel (lab recording placeholder)', caption: 'Caption: GPU memory climbs to its ceiling, and the job is stopped.' },
+    expl: 'Slurm runs the job on the GPU node. The real failure, at whatever epoch it occurs in the lab, is recorded by the scheduler and visible in sacct.',
+    link: ['sbatch reference', 'https://slurm.schedmd.com/sbatch.html'] },
+  { title: '4 Retry', host: 'inspire · login',
+    console: { prompt: 'lab@inspire:~/run$ ', cmd: 'sbatch --export=NIL train.sbatch', out: ['[placeholder: Submitted batch job <job>]', '[placeholder: sacct shows COMPLETED]'] },
+    diagram: { from: 'sched', to: 'gpu', token: 'retry', footer: 'Same run ID, with the configuration change recorded' },
+    gui: null,
+    expl: 'The retry runs under the same run ID. What changed is a recorded configuration value, not the code, so the run stays one story.' },
+  { title: '5 Review run metadata', host: 'inspire · login',
+    console: null,
+    diagram: { from: 'gpu', to: 'mlflow', token: 'run metadata', footer: 'Context only: the run identity links the completed attempt to its recorded metadata' },
+    gui: null,
+    expl: 'Context-only beat: Explanation and Diagram advance while the action row holds the final state of the most recent action. You can switch tabs without stopping the lesson; the next action beat selects its active tab.' },
+  { title: '6 Track in MLflow', host: 'inspire · login',
+    console: null,
+    diagram: { from: 'gpu', to: 'mlflow', token: 'metrics', footer: 'Metrics and parameters move from the GPU node to MLflow' },
+    gui: { fail: true, alt: 'The MLflow run page lists the run’s parameters and its validation accuracy rising over the epochs.' },
+    expl: 'MLflow records parameters and metrics against the run. There is no command to type here, so the Console waits; this beat would show the MLflow run page.',
+    link: ['MLflow tracking', 'https://mlflow.org/docs/latest/tracking.html'] },
+  { title: '7 Gate 10: prove custody', host: 'invent · verifier',
+    console: { prompt: 'verify@invent:~$ ', cmd: 'dvc pull && oras pull <registry>/models/classifier@sha256:<digest>', out: ['[placeholder: every retrieved hash matches the manifest]', 'CUSTODY: VERIFIED'] },
+    diagram: { from: 'invent', to: 'services', token: 'manifest', custody: true, footer: 'INVENT, which never touched the run, retrieves every part and checks its hash' },
+    gui: null,
+    expl: 'Custody proof: a machine that never touched the run retrieves every part from the manifest alone, and every hash matches. This proves the parts are intact; it does not re-run anything.',
+    link: ['dvc pull reference', 'https://dvc.org/doc/command-reference/pull'] },
+  { title: '8 Reproduction check', host: 'inspire · gpu',
+    console: { prompt: 'lab@inspire:~/run$ ', cmd: 'python evaluate.py --manifest run-manifest.json', out: ['[placeholder: val_acc and its bound]', 'REPRODUCTION: WITHIN BOUND'] },
+    diagram: { from: 'gpu', to: 'gpu', token: 'evaluate', repro: true, footer: 'Separate check: evaluation is re-run on the GPU node' },
+    gui: null,
+    expl: 'Reproduction check, separate from custody: re-running evaluation shows the result itself reproduces within its bound. Shown right after Gate 10 so the two proofs sit side by side.' }
+];
+
+const NODES = {
+  git:      { label: 'Git server',     x: 26, y: 24 },
+  storage:  { label: 'Object storage', x: 48, y: 24 },
+  registry: { label: 'OCI registry',   x: 70, y: 24 },
+  mlflow:   { label: 'MLflow',         x: 90, y: 24 },
+  login:    { label: 'Login shell',    x: 10, y: 74 },
+  sched:    { label: 'Slurm scheduler', x: 32, y: 74 },
+  gpu:      { label: 'GPU node',       x: 56, y: 74 },
+  invent:   { label: 'INVENT verifier', x: 88, y: 74 }
+};
+const SERVICES = ['git', 'storage', 'registry', 'mlflow'];
+const LAYOUTS = {
+  grid:  { name: '2 × 2 grid', areas: '"console expl" "diagram gui"', cols: 'minmax(0,1fr) minmax(0,1fr)', rows: 'minmax(0,1fr) minmax(0,1fr)' },
+  tabs:  { name: 'Action row + context row', areas: '"slottabs slottabs" "slot slot" "expl diagram"', cols: 'minmax(0,1fr) minmax(0,1fr)', rows: 'auto minmax(0,1.5fr) minmax(0,1fr)' },
+  band:  { name: 'Diagram band', areas: '"diagram diagram diagram" "console gui expl"', cols: 'minmax(0,1.15fr) minmax(0,0.95fr) minmax(0,0.9fr)', rows: 'minmax(0,0.42fr) minmax(0,1fr)' }
+};
+const TICK = 50, BEAT_MS = 4200;
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { beat: -1, p: 1, playing: false, tab: 'console', beatListOpen: false };
+    this.timer = null;
+  }
+  componentWillUnmount() { this.stopTimer(); }
+  reduced() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  stopTimer() { if (this.timer) { clearInterval(this.timer); this.timer = null; } }
+  startTimer() {
+    this.stopTimer();
+    this.timer = setInterval(() => {
+      const p = Math.min(1, this.state.p + TICK / BEAT_MS);
+      if (p >= 1) { this.stopTimer(); this.setState({ p: 1, playing: false }); }
+      else this.setState({ p });
+    }, TICK);
+  }
+  closeBeatList() { this.setState({beatListOpen:false},()=>document.querySelector('[aria-controls="beat-list"]')?.focus({preventScroll:true})); }
+  menuJump(beat) { this.jumpTo(beat); this.closeBeatList(); }
+  actionTab(beat) { for(let i=beat;i>=0;i--){const b=BEATS[i];if(b.gui)return 'gui';if(b.console)return 'console';}return 'console'; }
+  playbackTab(beat) { const b=BEATS[beat]; return b && !b.console && !b.gui ? this.state.tab : this.actionTab(beat); }
+  advanceTo(beat) { this.stopTimer(); this.setState({beat,p:1,playing:false,tab:this.playbackTab(beat)}); }
+  playFrom(beat, p) {
+    if (beat >= BEATS.length) return;
+    if (this.reduced()) { this.stopTimer(); this.setState({ beat, p: 1, playing: false, tab: this.playbackTab(beat) }); return; }
+    this.setState({ beat, p, playing: true, tab: this.playbackTab(beat) }, () => this.startTimer());
+  }
+  jumpTo(beat) { this.stopTimer(); this.setState({ beat, p: 1, playing: false, tab: this.actionTab(beat) }); }
+
+  renderVals() {
+    const w = this.props.width ?? 1920, h = this.props.height ?? 1080;
+    const arrangement = LAYOUTS[this.props.arrangement] ? this.props.arrangement : 'grid';
+    const L = LAYOUTS[arrangement];
+    const { beat, p, playing, tab } = this.state;
+    const cur = beat >= 0 ? BEATS[beat] : null;
+    const done = !cur || p >= 1;
+
+    const consoleLines = [];
+    for (let i = 0; i <= beat; i++) {
+      const c = BEATS[i].console; if (!c) continue;
+      const f = i < beat ? 1 : p, isCur = i === beat;
+      const typed = c.cmd.slice(0, Math.round(c.cmd.length * Math.min(1, f / 0.5)));
+      consoleLines.push({ text: c.prompt + typed, color: '#7CB7FF', limn: isCur && f > 0 && f < 0.6 ? '1px solid #FFFFFF' : 'none' });
+      if (f >= 0.5) {
+        const n = f >= 0.75 ? c.out.length : Math.ceil(c.out.length * (f - 0.5) / 0.25);
+        c.out.slice(0, n).forEach((t) => consoleLines.push({ text: t, color: c.risk && t.indexOf('OUT_OF_MEMORY') >= 0 ? '#FF7A7A' : '#6F93C2', limn: 'none' }));
+      }
+    }
+    if (consoleLines.length === 0) consoleLines.push({ text: 'lab@inspire:~/run$ ', color: '#7CB7FF', limn: 'none' });
+    const consoleWaiting = !!cur && !cur.console;
+    let consoleHost = cur ? cur.host : 'inspire · login';
+    if (consoleWaiting) { for (let i = beat - 1; i >= 0; i--) if (BEATS[i].console) { consoleHost = BEATS[i].host; break; } }
+
+    const nodeState = {};
+    Object.keys(NODES).forEach((k) => { nodeState[k] = 'idle'; });
+    for (let i = 0; i <= beat; i++) {
+      const d = BEATS[i].diagram; if (!d) continue;
+      const reached = i < beat || p >= 0.9;
+      if (d.custody) { if (reached) SERVICES.forEach((s) => { nodeState[s] = 'verified'; }); nodeState.invent = reached ? 'verifier' : 'active'; }
+      else if (d.repro) nodeState.gpu = reached ? 'repro' : 'active';
+      else {
+        if (nodeState[d.from] === 'idle') nodeState[d.from] = 'done';
+        nodeState[d.to] = reached ? (d.fail ? 'failed' : 'done') : 'active';
+      }
+    }
+    const STYLE = {
+      idle:     ['#2A3342', '#0E1218', '', '#A9B1BD'],
+      done:     ['#6F93C2', '#121A26', 'used', '#A9C8F0'],
+      active:   ['#FFFFFF', '#1A2230', 'in progress', '#FFFFFF'],
+      failed:   ['#FF7A7A', '#24141A', 'failed: out of memory', '#FF7A7A'],
+      verified: ['#7BD88F', '#11211A', 'custody verified', '#7BD88F'],
+      verifier: ['#7BD88F', '#11211A', 'proved custody', '#7BD88F'],
+      repro:    ['#7CB7FF', '#101C2C', 'reproduced (separate check)', '#7CB7FF']
+    };
+    const ybase = arrangement === 'band' ? { 24: '28%', 74: '72%' } : { 24: '26%', 74: '70%' };
+    const nodes = Object.keys(NODES).map((k) => {
+      const s = STYLE[nodeState[k]];
+      return { label: NODES[k].label, left: NODES[k].x + '%', top: ybase[NODES[k].y], border: s[0], bg: s[1], status: s[2] || ' ', statusColor: s[3] };
+    });
+    let tokenShown = false, tokenLeft = '0%', tokenTop = '0%', tokenLabel = '';
+    if (cur && cur.diagram && !cur.diagram.custody && p >= 0.3 && p < 1) {
+      const d = cur.diagram, a = NODES[d.from], b = NODES[d.to];
+      const t = Math.min(1, (p - 0.3) / 0.6);
+      const ya = parseFloat(ybase[a.y]), yb = parseFloat(ybase[b.y]);
+      tokenShown = true; tokenLabel = d.token;
+      tokenLeft = (a.x + (b.x - a.x) * t) + '%';
+      tokenTop = (ya + (yb - ya) * t - 14) + '%';
+    }
+    const diagramFooter = cur && cur.diagram ? cur.diagram.footer : 'Initial state: the lab architecture, nothing has moved yet';
+
+    let guiFailed = false, guiFrame = true, guiWaiting = false, guiScreen = 'No GUI recording has played yet', guiCaption = '', guiProgress = '0%', guiAlt = '';
+    if (cur && cur.gui && cur.gui.fail) { guiFailed = true; guiFrame = false; guiAlt = cur.gui.alt; }
+    else if (cur && cur.gui) { guiScreen = cur.gui.screen; guiCaption = cur.gui.caption; guiProgress = Math.round(p * 100) + '%'; }
+    else if (cur) {
+      guiWaiting = true;
+      for (let i = beat - 1; i >= 0; i--) { const g = BEATS[i].gui; if (g) { if(g.fail){guiFailed=true;guiFrame=false;guiAlt=g.alt;}else{guiScreen = g.screen + ' · last frame held'; guiCaption = g.caption; guiProgress = '100%';} break; } }
+    }
+
+    const explEntries = [{ title: 'About this lesson', text: 'One AI training run is launched, recorded, published and proven. Press Play to begin; playback stops after each beat.', border: beat < 0 ? '#E6E9EF' : '#323A4A', hasLink: false, href: '', linkText: '' }];
+    for (let i = 0; i <= beat; i++) {
+      const b = BEATS[i];
+      explEntries.push({ title: b.title, text: b.expl, border: i === beat ? '#E6E9EF' : '#323A4A', hasLink: !!b.link, href: b.link ? b.link[1] : '', linkText: b.link ? b.link[0] : '' });
+    }
+
+    const tabsOn = arrangement === 'tabs';
+    const diagramAction = !!(cur && cur.diagram), guiAction = !!(cur && cur.gui);
+    const activeBorder = (has) => (cur && has && !done ? '#E6E9EF' : '#323A4A');
+
+    const beatButtons = BEATS.map((b, i) => ({
+      label: b.title, current: i === beat ? 'step' : 'false', jump: () => this.menuJump(i),
+      border: i === beat ? '#E6E9EF' : '#323A4A', bg: i === beat ? '#1E2633' : 'transparent'
+    }));
+
+    const atEnd = beat === BEATS.length - 1 && p >= 1;
+    return {
+      w, h, base: w >= 1800 ? 15 : w >= 1500 ? 14 : 13,
+      arrangementName: L.name, areas: L.areas, cols: L.cols, rows: L.rows,
+      tabsDisplay: tabsOn ? 'flex' : 'none',
+      actionPanelRole: tabsOn ? 'tabpanel' : 'region', consoleLabelledBy: tabsOn ? 'action-tab-console' : '', guiLabelledBy: tabsOn ? 'action-tab-gui' : '',
+      consoleSelected: tab === 'console' ? 'true' : 'false', guiSelected: tab === 'gui' ? 'true' : 'false',
+      consoleTabIndex: tab === 'console' ? '0' : '-1', guiTabIndex: tab === 'gui' ? '0' : '-1',
+      consoleArea: tabsOn ? 'slot' : 'console', consoleDisplay: !tabsOn || tab === 'console' ? 'flex' : 'none',
+      diagramArea: 'diagram', guiArea: tabsOn ? 'slot' : 'gui',
+      diagramDisplay: 'flex',
+      guiDisplay: !tabsOn || tab === 'gui' ? 'flex' : 'none',
+      tabConsoleBg: tab === 'console' ? '#1E2633' : 'transparent', tabGuiBg: tab === 'gui' ? '#1E2633' : 'transparent',
+      consoleMarker: tabsOn && tab !== 'console' && !!(cur && cur.console), guiMarker: tabsOn && tab !== 'gui' && guiAction,
+      showConsole: () => this.setState({ tab: 'console' }), showGui: () => this.setState({ tab: 'gui' }),
+      consoleLines, consoleWaiting, consoleHost, consoleBorder: activeBorder(cur && cur.console),
+      nodes, tokenShown, tokenLeft, tokenTop, tokenLabel, diagramFooter, diagramBorder: activeBorder(diagramAction),
+      guiFailed, guiFrame, guiWaiting, guiScreen, guiCaption, guiProgress, guiAlt, guiBorder: activeBorder(guiAction),
+      explEntries,
+      beatButtons,
+      playLabel: playing ? 'Pause' : 'Play',
+      playIcon: playing ? 'M6 4h4v16H6z M14 4h4v16h-4z' : 'M7 3l15 9-15 9z',
+      beatListOpen: this.state.beatListOpen ? 'true' : 'false', beatListDisplay: this.state.beatListOpen ? 'flex' : 'none',
+      toggleBeatList: () => { if(this.state.beatListOpen){this.closeBeatList();return;}this.setState({beatListOpen:true},()=>{const menu=document.getElementById('beat-list');(menu.querySelector('[aria-current="step"]')||menu.querySelector('button'))?.focus({preventScroll:true});}); },
+      closeBeatList: () => this.closeBeatList(), menuStart: () => this.menuJump(-1), menuEnd: () => this.menuJump(BEATS.length-1),
+      statusText: beat < 0 ? 'Start · ' + BEATS.length + ' beats' : (beat + 1) + ' / ' + BEATS.length + ' · ' + cur.title.replace(/^\d+ /, '') + (playing ? ' · playing' : ' · paused'),
+      togglePlay: () => {
+        if (this.state.playing) { this.stopTimer(); this.setState({ playing: false }); return; }
+        if (this.state.beat >= 0 && this.state.p < 1) { this.setState({ playing: true }, () => this.startTimer()); return; }
+        if (atEnd) return;
+        this.playFrom(this.state.beat + 1, 0);
+      },
+      goNext: () => {
+        if (this.state.beat >= 0 && this.state.p < 1) { this.stopTimer(); this.setState({p:1,playing:false}); return; }
+        if (this.state.beat < BEATS.length - 1) this.advanceTo(this.state.beat + 1);
+      },
+      goPrev: () => this.jumpTo(Math.max(-1, this.state.beat - 1)),
+      goStart: () => this.jumpTo(-1),
+      goEnd: () => this.jumpTo(BEATS.length - 1),
+      restart: () => { this.stopTimer(); this.setState({ beat: -1, p: 1, playing: false }, () => this.playFrom(0, 0)); }
+    };
+  }
+}
+
+component=new Component({width:1366,height:768,arrangement:'tabs'});draw();
+document.getElementById('size').onchange=e=>{const [width,height]=e.target.value.split('x').map(Number);Object.assign(component.props,{width,height});draw()};
+document.getElementById('layout').onchange=e=>{component.props.arrangement=e.target.value;draw()};
+function fit(){const p=component.props,on=document.getElementById('fit').checked,avail=document.getElementById('viewport').clientWidth,s=on?Math.min(1,avail/p.width):1;document.getElementById('stage').style.transform=s<1?'scale('+s+')':'';const f=document.getElementById('frame');f.style.width=Math.floor(p.width*s)+'px';f.style.height=Math.ceil(p.height*s)+'px';f.style.overflow='hidden';document.getElementById('scale').textContent=s<1?'Showing at '+Math.round(s*100)+'% · not true size':'True size';}
+document.getElementById('fit').onchange=fit;addEventListener('resize',fit);fit();
+window.prototypePlayer=component;
+document.addEventListener('keydown',e=>{const tab=e.target.closest('[role="tab"]');if(!tab)return;let dest;if(e.key==='ArrowRight'||e.key==='ArrowLeft')dest=tab.id==='action-tab-console'?'gui':'console';else if(e.key==='Home')dest='console';else if(e.key==='End')dest='gui';if(dest){e.preventDefault();component.setState({tab:dest},()=>document.getElementById('action-tab-'+dest).focus({preventScroll:true}));}});
+document.addEventListener('keydown',e=>{if(!component.state.beatListOpen)return;if(e.key==='Escape'){e.preventDefault();component.closeBeatList();return;}const menu=document.getElementById('beat-list');if(!menu.contains(document.activeElement))return;const buttons=[...menu.querySelectorAll('button')];const index=buttons.indexOf(document.activeElement);let next;if(e.key==='ArrowDown'||e.key==='ArrowRight')next=(index+1)%buttons.length;else if(e.key==='ArrowUp'||e.key==='ArrowLeft')next=(index+buttons.length-1)%buttons.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=buttons.length-1;if(next!==undefined){e.preventDefault();buttons[next].focus();}});
+</script></html>

@@ -1,6 +1,6 @@
 # ADR 0061 Synchronized multi-pane Player
 
-Status: Proposed implementation design, based on Johann’s agreed brief v6 and the frozen page 3547 prototype. The presentation decisions are settled; production compatibility and release gates remain to be demonstrated. Date: 2026-10-18.
+Status: Proposed implementation design, based on Johann’s agreed brief v7 (the approved context-only continuation amendment to frozen v6) and the page 3547 prototype. The presentation decisions are settled; production compatibility and release gates remain to be demonstrated. Not accepted or merged; awaiting independent review and Johann's acceptance. Date: 2026-10-18.
 
 ## Problem and outcome
 
@@ -79,9 +79,13 @@ Keep `cim.lesson-pack/v1` discovery and acceptance unchanged for old Console pac
 
 Media adds a real pack boundary: the v2 specification must declare media/caption asset maps, permitted formats, per-file and total size limits, digest checks and same-pack realpath confinement before serving bytes. Reject path traversal, external symlinks, remote arbitrary sources, unknown assets and deactivated pack data. Do not turn the v1 JSON loader into an unrestricted file server. Pack-level and lesson-level rejection reasons remain visible in Admin, with an independent lesson continuing when another is rejected.
 
+Before the Motion/media implementation in step 6, settle installation size and large-media placement. Pack-local media is the default. Preflight reports the generated ZIP size and explains the target host's configured upload/request limit when known, without claiming that a pack will install merely because each file passes its own size cap. WordPress Media Library attachments are the supported alternative to evaluate for large clips: bind explicit attachment IDs to verified media/caption metadata and content digests, enforce site permissions and the declared source policy, and specify replacement/deletion, export portability, rollback and missing-attachment behavior. Do not silently convert attachment references into arbitrary remote URLs or copy files outside the pack confinement boundary. If no supported location fits the host's limits, stop packaging with an actionable recommendation to shorten/split the recording or use the agreed attachment workflow. The serving route, limits and attachment policy must be reviewed before step 6, not improvised when a large upload fails.
+
+Placeholder mode must be visible in the Player. A sample or authored lesson using placeholder commands, output, capture records or simulated media carries a persistent, accessible **Placeholder content** badge in the Player frame, including after jumps, during waits, on error fallback and with the Beats panel open. The generic “Recorded in the lab” pane label must not imply that a simulated clip is authentic: show an explicit simulated/placeholder label in that mode. Pack preflight, local preview and public loading derive the badge from validated lesson metadata; hiding or dropping it is an acceptance failure and needs its own mutation guard. Only verified real-capture metadata may select the authentic recording label.
+
 ## 8 Delivery gates and sequence
 
-0. Freeze the accessible prototype and v6 with checksums and browser evidence. See [freeze record](../design/cim-v2/PROTOTYPE-FREEZE.md).
+0. Preserve the accessible v6 prototype freeze and record v7's approved context-only continuation amendment with checksums and browser evidence. See [freeze record](../design/cim-v2/PROTOTYPE-FREEZE.md).
 1. Apply the additive 1.1.0 compatibility decision and keep its gates live.
 2. Review this ADR before production schema or engine implementation. This file is a design proposal, not a claim that those modules have landed.
 3. Specify beat authoring and capture schemas with actionable `cim-author validate` diagnostics, examples, boundary limits and mutation probes; no production UI yet.
@@ -97,6 +101,6 @@ The Ubuntu laptop is deferred. Prototype/schema work needs no lab. Real captures
 
 ## 9 Current evidence and unresolved checks
 
-At the baseline, verify passes all 962 tests; the v1 differential has 41 identical results and zero differences. Nine prototype browser/size combinations pass the new tab checks. Audit Node was 24.15.0; production release builds still use pinned Node 22.23.2. These are baseline/design evidence only. Full future implementation tests, real-media synchronization, assistive-technology review, independent reviewer approval, exact candidate builds and live acceptance are not yet performed.
+At the baseline, verify passes all 962 tests on pinned Node 22.23.2 (npm 10.9.8); the v1 differential rerun on that runtime has 41 identical results and zero differences. Nine prototype browser/size combinations pass the tab checks, and nine also pass the approved v7 continuation cases. The first Node 24.15.0 run remains historical evidence only. These are baseline/design evidence, not an independent release rebuild. Full future implementation tests, real-media synchronization, assistive-technology review, independent reviewer approval, exact candidate builds and live acceptance are not yet performed.
 
 Still to specify before the corresponding implementation gate: concrete pane capability/error/result types, media-ready synchronization and limits, v2 pack media-serving path, and readable row proportions. The n+1 extension point and admission policy above constrain those specifications without assuming that arbitrary panes fit the initial four-pane layout.

@@ -22,9 +22,10 @@ Sources: `docs/AUTHORING-JSON-v2.md`, `docs/AUTHORING-TO-RUNTIME-v2.md`, `docs/E
 
 ## Baseline evidence and limits
 
-- `npm run verify`: 962 tests passed, zero failures/skips, plus all verification commands. Audit runtime: Node 24.15.0; this is not the pinned release rebuild.
-- `node tools/r42-v1-differential.mjs`: 41 identical v1 validation results, zero differences; 28 v2/non-JSON cases skipped as the tool specifies. This does not prove future v2 compatibility.
+- `npm run verify`: 962 tests passed, zero failures/skips, plus all verification commands, rerun on pinned **Node 22.23.2** with npm 10.9.8. The earlier Node 24.15.0 run remains historical evidence, not the release baseline. See the [verification log](evidence/verify-node22.log) and [runtime versions](evidence/node22-runtime.txt).
+- `node tools/r42-v1-differential.mjs`: rerun on Node 22.23.2, 41 identical v1 validation results, zero differences; 28 v2/non-JSON cases skipped as the tool specifies. This does not prove future v2 compatibility.
 - Prototype tab acceptance: Chromium, Firefox and WebKit at 1366×768, 1536×864 and 1920×1080, nine combinations passed. This checks the prototype, not production engine compatibility or screen-reader behavior.
+- V7 continuation acceptance: nine combinations also pass the approved manual-choice persistence rule across consecutive context-only beats, direct-jump defaults, pause/resume and next-action auto-selection. The additional context-only beat is injected into the test fixture only; the displayed sample remains eight beats.
 - Full production browser suites, mutation suites, WordPress upgrade/rollback rehearsals and independent rebuilds must run on the implementation candidate. They were not re-run or claimed complete for this documentation-only decision.
 
 ## Release gates

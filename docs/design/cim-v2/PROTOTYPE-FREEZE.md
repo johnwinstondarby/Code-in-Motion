@@ -28,3 +28,23 @@ The local freeze kit `outputs/cim-v2-design-freeze/` holds the self-contained HT
 | Tab acceptance results | `caa1a9419f14998b9265cd98b4f1a9778d95910b27511a4464688c2eb6809b61` |
 
 The WordPress block checksum identifies the UTF-8 local snapshot; live saved content is compared after CRLF/LF normalization and trimming boundary whitespace. It is not a hash of the entire theme-rendered page.
+
+## Approved v7 amendment
+
+Johann approved retaining manual tab choice across consecutive context-only beats during normal playback, while direct jumps reconstruct the deterministic last-action default. Brief v7 records this distinction; the original v6 DOCX and its freeze artifacts above remain unchanged. Page 3547 now carries the recorded v7 amendment. New hashes are in the local freeze manifest's `v7_amendment` entry, and the public standalone prototype/evidence are linked below. This is a new recorded revision, not a silent change to the v6 freeze.
+
+The prototype's continuation behavior now follows that rule. The media pane says **Placeholder GUI · simulated**, in addition to the persistent frame badge, so no placeholder clip is labeled as a genuine lab recording. Normal playback and Next preserve the override across the context-only run; direct navigation resets to the last-action default.
+
+For the continuation test, one additional context-only beat is injected into the browser's test fixture only. The displayed sample remains eight beats. Chromium, Firefox and WebKit at all three review sizes pass the nine continuation combinations, including pause/resume, the next action's automatic selection and keyboard/menu regression checks. This is not a claim to have tested real media or assistive technology.
+
+Review evidence is available in this branch, without access to Pilgrim's workspace:
+
+- [Standalone v7 prototype](evidence/prototype-v7.html)
+- [V7 acceptance results](evidence/v7-acceptance.json)
+- [V7 browser check](evidence/check-v7-prototype.cjs)
+- [Node 22.23.2 verification log](evidence/verify-node22.log)
+- [Pinned-runtime v1 comparison](evidence/v1-differential-node22.log)
+- [Node/npm versions](evidence/node22-runtime.txt)
+- [Evidence checksums](evidence/manifest.json)
+
+To replay the prototype check, use Node with Playwright installed and its Chromium/Firefox/WebKit browsers available, then run `node docs/design/cim-v2/evidence/check-v7-prototype.cjs` from the repository root. It writes `v7-acceptance-rerun.json` in the working directory; it does not edit the frozen evidence. No WordPress credentials are needed.

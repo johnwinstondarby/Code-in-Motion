@@ -2,6 +2,8 @@
 
 Status: Accepted. Part A lands with the visual stylesheet (roadmap step 11, before RC#2). Parts B and C are deferred after the MVP. The 0.2.2 learner-action whole-line cue is described below.
 
+Authoring v3 reservation: superseded in part by [ADR 0061](0061-synchronized-multi-pane-player.md) upon that ADR's acceptance. ADR 0061 assigns `localis.cim/authoring/v3` to multi-pane authoring; this earlier reservation no longer requires limn to be its purpose. This amendment changes the identifier allocation only. Deferred per-phrase limn and author palettes remain out of scope, and all implemented presentation behavior and frozen v1/v2 formats remain unchanged. ADR 0061 is still proposed pending review and Johann's acceptance.
+
 Date: 2026-10-03
 
 ## Context
