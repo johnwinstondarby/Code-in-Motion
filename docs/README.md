@@ -18,6 +18,12 @@ This directory holds the normative architecture and public contracts for Code in
 - [`FAULTS.md`](FAULTS.md) — v1 fault ownership, recovery classes, error-code namespaces, restoration anchors, and fallback outcomes
 - [`adr/`](adr/) — Architecture Decision Records preserving cross-component decisions and rejected alternatives
 
+## CiM v2 design work
+
+- [ADR 0061](adr/0061-synchronized-multi-pane-player.md) — accepted additive 1.1.0 multi-pane design and implementation gates
+- [Compatibility audit](design/cim-v2/COMPATIBILITY.md) — legacy lesson, renderer and pack boundaries; baseline evidence and release conditions
+- [Frozen prototype reference](design/cim-v2/PROTOTYPE-FREEZE.md) — page 3547 and brief v6 checksums, tab accessibility and browser evidence
+
 ## Owns
 
 - Platform architecture and dependency rules

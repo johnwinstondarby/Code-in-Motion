@@ -1,0 +1,65 @@
+[
+  {
+    "engine": "chromium",
+    "size": "1366x768",
+    "status": "passed",
+    "fixture": "one additional context-only beat injected for this test only",
+    "checks": "playthrough retains manual choice; Next retains it across contexts; jump reconstructs last action; pause/resume; next action auto-selects; visible placeholders; tab keyboard; menu Escape"
+  },
+  {
+    "engine": "chromium",
+    "size": "1536x864",
+    "status": "passed",
+    "fixture": "one additional context-only beat injected for this test only",
+    "checks": "playthrough retains manual choice; Next retains it across contexts; jump reconstructs last action; pause/resume; next action auto-selects; visible placeholders; tab keyboard; menu Escape"
+  },
+  {
+    "engine": "chromium",
+    "size": "1920x1080",
+    "status": "passed",
+    "fixture": "one additional context-only beat injected for this test only",
+    "checks": "playthrough retains manual choice; Next retains it across contexts; jump reconstructs last action; pause/resume; next action auto-selects; visible placeholders; tab keyboard; menu Escape"
+  },
+  {
+    "engine": "firefox",
+    "size": "1366x768",
+    "status": "passed",
+    "fixture": "one additional context-only beat injected for this test only",
+    "checks": "playthrough retains manual choice; Next retains it across contexts; jump reconstructs last action; pause/resume; next action auto-selects; visible placeholders; tab keyboard; menu Escape"
+  },
+  {
+    "engine": "firefox",
+    "size": "1536x864",
+    "status": "passed",
+    "fixture": "one additional context-only beat injected for this test only",
+    "checks": "playthrough retains manual choice; Next retains it across contexts; jump reconstructs last action; pause/resume; next action auto-selects; visible placeholders; tab keyboard; menu Escape"
+  },
+  {
+    "engine": "firefox",
+    "size": "1920x1080",
+    "status": "passed",
+    "fixture": "one additional context-only beat injected for this test only",
+    "checks": "playthrough retains manual choice; Next retains it across contexts; jump reconstructs last action; pause/resume; next action auto-selects; visible placeholders; tab keyboard; menu Escape"
+  },
+  {
+    "engine": "webkit",
+    "size": "1366x768",
+    "status": "passed",
+    "fixture": "one additional context-only beat injected for this test only",
+    "checks": "playthrough retains manual choice; Next retains it across contexts; jump reconstructs last action; pause/resume; next action auto-selects; visible placeholders; tab keyboard; menu Escape"
+  },
+  {
+    "engine": "webkit",
+    "size": "1536x864",
+    "status": "passed",
+    "fixture": "one additional context-only beat injected for this test only",
+    "checks": "playthrough retains manual choice; Next retains it across contexts; jump reconstructs last action; pause/resume; next action auto-selects; visible placeholders; tab keyboard; menu Escape"
+  },
+  {
+    "engine": "webkit",
+    "size": "1920x1080",
+    "status": "passed",
+    "fixture": "one additional context-only beat injected for this test only",
+    "checks": "playthrough retains manual choice; Next retains it across contexts; jump reconstructs last action; pause/resume; next action auto-selects; visible placeholders; tab keyboard; menu Escape"
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "engine": "chromium",
+    "size": "1366x768",
+    "status": "passed",
+    "checks": "tab roles, selected state, controlled panel, roving focus, arrows/Home/End, Tab to visible panel, no focus theft, manual playback override, pause/resume, Next completion, context jump, current beat, Escape/Close"
+  },
+  {
+    "engine": "chromium",
+    "size": "1536x864",
+    "status": "passed",
+    "checks": "tab roles, selected state, controlled panel, roving focus, arrows/Home/End, Tab to visible panel, no focus theft, manual playback override, pause/resume, Next completion, context jump, current beat, Escape/Close"
+  },
+  {
+    "engine": "chromium",
+    "size": "1920x1080",
+    "status": "passed",
+    "checks": "tab roles, selected state, controlled panel, roving focus, arrows/Home/End, Tab to visible panel, no focus theft, manual playback override, pause/resume, Next completion, context jump, current beat, Escape/Close"
+  },
+  {
+    "engine": "firefox",
+    "size": "1366x768",
+    "status": "passed",
+    "checks": "tab roles, selected state, controlled panel, roving focus, arrows/Home/End, Tab to visible panel, no focus theft, manual playback override, pause/resume, Next completion, context jump, current beat, Escape/Close"
+  },
+  {
+    "engine": "firefox",
+    "size": "1536x864",
+    "status": "passed",
+    "checks": "tab roles, selected state, controlled panel, roving focus, arrows/Home/End, Tab to visible panel, no focus theft, manual playback override, pause/resume, Next completion, context jump, current beat, Escape/Close"
+  },
+  {
+    "engine": "firefox",
+    "size": "1920x1080",
+    "status": "passed",
+    "checks": "tab roles, selected state, controlled panel, roving focus, arrows/Home/End, Tab to visible panel, no focus theft, manual playback override, pause/resume, Next completion, context jump, current beat, Escape/Close"
+  },
+  {
+    "engine": "webkit",
+    "size": "1366x768",
+    "status": "passed",
+    "checks": "tab roles, selected state, controlled panel, roving focus, arrows/Home/End, Tab to visible panel, no focus theft, manual playback override, pause/resume, Next completion, context jump, current beat, Escape/Close"
+  },
+  {
+    "engine": "webkit",
+    "size": "1536x864",
+    "status": "passed",
+    "checks": "tab roles, selected state, controlled panel, roving focus, arrows/Home/End, Tab to visible panel, no focus theft, manual playback override, pause/resume, Next completion, context jump, current beat, Escape/Close"
+  },
+  {
+    "engine": "webkit",
+    "size": "1920x1080",
+    "status": "passed",
+    "checks": "tab roles, selected state, controlled panel, roving focus, arrows/Home/End, Tab to visible panel, no focus theft, manual playback override, pause/resume, Next completion, context jump, current beat, Escape/Close"
+  }
+]

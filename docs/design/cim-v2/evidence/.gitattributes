@@ -1,0 +1,2 @@
+# Evidence checksums describe exact file bytes, including captured line endings.
+* -text whitespace=cr-at-eol
