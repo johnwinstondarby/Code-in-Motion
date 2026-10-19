@@ -40,6 +40,7 @@ For the continuation test, one additional context-only beat is injected into the
 Review evidence is available in this branch, without access to Pilgrim's workspace:
 
 - [Standalone v7 prototype](evidence/prototype-v7.html)
+- [Original tab acceptance results](evidence/tab-acceptance.json), matching the checksum in the original freeze table above
 - [V7 acceptance results](evidence/v7-acceptance.json)
 - [V7 browser check](evidence/check-v7-prototype.cjs)
 - [Node 22.23.2 verification log](evidence/verify-node22.log)

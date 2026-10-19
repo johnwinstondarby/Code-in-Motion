@@ -1,6 +1,6 @@
 # ADR 0061 Synchronized multi-pane Player
 
-Status: Proposed implementation design, based on Johann’s agreed brief v7 (the approved context-only continuation amendment to frozen v6) and the page 3547 prototype. The presentation decisions are settled; production compatibility and release gates remain to be demonstrated. Not accepted or merged; awaiting independent review and Johann's acceptance. Date: 2026-10-18.
+Status: Accepted by Johann on 2026-10-18 after Daisy's independent review, based on agreed brief v7 (the approved context-only continuation amendment to frozen v6) and the page 3547 prototype. Acceptance approves the design only; production implementation, compatibility and release gates remain to be demonstrated. This status does not authorize a release or production installation.
 
 ## Problem and outcome
 

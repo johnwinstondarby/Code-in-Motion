@@ -20,7 +20,7 @@ This directory holds the normative architecture and public contracts for Code in
 
 ## CiM v2 design work
 
-- [ADR 0061](adr/0061-synchronized-multi-pane-player.md) — proposed additive 1.1.0 multi-pane design and implementation gates
+- [ADR 0061](adr/0061-synchronized-multi-pane-player.md) — accepted additive 1.1.0 multi-pane design and implementation gates
 - [Compatibility audit](design/cim-v2/COMPATIBILITY.md) — legacy lesson, renderer and pack boundaries; baseline evidence and release conditions
 - [Frozen prototype reference](design/cim-v2/PROTOTYPE-FREEZE.md) — page 3547 and brief v6 checksums, tab accessibility and browser evidence
 

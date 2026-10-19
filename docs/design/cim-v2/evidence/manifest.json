@@ -22,5 +22,9 @@
   "check-v7-prototype.cjs": {
     "sha256": "1d33e177cbadd3b26f7671dd87052d40f3f4a4a4e62126d4146077c466baa014",
     "bytes": 3139
+  },
+  "tab-acceptance.json": {
+    "sha256": "caa1a9419f14998b9265cd98b4f1a9778d95910b27511a4464688c2eb6809b61",
+    "bytes": 2852
   }
 }
