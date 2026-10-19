@@ -1,0 +1,153 @@
+{
+  "valid": [
+    "valid/run-custody/lesson.json",
+    "valid/context-chain/lesson.json",
+    "valid/pack.json"
+  ],
+  "invalid": [
+    {
+      "name": "shape",
+      "rule": "CIM-V3-SHAPE",
+      "kind": "authoring",
+      "file": "invalid/shape.json",
+      "path": "$.extra",
+      "mode": "document"
+    },
+    {
+      "name": "pane-type",
+      "rule": "CIM-V3-PANE-TYPE",
+      "kind": "authoring",
+      "file": "invalid/pane-type.json",
+      "path": "$.panes",
+      "mode": "document"
+    },
+    {
+      "name": "repeated-cli",
+      "rule": "CIM-V3-ACTION-COUNT",
+      "kind": "authoring",
+      "file": "invalid/repeated-cli.json",
+      "path": "$.beats[0].actions",
+      "mode": "document"
+    },
+    {
+      "name": "simultaneous",
+      "rule": "CIM-V3-SIMULTANEOUS",
+      "kind": "authoring",
+      "file": "invalid/simultaneous.json",
+      "path": "$.beats[0].actions",
+      "mode": "document"
+    },
+    {
+      "name": "wrong-tab",
+      "rule": "CIM-V3-ACTION-TAB",
+      "kind": "authoring",
+      "file": "invalid/wrong-tab.json",
+      "path": "$.beats[0].action_tab",
+      "mode": "document"
+    },
+    {
+      "name": "missing-explanation",
+      "rule": "CIM-V3-EXPLANATION",
+      "kind": "authoring",
+      "file": "invalid/missing-explanation.json",
+      "path": "$.beats[0].explanation",
+      "mode": "document"
+    },
+    {
+      "name": "missing-initial",
+      "rule": "CIM-V3-INITIAL",
+      "kind": "authoring",
+      "file": "invalid/missing-initial.json",
+      "path": "$.panes[0].initial_state",
+      "mode": "document"
+    },
+    {
+      "name": "duplicate-id",
+      "rule": "CIM-V3-ID",
+      "kind": "authoring",
+      "file": "invalid/duplicate-id.json",
+      "path": "$.beats[0].explanation.links",
+      "mode": "document"
+    },
+    {
+      "name": "capture-reference",
+      "rule": "CIM-V3-CAPTURE-REFERENCE",
+      "kind": "authoring",
+      "file": "invalid/capture-reference.json",
+      "path": "$.capture.id",
+      "mode": "bundle"
+    },
+    {
+      "name": "diagram-result",
+      "rule": "CIM-V3-DIAGRAM-STATE",
+      "kind": "authoring",
+      "file": "invalid/diagram-result.json",
+      "path": "$.beats[0].engineering.state",
+      "mode": "bundle"
+    },
+    {
+      "name": "missing-placeholder",
+      "rule": "CIM-V3-PLACEHOLDER",
+      "kind": "authoring",
+      "file": "invalid/missing-placeholder.json",
+      "path": "$.placeholder",
+      "mode": "document"
+    },
+    {
+      "name": "real-label",
+      "rule": "CIM-V3-PLACEHOLDER",
+      "kind": "authoring",
+      "file": "invalid/real-label.json",
+      "path": "$.beats[2].actions[0].label",
+      "mode": "document"
+    },
+    {
+      "name": "archive-path",
+      "rule": "CIM-V3-ARCHIVE-PATH",
+      "kind": "capture",
+      "file": "invalid/archive-path.json",
+      "path": "$.archive.files[0].path",
+      "mode": "document"
+    },
+    {
+      "name": "evidence-digest",
+      "rule": "CIM-V3-EVIDENCE",
+      "kind": "capture",
+      "file": "invalid/evidence-digest.json",
+      "path": "$capture.archive.files[0].sha256",
+      "mode": "archive"
+    },
+    {
+      "name": "pack-version",
+      "rule": "CIM-V3-PACK-VERSION",
+      "kind": "pack",
+      "file": "invalid/pack-version.json",
+      "path": "$.cim_min",
+      "mode": "document"
+    },
+    {
+      "name": "media-map",
+      "rule": "CIM-V3-MEDIA-DEFERRED",
+      "kind": "pack",
+      "file": "invalid/media-map.json",
+      "path": "$.media",
+      "mode": "document"
+    },
+    {
+      "name": "limit",
+      "rule": "CIM-V3-LIMIT",
+      "kind": "authoring",
+      "file": "invalid/limit.json",
+      "path": "$.beats",
+      "mode": "document"
+    },
+    {
+      "name": "parse",
+      "rule": "CIM-V3-PARSE",
+      "kind": "authoring",
+      "file": "invalid/parse.json",
+      "path": "$",
+      "mode": "document"
+    }
+  ]
+}

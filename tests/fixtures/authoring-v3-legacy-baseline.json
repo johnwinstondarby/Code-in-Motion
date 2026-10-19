@@ -1,0 +1,823 @@
+{
+  "baseline": "7e3d96f49d446a29a936deae437a64c5138dd3a6",
+  "node": "22.23.2",
+  "frozenFiles": {
+    "authoring/v1/compile-authoring.mjs": "74d81202eda0374c13b8726762c2f837ce670e624553ca9c3cb097765d814f95",
+    "authoring/v1/console-state-conformance.mjs": "509783bf6c0eaf3780f8aef8b9ecb42aae184330bff0a256c7ce5ac6d8055902",
+    "authoring/v1/evidence-conformance.mjs": "5c3bda1915294ba074de8f5d196620e4e9cd0c3954dcf72de4be630595daea1d",
+    "authoring/v1/fixtures/invalid/copy-empty.json": "c498dcfe803fe9b3131ac58cde2b653a498efa86a62b27cccbc3480c97a91346",
+    "authoring/v1/fixtures/invalid/copy-not-string.json": "a423de94a2948f5b3113057d83d5687dc49a72d5664c303dda671fc7f509a0d6",
+    "authoring/v1/fixtures/invalid/duplicate-beat-id.json": "2293824425bda2e5b39c998521ca2f1cc22205ddd6f4acab2f53b39421b19869",
+    "authoring/v1/fixtures/invalid/duplicate-key.json": "587c623500bf01f022a2c046354d92152b7ded67ea2eda6e2652b266b1a42de2",
+    "authoring/v1/fixtures/invalid/duplicate-output-id.json": "90944d5141d6d5e20fafd14bec62f09488a8cf1e3efdb6109704a5f2203e8943",
+    "authoring/v1/fixtures/invalid/empty-beats.json": "e901875ba7807747f663c17cafa58b0ac7ba9b92bc7e3d2ec0cc0cba5761bc78",
+    "authoring/v1/fixtures/invalid/final-anchor-incomplete.json": "ff57d779e2ad9cb2b55b61d1c737cde79b7071d6e5112873ffa07580c38ee28b",
+    "authoring/v1/fixtures/invalid/final-anchor-output-pending.json": "c24f32e2d73bad90386c71d2df33b0d28f35ebe5807c4ad44c6ace86bcf489e1",
+    "authoring/v1/fixtures/invalid/focus-cross-beat.json": "ee0b0ef09bd693e91fe545c9b4e72768775e85aeec54e5f841e520b9c8482c37",
+    "authoring/v1/fixtures/invalid/focus-references-future-output.json": "885083f0652b2bcd9469e6cfb853e4405076bd39ca8690618ad4e9a23f81cadc",
+    "authoring/v1/fixtures/invalid/focus-unknown-target.json": "11b9d09f44c50b56ad8610258c9f576d8301342464dc75e5bd4b00ba13c1453f",
+    "authoring/v1/fixtures/invalid/invalid-beat-id.json": "2cc25423a87d3db2847e1ace21b72f681c685fc45741f73c7a6e95da4bc88c80",
+    "authoring/v1/fixtures/invalid/invalid-experience-id.json": "15c446375a31569d3ad5bf22d5c60a092f821fd07ce5943b58304b93cf7d1ad0",
+    "authoring/v1/fixtures/invalid/invalid-json.json": "5a67d98647de004f40ba7d4bdf5ec817a151e18abdf404907757fa5ef1883eae",
+    "authoring/v1/fixtures/invalid/invalid-output-id.json": "6df6f16991fd2cf9937630f4faaee50a69e2be07e318c66a34a7bdae069fe471",
+    "authoring/v1/fixtures/invalid/line-break-in-command.json": "449d64d5c87778620e69256b2547ee2327b92805c6127716d8687655381554ab",
+    "authoring/v1/fixtures/invalid/line-break-in-copy.json": "74d035ff7b733f52258aaf217aa4b10ad954ec3a3df61525cf430c21186a0fb4",
+    "authoring/v1/fixtures/invalid/line-break-in-output.json": "051ef14dae05a99855461ecafa0f5a479d50de19e0279216c71f991f6e104d2e",
+    "authoring/v1/fixtures/invalid/line-break-in-prompt.json": "f54fdd1b854ce583bec6f010838d0d3186e8e0aa44b5700c5ddb37edf11ddbc8",
+    "authoring/v1/fixtures/invalid/line-break-in-response.json": "378429a85fe546690e4aca5598a3ebe354d2a609874873536e5c627b0f034b51",
+    "authoring/v1/fixtures/invalid/missing-command.json": "b46ddd6b6b8f618f3eb6c87b08764b81894a7af322dbe934bb4a9b90b2b980f9",
+    "authoring/v1/fixtures/invalid/missing-explanation.json": "b1984de15db1a1b6393f515b3d4bb21df2d1fbacd8b5a22265992c9c13cc73f4",
+    "authoring/v1/fixtures/invalid/missing-heading.json": "7306f4954dca22b243b63d3417e22f43e54580e088bb706071db069cb14bd442",
+    "authoring/v1/fixtures/invalid/missing-output.json": "8048781a5fc0e7843c1d2136fd8caec44352386e316140f9df8cbd26efb355b9",
+    "authoring/v1/fixtures/invalid/missing-prompt.json": "d047165e8988a96f58fd66bdbe9a9e25a180a89dff27264aacfeb737d355bb1c",
+    "authoring/v1/fixtures/invalid/missing-required-field.json": "4c4b407d76c202486d496ce15fe6b8268fa085c60554e001881f1ef37860d0d7",
+    "authoring/v1/fixtures/invalid/missing-tone.json": "dfe2aefb9d71ba1609d706ce70af79c3ff177e7fac6b4fcd30c939a03f25722b",
+    "authoring/v1/fixtures/invalid/negative-dwell.json": "4ca55ae448c7113bc18df83a50c118143d5c41ed3aa66b468f31bc6146d3d428",
+    "authoring/v1/fixtures/invalid/no-segments.json": "58437fb2e880405300189463845177a501625df2b0981bfea91dd911dcd0a113",
+    "authoring/v1/fixtures/invalid/output-anchor-without-output.json": "53a274070e58cd98171e843539674232154abf901ec8699575a3c0365e867274",
+    "authoring/v1/fixtures/invalid/playback-rate-above-range.json": "0fabc2efd6e51eb8b59413f60d179d1d2c0ec9bf98a7e97e41be658ef2c1803c",
+    "authoring/v1/fixtures/invalid/playback-rate-below-range.json": "764a124b9a819e21d4bfc9aabad968e9aae0b4acfbd3bc65d6420496346accab",
+    "authoring/v1/fixtures/invalid/reference-generic-label.json": "39d496a40beef45f4dd0cbcf1126ba7b306aad0e9e9c37d1f7d2f9e6dcf90a5a",
+    "authoring/v1/fixtures/invalid/reference-not-https.json": "341e4e56b10e48b24af7cafb57084b948d52ecd2f78a73a45c96aaaf5d7a89ec",
+    "authoring/v1/fixtures/invalid/reference-relative-url.json": "743479baa1680cd4b05fc59c12fd2f3f5e51311b0d1c9518ce462f0e9f21298f",
+    "authoring/v1/fixtures/invalid/removed-presentation-field.json": "54800a89f571203f37d1911d22c11c8453491f889bfe19e6b6f8f3b09e8affb1",
+    "authoring/v1/fixtures/invalid/reserved-beat-id.json": "810e5ed9659714599804363fface0722b5054337a3beae9eeea27abcd46d079e",
+    "authoring/v1/fixtures/invalid/response-anchor-without-response.json": "4b0c21d6c0105028b7c83a53330f32195f9b6ad16de9bff249612a4576b337b2",
+    "authoring/v1/fixtures/invalid/response-without-prompt.json": "262b926ee679b16c3ff244ef51a5398f7b4a10e39918a5bf0e7e2a1d022758c6",
+    "authoring/v1/fixtures/invalid/risk-label-present.json": "3cdb3e2ac0441b845c75b59cd4116e17a8bd7e75dac63773ccef492ca82da9ac",
+    "authoring/v1/fixtures/invalid/risk-level-none.json": "5ce6b167e28c0d5a1d7b048cf75a62c7428ebda6067cbc16444f3ab815aea1a8",
+    "authoring/v1/fixtures/invalid/risk-missing-level.json": "2cf0265fbf1d59ac7dfb61815f1d419e2b01a385b0b93d406dce13a194593f18",
+    "authoring/v1/fixtures/invalid/schema-mismatch.json": "c1301e82700e3e0be66bfa0915a0907c4bf4db942a4cde133ad635731d5fc225",
+    "authoring/v1/fixtures/invalid/segment-order.json": "ebad0c989dc2fcfa3db3ce6e03df194c5770e1d3d454a4c92b6f6d200a5a9adb",
+    "authoring/v1/fixtures/invalid/tab-in-command.json": "8b80d3ea483627bbd73862a8147826dafc0fb575d8f813cadcc0d1a0eb1d46b8",
+    "authoring/v1/fixtures/invalid/tab-in-output.json": "fd0cc93c83629c557a153b550203ac985a1d12de77a26645fe2a21a48ac6f60d",
+    "authoring/v1/fixtures/invalid/typing-not-boolean.json": "0f492fb1768b267cbc8240f04ccfabbb3f90c923d9daea4651167ddfaae6b550",
+    "authoring/v1/fixtures/invalid/unknown-anchor.json": "f62d65bdbf08b02e2fca90b8aa87adab5ede6e1794df9d1eac7d0c2805dc2c00",
+    "authoring/v1/fixtures/invalid/unknown-beat-field.json": "e65e9590080d5d5bc46b2f5a7fa3daa1f2cc78f3441678e818a841e92ca03eb3",
+    "authoring/v1/fixtures/invalid/unknown-layout.json": "41dbb30c2f9cf99fbf788e46fec59d605f8903b377788322ed55ea81d98f3b79",
+    "authoring/v1/fixtures/invalid/unknown-risk-level.json": "6588e4ff6a4bff82e7645c3a73983344fb5f34e2f470bf294a9a810376cf7b69",
+    "authoring/v1/fixtures/invalid/unknown-root-field.json": "6e7873b0bd1b41079704cc817d9a0936fb62e4d4e2871afa379851077a2e5322",
+    "authoring/v1/fixtures/invalid/unknown-tone.json": "6fd410856d04124ada4ab8cd9e6584d180c27a44adb8ff8dfb0ceafe03139f28",
+    "authoring/v1/fixtures/invalid/version-not-semver.json": "64ec944568c5a256da6c98ecf4faf0f84ad5d8c7f181968355f6fc4753e8d491",
+    "authoring/v1/fixtures/lint/lint-blank-lines-excluded.json": "7f6d1d52848a23881d5ab8864310ceaf5033191dd5fe49d3a5df8a22235f071f",
+    "authoring/v1/fixtures/lint/lint-focus-breadth.json": "5d5b12a266bc5a2be21245257b1817d67b79e287754bd7ae7846df1d5218c3c6",
+    "authoring/v1/fixtures/lint/lint-tone-density.json": "e0f559840000b603326bdd38a7cc89100388caf96c03bd7b46032ce018606f1f",
+    "authoring/v1/fixtures/manifest.json": "298d64bf49850f4d6188c1ac2a18df5b789489136db56928eb76f9e3134d5938",
+    "authoring/v1/fixtures/valid/base.json": "5325423b0438989e5b6951dfdec37364069caea2fc6e91d8c7d19b8e6b0ebfc1",
+    "authoring/v1/fixtures/valid/command-only-beat.json": "6a242130a2b086d3c84a60f550cd2d4410972084d499a2a544442d603e606cf8",
+    "authoring/v1/fixtures/valid/minimal-optionals.json": "9861058ae3d3374a1067f37b64220e98fe4a4e5bff3a47d43d10056825a64948",
+    "authoring/v1/fixtures/valid/prompt-overrides-only.json": "99290ee3045594fa8336d901b7865d324a4cf416c68b9f42a1f2f3b4f8c3326c",
+    "authoring/v1/fixtures/valid/rate-range-bounds.json": "542a2d08eb2f1aeb21c8a371896206aa7dd9e483ab4822690670cbd0dc422f0d",
+    "authoring/v1/fixtures/valid/trailing-whitespace-and-copy.json": "5a27e5a5e1c6086ff66602646c8ca5cd35e7f2d851b5d7e87c477456a23afd70",
+    "authoring/v1/README.md": "de01ccef59dc81e634ddac737397d94317944039b783d0987bd35d0d34081694",
+    "authoring/v1/validate-authoring.mjs": "4bf288bb4f4aef275dc100f85d5bc036fafddf988646cdb29511a733dadcb7e0",
+    "authoring/v2/compile-authoring.mjs": "1d178cbb2246f3a440026aa9dfece0d74f3b9575fc9b3e7aeffde26a55845f0d",
+    "authoring/v2/README.md": "739a0431daaa76837a9188d884b6b86eda8b2a8b60a784f89b615f5dee71e465",
+    "authoring/v2/validate-authoring.mjs": "c4d3a5347fd960fa21573e515aaa4630e0dad1bea700f2a11a6f4c7367bdb791",
+    "tools/compile-authoring.mjs": "201e013ba6aadae58e9126a9afb8e74ecfbe43755c2a86d6b2678118c8b5bd82",
+    "docs/AUTHORING-JSON-v1.md": "b0268b5804677c013fc702936ab79ef55f569cf30738bc7a621ea117eda8fcad",
+    "docs/AUTHORING-JSON-v2.md": "110c168fb801cd653c1e21774cdefd6f4f2da3c257092840209c27f02eabf092",
+    "docs/AUTHORING-TO-RUNTIME-v1.md": "5a9db2732c146170f556b76dd1ecf226c6f64e99838e08a82894be26243df0ac",
+    "docs/AUTHORING-TO-RUNTIME-v2.md": "2245f98ef97210b5635d57bb5bdfbc72f546bb73f252c3f9ce695b318964bd08"
+  },
+  "samples": [
+    {
+      "file": "authoring/v1/fixtures/invalid/copy-empty.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "fb1063894b858b2c3c70809813bdd132a2557ae3962eddce4b91931008170e8b"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/copy-not-string.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "fb1063894b858b2c3c70809813bdd132a2557ae3962eddce4b91931008170e8b"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/duplicate-beat-id.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "705094e8223ec775cedcc181bbae74f118ac2203b707ade8bc1dc4f16e11d5d4"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/duplicate-key.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "2bbc1a1901abdce9f00a5d88a332f5f09bd399877189c0694ad8ce9e820a858b"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/duplicate-output-id.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "f590c0d4d96e6fbb46da4d14f2df34dcb1eb1e65e88eeb2206f32cd96f9321d9"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/empty-beats.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "557a0bd9e57e9611a05ed9cd9985f9fe3f9d782ff78e18f3674ca574db786f25"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/final-anchor-incomplete.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "21352bd4dcb0b2dcb37dbd449a3149a7b39675aa3dfc2c543a44779624e3f6f7"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/final-anchor-output-pending.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "d8c79f7e2cc3fb9a15fcec95c7f3061e4b9808f78dee915eb22e3ce1bb767bfd"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/focus-cross-beat.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "f85eafa090d1b17f2eca76e23274c6dd0a46eb00fe6f0e59d0f2e3d908828fb9"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/focus-references-future-output.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "50c0e536c5304ed09b65d3d5ea89bd868f3ca73a96dd28ff16551e2b8c597230"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/focus-unknown-target.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "fa7b33a040c947f69ae3d7e518b024a7da25a9d11eb2425cabf4c51d8c782d0a"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/invalid-beat-id.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "76f920f7c2582cb66732abca490282c5c5dec0356c358b614741ee8e21307db8"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/invalid-experience-id.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "1b45f11f3067af696c18d79354551fbd15ebdb164f53aac4cd98f6c573641578"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/invalid-json.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "d92e60410e797a8a3a3a543498833d1d6b9560044b0e15c9848748f983501351"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "d92e60410e797a8a3a3a543498833d1d6b9560044b0e15c9848748f983501351"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/invalid-output-id.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "ef84caf18481b5039977ce082d10dc1bef771167c7c3465fc400964bdbb564b2"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/line-break-in-command.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "caf87f467ae6f2d61322797774b6df53ee470c69b5d5153ce4b0097f8fb499e9"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/line-break-in-copy.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "c138caf689be32f998632876f07788a179b7598791bf1981b8ecf0ea3f2e61a9"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/line-break-in-output.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "2ac79a5bac1d5519389741ed7d84bad70eabe43420a6e0d667dec45541165d71"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/line-break-in-prompt.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "08417d921bd1fe9a601cc32fb69cdcdb9535185df714658b16ffe4be3887c4ff"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/line-break-in-response.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "e80dc7c82e5efde2427a5837fe908d1ef76571ff54aed292ec60561387e040d2"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/missing-command.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "5381eafa327e2d1e06760806fdd8f37b92f7b86d1f6b764b93ac125fc3135df5"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/missing-explanation.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "d8776b33c827ef1b2bd03d2589ce08b85c61eeea97d9123c3815c5f3b4262d6e"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/missing-heading.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "f75bf29a01ea52dbe7f96000571b6817a4bc22ab519f90bae0da3a61aea69afd"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/missing-output.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "de86b04ef7e6ae1b00448c7fcb34a0a1a01420b59828597f29359332a4ad7cc7"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/missing-prompt.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "b5f93f2e9401b4fcafc20c12a2d688a8240b37ba4d1a561fc814d50f669093cf"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/missing-required-field.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "f64793a676724ce9b91a2e04072977888bf13806231869fa887f9556cebd19d7"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/missing-tone.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "22de5b3239e9f1206163a561dc596632e6d30cc8f568ceb5bad1f69a183192b3"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/negative-dwell.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "269c7184ea26947576b65c3639cdda4e84f0c843c049a3b251d10dca0126b563"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/no-segments.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "bdf8fbdcb190bf01247f03b852c1edd616fd32012d012bdb1b1a2f03c6cfa5f4"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/output-anchor-without-output.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "f569c3d2b0bdecbb0b2040f7097ba973a4808a3cda7e56e2f922bc6ec226cb55"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/playback-rate-above-range.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "4f3249c1c09bfba25f81d9b15a7ee24b786f4edce6585bc3648dbe88ded33970"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/playback-rate-below-range.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "4f3249c1c09bfba25f81d9b15a7ee24b786f4edce6585bc3648dbe88ded33970"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/reference-generic-label.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "cce11a6df2cfbcacfaa84d3fa107ab29be69ad50bd81011f92c545ae493436d0"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/reference-not-https.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "53495bcadc104b4f337421fc5c7fa1aa344320eb016f71ffc59c08a79f59a4c5"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/reference-relative-url.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "3bbbc30b26b0a8879b7da75ed5939c75eee7abe8df63e77762beaf3c3568c63e"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/removed-presentation-field.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "58b07f58f568abb4f4f94a7975985a1979ea9f93d1d5e7f084f9c8bad10ce1fd"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/reserved-beat-id.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "8b310fb8207a5be2a9d5958288553830f88483217d4446173d203becca80df4e"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/response-anchor-without-response.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "f89c59d30df13da8dc5ce3da38bd133f6137e21f178ee63a7e918e4010122b61"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/response-without-prompt.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "77e510d23a6ac5d11a8ffd277c2b26ded1cd4a23b6d474af200ded8c9d6e0b03"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/risk-label-present.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "701a8918f705bc73f0eb60f26cbd47b07af08ff82d36aa604e8e269bd455b348"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/risk-level-none.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "383742a54c8588680d8be5fa1de53174e1494e17ce66695d9a616655c0a5ad9e"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/risk-missing-level.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "130cbc2f42f3422dcae4085ec5b0ddda07380a671c9348ba0ec07150d3aabb66"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/schema-mismatch.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "951ca9938e1229213733f7d27e7aedc5cb31d3c9c197d87f5445e9d1e39f516c"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "96e67940772d6c73dca0aef72c25607baeec7aadcf87d2863fc8a014017b5ee8"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/segment-order.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "9445377898408e25b8dc29d4eabc841398fb6612af1449d2581db478b5971b83"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/tab-in-command.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "dce519a1b15e39a89eb895c1e0bf9443f85abb2d390a84c0d71e1ebe1d80aead"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/tab-in-output.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "4b83f43dada458fdbe412cf05fd7a28edc7ea9d3e0e6c9c30077f61c4573ecc6"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/typing-not-boolean.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "4d5c041680cf3d3da5677fc95ca7e7d70382a37592289335c056dd4ed38231d5"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/unknown-anchor.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "2b238d343ee22f8fdb871e9f4971603b41066f6b0ab4bb7907d1d713fd72ad86"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/unknown-beat-field.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "5984300d93ef71b2493ce4f96abaaf861f4845f2042835b7f538fa5c9b145c62"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/unknown-layout.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "f8c9c3aa5508106b8afb1d191a8ae97ea36b067451d1c6d73a5455b789d4eee8"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/unknown-risk-level.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "d9c019b5d866c9281ebaf1ffaf5a383839e12ed016247d0340db04929dc9aadf"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/unknown-root-field.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "30237ab4fbf249082b4105ff5f2676dffa2ebfa0a6e0bd6fb7b9bf6d60d9b53b"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/unknown-tone.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "8785a0c3d70fc06c5d75cf392aba481a432c74818255fad5e21d257e497f4559"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/invalid/version-not-semver.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "4f0aebdd55a1e797bb3aa25a73f339b1f4ce3a27d394361c19bd46813668b7bf"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/lint/lint-blank-lines-excluded.json",
+      "v1": {
+        "accepted": true,
+        "text": "5bdfeaf64a6ff810f26692e74ada341372a8fd7372ef613b19a8733e394aced4",
+        "provenance": "45514997d4afbe27e3b08604e13850938b836a215851b3855a60954961386ca2"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/lint/lint-focus-breadth.json",
+      "v1": {
+        "accepted": true,
+        "text": "6d442c1c796b60a272cc06ab346d8aa64ba6e6ecb383bf94e55b0cd0eeeb13b9",
+        "provenance": "e76c0c2af2ac617ee7274574e24d50f0a2136d00bebdb586f711f4f9e754fb16"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/lint/lint-tone-density.json",
+      "v1": {
+        "accepted": true,
+        "text": "c3a110b4b5f4eb13cedb14595f5bea907d2777e6b23bba492a9aac9dd0bde04f",
+        "provenance": "de627c423d741bef4ea8ce0060fcaa7c742d11b639fd2256c82d54fc88c7ce10"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/valid/base.json",
+      "v1": {
+        "accepted": true,
+        "text": "f51ec246e01f6a8bbcc32d8d81175a6cf0c88c6f4dec1eaa59d685c27e5a0257",
+        "provenance": "f5d0b4c9445d24f12fcd18ea874cc301ffd6fa07c297e207c84e08d5e1bfd14d"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/valid/command-only-beat.json",
+      "v1": {
+        "accepted": true,
+        "text": "e67a7242a98f521f669277d7352dc537bfdb54f8ea1bc840b4dbe2737c8c8381",
+        "provenance": "d6d2300008e8231ec5e6270cb1892ca3c82695100537da6880c0f27e394d10d8"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/valid/minimal-optionals.json",
+      "v1": {
+        "accepted": true,
+        "text": "7db39d537f8f3c09464808107f49f6d074184b2f5925cfdde2cba7c8a61e2e09",
+        "provenance": "34148973a846dd931b0b87491f32d79d8f71829bcb12ce982ff98ad6b0116ecf"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/valid/prompt-overrides-only.json",
+      "v1": {
+        "accepted": true,
+        "text": "c4b09a7a539fe85f07211517747a7ae20db95de9567bee62ce545014dcac9062",
+        "provenance": "ba6c0374e57a460eb8211487209e51d8521a684885038e925bf014278580a491"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/valid/rate-range-bounds.json",
+      "v1": {
+        "accepted": true,
+        "text": "0f7b9b8196a013da2ab182294a46e870ca1418bd95bc7b5880f52a0529c1df5e",
+        "provenance": "b468cab6e069f43c7e2716ecbf66bb45d591bd2315ca6794d3da24a7f41c7a75"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "authoring/v1/fixtures/valid/trailing-whitespace-and-copy.json",
+      "v1": {
+        "accepted": true,
+        "text": "ebe7595b8da7a02003a9769f8fd8f7b4132975146dc5885a711b3a4efda3e7c5",
+        "provenance": "953968e2330f7e4369637d92cdb7c406bc4594fa7fe444b0ca549f4685bc92b2"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    },
+    {
+      "file": "experiences/git/git-repository-practice.authoring.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "63ea06e1251fc0568f0a7c1738b37cee3526311987e04bf27e279a8c9ad34511"
+      },
+      "v2": {
+        "accepted": true,
+        "text": "8321d392561fe80d4139e903e4a234889d719ac4e7777f20a6fe32b7d0a5f35c",
+        "provenance": "9d3fb63fc1b8ffba53f6f3c4b7628a45c94e5b1bf07b6480aafd5ac3f71b59f6"
+      }
+    },
+    {
+      "file": "experiences/starter/python-first-steps.authoring.json",
+      "v1": {
+        "accepted": false,
+        "diagnostics": "63ea06e1251fc0568f0a7c1738b37cee3526311987e04bf27e279a8c9ad34511"
+      },
+      "v2": {
+        "accepted": true,
+        "text": "d3f46f7436c4822b17a99374a7e780b4890aea9d30080becbcbbd7af92478457",
+        "provenance": "2454f225b02617dbf1e384ae2b35fc70e7e8fbca81470e6525d3b180ea13480a"
+      }
+    },
+    {
+      "file": "tests/fixtures/authoring-v1-compat/git-repository-practice.authoring.json",
+      "v1": {
+        "accepted": true,
+        "text": "a77e2527c4b1feb0fbfae671d98dbd008c4f2e623bd5edddddf5aad9ff1fd005",
+        "provenance": "530f82142b22fe01e43844ef4e3bb72e249b0ab160cf5d02aa2073010b140f9a"
+      },
+      "v2": {
+        "accepted": false,
+        "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
+      }
+    }
+  ]
+}

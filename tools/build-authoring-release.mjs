@@ -30,7 +30,9 @@ async function includeRuntime(directory) {
  }
 }
 await includeRuntime('src');await includeRuntime('wordpress/assets');
-for (const file of ['LICENSE','.nvmrc','docs/LESSON-PACKS-v1.md','docs/INSTALL.md','docs/AUTHORING-GUIDE.md','docs/AUTHORING-JSON-v1.md','docs/AUTHORING-JSON-v2.md','docs/AUTHORING-TO-RUNTIME-v1.md','docs/AUTHORING-TO-RUNTIME-v2.md','experiences/starter/python-first-steps.authoring.json']) files.set(resolve(root,file),readHeadFile(file,'utf8'));
+for (const file of ['LICENSE','.nvmrc','docs/LESSON-PACKS-v1.md','docs/LESSON-PACKS-v2.md','docs/AUTHORING-JSON-v3.md','docs/ENGINEERING-CAPTURE-v1.md','docs/INSTALL.md','docs/AUTHORING-GUIDE.md','docs/AUTHORING-JSON-v1.md','docs/AUTHORING-JSON-v2.md','docs/AUTHORING-TO-RUNTIME-v1.md','docs/AUTHORING-TO-RUNTIME-v2.md','experiences/starter/python-first-steps.authoring.json']) files.set(resolve(root,file),readHeadFile(file,'utf8'));
+for (const sample of ['run-custody','context-chain']) for (const name of ['lesson.json','capture.json','raw/transcript.txt']) { const file = 'authoring/v3/fixtures/valid/'+sample+'/'+name; files.set(resolve(root,file),readHeadFile(file,'utf8')); }
+files.set(resolve(root,'authoring/v3/fixtures/valid/pack.json'),readHeadFile('authoring/v3/fixtures/valid/pack.json','utf8'));
 files.set(resolve(root,'README.md'), readHeadFile('docs/AUTHORING-TOOL-README.md','utf8'));
 const zip = createPortableArchive([...files].map(([file,data])=>({path:'cim-authoring-'+version+'/'+relative(root,file).replaceAll('\\','/'),data})));
 const name = 'cim-authoring-'+version+'.zip';

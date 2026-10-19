@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "localis.cim/engineering-capture/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "localis.cim/engineering-capture/v1"
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "placeholder": {
+      "type": "boolean"
+    },
+    "archive": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "root": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "\\S"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "\\S"
+              },
+              "sha256": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "provenance": {
+                "enum": [
+                  "placeholder",
+                  "captured"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "path",
+              "sha256",
+              "provenance"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 256
+        }
+      },
+      "required": [
+        "id",
+        "root",
+        "files"
+      ]
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "beat": {
+            "$ref": "#/$defs/id"
+          },
+          "pane": {
+            "$ref": "#/$defs/id"
+          },
+          "host": {
+            "$ref": "#/$defs/id"
+          },
+          "service": {
+            "$ref": "#/$defs/id"
+          },
+          "artifact": {
+            "$ref": "#/$defs/id"
+          },
+          "action": {
+            "enum": [
+              "pin",
+              "fail",
+              "complete",
+              "publish",
+              "verify",
+              "evaluate",
+              "observe"
+            ]
+          },
+          "from": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 100
+          },
+          "result": {
+            "$ref": "#/$defs/artifactState"
+          },
+          "evidence": {
+            "$ref": "#/$defs/id"
+          },
+          "provenance": {
+            "enum": [
+              "placeholder",
+              "captured"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "beat",
+          "pane",
+          "host",
+          "service",
+          "artifact",
+          "action",
+          "from",
+          "result",
+          "evidence",
+          "provenance"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 512
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "placeholder",
+    "archive",
+    "records"
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 100
+    },
+    "artifactState": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 100
+        },
+        "status": {
+          "enum": [
+            "absent",
+            "pinned",
+            "failed",
+            "completed",
+            "published",
+            "verified",
+            "reproduced"
+          ]
+        }
+      },
+      "required": [
+        "location",
+        "status"
+      ]
+    },
+    "diagram": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/artifactState"
+          },
+          "maxProperties": 128
+        }
+      },
+      "required": [
+        "artifacts"
+      ]
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "href": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^https://[^\\s]+$"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "href"
+      ]
+    }
+  }
+}

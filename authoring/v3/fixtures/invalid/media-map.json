@@ -1,0 +1,19 @@
+{
+  "schema": "cim.lesson-pack/v2",
+  "cim_min": "1.1.0",
+  "cim_max_exclusive": "2.0.0",
+  "placeholder": true,
+  "lessons": [
+    {
+      "id": "run-custody-placeholder",
+      "file": "lesson.json",
+      "capture": "capture.json"
+    }
+  ],
+  "media": {
+    "status": "deferred",
+    "assets": [
+      "not-yet-implemented"
+    ]
+  }
+}
