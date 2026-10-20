@@ -23,4 +23,3 @@ const run=rule=>spawnSync(process.execPath,['--test',...(rule?['--test-name-patt
 let r=run();if(r.status!==0)throw new Error('Baseline failed: '+r.stdout+r.stderr);const results=[];
 for(const[id,file,from,to,rule]of cases){const path=resolve(sandbox,file),original=await readFile(path,'utf8');if(!original.includes(from))throw new Error('Missing target '+id);try{await writeFile(path,original.replaceAll(from,to));r=run(rule);}finally{await writeFile(path,original);}const output=r.stdout+r.stderr,caught=r.status!==0&&/ERR_ASSERTION|AssertionError/.test(output)&&!/SyntaxError|ReferenceError/.test(output);results.push({id,rule,caught});if(!caught)throw new Error('Probe survived or crashed: '+id+'\n'+output);}
 console.log(JSON.stringify({node:process.version,baseline:'passed',results},null,2));
-

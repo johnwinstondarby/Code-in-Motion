@@ -61,6 +61,3 @@ export function createEngineeringPane(){
  async play(state,context){if(disposed)throw new Error('Engineering disposed.');const result=await lifecycle.play(state,context);if(result.status==='failed'&&!disposed)showError();return result;},
  dispose(){disposed=true;lifecycle.dispose();}});
 }
-
-
-

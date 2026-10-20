@@ -8,4 +8,3 @@ export function engineeringFixture(){
  initial:lesson.panes.find(p=>p.type==='diagram/v1').initial_state,
  archive:{id:capture.archive.id,root:capture.archive.root},records:capture.records,evidence:capture.archive.files,beats:lesson.beats.map((b,i)=>({id:b.id,records:b.engineering.records,state:bundle.states[i]}))};
 }
-

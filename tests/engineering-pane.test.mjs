@@ -25,10 +25,3 @@ test('[ENG-07] missing invalid and mismatched records give bounded classified fa
 test('[ENG-07] invalid diagram releases participation while other panes complete',async()=>{const c=structuredClone(config);c.records=[];const root=new Element();const driver=createMultiPaneFixtureDriver(fixtureExperience(),{}, {paneFactories:{engineering:()=>{const p=createEngineeringPane();p.mount(root,c,{id:'engineering',type:'diagram/v1'});return p;}}});driver.session.dispatch({type:'play'});await driver.advance(1000);assert.equal(driver.session.read().playing,false);assert(driver.session.read().failures.includes('engineering'));assert(driver.log.some(x=>x.pane==='explanation'&&x.stage==='settled'));assert.match(root.textContent,/CIM-DIAGRAM/);driver.dispose();});
 test('[ENG-08] labels use readable unscaled minimum sizes',()=>{const css=readFileSync(new URL('../src/multipane/engineering.css',import.meta.url),'utf8');assert.match(css,/font-size:14px/);assert.doesNotMatch(css,/scale\(/);});
 test('[ENG-09] fixture-only immutable data no leaked capabilities or network',()=>{const c=structuredClone(config);c.fixtureOnly=false;assert.throws(()=>setup(c),/fixture/);const x=structuredClone(config);x.host=()=>{};assert.throws(()=>setup(x));const source=readFileSync(new URL('../src/multipane/engineering.mjs',import.meta.url),'utf8');assert.doesNotMatch(source,/\b(fetch|XMLHttpRequest|WebSocket|setTimeout|setInterval|eval)\s*\(|from ['"].*(?:core|runtime|host)\//);const{pane}=setup();assert.deepEqual(Object.keys(pane).sort(),['dispose','mount','play','settle']);});
-
-
-
-
-
-
-
