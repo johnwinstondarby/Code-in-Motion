@@ -1,6 +1,6 @@
 # ADR 0061 step 3 review packet
 
-Status: draft for Daisy review and Johann approval. No merge, tag, release or installation is authorized by this packet. Base: `7e3d96f49d446a29a936deae437a64c5138dd3a6`. Implementation/build commit: `2a2e479`.
+Status: draft for Daisy review and Johann approval. No merge, tag, release or installation is authorized by this packet. Base: `7e3d96f49d446a29a936deae437a64c5138dd3a6`. Implementation/build commit: `33acede`.
 
 ## Scope and feasibility
 
@@ -10,7 +10,7 @@ All three JSON schemas are checked independently with Ajv in tests. The standalo
 
 ## Verification
 
-Node 22.23.2: `npm run verify` passes, 991 tests (baseline 962), zero failed/skipped. All 17 new rule-bypass mutations are caught by assertions, not crashes. R42 v1 comparison: 41 identical, zero different, 28 skipped. The added frozen baseline also checks 77 file hashes and both compilers across 66 source documents, including serialized rejection messages. Logs and projection are included here.
+Node 22.23.2: `npm run verify` passes, 995 tests (baseline 962), zero failed/skipped. All 17 new rule-bypass mutations are caught by assertions, not crashes. R42 v1 comparison: 41 identical, zero different, 28 skipped. The added frozen baseline also checks 77 file hashes and both compilers across 66 source documents, including serialized rejection messages (only engine-owned parse-error suffixes are normalized). Logs and projection are included here.
 
 ## Rule / fixture map
 
@@ -41,9 +41,9 @@ Paths below are relative to `authoring/v3/fixtures/`. Each listed case asserts i
 
 Two clean-HEAD builds on Node 22.23.2 produced identical 110-file archives:
 
-`91bf2892140f269fbb9cb6fea5ce7bbb184f577c589bdd09ba8819e28ffcf702`
+`756731cffe5217888fdfec941076bae2a4b50460fd52f3286ea5fadb382a71ac`
 
-Filename remains `cim-authoring-1.0.1.zip` because there is no version bump or release in this step. This is a changed validation candidate, not the published 1.0.1 asset. The build adds only authoring validation modules, schemas, reference docs and valid fixtures. Extracted validation succeeds without node_modules. Existing published ZIPs and rollback kits are untouched.
+Build with `node tools/build-authoring-release.mjs --candidate`; filename and archive root are `cim-authoring-1.0.1-candidate` (ZIP extension on the filename). No version bump or release is made in this step. This is a changed validation candidate, not the published 1.0.1 asset. The build adds only authoring validation modules, schemas, reference docs and valid fixtures. Extracted validation succeeds without node_modules. Existing published ZIPs and rollback kits are untouched.
 
 ## Limits and deferred work
 
@@ -54,3 +54,11 @@ The full verify log includes the existing checks and 17 new schema mutation prob
 ## Evidence integrity
 
 SHA256SUMS covers every evidence file in this directory except this packet, attributes and the checksum file itself. Binary Git attributes preserve recorded bytes.
+
+## Review corrections
+
+Full verify now passes on both Node 20.20.2 and pinned Node 22.23.2: 995 tests and 17 mutation probes each. `verify-node20.log` and `verify.log` record these runs. Frozen compiler code is unchanged. Baseline normalization replaces only the V8-generated suffix of the `CIM-AUTH-PARSE` diagnostic with `<engine parse error>`; rule IDs, paths, other fields and all non-parse messages remain exact. Only the invalid-JSON fixture's two rejection hashes changed.
+
+Added guards enumerate every schema keyword (walking property and definition maps as schema containers), compare the built-in structural checker with Ajv on every parseable invalid fixture, and require both to refuse malformed documents for all three schemas. Semantic-only invalid fixtures may pass both structural validators and remain covered by the full validator's rule tests. Unicode code-point string length and Unicode-mode regular expressions now match JSON Schema; emoji length-boundary and pattern tests compare with Ajv.
+
+Candidate filename/root use an explicit `-candidate` suffix via the build flag, avoiding confusion with the published asset. Two clean builds at `33acede` match the checksum above. The public release and plugin remain untouched. CI on the final PR head must pass before approval.
