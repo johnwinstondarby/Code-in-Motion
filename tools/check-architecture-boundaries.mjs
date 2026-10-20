@@ -8,6 +8,9 @@ const SOURCE_EXTENSIONS = new Set(['.js', '.mjs', '.cjs', '.ts', '.tsx', '.jsx']
 const NODE_BUILTINS = new Set([...builtinModules, ...builtinModules.map((name) => `node:${name}`)]);
 
 const FORBIDDEN_IMPORTS = [
+  ['multipane-to-core', 'src/multipane/', 'src/core/', 'Experimental transport cannot import Core.'],
+  ['multipane-to-runtime', 'src/multipane/', 'src/runtime/', 'Experimental transport receives scoped clock authority by injection.'],
+  ['multipane-to-host', 'src/multipane/', 'src/host/', 'Experimental transport cannot import hosts.'],
   ['pane-contract-to-core', 'src/contracts/', 'src/core/', 'Shared pane contracts cannot import Core.'],
   ['pane-contract-to-runtime', 'src/contracts/', 'src/runtime/', 'Shared pane contracts cannot import Runtime.'],
   ['pane-contract-to-host', 'src/contracts/', 'src/host/', 'Shared pane contracts cannot import hosts.'],

@@ -47,11 +47,12 @@ for(const [width,height] of [[1366,768],[1536,864],[1920,1080]])test.describe(`$
   await tabs.nth(0).focus();await page.keyboard.press('ArrowRight');await expect(tabs.nth(1)).toBeFocused();await expect(tabs.nth(1)).toHaveAttribute('aria-selected','true');
   await page.keyboard.press('Home');await expect(tabs.nth(0)).toBeFocused();await page.keyboard.press('End');await expect(tabs.nth(1)).toBeFocused();
   await page.keyboard.press('ArrowLeft');await expect(tabs.nth(0)).toBeFocused();
+  await page.keyboard.press('Tab');await expect(page.locator('[data-mp-panel="console"] pre')).toBeFocused();
  });
  test('[MP-01] beat-start auto selection never takes focus and never repeats during a beat',async({page})=>{
   await open(page);await page.locator('#outside').focus();await event(page,{type:'jump',index:1});await event(page,{type:'play'});
   await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');await expect(page.locator('#outside')).toBeFocused();
-  await page.getByRole('tab',{name:'Console – CLI'}).click();await advance(page,80);
+  await page.getByRole('tab',{name:'Console – CLI'}).click();await advance(page,200);
   await expect(page.getByRole('tab',{name:'Console – CLI'})).toHaveAttribute('aria-selected','true');
  });
  test('[MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice',async({page})=>{
@@ -65,7 +66,10 @@ for(const [width,height] of [[1366,768],[1536,864],[1920,1080]])test.describe(`$
  });
  test('[MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation',async({page})=>{
   await open(page);await expect(page.locator('[data-mp-status]')).toHaveText('Start · 9 beats');
+  await expect(page.getByRole('button',{name:'Play',exact:true})).toHaveAttribute('title','Play');
+  await page.getByRole('button',{name:'Beats',exact:true}).click();await expect(page.getByRole('dialog',{name:'Beats'}).locator('[aria-current="step"]')).toHaveCount(0);await page.getByRole('button',{name:'Close',exact:true}).click();
   await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.locator('[data-mp-status]')).toHaveText('Beat 1 / 9 · playing');
+  await expect(page.getByRole('button',{name:'Pause',exact:true})).toHaveAttribute('title','Pause');
   await page.getByRole('button',{name:'Beats',exact:true}).click();const menu=page.getByRole('dialog',{name:'Beats'});await expect(menu).toBeVisible();
   await expect(menu.locator('[aria-current="step"]')).toHaveCount(1);await expect(menu.locator('[aria-current="step"]')).toContainText('1 ');
   await advance(page,50);expect(await page.evaluate(()=>fixture.session.read().playing)).toBe(true);
@@ -73,14 +77,15 @@ for(const [width,height] of [[1366,768],[1536,864],[1920,1080]])test.describe(`$
   await page.keyboard.press('End');await expect(menu.getByRole('button',{name:'Close',exact:true})).toBeFocused();
   await page.keyboard.press('Escape');await expect(menu).toBeHidden();await expect(page.getByRole('button',{name:'Beats',exact:true})).toBeFocused();
   const after=await page.evaluate(()=>fixture.session.read());expect({...after,panelOpen:true}).toEqual(state);
-  await page.getByRole('button',{name:'Beats',exact:true}).click();await menu.getByRole('button',{name:'Close',exact:true}).click();await expect(page.getByRole('button',{name:'Beats',exact:true})).toBeFocused();expect(await page.evaluate(()=>fixture.session.read().index)).toBe(state.index);
+  await page.getByRole('button',{name:'Beats',exact:true}).click();await menu.getByRole('button',{name:'Close',exact:true}).click();await expect(page.getByRole('button',{name:'Beats',exact:true})).toBeFocused();expect(await page.evaluate(()=>fixture.session.read())).toEqual(after);
  });
  test('[MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab',async({page},info)=>{
   await open(page);await event(page,{type:'jump',index:3});await page.getByRole('tab',{name:'Motion – GUI'}).click();
-  await page.getByRole('button',{name:'Next',exact:true}).click();await page.getByRole('button',{name:'Next',exact:true}).click();
+  await page.getByRole('button',{name:'Next',exact:true}).click();await page.getByRole('button',{name:'Play',exact:true}).click();
   await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');
   await expect(page.locator('[data-mp-wait="motion"]')).toHaveText('Waiting on next GUI action');
   const selected=await page.evaluate(()=>{const node=fixture.slots.motion;const range=document.createRange();range.selectNodeContents(node);const selection=getSelection();selection.removeAllRanges();selection.addRange(range);return selection.toString();});expect(selected.length).toBeGreaterThan(0);
+  await advance(page,60);expect(await page.evaluate(()=>getSelection().toString())).toBe(selected);
   await expect(page.locator('[data-mp-panel="motion"] pre')).toHaveCSS('user-select','text');await expect(page.locator('[data-mp-panel="motion"]')).toHaveCSS('opacity','1');
   await page.getByRole('button',{name:'Beats',exact:true}).click();await page.getByRole('dialog',{name:'Beats'}).locator('[data-mp-beat="5"]').click();
   await expect(page.getByRole('tab',{name:'Console – CLI'})).toHaveAttribute('aria-selected','true');
@@ -88,7 +93,9 @@ for(const [width,height] of [[1366,768],[1536,864],[1920,1080]])test.describe(`$
   expect(boxes[0].width).toBeCloseTo(boxes[1].width,0);expect(boxes[0].y).toBeCloseTo(boxes[1].y,0);
   expect(await page.locator('#fixture').evaluate(n=>getComputedStyle(n).transform)).toBe('none');
   const bar=await page.locator('[data-mp-transport]').boundingBox();expect(bar.y+bar.height).toBeLessThanOrEqual(height);
-  await info.attach('true-size-layout',{body:await page.screenshot(),contentType:'image/png'});
+  const image=info.outputPath('true-size-layout.png');await page.screenshot({path:image});
+  await info.attach('true-size-layout',{path:image,contentType:'image/png'});
+  await writeFile(info.outputPath('layout.json'),JSON.stringify({width,height,contexts:boxes,transport:bar,transform:'none'},null,2));
  });
  test('[MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states',async({page})=>{
   await open(page);await expect(page.getByRole('button',{name:'Beats',exact:true})).toHaveCount(1);

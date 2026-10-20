@@ -1,1 +1,28 @@
-/* Tests-first placeholder. No legacy page loads this stylesheet. */
+/* Experimental fixture only: never imported by existing lessons or WordPress. */
+.mp-fixture { box-sizing:border-box; height:calc(100vh - 40px); display:grid; grid-template-rows:auto minmax(160px,1.3fr) minmax(160px,1fr) 64px; gap:10px; position:relative; background:#0b1017; color:#edf2fa; font:16px/1.4 system-ui,sans-serif; padding:12px; }
+.mp-fixture *, .mp-fixture *::before { box-sizing:border-box; }
+.mp-fixture [hidden] { display:none !important; }
+.mp-fixture header { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.mp-fixture h2 { font-size:18px; margin:0; }
+.mp-fixture h3 { font-size:14px; margin:0; padding:6px 10px; border-bottom:1px solid #617084; }
+.mp-fixture strong { border:1px solid #ffc05c; color:#ffc05c; padding:2px 8px; font-size:14px; }
+.mp-fixture button { font:inherit; color:inherit; background:#1b2736; border:1px solid #8292a5; border-radius:4px; padding:6px 10px; cursor:pointer; }
+.mp-fixture button:focus-visible, .mp-fixture pre:focus-visible { outline:3px solid #ffd878; outline-offset:2px; }
+.mp-fixture [role=tab][aria-selected=true], .mp-fixture [aria-current=step] { background:#456484; border-color:#edf2fa; }
+.mp-fixture [data-mp-action] { display:grid; grid-template-rows:auto 1fr; min-height:0; }
+.mp-fixture [role=tablist] { display:flex; gap:6px; padding-bottom:6px; }
+.mp-fixture [role=tabpanel], .mp-fixture [data-mp-context] { display:flex; flex-direction:column; overflow:hidden; min-height:0; border:1px solid #617084; border-radius:5px; background:#111c28; opacity:1; }
+.mp-fixture pre { white-space:pre-wrap; overflow-wrap:anywhere; overflow:auto; min-height:0; flex:1; padding:10px; margin:0; font:15px/1.4 ui-monospace,monospace; user-select:text; }
+.mp-fixture [data-mp-wait] { margin:0; padding:4px 10px; border-top:1px solid #617084; font-size:14px; }
+.mp-fixture [data-mp-context-row] { display:grid; grid-template-columns:1fr 1fr; gap:10px; min-height:0; }
+.mp-fixture [data-mp-transport] { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px; background:#1b2736; border-radius:5px; }
+.mp-fixture [data-mp-buttons] { display:flex; align-items:center; gap:6px; }
+.mp-fixture [data-mp-buttons] button { display:flex; align-items:center; gap:6px; }
+.mp-fixture [data-mp-icon] { flex:none; }
+.mp-fixture [data-mp-identity] { max-width:20vw; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.mp-fixture [data-mp-command=playback] { background:#b9d5ff; color:#101b29; font-weight:700; min-width:70px; }
+.mp-fixture [data-mp-command=restart] { margin-left:18px; }
+.mp-fixture [data-mp-status] { font-size:14px; min-width:180px; text-align:right; }
+.mp-fixture [data-mp-menu] { position:absolute; z-index:2; right:12px; bottom:82px; width:min(720px,calc(100% - 24px)); border:1px solid #8292a5; padding:12px; background:#1b2736; box-shadow:0 4px 12px #0008; }
+.mp-fixture [data-mp-menu] p { margin:0 0 8px; }
+.mp-fixture [data-mp-menu] > div { display:flex; flex-wrap:wrap; gap:6px; }
