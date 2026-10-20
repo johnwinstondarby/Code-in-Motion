@@ -2,12 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,symlink} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
+import {fileURLToPath} from 'node:url';
 import {join,resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import Ajv2020 from 'ajv/dist/2020.js';
 import {SCHEMAS,validateDocument} from '../authoring/v3/validate.mjs';
 import {motionFixture} from './helpers/motion-fixture.mjs';
-const fixture=motionFixture(),root=resolve(new URL('../',import.meta.url).pathname.replace(/^\/([A-Za-z]:)/,'$1'));
+const fixture=motionFixture(),root=fileURLToPath(new URL('../',import.meta.url));
 const manifest=media=>({schema:'cim.lesson-pack/v2',cim_min:'1.1.0',cim_max_exclusive:'2.0.0',placeholder:true,lessons:[{id:'lesson',file:'lesson.json',capture:'capture.json'}],media});
 async function folder(){const path=await mkdtemp(join(tmpdir(),'cim-motion-'));await mkdir(join(path,'media'));await writeFile(join(path,'media/placeholder.webm'),fixture.bytes);await writeFile(join(path,'media/placeholder.vtt'),fixture.captions);await writeFile(join(path,'map.json'),JSON.stringify(fixture.map));return path;}
 const cli=path=>spawnSync(process.execPath,[join(root,'tools/cim-author.mjs'),'validate',path],{cwd:root,encoding:'utf8'});

@@ -29,12 +29,13 @@ const manifest = JSON.parse(await readFile(join(fixtures, 'manifest.json'), 'utf
 const ajv = new Ajv2020({ strict: false, allErrors: true });
 
 test('v3 schemas use only explicitly supported evaluator keywords', () => {
-  const keywords = new Set(['$schema','$id','$defs','$ref','title','description','type','const','enum','properties','required','additionalProperties','items','minItems','maxItems','minLength','maxLength','pattern','maxProperties']);
+  const keywords = new Set(['$schema','$id','$defs','$ref','title','description','type','const','enum','properties','required','additionalProperties','items','minItems','maxItems','minLength','maxLength','pattern','maxProperties','anyOf','minimum','maximum']);
   function visit(schema) {
     for (const [key, value] of Object.entries(schema)) {
       assert(keywords.has(key), `Unsupported schema keyword: ${key}`);
       if (['properties','$defs'].includes(key)) Object.values(value).forEach(visit);
       else if (['items','additionalProperties'].includes(key) && typeof value === 'object') visit(value);
+      else if (key === 'anyOf') value.forEach(visit);
       else if (key === '$ref') assert.match(value, /^#\/\$defs\/[^/]+$/);
     }
   }

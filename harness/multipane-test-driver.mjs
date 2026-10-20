@@ -28,7 +28,7 @@ export function createMultiPaneFixtureDriver(experience,slots={},options={}) {
     const transition={clock:clock.facade,cancellation:abort.facade,
       pause:()=>clock.controller.pause(),resume:()=>clock.controller.resume(),
       cancel:reason=>abort.controller.abort(reason),close:()=>{clock.controller.revoke();abort.controller.close();}};
-    transitions.push(transition);return transition;
+    const scoped=options.wrapTransition?.(transition,generation)??transition;transitions.push(scoped);return scoped;
   };
   const session=createMultiPaneSession({experience,testFixture:true,panes,openTransition,reducedMotion:options.reducedMotion===true});
   return {session,scheduler,log,transitions,async advance(ms){scheduler.advanceTo(scheduler.time()+ms);await flushMultiPane();},dispose(){session.dispose();}};
