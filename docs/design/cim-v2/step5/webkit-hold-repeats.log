@@ -1,0 +1,19 @@
+
+Running 3 tests using 1 worker
+
+
+
+(node:38380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1/3] tests\e2e\wordpress-player-mvp.spec.mjs:985:1 › Explanation overlapping holds and pane-owned scrolling remain independent
+(node:94288) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/3] tests\e2e\wordpress-player-mvp.spec.mjs:985:1 › Explanation overlapping holds and pane-owned scrolling remain independent
+
+(node:125916) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[3/3] tests\e2e\wordpress-player-mvp.spec.mjs:985:1 › Explanation overlapping holds and pane-owned scrolling remain independent
+  3 passed (6.1s)

@@ -1,0 +1,98 @@
+
+Running 89 tests using 1 worker
+
+
+(node:113876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/89] tests\e2e\lesson-packs.spec.mjs:44:1 › companion lesson uses the production bootstrap, neutral theme and inert text
+[2/89] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: schema
+[3/89] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: state
+[4/89] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: identity
+[5/89] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: engine
+[6/89] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: link
+[7/89] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: huge
+[8/89] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: malformed
+[9/89] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: external
+[10/89] tests\e2e\lesson-packs.spec.mjs:57:1 › a pack root cannot override a bundled lesson
+[11/89] tests\e2e\lesson-packs.spec.mjs:63:1 › Admin checks all lessons before preview and exposes rejection without affecting other content
+[12/89] tests\e2e\lesson-preview.spec.mjs:10:1 › local Player preview shows saved edits without a build or WordPress installation
+[13/89] tests\e2e\multipane-transport.spec.mjs:40:2 › 1366x768 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+[14/89] tests\e2e\multipane-transport.spec.mjs:52:2 › 1366x768 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+[15/89] tests\e2e\multipane-transport.spec.mjs:58:2 › 1366x768 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+[16/89] tests\e2e\multipane-transport.spec.mjs:67:2 › 1366x768 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+[17/89] tests\e2e\multipane-transport.spec.mjs:80:2 › 1366x768 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+[18/89] tests\e2e\multipane-transport.spec.mjs:98:2 › 1366x768 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+[19/89] tests\e2e\multipane-transport.spec.mjs:107:2 › 1366x768 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+[20/89] tests\e2e\multipane-transport.spec.mjs:40:2 › 1536x864 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+[21/89] tests\e2e\multipane-transport.spec.mjs:52:2 › 1536x864 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+[22/89] tests\e2e\multipane-transport.spec.mjs:58:2 › 1536x864 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+[23/89] tests\e2e\multipane-transport.spec.mjs:67:2 › 1536x864 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+[24/89] tests\e2e\multipane-transport.spec.mjs:80:2 › 1536x864 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+[25/89] tests\e2e\multipane-transport.spec.mjs:98:2 › 1536x864 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+[26/89] tests\e2e\multipane-transport.spec.mjs:107:2 › 1536x864 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+[27/89] tests\e2e\multipane-transport.spec.mjs:40:2 › 1920x1080 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+[28/89] tests\e2e\multipane-transport.spec.mjs:52:2 › 1920x1080 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+[29/89] tests\e2e\multipane-transport.spec.mjs:58:2 › 1920x1080 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+[30/89] tests\e2e\multipane-transport.spec.mjs:67:2 › 1920x1080 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+[31/89] tests\e2e\multipane-transport.spec.mjs:80:2 › 1920x1080 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+[32/89] tests\e2e\multipane-transport.spec.mjs:98:2 › 1920x1080 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+[33/89] tests\e2e\multipane-transport.spec.mjs:107:2 › 1920x1080 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+[34/89] tests\e2e\teacher-admin.spec.mjs:6:1 › production Admin disclosure is initially closed and keyboard reachable
+[35/89] tests\e2e\wordpress-player-mvp.spec.mjs:130:1 › pane contract: markup and virtual timing match pre-refactor panes at rest and every transition frame
+[36/89] tests\e2e\wordpress-player-mvp.spec.mjs:193:1 › mobile policy: narrow screens fetch no Player modules or lessons, including late embeds
+[37/89] tests\e2e\wordpress-player-mvp.spec.mjs:209:1 › mobile policy: landscape touch-only devices do not load the Player
+[38/89] tests\e2e\wordpress-player-mvp.spec.mjs:221:1 › mobile policy: desktop still initializes the production Player
+[39/89] tests\e2e\wordpress-player-mvp.spec.mjs:229:3 › CLI and copy: powershell badge uses neutral secondary Console text independently of kind and label
+[40/89] tests\e2e\wordpress-player-mvp.spec.mjs:229:3 › CLI and copy: windows-cli badge uses neutral secondary Console text independently of kind and label
+[41/89] tests\e2e\wordpress-player-mvp.spec.mjs:229:3 › CLI and copy: bash badge uses neutral secondary Console text independently of kind and label
+[42/89] tests\e2e\wordpress-player-mvp.spec.mjs:248:1 › CLI and copy: exact authored override writes plain text without seeking and survives renderer replacement
+[43/89] tests\e2e\wordpress-player-mvp.spec.mjs:266:1 › CLI and copy: native drag selection and copy shortcuts leave navigation untouched
+[44/89] tests\e2e\wordpress-player-mvp.spec.mjs:297:1 › CLI and copy: clipboard denial gives guidance, sibling stays usable and stale controls are inert
+[45/89] tests\e2e\wordpress-player-mvp.spec.mjs:314:1 › line limn: all 18 Show entries target command, evidence or response after scrolling while paused
+[46/89] tests\e2e\wordpress-player-mvp.spec.mjs:344:1 › line limn: strong inset cue remains visible on all four sides in every theme
+[47/89] tests\e2e\wordpress-player-mvp.spec.mjs:385:1 › line limn: tint retains readable dim text in flash and quiet across themes
+[48/89] tests\e2e\wordpress-player-mvp.spec.mjs:402:1 › line limn: repeated clicks restart the cue, theme colors adapt and navigation clears it
+[49/89] tests\e2e\wordpress-player-mvp.spec.mjs:424:1 › line limn: reduced motion stays steady and disposal clears emphasis
+[50/89] tests\e2e\wordpress-player-mvp.spec.mjs:438:1 › line limn: site-forced reduced motion stays steady without animation
+[51/89] tests\e2e\wordpress-player-mvp.spec.mjs:446:1 › line limn: disposal cancels a running cue without changing renderer canonical markup
+[52/89] tests\e2e\wordpress-player-mvp.spec.mjs:471:1 › production v2 admission uses registry loader bootstrap and final beat deep links alongside legacy
+[53/89] tests\e2e\wordpress-player-mvp.spec.mjs:493:1 › production v2 admission rejects incompatible engine minimum locally before any Console construction
+[54/89] tests\e2e\wordpress-player-mvp.spec.mjs:509:1 › v2 instructional consumers preserve phase evidence risk guidance ordering and renderer-owned focus
+[55/89] tests\e2e\wordpress-player-mvp.spec.mjs:539:1 › learner themes render complete palettes without altering canonical state or Console DOM
+[56/89] tests\e2e\wordpress-player-mvp.spec.mjs:576:1 › learner themes retain the explicit choice across reload and ignore device changes
+[57/89] tests\e2e\wordpress-player-mvp.spec.mjs:586:1 › learner themes follow device preference changes until an explicit choice and hide in forced colors
+[58/89] tests\e2e\wordpress-player-mvp.spec.mjs:609:1 › learner themes unavailable storage keeps an in-memory choice for siblings and remount
+[59/89] tests\e2e\wordpress-player-mvp.spec.mjs:625:1 › learner themes invalid persisted ID falls back to current device preferences
+[60/89] tests\e2e\wordpress-player-mvp.spec.mjs:635:1 › learner themes disposed selectors are inert and leave sibling controls functional
+[61/89] tests\e2e\wordpress-player-mvp.spec.mjs:648:1 › atomic readiness, two panes, fixed colors and native opening content
+[62/89] tests\e2e\wordpress-player-mvp.spec.mjs:673:1 › dark Player frame and Transport preserve keyboard focus and legacy presentation
+[63/89] tests\e2e\wordpress-player-mvp.spec.mjs:715:1 › reveal, Commentary navigation, protected links and Restart stay isolated
+[64/89] tests\e2e\wordpress-player-mvp.spec.mjs:745:1 › admission failure rolls back the full Player and synchronous disposal wins
+[65/89] tests\e2e\wordpress-player-mvp.spec.mjs:756:1 › root teardown restores renderer position and preserves sibling Player
+[66/89] tests\e2e\wordpress-player-mvp.spec.mjs:775:1 › narrow layout stacks panes without horizontal page overflow
+[67/89] tests\e2e\wordpress-player-mvp.spec.mjs:785:1 › Console wraps with hanging continuations and preserves authored leading spaces
+[68/89] tests\e2e\wordpress-player-mvp.spec.mjs:835:1 › Console continuation begins beyond authored indentation
+[69/89] tests\e2e\wordpress-player-mvp.spec.mjs:863:1 › Console continuation geometry updates for multiple authored indents and cleans up
+[70/89] tests\e2e\wordpress-player-mvp.spec.mjs:920:1 › pane follow survives real renderer replacement and keeps both newest views visible
+[71/89] tests\e2e\wordpress-player-mvp.spec.mjs:944:1 › Console pointer focus and selection holds catch up without taking scroll ownership
+[72/89] tests\e2e\wordpress-player-mvp.spec.mjs:985:1 › Explanation overlapping holds and pane-owned scrolling remain independent
+[73/89] tests\e2e\wordpress-player-mvp.spec.mjs:1038:1 › Console scroll ownership waits for explicit return and stale pane listeners are withdrawn
+[74/89] tests\e2e\wordpress-player-mvp.spec.mjs:1081:1 › deliberate navigation repositions both held panes while preserving Commentary provenance
+[75/89] tests\e2e\wordpress-player-mvp.spec.mjs:1103:1 › offscreen link focus scrolls natively without claiming viewport ownership
+[76/89] tests\e2e\wordpress-player-mvp.spec.mjs:1122:1 › pinned Console title and its lower gap cover scrolling transcript text
+[77/89] tests\e2e\wordpress-player-mvp.spec.mjs:1146:1 › Copy button edge stays covered when its command scrolls behind the pinned title
+[78/89] tests\e2e\wordpress-player-mvp.spec.mjs:1168:1 › selection holds only the intersected pane while its peer follows
+[79/89] tests\e2e\wordpress-player-mvp.spec.mjs:1193:1 › pointer already present at pane binding construction holds new output
+[80/89] tests\e2e\wordpress-player-mvp.spec.mjs:1227:1 › authored beat headings progress and button keyboard navigation use eight beats
+[81/89] tests\e2e\wordpress-player-mvp.spec.mjs:1264:1 › beat markers capture final destinations while Commentary retains individual segments
+[82/89] tests\e2e\wordpress-player-mvp.spec.mjs:1286:1 › public beat deep links mount directly at final boundaries before presentation admission
+[83/89] tests\e2e\wordpress-player-mvp.spec.mjs:1302:1 › deep links reject public v2 segment IDs and preserve legacy direct step links
+[84/89] tests\e2e\wordpress-player-mvp.spec.mjs:1316:1 › disposed beat markers lose their listeners and preserve sibling controls
+[85/89] tests\e2e\wordpress-player-mvp.spec.mjs:1329:49 › GA pacing: every beat waits and both Play and Next continue (reduce)
+[86/89] tests\e2e\wordpress-player-mvp.spec.mjs:1329:49 › GA pacing: every beat waits and both Play and Next continue (no-preference)
+[87/89] tests\e2e\wordpress-player-mvp.spec.mjs:1362:1 › GA layout: overflowing risk badges clear the scrollbar in every theme and risk state; Copy waits for complete typing
+[88/89] tests\e2e\wordpress-player-mvp.spec.mjs:1419:1 › GA layout: wrapped commands keep Copy beside their final text line and ready prompts align
+[89/89] tests\e2e\wordpress-player-mvp.spec.mjs:1435:1 › Explanation preserves selected text nodes and stable Resume labels across refreshes
+  1 skipped
+  88 passed (2.6m)

@@ -1,0 +1,25 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "contexts": [
+    {
+      "x": 20,
+      "y": 572.25,
+      "width": 935,
+      "height": 389.75
+    },
+    {
+      "x": 965,
+      "y": 572.25,
+      "width": 935,
+      "height": 389.75
+    }
+  ],
+  "transport": {
+    "x": 20,
+    "y": 972,
+    "width": 1880,
+    "height": 64
+  },
+  "transform": "none"
+}

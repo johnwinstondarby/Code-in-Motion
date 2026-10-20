@@ -1,0 +1,727 @@
+
+Running 21 tests using 1 worker
+
+
+(node:85800) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/21] tests\e2e\multipane-transport.spec.mjs:40:2 › 1366x768 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+  1) tests\e2e\multipane-transport.spec.mjs:40:2 › 1366x768 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab') with timeout 5000ms
+      - waiting for getByRole('tab')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      39 |  test.use({viewport:{width,height}});
+      40 |  test('[MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection',async({page})=>{
+    > 41 |   await open(page);const tabs=page.getByRole('tab');await expect(tabs).toHaveCount(2);
+         |                                                                        ^
+      42 |   await expect(page.getByRole('tablist')).toHaveCount(1);await expect(page.locator('[role="tab"][aria-selected="true"]')).toHaveCount(1);
+      43 |   await expect(page.locator('[role="tab"][tabindex="0"]')).toHaveCount(1);
+      44 |   for(const tab of await tabs.all()){
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:41:72
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-f7dfd-e-roving-keyboard-selection\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-f7dfd-e-roving-keyboard-selection\error-context.md
+
+
+
+(node:34476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[2/21] tests\e2e\multipane-transport.spec.mjs:51:2 › 1366x768 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+  2) tests\e2e\multipane-transport.spec.mjs:51:2 › 1366x768 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('tab', { name: 'Motion – GUI' })
+    Expected: "true"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('tab', { name: 'Motion – GUI' }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Motion – GUI' })
+
+
+      51 |  test('[MP-01] beat-start auto selection never takes focus and never repeats during a beat',async({page})=>{
+      52 |   await open(page);await page.locator('#outside').focus();await event(page,{type:'jump',index:1});await event(page,{type:'play'});
+    > 53 |   await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');await expect(page.locator('#outside')).toBeFocused();
+         |                                                             ^
+      54 |   await page.getByRole('tab',{name:'Console – CLI'}).click();await advance(page,80);
+      55 |   await expect(page.getByRole('tab',{name:'Console – CLI'})).toHaveAttribute('aria-selected','true');
+      56 |  });
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:53:61
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-66d90-never-repeats-during-a-beat\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-66d90-never-repeats-during-a-beat\error-context.md
+
+
+
+(node:114444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[3/21] tests\e2e\multipane-transport.spec.mjs:57:2 › 1366x768 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+  3) tests\e2e\multipane-transport.spec.mjs:57:2 › 1366x768 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Play', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('button', { name: 'Play', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Play', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      56 |  });
+      57 |  test('[MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice',async({page})=>{
+    > 58 |   await open(page);await expect(page.getByRole('button',{name:'Play',exact:true})).toHaveCount(1);await page.getByRole('button',{name:'Play',exact:true}).click();
+         |                                                                                    ^
+      59 |   await page.getByRole('tab',{name:'Motion – GUI'}).click();const before=await page.evaluate(()=>fixture.slots.console.textContent);await advance(page,50);
+      60 |   expect(await page.evaluate(()=>fixture.slots.console.textContent)).not.toBe(before);
+      61 |   await page.getByRole('button',{name:'Pause',exact:true}).click();const held=await page.evaluate(()=>fixture.log.length);await advance(page,500);expect(await page.evaluate(()=>fixture.log.length)).toBe(held);
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:58:84
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-69d80-Next-preserve-manual-choice\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-69d80-Next-preserve-manual-choice\error-context.md
+
+
+
+(node:93816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[4/21] tests\e2e\multipane-transport.spec.mjs:66:2 › 1366x768 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+  4) tests\e2e\multipane-transport.spec.mjs:66:2 › 1366x768 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: locator('[data-mp-status]')
+    Expected: "Start · 9 beats"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveText" locator('[data-mp-status]') with timeout 5000ms
+      - waiting for locator('[data-mp-status]')
+
+
+      65 |  });
+      66 |  test('[MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation',async({page})=>{
+    > 67 |   await open(page);await expect(page.locator('[data-mp-status]')).toHaveText('Start · 9 beats');
+         |                                                                   ^
+      68 |   await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.locator('[data-mp-status]')).toHaveText('Beat 1 / 9 · playing');
+      69 |   await page.getByRole('button',{name:'Beats',exact:true}).click();const menu=page.getByRole('dialog',{name:'Beats'});await expect(menu).toBeVisible();
+      70 |   await expect(menu.locator('[aria-current="step"]')).toHaveCount(1);await expect(menu.locator('[aria-current="step"]')).toContainText('1 ');
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:67:67
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-0944d-d-closes-without-navigation\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-0944d-d-closes-without-navigation\error-context.md
+
+
+
+(node:110360) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[5/21] tests\e2e\multipane-transport.spec.mjs:78:2 › 1366x768 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+  5) tests\e2e\multipane-transport.spec.mjs:78:2 › 1366x768 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab 
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Motion – GUI' })
+
+
+      77 |  });
+      78 |  test('[MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab',async({page},info)=>{
+    > 79 |   await open(page);await event(page,{type:'jump',index:3});await page.getByRole('tab',{name:'Motion – GUI'}).click();
+         |                                                                                                              ^
+      80 |   await page.getByRole('button',{name:'Next',exact:true}).click();await page.getByRole('button',{name:'Next',exact:true}).click();
+      81 |   await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');
+      82 |   await expect(page.locator('[data-mp-wait="motion"]')).toHaveText('Waiting on next GUI action');
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:79:110
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-34dde-jumps-reset-the-default-tab\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-34dde-jumps-reset-the-default-tab\error-context.md
+
+
+(node:57480) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[6/21] tests\e2e\multipane-transport.spec.mjs:93:2 › 1366x768 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+  6) tests\e2e\multipane-transport.spec.mjs:93:2 › 1366x768 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Beats', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('button', { name: 'Beats', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Beats', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      92 |  });
+      93 |  test('[MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states',async({page})=>{
+    > 94 |   await open(page);await expect(page.getByRole('button',{name:'Beats',exact:true})).toHaveCount(1);
+         |                                                                                     ^
+      95 |   await event(page,{type:'deepLink',fragment:'#cim/context-chain-placeholder/submit-fail'});await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');
+      96 |   await page.getByRole('button',{name:'Beats',exact:true}).click();await page.getByRole('button',{name:'End',exact:true}).click();expect(await page.evaluate(()=>fixture.session.read().index)).toBe(8);
+      97 |   await page.getByRole('button',{name:'Beats',exact:true}).click();await page.getByRole('button',{name:'Start',exact:true}).click();await expect(page.locator('[data-mp-status]')).toHaveText('Start · 9 beats');
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:94:85
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-297b2-ebuild-deterministic-states\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-297b2-ebuild-deterministic-states\error-context.md
+
+
+
+(node:114732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[7/21] tests\e2e\multipane-transport.spec.mjs:102:2 › 1366x768 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+  7) tests\e2e\multipane-transport.spec.mjs:102:2 › 1366x768 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab') with timeout 5000ms
+      - waiting for getByRole('tab')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      101 |  });
+      102 |  test('[MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls',async({page})=>{
+    > 103 |   await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?leading=1');await expect(page.getByRole('tab')).toHaveCount(2);
+          |                                                                                                                       ^
+      104 |   await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.locator('[data-mp-status]')).toHaveText('Beat 1 / 10 · paused');
+      105 |   await expect(page.getByRole('tab',{name:'Console – CLI'})).toHaveAttribute('aria-selected','true');expect(await page.evaluate(()=>fixture.scheduler.counts.schedule)).toBe(0);
+      106 |   const result=await page.evaluate(()=>{const button=document.querySelector('[data-mp-command="restart"]');fixture.dispose();button.click();return{pending:fixture.scheduler.pending(),children:document.querySelector('#fixture').childElementCount};});
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:103:119
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-2adb0-ing-clock-or-stale-controls\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-2adb0-ing-clock-or-stale-controls\error-context.md
+
+
+
+(node:82904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[8/21] tests\e2e\multipane-transport.spec.mjs:40:2 › 1536x864 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+  8) tests\e2e\multipane-transport.spec.mjs:40:2 › 1536x864 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab') with timeout 5000ms
+      - waiting for getByRole('tab')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      39 |  test.use({viewport:{width,height}});
+      40 |  test('[MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection',async({page})=>{
+    > 41 |   await open(page);const tabs=page.getByRole('tab');await expect(tabs).toHaveCount(2);
+         |                                                                        ^
+      42 |   await expect(page.getByRole('tablist')).toHaveCount(1);await expect(page.locator('[role="tab"][aria-selected="true"]')).toHaveCount(1);
+      43 |   await expect(page.locator('[role="tab"][tabindex="0"]')).toHaveCount(1);
+      44 |   for(const tab of await tabs.all()){
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:41:72
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-455bf-e-roving-keyboard-selection\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-455bf-e-roving-keyboard-selection\error-context.md
+
+
+
+(node:116844) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[9/21] tests\e2e\multipane-transport.spec.mjs:51:2 › 1536x864 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+  9) tests\e2e\multipane-transport.spec.mjs:51:2 › 1536x864 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('tab', { name: 'Motion – GUI' })
+    Expected: "true"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('tab', { name: 'Motion – GUI' }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Motion – GUI' })
+
+
+      51 |  test('[MP-01] beat-start auto selection never takes focus and never repeats during a beat',async({page})=>{
+      52 |   await open(page);await page.locator('#outside').focus();await event(page,{type:'jump',index:1});await event(page,{type:'play'});
+    > 53 |   await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');await expect(page.locator('#outside')).toBeFocused();
+         |                                                             ^
+      54 |   await page.getByRole('tab',{name:'Console – CLI'}).click();await advance(page,80);
+      55 |   await expect(page.getByRole('tab',{name:'Console – CLI'})).toHaveAttribute('aria-selected','true');
+      56 |  });
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:53:61
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-97b90-never-repeats-during-a-beat\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-97b90-never-repeats-during-a-beat\error-context.md
+
+
+
+(node:124576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[10/21] tests\e2e\multipane-transport.spec.mjs:57:2 › 1536x864 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+  10) tests\e2e\multipane-transport.spec.mjs:57:2 › 1536x864 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Play', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('button', { name: 'Play', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Play', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      56 |  });
+      57 |  test('[MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice',async({page})=>{
+    > 58 |   await open(page);await expect(page.getByRole('button',{name:'Play',exact:true})).toHaveCount(1);await page.getByRole('button',{name:'Play',exact:true}).click();
+         |                                                                                    ^
+      59 |   await page.getByRole('tab',{name:'Motion – GUI'}).click();const before=await page.evaluate(()=>fixture.slots.console.textContent);await advance(page,50);
+      60 |   expect(await page.evaluate(()=>fixture.slots.console.textContent)).not.toBe(before);
+      61 |   await page.getByRole('button',{name:'Pause',exact:true}).click();const held=await page.evaluate(()=>fixture.log.length);await advance(page,500);expect(await page.evaluate(()=>fixture.log.length)).toBe(held);
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:58:84
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-54187-Next-preserve-manual-choice\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-54187-Next-preserve-manual-choice\error-context.md
+
+
+
+(node:31720) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[11/21] tests\e2e\multipane-transport.spec.mjs:66:2 › 1536x864 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+  11) tests\e2e\multipane-transport.spec.mjs:66:2 › 1536x864 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: locator('[data-mp-status]')
+    Expected: "Start · 9 beats"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveText" locator('[data-mp-status]') with timeout 5000ms
+      - waiting for locator('[data-mp-status]')
+
+
+      65 |  });
+      66 |  test('[MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation',async({page})=>{
+    > 67 |   await open(page);await expect(page.locator('[data-mp-status]')).toHaveText('Start · 9 beats');
+         |                                                                   ^
+      68 |   await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.locator('[data-mp-status]')).toHaveText('Beat 1 / 9 · playing');
+      69 |   await page.getByRole('button',{name:'Beats',exact:true}).click();const menu=page.getByRole('dialog',{name:'Beats'});await expect(menu).toBeVisible();
+      70 |   await expect(menu.locator('[aria-current="step"]')).toHaveCount(1);await expect(menu.locator('[aria-current="step"]')).toContainText('1 ');
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:67:67
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-67d93-d-closes-without-navigation\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-67d93-d-closes-without-navigation\error-context.md
+
+
+
+(node:103608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[12/21] tests\e2e\multipane-transport.spec.mjs:78:2 › 1536x864 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+  12) tests\e2e\multipane-transport.spec.mjs:78:2 › 1536x864 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab 
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Motion – GUI' })
+
+
+      77 |  });
+      78 |  test('[MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab',async({page},info)=>{
+    > 79 |   await open(page);await event(page,{type:'jump',index:3});await page.getByRole('tab',{name:'Motion – GUI'}).click();
+         |                                                                                                              ^
+      80 |   await page.getByRole('button',{name:'Next',exact:true}).click();await page.getByRole('button',{name:'Next',exact:true}).click();
+      81 |   await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');
+      82 |   await expect(page.locator('[data-mp-wait="motion"]')).toHaveText('Waiting on next GUI action');
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:79:110
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-8abc2-jumps-reset-the-default-tab\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-8abc2-jumps-reset-the-default-tab\error-context.md
+
+
+(node:35940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[13/21] tests\e2e\multipane-transport.spec.mjs:93:2 › 1536x864 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+  13) tests\e2e\multipane-transport.spec.mjs:93:2 › 1536x864 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Beats', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('button', { name: 'Beats', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Beats', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      92 |  });
+      93 |  test('[MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states',async({page})=>{
+    > 94 |   await open(page);await expect(page.getByRole('button',{name:'Beats',exact:true})).toHaveCount(1);
+         |                                                                                     ^
+      95 |   await event(page,{type:'deepLink',fragment:'#cim/context-chain-placeholder/submit-fail'});await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');
+      96 |   await page.getByRole('button',{name:'Beats',exact:true}).click();await page.getByRole('button',{name:'End',exact:true}).click();expect(await page.evaluate(()=>fixture.session.read().index)).toBe(8);
+      97 |   await page.getByRole('button',{name:'Beats',exact:true}).click();await page.getByRole('button',{name:'Start',exact:true}).click();await expect(page.locator('[data-mp-status]')).toHaveText('Start · 9 beats');
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:94:85
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-5ff49-ebuild-deterministic-states\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-5ff49-ebuild-deterministic-states\error-context.md
+
+
+
+(node:105400) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[14/21] tests\e2e\multipane-transport.spec.mjs:102:2 › 1536x864 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+  14) tests\e2e\multipane-transport.spec.mjs:102:2 › 1536x864 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab') with timeout 5000ms
+      - waiting for getByRole('tab')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      101 |  });
+      102 |  test('[MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls',async({page})=>{
+    > 103 |   await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?leading=1');await expect(page.getByRole('tab')).toHaveCount(2);
+          |                                                                                                                       ^
+      104 |   await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.locator('[data-mp-status]')).toHaveText('Beat 1 / 10 · paused');
+      105 |   await expect(page.getByRole('tab',{name:'Console – CLI'})).toHaveAttribute('aria-selected','true');expect(await page.evaluate(()=>fixture.scheduler.counts.schedule)).toBe(0);
+      106 |   const result=await page.evaluate(()=>{const button=document.querySelector('[data-mp-command="restart"]');fixture.dispose();button.click();return{pending:fixture.scheduler.pending(),children:document.querySelector('#fixture').childElementCount};});
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:103:119
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-db094-ing-clock-or-stale-controls\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-db094-ing-clock-or-stale-controls\error-context.md
+
+
+
+(node:118248) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+[15/21] tests\e2e\multipane-transport.spec.mjs:40:2 › 1920x1080 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+  15) tests\e2e\multipane-transport.spec.mjs:40:2 › 1920x1080 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab') with timeout 5000ms
+      - waiting for getByRole('tab')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      39 |  test.use({viewport:{width,height}});
+      40 |  test('[MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection',async({page})=>{
+    > 41 |   await open(page);const tabs=page.getByRole('tab');await expect(tabs).toHaveCount(2);
+         |                                                                        ^
+      42 |   await expect(page.getByRole('tablist')).toHaveCount(1);await expect(page.locator('[role="tab"][aria-selected="true"]')).toHaveCount(1);
+      43 |   await expect(page.locator('[role="tab"][tabindex="0"]')).toHaveCount(1);
+      44 |   for(const tab of await tabs.all()){
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:41:72
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-53f3c-e-roving-keyboard-selection\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-53f3c-e-roving-keyboard-selection\error-context.md
+
+
+
+(node:99260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+[16/21] tests\e2e\multipane-transport.spec.mjs:51:2 › 1920x1080 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+  16) tests\e2e\multipane-transport.spec.mjs:51:2 › 1920x1080 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: getByRole('tab', { name: 'Motion – GUI' })
+    Expected: "true"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('tab', { name: 'Motion – GUI' }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Motion – GUI' })
+
+
+      51 |  test('[MP-01] beat-start auto selection never takes focus and never repeats during a beat',async({page})=>{
+      52 |   await open(page);await page.locator('#outside').focus();await event(page,{type:'jump',index:1});await event(page,{type:'play'});
+    > 53 |   await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');await expect(page.locator('#outside')).toBeFocused();
+         |                                                             ^
+      54 |   await page.getByRole('tab',{name:'Console – CLI'}).click();await advance(page,80);
+      55 |   await expect(page.getByRole('tab',{name:'Console – CLI'})).toHaveAttribute('aria-selected','true');
+      56 |  });
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:53:61
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-82c9a-never-repeats-during-a-beat\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-82c9a-never-repeats-during-a-beat\error-context.md
+
+
+
+(node:114108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[17/21] tests\e2e\multipane-transport.spec.mjs:57:2 › 1920x1080 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+  17) tests\e2e\multipane-transport.spec.mjs:57:2 › 1920x1080 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Play', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('button', { name: 'Play', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Play', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      56 |  });
+      57 |  test('[MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice',async({page})=>{
+    > 58 |   await open(page);await expect(page.getByRole('button',{name:'Play',exact:true})).toHaveCount(1);await page.getByRole('button',{name:'Play',exact:true}).click();
+         |                                                                                    ^
+      59 |   await page.getByRole('tab',{name:'Motion – GUI'}).click();const before=await page.evaluate(()=>fixture.slots.console.textContent);await advance(page,50);
+      60 |   expect(await page.evaluate(()=>fixture.slots.console.textContent)).not.toBe(before);
+      61 |   await page.getByRole('button',{name:'Pause',exact:true}).click();const held=await page.evaluate(()=>fixture.log.length);await advance(page,500);expect(await page.evaluate(()=>fixture.log.length)).toBe(held);
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:58:84
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-74c88-Next-preserve-manual-choice\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-74c88-Next-preserve-manual-choice\error-context.md
+
+
+(node:32396) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[18/21] tests\e2e\multipane-transport.spec.mjs:66:2 › 1920x1080 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+  18) tests\e2e\multipane-transport.spec.mjs:66:2 › 1920x1080 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: locator('[data-mp-status]')
+    Expected: "Start · 9 beats"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveText" locator('[data-mp-status]') with timeout 5000ms
+      - waiting for locator('[data-mp-status]')
+
+
+      65 |  });
+      66 |  test('[MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation',async({page})=>{
+    > 67 |   await open(page);await expect(page.locator('[data-mp-status]')).toHaveText('Start · 9 beats');
+         |                                                                   ^
+      68 |   await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.locator('[data-mp-status]')).toHaveText('Beat 1 / 9 · playing');
+      69 |   await page.getByRole('button',{name:'Beats',exact:true}).click();const menu=page.getByRole('dialog',{name:'Beats'});await expect(menu).toBeVisible();
+      70 |   await expect(menu.locator('[aria-current="step"]')).toHaveCount(1);await expect(menu.locator('[aria-current="step"]')).toContainText('1 ');
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:67:67
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-e8a56-d-closes-without-navigation\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-e8a56-d-closes-without-navigation\error-context.md
+
+
+
+(node:58948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[19/21] tests\e2e\multipane-transport.spec.mjs:78:2 › 1920x1080 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+  19) tests\e2e\multipane-transport.spec.mjs:78:2 › 1920x1080 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab 
+
+    Test timeout of 10000ms exceeded.
+
+    Error: locator.click: Test timeout of 10000ms exceeded.
+    Call log:
+      - waiting for getByRole('tab', { name: 'Motion – GUI' })
+
+
+      77 |  });
+      78 |  test('[MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab',async({page},info)=>{
+    > 79 |   await open(page);await event(page,{type:'jump',index:3});await page.getByRole('tab',{name:'Motion – GUI'}).click();
+         |                                                                                                              ^
+      80 |   await page.getByRole('button',{name:'Next',exact:true}).click();await page.getByRole('button',{name:'Next',exact:true}).click();
+      81 |   await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');
+      82 |   await expect(page.locator('[data-mp-wait="motion"]')).toHaveText('Waiting on next GUI action');
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:79:110
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-829bd-jumps-reset-the-default-tab\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-829bd-jumps-reset-the-default-tab\error-context.md
+
+
+
+(node:69784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[20/21] tests\e2e\multipane-transport.spec.mjs:93:2 › 1920x1080 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+  20) tests\e2e\multipane-transport.spec.mjs:93:2 › 1920x1080 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('button', { name: 'Beats', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('button', { name: 'Beats', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Beats', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      92 |  });
+      93 |  test('[MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states',async({page})=>{
+    > 94 |   await open(page);await expect(page.getByRole('button',{name:'Beats',exact:true})).toHaveCount(1);
+         |                                                                                     ^
+      95 |   await event(page,{type:'deepLink',fragment:'#cim/context-chain-placeholder/submit-fail'});await expect(page.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');
+      96 |   await page.getByRole('button',{name:'Beats',exact:true}).click();await page.getByRole('button',{name:'End',exact:true}).click();expect(await page.evaluate(()=>fixture.session.read().index)).toBe(8);
+      97 |   await page.getByRole('button',{name:'Beats',exact:true}).click();await page.getByRole('button',{name:'Start',exact:true}).click();await expect(page.locator('[data-mp-status]')).toHaveText('Start · 9 beats');
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:94:85
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-feae7-ebuild-deterministic-states\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-feae7-ebuild-deterministic-states\error-context.md
+
+
+(node:82644) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[21/21] tests\e2e\multipane-transport.spec.mjs:102:2 › 1920x1080 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+  21) tests\e2e\multipane-transport.spec.mjs:102:2 › 1920x1080 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab') with timeout 5000ms
+      - waiting for getByRole('tab')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      101 |  });
+      102 |  test('[MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls',async({page})=>{
+    > 103 |   await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?leading=1');await expect(page.getByRole('tab')).toHaveCount(2);
+          |                                                                                                                       ^
+      104 |   await page.getByRole('button',{name:'Play',exact:true}).click();await expect(page.locator('[data-mp-status]')).toHaveText('Beat 1 / 10 · paused');
+      105 |   await expect(page.getByRole('tab',{name:'Console – CLI'})).toHaveAttribute('aria-selected','true');expect(await page.evaluate(()=>fixture.scheduler.counts.schedule)).toBe(0);
+      106 |   const result=await page.evaluate(()=>{const button=document.querySelector('[data-mp-command="restart"]');fixture.dispose();button.click();return{pending:fixture.scheduler.pending(),children:document.querySelector('#fixture').childElementCount};});
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\step5-stub-proof\tests\e2e\multipane-transport.spec.mjs:103:119
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-bba6a-ing-clock-or-stale-controls\error-context.md
+
+    Error Context: ..\..\outputs\step5-stub-replay-browser\tests-e2e-multipane-transp-bba6a-ing-clock-or-stale-controls\error-context.md
+
+
+  21 failed
+    tests\e2e\multipane-transport.spec.mjs:40:2 › 1366x768 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection 
+    tests\e2e\multipane-transport.spec.mjs:51:2 › 1366x768 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat 
+    tests\e2e\multipane-transport.spec.mjs:57:2 › 1366x768 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice 
+    tests\e2e\multipane-transport.spec.mjs:66:2 › 1366x768 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation 
+    tests\e2e\multipane-transport.spec.mjs:78:2 › 1366x768 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab 
+    tests\e2e\multipane-transport.spec.mjs:93:2 › 1366x768 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states 
+    tests\e2e\multipane-transport.spec.mjs:102:2 › 1366x768 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls 
+    tests\e2e\multipane-transport.spec.mjs:40:2 › 1536x864 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection 
+    tests\e2e\multipane-transport.spec.mjs:51:2 › 1536x864 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat 
+    tests\e2e\multipane-transport.spec.mjs:57:2 › 1536x864 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice 
+    tests\e2e\multipane-transport.spec.mjs:66:2 › 1536x864 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation 
+    tests\e2e\multipane-transport.spec.mjs:78:2 › 1536x864 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab 
+    tests\e2e\multipane-transport.spec.mjs:93:2 › 1536x864 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states 
+    tests\e2e\multipane-transport.spec.mjs:102:2 › 1536x864 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls 
+    tests\e2e\multipane-transport.spec.mjs:40:2 › 1920x1080 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection 
+    tests\e2e\multipane-transport.spec.mjs:51:2 › 1920x1080 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat 
+    tests\e2e\multipane-transport.spec.mjs:57:2 › 1920x1080 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice 
+    tests\e2e\multipane-transport.spec.mjs:66:2 › 1920x1080 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation 
+    tests\e2e\multipane-transport.spec.mjs:78:2 › 1920x1080 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab 
+    tests\e2e\multipane-transport.spec.mjs:93:2 › 1920x1080 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states 
+    tests\e2e\multipane-transport.spec.mjs:102:2 › 1920x1080 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls 
