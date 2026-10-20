@@ -27,7 +27,7 @@ These edits belong to the implementation commit, not the earlier tests-first com
 | Browser MP-14/15/16 | Added Tab-to-content keyboard focus and persistent text selection after 60 clock units of peer work; the existing selected-state, waiting-note and undimmed assertions remain. |
 | Browser layout evidence | Saved the existing screenshot to a named file and added geometry JSON so the true-size evidence is independently inspectable. |
 
-**Navigation wording awaiting Johann's decision:** current code and ADR 0061 treat Next as forward progression, preserving a manual tab choice on context-only beats. Brief v7 groups Next with direct jumps and needs a matching amendment if that behavior is approved. This packet does not resolve that policy conflict on its own.
+**Navigation decision approved by Johann on 2026-10-20:** Next is forward progression and preserves the learner's tab on context-only beats. The [brief v8 amendment](../BRIEF-v8-AMENDMENT.md) replaces v7's conflicting grouping of Next with direct jumps. Existing code and tests remain unchanged; direct jumps still select the deterministic default.
 
 The [supplemental historical replay](historical-stub-replay.log) later runs all **21 original browser cases** at all three sizes against an untouched worktree of `5a89a69`: all 21 fail. This replay happened **after** implementation and is labeled accordingly; it supplements the original pre-implementation run, not a claim to an earlier timestamp. `results.json` and `tests-first.json` record the distinction. The original committed source hashes have been independently checked against Git blobs.
 
