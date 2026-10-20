@@ -8,6 +8,12 @@ const SOURCE_EXTENSIONS = new Set(['.js', '.mjs', '.cjs', '.ts', '.tsx', '.jsx']
 const NODE_BUILTINS = new Set([...builtinModules, ...builtinModules.map((name) => `node:${name}`)]);
 
 const FORBIDDEN_IMPORTS = [
+  ['pane-contract-to-core', 'src/contracts/', 'src/core/', 'Shared pane contracts cannot import Core.'],
+  ['pane-contract-to-runtime', 'src/contracts/', 'src/runtime/', 'Shared pane contracts cannot import Runtime.'],
+  ['pane-contract-to-host', 'src/contracts/', 'src/host/', 'Shared pane contracts cannot import hosts.'],
+  ['pane-contract-to-transport', 'src/contracts/', 'src/transport/', 'Shared pane contracts cannot import transport.'],
+  ['pane-contract-to-renderers', 'src/contracts/', 'src/renderers/', 'Shared pane contracts cannot import renderer implementations.'],
+  ['pane-contract-to-commentary', 'src/contracts/', 'src/commentary/', 'Shared pane contracts cannot import commentary implementations.'],
   ['core-to-runtime', 'src/core/', 'src/runtime/', 'Core cannot import Runtime.'],
   ['core-to-transport', 'src/core/', 'src/transport/', 'Core cannot depend on learner-facing transport.'],
   ['core-to-commentary', 'src/core/', 'src/commentary/', 'Core cannot depend on commentary presentation.'],

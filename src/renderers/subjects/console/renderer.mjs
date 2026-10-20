@@ -8,6 +8,7 @@
 // final frame of every animation is the exact stable output, so animation changes the path to a
 // destination and never the destination. Every other arrival settles directly.
 
+import { createPaneLifecycle, paneBoundary, paneTransition } from '../../../contracts/pane.mjs';
 import { RendererCancelledError } from '../../interface.mjs';
 import { assertConsoleRendererInput, CONSOLE_RENDERER_ID } from './validate-console-input.mjs';
 
@@ -238,92 +239,59 @@ export function consoleAnimationFrames(from, to) {
   return frames;
 }
 
-export function createConsoleRenderer() {
-  let root = null;
-  let disposed = false;
-  let generation = 0;   // renderer-side stale-callback guard, in addition to facade revocation
+// The existing drawing and animation plan above are unchanged. The shared
+// lifecycle owns scheduling, cancellation, completion and disposal.
+export function createConsolePane() {
+  return createPaneLifecycle({
+    validate: (state, config, context) => assertConsoleRendererInput(state, config, context.stepRendererConfig),
+    frames: consoleAnimationFrames,
+    settle: (root, state, config, context) => root.replaceChildren(buildStableOutput(root.ownerDocument, state, config ?? {}, context.stepId)),
+    frame: (root, frame, destination, config, context) => root.replaceChildren(buildOutput(root.ownerDocument, frame.state, config ?? {}, context.stepId, frame.placement, frame.state.transcript.at(-1).command === destination.transcript.at(-1).command))
+  });
+}
 
+export function createConsoleRenderer() {
+  let root = null, pane = null, configKey = null;
+  let disposed = false;
   function mount(context) {
     if (!context || typeof context !== 'object') throw new TypeError('console renderer mount context must be an object.');
     assertRoot(context.root);
-    root = context.root;
-    disposed = false;
-    return undefined;
+    pane?.dispose(); pane = null; configKey = null;
+    root = context.root; disposed = false;
   }
-
   function render(state, context) {
     if (disposed) return Promise.reject(new Error('console renderer is disposed.'));
     if (!root) return Promise.reject(new Error('console renderer must be mounted before render().'));
     if (context.abortSignal.aborted) return Promise.reject(new RendererCancelledError(context.abortSignal.reason));
-    generation += 1;
-    const token = generation;
     try {
-      // §6: validate before any DOM work; reject rather than repair. The previous stable view is
-      // left untouched, so Runtime's CIM-RND-004 restoration starts from a coherent DOM.
       assertConsoleRendererInput(state, context.rendererConfig, context.stepRendererConfig);
+      const key = JSON.stringify(context.rendererConfig);
+      if (pane === null || key !== configKey) {
+        pane?.dispose();
+        pane = createConsolePane();
+        pane.mount(root, context.rendererConfig, Object.freeze({id:'console',type:'console/v1'}));
+        configKey = key;
+      }
+      if (!context.animate || context.reducedMotion) {
+        pane.settle(state, paneBoundary(context));
+        return Promise.resolve();
+      }
+      return pane.play(state, paneTransition(context)).then(result => {
+        if (result.status === 'cancelled') throw new RendererCancelledError(result.reason);
+        if (result.status === 'failed') throw result.error;
+      });
     } catch (error) {
+      // Match the old generation guard: even a rejected new render revokes the
+      // preceding animation, without changing its current DOM.
+      pane?.dispose(); pane = null; configKey = null;
       return Promise.reject(error);
     }
-    const document = root.ownerDocument;
-    const config = context.rendererConfig ?? {};
-    const settleStable = () => root.replaceChildren(buildStableOutput(document, state, config, context.stepId));
-
-    const frames = context.animate === true && context.reducedMotion !== true
-      ? consoleAnimationFrames(context.fromState, state)
-      : null;
-    if (frames === null || frames.length === 0) {
-      settleStable();
-      return Promise.resolve();
-    }
-
-    return new Promise((resolve, reject) => {
-      let pending = null;
-      let finished = false;
-      const live = () => !finished && !disposed && token === generation && root !== null;
-      const finish = (outcome) => {
-        if (finished) return;
-        finished = true;
-        unsubscribe();
-        if (pending !== null) { try { context.clock.cancel(pending); } catch { /* facade already revoked */ } pending = null; }
-        outcome();
-      };
-      const unsubscribe = context.abortSignal.onAbort((reason) => {
-        finish(() => reject(new RendererCancelledError(reason)));
-      });
-      if (finished) return;
-      // Frame i appears frames[i].delayMs after frame i-1 (or after render start, for frame 0).
-      // The last planned frame is replaced by the exact stable output at the moment it is due, so
-      // settlement adds no delay of its own. Only zero-delay frames apply synchronously.
-      const show = (index) => {
-        if (!live()) return;
-        if (index === frames.length - 1) {
-          settleStable();
-          finish(resolve);
-          return;
-        }
-        const { state: partial, placement } = frames[index];
-        root.replaceChildren(buildOutput(document, partial, config, context.stepId, placement, partial.transcript.at(-1).command === state.transcript.at(-1).command));
-        arm(index + 1);
-      };
-      const arm = (index) => {
-        if (frames[index].delayMs === 0) { show(index); return; }
-        try {
-          pending = context.clock.schedule(() => { pending = null; show(index); }, frames[index].delayMs);
-        } catch (error) {
-          finish(() => reject(error));
-        }
-      };
-      arm(0);
-    });
   }
-
   function dispose() {
-    generation += 1;
-    root = null;
-    disposed = true;
+    pane?.dispose(); pane = null;
+    root = null; disposed = true;
   }
-
-  return Object.freeze({ mount, render, dispose });
+  return Object.freeze({mount,render,dispose});
 }
 
 export { CONSOLE_RENDERER_ID };

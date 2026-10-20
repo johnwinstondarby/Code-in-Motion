@@ -1,0 +1,45 @@
+CAUGHT: teacher lessons before support
+CAUGHT: bundled scan bypass
+CAUGHT: once per request inventory
+CAUGHT: warm header discovery bypass
+CAUGHT: cross-request inventory cache
+CAUGHT: manifest cache invalidation
+CAUGHT: activation cache invalidation
+CAUGHT: file boundary cache invalidation
+CAUGHT: compiler cause diagnostics
+CAUGHT: preview detailed diagnostics
+CAUGHT: CLI detailed diagnostics
+CAUGHT: authoring root README
+CAUGHT: uninstall cache cleanup
+CAUGHT: mistyped theme fallback
+CAUGHT: own folder boundary
+CAUGHT: canonical JSON basename
+CAUGHT: active packs only
+CAUGHT: bundled lesson protection
+CAUGHT: duplicate lesson protection
+CAUGHT: PHP 2 MiB limit
+CAUGHT: manifest size limit
+CAUGHT: versioned header agreement
+CAUGHT: versioned manifest agreement
+CAUGHT: minimum compatibility
+CAUGHT: maximum compatibility
+CAUGHT: metadata identity
+CAUGHT: metadata schema
+CAUGHT: metadata renderer
+CAUGHT: authoring input limit
+CAUGHT: authored text cannot become PHP
+CAUGHT: browser 2 MiB limit
+CAUGHT: same origin requirement
+CAUGHT: JSON response path
+CAUGHT: conflicting URL rejection
+CAUGHT: pack link protocol check
+CAUGHT: malformed JSON fails closed
+CAUGHT: invalid UTF-8 fails closed
+CAUGHT: existing schema gate
+CAUGHT: preflight every renderer state
+CAUGHT: preview Host check
+CAUGHT: preview Origin check
+CAUGHT: preview file allowlist
+CAUGHT: preview read only methods
+CAUGHT: Admin performs actual admission
+PASS: all 44 packaging mutations caught. Evidence: C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\outputs\step4-pack-mutations

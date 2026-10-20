@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { resolve, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { THEME_PRESETS } from '../../wordpress/assets/theme-presets.mjs';
@@ -126,6 +126,69 @@ test.beforeAll(async () => {
   origin = 'http://127.0.0.1:' + server.address().port;
 });
 test.afterAll(async () => { await new Promise(done => server.close(done)); });
+
+test('pane contract: markup and virtual timing match pre-refactor panes at rest and every transition frame', async ({page}, testInfo) => {
+  await page.goto(origin+'/fixture');
+  await page.waitForFunction(()=>window.playerTest);
+  const evidence=await page.evaluate(async()=>{
+    const current=await import('/src/renderers/subjects/console/renderer.mjs');
+    const before=await import('/tests/fixtures/pane-contract-baseline/console-renderer.mjs');
+    const native=await import('/src/commentary/native-binding.mjs');
+    const oldNative=await import('/tests/fixtures/pane-contract-baseline/native-binding.mjs');
+    const {virtualScheduler}=await import('/tests/conformance/console-test-support.mjs');
+    const {createRendererAbortCapability,createRendererClockCapability}=await import('/src/runtime/renderer-capabilities.mjs');
+    const freeze=value=>{if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value);}return value;};
+    const documents=await Promise.all(['git-repository-practice','python-first-steps'].map(async id=>(await fetch('/wordpress/experiences/'+id+'.json')).json()));
+    const results=[];
+    for(const doc of documents){
+      const setup=(rendererFactory,bindingFactory)=>{
+        const container=document.createElement('section'),root=document.createElement('div'),explanation=document.createElement('div');
+        container.append(root,explanation);document.body.append(container);
+        const controls=Object.freeze(doc.steps.map(step=>{
+          const node=document.createElement('div'),text=document.createElement('p'),select=document.createElement('button');select.type='button';
+          const links=Object.freeze((step.commentary.links??[]).map(()=>document.createElement('a')));
+          node.append(select,text,...links);explanation.append(node);return Object.freeze({root:node,text,select,links});
+        }));
+        let position=-1;
+        const presentation=Object.freeze({read:()=>freeze({revealFrontier:position<0?'initial':doc.steps[position].id,currentStepId:position<0?'initial':doc.steps[position].id,selectedStepId:null,entryCount:doc.steps.length,
+          entries:doc.steps.slice(0,position+1).map((step,i)=>({stepId:step.id,index:i+1,text:step.commentary.text,links:step.commentary.links??[],selected:false,active:i===position}))})});
+        const binding=bindingFactory({controls,presentation,select(){},navigate(){}});
+        const renderer=rendererFactory();renderer.mount({root,instanceId:'pane-markup'});
+        return {container,root,binding,renderer,position(i){position=i;binding.refresh();}};
+      };
+      const a=setup(before.createConsoleRenderer,oldNative.createCommentaryNativeBinding),b=setup(current.createConsoleRenderer,native.createCommentaryNativeBinding);
+      let compared=0;const samples=[];
+      const compare=(label,sample=false)=>{
+        if(a.container.innerHTML!==b.container.innerHTML)throw new Error(doc.id+' markup differs: '+label);
+        compared++;
+        if(sample)samples.push({label,before:a.container.innerHTML,after:b.container.innerHTML});
+      };
+      const states=[doc.initial_state,...doc.steps.map(step=>step.state)],ids=['initial',...doc.steps.map(step=>step.id)];
+      for(let i=0;i<states.length;i++){
+        const sa=virtualScheduler(),sb=virtualScheduler(),aa=createRendererAbortCapability(),ab=createRendererAbortCapability();
+        const ca=createRendererClockCapability({transitionId:'markup-'+i,scheduler:sa}),cb=createRendererClockCapability({transitionId:'markup-'+i,scheduler:sb});
+        const context=(clock,abort)=>({stepId:ids[i],fromStepId:i?ids[i-1]:null,fromState:i?states[i-1]:null,rendererConfig:doc.renderer_config,stepRendererConfig:null,transitionId:'markup-'+i,animate:i>0,reducedMotion:false,clock:clock.facade,abortSignal:abort.facade});
+        a.position(i-1);b.position(i-1);
+        const pa=a.renderer.render(states[i],context(ca,aa)),pb=b.renderer.render(states[i],context(cb,ab));
+        compare(ids[i]+' initial frame',i===0);
+        let frames=0;
+        for(;;){const ra=sa.runNext(),rb=sb.runNext();if(ra!==rb)throw new Error('Frame count differs');if(!ra)break;
+          if(sa.time()!==sb.time())throw new Error('Virtual timing differs');frames++;compare(ids[i]+' frame '+frames,i===1&&frames===1);}
+        await Promise.all([pa,pb]);compare(ids[i]+' settled',i===states.length-1);
+        ca.controller.revoke();cb.controller.revoke();aa.controller.close();ab.controller.close();
+      }
+      a.binding.dispose();b.binding.dispose();a.renderer.dispose();b.renderer.dispose();
+      results.push({lesson:doc.id,boundaries:states.length,compared,samples});a.container.remove();b.container.remove();
+    }
+    return results;
+  });
+  expect(evidence.map(item=>item.lesson)).toEqual(['git-repository-practice','python-first-steps']);
+  expect(evidence.every(item=>item.compared>item.boundaries)).toBe(true);
+  const evidencePath=testInfo.outputPath('pane-markup-before-after.json');
+  await writeFile(evidencePath,JSON.stringify(evidence,null,2));
+  await testInfo.attach('pane-markup-before-after.json',{path:evidencePath,contentType:'application/json'});
+});
+
 
 test('mobile policy: narrow screens fetch no Player modules or lessons, including late embeds', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });

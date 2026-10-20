@@ -1,0 +1,70 @@
+{
+  "source_commit": "c2f1ef4",
+  "node": [
+    "20.20.2",
+    "22.23.2"
+  ],
+  "unit_tests": 1003,
+  "browsers": {
+    "chromium": {
+      "passed": 68,
+      "skipped": 0,
+      "skip_reason": null,
+      "markup": [
+        {
+          "lesson": "git-repository-practice",
+          "boundaries": 19,
+          "compared": 249
+        },
+        {
+          "lesson": "python-first-steps",
+          "boundaries": 6,
+          "compared": 37
+        }
+      ]
+    },
+    "firefox": {
+      "passed": 67,
+      "skipped": 1,
+      "skip_reason": "Existing native clipboard permission proof is Chromium-only; binding behavior is tested in all engines.",
+      "markup": [
+        {
+          "lesson": "git-repository-practice",
+          "boundaries": 19,
+          "compared": 249
+        },
+        {
+          "lesson": "python-first-steps",
+          "boundaries": 6,
+          "compared": 37
+        }
+      ]
+    },
+    "webkit": {
+      "passed": 67,
+      "skipped": 1,
+      "skip_reason": "Existing native clipboard permission proof is Chromium-only; binding behavior is tested in all engines.",
+      "markup": [
+        {
+          "lesson": "git-repository-practice",
+          "boundaries": 19,
+          "compared": 249
+        },
+        {
+          "lesson": "python-first-steps",
+          "boundaries": 6,
+          "compared": 37
+        }
+      ]
+    }
+  },
+  "plugin_sha256": "d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a",
+  "authoring_sha256": "ba426be7a37d811386a8478c5f5de068c0a6db75073435a2b099ffae645ce202",
+  "frozen_legacy_files": 20,
+  "mutations": {
+    "pane": 5,
+    "v3": 17,
+    "packaging": 44,
+    "existing_player": 104
+  }
+}

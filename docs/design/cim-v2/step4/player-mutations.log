@@ -1,0 +1,105 @@
+CAUGHT: Explanation track uses Console background
+CAUGHT: remove discard-commit reminder from experiences/git/git-repository-practice.authoring.json
+CAUGHT: remove recover-from-reflog reminder from experiences/git/git-repository-practice.authoring.json
+CAUGHT: remove discard-commit reminder from experiences/git/git-repository-practice.json
+CAUGHT: remove recover-from-reflog reminder from experiences/git/git-repository-practice.json
+CAUGHT: remove discard-commit reminder from wordpress/experiences/git-repository-practice.json
+CAUGHT: remove recover-from-reflog reminder from wordpress/experiences/git-repository-practice.json
+CAUGHT: unchanged Resume label rebuilt
+CAUGHT: unchanged Explanation text rebuilt
+CAUGHT: risk scrollbar clearance removed
+CAUGHT: v2 beat stop bypassed
+CAUGHT: continuation cap removed
+CAUGHT: typing exposes Copy
+CAUGHT: registration enqueues script
+CAUGHT: registration enqueues style
+CAUGHT: empty page imports Player modules
+CAUGHT: wrap fixed indentation returns
+CAUGHT: wrap skips disposal cleanup
+CAUGHT: limn dim text loses flash contrast
+CAUGHT: limn quiet tint loses dim contrast
+CAUGHT: limn text hides cue band
+CAUGHT: limn box overlaps text
+CAUGHT: limn outline clips outside line
+CAUGHT: limn initial background stays quiet
+CAUGHT: limn command target omitted
+CAUGHT: limn response target omitted
+CAUGHT: limn evidence target omitted
+CAUGHT: limn fade ends too early
+CAUGHT: limn ignores reduced motion
+CAUGHT: limn retains emphasis after navigation
+CAUGHT: limn skips disposal cleanup
+CAUGHT: mobile gate bypassed
+CAUGHT: mobile notice misleading
+CAUGHT: mobile late embeds ignored
+CAUGHT: v2 related-lines label returns
+CAUGHT: copy badge reuses risk color
+CAUGHT: copy tall button edge
+CAUGHT: copy frozen v1 altered
+CAUGHT: copy CLI minimum underdeclared
+CAUGHT: copy writes altered value
+CAUGHT: copy reports failed write as success
+CAUGHT: copy ignores disposal
+CAUGHT: copy stale write overwrites newer result
+CAUGHT: copy retains listener
+CAUGHT: copy badge derives label from kind
+CAUGHT: copy badge derives kind from label
+CAUGHT: copy controls hidden
+CAUGHT: v2 bypass loader admission
+CAUGHT: v2 bypass registry admission
+CAUGHT: v2 ignore engine minimum
+CAUGHT: v2 admit unsupported Player mode
+CAUGHT: v2 drop instruction metadata
+CAUGHT: v2 drop evidence relationship
+CAUGHT: v2 drop risk guidance
+CAUGHT: v2 hide anchor phase
+CAUGHT: v2 hide risk label
+CAUGHT: v2 bypass hash beat normalization
+CAUGHT: theme drop light role
+CAUGHT: theme break persistence
+CAUGHT: theme discard in-memory choice
+CAUGHT: theme device overrides explicit choice
+CAUGHT: theme skip select withdrawal
+CAUGHT: theme skip media withdrawal
+CAUGHT: theme omit sibling publication
+CAUGHT: theme retain stale device values
+CAUGHT: theme show menu under forced colors
+CAUGHT: skip unfinished beat
+CAUGHT: disable manual beat navigation
+CAUGHT: deep link selects first segment
+CAUGHT: progress follows reveal frontier
+CAUGHT: markers select first segment
+CAUGHT: markers trust mutable DOM identity
+CAUGHT: skip beat listener withdrawal
+CAUGHT: remove Player mapping
+CAUGHT: route Console through legacy
+CAUGHT: expose legacy Restart
+CAUGHT: hide Console Restart
+CAUGHT: remove Commentary provenance
+CAUGHT: skip Commentary disposal
+CAUGHT: leave partial Player active
+CAUGHT: project ready during mount
+CAUGHT: admit after disposal
+CAUGHT: retain Player content during disposal
+CAUGHT: shift Commentary boundaries
+CAUGHT: remove renderer withholding
+CAUGHT: remove Player withholding
+CAUGHT: remove Transport withholding
+CAUGHT: close v2 production registration
+CAUGHT: skip Console follow refresh
+CAUGHT: remove pointer hold
+CAUGHT: remove focus hold
+CAUGHT: remove selection hold
+CAUGHT: scroll while held
+CAUGHT: release Commentary hold resumes ownership
+CAUGHT: release Console hold resumes ownership
+CAUGHT: skip pane hold listener withdrawal
+CAUGHT: skip renderer observer disposal
+CAUGHT: skip deliberate viewport navigation
+CAUGHT: focus scrolling claims ownership
+CAUGHT: ignore native wheel intent
+CAUGHT: skip scroll intent listener withdrawal
+CAUGHT: expose transcript behind pinned title
+CAUGHT: selection holds peer pane
+CAUGHT: ignore initial pointer presence
+PASS: all 104 Player guarded mutations were detected. Evidence: C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\outputs\step4-player-mutations-corrected

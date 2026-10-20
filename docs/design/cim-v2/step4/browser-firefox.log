@@ -1,0 +1,81 @@
+
+Running 68 tests using 2 workers
+
+
+
+
+
+(node:37780) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:103296) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1/68] tests\e2e\lesson-preview.spec.mjs:10:1 › local Player preview shows saved edits without a build or WordPress installation
+[2/68] tests\e2e\lesson-packs.spec.mjs:44:1 › companion lesson uses the production bootstrap, neutral theme and inert text
+[3/68] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: schema
+[4/68] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: state
+[5/68] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: identity
+[6/68] tests\e2e\teacher-admin.spec.mjs:6:1 › production Admin disclosure is initially closed and keyboard reachable
+[7/68] tests\e2e\wordpress-player-mvp.spec.mjs:130:1 › pane contract: markup and virtual timing match pre-refactor panes at rest and every transition frame
+[8/68] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: engine
+[9/68] tests\e2e\wordpress-player-mvp.spec.mjs:191:1 › mobile policy: narrow screens fetch no Player modules or lessons, including late embeds
+[10/68] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: link
+[11/68] tests\e2e\wordpress-player-mvp.spec.mjs:207:1 › mobile policy: landscape touch-only devices do not load the Player
+[12/68] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: huge
+[13/68] tests\e2e\wordpress-player-mvp.spec.mjs:219:1 › mobile policy: desktop still initializes the production Player
+[14/68] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: malformed
+[15/68] tests\e2e\wordpress-player-mvp.spec.mjs:227:3 › CLI and copy: powershell badge uses neutral secondary Console text independently of kind and label
+[16/68] tests\e2e\lesson-packs.spec.mjs:53:95 › companion lesson fails closed: external
+[17/68] tests\e2e\wordpress-player-mvp.spec.mjs:227:3 › CLI and copy: windows-cli badge uses neutral secondary Console text independently of kind and label
+[18/68] tests\e2e\lesson-packs.spec.mjs:57:1 › a pack root cannot override a bundled lesson
+[19/68] tests\e2e\wordpress-player-mvp.spec.mjs:227:3 › CLI and copy: bash badge uses neutral secondary Console text independently of kind and label
+[20/68] tests\e2e\wordpress-player-mvp.spec.mjs:246:1 › CLI and copy: exact authored override writes plain text without seeking and survives renderer replacement
+[21/68] tests\e2e\lesson-packs.spec.mjs:63:1 › Admin checks all lessons before preview and exposes rejection without affecting other content
+[22/68] tests\e2e\wordpress-player-mvp.spec.mjs:264:1 › CLI and copy: native drag selection and copy shortcuts leave navigation untouched
+[23/68] tests\e2e\wordpress-player-mvp.spec.mjs:295:1 › CLI and copy: clipboard denial gives guidance, sibling stays usable and stale controls are inert
+[24/68] tests\e2e\wordpress-player-mvp.spec.mjs:312:1 › line limn: all 18 Show entries target command, evidence or response after scrolling while paused
+[25/68] tests\e2e\wordpress-player-mvp.spec.mjs:342:1 › line limn: strong inset cue remains visible on all four sides in every theme
+[26/68] tests\e2e\wordpress-player-mvp.spec.mjs:383:1 › line limn: tint retains readable dim text in flash and quiet across themes
+[27/68] tests\e2e\wordpress-player-mvp.spec.mjs:400:1 › line limn: repeated clicks restart the cue, theme colors adapt and navigation clears it
+[28/68] tests\e2e\wordpress-player-mvp.spec.mjs:422:1 › line limn: reduced motion stays steady and disposal clears emphasis
+[29/68] tests\e2e\wordpress-player-mvp.spec.mjs:436:1 › line limn: site-forced reduced motion stays steady without animation
+[30/68] tests\e2e\wordpress-player-mvp.spec.mjs:444:1 › line limn: disposal cancels a running cue without changing renderer canonical markup
+[31/68] tests\e2e\wordpress-player-mvp.spec.mjs:469:1 › production v2 admission uses registry loader bootstrap and final beat deep links alongside legacy
+[32/68] tests\e2e\wordpress-player-mvp.spec.mjs:491:1 › production v2 admission rejects incompatible engine minimum locally before any Console construction
+[33/68] tests\e2e\wordpress-player-mvp.spec.mjs:507:1 › v2 instructional consumers preserve phase evidence risk guidance ordering and renderer-owned focus
+[34/68] tests\e2e\wordpress-player-mvp.spec.mjs:537:1 › learner themes render complete palettes without altering canonical state or Console DOM
+[35/68] tests\e2e\wordpress-player-mvp.spec.mjs:574:1 › learner themes retain the explicit choice across reload and ignore device changes
+[36/68] tests\e2e\wordpress-player-mvp.spec.mjs:584:1 › learner themes follow device preference changes until an explicit choice and hide in forced colors
+[37/68] tests\e2e\wordpress-player-mvp.spec.mjs:607:1 › learner themes unavailable storage keeps an in-memory choice for siblings and remount
+[38/68] tests\e2e\wordpress-player-mvp.spec.mjs:623:1 › learner themes invalid persisted ID falls back to current device preferences
+[39/68] tests\e2e\wordpress-player-mvp.spec.mjs:633:1 › learner themes disposed selectors are inert and leave sibling controls functional
+[40/68] tests\e2e\wordpress-player-mvp.spec.mjs:646:1 › atomic readiness, two panes, fixed colors and native opening content
+[41/68] tests\e2e\wordpress-player-mvp.spec.mjs:671:1 › dark Player frame and Transport preserve keyboard focus and legacy presentation
+[42/68] tests\e2e\wordpress-player-mvp.spec.mjs:713:1 › reveal, Commentary navigation, protected links and Restart stay isolated
+[43/68] tests\e2e\wordpress-player-mvp.spec.mjs:743:1 › admission failure rolls back the full Player and synchronous disposal wins
+[44/68] tests\e2e\wordpress-player-mvp.spec.mjs:754:1 › root teardown restores renderer position and preserves sibling Player
+[45/68] tests\e2e\wordpress-player-mvp.spec.mjs:773:1 › narrow layout stacks panes without horizontal page overflow
+[46/68] tests\e2e\wordpress-player-mvp.spec.mjs:783:1 › Console wraps with hanging continuations and preserves authored leading spaces
+[47/68] tests\e2e\wordpress-player-mvp.spec.mjs:833:1 › Console continuation begins beyond authored indentation
+[48/68] tests\e2e\wordpress-player-mvp.spec.mjs:861:1 › Console continuation geometry updates for multiple authored indents and cleans up
+[49/68] tests\e2e\wordpress-player-mvp.spec.mjs:918:1 › pane follow survives real renderer replacement and keeps both newest views visible
+[50/68] tests\e2e\wordpress-player-mvp.spec.mjs:942:1 › Console pointer focus and selection holds catch up without taking scroll ownership
+[51/68] tests\e2e\wordpress-player-mvp.spec.mjs:983:1 › Explanation overlapping holds and pane-owned scrolling remain independent
+[52/68] tests\e2e\wordpress-player-mvp.spec.mjs:1036:1 › Console scroll ownership waits for explicit return and stale pane listeners are withdrawn
+[53/68] tests\e2e\wordpress-player-mvp.spec.mjs:1079:1 › deliberate navigation repositions both held panes while preserving Commentary provenance
+[54/68] tests\e2e\wordpress-player-mvp.spec.mjs:1101:1 › offscreen link focus scrolls natively without claiming viewport ownership
+[55/68] tests\e2e\wordpress-player-mvp.spec.mjs:1120:1 › pinned Console title and its lower gap cover scrolling transcript text
+[56/68] tests\e2e\wordpress-player-mvp.spec.mjs:1144:1 › Copy button edge stays covered when its command scrolls behind the pinned title
+[57/68] tests\e2e\wordpress-player-mvp.spec.mjs:1166:1 › selection holds only the intersected pane while its peer follows
+[58/68] tests\e2e\wordpress-player-mvp.spec.mjs:1191:1 › pointer already present at pane binding construction holds new output
+[59/68] tests\e2e\wordpress-player-mvp.spec.mjs:1225:1 › authored beat headings progress and button keyboard navigation use eight beats
+[60/68] tests\e2e\wordpress-player-mvp.spec.mjs:1262:1 › beat markers capture final destinations while Commentary retains individual segments
+[61/68] tests\e2e\wordpress-player-mvp.spec.mjs:1284:1 › public beat deep links mount directly at final boundaries before presentation admission
+[62/68] tests\e2e\wordpress-player-mvp.spec.mjs:1300:1 › deep links reject public v2 segment IDs and preserve legacy direct step links
+[63/68] tests\e2e\wordpress-player-mvp.spec.mjs:1314:1 › disposed beat markers lose their listeners and preserve sibling controls
+[64/68] tests\e2e\wordpress-player-mvp.spec.mjs:1327:49 › GA pacing: every beat waits and both Play and Next continue (reduce)
+[65/68] tests\e2e\wordpress-player-mvp.spec.mjs:1327:49 › GA pacing: every beat waits and both Play and Next continue (no-preference)
+[66/68] tests\e2e\wordpress-player-mvp.spec.mjs:1360:1 › GA layout: overflowing risk badges clear the scrollbar in every theme and risk state; Copy waits for complete typing
+[67/68] tests\e2e\wordpress-player-mvp.spec.mjs:1417:1 › GA layout: wrapped commands keep Copy beside their final text line and ready prompts align
+[68/68] tests\e2e\wordpress-player-mvp.spec.mjs:1433:1 › Explanation preserves selected text nodes and stable Resume labels across refreshes
+  1 skipped
+  67 passed (1.3m)

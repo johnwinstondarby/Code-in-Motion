@@ -1,0 +1,38 @@
+[
+  {
+    "base": "586937130e5a49bb80aeaae95ddef4ecd8236fad",
+    "source": "src/renderers/subjects/console/renderer.mjs",
+    "original_sha256": "431db1a8872884d58616e5271d00a2f9a06c1aa58f98ba0de9a9bf08d4b10f15",
+    "fixture": "tests/fixtures/pane-contract-baseline/console-renderer.mjs",
+    "fixture_sha256": "c509cf7172d60c78ab6ef6f0963c129a22b7d41ee1f1f98d3210e97637c5bf6c",
+    "rewrites": [
+      [
+        "'../../interface.mjs'",
+        "'/src/renderers/interface.mjs'"
+      ],
+      [
+        "'./validate-console-input.mjs'",
+        "'/src/renderers/subjects/console/validate-console-input.mjs'"
+      ]
+    ],
+    "exact_match_after_import_rewrite": true
+  },
+  {
+    "base": "586937130e5a49bb80aeaae95ddef4ecd8236fad",
+    "source": "src/commentary/native-binding.mjs",
+    "original_sha256": "128831c959ae702e5253344d683d1cc1a9b1a3ddb5293ec5023175c19e1321d9",
+    "fixture": "tests/fixtures/pane-contract-baseline/native-binding.mjs",
+    "fixture_sha256": "13034eb36b139f9fe7cd39a77223004e0a46a7aff0dae39453735b6768590e7b",
+    "rewrites": [
+      [
+        "'./reveal-projection.mjs'",
+        "'/src/commentary/reveal-projection.mjs'"
+      ],
+      [
+        "'./presentation.mjs'",
+        "'/src/commentary/presentation.mjs'"
+      ]
+    ],
+    "exact_match_after_import_rewrite": true
+  }
+]
