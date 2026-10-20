@@ -1,0 +1,201 @@
+TAP version 13
+# Subtest: [ENG-01] records alone derive deterministic state and preserve capture IDs
+not ok 1 - [ENG-01] records alone derive deterministic state and preserve capture IDs
+  ---
+  duration_ms: 0.7794
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\engineering-pane.test.mjs:12:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of null (reading 'state')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/engineering-pane.test.mjs:13:149)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: [ENG-02] modeled and placeholder labels survive absolute states and failure
+not ok 2 - [ENG-02] modeled and placeholder labels survive absolute states and failure
+  ---
+  duration_ms: 0.685
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\engineering-pane.test.mjs:17:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Diagram · modeled/. Input:
+    
+    ''
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: ''
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/engineering-pane.test.mjs:17:231)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [ENG-03] finite clock frames finish exactly settled; reduced motion and cancel
+not ok 3 - [ENG-03] finite clock frames finish exactly settled; reduced motion and cancel
+  ---
+  duration_ms: 2.9713
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\engineering-pane.test.mjs:18:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(t.scheduler.pending()>0)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/engineering-pane.test.mjs:18:195)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [ENG-04] all statuses have visible words and custody differs from reproduction
+not ok 4 - [ENG-04] all statuses have visible words and custody differs from reproduction
+  ---
+  duration_ms: 0.3468
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\engineering-pane.test.mjs:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /failed/. Input:
+    
+    ''
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: ''
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/engineering-pane.test.mjs:19:224)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [ENG-05] text alternative carries flow provenance and evidence reference
+not ok 5 - [ENG-05] text alternative carries flow provenance and evidence reference
+  ---
+  duration_ms: 0.384
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\engineering-pane.test.mjs:20:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(root.textContent.includes(text))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/engineering-pane.test.mjs:20:232)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [ENG-06] context-only holds state without invented movement
+not ok 6 - [ENG-06] context-only holds state without invented movement
+  ---
+  duration_ms: 0.182
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\engineering-pane.test.mjs:21:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of null (reading 'state')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/engineering-pane.test.mjs:21:268)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [ENG-07] missing invalid and mismatched records give bounded classified failure
+not ok 7 - [ENG-07] missing invalid and mismatched records give bounded classified failure
+  ---
+  duration_ms: 0.563
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\engineering-pane.test.mjs:22:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'settled'
+    - 'failed'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'failed'
+  actual: 'settled'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/engineering-pane.test.mjs:22:413)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [ENG-08] labels use readable unscaled minimum sizes
+ok 8 - [ENG-08] labels use readable unscaled minimum sizes
+  ---
+  duration_ms: 0.3044
+  type: 'test'
+  ...
+# Subtest: [ENG-09] fixture-only immutable data no leaked capabilities or network
+not ok 9 - [ENG-09] fixture-only immutable data no leaked capabilities or network
+  ---
+  duration_ms: 0.477
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\engineering-pane.test.mjs:24:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/engineering-pane.test.mjs:24:143)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 1
+# fail 8
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 107.3676
