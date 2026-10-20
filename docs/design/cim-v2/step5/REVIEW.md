@@ -7,7 +7,27 @@ Draft for independent review and Johann's approval. Base: `b9c3c955f473d69fcf24e
 1. **`5a89a69`** commits the tests, validated-v3 fixture/clock instrumentation and inert model/session/view stubs. There is no working transport in this commit.
 2. On **Node 22.23.2**, the [original unit run](red-unit.log) fails **18 of 19 tests**, with assertion failures rather than import/syntax crashes. The one passing case is the already-correct initial Start view. The [original browser run](red-browser.log) fails because the expected two action tabs do not exist (received zero).
 3. **`944f611`** commits those red logs and [source/log hashes](tests-first.json), still before implementation.
-4. **`a6963b6`** implements the behavior. It also strengthens the same tests: manual choice through automatic completion; no pane redraw on a view-only switch; all four initial states on Restart; and pausing the current beat after stale callbacks arrive. Selection during peer motion, content keyboard access and tooltips receive stronger browser assertions. No initial red record or commit was rewritten.
+4. **`a6963b6`** implements the behavior. It also changes the tests as itemized below, including scenario corrections as well as stronger assertions. No initial red record or commit was rewritten.
+
+### Test edits after the original failing run
+
+These edits belong to the implementation commit, not the earlier tests-first commit. The original red evidence proves the original tests failed against the stubs; it does not establish a pre-implementation failing run for the revised scenarios or added assertions.
+
+| Test | Edit and reason |
+|---|---|
+| Browser MP-05/07/16 | **Scenario correction:** `Next, Next` became `Next, Play`. From a settled beat, Next arrives at the following beat paused; Play then enters the next beat with an actual transition. This exercises held text selection while the context panes are progressing, rather than inspecting only settled arrivals. The separate MP-04 test continues to cover Next's two-stage finish/advance behavior. |
+| Unit MP-01 | **Scenario correction:** a direct jump to beat 3 became a jump to beat 2 followed by Play. A jump reconstructs a settled destination; Play advances from that destination and starts the next beat. This makes the case exercise a genuine beat start, followed by manual selection, pause/resume and completion, instead of treating a settled jump as an active transition. |
+| Unit MP-02 | Added a pane-write count assertion: a view-only tab switch must not redraw panes, in addition to preserving position and clock. |
+| Unit MP-10 | Starts from a later beat instead of the first beat and compares all four starting states after Restart; also checks cancellation explicitly. This prevents a reset to already-initial content from passing accidentally. |
+| Unit MP-17 | Starts new work after the jump, injects the stale completion with a failure payload and compares the entire current state before allowing the new transition to finish. This checks stale results against active replacement work rather than only a settled destination. |
+| Unit MP-18 | Checks the immediate final navigation state, then starts fresh work, flushes old callbacks and pauses the new beat. This catches stale callbacks losing the current transition handle; the earlier settled-only scenario did not catch that mutation. |
+| Unit MP-20/21 | Added explicit WordPress archive-exclusion checks and explicit transition cancellation on disposal. |
+| Browser MP-01 | Extended the wait from 80 to 200 clock units to check the learner's tab through automatic completion, not only mid-transition. |
+| Browser MP-11/12/13 | Added Play/Pause tooltip checks, no current-beat marker at Start, and whole-state equality after Close instead of checking position alone. |
+| Browser MP-14/15/16 | Added Tab-to-content keyboard focus and persistent text selection after 60 clock units of peer work; the existing selected-state, waiting-note and undimmed assertions remain. |
+| Browser layout evidence | Saved the existing screenshot to a named file and added geometry JSON so the true-size evidence is independently inspectable. |
+
+**Navigation wording awaiting Johann's decision:** current code and ADR 0061 treat Next as forward progression, preserving a manual tab choice on context-only beats. Brief v7 groups Next with direct jumps and needs a matching amendment if that behavior is approved. This packet does not resolve that policy conflict on its own.
 
 The [supplemental historical replay](historical-stub-replay.log) later runs all **21 original browser cases** at all three sizes against an untouched worktree of `5a89a69`: all 21 fail. This replay happened **after** implementation and is labeled accordingly; it supplements the original pre-implementation run, not a claim to an earlier timestamp. `results.json` and `tests-first.json` record the distinction. The original committed source hashes have been independently checked against Git blobs.
 
