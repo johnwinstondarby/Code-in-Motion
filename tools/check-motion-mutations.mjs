@@ -7,6 +7,7 @@ const map='src/multipane/media-map.mjs',access='src/multipane/motion-media.mjs',
 const cases=[
  ['MOT-01-source',map,'const source=(s,path)=>{','const source=(s,path)=>{return;','MOT-01'],
  ['MOT-01-type',map,"if(!(caption?d.type==='text/vtt':['video/webm','video/mp4'].includes(d.type)))",'if(false)','MOT-01'],
+ ['MOT-01-file-size',map,'d.size>(caption?MEDIA_LIMITS.captions:MEDIA_LIMITS.clip)','false','MOT-01'],
  ['MOT-01-total',map,'if(total>MEDIA_LIMITS.total)','if(false)','MOT-01'],
  ['MOT-02-original-address',access,'{videoURL,captionURL,duration:','{videoURL:bindings.get(clip.source.type===\'pack\'?\'pack:\'+clip.source.path:\'attachment:\'+clip.source.id),captionURL,duration:','MOT-02'],
  ['MOT-02-caption-bytes',access,'await verified(clip.captions,controller.signal)','new Uint8Array()','MOT-02'],

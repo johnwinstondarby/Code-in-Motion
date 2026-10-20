@@ -11,8 +11,8 @@ export function validateMediaMap(map){
   if(typeof d.sha256!=='string'||!/^[a-f0-9]{64}$/.test(d.sha256))reject('FINGERPRINT',path+'.sha256','Missing or invalid fingerprint.');
   if(!Number.isSafeInteger(d.size)||d.size<=0||d.size>(caption?MEDIA_LIMITS.captions:MEDIA_LIMITS.clip))reject('LIMIT',path+'.size','Invalid media byte size.');
   if(!(caption?d.type==='text/vtt':['video/webm','video/mp4'].includes(d.type)))reject('TYPE',path+'.type','Unsupported media type.');
-  if(caption){if(!keys(d,['source','sha256','size','type','language','label'])||typeof d.language!=='string'||!/^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/.test(d.language)||typeof d.label!=='string'||!d.label.trim()||d.label.length>100)reject('CAPTIONS',path,'Invalid caption language, label or fields.');}
-  else if(!keys(d,['id','source','sha256','size','type','duration','alt','captions'])||typeof d.alt!=='string'||!d.alt.trim()||d.alt.length>4000)reject('SHAPE',path,'Invalid clip fields or text alternative.');
+  if(caption){if(!keys(d,['source','sha256','size','type','language','label'])||typeof d.language!=='string'||!/^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/.test(d.language)||typeof d.label!=='string'||!d.label.trim()||[...d.label].length>100)reject('CAPTIONS',path,'Invalid caption language, label or fields.');}
+  else if(!keys(d,['id','source','sha256','size','type','duration','alt','captions'])||typeof d.alt!=='string'||!d.alt.trim()||[...d.alt].length>4000)reject('SHAPE',path,'Invalid clip fields or text alternative.');
   return Number.isSafeInteger(d.size)&&d.size>0?d.size:0;
  };
  if(!keys(map,['schema','status','placeholder','assets'])||map.schema!=='localis.cim/media/v1'||map.status!=='fixture'||typeof map.placeholder!=='boolean'||!Array.isArray(map.assets)){reject('SHAPE','$','Expected a fixture-only media map.');return diagnostics;}

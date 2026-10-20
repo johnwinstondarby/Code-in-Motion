@@ -2,8 +2,8 @@ import {readonlyPaneData} from '../contracts/pane.mjs';
 import {validateMediaMap} from './media-map.mjs';
 const unavailable=()=>new Error('CIM-PANE-MEDIA-UNAVAILABLE: GUI recording unavailable. Check the declared file, permissions and fingerprint.');
 export function createVerifiedMediaAccess(input,options={}){
- const diagnostics=validateMediaMap(input);if(diagnostics.length)throw new Error(diagnostics[0].id+': '+diagnostics[0].message);
- const map=readonlyPaneData(input),origin=new URL(options.origin).origin,bindings=new Map(),request=options.fetch??globalThis.fetch,crypto=options.crypto??globalThis.crypto,urls=options.urls??URL;
+ const map=readonlyPaneData(input);const diagnostics=validateMediaMap(map);if(diagnostics.length)throw new Error(diagnostics[0].id+': '+diagnostics[0].message);
+ const origin=new URL(options.origin).origin,bindings=new Map(),request=options.fetch??globalThis.fetch,crypto=options.crypto??globalThis.crypto,urls=options.urls??URL;
  for(const[key,value]of Object.entries(options.bindings??{})){const url=new URL(value,origin);if(url.origin!==origin||!url.pathname.startsWith('/__cim_fixture_media/')||url.username||url.password||url.search||url.hash)throw new Error('CIM-MEDIA-SOURCE: Fixture binding must be a fixed same-origin media address.');bindings.set(key,url.href);}
  const live=new Set(),controllers=new Set();let disposed=false;
  const timeoutMs=options.timeoutMs??3000;if(!Number.isFinite(timeoutMs)||timeoutMs<1||timeoutMs>10000)throw new TypeError('Invalid fixture I/O deadline.');

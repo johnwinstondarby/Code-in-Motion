@@ -33,3 +33,14 @@ This snapshot plan avoids loading large production clips entirely into browser m
 ## Media-map compatibility
 
 Keep existing `status: deferred` maps empty and preserve their diagnostics. Add a distinct fixture-only map form rather than admitting media to old hosts or pretending production serving exists. Frozen authored/compiled v1/v2 files, legacy diagnostics and capture records remain unchanged. The packet must enumerate the deliberate v3 media-schema/validator additions.
+
+
+## Native decoder details established during implementation
+
+The Windows Playwright WebKit build tested here accepts the H.264 fixture over HTTP but rejects the verified Blob URL. The original address is never used as a workaround. Positive WebKit playback evidence therefore uses the available Ubuntu 24.04 WSL environment, the same OS family as CI. Unsupported backends retain the required fallback. The common actual-playback fixture is a small H.264/yuv420p MP4; a VP8 WebM remains committed for validator/file tests. Format declarations alone are not counted as playback proof.
+
+Linux WebKit exposed a seek-completion race: a decoder can issue a native play event after the shared clock has paused. Clock intent is authoritative. Native play/playing events are suppressed unless authorized by the clock, including during held/final stills; a late native play promise also rechecks that intent. Pause aligns the target position and the tests wait for the pending seek to complete before checking frame stability. A separate explicit-gesture test prevents browser autoplay policy from masking a missing guard.
+
+Hiding the entire media surface with display:none prevents WebKit from completing seeks while the learner views Console. The private fixture therefore retains the inactive Motion surface in layout behind the opaque selected Console layer, within its assigned container. It remains aria-hidden and inert while inactive, receives no pointer input, and does not select a tab or take focus. The test asserts only the selected tabpanel is exposed to accessibility. This is a fixture composition requirement, not WordPress layout admission; step 6c must retain these semantics in the final composition.
+
+For mutable production source files, reusing a snapshot must first establish that the currently authorized source still matches the descriptor. The safe default is a fresh bounded streaming digest check before issuing a playback session, or a source adapter whose immutable version identity and write controls give the same assurance. Modification time, filename and an unverified ETag are insufficient. Replaced or deleted attachments must not silently reuse a stale snapshot. A verified playback session may use range requests against its one pinned snapshot; session expiry, permission revocation and mid-play replacement policy must be explicit in the admission review.
