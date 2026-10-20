@@ -1,0 +1,13 @@
+{
+  "base": "9864071ea18284a3d60eff4343afd47f91046983",
+  "implementation": "0a05a16",
+  "cleanBuildCommit": "b5a1ea0",
+  "pluginSHA256": "d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a",
+  "pluginFiles": 99,
+  "authoringSHA256": "56f245ea943e2d30df17bd0832d00049ec6ffdc19c6b83a5469b0a782189777e",
+  "authoringFiles": 117,
+  "authoringBuildsIdentical": true,
+  "protectedPathsUnchanged": true,
+  "fixtureOnly": true,
+  "release": false
+}

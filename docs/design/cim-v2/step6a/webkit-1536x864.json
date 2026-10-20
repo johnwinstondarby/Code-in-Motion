@@ -1,0 +1,48 @@
+{
+  "width": 1536,
+  "height": 864,
+  "labels": [
+    {
+      "id": "login",
+      "font": 14,
+      "width": 353,
+      "scroll": 353
+    },
+    {
+      "id": "git",
+      "font": 14,
+      "width": 353,
+      "scroll": 353
+    },
+    {
+      "id": "scheduler",
+      "font": 14,
+      "width": 356,
+      "scroll": 356
+    },
+    {
+      "id": "gpu",
+      "font": 14,
+      "width": 353,
+      "scroll": 353
+    },
+    {
+      "id": "mlflow",
+      "font": 14,
+      "width": 353,
+      "scroll": 353
+    },
+    {
+      "id": "storage",
+      "font": 14,
+      "width": 356,
+      "scroll": 356
+    },
+    {
+      "id": "registry",
+      "font": 14,
+      "width": 356,
+      "scroll": 356
+    }
+  ]
+}

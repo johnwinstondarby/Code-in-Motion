@@ -9,6 +9,7 @@ export function createMultiPaneFixtureDriver(experience,slots={},options={}) {
   const scheduler=virtualScheduler(),log=[],transitions=[];
   const durations={console:100,motion:140,explanation:120,engineering:160};
   const panes=Object.fromEntries(experience.renderer_config.panes.map(p=>{
+    if(options.paneFactories?.[p.id])return[p.id,options.paneFactories[p.id]()];
     const write=(stage,state)=>{
       log.push({pane:p.id,stage,state,time:scheduler.time()});
       const slot=slots[p.id],text=stage==='settled'?JSON.stringify(state):`Placeholder ${stage}: ${JSON.stringify(state)}`;

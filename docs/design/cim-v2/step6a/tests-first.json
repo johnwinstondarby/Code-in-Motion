@@ -1,0 +1,13 @@
+{
+  "unitTestsCommit": "c98dc56",
+  "unitRedCommit": "98b46d8",
+  "browserTestsCommit": "02a5800",
+  "browserHarnessCorrections": [
+    "519513d",
+    "8eb1661"
+  ],
+  "meaningfulBrowserRedCommit": "071f57a",
+  "implementationCommit": "0a05a16",
+  "stubSourceGitBlob": "2d9cdf6b0c9ded7bab342981177387f468788175",
+  "testEditsAfterRed": "See REVIEW.md; no retrospective red claim."
+}
