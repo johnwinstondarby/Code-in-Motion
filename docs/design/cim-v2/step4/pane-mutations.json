@@ -1,0 +1,30 @@
+{
+  "node": "20.20.2",
+  "results": [
+    {
+      "id": "stale-callback",
+      "caught": true,
+      "test": "stale completion after cancellation"
+    },
+    {
+      "id": "capability-leak",
+      "caught": true,
+      "test": "projection cannot expose"
+    },
+    {
+      "id": "missed-dispose",
+      "caught": true,
+      "test": "dispose finishes active work"
+    },
+    {
+      "id": "retained-listener",
+      "caught": true,
+      "test": "stale completion after cancellation"
+    },
+    {
+      "id": "renderer-missed-dispose",
+      "caught": true,
+      "test": "renderer disposal forwards"
+    }
+  ]
+}
