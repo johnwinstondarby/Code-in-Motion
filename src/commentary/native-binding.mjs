@@ -1,3 +1,4 @@
+import { createPaneLifecycle } from '../contracts/pane.mjs';
 import { COMMENTARY_LINK_KEYS } from './reveal-projection.mjs';
 import {
   COMMENTARY_PRESENTATION_ENTRY_KEYS,
@@ -293,6 +294,8 @@ export function createCommentaryNativeBinding(optionsInput) {
   if (typeof select !== 'function') fail('Commentary native binding select must be a function.');
   if (typeof navigate !== 'function') fail('Commentary native binding navigate must be a function.');
 
+  const pane = createExplanationPane();
+  pane.mount(controls, Object.freeze({entryCount:controls.length}), Object.freeze({id:'explanation',type:'explanation/v1'}));
   const listeners = new Map();
   let disposalStarted = false;
 
@@ -342,7 +345,7 @@ export function createCommentaryNativeBinding(optionsInput) {
     const priorDom = snapshotDom(controls);
     const installed = [];
     try {
-      applyState(controls, state);
+      pane.settle(state, {stepId:state.currentStepId});
       state.entries.forEach((entry, offset) => {
         const record = installListener(offset, entry.stepId);
         if (record) installed.push([offset, record]);
@@ -368,6 +371,7 @@ export function createCommentaryNativeBinding(optionsInput) {
 
   function dispose() {
     disposalStarted = true;
+    pane.dispose();
     if (listeners.size === 0) return;
     const errors = [];
     for (const [offset, record] of [...listeners.entries()]) {
@@ -387,4 +391,13 @@ export function createCommentaryNativeBinding(optionsInput) {
   const surface = { refresh, dispose };
   assertExactKeys(surface, COMMENTARY_NATIVE_BINDING_KEYS, 'Commentary native binding');
   return Object.freeze(surface);
+}
+
+// The host continues to own navigation listeners. This adapter receives only
+// validated element slots and immutable projected display data, never commands.
+export function createExplanationPane() {
+  return createPaneLifecycle({
+    validate: (state, config) => validatePresentationState(state, config.entryCount),
+    settle: (controls, state) => applyState(controls, state)
+  });
 }

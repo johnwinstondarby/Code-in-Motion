@@ -1,0 +1,25 @@
+{
+  "base": "586937130e5a49bb80aeaae95ddef4ecd8236fad",
+  "files": {
+    "authoring/generated/page-3227-git-adapter.js": "716c2cca736efb21db3b2bb3655b19f2b9e4e77c3057f446b84ad2d5feef110b",
+    "authoring/generated/page-3227-git-reference.json": "22d5c5570982dcc5503e1ff4bd529e8086647a9e28dd45e10e25ee3e8e9c900f",
+    "authoring/generated/synthetic-authored.json": "3269f6f6b3b91e62dd0514c7e1a269539dc74676acf9edd4a2b1f3d4b82b7faa",
+    "experiences/README.md": "00ff9f406a9ad5b5c72c985e7b4eb74d82c49d8da5021293710c50cf1e0a6a0e",
+    "experiences/git/README.md": "3dd6b94ccccfc97111b4fbb20b73e13df08870aba9c1366c76d375e5b38834f8",
+    "experiences/git/git-basic-cycle.json": "2e6664bfe03883cdc3a7229f5d30a4d1661f1b2fab81e665b3c39bf477e295e9",
+    "experiences/git/git-repository-practice.authoring.json": "3341f22a11320926ffb4b6330ce959e1161b5b33e150d57b80d6a1c004acf93e",
+    "experiences/git/git-repository-practice.json": "8321d392561fe80d4139e903e4a234889d719ac4e7777f20a6fe32b7d0a5f35c",
+    "experiences/git/git-repository-practice.provenance.json": "9d3fb63fc1b8ffba53f6f3c4b7628a45c94e5b1bf07b6480aafd5ac3f71b59f6",
+    "experiences/starter/python-first-steps.authoring.json": "8d32c037d3926c3821a40fb269c1ebaf32b1ddea159ba9af112f6a872551dbe7",
+    "experiences/starter/python-first-steps.json": "d3f46f7436c4822b17a99374a7e780b4890aea9d30080becbcbbd7af92478457",
+    "experiences/starter/python-first-steps.provenance.json": "2454f225b02617dbf1e384ae2b35fc70e7e8fbca81470e6525d3b180ea13480a",
+    "experiences/synthetic/README.md": "fe4fef7e6702239fe3da1f671af41e992d89a42406f72f0e2b3b85f716fa4c13",
+    "harness/evidence/README.md": "9ebbd5425642ecc57c58fea3318c1383cd449b863b41b0a5396ff3373a08c4e0",
+    "harness/evidence/console-v1/git-repository-practice.json": "56bb0635dc246f9ab96759d7156d07ad4b892c511e43c1eed40a4a95e20333ac",
+    "wordpress/experiences/git-basic-cycle.json": "2e6664bfe03883cdc3a7229f5d30a4d1661f1b2fab81e665b3c39bf477e295e9",
+    "wordpress/experiences/git-repository-practice.json": "8321d392561fe80d4139e903e4a234889d719ac4e7777f20a6fe32b7d0a5f35c",
+    "wordpress/experiences/python-first-steps.json": "d3f46f7436c4822b17a99374a7e780b4890aea9d30080becbcbbd7af92478457",
+    "wordpress/experiences/registry.json": "e631a7501a64d4197416e73c665e78eacc249b064d036f8ab0e01785482fa0c2",
+    "wordpress/experiences/synthetic-wordpress.json": "9706240b164e2cc5e20b6b6318b082d6472934d2991cbb82a68ff2e2ce2fc257"
+  }
+}
