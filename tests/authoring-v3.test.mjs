@@ -7,7 +7,7 @@ import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import Ajv2020 from 'ajv/dist/2020.js';
-import { SCHEMAS, LIMITS, RULES, validateDocument, validateBundle, canonicalJSON } from '../authoring/v3/validate.mjs';
+import { SCHEMAS, LIMITS, RULES, validateShape, validateDocument, validateBundle, canonicalJSON } from '../authoring/v3/validate.mjs';
 import { validateArchiveFiles, validateV3File, decodeJSON } from '../authoring/v3/files.mjs';
 import { proveEnvelope } from '../authoring/v3/prove-envelope.mjs';
 import { validateExperience } from '../src/experience/validate-experience.mjs';
@@ -18,6 +18,8 @@ import { createWordPressRendererRegistry } from '../wordpress/assets/renderer-re
 import { compileAuthoringSource as compileV1 } from '../authoring/v1/compile-authoring.mjs';
 import { compileAuthoringSource as compileV2 } from '../authoring/v2/compile-authoring.mjs';
 
+import { legacySignature, normalizeLegacyDiagnostics } from './helpers/legacy-signature.mjs';
+
 const root = fileURLToPath(new URL('../', import.meta.url));
 const fixtures = resolve(root, 'authoring/v3/fixtures');
 const source = await readFile(join(fixtures, 'valid/run-custody/lesson.json'), 'utf8');
@@ -25,6 +27,58 @@ const captureText = await readFile(join(fixtures, 'valid/run-custody/capture.jso
 const lesson = JSON.parse(source), capture = JSON.parse(captureText);
 const manifest = JSON.parse(await readFile(join(fixtures, 'manifest.json'), 'utf8'));
 const ajv = new Ajv2020({ strict: false, allErrors: true });
+
+test('v3 schemas use only explicitly supported evaluator keywords', () => {
+  const keywords = new Set(['$schema','$id','$defs','$ref','title','description','type','const','enum','properties','required','additionalProperties','items','minItems','maxItems','minLength','maxLength','pattern','maxProperties']);
+  function visit(schema) {
+    for (const [key, value] of Object.entries(schema)) {
+      assert(keywords.has(key), `Unsupported schema keyword: ${key}`);
+      if (['properties','$defs'].includes(key)) Object.values(value).forEach(visit);
+      else if (['items','additionalProperties'].includes(key) && typeof value === 'object') visit(value);
+      else if (key === '$ref') assert.match(value, /^#\/\$defs\/[^/]+$/);
+    }
+  }
+  Object.values(SCHEMAS).forEach(visit);
+});
+
+test('v3 structural checker agrees with Ajv on invalid fixtures and malformed shapes', async () => {
+  for (const item of manifest.invalid) {
+    const text = await readFile(join(fixtures, item.file), 'utf8');
+    let value; try { value = JSON.parse(text); } catch { continue; }
+    assert.equal(validateShape(value, SCHEMAS[item.kind]).length === 0, ajv.compile(SCHEMAS[item.kind])(value), item.file);
+  }
+  // Semantic-only invalid fixtures may satisfy both schemas. These structural
+  // counterexamples must actually be refused by both implementations.
+  for (const [kind, file] of [['authoring','valid/run-custody/lesson.json'],['capture','valid/run-custody/capture.json'],['pack','valid/pack.json']]) {
+    const base = JSON.parse(await readFile(join(fixtures, file), 'utf8'));
+    for (const value of [{...base,extra:true},{...base,schema:'wrong'},{...base,placeholder:'yes'},Object.fromEntries(Object.entries(base).filter(([k]) => k !== 'schema'))]) {
+      assert.equal(ajv.compile(SCHEMAS[kind])(value),false);
+      assert.notEqual(validateShape(value,SCHEMAS[kind]).length,0);
+    }
+  }
+});
+
+test('v3 Unicode bounds and patterns agree with JSON Schema', () => {
+  const emoji = String.fromCodePoint(0x1f600);
+  for (const schema of [{type:'string',minLength:2,maxLength:3},{type:'string',pattern:'^.$'}]) {
+    const reference = ajv.compile(schema);
+    for (const value of ['', 'a',emoji,emoji.repeat(2),emoji.repeat(3),emoji.repeat(4),'a'+emoji]) assert.equal(validateShape(value,schema).length === 0,reference(value));
+  }
+  const value = structuredClone(lesson); value.title = emoji.repeat(300);
+  assert.equal(validateShape(value,SCHEMAS.authoring).length,0);
+  assert.equal(ajv.compile(SCHEMAS.authoring)(value),true);
+  value.title += emoji;
+  assert.notEqual(validateShape(value,SCHEMAS.authoring).length,0);
+  assert.equal(ajv.compile(SCHEMAS.authoring)(value),false);
+});
+
+test('legacy normalization preserves rule, path and non-parse messages', () => {
+  const a = {id:'CIM-AUTH-PARSE',path:'$',message:'Document is not valid JSON: engine A'};
+  assert.deepEqual(normalizeLegacyDiagnostics(a),normalizeLegacyDiagnostics({...a,message:'Document is not valid JSON: engine B'}));
+  assert.notDeepEqual(normalizeLegacyDiagnostics(a),normalizeLegacyDiagnostics({...a,path:'$.other'}));
+  assert.notDeepEqual(normalizeLegacyDiagnostics(a),normalizeLegacyDiagnostics({...a,id:'OTHER'}));
+  assert.equal(normalizeLegacyDiagnostics({id:'OTHER',message:a.message}).message,a.message);
+});
 
 for (const example of ['run-custody', 'context-chain']) test(`v3 valid ${example}: schemas, references, archive and deterministic Diagram derivation`, async () => {
   const dir = join(fixtures, 'valid', example);
@@ -156,13 +210,9 @@ test('v3 work preserves all 77 frozen v1/v2 files and 66 source outputs or rejec
   const baseline = JSON.parse(await readFile(resolve(root, 'tests/fixtures/authoring-v3-legacy-baseline.json'), 'utf8'));
   const hash = value => createHash('sha256').update(value).digest('hex');
   for (const [file, digest] of Object.entries(baseline.frozenFiles)) assert.equal(hash(await readFile(resolve(root, file))), digest, file);
-  function signature(compile, text) {
-    try { const result = compile(text); return { accepted: true, text: hash(result.text), provenance: hash(result.provenanceText) }; }
-    catch (e) { return { accepted: false, diagnostics: hash(JSON.stringify({ message: e.message, diagnostics: e.diagnostics, causes: e.causes })) }; }
-  }
   for (const entry of baseline.samples) {
     const text = await readFile(resolve(root, entry.file), 'utf8');
-    assert.deepEqual(signature(compileV1, text), entry.v1, entry.file + ' v1');
-    assert.deepEqual(signature(compileV2, text), entry.v2, entry.file + ' v2');
+    assert.deepEqual(legacySignature(compileV1, text), entry.v1, entry.file + ' v1');
+    assert.deepEqual(legacySignature(compileV2, text), entry.v2, entry.file + ' v2');
   }
 });

@@ -77,8 +77,9 @@ function shape(value, schema, path, c, root = schema) {
   c.reject('CIM-V3-SHAPE', own(schema, 'const') && value !== schema.const, path, 'Unexpected schema identifier or fixed value.');
   c.reject('CIM-V3-SHAPE', !!schema.enum && !schema.enum.includes(value), path, 'Value is not in the documented enumeration.');
   if (typeof value === 'string') {
-    c.reject('CIM-V3-LIMIT', schema.maxLength !== undefined && value.length > schema.maxLength, path, 'Text exceeds the field length limit.');
-    c.reject('CIM-V3-SHAPE', (schema.minLength !== undefined && value.length < schema.minLength) || (!!schema.pattern && !new RegExp(schema.pattern).test(value)), path, 'Text does not match the documented form.');
+    const length = [...value].length; // JSON Schema counts Unicode code points.
+    c.reject('CIM-V3-LIMIT', schema.maxLength !== undefined && length > schema.maxLength, path, 'Text exceeds the field length limit.');
+    c.reject('CIM-V3-SHAPE', (schema.minLength !== undefined && length < schema.minLength) || (!!schema.pattern && !new RegExp(schema.pattern, 'u').test(value)), path, 'Text does not match the documented form.');
   }
   if (Array.isArray(value)) {
     c.reject('CIM-V3-LIMIT', value.length > (schema.maxItems ?? Infinity), path, 'Array exceeds the entry limit.');
@@ -97,6 +98,12 @@ function shape(value, schema, path, c, root = schema) {
       else if (object(schema.additionalProperties)) shape(child, schema.additionalProperties, `${path}.${key}`, c, root);
     }
   }
+}
+
+export function validateShape(value, schema) {
+  const c = collector();
+  shape(value, schema, '$', c);
+  return c.diagnostics;
 }
 
 function unique(entries, path, c, key = null) {

@@ -7,6 +7,7 @@ import { assertCleanReleaseCheckout, assertReleaseNodeVersion, readHeadFile } fr
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 assertCleanReleaseCheckout();
 assertReleaseNodeVersion(process.versions.node,(await readFile(resolve(root,'.nvmrc'),'utf8')).trim().replace(/^v/,''));
+const candidate = process.argv.includes('--candidate') ? '-candidate' : '';
 const version = JSON.parse(await readFile(resolve(root,'package.json'),'utf8')).version;
 const files = new Map();
 async function visit(file) {
@@ -37,8 +38,8 @@ for (const file of ['LICENSE','.nvmrc','docs/LESSON-PACKS-v1.md','docs/LESSON-PA
 for (const sample of ['run-custody','context-chain']) for (const name of ['lesson.json','capture.json','raw/transcript.txt']) { const file = 'authoring/v3/fixtures/valid/'+sample+'/'+name; files.set(resolve(root,file),readHeadFile(file,'utf8')); }
 files.set(resolve(root,'authoring/v3/fixtures/valid/pack.json'),readHeadFile('authoring/v3/fixtures/valid/pack.json','utf8'));
 files.set(resolve(root,'README.md'), readHeadFile('docs/AUTHORING-TOOL-README.md','utf8'));
-const zip = createPortableArchive([...files].map(([file,data])=>({path:'cim-authoring-'+version+'/'+relative(root,file).replaceAll('\\','/'),data})));
-const name = 'cim-authoring-'+version+'.zip';
+const zip = createPortableArchive([...files].map(([file,data])=>({path:'cim-authoring-'+version+candidate+'/'+relative(root,file).replaceAll('\\','/'),data})));
+const name = 'cim-authoring-'+version+candidate+'.zip';
 await mkdir(resolve(root,'dist'),{recursive:true});
 await writeFile(resolve(root,'dist',name),zip);
 const hash = createHash('sha256').update(zip).digest('hex');

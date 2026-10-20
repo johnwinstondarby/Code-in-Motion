@@ -228,11 +228,11 @@
       "file": "authoring/v1/fixtures/invalid/invalid-json.json",
       "v1": {
         "accepted": false,
-        "diagnostics": "d92e60410e797a8a3a3a543498833d1d6b9560044b0e15c9848748f983501351"
+        "diagnostics": "f1d03e34afb742ddc8a244d78d0b26daea26a915f385b69f008350e41813c55b"
       },
       "v2": {
         "accepted": false,
-        "diagnostics": "d92e60410e797a8a3a3a543498833d1d6b9560044b0e15c9848748f983501351"
+        "diagnostics": "f1d03e34afb742ddc8a244d78d0b26daea26a915f385b69f008350e41813c55b"
       }
     },
     {
@@ -819,5 +819,6 @@
         "diagnostics": "32c6f494d42f6323a3ee7c66e6292b930e3bde84502ee3137a87a19b8659bfbd"
       }
     }
-  ]
+  ],
+  "normalization": "CIM-AUTH-PARSE message suffix only; rule, path and other fields preserved"
 }
