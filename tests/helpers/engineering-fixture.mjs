@@ -6,5 +6,6 @@ export function engineeringFixture(){
  const bundle=assertValid(validateBundle(lesson,capture));
  return {fixtureOnly:true,placeholder:lesson.placeholder,hosts:lesson.hosts,services:lesson.services,artifacts:lesson.artifacts,
  initial:lesson.panes.find(p=>p.type==='diagram/v1').initial_state,
- records:capture.records,evidence:capture.archive.files,beats:lesson.beats.map((b,i)=>({id:b.id,records:b.engineering.records,state:bundle.states[i]}))};
+ archive:{id:capture.archive.id,root:capture.archive.root},records:capture.records,evidence:capture.archive.files,beats:lesson.beats.map((b,i)=>({id:b.id,records:b.engineering.records,state:bundle.states[i]}))};
 }
+
