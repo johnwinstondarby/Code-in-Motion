@@ -1,0 +1,40 @@
+
+Running 1 test using 1 worker
+
+
+
+(node:33448) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1/1] tests\e2e\multipane-transport.spec.mjs:40:2 › 1366x768 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+  1) tests\e2e\multipane-transport.spec.mjs:40:2 › 1366x768 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab') with timeout 5000ms
+      - waiting for getByRole('tab')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      39 |  test.use({viewport:{width,height}});
+      40 |  test('[MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection',async({page})=>{
+    > 41 |   await open(page);const tabs=page.getByRole('tab');await expect(tabs).toHaveCount(2);
+         |                                                                        ^
+      42 |   await expect(page.getByRole('tablist')).toHaveCount(1);await expect(page.locator('[role="tab"][aria-selected="true"]')).toHaveCount(1);
+      43 |   await expect(page.locator('[role="tab"][tabindex="0"]')).toHaveCount(1);
+      44 |   for(const tab of await tabs.all()){
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\multipane-transport.spec.mjs:41:72
+
+    Error Context: ..\..\outputs\step5-red-browser\tests-e2e-multipane-transp-f7dfd-e-roving-keyboard-selection\error-context.md
+
+    Error Context: ..\..\outputs\step5-red-browser\tests-e2e-multipane-transp-f7dfd-e-roving-keyboard-selection\error-context.md
+
+
+  1 failed
+    tests\e2e\multipane-transport.spec.mjs:40:2 › 1366x768 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection 

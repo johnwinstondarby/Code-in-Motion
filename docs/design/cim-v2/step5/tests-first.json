@@ -1,0 +1,25 @@
+{
+  "stub_commit": "5a89a698b3307c765c3a0956d3728153567f912b",
+  "node": "22.23.2",
+  "unit": {
+    "exit": 1,
+    "passed": 1,
+    "failed": 18
+  },
+  "browser": {
+    "exit": 1,
+    "failed": 1,
+    "case": "1366x768 MP-14/MP-15 expected two tabs, found zero"
+  },
+  "files": {
+    "src/multipane/model.mjs": "5c2352b20bcb8798d37daa940c8dbcfc3d5aff6520ae6002e97ecf60ba6cbbaf",
+    "src/multipane/session.mjs": "d4c3576ad9c36e7fac25097c43c2fe89504236a08656bb337d46b393df57da94",
+    "src/multipane/controls.mjs": "d3816ddaa1cf1e71834bff79d9d3bd9754fe7eaf6ae7ffeb60418379faf1434d",
+    "tests/multipane-transport.test.mjs": "99135eda0024dadf4d785c68bbe07bad9c008a822e66bb934f72b3c92233b17b",
+    "tests/e2e/multipane-transport.spec.mjs": "904a610ad1a67689d9905716284be9fd1715e04246b4bb33d610c951ec5606ea"
+  },
+  "logs": {
+    "red-unit.log": "8fe4933dd0291f5a98d1116d202920c9b2e3294d61bdd7d14ba559e86b412339",
+    "red-browser.log": "1bd6d24edd6da6bbf4a3d8a3d78ef33fd09e13d4e109f25013decafe586c631e"
+  }
+}

@@ -88,6 +88,12 @@ export function assertReleaseNodeVersion(actualVersion, requiredVersion) {
   return required;
 }
 
+// ADR 0061 step 5 is fixture-only. Admission and packaging must be reviewed
+// together at the later opt-in consumer step, never enabled by adding a file.
+export function isWordPressSourceModule(source) {
+  return source.startsWith('src/') && source.endsWith('.mjs') && !source.startsWith('src/multipane/');
+}
+
 export function rewriteBootstrapForRelease(source, version) {
   const token = "'./bootstrap-module.mjs'";
   const replacement = `'./modules/${version}/wordpress/assets/bootstrap-module.mjs'`;
@@ -371,7 +377,7 @@ async function releaseInputs(version) {
   ));
 
   const moduleRoot = `wordpress/assets/modules/${version}`;
-  const srcModules = await collectFiles(resolve(ROOT, 'src'), (path) => extname(path) === '.mjs');
+  const srcModules = await collectFiles(resolve(ROOT, 'src'), (path) => isWordPressSourceModule(repoPath(path)));
   const wordpressModules = await collectFiles(
     resolve(ROOT, 'wordpress', 'assets'),
     (path) => extname(path) === '.mjs'

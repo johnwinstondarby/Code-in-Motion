@@ -4,6 +4,8 @@ Status: Accepted by Johann on 2026-10-18 after Daisy's independent review, based
 
 ## Problem and outcome
 
+Navigation clarification approved by Johann on 2026-10-20: Next counts as normal forward progression, preserving a manual tab choice when advancing into context-only beats. Previous, End, direct beat selection and deep links remain direct navigation. See the [brief v8 amendment](../design/cim-v2/BRIEF-v8-AMENDMENT.md), which supersedes the conflicting v7 wording without altering the frozen evidence.
+
 A newcomer needs to connect exact CLI commands or recorded GUI activity with an explanation and a model of where the activity occurs. Four independently controlled players would obscure that relationship. CiM v2 uses one beat sequence and transport, with pluggable panes and a deterministic held state for inactive panes.
 
 The first worked example is AI Run Custody. Gate 10 proves retrieval and integrity on INVENT; a separately labeled reproduction check follows immediately on INSPIRE. Prototype content is placeholders, not captured evidence.

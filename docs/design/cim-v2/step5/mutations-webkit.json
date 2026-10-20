@@ -1,0 +1,210 @@
+{
+  "node": "22.23.2",
+  "browser": "webkit",
+  "results": [
+    {
+      "id": "MP-01-tab",
+      "rule": "MP-01",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-01-completion-tab",
+      "rule": "MP-01",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-02-view-only",
+      "rule": "MP-02",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-03-pause-tab",
+      "rule": "MP-03",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-03-resume-tab",
+      "rule": "MP-03",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-03-clock",
+      "rule": "MP-03",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-04-next",
+      "rule": "MP-04",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-05-held-state",
+      "rule": "MP-05",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-06-initial-default",
+      "rule": "MP-06",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-07-context-override",
+      "rule": "MP-07",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-08-reconstruction",
+      "rule": "MP-08",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-08-pane-wiring",
+      "rule": "MP-18",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-09-start",
+      "rule": "MP-09",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-10-restart",
+      "rule": "MP-10",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-10-reset",
+      "rule": "MP-10",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-11-open",
+      "rule": "MP-11",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-12-close",
+      "rule": "MP-12",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-13-status",
+      "rule": "MP-13",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-17-stale-completion",
+      "rule": "MP-17",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-18-late-results",
+      "rule": "MP-18",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-19-reduced-motion",
+      "rule": "MP-19",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-20-fixture-guard",
+      "rule": "MP-20",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-20-packaging",
+      "rule": "MP-20",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-21-dispose",
+      "rule": "MP-21",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-22-all-panes",
+      "rule": "MP-22",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-22-failure",
+      "rule": "MP-22",
+      "kind": "unit",
+      "caught": true
+    },
+    {
+      "id": "MP-01-focus",
+      "rule": "MP-01",
+      "kind": "browser",
+      "caught": true
+    },
+    {
+      "id": "MP-11-current",
+      "rule": "MP-11",
+      "kind": "browser",
+      "caught": true
+    },
+    {
+      "id": "MP-12-focus-return",
+      "rule": "MP-12",
+      "kind": "browser",
+      "caught": true
+    },
+    {
+      "id": "MP-13-tooltip",
+      "rule": "MP-13",
+      "kind": "browser",
+      "caught": true
+    },
+    {
+      "id": "MP-14-roving",
+      "rule": "MP-14",
+      "kind": "browser",
+      "caught": true
+    },
+    {
+      "id": "MP-15-keyboard",
+      "rule": "MP-15",
+      "kind": "browser",
+      "caught": true
+    },
+    {
+      "id": "MP-16-selection",
+      "rule": "MP-16",
+      "kind": "browser",
+      "caught": true
+    },
+    {
+      "id": "MP-21-view-dispose",
+      "rule": "MP-21",
+      "kind": "browser",
+      "caught": true
+    }
+  ]
+}

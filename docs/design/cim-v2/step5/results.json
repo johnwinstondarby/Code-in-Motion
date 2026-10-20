@@ -1,0 +1,72 @@
+{
+  "implementation_commit": "a6963b6407ab88529ea59e027d201596fc7ed4c8",
+  "tests_first_commit": "5a89a698b3307c765c3a0956d3728153567f912b",
+  "red_evidence_commit": "944f611",
+  "node_versions": [
+    "20.20.2",
+    "22.23.2"
+  ],
+  "verify_tests_each": 1022,
+  "mutation_unit_probes_per_verify": 26,
+  "browser_mutations_each": 34,
+  "new_browser_cases_per_engine": 21,
+  "viewports": [
+    [
+      1366,
+      768
+    ],
+    [
+      1536,
+      864
+    ],
+    [
+      1920,
+      1080
+    ]
+  ],
+  "regression_results": {
+    "chromium": {
+      "pass": 89,
+      "skip": 0
+    },
+    "firefox": {
+      "pass": 88,
+      "skip": 1
+    },
+    "webkit_serial": {
+      "pass": 88,
+      "skip": 1
+    },
+    "skip_reason": "Existing Chromium-only native clipboard permission proof."
+  },
+  "plugin_sha256": "d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a",
+  "plugin_files": 99,
+  "plugin_excludes_multipane": true,
+  "plugin_equal_step4_candidate": true,
+  "authoring_sha256": "826dbe2746c4063d43b36f47fd9cac1dd875858ff94d2b245016c076ec5123c3",
+  "protected_source_unchanged": [
+    "wordpress",
+    "src/core",
+    "src/runtime",
+    "src/host",
+    "src/experience",
+    "src/renderers",
+    "src/commentary",
+    "src/contracts",
+    "authoring",
+    "tests/fixtures/authoring-v3-legacy-baseline.json",
+    "tests/fixtures/pane-contract-legacy-files.json"
+  ],
+  "historical_replay": {
+    "commit": "5a89a698b3307c765c3a0956d3728153567f912b",
+    "browser": "chromium",
+    "failed": 21,
+    "supplemental_after_implementation": true
+  },
+  "webkit_initial_failure": {
+    "case": "Explanation overlapping holds and pane-owned scrolling remain independent",
+    "isolated_repeats_passed": 3,
+    "subsequent_full_serial_suite_passed": true,
+    "legacy_source_or_test_changed": false
+  }
+}
