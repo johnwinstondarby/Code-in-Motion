@@ -1,0 +1,38 @@
+
+Running 1 test using 1 worker
+
+
+
+(node:22604) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1/1] tests\e2e\engineering-pane.spec.mjs:24:2 › 1366x768 › [ENG-08-FLOW] current beat flows are fully visible before evidence and grid
+  1) tests\e2e\engineering-pane.spec.mjs:24:2 › 1366x768 › [ENG-08-FLOW] current beat flows are fully visible before evidence and grid 
+
+    Error: expect(locator).not.toHaveAttribute(expected) failed
+
+    Locator: locator('.engineering-diagram details')
+    Expected: not ""
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "not toHaveAttribute" locator('.engineering-diagram details') with timeout 5000ms
+      - waiting for locator('.engineering-diagram details')
+
+
+      26 |   const geometry=await page.locator('.engineering-diagram').evaluate(pane=>{const clip=pane.getBoundingClientRect();return [...pane.querySelectorAll('[data-edge-id]')].map(row=>{const box=row.getBoundingClientRect();return {top:box.top,bottom:box.bottom,left:box.left,right:box.right,clip:{top:clip.top,bottom:clip.bottom,left:clip.left,right:clip.right},scroll:pane.scrollTop};});});
+      27 |   expect(geometry).toHaveLength(4);for(const row of geometry){expect(row.scroll).toBe(0);expect(row.top).toBeGreaterThanOrEqual(row.clip.top);expect(row.bottom).toBeLessThanOrEqual(row.clip.bottom);expect(row.left).toBeGreaterThanOrEqual(row.clip.left);expect(row.right).toBeLessThanOrEqual(row.clip.right);}
+    > 28 |   const evidence=page.locator('.engineering-diagram details');await expect(evidence).not.toHaveAttribute('open','');await evidence.locator('summary').focus();await page.keyboard.press('Enter');await expect(evidence).toHaveAttribute('open','');await expect(evidence).toContainText('SHA-256');await expect(evidence).toContainText('transcript.txt');
+         |                                                                                          ^
+      29 |  });
+      30 |  test('[ENG-03][ENG-06] shared pause cancel hold and selectable content',async({page})=>{await page.goto(origin);await page.waitForFunction(()=>window.fixture?.session);await page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:2});fixture.session.dispatch({type:'play'});});await expect(page.locator('.engineering-diagram')).toContainText('in progress');await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));const html=await page.locator('.engineering-diagram').innerHTML();await page.evaluate(()=>fixture.advance(100));expect(await page.locator('.engineering-diagram').innerHTML()).toBe(html);await page.evaluate(()=>{fixture.session.dispatch({type:'play'});return fixture.advance(1000);});await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'next'});});await expect(page.locator('.engineering-diagram')).toContainText('Waiting on next diagram action');const selection=await page.locator('.engineering-diagram').evaluate(n=>{const r=document.createRange();r.selectNodeContents(n);getSelection().removeAllRanges();getSelection().addRange(r);return getSelection().toString();});await page.evaluate(()=>{fixture.session.dispatch({type:'tab',tab:'motion'});return fixture.advance(200);});expect(await page.evaluate(()=>getSelection().toString())).toBe(selection);await expect(page.locator('.engineering-diagram')).toHaveCSS('user-select','text');});
+      31 |  test('[ENG-07][ENG-09] malformed records stay bounded and peers remain visible',async({page})=>{await page.goto(origin);await page.waitForFunction(()=>window.fixture?.session);await page.evaluate(async()=>{const{createEngineeringPane}=await import('/src/multipane/engineering.mjs');const config=structuredClone(fixture.config);config.records=[];const p=createEngineeringPane();p.mount(fixture.slots.engineering,config,{id:'engineering',type:'diagram/v1'});p.settle({}, {stepId:'name-run'});});await expect(page.locator('.engineering-diagram')).toContainText('CIM-DIAGRAM');await expect(page.locator('.engineering-diagram')).toContainText('Placeholder content');await expect(page.getByRole('button',{name:'Next',exact:true})).toBeEnabled();await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();});
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\engineering-pane.spec.mjs:28:90
+
+    Error Context: test-results\tests-e2e-engineering-pane-28953-le-before-evidence-and-grid\error-context.md
+
+    Error Context: test-results\tests-e2e-engineering-pane-28953-le-before-evidence-and-grid\error-context.md
+
+
+  1 failed
+    tests\e2e\engineering-pane.spec.mjs:24:2 › 1366x768 › [ENG-08-FLOW] current beat flows are fully visible before evidence and grid 
