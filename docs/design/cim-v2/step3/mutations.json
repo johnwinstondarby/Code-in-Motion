@@ -1,0 +1,87 @@
+[
+  {
+    "rule": "CIM-V3-PARSE",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-SHAPE",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-LIMIT",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-ID",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-PANE-TYPE",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-INITIAL",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-EXPLANATION",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-ACTION-COUNT",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-SIMULTANEOUS",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-ACTION-TAB",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-CAPTURE-REFERENCE",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-DIAGRAM-STATE",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-PLACEHOLDER",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-ARCHIVE-PATH",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-EVIDENCE",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-PACK-VERSION",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  },
+  {
+    "rule": "CIM-V3-MEDIA-DEFERRED",
+    "caught": true,
+    "reason": "invalid fixture accepted after enforcement removal"
+  }
+]

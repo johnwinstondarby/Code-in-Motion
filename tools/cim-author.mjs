@@ -5,6 +5,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { startLessonPreview } from './lesson-preview-server.mjs';
 import { compileLesson, createLessonPack, MAX_AUTHORING_BYTES } from './lesson-pack-archive.mjs';
+import { decodeJSON, readBoundedFile, validateV3File } from '../authoring/v3/files.mjs';
 
 export async function main(args) {
   const [command, source, ...rest] = args;
@@ -26,6 +27,14 @@ export async function main(args) {
   const { stat } = await import('node:fs/promises');
   if ((await stat(resolve(source))).size > MAX_AUTHORING_BYTES) throw new RangeError('Authored lesson exceeds 2 MiB.');
   const text = await readFile(resolve(source),'utf8');
+  let declaredSchema;
+  try { declaredSchema = JSON.parse(text)?.schema; } catch { /* Preserve the legacy compiler's parse diagnostics. */ }
+  if (['localis.cim/authoring/v3','localis.cim/engineering-capture/v1','cim.lesson-pack/v2'].includes(declaredSchema)) {
+    if (command !== 'validate') throw new Error('Multi-pane schemas support validate only in this step. Use cim-author validate; compile, pack and preview admission wait for later work.');
+    const result = await validateV3File(resolve(source), decodeJSON(await readBoundedFile(resolve(source))));
+    console.log(`Valid: ${result.id} (${result.count} ${result.kind === 'authoring' ? 'beats' : 'entries'}; schema validation only, not Player admission).`);
+    return;
+  }
   const result = compileLesson(text);
   if (command==='validate') { console.log('Valid: '+result.document.id+' ('+result.document.steps.length+' segments).'); return; }
   if (command==='compile') {

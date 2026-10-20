@@ -1,0 +1,6171 @@
+{
+  "schema": "localis.cim/authoring/v3",
+  "id": "run-custody-placeholder",
+  "title": "Run Custody placeholder",
+  "description": "Eight illustrative beats; this is not lab evidence.",
+  "version": "1.0.0",
+  "placeholder": true,
+  "capture": {
+    "id": "custody-capture",
+    "file": "capture.json"
+  },
+  "hosts": [
+    "inspire",
+    "invent"
+  ],
+  "services": [
+    {
+      "id": "login",
+      "host": "inspire"
+    },
+    {
+      "id": "git",
+      "host": "inspire"
+    },
+    {
+      "id": "scheduler",
+      "host": "inspire"
+    },
+    {
+      "id": "gpu",
+      "host": "inspire"
+    },
+    {
+      "id": "mlflow",
+      "host": "inspire"
+    },
+    {
+      "id": "storage",
+      "host": "inspire"
+    },
+    {
+      "id": "registry",
+      "host": "inspire"
+    }
+  ],
+  "artifacts": [
+    "run",
+    "commit",
+    "job",
+    "metrics"
+  ],
+  "media": {
+    "status": "deferred",
+    "asset_ids": [
+      "gpu-memory",
+      "mlflow-missing"
+    ]
+  },
+  "panes": [
+    {
+      "id": "console",
+      "type": "console/v1",
+      "initial_state": {
+        "lines": []
+      }
+    },
+    {
+      "id": "explanation",
+      "type": "explanation/v1",
+      "initial_state": {
+        "text": "Placeholder lesson: begin at the starting view."
+      }
+    },
+    {
+      "id": "engineering",
+      "type": "diagram/v1",
+      "initial_state": {
+        "artifacts": {
+          "run": {
+            "location": null,
+            "status": "absent"
+          },
+          "commit": {
+            "location": null,
+            "status": "absent"
+          },
+          "job": {
+            "location": null,
+            "status": "absent"
+          },
+          "metrics": {
+            "location": null,
+            "status": "absent"
+          }
+        }
+      }
+    },
+    {
+      "id": "motion",
+      "type": "motion/v1",
+      "initial_state": {
+        "frame": null
+      }
+    }
+  ],
+  "beats": [
+    {
+      "id": "beat-0",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-1",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-2",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-3",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-4",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-5",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-6",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-7",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-8",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-9",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-10",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-11",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-12",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-13",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-14",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-15",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-16",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-17",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-18",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-19",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-20",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-21",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-22",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-23",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-24",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-25",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-26",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-27",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-28",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-29",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-30",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-31",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-32",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-33",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-34",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-35",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-36",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-37",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-38",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-39",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-40",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-41",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-42",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-43",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-44",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-45",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-46",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-47",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-48",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-49",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-50",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-51",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-52",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-53",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-54",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-55",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-56",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-57",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-58",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-59",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-60",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-61",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-62",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-63",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-64",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-65",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-66",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-67",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-68",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-69",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-70",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-71",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-72",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-73",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-74",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-75",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-76",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-77",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-78",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-79",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-80",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-81",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-82",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-83",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-84",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-85",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-86",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-87",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-88",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-89",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-90",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-91",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-92",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-93",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-94",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-95",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-96",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-97",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-98",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-99",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-100",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-101",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-102",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-103",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-104",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-105",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-106",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-107",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-108",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-109",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-110",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-111",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-112",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-113",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-114",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-115",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-116",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-117",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-118",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-119",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-120",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-121",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-122",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-123",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-124",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-125",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-126",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-127",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "beat-128",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    }
+  ]
+}

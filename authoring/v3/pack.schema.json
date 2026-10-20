@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cim.lesson-pack/v2",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "cim.lesson-pack/v2"
+    },
+    "cim_min": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "cim_max_exclusive": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "placeholder": {
+      "type": "boolean"
+    },
+    "lessons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "file": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "\\S"
+          },
+          "capture": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "pattern": "\\S"
+          }
+        },
+        "required": [
+          "id",
+          "file",
+          "capture"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 100
+    },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "deferred"
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0,
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "status",
+        "assets"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "cim_min",
+    "cim_max_exclusive",
+    "placeholder",
+    "lessons",
+    "media"
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 100
+    },
+    "artifactState": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 100
+        },
+        "status": {
+          "enum": [
+            "absent",
+            "pinned",
+            "failed",
+            "completed",
+            "published",
+            "verified",
+            "reproduced"
+          ]
+        }
+      },
+      "required": [
+        "location",
+        "status"
+      ]
+    },
+    "diagram": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/artifactState"
+          },
+          "maxProperties": 128
+        }
+      },
+      "required": [
+        "artifacts"
+      ]
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "href": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^https://[^\\s]+$"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "href"
+      ]
+    }
+  }
+}

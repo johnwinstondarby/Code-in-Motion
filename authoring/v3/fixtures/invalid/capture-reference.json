@@ -1,0 +1,474 @@
+{
+  "schema": "localis.cim/authoring/v3",
+  "id": "run-custody-placeholder",
+  "title": "Run Custody placeholder",
+  "description": "Eight illustrative beats; this is not lab evidence.",
+  "version": "1.0.0",
+  "placeholder": true,
+  "capture": {
+    "id": "missing-capture",
+    "file": "capture.json"
+  },
+  "hosts": [
+    "inspire",
+    "invent"
+  ],
+  "services": [
+    {
+      "id": "login",
+      "host": "inspire"
+    },
+    {
+      "id": "git",
+      "host": "inspire"
+    },
+    {
+      "id": "scheduler",
+      "host": "inspire"
+    },
+    {
+      "id": "gpu",
+      "host": "inspire"
+    },
+    {
+      "id": "mlflow",
+      "host": "inspire"
+    },
+    {
+      "id": "storage",
+      "host": "inspire"
+    },
+    {
+      "id": "registry",
+      "host": "inspire"
+    }
+  ],
+  "artifacts": [
+    "run",
+    "commit",
+    "job",
+    "metrics"
+  ],
+  "media": {
+    "status": "deferred",
+    "asset_ids": [
+      "gpu-memory",
+      "mlflow-missing"
+    ]
+  },
+  "panes": [
+    {
+      "id": "console",
+      "type": "console/v1",
+      "initial_state": {
+        "lines": []
+      }
+    },
+    {
+      "id": "explanation",
+      "type": "explanation/v1",
+      "initial_state": {
+        "text": "Placeholder lesson: begin at the starting view."
+      }
+    },
+    {
+      "id": "engineering",
+      "type": "diagram/v1",
+      "initial_state": {
+        "artifacts": {
+          "run": {
+            "location": null,
+            "status": "absent"
+          },
+          "commit": {
+            "location": null,
+            "status": "absent"
+          },
+          "job": {
+            "location": null,
+            "status": "absent"
+          },
+          "metrics": {
+            "location": null,
+            "status": "absent"
+          }
+        }
+      }
+    },
+    {
+      "id": "motion",
+      "type": "motion/v1",
+      "initial_state": {
+        "frame": null
+      }
+    }
+  ],
+  "beats": [
+    {
+      "id": "name-run",
+      "title": "Name the run",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "export RUN_ID=<placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Give the illustrative run a stable identity.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "name-run-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": null,
+              "status": "absent"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "pin-code",
+      "title": "Pin code",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "git rev-parse HEAD",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "The commit identifies the code version.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "pin-code-commit"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": null,
+              "status": "absent"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "submit-fail",
+      "title": "Submit and fail",
+      "actions": [
+        {
+          "pane": "motion",
+          "kind": "gui",
+          "provenance": "placeholder",
+          "asset": "gpu-memory",
+          "alt": "Illustrative interface; no real recording exists.",
+          "label": "Placeholder GUI \u00b7 simulated"
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "The modeled job fails; real failure type and timing come from the future capture.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "submit-fail-job"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "failed"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "motion"
+    },
+    {
+      "id": "retry",
+      "title": "Retry",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "sbatch train.sbatch",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Retry under the same run identity with a recorded configuration change.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "retry-job"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "completed"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "review-run-metadata",
+      "title": "Review run metadata",
+      "actions": [],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Context-only beat: Explanation and Diagram advance while the action row holds.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "review-run-metadata-run"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "completed"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "track-mlflow",
+      "title": "Track in MLflow",
+      "actions": [
+        {
+          "pane": "motion",
+          "kind": "gui",
+          "provenance": "placeholder",
+          "asset": "mlflow-missing",
+          "alt": "Illustrative interface; no real recording exists.",
+          "label": "Placeholder GUI \u00b7 simulated"
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "The placeholder GUI has a text alternative, including if the eventual recording is unavailable.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "track-mlflow-metrics"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "completed"
+            },
+            "metrics": {
+              "location": "mlflow",
+              "status": "pinned"
+            }
+          }
+        }
+      },
+      "action_tab": "motion"
+    },
+    {
+      "id": "prove-custody",
+      "title": "Gate 10 prove custody",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "verify-manifest <placeholder>",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Custody proves retrieval and integrity; no evaluation runs here.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "prove-custody-run",
+          "prove-custody-commit",
+          "prove-custody-job",
+          "prove-custody-metrics"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "verified"
+            },
+            "commit": {
+              "location": "git",
+              "status": "verified"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "verified"
+            },
+            "metrics": {
+              "location": "mlflow",
+              "status": "verified"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    },
+    {
+      "id": "reproduce",
+      "title": "Reproduction check",
+      "actions": [
+        {
+          "pane": "console",
+          "kind": "cli",
+          "provenance": "placeholder",
+          "command": "python evaluate.py --manifest run-manifest.json",
+          "output": [
+            "[placeholder output]"
+          ]
+        }
+      ],
+      "explanation": {
+        "pane": "explanation",
+        "text": "Re-running evaluation is a separate reproduction check on INSPIRE.",
+        "links": []
+      },
+      "engineering": {
+        "pane": "engineering",
+        "records": [
+          "reproduce-job"
+        ],
+        "state": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "verified"
+            },
+            "commit": {
+              "location": "git",
+              "status": "verified"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "reproduced"
+            },
+            "metrics": {
+              "location": "mlflow",
+              "status": "verified"
+            }
+          }
+        }
+      },
+      "action_tab": "console"
+    }
+  ]
+}

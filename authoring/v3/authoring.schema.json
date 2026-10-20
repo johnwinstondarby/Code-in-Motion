@@ -1,0 +1,378 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "localis.cim/authoring/v3",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "localis.cim/authoring/v3"
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "pattern": "\\S"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16384,
+      "pattern": "\\S"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "placeholder": {
+      "type": "boolean"
+    },
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "file": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "id",
+        "file"
+      ]
+    },
+    "hosts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/id"
+      },
+      "minItems": 1,
+      "maxItems": 32
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "host": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "required": [
+          "id",
+          "host"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 64
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/id"
+      },
+      "minItems": 1,
+      "maxItems": 128
+    },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "deferred"
+        },
+        "asset_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "status",
+        "asset_ids"
+      ]
+    },
+    "panes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          },
+          "initial_state": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "initial_state"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 4
+    },
+    "beats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300,
+            "pattern": "\\S"
+          },
+          "action_tab": {
+            "$ref": "#/$defs/id"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pane": {
+                  "$ref": "#/$defs/id"
+                },
+                "kind": {
+                  "enum": [
+                    "cli",
+                    "gui"
+                  ]
+                },
+                "provenance": {
+                  "enum": [
+                    "placeholder",
+                    "captured"
+                  ]
+                },
+                "command": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384,
+                  "pattern": "\\S"
+                },
+                "output": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 16384,
+                    "pattern": "\\S"
+                  },
+                  "minItems": 0,
+                  "maxItems": 128
+                },
+                "asset": {
+                  "$ref": "#/$defs/id"
+                },
+                "alt": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384,
+                  "pattern": "\\S"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "pattern": "\\S"
+                }
+              },
+              "required": [
+                "pane",
+                "kind",
+                "provenance"
+              ]
+            },
+            "minItems": 0,
+            "maxItems": 8
+          },
+          "explanation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "pane": {
+                "$ref": "#/$defs/id"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 16384,
+                "pattern": "\\S"
+              },
+              "links": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/link"
+                },
+                "minItems": 0,
+                "maxItems": 16
+              }
+            },
+            "required": [
+              "pane",
+              "text",
+              "links"
+            ]
+          },
+          "engineering": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "pane": {
+                "$ref": "#/$defs/id"
+              },
+              "records": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/id"
+                },
+                "minItems": 0,
+                "maxItems": 32
+              },
+              "state": {
+                "$ref": "#/$defs/diagram"
+              }
+            },
+            "required": [
+              "pane",
+              "records",
+              "state"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "actions",
+          "explanation",
+          "engineering"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 128
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "title",
+    "description",
+    "version",
+    "placeholder",
+    "capture",
+    "hosts",
+    "services",
+    "artifacts",
+    "media",
+    "panes",
+    "beats"
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 100
+    },
+    "artifactState": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 100
+        },
+        "status": {
+          "enum": [
+            "absent",
+            "pinned",
+            "failed",
+            "completed",
+            "published",
+            "verified",
+            "reproduced"
+          ]
+        }
+      },
+      "required": [
+        "location",
+        "status"
+      ]
+    },
+    "diagram": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/artifactState"
+          },
+          "maxProperties": 128
+        }
+      },
+      "required": [
+        "artifacts"
+      ]
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "pattern": "\\S"
+        },
+        "href": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^https://[^\\s]+$"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "href"
+      ]
+    }
+  }
+}
