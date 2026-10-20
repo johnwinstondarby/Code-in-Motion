@@ -1,0 +1,29 @@
+{
+  "source_commit": "fcf23d4",
+  "node20_tests": 1047,
+  "node22_tests": 1047,
+  "v1_identical": 41,
+  "v1_differences": 0,
+  "engines": {
+    "chromium": {
+      "passed": 125,
+      "skipped": 0,
+      "motion_cases_passed": 24,
+      "motion_mutation_probes_caught": 30
+    },
+    "firefox": {
+      "passed": 124,
+      "skipped": 1,
+      "motion_cases_passed": 24,
+      "motion_mutation_probes_caught": 30
+    },
+    "webkit": {
+      "passed": 124,
+      "skipped": 1,
+      "motion_cases_passed": 24,
+      "motion_mutation_probes_caught": 30
+    }
+  },
+  "skip_reason": "Native clipboard permission proof is Chromium-only; binding behavior is tested in every engine.",
+  "ci": "To be run on final draft PR head; no local Docker WordPress-version or upgrade result is claimed."
+}

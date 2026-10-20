@@ -1,0 +1,27 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-16] preparation holds peers and a jump cancels without waiting
+  1) tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-16] preparation holds peers and a jump cancels without waiting 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 12
+    Received: 16
+
+      44 |  test('[MOT-16] preparation holds peers and a jump cancels without waiting',async({page})=>{
+      45 |   let release;const held=new Promise(resolve=>{release=resolve;});await page.route('**/__cim_fixture_media/good.mp4',async route=>{await held;await route.continue();});
+    > 46 |   await open(page);await gui(page);const writes=await page.evaluate(()=>fixture.log.length);await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.log.length)).toBe(writes);expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');
+         |                                                                                                                                                                                               ^
+      47 |   await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));release();await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);expect(await page.evaluate(()=>fixture.session.read().playing)).toBe(false);expect(await page.locator('.motion-pane video').evaluate(v=>v.paused)).toBe(true);
+      48 |   await page.evaluate(()=>{fixture.session.dispatch({type:'play'});fixture.session.dispatch({type:'jump',index:7});});expect(await page.evaluate(()=>fixture.session.read().index)).toBe(7);
+      49 |  });
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/motion-mutations/candidate-QMSdas/tests/e2e/motion-pane.spec.mjs:46:191
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-e97b1-ump-cancels-without-waiting/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-e97b1-ump-cancels-without-waiting/error-context.md
+
+
+  1 failed
+    tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-16] preparation holds peers and a jump cancels without waiting 

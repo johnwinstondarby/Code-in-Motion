@@ -1,0 +1,34 @@
+TAP version 13
+1..0
+# Subtest: tests/motion-authoring.test.mjs
+ok 1 - tests/motion-authoring.test.mjs
+  ---
+  duration_ms: 1673.380383
+  type: 'test'
+  ...
+# Subtest: [MOT-03] mismatch and missing data withhold every playback URL
+not ok 2 - [MOT-03] mismatch and missing data withhold every playback URL
+  ---
+  duration_ms: 13.439101
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/motion-mutations/candidate-Qwjk8H/tests/motion-media.test.mjs:22:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/motion-mutations/candidate-Qwjk8H/tests/motion-media.test.mjs:22:164)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1679.64537

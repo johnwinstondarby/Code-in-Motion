@@ -1,0 +1,35 @@
+TAP version 13
+# Subtest: [MOT-13] author validate verifies bounded pack files and their digests
+not ok 1 - [MOT-13] author validate verifies bounded pack files and their digests
+  ---
+  duration_ms: 264.911116
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/motion-mutations/candidate-gRWsJR/tests/motion-authoring.test.mjs:17:1'
+  failureType: 'testCodeFailure'
+  error: 'Expected "actual" to be strictly unequal to: 0'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 0
+  operator: 'notStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/motion-mutations/candidate-gRWsJR/tests/motion-authoring.test.mjs:17:340)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..0
+# Subtest: tests/motion-media.test.mjs
+ok 2 - tests/motion-media.test.mjs
+  ---
+  duration_ms: 83.386985
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1933.844464

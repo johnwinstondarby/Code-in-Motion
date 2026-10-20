@@ -1,0 +1,27 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/motion-pane.spec.mjs:42:2 › 1366x768 › [MOT-08] reduced motion shows still and alternative with no automatic play
+  1) tests/e2e/motion-pane.spec.mjs:42:2 › 1366x768 › [MOT-08] reduced motion shows still and alternative with no automatic play 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      40 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});
+      41 |  });
+    > 42 |  test('[MOT-08] reduced motion shows still and alternative with no automatic play',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?attachment');await gui(page);await expect(page.locator('.motion-pane')).toContainText('Simulated GUI test pattern');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);expect(await page.locator('.motion-pane video').evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+      43 |  test('[MOT-09] missing and tampered clips fail safely and retain fallback while held',async({page},info)=>{for(const mode of ['missing','tampered','undecodable']){await open(page,'?mode='+mode);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('GUI recording unavailable');await expect(pane).toContainText('CIM-PANE-MEDIA-UNAVAILABLE');await expect(pane).toContainText('Simulated GUI test pattern');await page.evaluate(()=>fixture.advance(500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(pane).toContainText('GUI recording unavailable');await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();await page.screenshot({path:info.outputPath('fallback-'+mode+'.png')});}});
+      44 |  test('[MOT-16] preparation holds peers and a jump cancels without waiting',async({page})=>{
+      45 |   let release;const held=new Promise(resolve=>{release=resolve;});await page.route('**/__cim_fixture_media/good.mp4',async route=>{await held;await route.continue();});
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/motion-mutations/candidate-Qwjk8H/tests/e2e/motion-pane.spec.mjs:42:447
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-a7f0d-tive-with-no-automatic-play/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-a7f0d-tive-with-no-automatic-play/error-context.md
+
+
+  1 failed
+    tests/e2e/motion-pane.spec.mjs:42:2 › 1366x768 › [MOT-08] reduced motion shows still and alternative with no automatic play 
