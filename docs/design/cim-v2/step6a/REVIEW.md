@@ -64,3 +64,14 @@ Text alternatives are visible DOM text with state, flow, action, host, artifact 
 - `results.json` records the protected-path check and paired archive comparisons. The published 1.0.1 ZIP, prior rollback kits and page 3227 capture are untouched. No production access occurred.
 
 `SHA256SUMS` covers evidence files except this packet, attributes and itself. Raw failing logs are preserved. Merge waits for Daisy's review, Johann's approval and green CI on the exact candidate head. Motion/media placement and production layout composition are later steps.
+
+
+## Review follow-up: flow visibility and approved graphical scope
+
+Johann approved retaining this text/service-flow view in PR #97 and adding the graphical canvas, connecting lines and travelling tokens in step 6c. The text view remains the required text alternative; this PR does not claim to implement the moving-canvas diagram.
+
+Daisy found that the current beat's flows were clipped at laptop size. Commit `257e555` adds ENG-08-FLOW; `734e353` records its meaningful failing laptop run before the correction. The correction puts compact flow rows first, then a native, initially closed Show evidence expander, then the service grid. Paths, record IDs, raw result values and SHA-256 fingerprints remain in the expander. The fallback code is now `CIM-PANE-DIAGRAM-RECORDS`.
+
+Post-red test edits in this follow-up: ENG-08-FLOW additionally checks moving frames and intersections with every clipping ancestor, after an initial mutation exposed that measuring only the inner element could miss clipping by its parent. It checks keyboard opening of the evidence expander. Existing error-code assertions change to the new code; no other existing scenario changes. The added browser mutation restores the grid-first order and must fail specifically on the visibility bound. Default verify retains 14 unit probes; the optional browser run contains 15 total and is added to every browser CI job.
+
+Updated revision logs, screenshots, measurements and build checksums below supersede the corresponding initial results above; the initial evidence remains unchanged. The separate step 6b media decision record captures the user-selected source choices and pre-playback/Admin/anonymous-access requirements without enabling media loading.

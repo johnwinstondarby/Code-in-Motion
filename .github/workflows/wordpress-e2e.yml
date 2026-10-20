@@ -1287,6 +1287,11 @@ jobs:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
         run: node tools/check-multipane-mutations.mjs --browser
 
+      - name: Prove current diagram flow remains visible
+        env:
+          CIM_PLAYER_BROWSER: ${{ matrix.browser }}
+        run: node tools/check-engineering-mutations.mjs --browser
+
 
       - name: Stop R20 browser environment
         if: always()

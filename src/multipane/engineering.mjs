@@ -1,6 +1,6 @@
 // Fixture-only diagram/v1. No registration, admission, network or engine authority.
 import {createPaneLifecycle,readonlyPaneData} from '../contracts/pane.mjs';
-const fail=message=>{throw new Error('CIM-DIAGRAM-RECORDS: '+message);};
+const fail=message=>{throw new Error('CIM-PANE-DIAGRAM-RECORDS: '+message);};
 const canonical=x=>JSON.stringify(x,(_,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.entries(v).sort(([a],[b])=>a.localeCompare(b))):v);
 const statuses={pin:'pinned',fail:'failed',complete:'completed',publish:'published',verify:'verified',evaluate:'reproduced'};
 const words={absent:'idle',pinned:'used',completed:'used',published:'used',failed:'failed',verified:'custody verified',reproduced:'reproduction checked'};
@@ -40,14 +40,19 @@ function draw(root,snapshot,config,phase=null,error=null){
  frame.append(element('h4','Diagram · modeled'));
  if(config.placeholder)frame.append(element('strong','Placeholder content',{'data-placeholder':'true'}));
  frame.append(element('p','Capture-derived model · not a live connection'));
- if(error){frame.append(element('p','Diagram unavailable · CIM-DIAGRAM-RECORDS'),element('p','Text alternative: capture records could not be resolved. Use the Explanation and check the capture references.'));root.replaceChildren(frame);return;}
+ if(error){frame.append(element('p','Diagram unavailable · CIM-PANE-DIAGRAM-RECORDS'),element('p','Text alternative: capture records could not be resolved. Use the Explanation and check the capture references.'));root.replaceChildren(frame);return;}
  const grid=element('div',null,{class:'engineering-nodes'});
  for(const node of snapshot.nodes){const labels=node.artifacts.length?node.artifacts.map(a=>`${a.id}: ${words[a.status]}`).join('; '):'idle';grid.append(element('div',`${node.id} · ${node.host} — ${phase&&snapshot.flows.some(f=>f.to===node.id)?'in progress; ':''}${labels}`,{'data-node-id':node.id,'data-status':phase&&snapshot.flows.some(f=>f.to===node.id)?'progress':node.artifacts.at(-1)?.status??'absent'}));}
- frame.append(grid);
  const flow=element('div',null,{class:'engineering-flows','aria-label':'Current beat flow and evidence'});
  if(!snapshot.flows.length)flow.append(element('p','Waiting on next diagram action'));
- for(const f of snapshot.flows){const row=element('p',`${f.id}: ${f.host}; ${f.artifact}: ${f.from??'initial'} → ${f.to}; ${f.action} → ${f.result.status}; raw evidence: ${f.evidence} (${f.raw.archive}/${f.raw.root}/${f.raw.path}; SHA-256 ${f.raw.sha256})`,{'data-edge-id':f.id});if(phase){const token=element('span','●',{'aria-hidden':'true','data-diagram-token':f.id});token.style.transform=`translateX(${phase*80}px)`;const track=element('span',null,{class:'engineering-edge','aria-hidden':'true'});track.append(token);row.append(track);}flow.append(row);}
- frame.append(flow);root.replaceChildren(frame);
+ const evidence=element('details',null,{'data-diagram-evidence':''});evidence.append(element('summary','Show evidence'));
+ for(const f of snapshot.flows){
+  const row=element('p',`${f.host} · ${f.artifact}: ${f.from??'initial'} → ${f.to} · ${words[f.result.status]}`,{'data-edge-id':f.id});
+  if(phase){const token=element('span','●',{'aria-hidden':'true','data-diagram-token':f.id});token.style.transform=`translateX(${phase*80}px)`;const track=element('span',null,{class:'engineering-edge','aria-hidden':'true'});track.append(token);row.append(track);}
+  flow.append(row);
+  evidence.append(element('p',`${f.id}: ${f.action} → ${f.result.status}; raw evidence: ${f.evidence} (${f.raw.archive}/${f.raw.root}/${f.raw.path}; SHA-256 ${f.raw.sha256})`));
+ }
+ frame.append(flow);frame.append(evidence);frame.append(grid);root.replaceChildren(frame);
 }
 export function createEngineeringPane(){
  let config,root,disposed=false;

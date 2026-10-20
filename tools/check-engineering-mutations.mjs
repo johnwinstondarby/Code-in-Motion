@@ -24,4 +24,12 @@ const cases=[
 const run=rule=>spawnSync(process.execPath,['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),'tests/engineering-pane.test.mjs'],{cwd:sandbox,encoding:'utf8',timeout:30000});
 let r=run();if(r.status!==0)throw new Error('Baseline failed: '+r.stdout+r.stderr);const results=[];
 for(const[id,file,from,to,rule]of cases){const path=resolve(sandbox,file),original=await readFile(path,'utf8');if(!original.includes(from))throw new Error('Missing target '+id);try{await writeFile(path,original.replaceAll(from,to));r=run(rule);}finally{await writeFile(path,original);}const output=r.stdout+r.stderr,caught=r.status!==0&&/ERR_ASSERTION|AssertionError/.test(output)&&!/SyntaxError|ReferenceError/.test(output);results.push({id,rule,caught});if(!caught)throw new Error('Probe survived or crashed: '+id+'\n'+output);}
+if(process.argv.includes('--browser')){
+ const browserRun=()=>spawnSync(process.execPath,[resolve(root,'node_modules/@playwright/test/cli.js'),'test','tests/e2e/engineering-pane.spec.mjs','--grep','ENG-08-FLOW','--reporter=line','--workers=1','--output='+resolve(work,'browser-results')],{cwd:sandbox,encoding:'utf8',timeout:90000});
+ let baseline=browserRun();if(baseline.status!==0)throw new Error('Flow browser baseline failed: '+baseline.stdout+baseline.stderr);
+ const path=resolve(sandbox,pane),original=await readFile(path,'utf8'),from='frame.append(flow);frame.append(evidence);frame.append(grid);';
+ if(!original.includes(from))throw new Error('Missing flow order mutation target');
+ try{await writeFile(path,original.replace(from,'frame.append(grid);frame.append(flow);frame.append(evidence);'));r=browserRun();}finally{await writeFile(path,original);}
+ const caught=r.status!==0&&/toBeLessThanOrEqual/.test(r.stdout+r.stderr);if(!caught)throw new Error('Flow visibility mutation survived or failed for another reason: '+r.stdout+r.stderr);results.push({id:'ENG-08-flow-order',rule:'ENG-08',caught});
+}
 console.log(JSON.stringify({node:process.version,baseline:'passed',results},null,2));

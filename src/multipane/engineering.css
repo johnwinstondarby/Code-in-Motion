@@ -10,6 +10,12 @@
 .engineering-diagram [data-status="verified"]{border-left:4px solid #6ce5ad}
 .engineering-diagram [data-status="reproduced"]{border-left:4px double #86bdff}
 .engineering-diagram [data-status="failed"]{border-left:4px dashed #ff9e9e}
-.engineering-edge{display:block;width:88px;height:16px;border-bottom:2px solid #a9bfd3;position:relative;margin-bottom:4px}
+.engineering-edge{display:inline-block;vertical-align:middle;margin-left:8px;width:88px;height:16px;border-bottom:2px solid #a9bfd3;position:relative;margin-bottom:4px}
 .engineering-edge::after{content:'›';position:absolute;right:0;bottom:-12px;font-size:24px}
 .engineering-edge [data-diagram-token]{position:absolute;left:0;top:0}
+
+.engineering-flows p{margin:2px 0}
+.engineering-diagram summary{cursor:pointer;font-weight:600;margin:4px 0}
+.engineering-diagram details p{font-size:14px}
+
+.mp-fixture [data-mp-context="engineering"]>div{min-height:0;flex:1;overflow:auto}
