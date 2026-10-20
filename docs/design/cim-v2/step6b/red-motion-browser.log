@@ -1,0 +1,38 @@
+
+Running 1 test using 1 worker
+
+
+(node:8072) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/1] tests\e2e\motion-pane.spec.mjs:34:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+  1) tests\e2e\motion-pane.spec.mjs:34:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.motion-pane')
+    Expected substring: "Placeholder GUI · simulated"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" locator('.motion-pane') with timeout 5000ms
+      - waiting for locator('.motion-pane')
+
+
+      33 |  test.use({viewport:{width,height}});
+      34 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{
+    > 35 |   await open(page);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI · simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);
+         |                                                                                               ^
+      36 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);expect(await video.evaluate(v=>v.currentTime)).toBeCloseTo(at,1);
+      37 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await video.evaluate(v=>v.ended||v.currentTime>=v.duration-0.15)).toBe(true);
+      38 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\motion-pane.spec.mjs:35:95
+
+    Error Context: test-results\tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold\error-context.md
+
+    Error Context: test-results\tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold\error-context.md
+
+
+  1 failed
+    tests\e2e\motion-pane.spec.mjs:34:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold 
