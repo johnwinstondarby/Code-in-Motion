@@ -17,6 +17,8 @@ const cases=[
  ['ENG-06-wait',pane,'Waiting on next diagram action','Idle diagram','ENG-06'],
  ['ENG-07-fallback',pane,'const showError=()=>draw(root,null,config,null,true);','const showError=()=>root.replaceChildren();','ENG-07'],
  ['ENG-08-size','src/multipane/engineering.css','font-size:14px','font-size:8px','ENG-08'],
+ ['ENG-09-leak',pane,'return Object.freeze({mount','return Object.freeze({host:globalThis,mount','ENG-09'],
+ ['ENG-09-network',pane,'const statuses=',"const request = () => fetch('https://example.invalid'); const statuses=",'ENG-09'],
  ['ENG-09-guard',pane,"if(data.fixtureOnly!==true)throw new TypeError('Engineering requires a test fixture.');",'/* fixture admission removed */','ENG-09'],
 ];
 const run=rule=>spawnSync(process.execPath,['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),'tests/engineering-pane.test.mjs'],{cwd:sandbox,encoding:'utf8',timeout:30000});
