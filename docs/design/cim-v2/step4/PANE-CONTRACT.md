@@ -25,6 +25,8 @@ The time bound is the sum of a finite frame array's finite, non-negative delays 
 
 Cancel, dispose and supersede settle the old participation once, cancel the pending clock handle and unsubscribe. A late callback checks the finished flag, disposal and active-task identity before touching DOM. Invalid input for a superseding external render also revokes the old animation, retaining its current DOM until Runtime's existing restoration path runs. Frame failures produce a failed result and release the same resources.
 
+Deliberately, calling Console render again without first aborting the preceding render now rejects the old promise as cancelled instead of leaving it pending forever; Runtime always aborts and waits before starting the next render, so normal Player behavior is unchanged.
+
 ## Console and Explanation composition
 
 Console's stable DOM builder, animation planner, timings, Copy/risk markup and validation are unchanged. `createConsolePane` wraps them with the lifecycle. The existing `createConsoleRenderer` owns this pane and explicitly projects the existing v1 context. Mount/remount and dispose forward cleanup. No new composite renderer is introduced.
