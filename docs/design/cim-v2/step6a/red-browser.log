@@ -1,0 +1,26 @@
+
+Running 1 test using 1 worker
+
+
+
+(node:6724) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1/1] tests\e2e\engineering-pane.spec.mjs:23:2 › 1366x768 › [ENG-01][ENG-02][ENG-04][ENG-05][ENG-08] readable modeled records and provenance at true size
+  1) tests\e2e\engineering-pane.spec.mjs:23:2 › 1366x768 › [ENG-01][ENG-02][ENG-04][ENG-05][ENG-08] readable modeled records and provenance at true size 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'dispatch')
+        at eval (eval at evaluate (:311:30), <anonymous>:1:23)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:311:30), <anonymous>:1:23)
+        at UtilityScript.evaluate (<anonymous>:313:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\engineering-pane.spec.mjs:23:206
+
+    Error Context: test-results\tests-e2e-engineering-pane-73574-and-provenance-at-true-size\error-context.md
+
+    Error Context: test-results\tests-e2e-engineering-pane-73574-and-provenance-at-true-size\error-context.md
+
+
+  1 failed
+    tests\e2e\engineering-pane.spec.mjs:23:2 › 1366x768 › [ENG-01][ENG-02][ENG-04][ENG-05][ENG-08] readable modeled records and provenance at true size 
