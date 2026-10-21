@@ -56,7 +56,7 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
  function settle(state){requireMounted();cancelPlay();const next=readonlyPaneData(state);const version=revision;
   if(!next?.asset){++revision;clear();asset=null;failed=false;frame('No GUI recording has played yet.');return;}
   if(next.asset===asset&&(failed||media&&!loading)){if(video&&!failed)finalStill().catch(()=>{if(!disposed&&revision===version)fallback(next.alt);});return;}
-  prepare(next).then(()=>{if(!disposed&&asset===next.asset)return finalStill();}).catch(()=>{});
+  const prepared=prepare(next),token=revision;prepared.then(()=>{if(!disposed&&revision===token&&asset===next.asset)return finalStill();}).catch(()=>{if(!disposed&&revision===token&&!failed)fallback(config.assets.find(a=>a.id===next.asset)?.alt??next.alt);});
  }
  function play(state,context){
   requireMounted();cancelPlay();const descriptor=config.assets.find(a=>a.id===state?.asset);
@@ -99,8 +99,8 @@ export function retireMediaElement(target){target.onplay=pauseRetiredPlay;target
 // Completion waits for the requested final frame, without re-seeking an already final frame.
 export async function settleFinalVideoFrame(target,{signal,timeoutMs=2500}={}){
  target.pause();const check=()=>!target.seeking&&target.readyState>=2&&Math.abs(target.currentTime-target.duration)<0.15;
- if(signal?.aborted)throw new Error('CIM-PANE-MEDIA-UNAVAILABLE');if(check())return;
- if(!target.seeking||Math.abs(target.currentTime-target.duration)>=0.15)target.currentTime=target.duration;
+ if(signal?.aborted)throw new Error('CIM-PANE-MEDIA-UNAVAILABLE');if(check()&&(target.ended||Math.abs(target.currentTime-target.duration)<0.001))return;
+ if(!target.seeking||Math.abs(target.currentTime-target.duration)>=0.001)target.currentTime=target.duration;
  const ready=new Promise((resolve,reject)=>{let timer;const events=['seeked','ended','canplay','loadeddata'];const clean=()=>{clearTimeout(timer);for(const name of events)target.removeEventListener(name,inspect);target.removeEventListener('error',bad);signal?.removeEventListener('abort',bad);};const bad=()=>{clean();reject(new Error('CIM-PANE-MEDIA-UNAVAILABLE'));};const inspect=()=>{if(check()){clean();resolve();}};for(const name of events)target.addEventListener(name,inspect);target.addEventListener('error',bad);signal?.addEventListener('abort',bad,{once:true});timer=setTimeout(bad,timeoutMs);if(signal?.aborted)bad();else inspect();});
  await ready;
 }
