@@ -91,4 +91,4 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
 
 // A pending native seek must not be synchronously reset: WebKit can block inside load().
 // Paused, detached elements and revoked Blob URLs can be released by the browser without that reset.
-export function retireMediaElement(target){target.pause();target.removeAttribute('src');if(!target.seeking)target.load();}
+export function retireMediaElement(target){target.pause();target.removeAttribute('src');if(target.readyState===4&&!target.seeking)target.load();}
