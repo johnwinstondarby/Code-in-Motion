@@ -52,7 +52,7 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
   loading=Promise.race([work,bounded]).catch(error=>{if(!disposed&&revision===token&&(!signal.aborted||timedOut)){fallback(descriptor.alt);media?.release();media=null;}throw error;}).finally(()=>{clearTimeout(expiry);if(revision===token)loading=null;});
   return loading;
  }
- async function finalStill(){if(!video||failed)return;authorizedPlayback=false;video.pause();const target=video;const ready=waitReady(target,['seeked','ended'],()=>!target.seeking&&target.readyState>=2&&Math.abs(target.currentTime-target.duration)<0.15,io?.signal);target.currentTime=target.duration;await ready;}
+ async function finalStill(){if(!video||failed)return;authorizedPlayback=false;const target=video;await settleFinalVideoFrame(target,{signal:io?.signal,timeoutMs});}
  function settle(state){requireMounted();cancelPlay();const next=readonlyPaneData(state);const version=revision;
   if(!next?.asset){++revision;clear();asset=null;failed=false;frame('No GUI recording has played yet.');return;}
   if(next.asset===asset&&(failed||media&&!loading)){if(video&&!failed)finalStill().catch(()=>{if(!disposed&&revision===version)fallback(next.alt);});return;}
@@ -72,13 +72,14 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
    const playNative=()=>{if(done||finalising||!clockRunning)return;authorizedPlayback=true;current.play().then(()=>{if(!done&&!clockRunning)pinPause();},error=>{if(done)return;if(!clockRunning)pinPause();else if(error.name!=='AbortError')fail();});};
    listen('waiting',()=>{if(done||finalising)return;emit(true);clearTimeout(bufferTimer);bufferTimer=setTimeout(fail,timeoutMs);});
    listen('canplay',()=>{clearTimeout(bufferTimer);emit(false);});listen('error',fail);
-   listen('ended',()=>{if(context.clock.now()-start>=descriptor.duration*1000)task.finish({status:'settled'});});
+   const finishAtEnd=()=>{if(done||finalising)return;finalising=true;finalStill().then(()=>task.finish({status:'settled'}),fail);};
+   listen('ended',()=>{if(context.clock.now()-start>=descriptor.duration*1000)finishAtEnd();});
    offAbort=context.cancellation.onAbort(reason=>task.finish({status:'cancelled',reason}));
    if(done)return;current.currentTime=0;
    if(typeof context.clock.observe!=='function'){fail();return;}
    offClock=context.clock.observe(({running})=>{clockRunning=running;if(running)playNative();else pinPause();});
    function tick(){if(done)return;const elapsed=context.clock.now()-start;
-    if(elapsed>=descriptor.duration*1000){finalising=true;finalStill().then(()=>task.finish({status:'settled'}),fail);return;}
+    if(elapsed>=descriptor.duration*1000){finishAtEnd();return;}
     if(Math.abs(current.currentTime-elapsed/1000)>0.15)current.currentTime=elapsed/1000;
     scheduled=context.clock.schedule(tick,Math.min(40,descriptor.duration*1000-elapsed));
    }
@@ -93,11 +94,13 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
 // Paused, detached elements and revoked Blob URLs can be released by the browser without that reset.
 function pauseRetiredPlay(){this.pause();this.onplay=null;}
 function pauseRetiredPlaying(){this.pause();this.onplaying=null;}
-export function retireMediaElement(target){target.onplay=pauseRetiredPlay;target.onplaying=pauseRetiredPlaying;target.pause();target.removeAttribute('src');if(target.readyState===4&&!target.seeking)target.load();}
+export function retireMediaElement(target){target.onplay=pauseRetiredPlay;target.onplaying=pauseRetiredPlaying;target.pause();target.removeAttribute('src');}
 
-// Existing final-seek ordering, factored for the recorded regression before its fix.
+// Completion waits for the requested final frame, without re-seeking an already final frame.
 export async function settleFinalVideoFrame(target,{signal,timeoutMs=2500}={}){
  target.pause();const check=()=>!target.seeking&&target.readyState>=2&&Math.abs(target.currentTime-target.duration)<0.15;
- const ready=new Promise((resolve,reject)=>{let timer;const events=['seeked','ended'];const clean=()=>{clearTimeout(timer);for(const name of events)target.removeEventListener(name,inspect);target.removeEventListener('error',bad);signal?.removeEventListener('abort',bad);};const bad=()=>{clean();reject(new Error('CIM-PANE-MEDIA-UNAVAILABLE'));};const inspect=()=>{if(check()){clean();resolve();}};for(const name of events)target.addEventListener(name,inspect);target.addEventListener('error',bad);signal?.addEventListener('abort',bad,{once:true});timer=setTimeout(bad,timeoutMs);if(signal?.aborted)bad();else inspect();});
- target.currentTime=target.duration;await ready;
+ if(signal?.aborted)throw new Error('CIM-PANE-MEDIA-UNAVAILABLE');if(check())return;
+ if(!target.seeking||Math.abs(target.currentTime-target.duration)>=0.15)target.currentTime=target.duration;
+ const ready=new Promise((resolve,reject)=>{let timer;const events=['seeked','ended','canplay','loadeddata'];const clean=()=>{clearTimeout(timer);for(const name of events)target.removeEventListener(name,inspect);target.removeEventListener('error',bad);signal?.removeEventListener('abort',bad);};const bad=()=>{clean();reject(new Error('CIM-PANE-MEDIA-UNAVAILABLE'));};const inspect=()=>{if(check()){clean();resolve();}};for(const name of events)target.addEventListener(name,inspect);target.addEventListener('error',bad);signal?.addEventListener('abort',bad,{once:true});timer=setTimeout(bad,timeoutMs);if(signal?.aborted)bad();else inspect();});
+ await ready;
 }
