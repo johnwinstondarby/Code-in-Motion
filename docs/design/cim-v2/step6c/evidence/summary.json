@@ -1,0 +1,39 @@
+{
+  "source": "d71fc58",
+  "node20": {
+    "passed": 1058,
+    "skipped": 0
+  },
+  "node22": {
+    "passed": 1058,
+    "skipped": 0
+  },
+  "v1": {
+    "identical": 41,
+    "different": 0
+  },
+  "browsers": {
+    "chromium": {
+      "passed": 146,
+      "skipped": 0,
+      "composition_passed": 21,
+      "new_probes_caught": 18
+    },
+    "firefox": {
+      "passed": 145,
+      "skipped": 1,
+      "composition_passed": 21,
+      "new_probes_caught": 18
+    },
+    "webkit": {
+      "passed": 145,
+      "skipped": 1,
+      "composition_passed": 21,
+      "new_probes_caught": 18
+    }
+  },
+  "skip": "Existing native clipboard permission proof is Chromium-only.",
+  "firefox_observation": "One native-start precondition failed in the first full run; three isolated repeats and a full serial rerun passed, with no test/code change.",
+  "issue98": "Not observed in accepted runs; the native retirement finding is separate.",
+  "ci": "Pending exact final draft head."
+}

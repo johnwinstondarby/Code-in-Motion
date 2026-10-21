@@ -1,0 +1,5 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+  1 passed (3.6s)

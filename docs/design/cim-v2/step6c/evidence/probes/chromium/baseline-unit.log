@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: [CMP-01] dual copies validate independently against both checkers
+ok 1 - [CMP-01] dual copies validate independently against both checkers
+  ---
+  duration_ms: 37.615338
+  type: 'test'
+  ...
+# Subtest: [CMP-02] both copies and both captions count and durations agree
+ok 2 - [CMP-02] both copies and both captions count and durations agree
+  ---
+  duration_ms: 10.076598
+  type: 'test'
+  ...
+# Subtest: [CMP-03] fixture shape diagnostics never say deferred and null remains safe
+ok 3 - [CMP-03] fixture shape diagnostics never say deferred and null remains safe
+  ---
+  duration_ms: 3.85264
+  type: 'test'
+  ...
+# Subtest: [CMP-04] coordinator is real source and harness delegates without engine imports
+ok 4 - [CMP-04] coordinator is real source and harness delegates without engine imports
+  ---
+  duration_ms: 2.105101
+  type: 'test'
+  ...
+# Subtest: [CMP-05] capture-derived geometry has no invented arrows or self arrows
+ok 5 - [CMP-05] capture-derived geometry has no invented arrows or self arrows
+  ---
+  duration_ms: 10.0072
+  type: 'test'
+  ...
+# Subtest: [CMP-06] verification and movement wording name what really happened
+ok 6 - [CMP-06] verification and movement wording name what really happened
+  ---
+  duration_ms: 0.083958
+  type: 'test'
+  ...
+# Subtest: [CMP-13] missing records never get silently filled or skipped
+ok 7 - [CMP-13] missing records never get silently filled or skipped
+  ---
+  duration_ms: 5.347867
+  type: 'test'
+  ...
+# Subtest: [CMP-05] a real placeholder transfer has a capture-owned arrow
+ok 8 - [CMP-05] a real placeholder transfer has a capture-owned arrow
+  ---
+  duration_ms: 6.845282
+  type: 'test'
+  ...
+# Subtest: [CMP-14] pack preflight checks the alternative and its own captions
+ok 9 - [CMP-14] pack preflight checks the alternative and its own captions
+  ---
+  duration_ms: 23.186154
+  type: 'test'
+  ...
+# Subtest: [CMP-15] retiring a pending seek never synchronously resets its decoder
+ok 10 - [CMP-15] retiring a pending seek never synchronously resets its decoder
+  ---
+  duration_ms: 4.849394
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1601.655246

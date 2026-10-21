@@ -1,0 +1,51 @@
+TAP version 13
+# Subtest: [CMP-05] capture-derived geometry has no invented arrows or self arrows
+not ok 1 - [CMP-05] capture-derived geometry has no invented arrows or self arrows
+  ---
+  duration_ms: 13.338579
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/firefox/candidate-KIUokD/tests/composition.test.mjs:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + [
+    +   'prove-custody-run',
+    +   'prove-custody-commit',
+    +   'prove-custody-job',
+    +   'prove-custody-metrics'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'prove-custody-run'
+    1: 'prove-custody-commit'
+    2: 'prove-custody-job'
+    3: 'prove-custody-metrics'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/firefox/candidate-KIUokD/tests/composition.test.mjs:16:323)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: [CMP-05] a real placeholder transfer has a capture-owned arrow
+ok 2 - [CMP-05] a real placeholder transfer has a capture-owned arrow
+  ---
+  duration_ms: 7.76171
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1595.604953

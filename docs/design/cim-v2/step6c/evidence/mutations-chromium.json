@@ -1,0 +1,97 @@
+{
+  "node": "v22.23.2",
+  "browser": "chromium",
+  "baseline": "passed",
+  "results": [
+    {
+      "id": "CMP-15-retired-pause",
+      "rule": "CMP-15",
+      "caught": true
+    },
+    {
+      "id": "CMP-15-seek-reset",
+      "rule": "CMP-15",
+      "caught": true
+    },
+    {
+      "id": "CMP-14-file-caption",
+      "rule": "CMP-14",
+      "caught": true
+    },
+    {
+      "id": "CMP-01-caption",
+      "rule": "CMP-01",
+      "caught": true
+    },
+    {
+      "id": "CMP-02-total",
+      "rule": "CMP-02",
+      "caught": true
+    },
+    {
+      "id": "CMP-02-duration",
+      "rule": "CMP-02",
+      "caught": true
+    },
+    {
+      "id": "CMP-03-diagnostic",
+      "rule": "CMP-03",
+      "caught": true
+    },
+    {
+      "id": "CMP-05-arrow",
+      "rule": "CMP-05",
+      "caught": true
+    },
+    {
+      "id": "CMP-06-wording",
+      "rule": "CMP-06",
+      "caught": true
+    },
+    {
+      "id": "CMP-13-missing",
+      "rule": "CMP-13",
+      "caught": true
+    },
+    {
+      "id": "CMP-07-hidden",
+      "rule": "CMP-07",
+      "caught": true
+    },
+    {
+      "id": "CMP-07-duplicate",
+      "rule": "CMP-07",
+      "caught": true
+    },
+    {
+      "id": "CMP-08-details",
+      "rule": "CMP-08",
+      "caught": true
+    },
+    {
+      "id": "CMP-09-choice",
+      "rule": "CMP-09",
+      "caught": true
+    },
+    {
+      "id": "CMP-10-second-hash",
+      "rule": "CMP-10",
+      "caught": true
+    },
+    {
+      "id": "CMP-09-webm-caption",
+      "rule": "CMP-09",
+      "caught": true
+    },
+    {
+      "id": "CMP-11-cues",
+      "rule": "CMP-11",
+      "caught": true
+    },
+    {
+      "id": "CMP-12-deadline",
+      "rule": "CMP-12",
+      "caught": true
+    }
+  ]
+}

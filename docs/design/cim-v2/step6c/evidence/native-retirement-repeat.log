@@ -1,0 +1,16 @@
+
+Running 12 tests using 1 worker
+
+[1/12] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+[2/12] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+[3/12] tests/e2e/composition.spec.mjs:38:2 › 1536x864 › [CMP-11] graphical states flows text cues holds and reduced motion
+[4/12] tests/e2e/composition.spec.mjs:40:2 › 1536x864 › [CMP-15] navigation during a final seek returns without blocking the page
+[5/12] tests/e2e/composition.spec.mjs:38:2 › 1920x1080 › [CMP-11] graphical states flows text cues holds and reduced motion
+[6/12] tests/e2e/composition.spec.mjs:40:2 › 1920x1080 › [CMP-15] navigation during a final seek returns without blocking the page
+[7/12] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+[8/12] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+[9/12] tests/e2e/composition.spec.mjs:38:2 › 1536x864 › [CMP-11] graphical states flows text cues holds and reduced motion
+[10/12] tests/e2e/composition.spec.mjs:40:2 › 1536x864 › [CMP-15] navigation during a final seek returns without blocking the page
+[11/12] tests/e2e/composition.spec.mjs:38:2 › 1920x1080 › [CMP-11] graphical states flows text cues holds and reduced motion
+[12/12] tests/e2e/composition.spec.mjs:40:2 › 1920x1080 › [CMP-15] navigation during a final seek returns without blocking the page
+  12 passed (21.7s)
