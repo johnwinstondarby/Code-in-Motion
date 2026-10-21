@@ -1,0 +1,54 @@
+TAP version 13
+# Subtest: [CMP-15] retiring a pending seek never synchronously resets its decoder
+not ok 1 - [CMP-15] retiring a pending seek never synchronously resets its decoder
+  ---
+  duration_ms: 22.7089
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\composition.test.mjs:25:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/composition.test.mjs:25:649)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [CMP-16] final-frame completion never restarts an already-final seek
+not ok 2 - [CMP-16] final-frame completion never restarts an already-final seek
+  ---
+  duration_ms: 1.0152
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\composition.test.mjs:27:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    An already settled final frame must not start another seek
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/composition.test.mjs:27:634)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 155.4423
