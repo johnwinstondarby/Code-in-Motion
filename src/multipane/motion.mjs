@@ -8,7 +8,7 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
  const observers=new Set(),offEvents=[];
  const emit=buffering=>{for(const fn of [...observers])fn(Object.freeze({buffering}));};
  function cancelPlay(reason='cancelled'){active?.finish({status:'cancelled',reason});}
- function clear(){authorizedPlayback=false;cancelPlay();io?.abort();io=null;for(const off of offEvents.splice(0))off();if(video){video.pause();video.removeAttribute('src');video.load();}video=null;media?.release();media=null;}
+ function clear(){authorizedPlayback=false;cancelPlay();io?.abort();io=null;for(const off of offEvents.splice(0))off();if(video)retireMediaElement(video);video=null;media?.release();media=null;}
  function element(tag,text,attrs={}){const node=root.ownerDocument.createElement(tag);if(text!==null)node.textContent=text;for(const[k,v]of Object.entries(attrs))node.setAttribute(k,v);return node;}
  function frame(alt){const section=element('section',null,{class:'motion-pane','aria-label':'Motion recording and text alternative'});if(showHeading)section.append(element('h4',motionLabel(config.placeholder)));if(config.placeholder)section.append(element('strong','Placeholder content'));section.append(element('p',alt));root.replaceChildren(section);return section;}
  function fallback(alt){if(disposed)return;failed=true;video?.pause();const section=frame(alt??'No recording is available for this beat.');const details=element('details',null,{'data-media-details':''});details.append(element('summary','Show details'),element('p',code));section.append(element('p','GUI recording unavailable'),details);emit(false);}
@@ -43,7 +43,7 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
      if(!Number.isFinite(nextVideo.duration)||Math.abs(nextVideo.duration-selected.duration)>0.2)throw new Error(code);
      message.remove();emit(false);return;
     }catch(error){
-     nextVideo.pause();nextVideo.removeAttribute('src');nextVideo.load();nextVideo.remove();loaded.release();media=null;video=null;
+     retireMediaElement(nextVideo);nextVideo.remove();loaded.release();media=null;video=null;
      if(index+1>=choices.length||signal.aborted||performance.now()>=deadline)throw error;
     }
    }
@@ -89,5 +89,6 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
  return Object.freeze({pane,prepare,observe(fn){if(typeof fn!=='function')throw new TypeError('Readiness observer must be a function.');observers.add(fn);return()=>observers.delete(fn);}});
 }
 
-// Existing native reset sequence, factored for a deterministic retirement regression.
-export function retireMediaElement(target){target.pause();target.removeAttribute('src');target.load();}
+// A pending native seek must not be synchronously reset: WebKit can block inside load().
+// Paused, detached elements and revoked Blob URLs can be released by the browser without that reset.
+export function retireMediaElement(target){target.pause();target.removeAttribute('src');if(!target.seeking)target.load();}
