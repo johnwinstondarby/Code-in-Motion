@@ -1,0 +1,31 @@
+/* Desktop-only private composition; below 1366px the page scrolls, never stacks. */
+[data-composed-player]{min-width:1350px;height:calc(100vh - 16px);grid-template-rows:24px minmax(250px,1.2fr) minmax(330px,1fr) 48px;gap:4px;padding:8px}
+[data-composed-player] [data-mp-context-row]{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+[data-composed-player] [data-mp-action]{position:relative;grid-template-rows:38px minmax(0,1fr)}
+[data-composed-player] [role=tablist]{z-index:2;align-items:center;background:#0b1017}
+[data-composed-player] [data-action-heading]{margin-left:auto;border:0;font-size:14px}
+[data-composed-player] [role=tabpanel]{position:relative;z-index:1;min-width:0;min-height:0;background:#111c28}
+[data-composed-player] [data-mp-panel=motion][hidden]{display:flex!important;position:absolute;inset:38px 0 0;z-index:0;pointer-events:none}
+[data-composed-player] [data-mp-panel]>div,[data-composed-player] [data-mp-context]>div{flex:1;overflow:auto;min-height:0;min-width:0}
+[data-composed-player] .motion-pane{height:100%;min-height:0;display:flex;flex-direction:column;align-items:center;padding:4px 8px;box-sizing:border-box;font-size:14px}
+[data-composed-player] .motion-pane p{margin:2px 0}
+[data-composed-player] .motion-pane strong{font-size:12px;flex:none}
+[data-composed-player] video{display:block;flex:none;min-height:0;width:auto;height:calc(100% - 44px);max-width:100%;object-fit:contain;aspect-ratio:16/9}
+[data-composed-player] video::cue{font-size:18px;background:#000e;color:white}
+[data-composed-player] details{align-self:stretch}
+[data-composed-player] summary{cursor:pointer}
+[data-composed-player] [data-mp-context=explanation] p{font-size:16px;line-height:1.5;margin:10px;white-space:pre-wrap}
+[data-composed-player] [data-mp-panel=console]>div{font:15px/1.4 ui-monospace,monospace;padding:8px;white-space:pre-wrap;overflow-wrap:anywhere;background:#000}
+[data-composed-player] [data-role=output]{display:block}
+[data-composed-player] .engineering-diagram{padding:6px;font-size:14px}
+[data-composed-player] .engineering-diagram h4{font-size:14px;margin:0 8px 0 0}
+[data-composed-player] .engineering-diagram>p{font-size:12px;margin:0}
+[data-composed-player] .engineering-flows p{font-size:13px;line-height:1.2;margin:1px 0}
+[data-composed-player] .engineering-edge{display:none}
+[data-composed-player] .engineering-graph svg{display:block;width:100%;height:190px;max-height:190px}
+
+[data-composed-player] [data-mp-wait]:empty{display:none}
+
+[data-composed-player] .engineering-diagram strong{font-size:12px;padding:0 4px}
+[data-composed-player] .engineering-flows p{font-size:12px;line-height:1.1}
+[data-composed-player] .engineering-diagram summary{margin:2px 0}

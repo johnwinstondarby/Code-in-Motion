@@ -1,0 +1,34 @@
+TAP version 13
+# Subtest: [CMP-02] both copies and both captions count and durations agree
+not ok 1 - [CMP-02] both copies and both captions count and durations agree
+  ---
+  duration_ms: 11.771429
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:13:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(validateMediaMap(m).some(d=>d.id==='CIM-MEDIA-DURATION'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:13:122)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2141.780388

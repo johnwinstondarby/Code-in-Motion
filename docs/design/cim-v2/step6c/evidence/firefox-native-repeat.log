@@ -1,0 +1,7 @@
+
+Running 3 tests using 1 worker
+
+[1/3] tests/e2e/motion-pane.spec.mjs:54:2 › 1536x864 › [MOT-18] native playback cannot override a paused shared clock
+[2/3] tests/e2e/motion-pane.spec.mjs:54:2 › 1536x864 › [MOT-18] native playback cannot override a paused shared clock
+[3/3] tests/e2e/motion-pane.spec.mjs:54:2 › 1536x864 › [MOT-18] native playback cannot override a paused shared clock
+  3 passed (8.3s)

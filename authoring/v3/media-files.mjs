@@ -7,7 +7,7 @@ const inside=(root,path)=>{const part=relative(root,path);return part!==''&&!isA
 export async function validateMediaFiles(map,directory){
  const diagnostics=validateMediaMap(map);if(diagnostics.length)throw new Error(diagnostics[0].id+' at '+diagnostics[0].path+': '+diagnostics[0].message);
  const root=await realpath(directory);
- for(const[i,clip]of map.assets.entries())for(const[descriptor,path]of [[clip,`$.assets[${i}]`],[clip.captions,`$.assets[${i}].captions`]]){
+ for(const[i,clip]of map.assets.entries())for(const[descriptor,path]of [[clip,`$.assets[${i}]`],[clip.captions,`$.assets[${i}].captions`],...(clip.webm?[[clip.webm,`$.assets[${i}].webm`],[clip.webm.captions,`$.assets[${i}].webm.captions`]]:[])]){
   if(descriptor.source.type==='attachment')continue; // Site access/attachment validation is deliberately deferred.
   const requested=resolve(root,descriptor.source.path);let file;try{file=await realpath(requested);}catch{reject('CIM-MEDIA-SOURCE',path+'.source','Media file is missing.');}
   if(!inside(root,file))reject('CIM-MEDIA-SOURCE',path+'.source','Resolved media link escapes the pack.');

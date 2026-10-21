@@ -1,5 +1,5 @@
 // Opt-in experimental fixture controls. No WordPress/legacy entry point imports this.
-export function mountMultiPaneControls({root,session,experience,slots,instanceId}) {
+export function mountMultiPaneControls({root,session,experience,slots,instanceId,composed=false}) {
   if(experience.renderer!=='panes/v1'||!instanceId||!/^[a-z0-9-]+$/.test(instanceId))throw new TypeError('Controls require a panes fixture and safe instance identity.');
   const document=root.ownerDocument,cleanups=[];let disposed=false;
   const element=(tag,attrs={},text)=>{const node=document.createElement(tag);for(const [key,value]of Object.entries(attrs))node.setAttribute(key,value);if(text!==undefined)node.textContent=text;return node;};
@@ -16,11 +16,11 @@ export function mountMultiPaneControls({root,session,experience,slots,instanceId
     const tab=button(p.type==='console/v1'?'Console – CLI':'Motion – GUI',()=>command({type:'tab',tab:p.id}),{role:'tab',id:tabId,'aria-controls':panelId,'data-mp-tab':p.id});
     const panel=element('section',{role:'tabpanel',id:panelId,'aria-labelledby':tabId,'data-mp-panel':p.id});
     const label=element('h3',{},p.type==='console/v1'?'Console':'Placeholder GUI · simulated'),wait=element('p',{'data-mp-wait':p.id});
-    panel.append(label,slots[p.id],wait);panels.set(p.id,panel);waits.set(p.id,wait);tabs.push(tab);tablist.append(tab);
+    if(!composed)panel.append(label);panel.append(slots[p.id],wait);panels.set(p.id,panel);waits.set(p.id,wait);tabs.push(tab);tablist.append(tab);
   }
-  action.append(tablist,...panels.values());
+  const sharedLabel=element('h3',{'data-action-heading':''},'Console');if(composed)tablist.append(sharedLabel);action.append(tablist,...panels.values());
   const contexts=element('div',{'data-mp-context-row':''});
-  for(const p of config.filter(p=>!actions.includes(p))){const panel=element('section',{'data-mp-context':p.id,'aria-label':p.type==='explanation/v1'?'Explanation':'Diagram'});panel.append(element('h3',{},p.type==='explanation/v1'?'Explanation':'Diagram · modeled (test stub)'),slots[p.id]);contexts.append(panel);}
+  for(const p of config.filter(p=>!actions.includes(p))){const panel=element('section',{'data-mp-context':p.id,'aria-label':p.type==='explanation/v1'?'Explanation':'Diagram'});if(!composed||p.type==='explanation/v1')panel.append(element('h3',{},p.type==='explanation/v1'?'Explanation':'Diagram · modeled (test stub)'));panel.append(slots[p.id]);contexts.append(panel);}
   const bar=element('nav',{'data-mp-transport':'','aria-label':'Lesson controls'}),identity=element('span',{'data-mp-identity':'',title:experience.presentation.title},experience.presentation.title),buttons=element('div',{'data-mp-buttons':''}),status=element('output',{'data-mp-status':'','aria-live':'polite'});
   const previous=button('Previous',()=>command({type:'previous'}),{'data-mp-command':'previous'});
   const playback=button('Play',()=>command({type:session.read().playing?'pause':'play'}),{'data-mp-command':'playback'});
@@ -60,6 +60,7 @@ export function mountMultiPaneControls({root,session,experience,slots,instanceId
   on(root,'keydown',event=>{if(event.key==='Escape'&&session.read().panelOpen){event.preventDefault();closeMenu();}});
   function update(state){
     if(disposed)return;
+    if(composed)sharedLabel.textContent=state.tab==='motion'?(experience.renderer_config.placeholder.enabled?'Placeholder GUI · simulated':'Recorded in the lab'):'Console – CLI';
     for(let i=0;i<tabs.length;i++){
       const id=actions[i].id,selected=state.tab===id;
       tabs[i].setAttribute('aria-selected',String(selected));tabs[i].tabIndex=selected?0:-1;panels.get(id).hidden=!selected;

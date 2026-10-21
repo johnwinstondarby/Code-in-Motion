@@ -1,0 +1,166 @@
+TAP version 13
+# Subtest: [CMP-01] dual copies validate independently against both checkers
+not ok 1 - [CMP-01] dual copies validate independently against both checkers
+  ---
+  duration_ms: 17.4635
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\composition.test.mjs:11:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + [
+    +   {
+    +     fix: 'Use the documented closed fixture media-map fields and distinct lowercase clip IDs.',
+    +     id: 'CIM-MEDIA-SHAPE',
+    +     message: 'Invalid clip fields or text alternative. Fix: Use the documented closed fixture media-map fields and distinct lowercase clip IDs.',
+    +     path: '$.assets[0]'
+    +   }
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0:
+      id: 'CIM-MEDIA-SHAPE'
+      path: '$.assets[0]'
+      fix: 'Use the documented closed fixture media-map fields and distinct lowercase clip IDs.'
+      message: 'Invalid clip fields or text alternative. Fix: Use the documented closed fixture media-map fields and distinct lowercase clip IDs.'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/composition.test.mjs:11:101)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: [CMP-02] both copies and both captions count and durations agree
+not ok 2 - [CMP-02] both copies and both captions count and durations agree
+  ---
+  duration_ms: 3.7303
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\composition.test.mjs:12:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(validateMediaMap(m).some(d=>d.id==='CIM-MEDIA-DURATION'))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/composition.test.mjs:12:122)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [CMP-03] fixture shape diagnostics never say deferred and null remains safe
+ok 3 - [CMP-03] fixture shape diagnostics never say deferred and null remains safe
+  ---
+  duration_ms: 1.2918
+  type: 'test'
+  ...
+# Subtest: [CMP-04] coordinator is real source and harness delegates without engine imports
+not ok 4 - [CMP-04] coordinator is real source and harness delegates without engine imports
+  ---
+  duration_ms: 13.7908
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\composition.test.mjs:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /createMediaBarrier/. Input:
+    
+    '// Step 6c inert coordinator stub for the recorded red run.\n' +
+      'export function createMotionCoordinator(){return {}; }\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    // Step 6c inert coordinator stub for the recorded red run.
+    export function createMotionCoordinator(){return {}; }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/composition.test.mjs:14:197)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [CMP-05] capture-derived geometry has no invented arrows or self arrows
+not ok 5 - [CMP-05] capture-derived geometry has no invented arrows or self arrows
+  ---
+  duration_ms: 0.2454
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\composition.test.mjs:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/composition.test.mjs:15:92)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [CMP-06] verification and movement wording name what really happened
+not ok 6 - [CMP-06] verification and movement wording name what really happened
+  ---
+  duration_ms: 0.1004
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\composition.test.mjs:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/composition.test.mjs:16:89)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 1
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 168.4482

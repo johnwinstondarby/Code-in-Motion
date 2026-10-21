@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+(node:72904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\composition.spec.mjs:34:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface (5.1s)
+
+
+  1) tests\e2e\composition.spec.mjs:34:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('[data-composed-player]')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('[data-composed-player]') with timeout 5000ms
+      - waiting for locator('[data-composed-player]')
+
+
+      32 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+      33 |  test.use({viewport:{width,height}});
+    > 34 |  test('[CMP-07] composed layout and graph stay contained with accessible selected surface',async({page},info)=>{await open(page,'?single');await expect(page.locator('[data-composed-player]')).toBeVisible();await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();await expect(page.locator('[data-mp-context="engineering"] svg')).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:info.outputPath('console.png')});await gui(page);await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-action-heading]')).toHaveText('Placeholder GUI · simulated');await expect(page.locator('.motion-pane h4')).toHaveCount(0);const v=await page.locator('video').boundingBox();expect(v.width).toBeGreaterThan(400);expect(v.width/v.height).toBeCloseTo(16/9,1);await page.screenshot({path:info.outputPath('motion.png')});await page.evaluate(()=>fixture.advance(2000));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>fixture.session.dispatch({type:'next'}));await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');await page.screenshot({path:info.outputPath('hold.png')});});
+         |                                                                                                                                                                                                 ^
+      35 |  test('[CMP-08] fallback details are collapsed and disclosure never changes transport',async({page},info)=>{for(const mode of ['missing','tampered','undecodable','timeout']){if(mode==='timeout')await page.route('**/__cim_fixture_media/timeout.*',r=>new Promise(resolve=>setTimeout(()=>r.abort().then(resolve),1500)));await open(page,'?mode='+mode);await gui(page);const p=page.locator('.motion-pane');await expect(p).toContainText('GUI recording unavailable');const d=p.locator('details');await expect(d).not.toHaveAttribute('open','');await expect(d.locator('p')).not.toBeVisible();await page.screenshot({path:info.outputPath(mode+'-closed.png')});const before=await page.evaluate(()=>fixture.session.read());await d.locator('summary').focus();await page.keyboard.press('Enter');await expect(d.locator('p')).toBeVisible();expect(await page.evaluate(()=>fixture.session.read().tab)).toBe(before.tab);await expect(d.locator('summary')).toBeFocused();await page.screenshot({path:info.outputPath(mode+'-open.png')});await page.unrouteAll({behavior:'ignoreErrors'});}});
+      36 |  test('[CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking',async({page})=>{const requests=[];page.on('request',r=>{if(r.url().includes('/__cim_fixture_media/'))requests.push(r.url());});await open(page,'?no-h264');await gui(page);await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);expect(await page.locator('video').evaluate(v=>v.currentSrc.startsWith('blob:'))).toBe(true);expect(requests.some(u=>u.endsWith('.webm'))).toBe(true);expect(requests.some(u=>u.endsWith('.mp4'))).toBe(false);await open(page,'?no-h264&mode=tampered');await gui(page);await expect(page.locator('.motion-pane')).toContainText('GUI recording unavailable');await expect(page.locator('video')).toHaveCount(0);});
+      37 |  test('[CMP-10] decode retry verifies the second copy but fingerprint failure is terminal',async({page})=>{await open(page,'?mode=decode-retry');await gui(page);await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);expect(await page.locator('video').evaluate(v=>v.currentSrc.startsWith('blob:'))).toBe(true);await open(page,'?mode=tampered');await gui(page);await expect(page.locator('.motion-pane')).toContainText('GUI recording unavailable');});
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\composition.spec.mjs:34:193
+
+    Error Context: test-results\tests-e2e-composition-1366-a21db-accessible-selected-surface\error-context.md
+
+    Error Context: test-results\tests-e2e-composition-1366-a21db-accessible-selected-surface\error-context.md
+
+  1 failed
+    tests\e2e\composition.spec.mjs:34:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface 

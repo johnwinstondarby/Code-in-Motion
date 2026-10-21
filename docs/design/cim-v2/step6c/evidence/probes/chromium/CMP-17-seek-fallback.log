@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+  1) tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.motion-pane')
+    Expected substring: "GUI recording unavailable"
+    Received string:    "Placeholder contentSecond simulated GUI clip: metadata view, not lab evidence."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('.motion-pane') with timeout 5000ms
+      - waiting for locator('.motion-pane')
+        - locator resolved to <section class="motion-pane" aria-label="Motion recording and text alternative">…</section>
+        - unexpected value "Placeholder contentSecond simulated GUI clip: metadata view, not lab evidence.Preparing verified recording"
+        13 × locator resolved to <section class="motion-pane" aria-label="Motion recording and text alternative">…</section>
+           - unexpected value "Placeholder contentSecond simulated GUI clip: metadata view, not lab evidence."
+
+
+      41 |  test('[CMP-15] navigation during a final seek returns without blocking the page',async({page})=>{await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);let finished=false;await page.exposeFunction('navigationFinished',()=>{finished=true;});await page.evaluate(()=>{const v=document.querySelector('video');window.retiredVideo=v;v.addEventListener('seeking',()=>{fixture.session.dispatch({type:'jump',index:7});window.navigationFinished();},{once:true});v.currentTime=v.duration/2;});await expect.poll(()=>finished,{timeout:1200}).toBe(true);expect(await page.evaluate(()=>fixture.session.read().index)).toBe(7);await page.waitForTimeout(150);expect(await page.evaluate(()=>window.retiredVideo.paused)).toBe(true);});
+      42 |
+    > 43 |  test('[CMP-17] a failed absolute final seek shows fallback without blocking navigation',async({page},info)=>{await open(page,'?seek-fail');await page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:7});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('.motion-pane')).toContainText('GUI recording unavailable');await expect(page.locator('.motion-pane details')).not.toHaveAttribute('open','');expect(await page.evaluate(()=>fixture.session.read().index)).toBe(7);await expect(page.getByRole('button',{name:'Next',exact:true})).toBeEnabled();await page.screenshot({path:info.outputPath('seek-failure-closed.png')});await page.locator('.motion-pane summary').click();await page.screenshot({path:info.outputPath('seek-failure-open.png')});});
+         |                                                                                                                                                                                                                                                                                                                        ^
+      44 | });
+      45 |
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/chromium/candidate-MgUWFn/tests/e2e/composition.spec.mjs:43:312
+
+    Error Context: ../browser-results/tests-e2e-composition-1366-a2751-without-blocking-navigation/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-composition-1366-a2751-without-blocking-navigation/error-context.md
+
+
+  1 failed
+    tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation 

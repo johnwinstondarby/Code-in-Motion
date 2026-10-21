@@ -1,0 +1,722 @@
+[
+  {
+    "file": "screenshots/chromium/1366-console.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-diagram-held.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-diagram-moving.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-hold.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-missing-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-missing-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-motion.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-reduced.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-seek-failure-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-seek-failure-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-tampered-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-tampered-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-timeout-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-timeout-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-undecodable-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-undecodable-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1536-console.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-diagram-held.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-diagram-moving.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-hold.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-missing-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-missing-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-motion.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-reduced.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-seek-failure-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-seek-failure-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-tampered-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-tampered-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-timeout-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-timeout-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-undecodable-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-undecodable-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1920-console.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-diagram-held.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-diagram-moving.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-hold.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-missing-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-missing-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-motion.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-reduced.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-seek-failure-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-seek-failure-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-tampered-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-tampered-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-timeout-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-timeout-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-undecodable-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-undecodable-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1366-console.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-diagram-held.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-diagram-moving.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-hold.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-missing-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-missing-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-motion.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-reduced.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-seek-failure-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-seek-failure-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-tampered-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-tampered-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-timeout-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-timeout-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-undecodable-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-undecodable-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1536-console.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-diagram-held.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-diagram-moving.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-hold.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-missing-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-missing-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-motion.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-reduced.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-seek-failure-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-seek-failure-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-tampered-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-tampered-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-timeout-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-timeout-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-undecodable-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-undecodable-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1920-console.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-diagram-held.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-diagram-moving.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-hold.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-missing-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-missing-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-motion.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-reduced.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-seek-failure-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-seek-failure-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-tampered-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-tampered-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-timeout-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-timeout-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-undecodable-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-undecodable-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1366-console.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-diagram-held.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-diagram-moving.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-hold.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-missing-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-missing-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-motion.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-reduced.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-seek-failure-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-seek-failure-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-tampered-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-tampered-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-timeout-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-timeout-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-undecodable-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-undecodable-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1536-console.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-diagram-held.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-diagram-moving.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-hold.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-missing-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-missing-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-motion.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-reduced.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-seek-failure-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-seek-failure-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-tampered-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-tampered-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-timeout-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-timeout-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-undecodable-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-undecodable-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1920-console.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-diagram-held.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-diagram-moving.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-hold.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-missing-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-missing-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-motion.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-reduced.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-seek-failure-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-seek-failure-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-tampered-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-tampered-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-timeout-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-timeout-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-undecodable-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-undecodable-open.png",
+    "width": 1920,
+    "height": 1080
+  }
+]

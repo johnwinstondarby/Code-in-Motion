@@ -1,0 +1,12 @@
+
+Running 8 tests using 1 worker
+
+[1/8] tests/e2e/composition.spec.mjs:35:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[2/8] tests/e2e/composition.spec.mjs:36:2 › 1366x768 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[3/8] tests/e2e/composition.spec.mjs:37:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[4/8] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[5/8] tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+[6/8] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+[7/8] tests/e2e/composition.spec.mjs:41:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+[8/8] tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+  8 passed (8.7s)

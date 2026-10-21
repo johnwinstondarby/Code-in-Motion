@@ -1,0 +1,18 @@
+file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-composition-mutations.mjs:28
+for(const[id,file,from,to,rule,kind='unit']of cases){const path=resolve(sandbox,file),original=await readFile(path,'utf8');if(!original.includes(from))throw new Error('Missing probe target '+id);let result;try{let mutated=original.replaceAll(from,to);if(id==='CMP-13-missing')mutated=mutated.replace("if(canonical(state)!==canonical(beat.state))fail('Claimed state differs from capture-derived state.');",'').replace("if(used.size!==records.size)fail('Unused capture record.');",'');if(id==='CMP-12-deadline')mutated=mutated.replace('const requestController=io,deadline=performance.now()+timeoutMs;','const requestController=io;let deadline=performance.now()+timeoutMs;').replace('},timeoutMs);','},timeoutMs*3);');await writeFile(path,mutated);result=run(rule,kind);}finally{await writeFile(path,original);}const output=result.stdout+result.stderr,caught=result.status!==0&&/ERR_ASSERTION|AssertionError|Error: expect\(|Error: expect\.poll/.test(output)&&!/SyntaxError|ReferenceError|TypeError: Assignment to constant/.test(output);await writeFile(resolve(work,id+'.log'),output);if(!caught)throw new Error('Probe survived or crashed: '+id+'\n'+output);results.push({id,rule,caught});}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+
+Error: Probe survived or crashed: CMP-09-webm-caption
+
+Running 1 test using 1 worker
+
+
+
+[1/1] tests\e2e\composition.spec.mjs:36:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+  1 passed (809ms)
+(node:78920) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+    at file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-composition-mutations.mjs:28:1099
+
+Node.js v22.23.2

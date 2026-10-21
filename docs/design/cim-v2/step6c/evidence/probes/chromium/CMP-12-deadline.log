@@ -1,0 +1,38 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+  1) tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.motion-pane')
+    Expected substring: "GUI recording unavailable"
+    Received string:    "Placeholder contentSimulated GUI test pattern. No real lab activity is shown."
+    Timeout: 4500ms
+
+    Call log:
+      - Expect "toContainText" locator('.motion-pane') with timeout 4500ms
+      - waiting for locator('.motion-pane')
+        10 × locator resolved to <section class="motion-pane" aria-label="Motion recording and text alternative">…</section>
+           - unexpected value "Placeholder contentSimulated GUI test pattern. No real lab activity is shown.Preparing verified recording"
+        3 × locator resolved to <section class="motion-pane" aria-label="Motion recording and text alternative">…</section>
+          - unexpected value "Placeholder contentSimulated GUI test pattern. No real lab activity is shown."
+
+
+      38 |  test('[CMP-10] decode retry verifies the second copy but fingerprint failure is terminal',async({page})=>{await open(page,'?mode=decode-retry');await gui(page);await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);expect(await page.locator('video').evaluate(v=>v.currentSrc.startsWith('blob:'))).toBe(true);expect(await page.locator('video').evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''))).toBe(motionFixture().map.assets[0].sha256);await open(page,'?mode=decode-retry-tampered');await gui(page);await expect(page.locator('.motion-pane')).toContainText('GUI recording unavailable');await open(page,'?mode=mp4-tampered');await gui(page);await expect(page.locator('.motion-pane')).toContainText('GUI recording unavailable');await open(page,'?mode=mp4-tampered&no-h264');await gui(page);await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);expect(await page.locator('video').evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''))).toBe(motionFixture().map.assets[0].sha256);});
+      39 |  test('[CMP-11] graphical states flows text cues holds and reduced motion',async({page},info)=>{await open(page);await page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:1});fixture.session.dispatch({type:'play'});});await expect(page.locator('[data-diagram-svg]')).toBeVisible();await expect(page.locator('[data-diagram-svg] title')).toHaveCount(1);await expect(page.locator('[data-diagram-svg] desc')).toHaveCount(1);const cues=await page.locator('[data-status-cue]').allTextContents();expect(cues.length).toBeGreaterThan(0);for(const text of cues)expect(text).toMatch(/[■×✓◆◎▣○].*:/);const rows=page.locator('.engineering-flows');await expect(rows).not.toContainText('login → login');await expect.poll(()=>page.evaluate(()=>fixture.clockEvents.length)).toBeGreaterThan(0);await page.evaluate(()=>fixture.advance(0));await expect(page.locator('[data-graph-token]')).toHaveCount(1);expect(await page.locator('[data-graph-token]').evaluate(t=>{const b=t.getBoundingClientRect();return t.ownerDocument.elementFromPoint(b.x+b.width/2,b.y+b.height/2)===t;})).toBe(true);await page.screenshot({path:info.outputPath('diagram-moving.png')});await page.evaluate(()=>fixture.session.dispatch({type:'jump',index:7}));const box=await page.locator('[data-diagram-svg]').boundingBox(),panel=await page.locator('[data-mp-context=engineering]').boundingBox();expect(box.y+box.height).toBeLessThanOrEqual(panel.y+panel.height);await page.evaluate(()=>fixture.advance(300));await page.evaluate(()=>fixture.session.dispatch({type:'jump',index:4}));const prior=await page.locator('[data-diagram-svg]').innerHTML();await page.evaluate(()=>fixture.session.dispatch({type:'next'}));expect(await page.evaluate(()=>fixture.session.read().index)).toBe(5);await expect(page.locator('.engineering-flows')).toContainText('Waiting on next diagram action');await expect(page.locator('[data-diagram-svg] [data-flow-record]')).toHaveCount(0);await page.screenshot({path:info.outputPath('diagram-held.png')});await page.emulateMedia({reducedMotion:'reduce'});await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);expect(await page.locator('video').evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('reduced.png')});});
+    > 40 |  test('[CMP-12] decode retry shares the original preparation deadline',async({page})=>{await page.route('**/__cim_fixture_media/decode-retry.*',async route=>{await new Promise(r=>setTimeout(r,1400));try{await route.continue();}catch{}});await open(page,'?mode=decode-retry&retry-deadline');await gui(page);await expect(page.locator('.motion-pane')).toContainText('GUI recording unavailable',{timeout:4500});await expect(page.locator('video')).toHaveCount(0);});
+         |                                                                                                                                                                                                                                                                                                                                                              ^
+      41 |  test('[CMP-15] navigation during a final seek returns without blocking the page',async({page})=>{await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('video')?.readyState>=2);let finished=false;await page.exposeFunction('navigationFinished',()=>{finished=true;});await page.evaluate(()=>{const v=document.querySelector('video');window.retiredVideo=v;v.addEventListener('seeking',()=>{fixture.session.dispatch({type:'jump',index:7});window.navigationFinished();},{once:true});v.currentTime=v.duration/2;});await expect.poll(()=>finished,{timeout:1200}).toBe(true);expect(await page.evaluate(()=>fixture.session.read().index)).toBe(7);await page.waitForTimeout(150);expect(await page.evaluate(()=>window.retiredVideo.paused)).toBe(true);});
+      42 |
+      43 |  test('[CMP-17] a failed absolute final seek shows fallback without blocking navigation',async({page},info)=>{await open(page,'?seek-fail');await page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:7});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('.motion-pane')).toContainText('GUI recording unavailable');await expect(page.locator('.motion-pane details')).not.toHaveAttribute('open','');expect(await page.evaluate(()=>fixture.session.read().index)).toBe(7);await expect(page.getByRole('button',{name:'Next',exact:true})).toBeEnabled();await page.screenshot({path:info.outputPath('seek-failure-closed.png')});await page.locator('.motion-pane summary').click();await page.screenshot({path:info.outputPath('seek-failure-open.png')});});
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/chromium/candidate-MgUWFn/tests/e2e/composition.spec.mjs:40:350
+
+    Error Context: ../browser-results/tests-e2e-composition-1366-dbc2e-iginal-preparation-deadline/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-composition-1366-dbc2e-iginal-preparation-deadline/error-context.md
+
+
+  1 failed
+    tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline 

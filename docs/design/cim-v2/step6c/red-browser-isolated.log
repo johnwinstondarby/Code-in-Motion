@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:43324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 tests\e2e\composition.spec.mjs:34:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface (8.0s)
+
+
+  1) tests\e2e\composition.spec.mjs:34:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface 
+
+    Test timeout of 8000ms exceeded.
+
+    Error: page.waitForFunction: Test timeout of 8000ms exceeded.
+
+      28 |  const path=resolve(root,'.'+decodeURIComponent(url.pathname));if(!path.startsWith(root+sep)){res.writeHead(403).end();return;}try{res.setHeader('Content-Type',extname(path)==='.css'?'text/css':'text/javascript');res.end(await readFile(path));}catch{res.writeHead(404).end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));origin='http://127.0.0.1:'+server.address().port;});
+      29 | test.afterAll(async()=>new Promise(r=>server.close(r)));
+    > 30 | const open=async(page,query='')=>{await page.goto(origin+query);await page.waitForFunction(()=>window.fixture?.session);};
+         |                                                                            ^
+      31 | const gui=page=>page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:1});fixture.session.dispatch({type:'play'});});
+      32 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+      33 |  test.use({viewport:{width,height}});
+        at open (C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\composition.spec.mjs:30:76)
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\composition.spec.mjs:34:113
+
+    Error Context: test-results\tests-e2e-composition-1366-a21db-accessible-selected-surface\error-context.md
+
+    Error Context: test-results\tests-e2e-composition-1366-a21db-accessible-selected-surface\error-context.md
+
+  1 failed
+    tests\e2e\composition.spec.mjs:34:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface 

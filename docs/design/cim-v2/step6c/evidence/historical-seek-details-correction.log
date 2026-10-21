@@ -1,0 +1,9 @@
+
+Running 1 test using 1 worker
+
+
+
+(node:42536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1/1] tests\e2e\composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+  1 passed (878ms)

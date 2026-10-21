@@ -1,0 +1,18 @@
+file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-composition-mutations.mjs:28
+for(const[id,file,from,to,rule,kind='unit']of cases){const path=resolve(sandbox,file),original=await readFile(path,'utf8');if(!original.includes(from))throw new Error('Missing probe target '+id);let result;try{let mutated=original.replaceAll(from,to);if(id==='CMP-13-missing')mutated=mutated.replace("if(canonical(state)!==canonical(beat.state))fail('Claimed state differs from capture-derived state.');",'').replace("if(used.size!==records.size)fail('Unused capture record.');",'');if(id==='CMP-12-deadline')mutated=mutated.replace('const requestController=io,deadline=performance.now()+timeoutMs;','const requestController=io;let deadline=performance.now()+timeoutMs;').replace('},timeoutMs);','},timeoutMs*3);');await writeFile(path,mutated);result=run(rule,kind);}finally{await writeFile(path,original);}const output=result.stdout+result.stderr,caught=result.status!==0&&/ERR_ASSERTION|AssertionError|Error: expect\(|Error: expect\.poll/.test(output)&&!/SyntaxError|ReferenceError|TypeError: Assignment to constant/.test(output);await writeFile(resolve(work,id+'.log'),output);if(!caught)throw new Error('Probe survived or crashed: '+id+'\n'+output);results.push({id,rule,caught});}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+
+Error: Probe survived or crashed: CMP-13-missing
+✔ [CMP-13] missing records never get silently filled or skipped (5.5652ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 108.4806
+
+    at file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-composition-mutations.mjs:28:1099
+
+Node.js v24.15.0

@@ -1,0 +1,1232 @@
+﻿2026-10-21T05:35:28.3257132Z Current runner version: '2.338.0'
+2026-10-21T05:35:28.3280616Z ##[group]Runner Image Provisioner
+2026-10-21T05:35:28.3281384Z Hosted Compute Agent
+2026-10-21T05:35:28.3282075Z Version: 20261015.610
+2026-10-21T05:35:28.3282671Z Commit: 267fdb4e8bbec4ab5ea31367f3a00d5c480c7656
+2026-10-21T05:35:28.3283384Z Build Date: 2026-10-14T17:06:54Z
+2026-10-21T05:35:28.3284007Z Worker ID: {2a9b53e8-a0d6-4037-a289-343dd8950179}
+2026-10-21T05:35:28.3284797Z Region: centralus
+2026-10-21T05:35:28.3285365Z Cloud: Azure
+2026-10-21T05:35:28.3285858Z ##[endgroup]
+2026-10-21T05:35:28.3287181Z ##[group]Operating System
+2026-10-21T05:35:28.3287804Z Ubuntu
+2026-10-21T05:35:28.3288286Z 24.04.5
+2026-10-21T05:35:28.3288836Z LTS
+2026-10-21T05:35:28.3289304Z ##[endgroup]
+2026-10-21T05:35:28.3289787Z ##[group]Runner Image
+2026-10-21T05:35:28.3290359Z Image: ubuntu-24.04
+2026-10-21T05:35:28.3290880Z Version: 20261018.339.1
+2026-10-21T05:35:28.3292075Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261018.339/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-21T05:35:28.3293425Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261018.339
+2026-10-21T05:35:28.3294327Z ##[endgroup]
+2026-10-21T05:35:28.3295634Z ##[group]GITHUB_TOKEN Permissions
+2026-10-21T05:35:28.3297572Z Contents: read
+2026-10-21T05:35:28.3298117Z Metadata: read
+2026-10-21T05:35:28.3298673Z ##[endgroup]
+2026-10-21T05:35:28.3300623Z Secret source: Actions
+2026-10-21T05:35:28.3301557Z Cache mode: write
+2026-10-21T05:35:28.3302196Z Prepare workflow directory
+2026-10-21T05:35:28.3610291Z Prepare all required actions
+2026-10-21T05:35:28.3658795Z Getting action download info
+2026-10-21T05:35:28.6241900Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-21T05:35:28.6926955Z Download action repository 'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020' (SHA:820762786026740c76f36085b0efc47a31fe5020)
+2026-10-21T05:35:28.8456712Z Complete job name: Browser firefox
+2026-10-21T05:35:28.9276742Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-21T05:35:28.9277683Z with:
+2026-10-21T05:35:28.9278129Z   repository: johnwinstondarby/Code-in-Motion
+2026-10-21T05:35:28.9281797Z   token: ***
+2026-10-21T05:35:28.9282183Z   ssh-strict: true
+2026-10-21T05:35:28.9282570Z   ssh-user: git
+2026-10-21T05:35:28.9282989Z   persist-credentials: true
+2026-10-21T05:35:28.9283423Z   clean: true
+2026-10-21T05:35:28.9283825Z   sparse-checkout-cone-mode: true
+2026-10-21T05:35:28.9284290Z   fetch-depth: 1
+2026-10-21T05:35:28.9284850Z   fetch-tags: false
+2026-10-21T05:35:28.9285264Z   show-progress: true
+2026-10-21T05:35:28.9285668Z   lfs: false
+2026-10-21T05:35:28.9286050Z   submodules: false
+2026-10-21T05:35:28.9286462Z   set-safe-directory: true
+2026-10-21T05:35:28.9286921Z   allow-unsafe-pr-checkout: false
+2026-10-21T05:35:28.9287607Z ##[endgroup]
+2026-10-21T05:35:29.0251783Z Syncing repository: johnwinstondarby/Code-in-Motion
+2026-10-21T05:35:29.0255167Z ##[group]Getting Git version info
+2026-10-21T05:35:29.0256491Z Working directory is '/home/runner/work/Code-in-Motion/Code-in-Motion'
+2026-10-21T05:35:29.0258283Z [command]/usr/bin/git version
+2026-10-21T05:35:29.0286065Z git version 2.55.0
+2026-10-21T05:35:29.0297036Z ##[endgroup]
+2026-10-21T05:35:29.0308710Z Temporarily overriding HOME='/home/runner/work/_temp/e3e06b9e-3eba-4861-9533-6b0d607eed1a' before making global git config changes
+2026-10-21T05:35:29.0311469Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-21T05:35:29.0316909Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Code-in-Motion/Code-in-Motion
+2026-10-21T05:35:29.0368699Z Deleting the contents of '/home/runner/work/Code-in-Motion/Code-in-Motion'
+2026-10-21T05:35:29.0370926Z ##[group]Determining repository object format
+2026-10-21T05:35:29.0372538Z ##[endgroup]
+2026-10-21T05:35:29.0373927Z ##[group]Initializing the repository
+2026-10-21T05:35:29.0376503Z [command]/usr/bin/git init /home/runner/work/Code-in-Motion/Code-in-Motion
+2026-10-21T05:35:29.0459710Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-21T05:35:29.0461163Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-21T05:35:29.0462310Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-21T05:35:29.0463200Z hint: call:
+2026-10-21T05:35:29.0463833Z hint:
+2026-10-21T05:35:29.0464761Z hint: 	git config --global init.defaultBranch <name>
+2026-10-21T05:35:29.0465557Z hint:
+2026-10-21T05:35:29.0466410Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-21T05:35:29.0467482Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-21T05:35:29.0468352Z hint:
+2026-10-21T05:35:29.0469057Z hint: 	git branch -m <name>
+2026-10-21T05:35:29.0469696Z hint:
+2026-10-21T05:35:29.0470434Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-21T05:35:29.0475321Z Initialized empty Git repository in /home/runner/work/Code-in-Motion/Code-in-Motion/.git/
+2026-10-21T05:35:29.0491587Z [command]/usr/bin/git remote add origin https://github.com/johnwinstondarby/Code-in-Motion
+2026-10-21T05:35:29.0525659Z ##[endgroup]
+2026-10-21T05:35:29.0526746Z ##[group]Disabling automatic garbage collection
+2026-10-21T05:35:29.0529617Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-21T05:35:29.0558351Z ##[endgroup]
+2026-10-21T05:35:29.0559667Z ##[group]Setting up auth
+2026-10-21T05:35:29.0560648Z Removing SSH command configuration
+2026-10-21T05:35:29.0563940Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-21T05:35:29.0592672Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-21T05:35:29.0913128Z Removing HTTP extra header
+2026-10-21T05:35:29.0915241Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-21T05:35:29.0943000Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-21T05:35:29.1134429Z Removing includeIf entries pointing to credentials config files
+2026-10-21T05:35:29.1139400Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-21T05:35:29.1173728Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-21T05:35:29.1363320Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-994aba75-2117-405a-9a5f-ed9a28246a5a.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-21T05:35:29.1397024Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path /home/runner/work/_temp/git-credentials-994aba75-2117-405a-9a5f-ed9a28246a5a.config
+2026-10-21T05:35:29.1423977Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-994aba75-2117-405a-9a5f-ed9a28246a5a.config
+2026-10-21T05:35:29.1453402Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-994aba75-2117-405a-9a5f-ed9a28246a5a.config
+2026-10-21T05:35:29.1480620Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-994aba75-2117-405a-9a5f-ed9a28246a5a.config
+2026-10-21T05:35:29.1505746Z ##[endgroup]
+2026-10-21T05:35:29.1506460Z ##[group]Fetching the repository
+2026-10-21T05:35:29.1512260Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6ba2f4ad70956e6825e99b0ea7899490847f5d28:refs/remotes/pull/100/merge
+2026-10-21T05:35:30.3239804Z From https://github.com/johnwinstondarby/Code-in-Motion
+2026-10-21T05:35:30.3243145Z  * [new ref]         6ba2f4ad70956e6825e99b0ea7899490847f5d28 -> pull/100/merge
+2026-10-21T05:35:30.3249354Z ##[endgroup]
+2026-10-21T05:35:30.3251769Z ##[group]Determining the checkout info
+2026-10-21T05:35:30.3254394Z ##[endgroup]
+2026-10-21T05:35:30.3256236Z [command]/usr/bin/git sparse-checkout disable
+2026-10-21T05:35:30.3304897Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-21T05:35:30.3337188Z ##[group]Checking out the ref
+2026-10-21T05:35:30.3340477Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/100/merge
+2026-10-21T05:35:30.4742946Z Note: switching to 'refs/remotes/pull/100/merge'.
+2026-10-21T05:35:30.4744002Z 
+2026-10-21T05:35:30.4745049Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-21T05:35:30.4747040Z changes and commit them, and you can discard any commits you make in this
+2026-10-21T05:35:30.4749039Z state without impacting any branches by switching back to a branch.
+2026-10-21T05:35:30.4750179Z 
+2026-10-21T05:35:30.4750925Z If you want to create a new branch to retain commits you create, you may
+2026-10-21T05:35:30.4752671Z do so (now or later) by using -c with the switch command. Example:
+2026-10-21T05:35:30.4753672Z 
+2026-10-21T05:35:30.4754101Z   git switch -c <new-branch-name>
+2026-10-21T05:35:30.4755076Z 
+2026-10-21T05:35:30.4755816Z Or undo this operation with:
+2026-10-21T05:35:30.4757088Z 
+2026-10-21T05:35:30.4757799Z   git switch -
+2026-10-21T05:35:30.4758790Z 
+2026-10-21T05:35:30.4760397Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-21T05:35:30.4762667Z 
+2026-10-21T05:35:30.4765195Z HEAD is now at 6ba2f4a Merge fa6d4c64bf17f4b81b076a75d0cbd2bc96939e94 into 9db0421e57f18e77cdbd6f2aa7a2d276ee574861
+2026-10-21T05:35:30.4772593Z ##[endgroup]
+2026-10-21T05:35:30.4814468Z [command]/usr/bin/git log -1 --format=%H
+2026-10-21T05:35:30.4838424Z 6ba2f4ad70956e6825e99b0ea7899490847f5d28
+2026-10-21T05:35:30.5115992Z ##[group]Run echo "CIM_R20_CONFIG=r20-wp-env.json" >> "${GITHUB_ENV}"
+2026-10-21T05:35:30.5118209Z [36;1mecho "CIM_R20_CONFIG=r20-wp-env.json" >> "${GITHUB_ENV}"[0m
+2026-10-21T05:35:30.5120385Z [36;1mecho "CIM_R20_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r20-artifact" >> "${GITHUB_ENV}"[0m
+2026-10-21T05:35:30.5122503Z [36;1mecho "CIM_R20_BROWSER=firefox" >> "${GITHUB_ENV}"[0m
+2026-10-21T05:35:30.5124217Z [36;1mecho "CIM_R20_WORDPRESS=7.1.1" >> "${GITHUB_ENV}"[0m
+2026-10-21T05:35:30.5125931Z [36;1mecho "CIM_R20_PHP=8.5" >> "${GITHUB_ENV}"[0m
+2026-10-21T05:35:30.5249368Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-21T05:35:30.5250973Z ##[endgroup]
+2026-10-21T05:35:30.5548924Z ##[group]Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+2026-10-21T05:35:30.5550514Z with:
+2026-10-21T05:35:30.5551395Z   node-version-file: .nvmrc
+2026-10-21T05:35:30.5552491Z   package-manager-cache: false
+2026-10-21T05:35:30.5553617Z   check-latest: false
+2026-10-21T05:35:30.5563190Z   token: ***
+2026-10-21T05:35:30.5564066Z env:
+2026-10-21T05:35:30.5565012Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:35:30.5566387Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:35:30.5567829Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:35:30.5568850Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:35:30.5569846Z   CIM_R20_PHP: 8.5
+2026-10-21T05:35:30.5570751Z ##[endgroup]
+2026-10-21T05:35:30.6762494Z Node version file is not JSON file
+2026-10-21T05:35:30.6764086Z Resolved .nvmrc as 22.23.2
+2026-10-21T05:35:30.6778117Z Attempting to download 22.23.2...
+2026-10-21T05:35:31.4722220Z Acquiring 22.23.2 - x64 from https://github.com/actions/node-versions/releases/download/22.23.2-30508424155/node-22.23.2-linux-x64.tar.gz
+2026-10-21T05:35:32.0586271Z Extracting ...
+2026-10-21T05:35:32.0696717Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/882c0832-2786-45b9-aeb3-13310b187ce7 -f /home/runner/work/_temp/2832df3a-5aa6-4efc-b5e2-ef25a11983f6
+2026-10-21T05:35:33.2291846Z Adding to the cache ...
+2026-10-21T05:35:34.4617973Z ##[group]Environment details
+2026-10-21T05:35:34.6809430Z node: v22.23.2
+2026-10-21T05:35:34.6809910Z npm: 10.9.8
+2026-10-21T05:35:34.6810129Z yarn: 1.22.22
+2026-10-21T05:35:34.6810635Z ##[endgroup]
+2026-10-21T05:35:34.6938593Z ##[group]Run npm ci --ignore-scripts --no-audit --no-fund
+2026-10-21T05:35:34.6939051Z [36;1mnpm ci --ignore-scripts --no-audit --no-fund[0m
+2026-10-21T05:35:34.6975167Z shell: /usr/bin/bash -e {0}
+2026-10-21T05:35:34.6975453Z env:
+2026-10-21T05:35:34.6975675Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:35:34.6976016Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:35:34.6976382Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:35:34.6976618Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:35:34.6976847Z   CIM_R20_PHP: 8.5
+2026-10-21T05:35:34.6977074Z ##[endgroup]
+2026-10-21T05:35:36.9542481Z npm warn deprecated @octokit/webhooks-types@7.6.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2026-10-21T05:35:38.0672498Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-10-21T05:35:40.7137630Z 
+2026-10-21T05:35:40.7138222Z added 393 packages in 6s
+2026-10-21T05:35:40.7474779Z ##[group]Run set -euo pipefail
+2026-10-21T05:35:40.7475126Z [36;1mset -euo pipefail[0m
+2026-10-21T05:35:40.7475379Z [36;1mnpm run build:wordpress[0m
+2026-10-21T05:35:40.7475828Z [36;1mVERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"[0m
+2026-10-21T05:35:40.7476336Z [36;1mecho "CIM_PLUGIN_VERSION=${VERSION}" >> "${GITHUB_ENV}"[0m
+2026-10-21T05:35:40.7508690Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-21T05:35:40.7509084Z env:
+2026-10-21T05:35:40.7509308Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:35:40.7509656Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:35:40.7509988Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:35:40.7510343Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:35:40.7510673Z   CIM_R20_PHP: 8.5
+2026-10-21T05:35:40.7510879Z ##[endgroup]
+2026-10-21T05:35:40.8390479Z 
+2026-10-21T05:35:40.8391085Z > code-in-motion@1.0.1 build:wordpress
+2026-10-21T05:35:40.8391573Z > node tools/build-wordpress-release.mjs
+2026-10-21T05:35:40.8391772Z 
+2026-10-21T05:35:41.5809285Z PASS: R13 WordPress release build (99 staged file(s), Node 22.23.2, code-in-motion-1.0.1.zip, SHA-256 d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a)
+2026-10-21T05:35:41.6154873Z ##[group]Run set -euo pipefail
+2026-10-21T05:35:41.6155197Z [36;1mset -euo pipefail[0m
+2026-10-21T05:35:41.6155516Z [36;1mZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"[0m
+2026-10-21T05:35:41.6155876Z [36;1m[0m
+2026-10-21T05:35:41.6156098Z [36;1mmkdir -p "${CIM_R20_ARTIFACT_DIR}"[0m
+2026-10-21T05:35:41.6156441Z [36;1mcp "dist/${ZIP_NAME}" "${CIM_R20_ARTIFACT_DIR}/${ZIP_NAME}"[0m
+2026-10-21T05:35:41.6156883Z [36;1mcp "dist/${ZIP_NAME}.sha256" "${CIM_R20_ARTIFACT_DIR}/${ZIP_NAME}.sha256"[0m
+2026-10-21T05:35:41.6157363Z [36;1m(cd "${CIM_R20_ARTIFACT_DIR}" && sha256sum --check "${ZIP_NAME}.sha256")[0m
+2026-10-21T05:35:41.6157716Z [36;1m[0m
+2026-10-21T05:35:41.6157934Z [36;1mnode --input-type=module <<'NODE'[0m
+2026-10-21T05:35:41.6158288Z [36;1mimport { writeFile } from 'node:fs/promises';[0m
+2026-10-21T05:35:41.6158572Z [36;1m[0m
+2026-10-21T05:35:41.6158767Z [36;1mconst config = {[0m
+2026-10-21T05:35:41.6159115Z [36;1m  $schema: 'https://schemas.wp.org/trunk/wp-env.json',[0m
+2026-10-21T05:35:41.6159535Z [36;1m  core: `WordPress/WordPress#${process.env.CIM_R20_WORDPRESS}`,[0m
+2026-10-21T05:35:41.6159927Z [36;1m  phpVersion: process.env.CIM_R20_PHP,[0m
+2026-10-21T05:35:41.6160342Z [36;1m  plugins: [],[0m
+2026-10-21T05:35:41.6160570Z [36;1m  port: 8894,[0m
+2026-10-21T05:35:41.6160809Z [36;1m  testsEnvironment: false,[0m
+2026-10-21T05:35:41.6161066Z [36;1m  config: {[0m
+2026-10-21T05:35:41.6161286Z [36;1m    WP_DEBUG: true,[0m
+2026-10-21T05:35:41.6161529Z [36;1m    SCRIPT_DEBUG: true[0m
+2026-10-21T05:35:41.6161772Z [36;1m  },[0m
+2026-10-21T05:35:41.6161978Z [36;1m  mappings: {[0m
+2026-10-21T05:35:41.6162286Z [36;1m    'wp-content/r20-artifact': process.env.CIM_R20_ARTIFACT_DIR[0m
+2026-10-21T05:35:41.6162622Z [36;1m  }[0m
+2026-10-21T05:35:41.6162804Z [36;1m};[0m
+2026-10-21T05:35:41.6162984Z [36;1m[0m
+2026-10-21T05:35:41.6163349Z [36;1mawait writeFile(process.env.CIM_R20_CONFIG, `${JSON.stringify(config, null, 2)}\n`, 'utf8');[0m
+2026-10-21T05:35:41.6163778Z [36;1mNODE[0m
+2026-10-21T05:35:41.6195221Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-21T05:35:41.6195559Z env:
+2026-10-21T05:35:41.6195774Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:35:41.6196130Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:35:41.6196463Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:35:41.6196696Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:35:41.6196918Z   CIM_R20_PHP: 8.5
+2026-10-21T05:35:41.6197134Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:35:41.6197366Z ##[endgroup]
+2026-10-21T05:35:41.6384908Z code-in-motion-1.0.1.zip: OK
+2026-10-21T05:35:41.6807186Z ##[group]Run npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
+2026-10-21T05:35:41.6807824Z [36;1mnpm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0[0m
+2026-10-21T05:35:41.6842329Z shell: /usr/bin/bash -e {0}
+2026-10-21T05:35:41.6842659Z env:
+2026-10-21T05:35:41.6842891Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:35:41.6843217Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:35:41.6843566Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:35:41.6843817Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:35:41.6844054Z   CIM_R20_PHP: 8.5
+2026-10-21T05:35:41.6844265Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:35:41.6844493Z ##[endgroup]
+2026-10-21T05:35:43.8924733Z 
+2026-10-21T05:35:43.8925360Z added 3 packages in 2s
+2026-10-21T05:35:43.9051641Z ##[group]Run npx playwright install --with-deps "${CIM_R20_BROWSER}"
+2026-10-21T05:35:43.9052122Z [36;1mnpx playwright install --with-deps "${CIM_R20_BROWSER}"[0m
+2026-10-21T05:35:43.9082935Z shell: /usr/bin/bash -e {0}
+2026-10-21T05:35:43.9083202Z env:
+2026-10-21T05:35:43.9083417Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:35:43.9083748Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:35:43.9084089Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:35:43.9084329Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:35:43.9084659Z   CIM_R20_PHP: 8.5
+2026-10-21T05:35:43.9084872Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:35:43.9085103Z ##[endgroup]
+2026-10-21T05:35:44.5798140Z Installing dependencies...
+2026-10-21T05:35:44.5853343Z Switching to root user to install dependencies...
+2026-10-21T05:35:44.6680549Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-21T05:35:44.6862441Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-21T05:35:44.6970367Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-21T05:35:44.6996607Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-10-21T05:35:44.7049531Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-10-21T05:35:44.7105740Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-10-21T05:35:44.8491349Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [565 kB]
+2026-10-21T05:35:45.0531677Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [628 kB]
+2026-10-21T05:35:45.0901726Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1397 kB]
+2026-10-21T05:35:45.1366366Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1704 kB]
+2026-10-21T05:35:45.1821737Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [342 kB]
+2026-10-21T05:35:45.1837657Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1145 kB]
+2026-10-21T05:35:45.2259089Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+2026-10-21T05:35:45.2285627Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1222 kB]
+2026-10-21T05:35:47.9331897Z Fetched 7616 kB in 1s (7177 kB/s)
+2026-10-21T05:35:48.8705440Z Reading package lists...
+2026-10-21T05:35:48.8998261Z Reading package lists...
+2026-10-21T05:35:49.0714183Z Building dependency tree...
+2026-10-21T05:35:49.0719449Z Reading state information...
+2026-10-21T05:35:49.2178313Z libasound2t64 is already the newest version (1.2.11-1ubuntu0.3).
+2026-10-21T05:35:49.2179479Z libasound2t64 set to manually installed.
+2026-10-21T05:35:49.2180481Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-21T05:35:49.2181302Z libatk1.0-0t64 set to manually installed.
+2026-10-21T05:35:49.2182232Z libcairo-gobject2 is already the newest version (1.18.0-3build1).
+2026-10-21T05:35:49.2183140Z libcairo-gobject2 set to manually installed.
+2026-10-21T05:35:49.2183809Z libcairo2 is already the newest version (1.18.0-3build1).
+2026-10-21T05:35:49.2184248Z libcairo2 set to manually installed.
+2026-10-21T05:35:49.2184997Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2026-10-21T05:35:49.2185479Z libdbus-1-3 set to manually installed.
+2026-10-21T05:35:49.2185956Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2026-10-21T05:35:49.2186441Z libfontconfig1 set to manually installed.
+2026-10-21T05:35:49.2186947Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+2026-10-21T05:35:49.2187435Z libfreetype6 set to manually installed.
+2026-10-21T05:35:49.2187983Z libgdk-pixbuf-2.0-0 is already the newest version (2.42.10+dfsg-3ubuntu3.3).
+2026-10-21T05:35:49.2188529Z libgdk-pixbuf-2.0-0 set to manually installed.
+2026-10-21T05:35:49.2189463Z libglib2.0-0t64 is already the newest version (2.80.0-6ubuntu3.9).
+2026-10-21T05:35:49.2189954Z libglib2.0-0t64 set to manually installed.
+2026-10-21T05:35:49.2190444Z libgtk-3-0t64 is already the newest version (3.24.41-4ubuntu1.3).
+2026-10-21T05:35:49.2190904Z libgtk-3-0t64 set to manually installed.
+2026-10-21T05:35:49.2191391Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-21T05:35:49.2191911Z libpango-1.0-0 set to manually installed.
+2026-10-21T05:35:49.2192524Z libpangocairo-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-21T05:35:49.2193038Z libpangocairo-1.0-0 set to manually installed.
+2026-10-21T05:35:49.2193544Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-10-21T05:35:49.2193985Z libx11-6 set to manually installed.
+2026-10-21T05:35:49.2194459Z libx11-xcb1 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-10-21T05:35:49.2195075Z libx11-xcb1 set to manually installed.
+2026-10-21T05:35:49.2195516Z libxcb-shm0 is already the newest version (1.15-1ubuntu2).
+2026-10-21T05:35:49.2195959Z libxcb-shm0 set to manually installed.
+2026-10-21T05:35:49.2196390Z libxcb1 is already the newest version (1.15-1ubuntu2).
+2026-10-21T05:35:49.2196809Z libxcb1 set to manually installed.
+2026-10-21T05:35:49.2197288Z libxcomposite1 is already the newest version (1:0.4.5-1build3).
+2026-10-21T05:35:49.2197765Z libxcomposite1 set to manually installed.
+2026-10-21T05:35:49.2198241Z libxcursor1 is already the newest version (1:1.2.1-1build1).
+2026-10-21T05:35:49.2198700Z libxcursor1 set to manually installed.
+2026-10-21T05:35:49.2199181Z libxdamage1 is already the newest version (1:1.1.6-1build1).
+2026-10-21T05:35:49.2199626Z libxdamage1 set to manually installed.
+2026-10-21T05:35:49.2200066Z libxext6 is already the newest version (2:1.3.4-1build2).
+2026-10-21T05:35:49.2200494Z libxext6 set to manually installed.
+2026-10-21T05:35:49.2201103Z libxfixes3 is already the newest version (1:6.0.0-2build1).
+2026-10-21T05:35:49.2201548Z libxfixes3 set to manually installed.
+2026-10-21T05:35:49.2201988Z libxi6 is already the newest version (2:1.8.1-1build1).
+2026-10-21T05:35:49.2202411Z libxi6 set to manually installed.
+2026-10-21T05:35:49.2202854Z libxrandr2 is already the newest version (2:1.5.2-2build1).
+2026-10-21T05:35:49.2203291Z libxrandr2 set to manually installed.
+2026-10-21T05:35:49.2203755Z libxrender1 is already the newest version (1:0.9.10-1.1build1).
+2026-10-21T05:35:49.2204200Z libxrender1 set to manually installed.
+2026-10-21T05:35:49.2204837Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2026-10-21T05:35:49.2205589Z fonts-liberation is already the newest version (1:2.1.5-3).
+2026-10-21T05:35:49.2206314Z fonts-liberation set to manually installed.
+2026-10-21T05:35:49.2206781Z The following additional packages will be installed:
+2026-10-21T05:35:49.2207352Z   libavutil58 libcodec2-1.2 libdav1d7 libgsm1 libhwy1t64 libjxl0.7 libmp3lame0
+2026-10-21T05:35:49.2208203Z   libopus0 librav1e0 librsvg2-2 libshine3 libsoxr0 libspeex1 libsvtav1enc1d1
+2026-10-21T05:35:49.2208907Z   libswresample4 libtheora0 libtwolame0 libva-drm2 libva-x11-2 libva2
+2026-10-21T05:35:49.2209635Z   libvdpau1 libvorbisenc2 libvpl2 libvpx9 libx264-164 libx265-199 libxvidcore4
+2026-10-21T05:35:49.2210541Z   libzvbi-common libzvbi0t64 ocl-icd-libopencl1 xfonts-encodings xfonts-utils
+2026-10-21T05:35:49.2211073Z   xserver-common
+2026-10-21T05:35:49.2211423Z Suggested packages:
+2026-10-21T05:35:49.2212159Z   libcuda1 libnvcuvid1 libnvidia-encode1 opus-tools librsvg2-bin speex
+2026-10-21T05:35:49.2212953Z   opencl-icd
+2026-10-21T05:35:49.2213460Z Recommended packages:
+2026-10-21T05:35:49.2214281Z   fonts-ipafont-mincho fonts-tlwg-loma librsvg2-common va-driver-all
+2026-10-21T05:35:49.2215873Z   | va-driver vdpau-driver-all | vdpau-driver xfonts-base
+2026-10-21T05:35:49.2425882Z The following NEW packages will be installed:
+2026-10-21T05:35:49.2426551Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-10-21T05:35:49.2427751Z   fonts-wqy-zenhei libavcodec60 libavutil58 libcodec2-1.2 libdav1d7 libgsm1
+2026-10-21T05:35:49.2431006Z   libhwy1t64 libjxl0.7 libmp3lame0 libopus0 librav1e0 librsvg2-2 libshine3
+2026-10-21T05:35:49.2431696Z   libsoxr0 libspeex1 libsvtav1enc1d1 libswresample4 libtheora0 libtwolame0
+2026-10-21T05:35:49.2432195Z   libva-drm2 libva-x11-2 libva2 libvdpau1 libvorbisenc2 libvpl2 libvpx9
+2026-10-21T05:35:49.2433029Z   libx264-164 libx265-199 libxvidcore4 libzvbi-common libzvbi0t64
+2026-10-21T05:35:49.2436255Z   ocl-icd-libopencl1 xfonts-cyrillic xfonts-encodings xfonts-scalable
+2026-10-21T05:35:49.2437058Z   xfonts-utils
+2026-10-21T05:35:49.2448500Z The following packages will be upgraded:
+2026-10-21T05:35:49.2449100Z   xserver-common xvfb
+2026-10-21T05:35:49.2606192Z 2 upgraded, 40 newly installed, 0 to remove and 43 not upgraded.
+2026-10-21T05:35:49.2606948Z Need to get 49.7 MB of archives.
+2026-10-21T05:35:49.2607667Z After this operation, 168 MB of additional disk space will be used.
+2026-10-21T05:35:49.2608438Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-21T05:35:49.3081417Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2026-10-21T05:35:49.3739593Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+2026-10-21T05:35:49.4614288Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2026-10-21T05:35:49.4936881Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+2026-10-21T05:35:49.5555624Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2026-10-21T05:35:49.6616974Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva2 amd64 2.20.0-2ubuntu0.2 [66.4 kB]
+2026-10-21T05:35:49.6944185Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva-drm2 amd64 2.20.0-2ubuntu0.2 [7124 B]
+2026-10-21T05:35:49.7260075Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva-x11-2 amd64 2.20.0-2ubuntu0.2 [12.0 kB]
+2026-10-21T05:35:49.7579357Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvdpau1 amd64 1.5-2build1 [27.8 kB]
+2026-10-21T05:35:49.7897847Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libvpl2 amd64 2023.3.0-1build1 [99.8 kB]
+2026-10-21T05:35:49.8220517Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 ocl-icd-libopencl1 amd64 2.3.2-1build1 [38.5 kB]
+2026-10-21T05:35:49.8535971Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavutil58 amd64 7:6.1.1-3ubuntu5 [401 kB]
+2026-10-21T05:35:49.8896706Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libcodec2-1.2 amd64 1.2.0-2build1 [8998 kB]
+2026-10-21T05:35:50.0092386Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdav1d7 amd64 1.4.1-1build1 [604 kB]
+2026-10-21T05:35:50.0465711Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgsm1 amd64 1.0.22-1build1 [27.8 kB]
+2026-10-21T05:35:50.0791446Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libhwy1t64 amd64 1.0.7-8.1build1 [584 kB]
+2026-10-21T05:35:50.1175440Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libjxl0.7 amd64 0.7.0-10.2ubuntu6.1 [1001 kB]
+2026-10-21T05:35:50.1617337Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libmp3lame0 amd64 3.100-6build1 [142 kB]
+2026-10-21T05:35:50.2381479Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libopus0 amd64 1.4-1build1 [208 kB]
+2026-10-21T05:35:50.2737960Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librav1e0 amd64 0.7.1-2 [1022 kB]
+2026-10-21T05:35:50.3183143Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 librsvg2-2 amd64 2.58.0+dfsg-1ubuntu0.1 [2141 kB]
+2026-10-21T05:35:50.3744050Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libshine3 amd64 3.1.1-2build1 [23.2 kB]
+2026-10-21T05:35:50.4065934Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libspeex1 amd64 1.2.1-2ubuntu2.24.04.1 [59.6 kB]
+2026-10-21T05:35:50.4385964Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsvtav1enc1d1 amd64 1.7.0+dfsg-2build1 [2425 kB]
+2026-10-21T05:35:50.4939372Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsoxr0 amd64 0.1.3-4build3 [80.0 kB]
+2026-10-21T05:35:50.5263790Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libswresample4 amd64 7:6.1.1-3ubuntu5 [63.8 kB]
+2026-10-21T05:35:50.5586353Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtheora0 amd64 1.1.1+dfsg.1-16.1build3 [211 kB]
+2026-10-21T05:35:50.5926352Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtwolame0 amd64 0.4.0-2build3 [52.3 kB]
+2026-10-21T05:35:50.6254164Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvorbisenc2 amd64 1.3.7-1build3 [80.8 kB]
+2026-10-21T05:35:50.6575591Z Get:31 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libvpx9 amd64 1.14.0-1ubuntu2.3 [1143 kB]
+2026-10-21T05:35:50.7005940Z Get:32 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx264-164 amd64 2:0.164.3108+git31e19f9-1 [604 kB]
+2026-10-21T05:35:50.7371628Z Get:33 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx265-199 amd64 3.5-2build1 [1226 kB]
+2026-10-21T05:35:50.7811944Z Get:34 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libxvidcore4 amd64 2:1.3.7-1build1 [219 kB]
+2026-10-21T05:35:50.8150204Z Get:35 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi-common all 0.2.42-2 [42.4 kB]
+2026-10-21T05:35:50.8467635Z Get:36 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi0t64 amd64 0.2.42-2 [261 kB]
+2026-10-21T05:35:50.8806374Z Get:37 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavcodec60 amd64 7:6.1.1-3ubuntu5 [5851 kB]
+2026-10-21T05:35:50.9707829Z Get:38 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-encodings all 1:1.0.5-0ubuntu2 [578 kB]
+2026-10-21T05:35:51.0553422Z Get:39 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-utils amd64 1:7.7+6build3 [94.4 kB]
+2026-10-21T05:35:51.0876243Z Get:40 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 xfonts-cyrillic all 1:1.0.5+nmu1 [384 kB]
+2026-10-21T05:35:51.1220541Z Get:41 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-scalable all 1:1.0.3-1.3 [304 kB]
+2026-10-21T05:35:51.1558306Z Get:42 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 xserver-common all 2:21.1.12-1ubuntu1.9 [35.0 kB]
+2026-10-21T05:35:51.1880000Z Get:43 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 xvfb amd64 2:21.1.12-1ubuntu1.9 [877 kB]
+2026-10-21T05:35:51.4629047Z Fetched 49.7 MB in 2s (25.6 MB/s)
+2026-10-21T05:35:51.4855432Z Selecting previously unselected package fonts-ipafont-gothic.
+2026-10-21T05:35:51.5014230Z (Reading database ... 
+2026-10-21T05:35:51.5014714Z (Reading database ... 5%
+2026-10-21T05:35:51.5015003Z (Reading database ... 10%
+2026-10-21T05:35:51.5015248Z (Reading database ... 15%
+2026-10-21T05:35:51.5016009Z (Reading database ... 20%
+2026-10-21T05:35:51.5016344Z (Reading database ... 25%
+2026-10-21T05:35:51.5016591Z (Reading database ... 30%
+2026-10-21T05:35:51.5016833Z (Reading database ... 35%
+2026-10-21T05:35:51.5017079Z (Reading database ... 40%
+2026-10-21T05:35:51.5017320Z (Reading database ... 45%
+2026-10-21T05:35:51.5017555Z (Reading database ... 50%
+2026-10-21T05:35:51.5055289Z (Reading database ... 55%
+2026-10-21T05:35:51.6409360Z (Reading database ... 60%
+2026-10-21T05:35:51.8856553Z (Reading database ... 65%
+2026-10-21T05:35:51.9449601Z (Reading database ... 70%
+2026-10-21T05:35:52.0769804Z (Reading database ... 75%
+2026-10-21T05:35:52.2810420Z (Reading database ... 80%
+2026-10-21T05:35:52.4620400Z (Reading database ... 85%
+2026-10-21T05:35:52.6328839Z (Reading database ... 90%
+2026-10-21T05:35:52.7976911Z (Reading database ... 95%
+2026-10-21T05:35:52.7977658Z (Reading database ... 100%
+2026-10-21T05:35:52.7978252Z (Reading database ... 214410 files and directories currently installed.)
+2026-10-21T05:35:52.8022166Z Preparing to unpack .../00-fonts-ipafont-gothic_00303-21ubuntu1_all.deb ...
+2026-10-21T05:35:52.8096944Z Unpacking fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-21T05:35:53.0382694Z Selecting previously unselected package fonts-freefont-ttf.
+2026-10-21T05:35:53.0498407Z Preparing to unpack .../01-fonts-freefont-ttf_20211204+svn4273-2_all.deb ...
+2026-10-21T05:35:53.0504475Z Unpacking fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-21T05:35:53.1245931Z Selecting previously unselected package fonts-tlwg-loma-otf.
+2026-10-21T05:35:53.1364885Z Preparing to unpack .../02-fonts-tlwg-loma-otf_1%3a0.7.3-1_all.deb ...
+2026-10-21T05:35:53.1370675Z Unpacking fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-21T05:35:53.1519907Z Selecting previously unselected package fonts-unifont.
+2026-10-21T05:35:53.1635718Z Preparing to unpack .../03-fonts-unifont_1%3a15.1.01-1build1_all.deb ...
+2026-10-21T05:35:53.1643142Z Unpacking fonts-unifont (1:15.1.01-1build1) ...
+2026-10-21T05:35:53.2560810Z Selecting previously unselected package fonts-wqy-zenhei.
+2026-10-21T05:35:53.2676980Z Preparing to unpack .../04-fonts-wqy-zenhei_0.9.45-8_all.deb ...
+2026-10-21T05:35:53.2755697Z Unpacking fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-21T05:35:53.7386562Z Selecting previously unselected package libva2:amd64.
+2026-10-21T05:35:53.7501984Z Preparing to unpack .../05-libva2_2.20.0-2ubuntu0.2_amd64.deb ...
+2026-10-21T05:35:53.7515691Z Unpacking libva2:amd64 (2.20.0-2ubuntu0.2) ...
+2026-10-21T05:35:53.7673683Z Selecting previously unselected package libva-drm2:amd64.
+2026-10-21T05:35:53.7788222Z Preparing to unpack .../06-libva-drm2_2.20.0-2ubuntu0.2_amd64.deb ...
+2026-10-21T05:35:53.7795391Z Unpacking libva-drm2:amd64 (2.20.0-2ubuntu0.2) ...
+2026-10-21T05:35:53.7935647Z Selecting previously unselected package libva-x11-2:amd64.
+2026-10-21T05:35:53.8049707Z Preparing to unpack .../07-libva-x11-2_2.20.0-2ubuntu0.2_amd64.deb ...
+2026-10-21T05:35:53.8053813Z Unpacking libva-x11-2:amd64 (2.20.0-2ubuntu0.2) ...
+2026-10-21T05:35:53.8193985Z Selecting previously unselected package libvdpau1:amd64.
+2026-10-21T05:35:53.8304399Z Preparing to unpack .../08-libvdpau1_1.5-2build1_amd64.deb ...
+2026-10-21T05:35:53.8309918Z Unpacking libvdpau1:amd64 (1.5-2build1) ...
+2026-10-21T05:35:53.8456994Z Selecting previously unselected package libvpl2.
+2026-10-21T05:35:53.8566156Z Preparing to unpack .../09-libvpl2_2023.3.0-1build1_amd64.deb ...
+2026-10-21T05:35:53.8570855Z Unpacking libvpl2 (2023.3.0-1build1) ...
+2026-10-21T05:35:53.8723701Z Selecting previously unselected package ocl-icd-libopencl1:amd64.
+2026-10-21T05:35:53.8832856Z Preparing to unpack .../10-ocl-icd-libopencl1_2.3.2-1build1_amd64.deb ...
+2026-10-21T05:35:53.8837985Z Unpacking ocl-icd-libopencl1:amd64 (2.3.2-1build1) ...
+2026-10-21T05:35:53.9010683Z Selecting previously unselected package libavutil58:amd64.
+2026-10-21T05:35:53.9119717Z Preparing to unpack .../11-libavutil58_7%3a6.1.1-3ubuntu5_amd64.deb ...
+2026-10-21T05:35:53.9124994Z Unpacking libavutil58:amd64 (7:6.1.1-3ubuntu5) ...
+2026-10-21T05:35:53.9309997Z Selecting previously unselected package libcodec2-1.2:amd64.
+2026-10-21T05:35:53.9420795Z Preparing to unpack .../12-libcodec2-1.2_1.2.0-2build1_amd64.deb ...
+2026-10-21T05:35:53.9429521Z Unpacking libcodec2-1.2:amd64 (1.2.0-2build1) ...
+2026-10-21T05:35:54.1450820Z Selecting previously unselected package libdav1d7:amd64.
+2026-10-21T05:35:54.1567065Z Preparing to unpack .../13-libdav1d7_1.4.1-1build1_amd64.deb ...
+2026-10-21T05:35:54.1573320Z Unpacking libdav1d7:amd64 (1.4.1-1build1) ...
+2026-10-21T05:35:54.1780835Z Selecting previously unselected package libgsm1:amd64.
+2026-10-21T05:35:54.1896731Z Preparing to unpack .../14-libgsm1_1.0.22-1build1_amd64.deb ...
+2026-10-21T05:35:54.1901602Z Unpacking libgsm1:amd64 (1.0.22-1build1) ...
+2026-10-21T05:35:54.2053378Z Selecting previously unselected package libhwy1t64:amd64.
+2026-10-21T05:35:54.2167538Z Preparing to unpack .../15-libhwy1t64_1.0.7-8.1build1_amd64.deb ...
+2026-10-21T05:35:54.2172262Z Unpacking libhwy1t64:amd64 (1.0.7-8.1build1) ...
+2026-10-21T05:35:54.2431289Z Selecting previously unselected package libjxl0.7:amd64.
+2026-10-21T05:35:54.2546956Z Preparing to unpack .../16-libjxl0.7_0.7.0-10.2ubuntu6.1_amd64.deb ...
+2026-10-21T05:35:54.2552566Z Unpacking libjxl0.7:amd64 (0.7.0-10.2ubuntu6.1) ...
+2026-10-21T05:35:54.2839972Z Selecting previously unselected package libmp3lame0:amd64.
+2026-10-21T05:35:54.2954430Z Preparing to unpack .../17-libmp3lame0_3.100-6build1_amd64.deb ...
+2026-10-21T05:35:54.2961605Z Unpacking libmp3lame0:amd64 (3.100-6build1) ...
+2026-10-21T05:35:54.3117663Z Selecting previously unselected package libopus0:amd64.
+2026-10-21T05:35:54.3232121Z Preparing to unpack .../18-libopus0_1.4-1build1_amd64.deb ...
+2026-10-21T05:35:54.3237214Z Unpacking libopus0:amd64 (1.4-1build1) ...
+2026-10-21T05:35:54.3398753Z Selecting previously unselected package librav1e0:amd64.
+2026-10-21T05:35:54.3512195Z Preparing to unpack .../19-librav1e0_0.7.1-2_amd64.deb ...
+2026-10-21T05:35:54.3520269Z Unpacking librav1e0:amd64 (0.7.1-2) ...
+2026-10-21T05:35:54.3782951Z Selecting previously unselected package librsvg2-2:amd64.
+2026-10-21T05:35:54.3897765Z Preparing to unpack .../20-librsvg2-2_2.58.0+dfsg-1ubuntu0.1_amd64.deb ...
+2026-10-21T05:35:54.3902715Z Unpacking librsvg2-2:amd64 (2.58.0+dfsg-1ubuntu0.1) ...
+2026-10-21T05:35:54.4298736Z Selecting previously unselected package libshine3:amd64.
+2026-10-21T05:35:54.4413909Z Preparing to unpack .../21-libshine3_3.1.1-2build1_amd64.deb ...
+2026-10-21T05:35:54.4420509Z Unpacking libshine3:amd64 (3.1.1-2build1) ...
+2026-10-21T05:35:54.4564361Z Selecting previously unselected package libspeex1:amd64.
+2026-10-21T05:35:54.4679138Z Preparing to unpack .../22-libspeex1_1.2.1-2ubuntu2.24.04.1_amd64.deb ...
+2026-10-21T05:35:54.4684425Z Unpacking libspeex1:amd64 (1.2.1-2ubuntu2.24.04.1) ...
+2026-10-21T05:35:54.4829065Z Selecting previously unselected package libsvtav1enc1d1:amd64.
+2026-10-21T05:35:54.4941764Z Preparing to unpack .../23-libsvtav1enc1d1_1.7.0+dfsg-2build1_amd64.deb ...
+2026-10-21T05:35:54.4947225Z Unpacking libsvtav1enc1d1:amd64 (1.7.0+dfsg-2build1) ...
+2026-10-21T05:35:54.5368143Z Selecting previously unselected package libsoxr0:amd64.
+2026-10-21T05:35:54.5482793Z Preparing to unpack .../24-libsoxr0_0.1.3-4build3_amd64.deb ...
+2026-10-21T05:35:54.5488478Z Unpacking libsoxr0:amd64 (0.1.3-4build3) ...
+2026-10-21T05:35:54.5637886Z Selecting previously unselected package libswresample4:amd64.
+2026-10-21T05:35:54.5752113Z Preparing to unpack .../25-libswresample4_7%3a6.1.1-3ubuntu5_amd64.deb ...
+2026-10-21T05:35:54.5757536Z Unpacking libswresample4:amd64 (7:6.1.1-3ubuntu5) ...
+2026-10-21T05:35:54.5915094Z Selecting previously unselected package libtheora0:amd64.
+2026-10-21T05:35:54.6037889Z Preparing to unpack .../26-libtheora0_1.1.1+dfsg.1-16.1build3_amd64.deb ...
+2026-10-21T05:35:54.6043458Z Unpacking libtheora0:amd64 (1.1.1+dfsg.1-16.1build3) ...
+2026-10-21T05:35:54.6216087Z Selecting previously unselected package libtwolame0:amd64.
+2026-10-21T05:35:54.6330206Z Preparing to unpack .../27-libtwolame0_0.4.0-2build3_amd64.deb ...
+2026-10-21T05:35:54.6335629Z Unpacking libtwolame0:amd64 (0.4.0-2build3) ...
+2026-10-21T05:35:54.6483745Z Selecting previously unselected package libvorbisenc2:amd64.
+2026-10-21T05:35:54.6596130Z Preparing to unpack .../28-libvorbisenc2_1.3.7-1build3_amd64.deb ...
+2026-10-21T05:35:54.6601281Z Unpacking libvorbisenc2:amd64 (1.3.7-1build3) ...
+2026-10-21T05:35:54.6763207Z Selecting previously unselected package libvpx9:amd64.
+2026-10-21T05:35:54.6873697Z Preparing to unpack .../29-libvpx9_1.14.0-1ubuntu2.3_amd64.deb ...
+2026-10-21T05:35:54.6878855Z Unpacking libvpx9:amd64 (1.14.0-1ubuntu2.3) ...
+2026-10-21T05:35:54.7140177Z Selecting previously unselected package libx264-164:amd64.
+2026-10-21T05:35:54.7252169Z Preparing to unpack .../30-libx264-164_2%3a0.164.3108+git31e19f9-1_amd64.deb ...
+2026-10-21T05:35:54.7258895Z Unpacking libx264-164:amd64 (2:0.164.3108+git31e19f9-1) ...
+2026-10-21T05:35:54.7464379Z Selecting previously unselected package libx265-199:amd64.
+2026-10-21T05:35:54.7575945Z Preparing to unpack .../31-libx265-199_3.5-2build1_amd64.deb ...
+2026-10-21T05:35:54.7582610Z Unpacking libx265-199:amd64 (3.5-2build1) ...
+2026-10-21T05:35:54.8139321Z Selecting previously unselected package libxvidcore4:amd64.
+2026-10-21T05:35:54.8254804Z Preparing to unpack .../32-libxvidcore4_2%3a1.3.7-1build1_amd64.deb ...
+2026-10-21T05:35:54.8259515Z Unpacking libxvidcore4:amd64 (2:1.3.7-1build1) ...
+2026-10-21T05:35:54.8430661Z Selecting previously unselected package libzvbi-common.
+2026-10-21T05:35:54.8545496Z Preparing to unpack .../33-libzvbi-common_0.2.42-2_all.deb ...
+2026-10-21T05:35:54.8552025Z Unpacking libzvbi-common (0.2.42-2) ...
+2026-10-21T05:35:54.9752762Z Selecting previously unselected package libzvbi0t64:amd64.
+2026-10-21T05:35:54.9868869Z Preparing to unpack .../34-libzvbi0t64_0.2.42-2_amd64.deb ...
+2026-10-21T05:35:54.9876322Z Unpacking libzvbi0t64:amd64 (0.2.42-2) ...
+2026-10-21T05:35:55.0050850Z Selecting previously unselected package libavcodec60:amd64.
+2026-10-21T05:35:55.0165094Z Preparing to unpack .../35-libavcodec60_7%3a6.1.1-3ubuntu5_amd64.deb ...
+2026-10-21T05:35:55.0174177Z Unpacking libavcodec60:amd64 (7:6.1.1-3ubuntu5) ...
+2026-10-21T05:35:55.0931035Z Selecting previously unselected package xfonts-encodings.
+2026-10-21T05:35:55.1047003Z Preparing to unpack .../36-xfonts-encodings_1%3a1.0.5-0ubuntu2_all.deb ...
+2026-10-21T05:35:55.1053142Z Unpacking xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-21T05:35:55.1246479Z Selecting previously unselected package xfonts-utils.
+2026-10-21T05:35:55.1361467Z Preparing to unpack .../37-xfonts-utils_1%3a7.7+6build3_amd64.deb ...
+2026-10-21T05:35:55.1369110Z Unpacking xfonts-utils (1:7.7+6build3) ...
+2026-10-21T05:35:55.1620136Z Selecting previously unselected package xfonts-cyrillic.
+2026-10-21T05:35:55.1735445Z Preparing to unpack .../38-xfonts-cyrillic_1%3a1.0.5+nmu1_all.deb ...
+2026-10-21T05:35:55.1740774Z Unpacking xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-21T05:35:55.1959969Z Selecting previously unselected package xfonts-scalable.
+2026-10-21T05:35:55.2073731Z Preparing to unpack .../39-xfonts-scalable_1%3a1.0.3-1.3_all.deb ...
+2026-10-21T05:35:55.2078510Z Unpacking xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-21T05:35:55.2352133Z Preparing to unpack .../40-xserver-common_2%3a21.1.12-1ubuntu1.9_all.deb ...
+2026-10-21T05:35:55.2364698Z Unpacking xserver-common (2:21.1.12-1ubuntu1.9) over (2:21.1.12-1ubuntu1.8) ...
+2026-10-21T05:35:55.2636397Z Preparing to unpack .../41-xvfb_2%3a21.1.12-1ubuntu1.9_amd64.deb ...
+2026-10-21T05:35:55.2648932Z Unpacking xvfb (2:21.1.12-1ubuntu1.9) over (2:21.1.12-1ubuntu1.8) ...
+2026-10-21T05:35:55.3123940Z Setting up libhwy1t64:amd64 (1.0.7-8.1build1) ...
+2026-10-21T05:35:55.3140569Z Setting up libspeex1:amd64 (1.2.1-2ubuntu2.24.04.1) ...
+2026-10-21T05:35:55.3152931Z Setting up libshine3:amd64 (3.1.1-2build1) ...
+2026-10-21T05:35:55.3164461Z Setting up libvpl2 (2023.3.0-1build1) ...
+2026-10-21T05:35:55.3177580Z Setting up libx264-164:amd64 (2:0.164.3108+git31e19f9-1) ...
+2026-10-21T05:35:55.3189808Z Setting up libtwolame0:amd64 (0.4.0-2build3) ...
+2026-10-21T05:35:55.3201781Z Setting up libgsm1:amd64 (1.0.22-1build1) ...
+2026-10-21T05:35:55.3213583Z Setting up libsoxr0:amd64 (0.1.3-4build3) ...
+2026-10-21T05:35:55.3226858Z Setting up libcodec2-1.2:amd64 (1.2.0-2build1) ...
+2026-10-21T05:35:55.3239029Z Setting up fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-21T05:35:55.3323653Z Setting up fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-21T05:35:55.3338481Z Setting up libsvtav1enc1d1:amd64 (1.7.0+dfsg-2build1) ...
+2026-10-21T05:35:55.3351274Z Setting up libxvidcore4:amd64 (2:1.3.7-1build1) ...
+2026-10-21T05:35:55.3363026Z Setting up librav1e0:amd64 (0.7.1-2) ...
+2026-10-21T05:35:55.3376274Z Setting up librsvg2-2:amd64 (2.58.0+dfsg-1ubuntu0.1) ...
+2026-10-21T05:35:55.3391213Z Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-21T05:35:55.3404722Z Setting up libva2:amd64 (2.20.0-2ubuntu0.2) ...
+2026-10-21T05:35:55.3417338Z Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-21T05:35:55.3430879Z Setting up libopus0:amd64 (1.4-1build1) ...
+2026-10-21T05:35:55.3443307Z Setting up libjxl0.7:amd64 (0.7.0-10.2ubuntu6.1) ...
+2026-10-21T05:35:55.3456282Z Setting up libx265-199:amd64 (3.5-2build1) ...
+2026-10-21T05:35:55.3468234Z Setting up libvpx9:amd64 (1.14.0-1ubuntu2.3) ...
+2026-10-21T05:35:55.3480416Z Setting up libdav1d7:amd64 (1.4.1-1build1) ...
+2026-10-21T05:35:55.3493993Z Setting up libva-drm2:amd64 (2.20.0-2ubuntu0.2) ...
+2026-10-21T05:35:55.3506700Z Setting up fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-21T05:35:55.3554770Z update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+2026-10-21T05:35:55.3566237Z Setting up ocl-icd-libopencl1:amd64 (2.3.2-1build1) ...
+2026-10-21T05:35:55.3579579Z Setting up libvdpau1:amd64 (1.5-2build1) ...
+2026-10-21T05:35:55.3597511Z Setting up libtheora0:amd64 (1.1.1+dfsg.1-16.1build3) ...
+2026-10-21T05:35:55.3612200Z Setting up xserver-common (2:21.1.12-1ubuntu1.9) ...
+2026-10-21T05:35:55.3625399Z Setting up libva-x11-2:amd64 (2.20.0-2ubuntu0.2) ...
+2026-10-21T05:35:55.3636210Z Setting up libzvbi-common (0.2.42-2) ...
+2026-10-21T05:35:55.3649350Z Setting up libmp3lame0:amd64 (3.100-6build1) ...
+2026-10-21T05:35:55.3661826Z Setting up libvorbisenc2:amd64 (1.3.7-1build3) ...
+2026-10-21T05:35:55.3674958Z Setting up fonts-unifont (1:15.1.01-1build1) ...
+2026-10-21T05:35:55.3687414Z Setting up libzvbi0t64:amd64 (0.2.42-2) ...
+2026-10-21T05:35:55.3700173Z Setting up xvfb (2:21.1.12-1ubuntu1.9) ...
+2026-10-21T05:35:55.3712459Z Setting up libavutil58:amd64 (7:6.1.1-3ubuntu5) ...
+2026-10-21T05:35:55.3725021Z Setting up xfonts-utils (1:7.7+6build3) ...
+2026-10-21T05:35:55.3756064Z Setting up libswresample4:amd64 (7:6.1.1-3ubuntu5) ...
+2026-10-21T05:35:55.3769534Z Setting up libavcodec60:amd64 (7:6.1.1-3ubuntu5) ...
+2026-10-21T05:35:55.3781800Z Setting up xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-21T05:35:55.4013115Z Setting up xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-21T05:35:55.4217100Z Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+2026-10-21T05:35:55.4449478Z Processing triggers for man-db (2.12.0-4build2) ...
+2026-10-21T05:35:55.4466387Z Not building database; man-db/auto-update is not 'true'.
+2026-10-21T05:35:55.4478287Z Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+2026-10-21T05:35:56.0701972Z 
+2026-10-21T05:35:56.0703046Z Running kernel seems to be up-to-date.
+2026-10-21T05:35:56.0703425Z 
+2026-10-21T05:35:56.0703660Z No services need to be restarted.
+2026-10-21T05:35:56.0703947Z 
+2026-10-21T05:35:56.0704164Z No containers need to be restarted.
+2026-10-21T05:35:56.0704446Z 
+2026-10-21T05:35:56.0704915Z No user sessions are running outdated binaries.
+2026-10-21T05:35:56.0705257Z 
+2026-10-21T05:35:56.0705711Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-21T05:35:56.8896165Z Downloading Firefox 155.0 (playwright firefox v1543) from https://cdn.playwright.dev/dbazure/download/playwright/builds/firefox/1543/firefox-ubuntu-24.04.zip
+2026-10-21T05:35:57.3354849Z |                                                                                |   0% of 109.5 MiB
+2026-10-21T05:35:57.5500201Z |■■■■■■■■                                                                        |  10% of 109.5 MiB
+2026-10-21T05:35:57.6307263Z |■■■■■■■■■■■■■■■■                                                                |  20% of 109.5 MiB
+2026-10-21T05:35:57.7185418Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 109.5 MiB
+2026-10-21T05:35:57.8363191Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 109.5 MiB
+2026-10-21T05:35:57.9161793Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 109.5 MiB
+2026-10-21T05:35:58.0058017Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 109.5 MiB
+2026-10-21T05:35:58.1068681Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 109.5 MiB
+2026-10-21T05:35:58.1986506Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 109.5 MiB
+2026-10-21T05:35:58.2921692Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 109.5 MiB
+2026-10-21T05:35:58.4019965Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 109.5 MiB
+2026-10-21T05:36:00.0295968Z Firefox 155.0 (playwright firefox v1543) downloaded to /home/runner/.cache/ms-playwright/firefox-1543
+2026-10-21T05:36:00.0298457Z Downloading FFmpeg (playwright ffmpeg v1011) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip
+2026-10-21T05:36:00.3920091Z |                                                                                |   0% of 2.3 MiB
+2026-10-21T05:36:00.4199998Z |■■■■■■■■                                                                        |  10% of 2.3 MiB
+2026-10-21T05:36:00.4316185Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.3 MiB
+2026-10-21T05:36:00.4399854Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.3 MiB
+2026-10-21T05:36:00.4421091Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.3 MiB
+2026-10-21T05:36:00.4481185Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.3 MiB
+2026-10-21T05:36:00.4510493Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.3 MiB
+2026-10-21T05:36:00.4530266Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.3 MiB
+2026-10-21T05:36:00.4541011Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.3 MiB
+2026-10-21T05:36:00.4553554Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.3 MiB
+2026-10-21T05:36:00.4593078Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.3 MiB
+2026-10-21T05:36:00.5079262Z FFmpeg (playwright ffmpeg v1011) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1011
+2026-10-21T05:36:00.7565225Z ##[group]Run npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" start --update
+2026-10-21T05:36:00.7565789Z [36;1mnpm run --silent wp-env -- --config="${CIM_R20_CONFIG}" start --update[0m
+2026-10-21T05:36:00.7596047Z shell: /usr/bin/bash -e {0}
+2026-10-21T05:36:00.7596316Z env:
+2026-10-21T05:36:00.7596532Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:36:00.7596864Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:36:00.7597235Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:36:00.7597474Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:36:00.7597702Z   CIM_R20_PHP: 8.5
+2026-10-21T05:36:00.7597914Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:36:00.7598138Z ##[endgroup]
+2026-10-21T05:37:02.7178136Z WordPress development site started at http://localhost:8894
+2026-10-21T05:37:02.7178726Z MySQL is listening on port 32768
+2026-10-21T05:37:02.7179036Z 
+2026-10-21T05:37:02.7179538Z  ✔ Done! (in 61s 683ms)
+2026-10-21T05:37:02.7288693Z ##[group]Run set -euo pipefail
+2026-10-21T05:37:02.7289029Z [36;1mset -euo pipefail[0m
+2026-10-21T05:37:02.7289332Z [36;1mZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"[0m
+2026-10-21T05:37:02.7289656Z [36;1m[0m
+2026-10-21T05:37:02.7289856Z [36;1mwp_env() {[0m
+2026-10-21T05:37:02.7290170Z [36;1m  npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" "$@"[0m
+2026-10-21T05:37:02.7290518Z [36;1m}[0m
+2026-10-21T05:37:02.7290699Z [36;1m[0m
+2026-10-21T05:37:02.7291084Z [36;1mCORE_VERSION="$(wp_env run cli wp core version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"[0m
+2026-10-21T05:37:02.7291564Z [36;1mtest "${CORE_VERSION}" = "${CIM_R20_WORDPRESS}"[0m
+2026-10-21T05:37:02.7291852Z [36;1m[0m
+2026-10-21T05:37:02.7292256Z [36;1mPHP_RUNTIME="$(wp_env run cli wp eval 'echo PHP_VERSION . PHP_EOL;' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+' | tail -n 1)"[0m
+2026-10-21T05:37:02.7292739Z [36;1mcase "${PHP_RUNTIME}" in[0m
+2026-10-21T05:37:02.7293106Z [36;1m  "${CIM_R20_PHP}".*) ;;[0m
+2026-10-21T05:37:02.7293358Z [36;1m  *)[0m
+2026-10-21T05:37:02.7293666Z [36;1m    echo "R20 expected PHP ${CIM_R20_PHP}.x but found ${PHP_RUNTIME}." >&2[0m
+2026-10-21T05:37:02.7294044Z [36;1m    exit 1[0m
+2026-10-21T05:37:02.7294240Z [36;1m    ;;[0m
+2026-10-21T05:37:02.7294427Z [36;1mesac[0m
+2026-10-21T05:37:02.7294830Z [36;1m[0m
+2026-10-21T05:37:02.7295277Z [36;1mif wp_env run cli wp plugin is-installed code-in-motion >/dev/null 2>&1; then[0m
+2026-10-21T05:37:02.7295994Z [36;1m  echo "R20 expected Code in Motion to be absent before ZIP installation." >&2[0m
+2026-10-21T05:37:02.7296370Z [36;1m  exit 1[0m
+2026-10-21T05:37:02.7296562Z [36;1mfi[0m
+2026-10-21T05:37:02.7296743Z [36;1m[0m
+2026-10-21T05:37:02.7297073Z [36;1mwp_env run cli wp plugin install "wp-content/r20-artifact/${ZIP_NAME}" --activate[0m
+2026-10-21T05:37:02.7297462Z [36;1m[0m
+2026-10-21T05:37:02.7297850Z [36;1mSTATUS="$(wp_env run cli wp plugin get code-in-motion --field=status | grep -E '^active$' | tail -n 1)"[0m
+2026-10-21T05:37:02.7298544Z [36;1mVERSION="$(wp_env run cli wp plugin get code-in-motion --field=version | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)"[0m
+2026-10-21T05:37:02.7299065Z [36;1mtest "${STATUS}" = "active"[0m
+2026-10-21T05:37:02.7299355Z [36;1mtest "${VERSION}" = "${CIM_PLUGIN_VERSION}"[0m
+2026-10-21T05:37:02.7299630Z [36;1m[0m
+2026-10-21T05:37:02.7300079Z [36;1mecho "PASS: R20 fixed environment WordPress ${CORE_VERSION}, PHP ${PHP_RUNTIME}, CiM ${VERSION}, browser ${CIM_R20_BROWSER}."[0m
+2026-10-21T05:37:02.7331239Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-21T05:37:02.7331578Z env:
+2026-10-21T05:37:02.7331794Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:37:02.7332118Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:37:02.7332454Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:37:02.7332695Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:37:02.7332919Z   CIM_R20_PHP: 8.5
+2026-10-21T05:37:02.7333144Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:37:02.7333368Z ##[endgroup]
+2026-10-21T05:37:03.1595598Z ℹ Starting 'wp core version' on the cli container. 
+2026-10-21T05:37:03.1595945Z 
+2026-10-21T05:37:03.3601934Z ✔ Ran `wp core version` in 'cli'. (in 0s 353ms)
+2026-10-21T05:37:03.7909289Z ℹ Starting 'wp eval echo PHP_VERSION . PHP_EOL;' on the cli container. 
+2026-10-21T05:37:03.7909624Z 
+2026-10-21T05:37:04.1826678Z ✔ Ran `wp eval echo PHP_VERSION . PHP_EOL;` in 'cli'. (in 0s 544ms)
+2026-10-21T05:37:05.4315716Z ℹ Starting 'wp plugin install wp-content/r20-artifact/code-in-motion-1.0.1.zip --activate' on the cli container. 
+2026-10-21T05:37:05.4316332Z 
+2026-10-21T05:37:05.8108562Z Unpacking the package...
+2026-10-21T05:37:05.8209035Z Installing the plugin...
+2026-10-21T05:37:06.0259669Z Plugin installed successfully.
+2026-10-21T05:37:06.2789506Z Activating 'code-in-motion'...
+2026-10-21T05:37:06.2814344Z Plugin 'code-in-motion' activated.
+2026-10-21T05:37:06.2820619Z [21-Oct-2026 05:37:06 UTC] PHP Deprecated:  Using null as an array offset is deprecated, use an empty string instead in phar:///usr/local/bin/wp/vendor/wp-cli/php-cli-tools/lib/cli/Colors.php on line 95
+2026-10-21T05:37:06.2822251Z Deprecated: Using null as an array offset is deprecated, use an empty string instead in phar:///usr/local/bin/wp/vendor/wp-cli/php-cli-tools/lib/cli/Colors.php on line 95
+2026-10-21T05:37:06.2823728Z Success: Installed 1 of 1 plugins.
+2026-10-21T05:37:06.2994916Z ✔ Ran `wp plugin install wp-content/r20-artifact/code-in-motion-1.0.1.zip --activate` in 'cli'. (in 1s 28ms)
+2026-10-21T05:37:06.7304906Z ℹ Starting 'wp plugin get code-in-motion --field=status' on the cli container. 
+2026-10-21T05:37:06.7305630Z 
+2026-10-21T05:37:07.1223216Z ✔ Ran `wp plugin get code-in-motion --field=status` in 'cli'. (in 0s 544ms)
+2026-10-21T05:37:07.5585301Z ℹ Starting 'wp plugin get code-in-motion --field=version' on the cli container. 
+2026-10-21T05:37:07.5586039Z 
+2026-10-21T05:37:07.9516979Z ✔ Ran `wp plugin get code-in-motion --field=version` in 'cli'. (in 0s 545ms)
+2026-10-21T05:37:07.9614313Z PASS: R20 fixed environment WordPress 7.1.1, PHP 8.5.11, CiM 1.0.1, browser firefox.
+2026-10-21T05:37:07.9644473Z ##[group]Run set -euo pipefail
+2026-10-21T05:37:07.9645104Z [36;1mset -euo pipefail[0m
+2026-10-21T05:37:07.9645334Z [36;1m[0m
+2026-10-21T05:37:07.9645537Z [36;1mwp_env() {[0m
+2026-10-21T05:37:07.9645837Z [36;1m  npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" "$@"[0m
+2026-10-21T05:37:07.9646174Z [36;1m}[0m
+2026-10-21T05:37:07.9646505Z [36;1m[0m
+2026-10-21T05:37:07.9646708Z [36;1mwp_env run cli wp post create \[0m
+2026-10-21T05:37:07.9646988Z [36;1m  --post_type=page \[0m
+2026-10-21T05:37:07.9647242Z [36;1m  --post_status=publish \[0m
+2026-10-21T05:37:07.9647518Z [36;1m  --post_title='CiM Browser E2E' \[0m
+2026-10-21T05:37:07.9647802Z [36;1m  --post_name='cim-e2e' \[0m
+2026-10-21T05:37:07.9648203Z [36;1m  --post_content='[cim experience="synthetic-wordpress"]CiM E2E fallback.[/cim]'[0m
+2026-10-21T05:37:07.9648601Z [36;1m[0m
+2026-10-21T05:37:07.9671507Z [36;1mr9_content='[cim experience="synthetic-wordpress" instance="r9-one"]R9 one fallback.[/cim][0m
+2026-10-21T05:37:07.9672292Z [36;1m[cim experience="synthetic-wordpress" instance="r9-two"]R9 two fallback.[/cim][0m
+2026-10-21T05:37:07.9672868Z [36;1m[cim experience="synthetic-wordpress" instance="r9-three"]R9 three fallback.[/cim]'[0m
+2026-10-21T05:37:07.9673289Z [36;1m[0m
+2026-10-21T05:37:07.9673510Z [36;1mwp_env run cli wp post create \[0m
+2026-10-21T05:37:07.9673809Z [36;1m  --post_type=page \[0m
+2026-10-21T05:37:07.9674072Z [36;1m  --post_status=publish \[0m
+2026-10-21T05:37:07.9674358Z [36;1m  --post_title='CiM R9 Isolation E2E' \[0m
+2026-10-21T05:37:07.9674935Z [36;1m  --post_name='cim-e2e-r9' \[0m
+2026-10-21T05:37:07.9675213Z [36;1m  --post_content="${r9_content}"[0m
+2026-10-21T05:37:07.9705695Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-21T05:37:07.9706029Z env:
+2026-10-21T05:37:07.9706246Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:37:07.9706573Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:37:07.9706930Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:37:07.9707168Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:37:07.9707394Z   CIM_R20_PHP: 8.5
+2026-10-21T05:37:07.9707622Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:37:07.9707855Z ##[endgroup]
+2026-10-21T05:37:08.4013022Z ℹ Starting 'wp post create --post_type=page --post_status=publish --post_title=CiM Browser E2E --post_name=cim-e2e --post_content=[cim experience="synthetic-wordpress"]CiM E2E fallback.[/cim]' on the cli container. 
+2026-10-21T05:37:08.4014274Z 
+2026-10-21T05:37:08.7897817Z [21-Oct-2026 05:37:08 UTC] PHP Deprecated:  Using null as an array offset is deprecated, use an empty string instead in phar:///usr/local/bin/wp/vendor/wp-cli/php-cli-tools/lib/cli/Colors.php on line 95
+2026-10-21T05:37:08.7899461Z Deprecated: Using null as an array offset is deprecated, use an empty string instead in phar:///usr/local/bin/wp/vendor/wp-cli/php-cli-tools/lib/cli/Colors.php on line 95
+2026-10-21T05:37:08.7900322Z Success: Created post 4.
+2026-10-21T05:37:08.8017906Z ✔ Ran `wp post create --post_type=page --post_status=publish --post_title=CiM Browser E2E --post_name=cim-e2e --post_content=[cim experience="synthetic-wordpress"]CiM E2E fallback.[/cim]` in 'cli'. (in 0s 561ms)
+2026-10-21T05:37:09.2404207Z ℹ Starting 'wp post create --post_type=page --post_status=publish --post_title=CiM R9 Isolation E2E --post_name=cim-e2e-r9 --post_content=[cim experience="synthetic-wordpress" instance="r9-one"]R9 one fallback.[/cim]
+2026-10-21T05:37:09.2405802Z [cim experience="synthetic-wordpress" instance="r9-two"]R9 two fallback.[/cim]
+2026-10-21T05:37:09.2406652Z [cim experience="synthetic-wordpress" instance="r9-three"]R9 three fallback.[/cim]' on the cli container. 
+2026-10-21T05:37:09.2407116Z 
+2026-10-21T05:37:09.6196124Z [21-Oct-2026 05:37:09 UTC] PHP Deprecated:  Using null as an array offset is deprecated, use an empty string instead in phar:///usr/local/bin/wp/vendor/wp-cli/php-cli-tools/lib/cli/Colors.php on line 95
+2026-10-21T05:37:09.6197123Z Success: Created post 5.
+2026-10-21T05:37:09.6199139Z Deprecated: Using null as an array offset is deprecated, use an empty string instead in phar:///usr/local/bin/wp/vendor/wp-cli/php-cli-tools/lib/cli/Colors.php on line 95
+2026-10-21T05:37:09.6342386Z ✔ Ran `wp post create --post_type=page --post_status=publish --post_title=CiM R9 Isolation E2E --post_name=cim-e2e-r9 --post_content=[cim experience="synthetic-wordpress" instance="r9-one"]R9 one fallback.[/cim]
+2026-10-21T05:37:09.6343652Z [cim experience="synthetic-wordpress" instance="r9-two"]R9 two fallback.[/cim]
+2026-10-21T05:37:09.6344353Z [cim experience="synthetic-wordpress" instance="r9-three"]R9 three fallback.[/cim]` in 'cli'. (in 0s 545ms)
+2026-10-21T05:37:09.6468450Z ##[group]Run npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" run cli wp eval "$(cat tests/fixtures/wordpress-asset-scope-setup.php)"
+2026-10-21T05:37:09.6469303Z [36;1mnpm run --silent wp-env -- --config="${CIM_R20_CONFIG}" run cli wp eval "$(cat tests/fixtures/wordpress-asset-scope-setup.php)"[0m
+2026-10-21T05:37:09.6500148Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-21T05:37:09.6500502Z env:
+2026-10-21T05:37:09.6500721Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:37:09.6501047Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:37:09.6501391Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:37:09.6501643Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:37:09.6501886Z   CIM_R20_PHP: 8.5
+2026-10-21T05:37:09.6502103Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:37:09.6502336Z ##[endgroup]
+2026-10-21T05:37:10.0778915Z ℹ Starting 'wp eval // Test-only setup executed by WP-CLI in the isolated R20 environment.
+2026-10-21T05:37:10.0779768Z // This file and the resulting MU plugin are never part of the delivery ZIP.
+2026-10-21T05:37:10.0780234Z $pages = array(
+2026-10-21T05:37:10.0780648Z     'cim-assets-plain' => 'A page without an interactive lesson.',
+2026-10-21T05:37:10.0781465Z     'cim-assets-block' => '<!-- wp:shortcode -->[cim experience="synthetic-wordpress"]Fallback.[/cim]<!-- /wp:shortcode -->',
+2026-10-21T05:37:10.0782268Z     'cim-assets-late' => 'The template adds a lesson after the page content.',
+2026-10-21T05:37:10.0782871Z     'cim-assets-force' => 'Assets explicitly requested without an embed.',
+2026-10-21T05:37:10.0783563Z     'cim-assets-suppress' => '[cim experience="synthetic-wordpress"]Suppressed fallback.[/cim]',
+2026-10-21T05:37:10.0784094Z );
+2026-10-21T05:37:10.0784411Z foreach ( $pages as $slug => $content ) {
+2026-10-21T05:37:10.0785029Z     $existing = get_page_by_path( $slug );
+2026-10-21T05:37:10.0785975Z     $id = wp_insert_post( array( 'ID' => $existing ? $existing->ID : 0, 'post_type' => 'page', 'post_status' => 'publish', 'post_name' => $slug, 'post_title' => $slug, 'post_content' => $content ), true );
+2026-10-21T05:37:10.0786976Z     if ( is_wp_error( $id ) ) { throw new RuntimeException( $id->get_error_message() ); }
+2026-10-21T05:37:10.0787427Z }
+2026-10-21T05:37:10.0787676Z $fixture = <<<'PHP'
+2026-10-21T05:37:10.0787942Z <?php
+2026-10-21T05:37:10.0788374Z add_filter( 'localis_cim_should_enqueue', function ( $needs, $post ) {
+2026-10-21T05:37:10.0789032Z     if ( $post instanceof WP_Post && 'cim-assets-force' === $post->post_name ) { return true; }
+2026-10-21T05:37:10.0789755Z     if ( $post instanceof WP_Post && 'cim-assets-suppress' === $post->post_name ) { return false; }
+2026-10-21T05:37:10.0790268Z     return $needs;
+2026-10-21T05:37:10.0790531Z }, 10, 2 );
+2026-10-21T05:37:10.0790835Z add_action( 'wp_footer', function () {
+2026-10-21T05:37:10.0791195Z     if ( is_page( 'cim-assets-late' ) ) {
+2026-10-21T05:37:10.0792625Z         echo do_shortcode( '[cim experience="synthetic-wordpress" instance="late-one"]Late fallback.[/cim][cim experience="synthetic-wordpress" instance="late-two"]Second fallback.[/cim]' );
+2026-10-21T05:37:10.0793609Z     }
+2026-10-21T05:37:10.0794048Z }, 1 );
+2026-10-21T05:37:10.0794670Z PHP;
+2026-10-21T05:37:10.0795165Z wp_mkdir_p( WPMU_PLUGIN_DIR );
+2026-10-21T05:37:10.0795837Z if ( false === file_put_contents( WPMU_PLUGIN_DIR . '/cim-asset-scope-fixture.php', $fixture ) ) {
+2026-10-21T05:37:10.0796559Z     throw new RuntimeException( 'Cannot install isolated asset-scope fixture.' );
+2026-10-21T05:37:10.0797057Z }' on the cli container. 
+2026-10-21T05:37:10.0797235Z 
+2026-10-21T05:37:10.4804291Z ✔ Ran `wp eval // Test-only setup executed by WP-CLI in the isolated R20 environment.
+2026-10-21T05:37:10.4805917Z // This file and the resulting MU plugin are never part of the delivery ZIP.
+2026-10-21T05:37:10.4806523Z $pages = array(
+2026-10-21T05:37:10.4807188Z     'cim-assets-plain' => 'A page without an interactive lesson.',
+2026-10-21T05:37:10.4808583Z     'cim-assets-block' => '<!-- wp:shortcode -->[cim experience="synthetic-wordpress"]Fallback.[/cim]<!-- /wp:shortcode -->',
+2026-10-21T05:37:10.4809662Z     'cim-assets-late' => 'The template adds a lesson after the page content.',
+2026-10-21T05:37:10.4810447Z     'cim-assets-force' => 'Assets explicitly requested without an embed.',
+2026-10-21T05:37:10.4811363Z     'cim-assets-suppress' => '[cim experience="synthetic-wordpress"]Suppressed fallback.[/cim]',
+2026-10-21T05:37:10.4812044Z );
+2026-10-21T05:37:10.4812438Z foreach ( $pages as $slug => $content ) {
+2026-10-21T05:37:10.4812954Z     $existing = get_page_by_path( $slug );
+2026-10-21T05:37:10.4814333Z     $id = wp_insert_post( array( 'ID' => $existing ? $existing->ID : 0, 'post_type' => 'page', 'post_status' => 'publish', 'post_name' => $slug, 'post_title' => $slug, 'post_content' => $content ), true );
+2026-10-21T05:37:10.4816386Z     if ( is_wp_error( $id ) ) { throw new RuntimeException( $id->get_error_message() ); }
+2026-10-21T05:37:10.4817017Z }
+2026-10-21T05:37:10.4817338Z $fixture = <<<'PHP'
+2026-10-21T05:37:10.4817648Z <?php
+2026-10-21T05:37:10.4818226Z add_filter( 'localis_cim_should_enqueue', function ( $needs, $post ) {
+2026-10-21T05:37:10.4819077Z     if ( $post instanceof WP_Post && 'cim-assets-force' === $post->post_name ) { return true; }
+2026-10-21T05:37:10.4820038Z     if ( $post instanceof WP_Post && 'cim-assets-suppress' === $post->post_name ) { return false; }
+2026-10-21T05:37:10.4820681Z     return $needs;
+2026-10-21T05:37:10.4821016Z }, 10, 2 );
+2026-10-21T05:37:10.4825805Z add_action( 'wp_footer', function () {
+2026-10-21T05:37:10.4826423Z     if ( is_page( 'cim-assets-late' ) ) {
+2026-10-21T05:37:10.4827870Z         echo do_shortcode( '[cim experience="synthetic-wordpress" instance="late-one"]Late fallback.[/cim][cim experience="synthetic-wordpress" instance="late-two"]Second fallback.[/cim]' );
+2026-10-21T05:37:10.4828586Z     }
+2026-10-21T05:37:10.4828776Z }, 1 );
+2026-10-21T05:37:10.4828969Z PHP;
+2026-10-21T05:37:10.4829204Z wp_mkdir_p( WPMU_PLUGIN_DIR );
+2026-10-21T05:37:10.4829734Z if ( false === file_put_contents( WPMU_PLUGIN_DIR . '/cim-asset-scope-fixture.php', $fixture ) ) {
+2026-10-21T05:37:10.4830337Z     throw new RuntimeException( 'Cannot install isolated asset-scope fixture.' );
+2026-10-21T05:37:10.4830751Z }` in 'cli'. (in 0s 554ms)
+2026-10-21T05:37:10.4937793Z ##[group]Run npx playwright test tests/e2e/wordpress-browser-smoke.spec.mjs --reporter=line
+2026-10-21T05:37:10.4938523Z [36;1mnpx playwright test tests/e2e/wordpress-browser-smoke.spec.mjs --reporter=line[0m
+2026-10-21T05:37:10.4968890Z shell: /usr/bin/bash -e {0}
+2026-10-21T05:37:10.4969149Z env:
+2026-10-21T05:37:10.4969363Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:37:10.4969693Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:37:10.4970039Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:37:10.4970278Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:37:10.4970500Z   CIM_R20_PHP: 8.5
+2026-10-21T05:37:10.4970709Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:37:10.4970974Z   CIM_WP_BASE_URL: http://localhost:8894
+2026-10-21T05:37:10.4971241Z ##[endgroup]
+2026-10-21T05:37:11.7688863Z 
+2026-10-21T05:37:11.7689534Z Running 8 tests using 1 worker
+2026-10-21T05:37:11.7690283Z 
+2026-10-21T05:37:12.1532644Z [1/8] tests/e2e/wordpress-browser-smoke.spec.mjs:43:1 › asset scope: pages without CiM fetch no plugin files on desktop or mobile
+2026-10-21T05:37:12.7596971Z tests/e2e/wordpress-browser-smoke.spec.mjs:43:1 › asset scope: pages without CiM fetch no plugin files on desktop or mobile
+2026-10-21T05:37:12.7625770Z R20 browser: firefox 155.0; Playwright 1.63.0
+2026-10-21T05:37:12.7635124Z 
+2026-10-21T05:37:15.4518114Z [2/8] tests/e2e/wordpress-browser-smoke.spec.mjs:56:1 › asset scope: shortcode blocks and late template embeds load with deduplicated assets
+2026-10-21T05:37:18.0105285Z [3/8] tests/e2e/wordpress-browser-smoke.spec.mjs:66:1 › asset scope: explicit filter can force assets or suppress even rendered shortcodes
+2026-10-21T05:37:19.8282419Z [4/8] tests/e2e/wordpress-browser-smoke.spec.mjs:88:1 › R20 installed artifact mounts and navigates through the production command path
+2026-10-21T05:37:20.3839941Z [5/8] tests/e2e/wordpress-browser-smoke.spec.mjs:121:1 › R20 keeps three same-Experience instances isolated
+2026-10-21T05:37:21.0400851Z [6/8] tests/e2e/wordpress-browser-smoke.spec.mjs:145:1 › R20 preserves static fallback when the Experience cannot be delivered
+2026-10-21T05:37:21.6136108Z [7/8] tests/e2e/wordpress-browser-smoke.spec.mjs:159:3 › R20 reduced motion › navigation succeeds without frame scheduling while reduced motion is active
+2026-10-21T05:37:22.1835067Z [8/8] tests/e2e/wordpress-browser-smoke.spec.mjs:200:1 › R20 permanent root removal disposes the mounted instance
+2026-10-21T05:37:23.0415128Z   8 passed (11.9s)
+2026-10-21T05:37:23.0638413Z ##[group]Run npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs --reporter=line
+2026-10-21T05:37:23.0640704Z [36;1mnpx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs --reporter=line[0m
+2026-10-21T05:37:23.0673564Z shell: /usr/bin/bash -e {0}
+2026-10-21T05:37:23.0674030Z env:
+2026-10-21T05:37:23.0674325Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:37:23.0674926Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:37:23.0675422Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:37:23.0675840Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:37:23.0676185Z   CIM_R20_PHP: 8.5
+2026-10-21T05:37:23.0676480Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:37:23.0676803Z   CIM_PLAYER_BROWSER: firefox
+2026-10-21T05:37:23.0677151Z ##[endgroup]
+2026-10-21T05:37:24.5383044Z 
+2026-10-21T05:37:24.5384251Z Running 146 tests using 2 workers
+2026-10-21T05:37:24.5385233Z 
+2026-10-21T05:37:24.9973159Z [1/146] tests/e2e/engineering-pane.spec.mjs:23:2 › 1366x768 › [ENG-01][ENG-02][ENG-04][ENG-05][ENG-08] readable modeled records and provenance at true size
+2026-10-21T05:37:25.0107213Z [2/146] tests/e2e/composition.spec.mjs:34:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+2026-10-21T05:37:27.5677292Z [3/146] tests/e2e/composition.spec.mjs:35:2 › 1366x768 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+2026-10-21T05:37:27.7236997Z [4/146] tests/e2e/engineering-pane.spec.mjs:24:2 › 1366x768 › [ENG-08-FLOW] current beat flows are fully visible before evidence and grid
+2026-10-21T05:37:28.4709934Z [5/146] tests/e2e/engineering-pane.spec.mjs:30:2 › 1366x768 › [ENG-03][ENG-06] shared pause cancel hold and selectable content
+2026-10-21T05:37:29.0575282Z [6/146] tests/e2e/engineering-pane.spec.mjs:31:2 › 1366x768 › [ENG-07][ENG-09] malformed records stay bounded and peers remain visible
+2026-10-21T05:37:29.5197672Z [7/146] tests/e2e/engineering-pane.spec.mjs:23:2 › 1536x864 › [ENG-01][ENG-02][ENG-04][ENG-05][ENG-08] readable modeled records and provenance at true size
+2026-10-21T05:37:29.9626811Z [8/146] tests/e2e/engineering-pane.spec.mjs:24:2 › 1536x864 › [ENG-08-FLOW] current beat flows are fully visible before evidence and grid
+2026-10-21T05:37:30.3937282Z [9/146] tests/e2e/engineering-pane.spec.mjs:30:2 › 1536x864 › [ENG-03][ENG-06] shared pause cancel hold and selectable content
+2026-10-21T05:37:30.7852522Z [10/146] tests/e2e/engineering-pane.spec.mjs:31:2 › 1536x864 › [ENG-07][ENG-09] malformed records stay bounded and peers remain visible
+2026-10-21T05:37:30.9355248Z [11/146] tests/e2e/composition.spec.mjs:36:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+2026-10-21T05:37:31.3866873Z [12/146] tests/e2e/engineering-pane.spec.mjs:23:2 › 1920x1080 › [ENG-01][ENG-02][ENG-04][ENG-05][ENG-08] readable modeled records and provenance at true size
+2026-10-21T05:37:31.8515843Z [13/146] tests/e2e/composition.spec.mjs:37:2 › 1366x768 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+2026-10-21T05:37:32.0827085Z [14/146] tests/e2e/engineering-pane.spec.mjs:24:2 › 1920x1080 › [ENG-08-FLOW] current beat flows are fully visible before evidence and grid
+2026-10-21T05:37:33.1579936Z [15/146] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+2026-10-21T05:37:33.7780019Z [16/146] tests/e2e/engineering-pane.spec.mjs:30:2 › 1920x1080 › [ENG-03][ENG-06] shared pause cancel hold and selectable content
+2026-10-21T05:37:34.3207279Z [17/146] tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+2026-10-21T05:37:34.4020043Z [18/146] tests/e2e/engineering-pane.spec.mjs:31:2 › 1920x1080 › [ENG-07][ENG-09] malformed records stay bounded and peers remain visible
+2026-10-21T05:37:37.7502830Z [19/146] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+2026-10-21T05:37:38.4220081Z [20/146] tests/e2e/composition.spec.mjs:34:2 › 1536x864 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+2026-10-21T05:37:39.1339322Z [21/146] tests/e2e/composition.spec.mjs:35:2 › 1536x864 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+2026-10-21T05:37:40.4406909Z [22/146] tests/e2e/lesson-packs.spec.mjs:44:1 › companion lesson uses the production bootstrap, neutral theme and inert text
+2026-10-21T05:37:41.0565233Z [23/146] tests/e2e/lesson-packs.spec.mjs:53:95 › companion lesson fails closed: schema
+2026-10-21T05:37:41.4622732Z [24/146] tests/e2e/lesson-packs.spec.mjs:53:95 › companion lesson fails closed: state
+2026-10-21T05:37:41.8985123Z [25/146] tests/e2e/lesson-packs.spec.mjs:53:95 › companion lesson fails closed: identity
+2026-10-21T05:37:41.9227885Z [26/146] tests/e2e/composition.spec.mjs:36:2 › 1536x864 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+2026-10-21T05:37:42.5371241Z [27/146] tests/e2e/lesson-packs.spec.mjs:53:95 › companion lesson fails closed: engine
+2026-10-21T05:37:43.1024326Z [28/146] tests/e2e/lesson-packs.spec.mjs:53:95 › companion lesson fails closed: link
+2026-10-21T05:37:43.5969734Z [29/146] tests/e2e/lesson-packs.spec.mjs:53:95 › companion lesson fails closed: huge
+2026-10-21T05:37:43.7296819Z [30/146] tests/e2e/composition.spec.mjs:37:2 › 1536x864 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+2026-10-21T05:37:44.1489469Z [31/146] tests/e2e/lesson-packs.spec.mjs:53:95 › companion lesson fails closed: malformed
+2026-10-21T05:37:45.1961804Z [32/146] tests/e2e/composition.spec.mjs:38:2 › 1536x864 › [CMP-11] graphical states flows text cues holds and reduced motion
+2026-10-21T05:37:46.0287830Z [33/146] tests/e2e/lesson-packs.spec.mjs:53:95 › companion lesson fails closed: external
+2026-10-21T05:37:46.1744371Z [34/146] tests/e2e/composition.spec.mjs:39:2 › 1536x864 › [CMP-12] decode retry shares the original preparation deadline
+2026-10-21T05:37:46.6726392Z [35/146] tests/e2e/lesson-packs.spec.mjs:57:1 › a pack root cannot override a bundled lesson
+2026-10-21T05:37:47.1180846Z [36/146] tests/e2e/lesson-packs.spec.mjs:63:1 › Admin checks all lessons before preview and exposes rejection without affecting other content
+2026-10-21T05:37:47.4517813Z [37/146] tests/e2e/lesson-preview.spec.mjs:10:1 › local Player preview shows saved edits without a build or WordPress installation
+2026-10-21T05:37:48.5421464Z [38/146] tests/e2e/motion-pane.spec.mjs:36:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+2026-10-21T05:37:49.3359365Z [39/146] tests/e2e/motion-pane.spec.mjs:42:2 › 1366x768 › [MOT-08] reduced motion shows still and alternative with no automatic play
+2026-10-21T05:37:49.5797223Z [40/146] tests/e2e/composition.spec.mjs:40:2 › 1536x864 › [CMP-15] navigation during a final seek returns without blocking the page
+2026-10-21T05:37:49.8317922Z [41/146] tests/e2e/motion-pane.spec.mjs:43:2 › 1366x768 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+2026-10-21T05:37:50.4325336Z [42/146] tests/e2e/composition.spec.mjs:34:2 › 1920x1080 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+2026-10-21T05:37:50.9512640Z [43/146] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-16] preparation holds peers and a jump cancels without waiting
+2026-10-21T05:37:51.4101987Z [44/146] tests/e2e/composition.spec.mjs:35:2 › 1920x1080 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+2026-10-21T05:37:51.5525136Z [45/146] tests/e2e/motion-pane.spec.mjs:50:2 › 1366x768 › [MOT-17] navigation cancels preparation and late results cannot replace the destination
+2026-10-21T05:37:52.4040150Z [46/146] tests/e2e/motion-pane.spec.mjs:54:2 › 1366x768 › [MOT-18] native playback cannot override a paused shared clock
+2026-10-21T05:37:54.0772586Z [47/146] tests/e2e/motion-pane.spec.mjs:57:2 › 1366x768 › [MOT-21] disposing Motion revokes its verified URLs and removes its DOM
+2026-10-21T05:37:54.5585160Z [48/146] tests/e2e/motion-pane.spec.mjs:60:2 › 1366x768 › [MOT-10] buffering holds every pane and never means completion
+2026-10-21T05:37:54.6178808Z [49/146] tests/e2e/composition.spec.mjs:36:2 › 1920x1080 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+2026-10-21T05:37:55.1849663Z [50/146] tests/e2e/motion-pane.spec.mjs:36:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+2026-10-21T05:37:55.4770446Z [51/146] tests/e2e/composition.spec.mjs:37:2 › 1920x1080 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+2026-10-21T05:37:56.3273511Z [52/146] tests/e2e/motion-pane.spec.mjs:42:2 › 1536x864 › [MOT-08] reduced motion shows still and alternative with no automatic play
+2026-10-21T05:37:56.8198470Z [53/146] tests/e2e/composition.spec.mjs:38:2 › 1920x1080 › [CMP-11] graphical states flows text cues holds and reduced motion
+2026-10-21T05:37:56.9056539Z [54/146] tests/e2e/motion-pane.spec.mjs:43:2 › 1536x864 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+2026-10-21T05:37:57.9465028Z [55/146] tests/e2e/composition.spec.mjs:39:2 › 1920x1080 › [CMP-12] decode retry shares the original preparation deadline
+2026-10-21T05:37:58.1260554Z [56/146] tests/e2e/motion-pane.spec.mjs:44:2 › 1536x864 › [MOT-16] preparation holds peers and a jump cancels without waiting
+2026-10-21T05:37:58.6947663Z [57/146] tests/e2e/motion-pane.spec.mjs:50:2 › 1536x864 › [MOT-17] navigation cancels preparation and late results cannot replace the destination
+2026-10-21T05:37:59.2869089Z [58/146] tests/e2e/motion-pane.spec.mjs:54:2 › 1536x864 › [MOT-18] native playback cannot override a paused shared clock
+2026-10-21T05:37:59.9753314Z [59/146] tests/e2e/motion-pane.spec.mjs:57:2 › 1536x864 › [MOT-21] disposing Motion revokes its verified URLs and removes its DOM
+2026-10-21T05:38:00.4255056Z [60/146] tests/e2e/motion-pane.spec.mjs:60:2 › 1536x864 › [MOT-10] buffering holds every pane and never means completion
+2026-10-21T05:38:01.7266466Z [61/146] tests/e2e/motion-pane.spec.mjs:36:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+2026-10-21T05:38:02.2652046Z [62/146] tests/e2e/composition.spec.mjs:40:2 › 1920x1080 › [CMP-15] navigation during a final seek returns without blocking the page
+2026-10-21T05:38:02.7337779Z [63/146] tests/e2e/motion-pane.spec.mjs:42:2 › 1920x1080 › [MOT-08] reduced motion shows still and alternative with no automatic play
+2026-10-21T05:38:03.0873872Z [64/146] tests/e2e/multipane-transport.spec.mjs:40:2 › 1366x768 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+2026-10-21T05:38:03.1919934Z [65/146] tests/e2e/motion-pane.spec.mjs:43:2 › 1920x1080 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+2026-10-21T05:38:03.7106437Z [66/146] tests/e2e/multipane-transport.spec.mjs:52:2 › 1366x768 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+2026-10-21T05:38:04.2583169Z [67/146] tests/e2e/multipane-transport.spec.mjs:58:2 › 1366x768 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+2026-10-21T05:38:04.3455731Z [68/146] tests/e2e/motion-pane.spec.mjs:44:2 › 1920x1080 › [MOT-16] preparation holds peers and a jump cancels without waiting
+2026-10-21T05:38:04.9318911Z [69/146] tests/e2e/motion-pane.spec.mjs:50:2 › 1920x1080 › [MOT-17] navigation cancels preparation and late results cannot replace the destination
+2026-10-21T05:38:05.1265539Z [70/146] tests/e2e/multipane-transport.spec.mjs:67:2 › 1366x768 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+2026-10-21T05:38:05.6993047Z [71/146] tests/e2e/motion-pane.spec.mjs:54:2 › 1920x1080 › [MOT-18] native playback cannot override a paused shared clock
+2026-10-21T05:38:06.0503381Z [72/146] tests/e2e/multipane-transport.spec.mjs:82:2 › 1366x768 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+2026-10-21T05:38:06.4581743Z [73/146] tests/e2e/motion-pane.spec.mjs:57:2 › 1920x1080 › [MOT-21] disposing Motion revokes its verified URLs and removes its DOM
+2026-10-21T05:38:06.8639211Z [74/146] tests/e2e/multipane-transport.spec.mjs:100:2 › 1366x768 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+2026-10-21T05:38:06.9620886Z [75/146] tests/e2e/motion-pane.spec.mjs:60:2 › 1920x1080 › [MOT-10] buffering holds every pane and never means completion
+2026-10-21T05:38:07.6581036Z [76/146] tests/e2e/multipane-transport.spec.mjs:109:2 › 1366x768 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+2026-10-21T05:38:08.0623587Z [77/146] tests/e2e/multipane-transport.spec.mjs:40:2 › 1536x864 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+2026-10-21T05:38:08.5619920Z [78/146] tests/e2e/multipane-transport.spec.mjs:52:2 › 1536x864 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+2026-10-21T05:38:09.7699823Z [79/146] tests/e2e/multipane-transport.spec.mjs:58:2 › 1536x864 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+2026-10-21T05:38:10.5260799Z [80/146] tests/e2e/multipane-transport.spec.mjs:67:2 › 1536x864 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+2026-10-21T05:38:11.1377341Z [81/146] tests/e2e/teacher-admin.spec.mjs:6:1 › production Admin disclosure is initially closed and keyboard reachable
+2026-10-21T05:38:11.2328042Z [82/146] tests/e2e/multipane-transport.spec.mjs:82:2 › 1536x864 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+2026-10-21T05:38:11.6720657Z [83/146] tests/e2e/wordpress-player-mvp.spec.mjs:130:1 › pane contract: markup and virtual timing match pre-refactor panes at rest and every transition frame
+2026-10-21T05:38:12.1018209Z [84/146] tests/e2e/multipane-transport.spec.mjs:100:2 › 1536x864 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+2026-10-21T05:38:12.8665590Z [85/146] tests/e2e/multipane-transport.spec.mjs:109:2 › 1536x864 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+2026-10-21T05:38:13.2252896Z [86/146] tests/e2e/wordpress-player-mvp.spec.mjs:193:1 › mobile policy: narrow screens fetch no Player modules or lessons, including late embeds
+2026-10-21T05:38:13.3690749Z [87/146] tests/e2e/multipane-transport.spec.mjs:40:2 › 1920x1080 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+2026-10-21T05:38:13.6909914Z [88/146] tests/e2e/wordpress-player-mvp.spec.mjs:209:1 › mobile policy: landscape touch-only devices do not load the Player
+2026-10-21T05:38:13.9705709Z [89/146] tests/e2e/multipane-transport.spec.mjs:52:2 › 1920x1080 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+2026-10-21T05:38:14.0604029Z [90/146] tests/e2e/wordpress-player-mvp.spec.mjs:221:1 › mobile policy: desktop still initializes the production Player
+2026-10-21T05:38:14.5692751Z [91/146] tests/e2e/multipane-transport.spec.mjs:58:2 › 1920x1080 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+2026-10-21T05:38:14.6745082Z [92/146] tests/e2e/wordpress-player-mvp.spec.mjs:229:3 › CLI and copy: powershell badge uses neutral secondary Console text independently of kind and label
+2026-10-21T05:38:15.3834480Z [93/146] tests/e2e/wordpress-player-mvp.spec.mjs:229:3 › CLI and copy: windows-cli badge uses neutral secondary Console text independently of kind and label
+2026-10-21T05:38:15.4427133Z [94/146] tests/e2e/multipane-transport.spec.mjs:67:2 › 1920x1080 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+2026-10-21T05:38:16.1067269Z [95/146] tests/e2e/wordpress-player-mvp.spec.mjs:229:3 › CLI and copy: bash badge uses neutral secondary Console text independently of kind and label
+2026-10-21T05:38:16.6632657Z [96/146] tests/e2e/multipane-transport.spec.mjs:82:2 › 1920x1080 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+2026-10-21T05:38:16.7808475Z [97/146] tests/e2e/wordpress-player-mvp.spec.mjs:248:1 › CLI and copy: exact authored override writes plain text without seeking and survives renderer replacement
+2026-10-21T05:38:17.0699361Z [98/146] tests/e2e/wordpress-player-mvp.spec.mjs:266:1 › CLI and copy: native drag selection and copy shortcuts leave navigation untouched
+2026-10-21T05:38:18.1031686Z [99/146] tests/e2e/wordpress-player-mvp.spec.mjs:297:1 › CLI and copy: clipboard denial gives guidance, sibling stays usable and stale controls are inert
+2026-10-21T05:38:18.5703044Z [100/146] tests/e2e/multipane-transport.spec.mjs:100:2 › 1920x1080 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+2026-10-21T05:38:18.9585490Z [101/146] tests/e2e/wordpress-player-mvp.spec.mjs:314:1 › line limn: all 18 Show entries target command, evidence or response after scrolling while paused
+2026-10-21T05:38:19.4228536Z [102/146] tests/e2e/multipane-transport.spec.mjs:109:2 › 1920x1080 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+2026-10-21T05:38:22.8170796Z [103/146] tests/e2e/wordpress-player-mvp.spec.mjs:344:1 › line limn: strong inset cue remains visible on all four sides in every theme
+2026-10-21T05:38:23.5897450Z [104/146] tests/e2e/wordpress-player-mvp.spec.mjs:385:1 › line limn: tint retains readable dim text in flash and quiet across themes
+2026-10-21T05:38:24.1646495Z [105/146] tests/e2e/wordpress-player-mvp.spec.mjs:402:1 › line limn: repeated clicks restart the cue, theme colors adapt and navigation clears it
+2026-10-21T05:38:31.1778738Z [106/146] tests/e2e/wordpress-player-mvp.spec.mjs:424:1 › line limn: reduced motion stays steady and disposal clears emphasis
+2026-10-21T05:38:33.1706948Z [107/146] tests/e2e/wordpress-player-mvp.spec.mjs:438:1 › line limn: site-forced reduced motion stays steady without animation
+2026-10-21T05:38:33.7249896Z [108/146] tests/e2e/wordpress-player-mvp.spec.mjs:446:1 › line limn: disposal cancels a running cue without changing renderer canonical markup
+2026-10-21T05:38:35.6715820Z [109/146] tests/e2e/wordpress-player-mvp.spec.mjs:471:1 › production v2 admission uses registry loader bootstrap and final beat deep links alongside legacy
+2026-10-21T05:38:36.4528839Z [110/146] tests/e2e/wordpress-player-mvp.spec.mjs:493:1 › production v2 admission rejects incompatible engine minimum locally before any Console construction
+2026-10-21T05:38:36.9074093Z [111/146] tests/e2e/wordpress-player-mvp.spec.mjs:509:1 › v2 instructional consumers preserve phase evidence risk guidance ordering and renderer-owned focus
+2026-10-21T05:38:38.9871400Z [112/146] tests/e2e/wordpress-player-mvp.spec.mjs:539:1 › learner themes render complete palettes without altering canonical state or Console DOM
+2026-10-21T05:38:40.4008333Z [113/146] tests/e2e/wordpress-player-mvp.spec.mjs:576:1 › learner themes retain the explicit choice across reload and ignore device changes
+2026-10-21T05:38:41.0727406Z [114/146] tests/e2e/wordpress-player-mvp.spec.mjs:586:1 › learner themes follow device preference changes until an explicit choice and hide in forced colors
+2026-10-21T05:38:41.5773680Z [115/146] tests/e2e/wordpress-player-mvp.spec.mjs:609:1 › learner themes unavailable storage keeps an in-memory choice for siblings and remount
+2026-10-21T05:38:42.0115142Z [116/146] tests/e2e/wordpress-player-mvp.spec.mjs:625:1 › learner themes invalid persisted ID falls back to current device preferences
+2026-10-21T05:38:42.4447491Z [117/146] tests/e2e/wordpress-player-mvp.spec.mjs:635:1 › learner themes disposed selectors are inert and leave sibling controls functional
+2026-10-21T05:38:42.8618307Z [118/146] tests/e2e/wordpress-player-mvp.spec.mjs:648:1 › atomic readiness, two panes, fixed colors and native opening content
+2026-10-21T05:38:43.3441966Z [119/146] tests/e2e/wordpress-player-mvp.spec.mjs:673:1 › dark Player frame and Transport preserve keyboard focus and legacy presentation
+2026-10-21T05:38:44.0452355Z [120/146] tests/e2e/wordpress-player-mvp.spec.mjs:715:1 › reveal, Commentary navigation, protected links and Restart stay isolated
+2026-10-21T05:38:44.7586300Z [121/146] tests/e2e/wordpress-player-mvp.spec.mjs:745:1 › admission failure rolls back the full Player and synchronous disposal wins
+2026-10-21T05:38:45.2380060Z [122/146] tests/e2e/wordpress-player-mvp.spec.mjs:756:1 › root teardown restores renderer position and preserves sibling Player
+2026-10-21T05:38:46.4812554Z [123/146] tests/e2e/wordpress-player-mvp.spec.mjs:775:1 › narrow layout stacks panes without horizontal page overflow
+2026-10-21T05:38:46.9844872Z [124/146] tests/e2e/wordpress-player-mvp.spec.mjs:785:1 › Console wraps with hanging continuations and preserves authored leading spaces
+2026-10-21T05:38:47.4103565Z [125/146] tests/e2e/wordpress-player-mvp.spec.mjs:835:1 › Console continuation begins beyond authored indentation
+2026-10-21T05:38:47.9202712Z [126/146] tests/e2e/wordpress-player-mvp.spec.mjs:863:1 › Console continuation geometry updates for multiple authored indents and cleans up
+2026-10-21T05:38:48.5903375Z [127/146] tests/e2e/wordpress-player-mvp.spec.mjs:920:1 › pane follow survives real renderer replacement and keeps both newest views visible
+2026-10-21T05:38:49.1599390Z [128/146] tests/e2e/wordpress-player-mvp.spec.mjs:944:1 › Console pointer focus and selection holds catch up without taking scroll ownership
+2026-10-21T05:38:49.8380746Z [129/146] tests/e2e/wordpress-player-mvp.spec.mjs:985:1 › Explanation overlapping holds and pane-owned scrolling remain independent
+2026-10-21T05:38:51.1425811Z [130/146] tests/e2e/wordpress-player-mvp.spec.mjs:1038:1 › Console scroll ownership waits for explicit return and stale pane listeners are withdrawn
+2026-10-21T05:38:52.4758680Z [131/146] tests/e2e/wordpress-player-mvp.spec.mjs:1081:1 › deliberate navigation repositions both held panes while preserving Commentary provenance
+2026-10-21T05:38:53.3863182Z [132/146] tests/e2e/wordpress-player-mvp.spec.mjs:1103:1 › offscreen link focus scrolls natively without claiming viewport ownership
+2026-10-21T05:38:54.9093973Z [133/146] tests/e2e/wordpress-player-mvp.spec.mjs:1122:1 › pinned Console title and its lower gap cover scrolling transcript text
+2026-10-21T05:38:55.4492969Z [134/146] tests/e2e/wordpress-player-mvp.spec.mjs:1146:1 › Copy button edge stays covered when its command scrolls behind the pinned title
+2026-10-21T05:38:55.8981688Z [135/146] tests/e2e/wordpress-player-mvp.spec.mjs:1168:1 › selection holds only the intersected pane while its peer follows
+2026-10-21T05:38:56.5076661Z [136/146] tests/e2e/wordpress-player-mvp.spec.mjs:1193:1 › pointer already present at pane binding construction holds new output
+2026-10-21T05:38:57.0417629Z [137/146] tests/e2e/wordpress-player-mvp.spec.mjs:1227:1 › authored beat headings progress and button keyboard navigation use eight beats
+2026-10-21T05:38:57.8894061Z [138/146] tests/e2e/wordpress-player-mvp.spec.mjs:1264:1 › beat markers capture final destinations while Commentary retains individual segments
+2026-10-21T05:38:58.5427386Z [139/146] tests/e2e/wordpress-player-mvp.spec.mjs:1286:1 › public beat deep links mount directly at final boundaries before presentation admission
+2026-10-21T05:38:59.0985782Z [140/146] tests/e2e/wordpress-player-mvp.spec.mjs:1302:1 › deep links reject public v2 segment IDs and preserve legacy direct step links
+2026-10-21T05:38:59.8807887Z [141/146] tests/e2e/wordpress-player-mvp.spec.mjs:1316:1 › disposed beat markers lose their listeners and preserve sibling controls
+2026-10-21T05:39:00.3423194Z [142/146] tests/e2e/wordpress-player-mvp.spec.mjs:1329:49 › GA pacing: every beat waits and both Play and Next continue (reduce)
+2026-10-21T05:39:07.1306157Z [143/146] tests/e2e/wordpress-player-mvp.spec.mjs:1329:49 › GA pacing: every beat waits and both Play and Next continue (no-preference)
+2026-10-21T05:39:13.7943244Z [144/146] tests/e2e/wordpress-player-mvp.spec.mjs:1362:1 › GA layout: overflowing risk badges clear the scrollbar in every theme and risk state; Copy waits for complete typing
+2026-10-21T05:39:17.9298896Z [145/146] tests/e2e/wordpress-player-mvp.spec.mjs:1419:1 › GA layout: wrapped commands keep Copy beside their final text line and ready prompts align
+2026-10-21T05:39:18.4067736Z [146/146] tests/e2e/wordpress-player-mvp.spec.mjs:1435:1 › Explanation preserves selected text nodes and stable Resume labels across refreshes
+2026-10-21T05:39:19.6889651Z   1 skipped
+2026-10-21T05:39:19.6889935Z   145 passed (1.9m)
+2026-10-21T05:39:19.7116321Z ##[group]Run node tools/check-multipane-mutations.mjs --browser
+2026-10-21T05:39:19.7117066Z [36;1mnode tools/check-multipane-mutations.mjs --browser[0m
+2026-10-21T05:39:19.7163891Z shell: /usr/bin/bash -e {0}
+2026-10-21T05:39:19.7164331Z env:
+2026-10-21T05:39:19.7164871Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:39:19.7165429Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:39:19.7166001Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:39:19.7166407Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:39:19.7166790Z   CIM_R20_PHP: 8.5
+2026-10-21T05:39:19.7167132Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:39:19.7167522Z   CIM_PLAYER_BROWSER: firefox
+2026-10-21T05:39:19.7167920Z ##[endgroup]
+2026-10-21T05:39:27.4708145Z CAUGHT MP-01-tab
+2026-10-21T05:39:27.5901293Z CAUGHT MP-01-completion-tab
+2026-10-21T05:39:27.7087341Z CAUGHT MP-02-view-only
+2026-10-21T05:39:27.8279731Z CAUGHT MP-03-pause-tab
+2026-10-21T05:39:27.9514932Z CAUGHT MP-03-resume-tab
+2026-10-21T05:39:28.0730998Z CAUGHT MP-03-clock
+2026-10-21T05:39:28.1914115Z CAUGHT MP-04-next
+2026-10-21T05:39:28.3132661Z CAUGHT MP-05-held-state
+2026-10-21T05:39:28.4379933Z CAUGHT MP-06-initial-default
+2026-10-21T05:39:28.5603067Z CAUGHT MP-07-context-override
+2026-10-21T05:39:28.6776143Z CAUGHT MP-08-reconstruction
+2026-10-21T05:39:28.7968110Z CAUGHT MP-08-pane-wiring
+2026-10-21T05:39:28.9116003Z CAUGHT MP-09-start
+2026-10-21T05:39:29.0350237Z CAUGHT MP-10-restart
+2026-10-21T05:39:29.1568663Z CAUGHT MP-10-reset
+2026-10-21T05:39:29.2754214Z CAUGHT MP-11-open
+2026-10-21T05:39:29.3982443Z CAUGHT MP-12-close
+2026-10-21T05:39:29.5185588Z CAUGHT MP-13-status
+2026-10-21T05:39:29.6402283Z CAUGHT MP-17-stale-completion
+2026-10-21T05:39:29.7688907Z CAUGHT MP-18-late-results
+2026-10-21T05:39:29.8866483Z CAUGHT MP-19-reduced-motion
+2026-10-21T05:39:30.0039580Z CAUGHT MP-20-fixture-guard
+2026-10-21T05:39:30.1204773Z CAUGHT MP-20-packaging
+2026-10-21T05:39:30.2430459Z CAUGHT MP-21-dispose
+2026-10-21T05:39:30.3771935Z CAUGHT MP-22-all-panes
+2026-10-21T05:39:30.5023946Z CAUGHT MP-22-failure
+2026-10-21T05:39:38.5139066Z CAUGHT MP-01-focus
+2026-10-21T05:39:46.7610974Z CAUGHT MP-11-current
+2026-10-21T05:39:55.2172167Z CAUGHT MP-12-focus-return
+2026-10-21T05:40:03.5747912Z CAUGHT MP-13-tooltip
+2026-10-21T05:40:11.5484495Z CAUGHT MP-14-roving
+2026-10-21T05:40:19.7665367Z CAUGHT MP-15-keyboard
+2026-10-21T05:40:23.1377508Z CAUGHT MP-16-selection
+2026-10-21T05:40:26.4700643Z CAUGHT MP-21-view-dispose
+2026-10-21T05:40:26.4702712Z PASS: 34 multi-pane mutations caught.
+2026-10-21T05:40:26.4763666Z ##[group]Run node tools/check-engineering-mutations.mjs --browser
+2026-10-21T05:40:26.4764130Z [36;1mnode tools/check-engineering-mutations.mjs --browser[0m
+2026-10-21T05:40:26.4794835Z shell: /usr/bin/bash -e {0}
+2026-10-21T05:40:26.4795093Z env:
+2026-10-21T05:40:26.4795320Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:40:26.4795645Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:40:26.4795984Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:40:26.4796215Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:40:26.4796433Z   CIM_R20_PHP: 8.5
+2026-10-21T05:40:26.4796657Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:40:26.4796899Z   CIM_PLAYER_BROWSER: firefox
+2026-10-21T05:40:26.4797131Z ##[endgroup]
+2026-10-21T05:40:41.3589543Z {
+2026-10-21T05:40:41.3589913Z   "node": "v22.23.2",
+2026-10-21T05:40:41.3590299Z   "baseline": "passed",
+2026-10-21T05:40:41.3590637Z   "results": [
+2026-10-21T05:40:41.3590837Z     {
+2026-10-21T05:40:41.3591053Z       "id": "ENG-01-ids",
+2026-10-21T05:40:41.3591398Z       "rule": "ENG-01",
+2026-10-21T05:40:41.3591735Z       "caught": true
+2026-10-21T05:40:41.3592041Z     },
+2026-10-21T05:40:41.3592317Z     {
+2026-10-21T05:40:41.3592581Z       "id": "ENG-01-derived",
+2026-10-21T05:40:41.3592982Z       "rule": "ENG-01",
+2026-10-21T05:40:41.3593372Z       "caught": true
+2026-10-21T05:40:41.3593722Z     },
+2026-10-21T05:40:41.3594052Z     {
+2026-10-21T05:40:41.3594403Z       "id": "ENG-02-label",
+2026-10-21T05:40:41.3594979Z       "rule": "ENG-02",
+2026-10-21T05:40:41.3595360Z       "caught": true
+2026-10-21T05:40:41.3595592Z     },
+2026-10-21T05:40:41.3595785Z     {
+2026-10-21T05:40:41.3596044Z       "id": "ENG-02-placeholder",
+2026-10-21T05:40:41.3596334Z       "rule": "ENG-02",
+2026-10-21T05:40:41.3596582Z       "caught": true
+2026-10-21T05:40:41.3596811Z     },
+2026-10-21T05:40:41.3596994Z     {
+2026-10-21T05:40:41.3597217Z       "id": "ENG-03-final",
+2026-10-21T05:40:41.3597490Z       "rule": "ENG-03",
+2026-10-21T05:40:41.3597749Z       "caught": true
+2026-10-21T05:40:41.3597975Z     },
+2026-10-21T05:40:41.3598176Z     {
+2026-10-21T05:40:41.3598417Z       "id": "ENG-03-reduced",
+2026-10-21T05:40:41.3598665Z       "rule": "ENG-03",
+2026-10-21T05:40:41.3598906Z       "caught": true
+2026-10-21T05:40:41.3599135Z     },
+2026-10-21T05:40:41.3599654Z     {
+2026-10-21T05:40:41.3599878Z       "id": "ENG-04-text",
+2026-10-21T05:40:41.3600138Z       "rule": "ENG-04",
+2026-10-21T05:40:41.3600383Z       "caught": true
+2026-10-21T05:40:41.3600621Z     },
+2026-10-21T05:40:41.3600832Z     {
+2026-10-21T05:40:41.3601073Z       "id": "ENG-05-evidence",
+2026-10-21T05:40:41.3601343Z       "rule": "ENG-05",
+2026-10-21T05:40:41.3601557Z       "caught": true
+2026-10-21T05:40:41.3601775Z     },
+2026-10-21T05:40:41.3601987Z     {
+2026-10-21T05:40:41.3602187Z       "id": "ENG-06-wait",
+2026-10-21T05:40:41.3602443Z       "rule": "ENG-06",
+2026-10-21T05:40:41.3602657Z       "caught": true
+2026-10-21T05:40:41.3602862Z     },
+2026-10-21T05:40:41.3603132Z     {
+2026-10-21T05:40:41.3603468Z       "id": "ENG-07-fallback",
+2026-10-21T05:40:41.3603895Z       "rule": "ENG-07",
+2026-10-21T05:40:41.3604296Z       "caught": true
+2026-10-21T05:40:41.3604704Z     },
+2026-10-21T05:40:41.3605046Z     {
+2026-10-21T05:40:41.3605361Z       "id": "ENG-08-size",
+2026-10-21T05:40:41.3605793Z       "rule": "ENG-08",
+2026-10-21T05:40:41.3606116Z       "caught": true
+2026-10-21T05:40:41.3606419Z     },
+2026-10-21T05:40:41.3606680Z     {
+2026-10-21T05:40:41.3606959Z       "id": "ENG-09-leak",
+2026-10-21T05:40:41.3607318Z       "rule": "ENG-09",
+2026-10-21T05:40:41.3607670Z       "caught": true
+2026-10-21T05:40:41.3607996Z     },
+2026-10-21T05:40:41.3608278Z     {
+2026-10-21T05:40:41.3608593Z       "id": "ENG-09-network",
+2026-10-21T05:40:41.3609006Z       "rule": "ENG-09",
+2026-10-21T05:40:41.3609342Z       "caught": true
+2026-10-21T05:40:41.3609680Z     },
+2026-10-21T05:40:41.3609951Z     {
+2026-10-21T05:40:41.3610240Z       "id": "ENG-09-guard",
+2026-10-21T05:40:41.3610580Z       "rule": "ENG-09",
+2026-10-21T05:40:41.3611194Z       "caught": true
+2026-10-21T05:40:41.3611503Z     },
+2026-10-21T05:40:41.3611762Z     {
+2026-10-21T05:40:41.3612097Z       "id": "ENG-08-flow-order",
+2026-10-21T05:40:41.3612475Z       "rule": "ENG-08",
+2026-10-21T05:40:41.3612800Z       "caught": true
+2026-10-21T05:40:41.3613100Z     }
+2026-10-21T05:40:41.3613383Z   ]
+2026-10-21T05:40:41.3613717Z }
+2026-10-21T05:40:41.3654326Z ##[group]Run node tools/check-motion-mutations.mjs --browser
+2026-10-21T05:40:41.3655801Z [36;1mnode tools/check-motion-mutations.mjs --browser[0m
+2026-10-21T05:40:41.3686210Z shell: /usr/bin/bash -e {0}
+2026-10-21T05:40:41.3686490Z env:
+2026-10-21T05:40:41.3686702Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:40:41.3687027Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:40:41.3687365Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:40:41.3687601Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:40:41.3687820Z   CIM_R20_PHP: 8.5
+2026-10-21T05:40:41.3688028Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:40:41.3688258Z   CIM_PLAYER_BROWSER: firefox
+2026-10-21T05:40:41.3688486Z ##[endgroup]
+2026-10-21T05:41:34.5686606Z file:///home/runner/work/Code-in-Motion/Code-in-Motion/tools/check-motion-mutations.mjs:44
+2026-10-21T05:41:34.5693514Z for(const[id,file,from,to,rule,kind='unit']of cases){const path=resolve(sandbox,file),original=await readFile(path,'utf8');if(!original.includes(from))throw new Error('Missing probe target '+id);let result;try{let mutated=original.replaceAll(from,to);if(id==='MOT-18-native-guard')mutated=mutated.replace('if(!done&&!clockRunning)pinPause();','/* late native start permitted */').replace('if(!clockRunning)pinPause();else ','');if(id==='MOT-07-captions')mutated=mutated.replace("track.track.mode='showing'","track.track.mode='disabled'");if(id==='MOT-16-preparation')mutated=mutated.replace("if(buffering)barrier.hold('buffering')",'if(buffering)void 0');if(id==='MOT-14-link')mutated=mutated.replaceAll('!inside(root,resolved)','false');await writeFile(path,mutated);result=run(rule,kind);}finally{await writeFile(path,original);}const output=result.stdout+result.stderr,caught=result.status!==0&&/ERR_ASSERTION|AssertionError|Error: expect\(|Error: expect\.poll/.test(output)&&!/SyntaxError|ReferenceError/.test(output);await writeFile(resolve(work,id+'.log'),output);if(!caught)throw new Error('Probe survived or crashed: '+id+'\n'+output);results.push({id,rule,caught});}
+2026-10-21T05:41:34.5703874Z                                                                                                                                                              ^
+2026-10-21T05:41:34.5704357Z 
+2026-10-21T05:41:34.5704757Z Error: Missing probe target MOT-17-stale
+2026-10-21T05:41:34.5705609Z     at file:///home/runner/work/Code-in-Motion/Code-in-Motion/tools/check-motion-mutations.mjs:44:158
+2026-10-21T05:41:34.5706264Z 
+2026-10-21T05:41:34.5706417Z Node.js v22.23.2
+2026-10-21T05:41:34.5718042Z ##[error]Process completed with exit code 1.
+2026-10-21T05:41:34.5769628Z ##[group]Run npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop
+2026-10-21T05:41:34.5770117Z [36;1mnpm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop[0m
+2026-10-21T05:41:34.5800643Z shell: /usr/bin/bash -e {0}
+2026-10-21T05:41:34.5800912Z env:
+2026-10-21T05:41:34.5801121Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-21T05:41:34.5801469Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-21T05:41:34.5801807Z   CIM_R20_BROWSER: firefox
+2026-10-21T05:41:34.5802041Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-21T05:41:34.5802267Z   CIM_R20_PHP: 8.5
+2026-10-21T05:41:34.5802478Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-21T05:41:34.5802702Z ##[endgroup]
+2026-10-21T05:41:46.9810928Z ✔ Stopped WordPress. (in 12s 127ms)
+2026-10-21T05:41:47.0030344Z Post job cleanup.
+2026-10-21T05:41:47.0915540Z [command]/usr/bin/git version
+2026-10-21T05:41:47.0951623Z git version 2.55.0
+2026-10-21T05:41:47.0985862Z Temporarily overriding HOME='/home/runner/work/_temp/e354abb6-2b58-4437-b2b3-53664c97ecfe' before making global git config changes
+2026-10-21T05:41:47.0987356Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-21T05:41:47.0991589Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Code-in-Motion/Code-in-Motion
+2026-10-21T05:41:47.1020387Z Removing SSH command configuration
+2026-10-21T05:41:47.1026714Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-21T05:41:47.1059268Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-21T05:41:47.1273241Z Removing HTTP extra header
+2026-10-21T05:41:47.1279923Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-21T05:41:47.1312609Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-21T05:41:47.1524976Z Removing includeIf entries pointing to credentials config files
+2026-10-21T05:41:47.1530404Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-21T05:41:47.1568527Z includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path
+2026-10-21T05:41:47.1569923Z includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path
+2026-10-21T05:41:47.1570972Z includeif.gitdir:/github/workspace/.git.path
+2026-10-21T05:41:47.1571803Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-21T05:41:47.1576178Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path
+2026-10-21T05:41:47.1601540Z /home/runner/work/_temp/git-credentials-994aba75-2117-405a-9a5f-ed9a28246a5a.config
+2026-10-21T05:41:47.1612666Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-994aba75\-2117\-405a\-9a5f\-ed9a28246a5a\.config
+2026-10-21T05:41:47.1660301Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path
+2026-10-21T05:41:47.1682310Z /home/runner/work/_temp/git-credentials-994aba75-2117-405a-9a5f-ed9a28246a5a.config
+2026-10-21T05:41:47.1691761Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-994aba75\-2117\-405a\-9a5f\-ed9a28246a5a\.config
+2026-10-21T05:41:47.1722551Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-21T05:41:47.1743170Z /github/runner_temp/git-credentials-994aba75-2117-405a-9a5f-ed9a28246a5a.config
+2026-10-21T05:41:47.1751480Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-994aba75\-2117\-405a\-9a5f\-ed9a28246a5a\.config
+2026-10-21T05:41:47.1780715Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-21T05:41:47.1816007Z /github/runner_temp/git-credentials-994aba75-2117-405a-9a5f-ed9a28246a5a.config
+2026-10-21T05:41:47.1818442Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-994aba75\-2117\-405a\-9a5f\-ed9a28246a5a\.config
+2026-10-21T05:41:47.1848371Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-21T05:41:47.2077183Z Removing credentials config '/home/runner/work/_temp/git-credentials-994aba75-2117-405a-9a5f-ed9a28246a5a.config'
+2026-10-21T05:41:47.2262576Z Cleaning up orphan processes

@@ -1,0 +1,21 @@
+{
+  "base": "9db0421",
+  "source": "32ab172",
+  "frozen_paths": [
+    "wordpress",
+    "src/core",
+    "src/runtime",
+    "src/host",
+    "src/contracts",
+    "src/renderers",
+    "src/commentary",
+    "src/experience",
+    "authoring/v1",
+    "authoring/v2",
+    "authoring/v3/fixtures",
+    "experiences",
+    "src/multipane/session.mjs",
+    "src/multipane/model.mjs"
+  ],
+  "changed_files": []
+}
