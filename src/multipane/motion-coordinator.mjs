@@ -13,4 +13,3 @@ export function createMotionCoordinator(experience,slots,options){
  }});
  return{...driver,adapter,clockEvents};
 }
-

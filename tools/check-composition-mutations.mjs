@@ -4,6 +4,7 @@ import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 const root=fileURLToPath(new URL('../',import.meta.url)),work=resolve(root,'../composition-mutations'),browser=process.argv.includes('--browser');await mkdir(work,{recursive:true});const sandbox=await mkdtemp(resolve(work,'candidate-'));await cp(root,sandbox,{recursive:true,filter:p=>!['.git','node_modules','dist','test-results','work'].includes(basename(p))});await symlink(resolve(root,'node_modules'),resolve(sandbox,'node_modules'),process.platform==='win32'?'junction':'dir');
 const cases=[
+ ['CMP-14-file-caption','authoring/v3/media-files.mjs','...(clip.webm?', '...(false?', 'CMP-14'],
  ['CMP-01-caption','src/multipane/media-map.mjs',"total+=descriptor(w?.captions,path+'.webm.captions',true);",'/* webm captions unchecked */','CMP-01'],
  ['CMP-02-total','src/multipane/media-map.mjs',"total+=descriptor({...w,alt:d.alt},path+'.webm');","descriptor({...w,alt:d.alt},path+'.webm');",'CMP-02'],
  ['CMP-02-duration','src/multipane/media-map.mjs','Math.abs(d.duration-w.duration)>0.2','false','CMP-02'],

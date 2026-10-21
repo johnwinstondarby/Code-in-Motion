@@ -73,7 +73,7 @@ function shape(value, schema, path, c, root = schema) {
     c = { ...c, reject: (id, condition, at, message) => original.reject('CIM-V3-MEDIA-DEFERRED', condition, at, message) };
   }
   if(schema.anyOf){
-    const alternatives=schema.anyOf.map(branch=>{const errors=[];shape(value,branch,path,{reject:(id,condition,at,message)=>{if(condition)errors.push([id,at,message]);}},root);return errors;});
+    const alternatives=schema.anyOf.map(branch=>{const errors=[];shape(value,branch,path,{fixtureMedia:c.fixtureMedia,reject:(id,condition,at,message)=>{if(condition)errors.push([id,at,message]);}},root);return errors;});
     if(alternatives.some(errors=>errors.length===0))return;
     const selected=schema.anyOf.findIndex(branch=>branch.properties?.status?.const!==undefined&&branch.properties.status.const===value?.status||branch.properties?.type?.const!==undefined&&branch.properties.type.const===value?.type);
     for(const[id,at,message]of alternatives[selected<0?0:selected])c.reject(id,true,at,message);return;
