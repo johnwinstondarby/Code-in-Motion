@@ -1,2 +1,2 @@
-// Step 6c inert composition stub for the recorded red run.
-export function mountComposedPlayer(){return {}; }
+// Step 6c inert composition stub: readiness only, no page markup or behavior.
+export function mountComposedPlayer(){return {session:{}}; }
