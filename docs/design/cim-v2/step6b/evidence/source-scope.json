@@ -1,0 +1,18 @@
+{
+  "base": "2f106266358fc35945d35b8dfb3444bb37718c6b",
+  "implementation": "fcf23d4",
+  "frozen_paths_checked": [
+    "wordpress",
+    "src/core",
+    "src/runtime",
+    "src/host",
+    "src/contracts",
+    "src/renderers",
+    "src/commentary",
+    "src/transport",
+    "authoring/v1",
+    "authoring/v2",
+    "experiences"
+  ],
+  "changed_files": []
+}

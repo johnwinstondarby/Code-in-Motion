@@ -1,0 +1,227 @@
+[
+  {
+    "file": "screenshots/chromium/1366-fallback-missing.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-fallback-tampered.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-fallback-undecodable.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-motion-active.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-motion.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1536-fallback-missing.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-fallback-tampered.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-fallback-undecodable.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-motion-active.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-motion.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1920-fallback-missing.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-fallback-tampered.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-fallback-undecodable.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-motion-active.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-motion.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1366-fallback-missing.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-fallback-tampered.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-fallback-undecodable.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-motion-active.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-motion.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1536-fallback-missing.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-fallback-tampered.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-fallback-undecodable.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-motion-active.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-motion.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1920-fallback-missing.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-fallback-tampered.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-fallback-undecodable.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-motion-active.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-motion.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1366-fallback-missing.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-fallback-tampered.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-fallback-undecodable.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-motion-active.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-motion.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1536-fallback-missing.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-fallback-tampered.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-fallback-undecodable.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-motion-active.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-motion.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1920-fallback-missing.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-fallback-tampered.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-fallback-undecodable.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-motion-active.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-motion.png",
+    "width": 1920,
+    "height": 1080
+  }
+]

@@ -1,3 +1,4 @@
+import {validateMediaFiles} from './media-files.mjs';
 import { open, realpath, stat } from 'node:fs/promises';
 import { dirname, isAbsolute, relative, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -57,9 +58,11 @@ export function decodeJSON(bytes, path = '$') {
 export async function validateV3File(source, text) {
   let parsed;
   try { parsed = JSON.parse(text); } catch { fail('CIM-V3-PARSE', '$', 'Malformed JSON.'); }
-  const kind = { 'localis.cim/authoring/v3': 'authoring', 'localis.cim/engineering-capture/v1': 'capture', 'cim.lesson-pack/v2': 'pack' }[parsed?.schema];
+  const kind = { 'localis.cim/authoring/v3': 'authoring', 'localis.cim/engineering-capture/v1': 'capture', 'cim.lesson-pack/v2': 'pack', 'localis.cim/media/v1':'media' }[parsed?.schema];
   if (!kind) fail('CIM-V3-SHAPE', '$.schema', 'Unsupported validation schema.');
   const validated = assertValid(validateDocument(text, kind));
+  if(kind==='media'){await validateMediaFiles(validated.value,dirname(source));return{kind,id:validated.value.schema,count:validated.value.assets.length};}
+  if(kind==='pack'&&validated.value.media.status==='fixture')await validateMediaFiles(validated.value.media,dirname(source));
   if (kind === 'pack') return { kind, id: 'cim.lesson-pack/v2', count: validated.value.lessons.length };
   if (kind === 'capture') {
     await validateArchiveFiles(validated.value, dirname(source));

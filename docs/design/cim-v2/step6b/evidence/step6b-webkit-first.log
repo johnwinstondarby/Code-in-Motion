@@ -1,0 +1,228 @@
+
+Running 12 tests using 1 worker
+
+
+(node:127936) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/12] tests\e2e\motion-pane.spec.mjs:34:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+  1) tests\e2e\motion-pane.spec.mjs:34:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold 
+
+    Test timeout of 15000ms exceeded.
+
+    Error: page.waitForFunction: Test timeout of 15000ms exceeded.
+
+      33 |  test.use({viewport:{width,height}});
+      34 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{
+    > 35 |   await open(page);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI · simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);
+         |                                                                                                                                                                                                               ^
+      36 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);expect(await video.evaluate(v=>v.currentTime)).toBeCloseTo(at,1);
+      37 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await video.evaluate(v=>v.ended||v.currentTime>=v.duration-0.15)).toBe(true);
+      38 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\motion-pane.spec.mjs:35:207
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold\error-context.md
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold\error-context.md
+
+
+
+(node:29940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[2/12] tests\e2e\motion-pane.spec.mjs:40:2 › 1366x768 › [MOT-08] reduced motion shows still and alternative with no automatic play
+  2) tests\e2e\motion-pane.spec.mjs:40:2 › 1366x768 › [MOT-08] reduced motion shows still and alternative with no automatic play 
+
+    Test timeout of 15000ms exceeded.
+
+    Error: page.waitForFunction: Test timeout of 15000ms exceeded.
+
+      38 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});
+      39 |  });
+    > 40 |  test('[MOT-08] reduced motion shows still and alternative with no automatic play',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?attachment');await gui(page);await expect(page.locator('.motion-pane')).toContainText('Simulated GUI test pattern');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);expect(await page.locator('.motion-pane video').evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');});
+         |                                                                                                                                                                                                                                                                                                       ^
+      41 |  test('[MOT-09] missing and tampered clips fail safely and retain fallback while held',async({page},info)=>{for(const mode of ['missing','tampered']){await open(page,'?mode='+mode);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('GUI recording unavailable');await expect(pane).toContainText('CIM-PANE-MEDIA-UNAVAILABLE');await expect(pane).toContainText('Simulated GUI test pattern');await page.evaluate(()=>fixture.advance(500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(pane).toContainText('GUI recording unavailable');await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();await page.screenshot({path:info.outputPath('fallback-'+mode+'.png')});}});
+      42 |  test('[MOT-10] buffering holds every pane and never means completion',async({page})=>{await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('waiting')));const before=await page.evaluate(()=>({state:fixture.session.read(),writes:fixture.log.length}));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('canplay')));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>{fixture.session.dispatch({type:'play'});fixture.session.dispatch({type:'jump',index:7});});await expect.poll(()=>page.evaluate(()=>fixture.session.read().index)).toBe(7);});
+      43 | });
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\motion-pane.spec.mjs:40:295
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1366-a7f0d-tive-with-no-automatic-play\error-context.md
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1366-a7f0d-tive-with-no-automatic-play\error-context.md
+
+
+(node:87188) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[3/12] tests\e2e\motion-pane.spec.mjs:41:2 › 1366x768 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+[4/12] tests\e2e\motion-pane.spec.mjs:42:2 › 1366x768 › [MOT-10] buffering holds every pane and never means completion
+  3) tests\e2e\motion-pane.spec.mjs:42:2 › 1366x768 › [MOT-10] buffering holds every pane and never means completion 
+
+    Test timeout of 15000ms exceeded.
+
+    Error: page.waitForFunction: Test timeout of 15000ms exceeded.
+
+      40 |  test('[MOT-08] reduced motion shows still and alternative with no automatic play',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?attachment');await gui(page);await expect(page.locator('.motion-pane')).toContainText('Simulated GUI test pattern');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);expect(await page.locator('.motion-pane video').evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');});
+      41 |  test('[MOT-09] missing and tampered clips fail safely and retain fallback while held',async({page},info)=>{for(const mode of ['missing','tampered']){await open(page,'?mode='+mode);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('GUI recording unavailable');await expect(pane).toContainText('CIM-PANE-MEDIA-UNAVAILABLE');await expect(pane).toContainText('Simulated GUI test pattern');await page.evaluate(()=>fixture.advance(500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(pane).toContainText('GUI recording unavailable');await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();await page.screenshot({path:info.outputPath('fallback-'+mode+'.png')});}});
+    > 42 |  test('[MOT-10] buffering holds every pane and never means completion',async({page})=>{await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('waiting')));const before=await page.evaluate(()=>({state:fixture.session.read(),writes:fixture.log.length}));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('canplay')));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>{fixture.session.dispatch({type:'play'});fixture.session.dispatch({type:'jump',index:7});});await expect.poll(()=>page.evaluate(()=>fixture.session.read().index)).toBe(7);});
+         |                                                                                                                                    ^
+      43 | });
+      44 |
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\motion-pane.spec.mjs:42:132
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1366-4f8c9--and-never-means-completion\error-context.md
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1366-4f8c9--and-never-means-completion\error-context.md
+
+
+
+(node:2564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[5/12] tests\e2e\motion-pane.spec.mjs:34:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+  4) tests\e2e\motion-pane.spec.mjs:34:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold 
+
+    Test timeout of 15000ms exceeded while setting up "page".
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold\error-context.md
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold\error-context.md
+
+
+
+(node:118976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[6/12] tests\e2e\motion-pane.spec.mjs:40:2 › 1536x864 › [MOT-08] reduced motion shows still and alternative with no automatic play
+  5) tests\e2e\motion-pane.spec.mjs:40:2 › 1536x864 › [MOT-08] reduced motion shows still and alternative with no automatic play 
+
+    Test timeout of 15000ms exceeded.
+
+    Error: page.waitForFunction: Test timeout of 15000ms exceeded.
+
+      38 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});
+      39 |  });
+    > 40 |  test('[MOT-08] reduced motion shows still and alternative with no automatic play',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?attachment');await gui(page);await expect(page.locator('.motion-pane')).toContainText('Simulated GUI test pattern');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);expect(await page.locator('.motion-pane video').evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');});
+         |                                                                                                                                                                                                                                                                                                       ^
+      41 |  test('[MOT-09] missing and tampered clips fail safely and retain fallback while held',async({page},info)=>{for(const mode of ['missing','tampered']){await open(page,'?mode='+mode);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('GUI recording unavailable');await expect(pane).toContainText('CIM-PANE-MEDIA-UNAVAILABLE');await expect(pane).toContainText('Simulated GUI test pattern');await page.evaluate(()=>fixture.advance(500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(pane).toContainText('GUI recording unavailable');await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();await page.screenshot({path:info.outputPath('fallback-'+mode+'.png')});}});
+      42 |  test('[MOT-10] buffering holds every pane and never means completion',async({page})=>{await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('waiting')));const before=await page.evaluate(()=>({state:fixture.session.read(),writes:fixture.log.length}));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('canplay')));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>{fixture.session.dispatch({type:'play'});fixture.session.dispatch({type:'jump',index:7});});await expect.poll(()=>page.evaluate(()=>fixture.session.read().index)).toBe(7);});
+      43 | });
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\motion-pane.spec.mjs:40:295
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1536-cc0b7-tive-with-no-automatic-play\error-context.md
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1536-cc0b7-tive-with-no-automatic-play\error-context.md
+
+
+
+(node:112108) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[7/12] tests\e2e\motion-pane.spec.mjs:41:2 › 1536x864 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+[8/12] tests\e2e\motion-pane.spec.mjs:42:2 › 1536x864 › [MOT-10] buffering holds every pane and never means completion
+  6) tests\e2e\motion-pane.spec.mjs:42:2 › 1536x864 › [MOT-10] buffering holds every pane and never means completion 
+
+    Test timeout of 15000ms exceeded.
+
+    Error: page.waitForFunction: Test timeout of 15000ms exceeded.
+
+      40 |  test('[MOT-08] reduced motion shows still and alternative with no automatic play',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?attachment');await gui(page);await expect(page.locator('.motion-pane')).toContainText('Simulated GUI test pattern');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);expect(await page.locator('.motion-pane video').evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');});
+      41 |  test('[MOT-09] missing and tampered clips fail safely and retain fallback while held',async({page},info)=>{for(const mode of ['missing','tampered']){await open(page,'?mode='+mode);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('GUI recording unavailable');await expect(pane).toContainText('CIM-PANE-MEDIA-UNAVAILABLE');await expect(pane).toContainText('Simulated GUI test pattern');await page.evaluate(()=>fixture.advance(500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(pane).toContainText('GUI recording unavailable');await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();await page.screenshot({path:info.outputPath('fallback-'+mode+'.png')});}});
+    > 42 |  test('[MOT-10] buffering holds every pane and never means completion',async({page})=>{await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('waiting')));const before=await page.evaluate(()=>({state:fixture.session.read(),writes:fixture.log.length}));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('canplay')));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>{fixture.session.dispatch({type:'play'});fixture.session.dispatch({type:'jump',index:7});});await expect.poll(()=>page.evaluate(()=>fixture.session.read().index)).toBe(7);});
+         |                                                                                                                                    ^
+      43 | });
+      44 |
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\motion-pane.spec.mjs:42:132
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1536-246eb--and-never-means-completion\error-context.md
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1536-246eb--and-never-means-completion\error-context.md
+
+
+(node:29896) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[9/12] tests\e2e\motion-pane.spec.mjs:34:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+  7) tests\e2e\motion-pane.spec.mjs:34:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold 
+
+    Test timeout of 15000ms exceeded.
+
+    Error: page.waitForFunction: Test timeout of 15000ms exceeded.
+
+      33 |  test.use({viewport:{width,height}});
+      34 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{
+    > 35 |   await open(page);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI · simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);
+         |                                                                                                                                                                                                               ^
+      36 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);expect(await video.evaluate(v=>v.currentTime)).toBeCloseTo(at,1);
+      37 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await video.evaluate(v=>v.ended||v.currentTime>=v.duration-0.15)).toBe(true);
+      38 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\motion-pane.spec.mjs:35:207
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold\error-context.md
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold\error-context.md
+
+
+(node:61160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[10/12] tests\e2e\motion-pane.spec.mjs:40:2 › 1920x1080 › [MOT-08] reduced motion shows still and alternative with no automatic play
+  8) tests\e2e\motion-pane.spec.mjs:40:2 › 1920x1080 › [MOT-08] reduced motion shows still and alternative with no automatic play 
+
+    Test timeout of 15000ms exceeded.
+
+    Error: page.waitForFunction: Test timeout of 15000ms exceeded.
+
+      38 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});
+      39 |  });
+    > 40 |  test('[MOT-08] reduced motion shows still and alternative with no automatic play',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?attachment');await gui(page);await expect(page.locator('.motion-pane')).toContainText('Simulated GUI test pattern');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);expect(await page.locator('.motion-pane video').evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');});
+         |                                                                                                                                                                                                                                                                                                       ^
+      41 |  test('[MOT-09] missing and tampered clips fail safely and retain fallback while held',async({page},info)=>{for(const mode of ['missing','tampered']){await open(page,'?mode='+mode);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('GUI recording unavailable');await expect(pane).toContainText('CIM-PANE-MEDIA-UNAVAILABLE');await expect(pane).toContainText('Simulated GUI test pattern');await page.evaluate(()=>fixture.advance(500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(pane).toContainText('GUI recording unavailable');await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();await page.screenshot({path:info.outputPath('fallback-'+mode+'.png')});}});
+      42 |  test('[MOT-10] buffering holds every pane and never means completion',async({page})=>{await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('waiting')));const before=await page.evaluate(()=>({state:fixture.session.read(),writes:fixture.log.length}));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('canplay')));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>{fixture.session.dispatch({type:'play'});fixture.session.dispatch({type:'jump',index:7});});await expect.poll(()=>page.evaluate(()=>fixture.session.read().index)).toBe(7);});
+      43 | });
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\motion-pane.spec.mjs:40:295
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1920-3b80f-tive-with-no-automatic-play\error-context.md
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1920-3b80f-tive-with-no-automatic-play\error-context.md
+
+
+
+
+(node:127368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[11/12] tests\e2e\motion-pane.spec.mjs:41:2 › 1920x1080 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+[12/12] tests\e2e\motion-pane.spec.mjs:42:2 › 1920x1080 › [MOT-10] buffering holds every pane and never means completion
+  9) tests\e2e\motion-pane.spec.mjs:42:2 › 1920x1080 › [MOT-10] buffering holds every pane and never means completion 
+
+    Test timeout of 15000ms exceeded.
+
+    Error: page.waitForFunction: Test timeout of 15000ms exceeded.
+
+      40 |  test('[MOT-08] reduced motion shows still and alternative with no automatic play',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?attachment');await gui(page);await expect(page.locator('.motion-pane')).toContainText('Simulated GUI test pattern');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);expect(await page.locator('.motion-pane video').evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');});
+      41 |  test('[MOT-09] missing and tampered clips fail safely and retain fallback while held',async({page},info)=>{for(const mode of ['missing','tampered']){await open(page,'?mode='+mode);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('GUI recording unavailable');await expect(pane).toContainText('CIM-PANE-MEDIA-UNAVAILABLE');await expect(pane).toContainText('Simulated GUI test pattern');await page.evaluate(()=>fixture.advance(500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(pane).toContainText('GUI recording unavailable');await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();await page.screenshot({path:info.outputPath('fallback-'+mode+'.png')});}});
+    > 42 |  test('[MOT-10] buffering holds every pane and never means completion',async({page})=>{await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('waiting')));const before=await page.evaluate(()=>({state:fixture.session.read(),writes:fixture.log.length}));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await page.locator('.motion-pane video').evaluate(v=>v.dispatchEvent(new Event('canplay')));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>{fixture.session.dispatch({type:'play'});fixture.session.dispatch({type:'jump',index:7});});await expect.poll(()=>page.evaluate(()=>fixture.session.read().index)).toBe(7);});
+         |                                                                                                                                    ^
+      43 | });
+      44 |
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\motion-pane.spec.mjs:42:132
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1920-45692--and-never-means-completion\error-context.md
+
+    Error Context: ..\..\outputs\step6b-webkit-first\tests-e2e-motion-pane-1920-45692--and-never-means-completion\error-context.md
+
+
+  9 failed
+    tests\e2e\motion-pane.spec.mjs:34:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold 
+    tests\e2e\motion-pane.spec.mjs:40:2 › 1366x768 › [MOT-08] reduced motion shows still and alternative with no automatic play 
+    tests\e2e\motion-pane.spec.mjs:42:2 › 1366x768 › [MOT-10] buffering holds every pane and never means completion 
+    tests\e2e\motion-pane.spec.mjs:34:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold 
+    tests\e2e\motion-pane.spec.mjs:40:2 › 1536x864 › [MOT-08] reduced motion shows still and alternative with no automatic play 
+    tests\e2e\motion-pane.spec.mjs:42:2 › 1536x864 › [MOT-10] buffering holds every pane and never means completion 
+    tests\e2e\motion-pane.spec.mjs:34:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold 
+    tests\e2e\motion-pane.spec.mjs:40:2 › 1920x1080 › [MOT-08] reduced motion shows still and alternative with no automatic play 
+    tests\e2e\motion-pane.spec.mjs:42:2 › 1920x1080 › [MOT-10] buffering holds every pane and never means completion 
+  3 passed (2.7m)

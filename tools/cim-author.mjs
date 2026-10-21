@@ -29,7 +29,7 @@ export async function main(args) {
   const text = await readFile(resolve(source),'utf8');
   let declaredSchema;
   try { declaredSchema = JSON.parse(text)?.schema; } catch { /* Preserve the legacy compiler's parse diagnostics. */ }
-  if (['localis.cim/authoring/v3','localis.cim/engineering-capture/v1','cim.lesson-pack/v2'].includes(declaredSchema)) {
+  if (['localis.cim/authoring/v3','localis.cim/engineering-capture/v1','cim.lesson-pack/v2','localis.cim/media/v1'].includes(declaredSchema)) {
     if (command !== 'validate') throw new Error('Multi-pane schemas support validate only in this step. Use cim-author validate; compile, pack and preview admission wait for later work.');
     const result = await validateV3File(resolve(source), decodeJSON(await readBoundedFile(resolve(source))));
     console.log(`Valid: ${result.id} (${result.count} ${result.kind === 'authoring' ? 'beats' : 'entries'}; schema validation only, not Player admission).`);

@@ -1,0 +1,39 @@
+TAP version 13
+1..0
+# Subtest: tests/motion-authoring.test.mjs
+ok 1 - tests/motion-authoring.test.mjs
+  ---
+  duration_ms: 1625.716504
+  type: 'test'
+  ...
+# Subtest: [MOT-02] only exact verified clip and caption bytes become playback Blob URLs
+not ok 2 - [MOT-02] only exact verified clip and caption bytes become playback Blob URLs
+  ---
+  duration_ms: 13.601186
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/motion-mutations/candidate-Qwjk8H/tests/motion-media.test.mjs:21:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /^blob:/. Input:
+    
+    'http://localhost:1234/__cim_fixture_media/clip.webm'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'http://localhost:1234/__cim_fixture_media/clip.webm'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/motion-mutations/candidate-Qwjk8H/tests/motion-media.test.mjs:21:168)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1631.675257

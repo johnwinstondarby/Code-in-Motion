@@ -1,10 +1,12 @@
+import mediaSchema from './media.schema.json' with { type: 'json' };
+import {validateMediaMap} from '../../src/multipane/media-map.mjs';
 import authoringSchema from './authoring.schema.json' with { type: 'json' };
 import captureSchema from './capture.schema.json' with { type: 'json' };
 import packSchema from './pack.schema.json' with { type: 'json' };
 import { findDuplicateKeys } from '../v2/validate-authoring.mjs';
 
 export const LIMITS = Object.freeze({ bytes: 2 * 1024 * 1024, depth: 32, nodes: 100000, evidenceBytes: 2 * 1024 * 1024, archiveBytes: 16 * 1024 * 1024 });
-export const SCHEMAS = Object.freeze({ authoring: authoringSchema, capture: captureSchema, pack: packSchema });
+export const SCHEMAS = Object.freeze({ authoring: authoringSchema, capture: captureSchema, pack: packSchema, media: mediaSchema });
 export const RULES = Object.freeze({
   'CIM-V3-PARSE': 'Save valid UTF-8 JSON with double quotes and no trailing comma.',
   'CIM-V3-SHAPE': 'Use only the documented fields and types in the matching v3 schema.',
@@ -63,13 +65,20 @@ function read(source, c) {
   return value;
 }
 
-// This bounded evaluator implements exactly the keywords used by the three closed
+// This bounded evaluator implements exactly the keywords used by the four closed
 // schemas. It has no remote references, executable keywords or installed dependencies.
 function shape(value, schema, path, c, root = schema) {
   if (root.$id === 'cim.lesson-pack/v2' && path.startsWith('$.media')) {
     const original = c;
     c = { ...c, reject: (id, condition, at, message) => original.reject('CIM-V3-MEDIA-DEFERRED', condition, at, message) };
   }
+  if(schema.anyOf){
+    const alternatives=schema.anyOf.map(branch=>{const errors=[];shape(value,branch,path,{reject:(id,condition,at,message)=>{if(condition)errors.push([id,at,message]);}},root);return errors;});
+    if(alternatives.some(errors=>errors.length===0))return;
+    const selected=schema.anyOf.findIndex(branch=>branch.properties?.status?.const!==undefined&&branch.properties.status.const===value?.status||branch.properties?.type?.const!==undefined&&branch.properties.type.const===value?.type);
+    for(const[id,at,message]of alternatives[selected<0?0:selected])c.reject(id,true,at,message);return;
+  }
+  if(typeof value==='number')c.reject('CIM-V3-LIMIT',(schema.minimum!==undefined&&value<schema.minimum)||(schema.maximum!==undefined&&value>schema.maximum),path,'Number exceeds the documented range.');
   if (schema.$ref) return shape(value, root.$defs[schema.$ref.split('/').at(-1)], path, c, root);
   const types = schema.type ? [schema.type].flat() : [];
   const matches = t => t === 'object' ? object(value) : t === 'array' ? Array.isArray(value) : t === 'null' ? value === null : t === 'integer' ? Number.isInteger(value) : typeof value === t;
@@ -182,13 +191,15 @@ function pack(doc, c) {
   const compare = (a, b) => { for (let i = 0; i < 3; i++) { const d = Number(a.split('.')[i]) - Number(b.split('.')[i]); if (d) return d; } return 0; };
   c.reject('CIM-V3-PACK-VERSION', !release(doc.cim_min) || !release(doc.cim_max_exclusive) || compare(doc.cim_min, '1.1.0') < 0 || compare(doc.cim_max_exclusive, '2.0.0') > 0 || compare(doc.cim_min, doc.cim_max_exclusive) >= 0, '$.cim_min', 'Pack version interval cannot claim unsupported hosts.');
   doc.lessons.forEach((l, i) => c.reject('CIM-V3-ARCHIVE-PATH', !jsonBasename(l.file) || !jsonBasename(l.capture), `$.lessons[${i}]`, 'Lesson and capture files must be JSON basenames.'));
+  if(doc.media.status==='fixture'){c.diagnostics.push(...validateMediaMap(doc.media).map(d=>({...d,path:'$.media'+d.path.slice(1)})));c.reject('CIM-V3-PLACEHOLDER',doc.media.placeholder!==doc.placeholder,'$.media.placeholder','Pack and media provenance disagree.');return;}
   c.reject('CIM-V3-MEDIA-DEFERRED', doc.media.status !== 'deferred' || doc.media.assets.length !== 0, '$.media', 'Media maps are reserved, not implemented.');
 }
 
 export function validateDocument(source, kind) {
   const c = collector(), value = read(source, c);
+  if(value!==undefined&&!c.diagnostics.length&&(kind==='media'||kind==='pack'&&value?.media?.status==='fixture'))c.diagnostics.push(...validateMediaMap(kind==='media'?value:value.media).map(d=>({...d,path:kind==='media'?d.path:'$.media'+d.path.slice(1)})));
   if (value !== undefined && !c.diagnostics.length) shape(value, SCHEMAS[kind], '$', c);
-  if (value !== undefined && !c.diagnostics.length) ({ authoring, capture, pack })[kind](value, c);
+  if (value !== undefined && !c.diagnostics.length) ({ authoring, capture, pack, media:()=>{} })[kind](value, c);
   return { value, diagnostics: c.diagnostics };
 }
 
