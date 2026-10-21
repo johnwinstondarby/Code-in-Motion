@@ -35,7 +35,7 @@ if(browser)cases.push(
  ['MOT-10-buffer-finished',pane,"listen('waiting',()=>{if(done||finalising)return;emit(true);","listen('waiting',()=>{if(done||finalising)return;task.finish({status:'settled'});",'MOT-10','browser'],
  ['MOT-21-release',pane,'media?.release();media=null;','media=null;','MOT-21','browser'],
  ['MOT-18-native-guard',pane,'if(!authorizedPlayback)nextVideo.pause();','/* unauthorized native playback allowed */','MOT-18','browser'],
- ['MOT-17-stale',pane,'if(!disposed&&revision===token&&!signal.aborted)','if(!disposed)','MOT-17','browser'],
+ ['MOT-17-stale',pane,'if(!disposed&&revision===token&&(!signal.aborted||timedOut))','if(!disposed)','MOT-17','browser'],
  ['MOT-16-preparation','src/multipane/motion-coordinator.mjs',"barrier.hold('preparation');",'/* preparation hold omitted */','MOT-16','browser']
 );
 const run=(rule,kind='unit')=>spawnSync(process.execPath,kind==='browser'?[resolve(root,'node_modules/@playwright/test/cli.js'),'test','tests/e2e/motion-pane.spec.mjs','--grep',`1366x768.*${rule??'MOT-'}`,'--workers=1','--reporter=line','--timeout=12000','--output='+resolve(work,'browser-results')]:['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),'tests/motion-media.test.mjs','tests/motion-authoring.test.mjs'],{cwd:sandbox,encoding:'utf8',timeout:180000});
