@@ -43,7 +43,7 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
      if(!Number.isFinite(nextVideo.duration)||Math.abs(nextVideo.duration-selected.duration)>0.2)throw new Error(code);
      message.remove();emit(false);return;
     }catch(error){
-     retireMediaElement(nextVideo);nextVideo.remove();loaded.release();media=null;video=null;
+     retireMediaElement(nextVideo);nextVideo.remove();loaded.release();if(media===loaded)media=null;if(video===nextVideo)video=null;
      if(index+1>=choices.length||signal.aborted||performance.now()>=deadline)throw error;
     }
    }
