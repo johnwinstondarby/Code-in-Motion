@@ -88,3 +88,6 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
  const pane=Object.freeze({mount(target,data,identity){if(root||disposed)throw new Error('Motion cannot mount twice or after disposal.');identity=readonlyPaneData(identity);if(typeof identity?.id!=='string'||!identity.id||identity?.type!=='motion/v1'||Object.keys(identity).some(k=>!['id','type'].includes(k)))throw new TypeError('Restricted Motion identity required.');config=readonlyPaneData(data);const diagnostics=validateMediaMap(config);if(diagnostics.length)throw new Error(diagnostics[0].message);root=target;frame('No GUI recording has played yet.');},settle,play,dispose(){if(disposed)return;disposed=true;++revision;clear();observers.clear();root?.replaceChildren();}});
  return Object.freeze({pane,prepare,observe(fn){if(typeof fn!=='function')throw new TypeError('Readiness observer must be a function.');observers.add(fn);return()=>observers.delete(fn);}});
 }
+
+// Existing native reset sequence, factored for a deterministic retirement regression.
+export function retireMediaElement(target){target.pause();target.removeAttribute('src');target.load();}
