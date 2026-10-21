@@ -1,6 +1,6 @@
 # ADR 0061 step 6c — composed fixture Player
 
-Draft for Daisy’s independent review and Johann’s approval. Base `9db0421`, version 1.0.1. Source implementation through `d71fc58`. No merge, version bump, tag, release, WordPress admission or installation.
+Draft for Daisy’s independent review and Johann’s approval. Base `9db0421`, version 1.0.1. Source implementation through `32a81ad`; final browser-harness correction `32ab172`. No merge, version bump, tag, release, WordPress admission or installation.
 
 ## Result and scope
 
@@ -48,6 +48,11 @@ No existing assertion was removed or given a wider tolerance. Changes to scenari
 | New CMP15 browser navigation test, then a seek-event trigger and retired-video pause assertion | Post-red coverage for the native race. Early attempts passed and are not red proof. Native responsiveness and paused retirement supplement the deterministic unit regression. |
 | New CMP15 unit retirement test, later extended to loading readiness states | Each was recorded failing before its corresponding fix; both red logs are retained. |
 | Reference-schema checks now reject the invalid examples as well as accepting the valid map | Strengthens agreement between the pure checker and the declared schema. |
+| CMP05 now explicitly requires a nonempty list of capture-owned transfer IDs; added invented-ID probe (`050e2f4`) | The earlier membership-only assertion could pass vacuously if no transfer was drawn. No existing assertion was removed. |
+| Existing MOT17 stale-completion probe target corrected (`c66d45e`) | The first draft CI exposed a stale textual mutation target after decode retry changed the guard. The earlier local run omitted the full old Motion browser runner; all 30 old probes are now rerun on all three engines. |
+| CMP15 unit now rejects every retired-video load reset; new CMP16 final-seek ordering cases (`f7c214e`, red `97e2ee7`) | CI WebKit showed the conditional reset was insufficient and native ended could report completion before the decoded final frame. Both assertions failed before `d9b6115`. |
+| CMP16 adds exact-final, near-final and stuck-final-seek cases; B17 forces an absolute final seek to reject (`7682fd9`, red `caa2f8c`) | The earlier final-frame check could accept a frame near the end then start a redundant seek; the absolute settle swallowed rejection. Red logs precede `32a81ad`. |
+| B17 selects Motion after jumping to the final beat (`32ab172`) | That beat's default action tab is Console. The first full run correctly kept hidden Motion inert, so clicking its hidden summary timed out. Selecting the held Motion tab tests the intended disclosure scenario without changing Player code. The failing run and passing correction are retained. |
 | Existing Motion mutation targets move from harness to real coordinator, and its timeout target follows the unchanged deadline logic | No original rule or assertion is removed. The same step-6b tests now reach the source coordinator through the thin wrapper. |
 
 Temporary trace statements were removed. The frozen session source is byte-identical to the base. Node24 was used in preliminary exploratory mutation attempts only; accepted verification, builds and mutation evidence use the pinned versions noted below.
@@ -83,17 +88,18 @@ U = tagged tests in `tests/composition.test.mjs`; B = `tests/e2e/composition.spe
 | Second-copy verification and captions | B09/10 | skip WebM fingerprint; omit WebM caption bytes |
 | Text and shape status cues | B11 | remove both labels and shape symbols |
 | Original retry deadline | B12 | extend/reset the deadline on retry |
-| Nonblocking native retirement | U15, B15 and repeated B11 WebKit runs | force synchronous reset of pending/loading decoder |
+| Nonblocking native retirement | U15, B15 and repeated B11 WebKit runs | force synchronous reset of any retired decoder |
+| Validated final frame and absolute-seek failure | U16, B17, existing MOT07 | redundant final seek; swallow absolute-seek rejection |
 
-Accepted mutation runs contain **18 assertion-detected probes per engine** (ten unit and eight browser probes), each after passing baselines. No syntax/reference crash counts as detection.
+Accepted mutation runs contain **21 assertion-detected probes per engine** (twelve unit and nine browser probes), plus all 30 existing Motion probes, each after passing baselines. No syntax/reference crash counts as detection.
 
 ## Verification and builds
 
-Final local verify passes **1,058 tests on each of Node 20.20.2 and Node 22.23.2**, with zero skipped unit tests; exact counts and logs are in evidence. Chromium passes 146 cases; Firefox/WebKit pass 145 with the existing clipboard skip. V1 differential remains **41 identical, zero different**. All frozen v1/v2 fixtures, outputs/rejections, bundled lessons, Core, Runtime, host, renderer contract and production WordPress files are unchanged. Default step-5 controls/session behavior remains protected by the complete existing tests.
+Final local verify passes **1,059 tests on each of Node 20.20.2 and Node 22.23.2**, with zero skipped unit tests; exact counts and logs are in evidence. Chromium passes 149 cases; Firefox/WebKit pass 148 with the existing clipboard skip. V1 differential remains **41 identical, zero different**. All frozen v1/v2 fixtures, outputs/rejections, bundled lessons, Core, Runtime, host, renderer contract and production WordPress files are unchanged. Default step-5 controls/session behavior remains protected by the complete existing tests.
 
-The full Linux browser matrix includes Player, lesson packs, preview, teacher-admin, transport, Engineering, Motion and composition: **146 cases per engine**, including 21 new composition cases across the three sizes. Firefox/WebKit retain the existing Chromium-only native clipboard skip. Positive WebKit playback uses Ubuntu 24.04 with pinned Node 22.23.2. Screenshots include Console, Motion, hold, all four failures with details closed/open, reduced motion and moving/held graph at every engine/size. No width-dependent pane hiding or phone composition exists, so no narrow/stacked screenshot is claimed.
+The full Linux browser matrix includes Player, lesson packs, preview, teacher-admin, transport, Engineering, Motion and composition: **149 cases per engine**, including 24 new composition cases across the three sizes. Firefox/WebKit retain the existing Chromium-only native clipboard skip. Positive WebKit playback uses Ubuntu 24.04 with pinned Node 22.23.2. Screenshots include Console, Motion, hold, all four failures with details closed/open, reduced motion and moving/held graph at every engine/size. No width-dependent pane hiding or phone composition exists, so no narrow/stacked screenshot is claimed.
 
-Two clean-checkout pinned builds are compared byte-for-byte. `evidence/builds.json` gives their complete hashes. The plugin must remain `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a` (99 files); it still excludes multipane code. The authoring candidate changes because its private source/schema bundle now includes composition, coordinator, surface, graph/media changes and CSS (128 files). Its SHA-256 is `5adf7fc9288edac162df0d3f8e4ef78971d887bbb449ec6da5678c6d612ced72`. It is not a release asset.
+Two clean-checkout pinned builds are compared byte-for-byte. `evidence/builds.json` gives their complete hashes. The plugin must remain `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a` (99 files); it still excludes multipane code. The authoring candidate changes because its private source/schema bundle now includes composition, coordinator, surface, graph/media changes and CSS (128 files). Its SHA-256 is `fb87e4dd3425195a7ac6fcc5eb29c2616e3d8807fed5e3e15359c8d4d2153463`. It is not a release asset.
 
 Published rollback ZIP remains `95cdd84b2d0cc8028ff94784a9087a865fc5381f72fb09c4faa9b8aaaa5b31d7`; page3227 capture `34ceed1c2b7536f20dfa62fb841d629d5ff6aa12471f3984480c27601d93f2ab`; existing kit `3610987def6deda4285726575e444c6da20d8672f08a92db3e050b482b913148`. Evidence records independent preservation checks.
 
@@ -103,16 +109,21 @@ No WordPress registration, discovery, Admin preflight, anonymous attachment acce
 
 CI must pass on the exact final draft head. Merge waits for Daisy’s independent review and Johann’s approval; the eventual merge tree must equal that approved head. No merge is authorized by this packet.
 
+## First draft CI failures and corrections
+
+The first published draft (`fa6d4c6`) did not pass CI. All three browser jobs failed; their complete logs are retained. Chromium/Firefox reached an obsolete MOT17 textual probe target. WebKit additionally exposed a final-frame completion race in existing MOT07 and a native reset stall during composition navigation. These were real failures, not the issue98 Explanation flake. The fixes remove all retired native resets, route native end through bounded decoded-final-frame settlement, and turn failed absolute seeks into the ordinary contained fallback. New deterministic/browser red evidence precedes each corresponding fix. No timeout or decode tolerance was widened to make these failures pass. Final workflow inspection also found the new composition mutation step lacked its browser matrix environment; it now explicitly selects the job’s browser, matching the local three-engine runs.
+
 ## Final run notes and reproduction
 
-The final Firefox full run initially missed the MOT18 native-start precondition once, before the pause assertions. No assertion or tolerance changed. Three isolated repeats and the complete serial Firefox rerun passed; both the failure and confirmations are retained. This is not issue #98. Accepted WebKit passes the full suite and every mutation baseline; the separate retirement/diagram repetition passes 12 cases. The earlier incomplete/failing browser runs are explicitly historical, not substituted for these results.
+An earlier pre-CI Firefox full run initially missed the MOT18 native-start precondition once, before the pause assertions. No assertion or tolerance changed. Three isolated repeats and the complete serial Firefox rerun passed; both the failure and confirmations are retained. This is not issue #98. The current accepted browser results are the corrected three-engine matrix; the separate earlier retirement/diagram repetition passed 12 cases. The earlier incomplete/failing browser runs are explicitly historical, not substituted for these results.
 
-Plain `verify*`, `browser-*`, `mutations-*`, `build-*`, `builds.json` and `summary.json` name the finalized evidence. Prefix `step6c-*` logs preserve intermediate experiments and their historical checksums; those earlier build hashes do not identify the final candidate. All 126 screenshots are indexed with their actual pixel dimensions. The fixture uses a deterministic clock supplied by the harness (`advance`) while the coordinator/layout/panes are real source modules; production host clock/admission is deferred.
+Plain `verify*`, `browser-*`, `mutations-*`, `build-*`, `builds.json` and `summary.json` name the finalized evidence. Prefix `step6c-*` logs preserve intermediate experiments and their historical checksums; those earlier build hashes do not identify the final candidate. All 144 screenshots are indexed with their actual pixel dimensions. The fixture uses a deterministic clock supplied by the harness (`advance`) while the coordinator/layout/panes are real source modules; production host clock/admission is deferred.
 
 ```sh
 npm run verify
 node tools/r42-v1-differential.mjs
 CIM_PLAYER_BROWSER=chromium npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs
+CIM_PLAYER_BROWSER=chromium node tools/check-motion-mutations.mjs --browser
 CIM_PLAYER_BROWSER=chromium node tools/check-composition-mutations.mjs --browser
 ```
 

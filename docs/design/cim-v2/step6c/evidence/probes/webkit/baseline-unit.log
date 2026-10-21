@@ -2,69 +2,75 @@ TAP version 13
 # Subtest: [CMP-01] dual copies validate independently against both checkers
 ok 1 - [CMP-01] dual copies validate independently against both checkers
   ---
-  duration_ms: 39.113646
+  duration_ms: 39.846809
   type: 'test'
   ...
 # Subtest: [CMP-02] both copies and both captions count and durations agree
 ok 2 - [CMP-02] both copies and both captions count and durations agree
   ---
-  duration_ms: 11.637185
+  duration_ms: 13.013166
   type: 'test'
   ...
 # Subtest: [CMP-03] fixture shape diagnostics never say deferred and null remains safe
 ok 3 - [CMP-03] fixture shape diagnostics never say deferred and null remains safe
   ---
-  duration_ms: 3.870549
+  duration_ms: 4.155755
   type: 'test'
   ...
 # Subtest: [CMP-04] coordinator is real source and harness delegates without engine imports
 ok 4 - [CMP-04] coordinator is real source and harness delegates without engine imports
   ---
-  duration_ms: 2.38395
+  duration_ms: 2.605588
   type: 'test'
   ...
 # Subtest: [CMP-05] capture-derived geometry has no invented arrows or self arrows
 ok 5 - [CMP-05] capture-derived geometry has no invented arrows or self arrows
   ---
-  duration_ms: 11.164849
+  duration_ms: 11.719206
   type: 'test'
   ...
 # Subtest: [CMP-06] verification and movement wording name what really happened
 ok 6 - [CMP-06] verification and movement wording name what really happened
   ---
-  duration_ms: 0.085749
+  duration_ms: 0.093008
   type: 'test'
   ...
 # Subtest: [CMP-13] missing records never get silently filled or skipped
 ok 7 - [CMP-13] missing records never get silently filled or skipped
   ---
-  duration_ms: 6.101575
+  duration_ms: 6.43544
   type: 'test'
   ...
 # Subtest: [CMP-05] a real placeholder transfer has a capture-owned arrow
 ok 8 - [CMP-05] a real placeholder transfer has a capture-owned arrow
   ---
-  duration_ms: 8.953204
+  duration_ms: 7.239746
   type: 'test'
   ...
 # Subtest: [CMP-14] pack preflight checks the alternative and its own captions
 ok 9 - [CMP-14] pack preflight checks the alternative and its own captions
   ---
-  duration_ms: 24.882999
+  duration_ms: 27.87301
   type: 'test'
   ...
 # Subtest: [CMP-15] retiring a pending seek never synchronously resets its decoder
 ok 10 - [CMP-15] retiring a pending seek never synchronously resets its decoder
   ---
-  duration_ms: 5.720068
+  duration_ms: 5.834457
   type: 'test'
   ...
-1..10
-# tests 10
+# Subtest: [CMP-16] final-frame completion never restarts an already-final seek
+ok 11 - [CMP-16] final-frame completion never restarts an already-final seek
+  ---
+  duration_ms: 10.453629
+  type: 'test'
+  ...
+1..11
+# tests 11
 # suites 0
-# pass 10
+# pass 11
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1740.300961
+# duration_ms 1973.993268

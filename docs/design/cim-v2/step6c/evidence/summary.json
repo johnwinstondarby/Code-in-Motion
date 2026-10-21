@@ -1,11 +1,11 @@
 {
-  "source": "d71fc58",
+  "source": "32ab172 (workflow selection 4d819c9)",
   "node20": {
-    "passed": 1058,
+    "passed": 1059,
     "skipped": 0
   },
   "node22": {
-    "passed": 1058,
+    "passed": 1059,
     "skipped": 0
   },
   "v1": {
@@ -14,26 +14,30 @@
   },
   "browsers": {
     "chromium": {
-      "passed": 146,
+      "passed": 149,
       "skipped": 0,
-      "composition_passed": 21,
-      "new_probes_caught": 18
+      "composition_passed": 24,
+      "new_probes_caught": 21,
+      "old_motion_probes_caught": 30
     },
     "firefox": {
-      "passed": 145,
+      "passed": 148,
       "skipped": 1,
-      "composition_passed": 21,
-      "new_probes_caught": 18
+      "composition_passed": 24,
+      "new_probes_caught": 21,
+      "old_motion_probes_caught": 30
     },
     "webkit": {
-      "passed": 145,
+      "passed": 148,
       "skipped": 1,
-      "composition_passed": 21,
-      "new_probes_caught": 18
+      "composition_passed": 24,
+      "new_probes_caught": 21,
+      "old_motion_probes_caught": 30
     }
   },
   "skip": "Existing native clipboard permission proof is Chromium-only.",
-  "firefox_observation": "One native-start precondition failed in the first full run; three isolated repeats and a full serial rerun passed, with no test/code change.",
-  "issue98": "Not observed in accepted runs; the native retirement finding is separate.",
-  "ci": "Pending exact final draft head."
+  "ci": "Pending exact final draft head; see PR100 for immutable-head CI results.",
+  "first_draft_ci": "Failed: stale MOT17 target, WebKit final-frame race and retired decoder reset stall. Complete failed logs retained.",
+  "issue98": "Not observed; new native-media failures are separate.",
+  "screenshots": 144
 }

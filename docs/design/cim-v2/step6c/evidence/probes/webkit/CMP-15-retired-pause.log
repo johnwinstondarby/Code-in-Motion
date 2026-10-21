@@ -2,9 +2,9 @@ TAP version 13
 # Subtest: [CMP-15] retiring a pending seek never synchronously resets its decoder
 not ok 1 - [CMP-15] retiring a pending seek never synchronously resets its decoder
   ---
-  duration_ms: 6.501214
+  duration_ms: 7.479228
   type: 'test'
-  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/webkit/candidate-mvAF6l/tests/composition.test.mjs:25:1'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:25:1'
   failureType: 'testCodeFailure'
   error: |-
     Expected values to be strictly equal:
@@ -19,7 +19,7 @@ not ok 1 - [CMP-15] retiring a pending seek never synchronously resets its decod
   actual: 'undefined'
   operator: 'strictEqual'
   stack: |-
-    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/webkit/candidate-mvAF6l/tests/composition.test.mjs:25:718)
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:25:692)
     async Test.run (node:internal/test_runner/test:1054:7)
     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
   ...
@@ -31,4 +31,4 @@ not ok 1 - [CMP-15] retiring a pending seek never synchronously resets its decod
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1703.513137
+# duration_ms 2406.173245

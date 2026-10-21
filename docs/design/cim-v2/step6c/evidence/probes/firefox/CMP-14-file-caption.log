@@ -2,9 +2,9 @@ TAP version 13
 # Subtest: [CMP-14] pack preflight checks the alternative and its own captions
 not ok 1 - [CMP-14] pack preflight checks the alternative and its own captions
   ---
-  duration_ms: 24.071179
+  duration_ms: 25.126796
   type: 'test'
-  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/firefox/candidate-KIUokD/tests/composition.test.mjs:23:1'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/firefox/candidate-SIp9yN/tests/composition.test.mjs:23:1'
   failureType: 'testCodeFailure'
   error: 'Missing expected rejection.'
   code: 'ERR_ASSERTION'
@@ -12,7 +12,7 @@ not ok 1 - [CMP-14] pack preflight checks the alternative and its own captions
   expected:
   operator: 'rejects'
   stack: |-
-    async TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/firefox/candidate-KIUokD/tests/composition.test.mjs:23:710)
+    async TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/firefox/candidate-SIp9yN/tests/composition.test.mjs:23:710)
     async Test.run (node:internal/test_runner/test:1054:7)
     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
   ...
@@ -24,4 +24,4 @@ not ok 1 - [CMP-14] pack preflight checks the alternative and its own captions
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1594.086335
+# duration_ms 1890.221397

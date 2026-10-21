@@ -1,6 +1,6 @@
 {
   "code-in-motion-1.0.1.zip": {
-    "source": "d71fc58",
+    "source": "3607595 (same shipped source as 32a81ad)",
     "node": "22.23.2",
     "clean_checkouts": 2,
     "identical_bytes": true,
@@ -8,11 +8,11 @@
     "files": 99
   },
   "cim-authoring-1.0.1-candidate.zip": {
-    "source": "d71fc58",
+    "source": "3607595 (same shipped source as 32a81ad)",
     "node": "22.23.2",
     "clean_checkouts": 2,
     "identical_bytes": true,
-    "sha256": "5adf7fc9288edac162df0d3f8e4ef78971d887bbb449ec6da5678c6d612ced72",
+    "sha256": "fb87e4dd3425195a7ac6fcc5eb29c2616e3d8807fed5e3e15359c8d4d2153463",
     "files": 128
   }
 }

@@ -2,9 +2,9 @@ TAP version 13
 # Subtest: [CMP-03] fixture shape diagnostics never say deferred and null remains safe
 not ok 1 - [CMP-03] fixture shape diagnostics never say deferred and null remains safe
   ---
-  duration_ms: 6.738355
+  duration_ms: 8.784677
   type: 'test'
-  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/webkit/candidate-mvAF6l/tests/composition.test.mjs:14:1'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:14:1'
   failureType: 'testCodeFailure'
   error: |-
     The expression evaluated to a falsy value:
@@ -17,7 +17,7 @@ not ok 1 - [CMP-03] fixture shape diagnostics never say deferred and null remain
   actual: false
   operator: '=='
   stack: |-
-    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/webkit/candidate-mvAF6l/tests/composition.test.mjs:14:381)
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:14:381)
     Test.runInAsyncScope (node:async_hooks:214:14)
     Test.run (node:internal/test_runner/test:1047:25)
     Test.start (node:internal/test_runner/test:944:17)
@@ -31,4 +31,4 @@ not ok 1 - [CMP-03] fixture shape diagnostics never say deferred and null remain
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1613.252609
+# duration_ms 2088.881146

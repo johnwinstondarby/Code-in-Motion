@@ -2,9 +2,9 @@ TAP version 13
 # Subtest: [CMP-05] capture-derived geometry has no invented arrows or self arrows
 not ok 1 - [CMP-05] capture-derived geometry has no invented arrows or self arrows
   ---
-  duration_ms: 13.338579
+  duration_ms: 14.082083
   type: 'test'
-  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/firefox/candidate-KIUokD/tests/composition.test.mjs:16:1'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/firefox/candidate-SIp9yN/tests/composition.test.mjs:16:1'
   failureType: 'testCodeFailure'
   error: |-
     Expected values to be strictly deep-equal:
@@ -28,7 +28,7 @@ not ok 1 - [CMP-05] capture-derived geometry has no invented arrows or self arro
     3: 'prove-custody-metrics'
   operator: 'deepStrictEqual'
   stack: |-
-    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/firefox/candidate-KIUokD/tests/composition.test.mjs:16:323)
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/firefox/candidate-SIp9yN/tests/composition.test.mjs:16:323)
     Test.runInAsyncScope (node:async_hooks:214:14)
     Test.run (node:internal/test_runner/test:1047:25)
     Test.start (node:internal/test_runner/test:944:17)
@@ -37,7 +37,7 @@ not ok 1 - [CMP-05] capture-derived geometry has no invented arrows or self arro
 # Subtest: [CMP-05] a real placeholder transfer has a capture-owned arrow
 ok 2 - [CMP-05] a real placeholder transfer has a capture-owned arrow
   ---
-  duration_ms: 7.76171
+  duration_ms: 8.513507
   type: 'test'
   ...
 1..2
@@ -48,4 +48,4 @@ ok 2 - [CMP-05] a real placeholder transfer has a capture-owned arrow
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1595.604953
+# duration_ms 1772.883493

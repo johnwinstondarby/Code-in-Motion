@@ -2,9 +2,9 @@ TAP version 13
 # Subtest: [CMP-15] retiring a pending seek never synchronously resets its decoder
 not ok 1 - [CMP-15] retiring a pending seek never synchronously resets its decoder
   ---
-  duration_ms: 5.866654
+  duration_ms: 7.710188
   type: 'test'
-  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/webkit/candidate-mvAF6l/tests/composition.test.mjs:25:1'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:25:1'
   failureType: 'testCodeFailure'
   error: |-
     Got unwanted exception.
@@ -21,17 +21,17 @@ not ok 1 - [CMP-15] retiring a pending seek never synchronously resets its decod
     0 !== 4
     
   stack: |-
-    Object.load (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/webkit/candidate-mvAF6l/tests/composition.test.mjs:25:378)
-    retireMediaElement (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/webkit/candidate-mvAF6l/src/multipane/motion.mjs:96:164)
-    file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/webkit/candidate-mvAF6l/tests/composition.test.mjs:25:581
+    Object.load (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:25:378)
+    retireMediaElement (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/src/multipane/motion.mjs:97:164)
+    file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:25:581
     getActual (node:assert:609:5)
     Function.doesNotThrow (node:assert:777:32)
-    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/webkit/candidate-mvAF6l/tests/composition.test.mjs:25:564)
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:25:564)
     async Test.run (node:internal/test_runner/test:1054:7)
     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
   operator: 'doesNotThrow'
   stack: |-
-    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-finalized-probes/webkit/candidate-mvAF6l/tests/composition.test.mjs:25:564)
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step6c-corrected-probes/webkit/candidate-TOT7cM/tests/composition.test.mjs:25:564)
     async Test.run (node:internal/test_runner/test:1054:7)
     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
   ...
@@ -43,4 +43,4 @@ not ok 1 - [CMP-15] retiring a pending seek never synchronously resets its decod
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1657.845617
+# duration_ms 1906.218303

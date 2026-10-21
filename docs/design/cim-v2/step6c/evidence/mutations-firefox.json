@@ -4,6 +4,16 @@
   "baseline": "passed",
   "results": [
     {
+      "id": "CMP-16-final-seek",
+      "rule": "CMP-16",
+      "caught": true
+    },
+    {
+      "id": "CMP-05-invented-id",
+      "rule": "CMP-05",
+      "caught": true
+    },
+    {
       "id": "CMP-15-retired-pause",
       "rule": "CMP-15",
       "caught": true
@@ -51,6 +61,11 @@
     {
       "id": "CMP-13-missing",
       "rule": "CMP-13",
+      "caught": true
+    },
+    {
+      "id": "CMP-17-seek-fallback",
+      "rule": "CMP-17",
       "caught": true
     },
     {

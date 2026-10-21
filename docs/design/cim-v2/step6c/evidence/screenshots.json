@@ -40,6 +40,16 @@
     "height": 768
   },
   {
+    "file": "screenshots/chromium/1366-seek-failure-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-seek-failure-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
     "file": "screenshots/chromium/1366-tampered-closed.png",
     "width": 1366,
     "height": 768
@@ -106,6 +116,16 @@
   },
   {
     "file": "screenshots/chromium/1536-reduced.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-seek-failure-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-seek-failure-open.png",
     "width": 1536,
     "height": 864
   },
@@ -180,6 +200,16 @@
     "height": 1080
   },
   {
+    "file": "screenshots/chromium/1920-seek-failure-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-seek-failure-open.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
     "file": "screenshots/chromium/1920-tampered-closed.png",
     "width": 1920,
     "height": 1080
@@ -246,6 +276,16 @@
   },
   {
     "file": "screenshots/firefox/1366-reduced.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-seek-failure-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-seek-failure-open.png",
     "width": 1366,
     "height": 768
   },
@@ -320,6 +360,16 @@
     "height": 864
   },
   {
+    "file": "screenshots/firefox/1536-seek-failure-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-seek-failure-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
     "file": "screenshots/firefox/1536-tampered-closed.png",
     "width": 1536,
     "height": 864
@@ -386,6 +436,16 @@
   },
   {
     "file": "screenshots/firefox/1920-reduced.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-seek-failure-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-seek-failure-open.png",
     "width": 1920,
     "height": 1080
   },
@@ -460,6 +520,16 @@
     "height": 768
   },
   {
+    "file": "screenshots/webkit/1366-seek-failure-closed.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-seek-failure-open.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
     "file": "screenshots/webkit/1366-tampered-closed.png",
     "width": 1366,
     "height": 768
@@ -530,6 +600,16 @@
     "height": 864
   },
   {
+    "file": "screenshots/webkit/1536-seek-failure-closed.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-seek-failure-open.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
     "file": "screenshots/webkit/1536-tampered-closed.png",
     "width": 1536,
     "height": 864
@@ -596,6 +676,16 @@
   },
   {
     "file": "screenshots/webkit/1920-reduced.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-seek-failure-closed.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-seek-failure-open.png",
     "width": 1920,
     "height": 1080
   },
