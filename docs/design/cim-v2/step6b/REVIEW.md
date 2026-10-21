@@ -107,3 +107,11 @@ node tools/build-authoring-release.mjs --candidate
 ```
 
 Repeat browser and mutation commands for firefox and webkit. The mutation runner requires passing unit/browser baselines, isolates its edits in a separate temporary checkout, and requires assertion failures for every probe. Build twice from a clean checkout and compare the ZIP bytes. Screenshots are in `evidence/screenshots/<engine>/`, including active, held, missing, tampered and undecodable states at all three sizes. `evidence/SHA256SUMS` covers committed evidence bytes, while `builds.json` records the candidate ZIPs kept in the local handoff folder.
+
+## Daisy review correction before merge
+
+Daisy approved head `15948de` subject to fixing null pack input. Commit `5778d6d` adds optional access at `value?.media?.status`, restoring the normal `CIM-V3-SHAPE` diagnostic at `$` instead of throwing. The added regression test was run first against the unfixed validator and failed with that TypeError; `evidence/step6b-null-red.log` preserves the result. This is an additional post-original-red test, not a change to earlier assertions.
+
+Full verify now passes **1,048 tests on both Node 20.20.2 and Node 22.23.2**, including the mutation checks. Two clean-checkout Node 22.23.2 authoring builds match byte-for-byte: **`4176bf9781788f49266ee394884adb316511bcaf85004a42e0b261a5ec8562e8`**, 124 files. This supersedes the authoring candidate checksum in the earlier table; its logs remain historical evidence. No plugin inputs changed, so the plugin remains the step-5/6a bytes. Final exact-head CI is required before merge.
+
+The following review notes are explicitly deferred to step 6c/admission: move the trusted coordinator from the fixture harness into a tested source module; retain hidden-video readiness/pause semantics; remove the duplicated placeholder label; decide how the learner sees diagnostic codes; size the video in the final layout; and tighten the fixture-media shape diagnostic so it cannot be mistaken for deferred media. Consider an optional WebM alternative alongside MP4 for browsers whose installed codecs cannot play H.264. None of these changes is included in this merge.
