@@ -197,7 +197,7 @@ function pack(doc, c) {
 
 export function validateDocument(source, kind) {
   const c = collector(), value = read(source, c);
-  if(value!==undefined&&!c.diagnostics.length&&(kind==='media'||kind==='pack'&&value.media?.status==='fixture'))c.diagnostics.push(...validateMediaMap(kind==='media'?value:value.media).map(d=>({...d,path:kind==='media'?d.path:'$.media'+d.path.slice(1)})));
+  if(value!==undefined&&!c.diagnostics.length&&(kind==='media'||kind==='pack'&&value?.media?.status==='fixture'))c.diagnostics.push(...validateMediaMap(kind==='media'?value:value.media).map(d=>({...d,path:kind==='media'?d.path:'$.media'+d.path.slice(1)})));
   if (value !== undefined && !c.diagnostics.length) shape(value, SCHEMAS[kind], '$', c);
   if (value !== undefined && !c.diagnostics.length) ({ authoring, capture, pack, media:()=>{} })[kind](value, c);
   return { value, diagnostics: c.diagnostics };
