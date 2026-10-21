@@ -2,7 +2,7 @@ import {cp,mkdir,mkdtemp,readFile,writeFile,symlink} from 'node:fs/promises';
 import {basename,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
-const root=fileURLToPath(new URL('../',import.meta.url)),work=resolve(root,'../composition-mutations'),browser=process.argv.includes('--browser');await mkdir(work,{recursive:true});const sandbox=await mkdtemp(resolve(work,'candidate-'));await cp(root,sandbox,{recursive:true,filter:p=>!['.git','node_modules','dist','test-results','work'].includes(basename(p))});await symlink(resolve(root,'node_modules'),resolve(sandbox,'node_modules'),process.platform==='win32'?'junction':'dir');
+const root=fileURLToPath(new URL('../',import.meta.url)),work=resolve(process.env.CIM_COMPOSITION_MUTATION_WORK??resolve(root,'../composition-mutations')),browser=process.argv.includes('--browser');await mkdir(work,{recursive:true});const sandbox=await mkdtemp(resolve(work,'candidate-'));await cp(root,sandbox,{recursive:true,filter:p=>!['.git','node_modules','dist','test-results','work'].includes(basename(p))});await symlink(resolve(root,'node_modules'),resolve(sandbox,'node_modules'),process.platform==='win32'?'junction':'dir');
 const cases=[
  ['CMP-14-file-caption','authoring/v3/media-files.mjs','...(clip.webm?', '...(false?', 'CMP-14'],
  ['CMP-01-caption','src/multipane/media-map.mjs',"total+=descriptor(w?.captions,path+'.webm.captions',true);",'/* webm captions unchecked */','CMP-01'],
