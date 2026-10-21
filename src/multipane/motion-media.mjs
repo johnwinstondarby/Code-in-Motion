@@ -15,12 +15,12 @@ export function createVerifiedMediaAccess(input,options={}){
   if(count!==descriptor.size)throw unavailable();const bytes=new Uint8Array(count);let offset=0;for(const part of parts){bytes.set(part,offset);offset+=part.length;}
   const actual=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('');if(actual!==descriptor.sha256)throw unavailable();return bytes;
  }
- async function load(id,{signal}={}){
-  if(disposed)throw unavailable();const clip=map.assets.find(a=>a.id===id);if(!clip)throw unavailable();
+ async function load(id,{signal,copy='primary',deadlineMs=timeoutMs}={}){
+  if(disposed)throw unavailable();const declared=map.assets.find(a=>a.id===id),clip=copy==='primary'?declared:copy==='webm'?declared?.webm:null;if(!clip)throw unavailable();
   const controller=new AbortController();controllers.add(controller);let timer,finished=false;const onAbort=()=>controller.abort();signal?.addEventListener('abort',onAbort,{once:true});if(signal?.aborted)controller.abort();
   try{
-   const work=(async()=>{const video=await verified(clip,controller.signal),captions=await verified(clip.captions,controller.signal);if(disposed||controller.signal.aborted||finished)throw unavailable();const videoURL=urls.createObjectURL(new Blob([video],{type:clip.type})),captionURL=urls.createObjectURL(new Blob([captions],{type:clip.captions.type}));live.add(videoURL);live.add(captionURL);return Object.freeze({videoURL,captionURL,duration:clip.duration,alt:clip.alt,captions:clip.captions,type:clip.type,release(){for(const url of[videoURL,captionURL])if(live.delete(url))urls.revokeObjectURL(url);}});})();
-   const bounded=new Promise((_,reject)=>{timer=setTimeout(()=>{finished=true;controller.abort();reject(unavailable());},timeoutMs);});
+   const work=(async()=>{const video=await verified(clip,controller.signal),captions=await verified(clip.captions,controller.signal);if(disposed||controller.signal.aborted||finished)throw unavailable();const videoURL=urls.createObjectURL(new Blob([video],{type:clip.type})),captionURL=urls.createObjectURL(new Blob([captions],{type:clip.captions.type}));live.add(videoURL);live.add(captionURL);return Object.freeze({videoURL,captionURL,duration:clip.duration,alt:declared.alt,captions:clip.captions,type:clip.type,release(){for(const url of[videoURL,captionURL])if(live.delete(url))urls.revokeObjectURL(url);}});})();
+   const bounded=new Promise((_,reject)=>{timer=setTimeout(()=>{finished=true;controller.abort();reject(unavailable());},Math.max(1,Math.min(timeoutMs,deadlineMs)));});
    return await Promise.race([work,bounded]);
   }catch{throw unavailable();}finally{finished=true;clearTimeout(timer);signal?.removeEventListener('abort',onAbort);controllers.delete(controller);}
  }

@@ -272,14 +272,120 @@
       ]
     },
     "mediaClip": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "source": {
+              "$ref": "#/$defs/mediaSource"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4194304
+            },
+            "type": {
+              "enum": [
+                "video/webm",
+                "video/mp4"
+              ]
+            },
+            "duration": {
+              "type": "number",
+              "minimum": 0.001,
+              "maximum": 30
+            },
+            "alt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            "captions": {
+              "$ref": "#/$defs/mediaCaption"
+            }
+          },
+          "required": [
+            "id",
+            "source",
+            "sha256",
+            "size",
+            "type",
+            "duration",
+            "alt",
+            "captions"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "source": {
+              "$ref": "#/$defs/mediaSource"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4194304
+            },
+            "type": {
+              "const": "video/mp4"
+            },
+            "duration": {
+              "type": "number",
+              "minimum": 0.001,
+              "maximum": 30
+            },
+            "alt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            "captions": {
+              "$ref": "#/$defs/mediaCaption"
+            },
+            "webm": {
+              "$ref": "#/$defs/mediaWebM"
+            }
+          },
+          "required": [
+            "id",
+            "source",
+            "sha256",
+            "size",
+            "type",
+            "duration",
+            "alt",
+            "captions",
+            "webm"
+          ]
+        }
+      ]
+    },
+    "mediaWebM": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "id": {
-          "type": "string",
-          "maxLength": 100,
-          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-        },
         "source": {
           "$ref": "#/$defs/mediaSource"
         },
@@ -293,34 +399,23 @@
           "maximum": 4194304
         },
         "type": {
-          "enum": [
-            "video/webm",
-            "video/mp4"
-          ]
+          "const": "video/webm"
         },
         "duration": {
           "type": "number",
           "minimum": 0.001,
           "maximum": 30
         },
-        "alt": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 4000,
-          "pattern": "\\S"
-        },
         "captions": {
           "$ref": "#/$defs/mediaCaption"
         }
       },
       "required": [
-        "id",
         "source",
         "sha256",
         "size",
         "type",
         "duration",
-        "alt",
         "captions"
       ]
     }

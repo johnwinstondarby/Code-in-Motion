@@ -13,7 +13,7 @@ const cases=[
  ['MOT-02-caption-bytes',access,'await verified(clip.captions,controller.signal)','new Uint8Array()','MOT-02'],
  ['MOT-03-digest',access,'if(actual!==descriptor.sha256)throw unavailable();','if(false)throw unavailable();','MOT-03'],
  ['MOT-04-resolver',access,"if(url.origin!==origin||!url.pathname.startsWith('/__cim_fixture_media/')||url.username||url.password||url.search||url.hash)",'if(false)','MOT-04'],
- ['MOT-05-timeout',access,'controller.abort();reject(unavailable());},timeoutMs)','controller.abort();},timeoutMs)','MOT-05'],
+ ['MOT-05-timeout',access,'controller.abort();reject(unavailable());','controller.abort();','MOT-05'],
  ['MOT-05-late-copy',access,'if(disposed||controller.signal.aborted||finished)throw unavailable();','if(false)throw unavailable();','MOT-05'],
  ['MOT-06-readiness',barrier,'const next=intent&&holds.size===0','const next=intent','MOT-06'],
  ['MOT-06-user-pause',barrier,'pause(){intent=false','pause(){intent=true','MOT-06'],
@@ -31,12 +31,12 @@ if(browser)cases.push(
  ['MOT-07-end',pane,"task.finish({status:'settled'})",'/* completion omitted */void 0','MOT-07','browser'],
  ['MOT-08-reduced',pane,'if(context.reducedMotion)return','if(false)return','MOT-08','browser'],
  ['MOT-09-fallback',pane,"element('p','GUI recording unavailable')","element('p','Loading recording')",'MOT-09','browser'],
- ['MOT-09-stall','harness/motion-test-driver.mjs',"return{status:'failed',error};","return new Promise(()=>{});",'MOT-09','browser'],
+ ['MOT-09-stall','src/multipane/motion-coordinator.mjs',"return{status:'failed',error};","return new Promise(()=>{});",'MOT-09','browser'],
  ['MOT-10-buffer-finished',pane,"listen('waiting',()=>{if(done||finalising)return;emit(true);","listen('waiting',()=>{if(done||finalising)return;task.finish({status:'settled'});",'MOT-10','browser'],
  ['MOT-21-release',pane,'media?.release();media=null;','media=null;','MOT-21','browser'],
  ['MOT-18-native-guard',pane,'if(!authorizedPlayback)nextVideo.pause();','/* unauthorized native playback allowed */','MOT-18','browser'],
  ['MOT-17-stale',pane,'if(!disposed&&revision===token&&!signal.aborted)','if(!disposed)','MOT-17','browser'],
- ['MOT-16-preparation','harness/motion-test-driver.mjs',"barrier.hold('preparation');",'/* preparation hold omitted */','MOT-16','browser']
+ ['MOT-16-preparation','src/multipane/motion-coordinator.mjs',"barrier.hold('preparation');",'/* preparation hold omitted */','MOT-16','browser']
 );
 const run=(rule,kind='unit')=>spawnSync(process.execPath,kind==='browser'?[resolve(root,'node_modules/@playwright/test/cli.js'),'test','tests/e2e/motion-pane.spec.mjs','--grep',`1366x768.*${rule??'MOT-'}`,'--workers=1','--reporter=line','--timeout=12000','--output='+resolve(work,'browser-results')]:['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),'tests/motion-media.test.mjs','tests/motion-authoring.test.mjs'],{cwd:sandbox,encoding:'utf8',timeout:180000});
 for(const kind of browser?['unit','browser']:['unit']){const baseline=run(null,kind);await writeFile(resolve(work,'baseline-'+kind+'.log'),baseline.stdout+baseline.stderr);if(baseline.status!==0)throw new Error('Motion mutation baseline failed: '+baseline.stdout+baseline.stderr);}

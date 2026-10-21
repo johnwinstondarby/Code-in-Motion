@@ -68,7 +68,7 @@ function read(source, c) {
 // This bounded evaluator implements exactly the keywords used by the four closed
 // schemas. It has no remote references, executable keywords or installed dependencies.
 function shape(value, schema, path, c, root = schema) {
-  if (root.$id === 'cim.lesson-pack/v2' && path.startsWith('$.media')) {
+  if (root.$id === 'cim.lesson-pack/v2' && path.startsWith('$.media') && !c.fixtureMedia) {
     const original = c;
     c = { ...c, reject: (id, condition, at, message) => original.reject('CIM-V3-MEDIA-DEFERRED', condition, at, message) };
   }
@@ -196,7 +196,7 @@ function pack(doc, c) {
 }
 
 export function validateDocument(source, kind) {
-  const c = collector(), value = read(source, c);
+  const c = collector(), value = read(source, c);c.fixtureMedia=kind==='pack'&&value?.media?.status==='fixture';
   if(value!==undefined&&!c.diagnostics.length&&(kind==='media'||kind==='pack'&&value?.media?.status==='fixture'))c.diagnostics.push(...validateMediaMap(kind==='media'?value:value.media).map(d=>({...d,path:kind==='media'?d.path:'$.media'+d.path.slice(1)})));
   if (value !== undefined && !c.diagnostics.length) shape(value, SCHEMAS[kind], '$', c);
   if (value !== undefined && !c.diagnostics.length) ({ authoring, capture, pack, media:()=>{} })[kind](value, c);
