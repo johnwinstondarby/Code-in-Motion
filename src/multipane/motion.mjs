@@ -94,3 +94,10 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
 function pauseRetiredPlay(){this.pause();this.onplay=null;}
 function pauseRetiredPlaying(){this.pause();this.onplaying=null;}
 export function retireMediaElement(target){target.onplay=pauseRetiredPlay;target.onplaying=pauseRetiredPlaying;target.pause();target.removeAttribute('src');if(target.readyState===4&&!target.seeking)target.load();}
+
+// Existing final-seek ordering, factored for the recorded regression before its fix.
+export async function settleFinalVideoFrame(target,{signal,timeoutMs=2500}={}){
+ target.pause();const check=()=>!target.seeking&&target.readyState>=2&&Math.abs(target.currentTime-target.duration)<0.15;
+ const ready=new Promise((resolve,reject)=>{let timer;const events=['seeked','ended'];const clean=()=>{clearTimeout(timer);for(const name of events)target.removeEventListener(name,inspect);target.removeEventListener('error',bad);signal?.removeEventListener('abort',bad);};const bad=()=>{clean();reject(new Error('CIM-PANE-MEDIA-UNAVAILABLE'));};const inspect=()=>{if(check()){clean();resolve();}};for(const name of events)target.addEventListener(name,inspect);target.addEventListener('error',bad);signal?.addEventListener('abort',bad,{once:true});timer=setTimeout(bad,timeoutMs);if(signal?.aborted)bad();else inspect();});
+ target.currentTime=target.duration;await ready;
+}
