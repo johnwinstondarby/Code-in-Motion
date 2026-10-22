@@ -8,6 +8,7 @@ const pane='src/multipane/engineering.mjs';
 const cases=[
  ['CAP-M01-fixed',pane,'const height=bottom+footer.lines.length*14+8;','const height=190; for(const [i,n] of nodes.entries()){n.y=20+Math.floor(i/4)*76;n.height=72;}','CAP-01'],
  ['CAP-M02-gate',pane,"const within=reason==='';",'const within=true;','CAP-02'],
+ ['CAP-M02-height',pane,'height>DIAGRAM_CAPACITY.maxHeight','false','CAP-04'],
  ['CAP-M03-note',pane,"if(graphical&&geometry.mode==='text')frame.append",'if(false)frame.append','CAP-02',false],
  ['CAP-M04-truncate',pane,'text.slice(i*size,(i+1)*size)','text.slice(i*size,(i+1)*size).slice(0,10)','CAP-04',true,'CAP-06'],
  ['CAP-M05-description',pane,'Object.entries(snapshot.state.artifacts).map(([id,a])=>','Object.entries(snapshot.state.artifacts).slice(0,2).map(([id,a])=>','CAP-05'],
