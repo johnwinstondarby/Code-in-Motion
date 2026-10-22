@@ -1,0 +1,28 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/diagram-capacity.spec.mjs:47:2 › 1366x768 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole
+  1) tests/e2e/diagram-capacity.spec.mjs:47:2 › 1366x768 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "Artifact a2: pinned"
+    Received string:    "Capture-derived model. Location s0 on host h: artifacts a0, a1, a2, a3. Artifact a0: pinned (used), at s0. Artifact a1: pinned (used), at s0. Flow place-0-0: a0 placed at s0; pin; pinned (used); by h; evidence transcript. Flow place-0-1: a1 placed at s0; pin; pinned (used); by h; evidence transcript. Flow place-0-2: a2 placed at s0; pin; pinned (used); by h; evidence transcript. Flow place-0-3: a3 placed at s0; pin; pinned (used); by h; evidence transcript."
+
+      27 |  const text=await pane.locator('[data-diagram-full-state]').textContent();
+      28 |  for(const n of state.nodes)expect(text).toContain(`Location ${n.id} on host ${n.host}`);
+    > 29 |  for(const[id,a]of Object.entries(state.state.artifacts))expect(text).toContain(`Artifact ${id}: ${a.status}`);
+         |                                                                       ^
+      30 |  for(const f of state.flows)expect(text).toContain(`Flow ${f.id}:`);
+      31 |  if(mode==='graph'){const description=await pane.locator('svg desc').textContent();expect(description).toBe(text);await pane.locator('[data-diagram-text] summary').click();}
+      32 | }
+        at complete (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-accepted-probes/webkit/candidate-YBe2RQ/tests/e2e/diagram-capacity.spec.mjs:29:71)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-accepted-probes/webkit/candidate-YBe2RQ/tests/e2e/diagram-capacity.spec.mjs:47:250
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-74c66-ent-descriptions-stay-whole/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-74c66-ent-descriptions-stay-whole/error-context.md
+
+
+  1 failed
+    tests/e2e/diagram-capacity.spec.mjs:47:2 › 1366x768 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole 

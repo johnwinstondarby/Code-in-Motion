@@ -1,0 +1,362 @@
+[
+  {
+    "file": "screenshots/chromium/1366-over.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1920-five.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1366-limit.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1920-custody.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-long.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1536-mid-transfer.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-custody.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1366-nine.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-mid-transfer.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-height.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1366-long.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1536-five.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1536-over.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1920-limit.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1366-custody.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1536-nine.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1920-nine.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1536-long.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1920-height.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-over.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1920-mid-transfer.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/chromium/1536-height.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/chromium/1366-five.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/chromium/1536-limit.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1366-over.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1920-five.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1366-limit.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1920-custody.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-long.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1536-mid-transfer.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-custody.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1366-nine.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-mid-transfer.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-height.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1366-long.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1536-five.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1536-over.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1920-limit.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1366-custody.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1536-nine.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1920-nine.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1536-long.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1920-height.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-over.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1920-mid-transfer.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/firefox/1536-height.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/firefox/1366-five.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/firefox/1536-limit.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1366-over.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1920-five.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1366-limit.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1920-custody.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-long.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1536-mid-transfer.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-custody.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1366-nine.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-mid-transfer.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-height.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1366-long.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1536-five.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1536-over.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1920-limit.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1366-custody.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1536-nine.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1920-nine.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1536-long.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1920-height.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-over.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1920-mid-transfer.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "file": "screenshots/webkit/1536-height.png",
+    "width": 1536,
+    "height": 864
+  },
+  {
+    "file": "screenshots/webkit/1366-five.png",
+    "width": 1366,
+    "height": 768
+  },
+  {
+    "file": "screenshots/webkit/1536-limit.png",
+    "width": 1536,
+    "height": 864
+  }
+]

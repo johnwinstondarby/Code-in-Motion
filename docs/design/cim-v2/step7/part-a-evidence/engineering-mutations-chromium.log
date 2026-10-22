@@ -1,0 +1,81 @@
+{
+  "node": "v22.23.2",
+  "baseline": "passed",
+  "results": [
+    {
+      "id": "ENG-01-ids",
+      "rule": "ENG-01",
+      "caught": true
+    },
+    {
+      "id": "ENG-01-derived",
+      "rule": "ENG-01",
+      "caught": true
+    },
+    {
+      "id": "ENG-02-label",
+      "rule": "ENG-02",
+      "caught": true
+    },
+    {
+      "id": "ENG-02-placeholder",
+      "rule": "ENG-02",
+      "caught": true
+    },
+    {
+      "id": "ENG-03-final",
+      "rule": "ENG-03",
+      "caught": true
+    },
+    {
+      "id": "ENG-03-reduced",
+      "rule": "ENG-03",
+      "caught": true
+    },
+    {
+      "id": "ENG-04-text",
+      "rule": "ENG-04",
+      "caught": true
+    },
+    {
+      "id": "ENG-05-evidence",
+      "rule": "ENG-05",
+      "caught": true
+    },
+    {
+      "id": "ENG-06-wait",
+      "rule": "ENG-06",
+      "caught": true
+    },
+    {
+      "id": "ENG-07-fallback",
+      "rule": "ENG-07",
+      "caught": true
+    },
+    {
+      "id": "ENG-08-size",
+      "rule": "ENG-08",
+      "caught": true
+    },
+    {
+      "id": "ENG-09-leak",
+      "rule": "ENG-09",
+      "caught": true
+    },
+    {
+      "id": "ENG-09-network",
+      "rule": "ENG-09",
+      "caught": true
+    },
+    {
+      "id": "ENG-09-guard",
+      "rule": "ENG-09",
+      "caught": true
+    },
+    {
+      "id": "ENG-08-flow-order",
+      "rule": "ENG-08",
+      "caught": true
+    }
+  ]
+}

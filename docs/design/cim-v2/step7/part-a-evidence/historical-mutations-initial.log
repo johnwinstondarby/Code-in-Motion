@@ -1,0 +1,25 @@
+file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-diagram-capacity-mutations.mjs:22
+ for(const[id,file,from,to,rule,unit=true]of cases){if(kind==='unit'&&!unit)continue;const path=resolve(sandbox,file),original=await readFile(path,'utf8');if(!original.includes(from))throw new Error('Missing capacity mutation target '+id);let result;try{await writeFile(path,original.replaceAll(from,to));result=run(rule,kind);}finally{await writeFile(path,original);}const output=result.stdout+result.stderr,caught=result.status!==0&&result.signal===null&&!result.error&&/ERR_ASSERTION|AssertionError|Error: expect\(|Error: expect\.poll/.test(output)&&!/SyntaxError|ReferenceError|TypeError|Test timeout of|worker process exited/.test(output);await writeFile(resolve(work,kind+'-'+id+'.log'),output);if(!caught)throw new Error('Capacity mutation survived or crashed: '+id+'\n'+output);results.push({id,kind,rule,caught});}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ^
+
+Error: Capacity mutation survived or crashed: CAP-M04-truncate
+TAP version 13
+# Subtest: [CAP-04] count and label boundaries draw; one-over cases fall back
+ok 1 - [CAP-04] count and label boundaries draw; one-over cases fall back
+  ---
+  duration_ms: 20.9639
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 89.2441
+
+    at file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-diagram-capacity-mutations.mjs:22:719
+
+Node.js v22.23.2

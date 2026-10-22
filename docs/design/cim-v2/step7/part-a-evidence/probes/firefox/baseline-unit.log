@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: [CAP-01] nine locations grow to three fully bounded rows
+ok 1 - [CAP-01] nine locations grow to three fully bounded rows
+  ---
+  duration_ms: 14.16512
+  type: 'test'
+  ...
+# Subtest: [CAP-02] five artifacts fall back; four remain graphical
+ok 2 - [CAP-02] five artifacts fall back; four remain graphical
+  ---
+  duration_ms: 14.930854
+  type: 'test'
+  ...
+# Subtest: [CAP-03] maximum IDs stay complete in wrapped labels and text
+ok 3 - [CAP-03] maximum IDs stay complete in wrapped labels and text
+  ---
+  duration_ms: 6.757019
+  type: 'test'
+  ...
+# Subtest: [CAP-04] count and label boundaries draw; one-over cases fall back
+ok 4 - [CAP-04] count and label boundaries draw; one-over cases fall back
+  ---
+  duration_ms: 50.917233
+  type: 'test'
+  ...
+# Subtest: [CAP-05] complete description includes idle locations, absent artifacts and every flow
+ok 5 - [CAP-05] complete description includes idle locations, absent artifacts and every flow
+  ---
+  duration_ms: 123.723155
+  type: 'test'
+  ...
+# Subtest: [CAP-06] every label preserves characters, grows its box and stays inside it
+ok 6 - [CAP-06] every label preserves characters, grows its box and stays inside it
+  ---
+  duration_ms: 47.358748
+  type: 'test'
+  ...
+# Subtest: [CAP-07] multi-row routes and mid-transfer tokens avoid every label
+ok 7 - [CAP-07] multi-row routes and mid-transfer tokens avoid every label
+  ---
+  duration_ms: 5.79203
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 383.293995

@@ -1,0 +1,79 @@
+
+Running 5 tests using 1 worker
+
+[1/5] tests/e2e/diagram-capacity.spec.mjs:46:215 › 1366x768 › [CAP-04] limit complete bounded outcome
+  1) tests/e2e/diagram-capacity.spec.mjs:46:215 › 1366x768 › [CAP-04] limit complete bounded outcome 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "■ a0: pinned"
+    Received: "■ a0: pinn"
+
+      38 |  for(const e of result.elements){expect(e.x,e.text).toBeGreaterThanOrEqual(result.view.x);expect(e.y,e.text).toBeGreaterThanOrEqual(result.view.y);expect(e.x+e.width,e.text).toBeLessThanOrEqual(result.view.x+result.view.width+.1);expect(e.y+e.height,e.text).toBeLessThanOrEqual(result.view.y+result.view.height+.1);if(e.font)expect(e.font).toBeGreaterThanOrEqual(12);}
+      39 |  for(const b of [result.slot,result.clip]){expect(result.box.left).toBeGreaterThanOrEqual(b.left-.1);expect(result.box.right).toBeLessThanOrEqual(b.right+.1);expect(result.box.top).toBeGreaterThanOrEqual(b.top-.1);expect(result.box.bottom).toBeLessThanOrEqual(b.bottom+.1);}
+    > 40 |  for(const l of result.labels)expect(l.text).toBe(l.raw);
+         |                                              ^
+      41 |  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(await page.evaluate(()=>innerWidth));
+      42 |  return result;
+      43 | }
+        at geometry (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-accepted-probes/firefox/candidate-SbnmIF/tests/e2e/diagram-capacity.spec.mjs:40:46)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-accepted-probes/firefox/candidate-SbnmIF/tests/e2e/diagram-capacity.spec.mjs:46:449
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-1cc05-it-complete-bounded-outcome/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-1cc05-it-complete-bounded-outcome/error-context.md
+
+
+[2/5] tests/e2e/diagram-capacity.spec.mjs:46:215 › 1366x768 › [CAP-04] over complete bounded outcome
+[3/5] tests/e2e/diagram-capacity.spec.mjs:46:215 › 1366x768 › [CAP-04] height complete bounded outcome
+[4/5] tests/e2e/diagram-capacity.spec.mjs:46:215 › 1366x768 › [CAP-04] custody complete bounded outcome
+  2) tests/e2e/diagram-capacity.spec.mjs:46:215 › 1366x768 › [CAP-04] custody complete bounded outcome 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "login · inspire"
+    Received: "login · ine"
+
+      38 |  for(const e of result.elements){expect(e.x,e.text).toBeGreaterThanOrEqual(result.view.x);expect(e.y,e.text).toBeGreaterThanOrEqual(result.view.y);expect(e.x+e.width,e.text).toBeLessThanOrEqual(result.view.x+result.view.width+.1);expect(e.y+e.height,e.text).toBeLessThanOrEqual(result.view.y+result.view.height+.1);if(e.font)expect(e.font).toBeGreaterThanOrEqual(12);}
+      39 |  for(const b of [result.slot,result.clip]){expect(result.box.left).toBeGreaterThanOrEqual(b.left-.1);expect(result.box.right).toBeLessThanOrEqual(b.right+.1);expect(result.box.top).toBeGreaterThanOrEqual(b.top-.1);expect(result.box.bottom).toBeLessThanOrEqual(b.bottom+.1);}
+    > 40 |  for(const l of result.labels)expect(l.text).toBe(l.raw);
+         |                                              ^
+      41 |  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(await page.evaluate(()=>innerWidth));
+      42 |  return result;
+      43 | }
+        at geometry (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-accepted-probes/firefox/candidate-SbnmIF/tests/e2e/diagram-capacity.spec.mjs:40:46)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-accepted-probes/firefox/candidate-SbnmIF/tests/e2e/diagram-capacity.spec.mjs:46:449
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-81d36-dy-complete-bounded-outcome/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-81d36-dy-complete-bounded-outcome/error-context.md
+
+
+[5/5] tests/e2e/diagram-capacity.spec.mjs:47:2 › 1366x768 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole
+  3) tests/e2e/diagram-capacity.spec.mjs:47:2 › 1366x768 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ssssssssssssssssssssssssssssssssssssssssssssssssssss · h"
+    Received: "ssssssssssssssssssssssssssssssssssssssss"
+
+      38 |  for(const e of result.elements){expect(e.x,e.text).toBeGreaterThanOrEqual(result.view.x);expect(e.y,e.text).toBeGreaterThanOrEqual(result.view.y);expect(e.x+e.width,e.text).toBeLessThanOrEqual(result.view.x+result.view.width+.1);expect(e.y+e.height,e.text).toBeLessThanOrEqual(result.view.y+result.view.height+.1);if(e.font)expect(e.font).toBeGreaterThanOrEqual(12);}
+      39 |  for(const b of [result.slot,result.clip]){expect(result.box.left).toBeGreaterThanOrEqual(b.left-.1);expect(result.box.right).toBeLessThanOrEqual(b.right+.1);expect(result.box.top).toBeGreaterThanOrEqual(b.top-.1);expect(result.box.bottom).toBeLessThanOrEqual(b.bottom+.1);}
+    > 40 |  for(const l of result.labels)expect(l.text).toBe(l.raw);
+         |                                              ^
+      41 |  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(await page.evaluate(()=>innerWidth));
+      42 |  return result;
+      43 | }
+        at geometry (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-accepted-probes/firefox/candidate-SbnmIF/tests/e2e/diagram-capacity.spec.mjs:40:46)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-accepted-probes/firefox/candidate-SbnmIF/tests/e2e/diagram-capacity.spec.mjs:47:229
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-74c66-ent-descriptions-stay-whole/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-74c66-ent-descriptions-stay-whole/error-context.md
+
+
+  3 failed
+    tests/e2e/diagram-capacity.spec.mjs:46:215 › 1366x768 › [CAP-04] limit complete bounded outcome 
+    tests/e2e/diagram-capacity.spec.mjs:46:215 › 1366x768 › [CAP-04] custody complete bounded outcome 
+    tests/e2e/diagram-capacity.spec.mjs:47:2 › 1366x768 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole 
+  2 passed (11.5s)

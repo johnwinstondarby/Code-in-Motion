@@ -29,6 +29,9 @@ The original browser red fails on the expected fallback text (the status locator
 | 7ee4bde: add a unit assertion that tokens avoid node boxes as well as text | The initially unrouted token missed short label glyphs but would be hidden by their box. The browser hit test covers that visibility defect; the unit rule is now stronger too. |
 | 8a7b7e0 / 6ba8652: require idle locations to be explicit in the description | A later completeness check found that idle locations were named without their idle state. This extra assertion was recorded failing before source correction 76131b0; both text and SVG alternatives now state idle explicitly. |
 | 95e0555: retain measured browser element/ancestor bounds as JSON | Evidence instrumentation only; no assertions, scenarios, timeouts or tolerances changed. Final capacity cases are rerun in all three engines to produce the measurements. |
+| 337dd6b: height-only fallback case and probe added after original reds | A nine-location transfer with the longer published status stays within every count/label limit but needs 204px. This independently tests the 190px height gate; removing just that check must fail, even while other capacity gates remain. |
+| 4b7d11f: CAP-03 also checks the full host ID in each header label | The location ID and host ID share a header; both record-backed identifiers must independently survive wrapping. This adds an assertion without changing the scenario or limits. |
+| 2cf51e6: mutation result metadata names the actual unit test tag | The truncation unit probe executes CAP-06 while its browser probe executes CAP-04. The JSON now reports that distinction; execution and assertions are unchanged. |
 
 Fixture setup before the original red also learned the existing semantic limits: services max64 and records-per-beat max32, despite the wider structural capture allowance. The largest valid fixture therefore uses 64 locations and 128 artifacts, split into batches of 32 records, without altering validators. These are simulation-only generated fixtures, never edits to frozen lessons.
 
@@ -36,14 +39,47 @@ Fixture setup before the original red also learned the existing semantic limits:
 
 CAP-01: nine locations / three rows / complete bounds. CAP-02: five artifacts fallback, four graphical. CAP-03: 100-character IDs preserved in labels and full text. CAP-04: within-capacity graphs, 12-location and wrapped-label boundaries, one-over fallbacks, and existing Run Custody. CAP-05: complete locations, hosts, artifact states (including absent), flows and SVG/text equivalence. CAP-06: character preservation and growing box bounds. CAP-07: multi-row routes, computed token bounds and actual on-screen mid-transfer hit test.
 
-Eight failure modes are covered by nine browser probes: restore fixed geometry; remove capacity gate; omit note; truncate labels; omit artifact descriptions; always fall back; hide slot overflow; hide SVG overflow; bypass routed token geometry. Six of these also run as unit probes. Each mutation run first requires passing unit/browser baselines. Only assertion failures count; crashes, test timeouts, signals and syntax/reference/type errors are refused. Initial surviving probe logs are retained, with the corrections above disclosed.
+Eight failure modes are covered by ten browser probes: restore fixed geometry; remove capacity gate; remove the height-only gate; omit note; truncate labels; omit artifact descriptions; always fall back; hide slot overflow; hide SVG overflow; bypass routed token geometry. Seven of these also run as unit probes. Each mutation run first requires passing unit/browser baselines. Only assertion failures count; crashes, test timeouts, signals and syntax/reference/type errors are refused. Initial surviving probe logs are retained, with the corrections above disclosed.
 
 ## Verification and artifacts
 
-Final counts, per-engine logs, screenshots, builds, frozen-scope comparison, v1 differential and rollback preservation will be added after all gates finish. Exact final-head CI belongs in the draft PR to avoid changing the reviewed tree merely to record its own CI status. Two clean pinned builds must match, with plugin SHA-256 d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a. The authoring candidate changes for the geometry/rendering/CSS source; no release is made.
+Final counts, per-engine logs, screenshots, measured bounds, builds, frozen-scope comparison, v1 differential and rollback preservation are indexed in part-a-evidence/. Exact final-head CI belongs in the draft PR to avoid changing the reviewed tree merely to record its own CI status. Two clean pinned builds must match, with plugin SHA-256 d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a. The authoring candidate changes for the geometry/rendering/CSS source; no release is made.
 
 Deferred: animation pacing, codec declarations, bounded coordinator trace, placeholder pack/real capture content, WordPress admission and download-retry/caching workflow changes. Diagram capacity must merge before capture content enters the placeholder pack.
 
 ## Current accepted source
 
-Runtime source is frozen at 76131b0. Both pinned Node versions pass 1,066 tests, zero skips. The v1 differential remains 41 identical, zero different. Two clean builds match: plugin `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a`; authoring candidate `b84bfc2164fe56274033ca6bb618a000e0ae3d0bf61876ece13a87a90bcdc1cc` (128 files). The authoring checksum changes only for the private diagram geometry/rendering and CSS source. Complete browser/probe evidence will be indexed below once all engines finish.
+Runtime source is frozen at 76131b0. Both pinned Node versions pass 1,066 tests, zero skips. The v1 differential remains 41 identical, zero different. Two clean builds match: plugin `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a`; authoring candidate `b84bfc2164fe56274033ca6bb618a000e0ae3d0bf61876ece13a87a90bcdc1cc` (128 files). The authoring checksum changes only for the private diagram geometry/rendering and CSS source. Complete browser/probe evidence is indexed below.
+
+## Accepted local results
+
+| Engine | Full suite | New capacity cases | Capacity probes | Existing transport / Engineering / Motion / composition probes |
+|---|---|---:|---|---|
+| Chromium | 176 pass | 27 | 7 unit + 10 browser, all detected | 34 / 15 / 30 / 21, all detected |
+| Firefox | 175 pass, 1 skip | 27 | 7 unit + 10 browser, all detected | 34 / 15 / 30 / 21, all detected |
+| WebKit | 175 pass, 1 skip | 27 | 7 unit + 10 browser, all detected | 34 / 15 / 30 / 21, all detected |
+
+The one skip is the existing native-clipboard permission check, which is Chromium-only. There are zero skipped tests in either full Node verify run. The final integrated matrix includes the height-only case added later (176 total); earlier positive 173-case runs are not substituted for it. Browser code is identical to the final test instrumentation; the later host-ID assertion and mutation-result tag correction affect unit assertions/output only. Runtime remains frozen at 76131b0. Final exact-head CI also enforces the older full Player and lesson-pack mutation runners; CI status is recorded in PR101, without adding another commit just to name its own check result.
+
+All supported sizes are tested at true pixel dimensions, without scaling: 1366x768, 1536x864 and 1920x1080. There are 72 screenshots and 72 geometry JSON records: the three primary cases, at-limit, one-over, height-only, existing custody and a genuinely mid-transfer token, in every engine/size. Measurements include every rect/text/path/circle SVG box, viewBox dimensions, actual SVG/slot rectangles and ancestor clipping intersections. They check geometry independently of screenshots, prohibit CSS concealment, and verify the token is the hit-test target. `measurements.json` and `screenshots.json` index them. `fixture-plans.json` records the pure plans and limits from validated generated placeholder bundles, including maximum effective semantic counts. No real capture or installable pack is created.
+
+`part-a-evidence/summary.json`, the canonical verify/browser/mutation logs and builds.json are the accepted evidence. `historical-*` logs retain the initial missing-note status-selector confusion, the first fixture-height issue, and the two initially surviving unit probes. Original red logs and the additional idle-description red stay separate. No source test assertion was removed or widened; all scenario changes/additions are listed above. No recurrence of issue #98 was observed.
+
+The published rollback checksums still match independently. No source under the frozen paths differs from base 7bba6c2; see source-scope.json. The exact finite frame-plan line also matches the base, so the 160ms pacing remains deferred.
+
+## Reproduction
+
+```sh
+npm run verify
+node tools/r42-v1-differential.mjs
+CIM_PLAYER_BROWSER=chromium npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs tests/e2e/diagram-capacity.spec.mjs --workers=2
+CIM_PLAYER_BROWSER=chromium node tools/check-diagram-capacity-mutations.mjs --browser
+CIM_PLAYER_BROWSER=chromium node tools/check-multipane-mutations.mjs --browser
+CIM_PLAYER_BROWSER=chromium node tools/check-engineering-mutations.mjs --browser
+CIM_PLAYER_BROWSER=chromium node tools/check-motion-mutations.mjs --browser
+CIM_PLAYER_BROWSER=chromium node tools/check-composition-mutations.mjs --browser
+npm run build:wordpress
+npm run build:authoring -- --candidate
+```
+
+Repeat browser/probe commands for Firefox and WebKit on Linux. Verify runs on Node20.20.2 and 22.23.2; builds use pinned22.23.2 in two separate clean checkouts. Runtime build source76131b0 differs from the final candidate only in tests, tooling and these unbundled review records. Final-head clean build confirmation is also recorded in the PR. SHA256SUMS hashes committed Git bytes; the downloadable review archive is built from those same bytes, without Windows checkout newline conversion. There is no release, tag, installation or merge in this task. The eventual merge tree must equal the independently approved final head.
