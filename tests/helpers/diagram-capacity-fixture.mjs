@@ -17,8 +17,8 @@ export function capacityFixture(name='nine') {
   const moving=b===placements;
   const beat=structuredClone(template);beat.id=moving?'transfer':b?'placed-'+b:'placed';beat.title=moving?'Simulated transfer':'Simulated placement';beat.explanation.text='Placeholder capacity example; every identifier comes from simulated capture records.';beat.engineering.records=[];
   const ids=moving?[lesson.artifacts[0]]:lesson.artifacts.slice(b*32,(b+1)*32);
-  ids.forEach((artifact,i)=>{const prior=state.artifacts[artifact],service=lesson.services[moving?locations-1:0].id,action=moving?(locations>1?'publish':'verify'):'pin';const id=name==='long'&&moving?long('record'):(moving?'move':'place-'+b)+'-'+i;
-   const result={location:service,status:moving?(locations>1?'published':'verified'):'pinned'};
+  ids.forEach((artifact,i)=>{const prior=state.artifacts[artifact],service=lesson.services[moving?locations-1:0].id,action=moving?(locations>1?'fail':'verify'):'pin';const id=name==='long'&&moving?long('record'):(moving?'move':'place-'+b)+'-'+i;
+   const result={location:service,status:moving?(locations>1?'failed':'verified'):'pinned'};
    capture.records.push({id,beat:beat.id,pane:'engineering',host:lesson.hosts[0],service,artifact,action,from:prior.location,result:structuredClone(result),evidence:capture.archive.files[0].id,provenance:'placeholder'});state.artifacts[artifact]=result;beat.engineering.records.push(id);});
   beat.engineering.state=structuredClone(state);lesson.beats.push(beat);
  }
