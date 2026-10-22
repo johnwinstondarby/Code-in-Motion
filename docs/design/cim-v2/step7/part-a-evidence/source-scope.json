@@ -1,0 +1,20 @@
+{
+  "base": "7bba6c2",
+  "source": "76131b0",
+  "frozen_paths": [
+    "wordpress",
+    "src/core",
+    "src/runtime",
+    "src/host",
+    "src/contracts",
+    "src/renderers",
+    "src/commentary",
+    "src/experience",
+    "authoring",
+    "experiences",
+    "src/multipane/model.mjs",
+    "src/multipane/session.mjs"
+  ],
+  "changed_files": [],
+  "frame_plan_unchanged": true
+}

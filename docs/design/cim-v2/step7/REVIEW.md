@@ -15,7 +15,7 @@ Only the fixture Engineering implementation and its composition CSS change shipp
 - fa28630: recorded seven unit assertion failures and the browser assertion for the missing capacity note. Original fixtures remained unchanged.
 - 99b8d2f: geometry/renderer implementation after recorded reds.
 
-The original browser red covers the fallback-note case at 1366 in Chromium; it does not claim every added scenario failed in every browser. Unit red contains seven assertion failures, not missing-import crashes.
+The original browser red fails on the expected fallback text (the status locator was still page-wide at that point); the later pane-scoped assertion is disclosed below. It covers the fallback-note case at 1366 in Chromium; it does not claim every added scenario failed in every browser. Unit red contains seven assertion failures, not missing-import crashes.
 
 ## Every test edit after those red runs
 
@@ -26,7 +26,9 @@ The original browser red covers the fallback-note case at 1366 in Chromium; it d
 | 0b36121: assert the exact Artifact ID: status prefix in full descriptions | A flow may mention an artifact whose state entry was omitted. This stronger assertion separately proves the complete state list. |
 | 0b36121: synchronous counts for outcome SVG/note presence | Make deliberate-break detections immediate assertions, rather than relying on a missing-locator assertion retry deadline. Expected counts are unchanged. |
 | 2f111e6: truncation unit probe selects CAP-06 | Its first unit probe mistakenly selected the boundary-only CAP-04 test, which does not check characters. CAP-06 already checked line preservation; no test was relaxed. Browser truncation remains checked by CAP-04's wrapped-label scenario. |
-| 7ee4bde: add a unit assertion that tokens avoid node boxes as well as text | The initially unrouted token missed short label glyphs but would be hidden by their box. The existing browser hit test caught that visibility defect; the unit rule is now stronger too. |
+| 7ee4bde: add a unit assertion that tokens avoid node boxes as well as text | The initially unrouted token missed short label glyphs but would be hidden by their box. The browser hit test covers that visibility defect; the unit rule is now stronger too. |
+| 8a7b7e0 / 6ba8652: require idle locations to be explicit in the description | A later completeness check found that idle locations were named without their idle state. This extra assertion was recorded failing before source correction 76131b0; both text and SVG alternatives now state idle explicitly. |
+| 95e0555: retain measured browser element/ancestor bounds as JSON | Evidence instrumentation only; no assertions, scenarios, timeouts or tolerances changed. Final capacity cases are rerun in all three engines to produce the measurements. |
 
 Fixture setup before the original red also learned the existing semantic limits: services max64 and records-per-beat max32, despite the wider structural capture allowance. The largest valid fixture therefore uses 64 locations and 128 artifacts, split into batches of 32 records, without altering validators. These are simulation-only generated fixtures, never edits to frozen lessons.
 
@@ -41,3 +43,7 @@ Eight failure modes are covered by nine browser probes: restore fixed geometry; 
 Final counts, per-engine logs, screenshots, builds, frozen-scope comparison, v1 differential and rollback preservation will be added after all gates finish. Exact final-head CI belongs in the draft PR to avoid changing the reviewed tree merely to record its own CI status. Two clean pinned builds must match, with plugin SHA-256 d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a. The authoring candidate changes for the geometry/rendering/CSS source; no release is made.
 
 Deferred: animation pacing, codec declarations, bounded coordinator trace, placeholder pack/real capture content, WordPress admission and download-retry/caching workflow changes. Diagram capacity must merge before capture content enters the placeholder pack.
+
+## Current accepted source
+
+Runtime source is frozen at 76131b0. Both pinned Node versions pass 1,066 tests, zero skips. The v1 differential remains 41 identical, zero different. Two clean builds match: plugin `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a`; authoring candidate `b84bfc2164fe56274033ca6bb618a000e0ae3d0bf61876ece13a87a90bcdc1cc` (128 files). The authoring checksum changes only for the private diagram geometry/rendering and CSS source. Complete browser/probe evidence will be indexed below once all engines finish.
