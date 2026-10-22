@@ -5,7 +5,7 @@ import {spawnSync} from 'node:child_process';
 const root=fileURLToPath(new URL('../',import.meta.url)),work=resolve(process.env.CIM_COMPOSITION_MUTATION_WORK??resolve(root,'../composition-mutations')),browser=process.argv.includes('--browser');await mkdir(work,{recursive:true});const sandbox=await mkdtemp(resolve(work,'candidate-'));await cp(root,sandbox,{recursive:true,filter:p=>!['.git','node_modules','dist','test-results','work'].includes(basename(p))});await symlink(resolve(root,'node_modules'),resolve(sandbox,'node_modules'),process.platform==='win32'?'junction':'dir');
 const cases=[
  ['CMP-16-final-seek','src/multipane/motion.mjs',"if(check()&&(target.ended||Math.abs(target.currentTime-target.duration)<0.001))return;","/* redundant final seek allowed */",'CMP-16'],
- ['CMP-05-invented-id','src/multipane/engineering.mjs','.map(f=>({...f})),absent:',".map(f=>({...f,id:'invented-flow'})),absent:",'CMP-05'],
+ ['CMP-05-invented-id','src/multipane/engineering.mjs','.map(f=>({...f}));',".map(f=>({...f,id:'invented-flow'}));",'CMP-05'],
  ['CMP-15-retired-pause','src/multipane/motion.mjs','target.onplay=pauseRetiredPlay;target.onplaying=pauseRetiredPlaying;','/* native retirement guards omitted */','CMP-15'],
  ['CMP-15-seek-reset','src/multipane/motion.mjs',"target.pause();target.removeAttribute('src');}","target.pause();target.removeAttribute('src');target.load();}",'CMP-15'],
  ['CMP-14-file-caption','authoring/v3/media-files.mjs','...(clip.webm?', '...(false?', 'CMP-14'],

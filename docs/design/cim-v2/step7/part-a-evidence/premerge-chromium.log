@@ -1,0 +1,31 @@
+
+Running 27 tests using 1 worker
+
+[1/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-01] nine complete bounded outcome
+[2/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-02] five complete bounded outcome
+[3/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-03] long complete bounded outcome
+[4/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-04] limit complete bounded outcome
+[5/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-04] over complete bounded outcome
+[6/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-04] height complete bounded outcome
+[7/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-04] custody complete bounded outcome
+[8/27] tests/e2e/diagram-capacity.spec.mjs:61:2 › 1366x768 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole
+[9/27] tests/e2e/diagram-capacity.spec.mjs:62:2 › 1366x768 › [CAP-07] multi-row mid-transfer token is routed clear of labels
+[10/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-01] nine complete bounded outcome
+[11/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-02] five complete bounded outcome
+[12/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-03] long complete bounded outcome
+[13/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-04] limit complete bounded outcome
+[14/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-04] over complete bounded outcome
+[15/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-04] height complete bounded outcome
+[16/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-04] custody complete bounded outcome
+[17/27] tests/e2e/diagram-capacity.spec.mjs:61:2 › 1536x864 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole
+[18/27] tests/e2e/diagram-capacity.spec.mjs:62:2 › 1536x864 › [CAP-07] multi-row mid-transfer token is routed clear of labels
+[19/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-01] nine complete bounded outcome
+[20/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-02] five complete bounded outcome
+[21/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-03] long complete bounded outcome
+[22/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-04] limit complete bounded outcome
+[23/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-04] over complete bounded outcome
+[24/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-04] height complete bounded outcome
+[25/27] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-04] custody complete bounded outcome
+[26/27] tests/e2e/diagram-capacity.spec.mjs:61:2 › 1920x1080 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole
+[27/27] tests/e2e/diagram-capacity.spec.mjs:62:2 › 1920x1080 › [CAP-07] multi-row mid-transfer token is routed clear of labels
+  27 passed (9.6s)

@@ -1,0 +1,40 @@
+
+Running 1 test using 1 worker
+
+
+
+(node:72744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1/1] tests\e2e\diagram-capacity.spec.mjs:45:188 › 1366x768 › [CAP-02] five complete bounded outcome
+  1) tests\e2e\diagram-capacity.spec.mjs:45:188 › 1366x768 › [CAP-02] five complete bounded outcome 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('status')
+    Expected substring: "too large"
+    Received string:    "Beat 1 / 2 · paused"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" getByRole('status') with timeout 5000ms
+      - waiting for getByRole('status')
+        14 × locator resolved to <output data-mp-status="" aria-live="polite">Beat 1 / 2 · paused</output>
+           - unexpected value "Beat 1 / 2 · paused"
+
+
+      43 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+      44 |  test.use({viewport:{width,height}});
+    > 45 |  for(const[tag,name,mode]of [['CAP-01','nine','graph'],['CAP-02','five','text'],['CAP-03','long','text'],['CAP-04','limit','graph'],['CAP-04','over','text'],['CAP-04','custody','graph']])test(`[${tag}] ${name} complete bounded outcome`,async({page},info)=>{await open(page,name);if(mode==='graph'){await expect(page.locator('[data-diagram-svg]')).toHaveCount(1);await geometry(page);}else{const note=page.getByRole('status');await expect(note).toHaveCount(1);await expect(note).toBeVisible();await expect(note).toContainText('too large');expect(await note.ariaSnapshot()).toContain('too large');await expect(page.locator('[data-diagram-svg]')).toHaveCount(0);expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);}await complete(page,mode);await page.screenshot({path:info.outputPath(name+'.png')});});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ^
+      46 |  test('[CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole',async({page})=>{for(const name of ['label','four']){await open(page,name);await expect(page.locator('[data-diagram-svg]')).toHaveCount(1);await geometry(page);await complete(page,'graph');}await open(page,'nine');await page.evaluate(()=>fixture.session.dispatch({type:'start'}));const description=await page.locator('svg desc').textContent();expect(description).toContain('Artifact a0: absent');await geometry(page);});
+      47 |  test('[CAP-07] multi-row mid-transfer token is routed clear of labels',async({page},info)=>{await open(page,'nine');await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(80));await expect(page.locator('[data-graph-token]')).toHaveCount(1);await geometry(page);const token=await page.locator('[data-graph-token]').evaluate(t=>{const b=t.getBoundingClientRect();return {visible:document.elementFromPoint(b.x+b.width/2,b.y+b.height/2)===t,x:+t.getAttribute('cx'),y:+t.getAttribute('cy')};});expect(token.visible).toBe(true);expect(token.x).toBe(610);await page.screenshot({path:info.outputPath('mid-transfer.png')});});
+      48 | });
+        at C:\Users\johnw\Documents\Codex\2026-10-16\referenced-chatgpt-conversation-this-is-an\work\Code-in-Motion\tests\e2e\diagram-capacity.spec.mjs:45:512
+
+    Error Context: ..\..\outputs\step7a-red-browser\tests-e2e-diagram-capacity-ec120-ve-complete-bounded-outcome\error-context.md
+
+    Error Context: ..\..\outputs\step7a-red-browser\tests-e2e-diagram-capacity-ec120-ve-complete-bounded-outcome\error-context.md
+
+
+  1 failed
+    tests\e2e\diagram-capacity.spec.mjs:45:188 › 1366x768 › [CAP-02] five complete bounded outcome ─

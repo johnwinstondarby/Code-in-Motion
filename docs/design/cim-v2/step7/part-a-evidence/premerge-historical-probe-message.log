@@ -1,0 +1,43 @@
+file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-diagram-capacity-mutations.mjs:25
+ for(const[id,file,from,to,rule,unit=true,unitRule=rule]of cases){if(kind==='unit'&&!unit)continue;const path=resolve(sandbox,file),original=await readFile(path,'utf8');if(!original.includes(from))throw new Error('Missing capacity mutation target '+id);let result;try{await writeFile(path,original.replaceAll(from,to));result=run(kind==='unit'?unitRule:rule,kind);}finally{await writeFile(path,original);}const output=result.stdout+result.stderr,caught=result.status!==0&&result.signal===null&&!result.error&&/ERR_ASSERTION|AssertionError|Error: expect\(|Error: expect\.poll/.test(output)&&!/SyntaxError|ReferenceError|TypeError|Test timeout of|worker process exited/.test(output);await writeFile(resolve(work,kind+'-'+id+'.log'),output);if(!caught)throw new Error('Capacity mutation survived or crashed: '+id+'\n'+output);results.push({id,kind,rule:kind==='unit'?unitRule:rule,caught});}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ^
+
+Error: Capacity mutation survived or crashed: CAP-M09-scaled-slot
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-01] nine complete bounded outcome
+  1) tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-01] nine complete bounded outcome 
+
+    Error: drawing must retain its on-screen width
+
+    expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 620
+    Received: 500
+
+    Expected precision:    1
+    Expected difference: < 0.05
+    Received difference:   120
+
+      48 |  const elements=[...svg.querySelectorAll('rect,text,path,circle')].map(e=>{const b=e.getBBox(),c=e.getBoundingClientRect();return{tag:e.tagName,text:e.textContent,x:b.x,y:b.y,width:b.width,height:b.height,left:c.left,right:c.right,top:c.top,bottom:c.bottom,font:e.tagName==='text'?parseFloat(getComputedStyle(e).fontSize):null};});
+      49 |  return{view:{x:view.x,y:view.y,width:view.width,height:view.height},box:{left:box.left,right:box.right,top:box.top,bottom:box.bottom},slot:{left:slot.left,right:slot.right,top:slot.top,bottom:slot.bottom},clip,elements,overflow:getComputedStyle(svg).overflow,slotOverflow:getComputedStyle(svg.closest('.engineering-graph')).overflow,labels:[...svg.querySelectorAll('[data-label-raw]')].map(t=>({raw:t.dataset.labelRaw,text:t.textContent}))};});
+    > 50 |  expect(result.box.right-result.box.left,'drawing must retain its on-screen width').toBeCloseTo(result.view.width,1);
+         |                                                                                     ^
+      51 |  expect(result.overflow).not.toMatch(/hidden|clip/);expect(result.slotOverflow).not.toMatch(/hidden|clip/);
+      52 |  for(const e of result.elements){expect(e.x,e.text).toBeGreaterThanOrEqual(result.view.x);expect(e.y,e.text).toBeGreaterThanOrEqual(result.view.y);expect(e.x+e.width,e.text).toBeLessThanOrEqual(result.view.x+result.view.width+.1);expect(e.y+e.height,e.text).toBeLessThanOrEqual(result.view.y+result.view.height+.1);if(e.font)expect(e.font).toBeGreaterThanOrEqual(12);}
+      53 |  for(const b of [result.slot,result.clip]){expect(result.box.left).toBeGreaterThanOrEqual(b.left-.1);expect(result.box.right).toBeLessThanOrEqual(b.right+.1);expect(result.box.top).toBeGreaterThanOrEqual(b.top-.1);expect(result.box.bottom).toBeLessThanOrEqual(b.bottom+.1);}
+        at geometry (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-review-additions-probes/chromium/candidate-zvpqq9/tests/e2e/diagram-capacity.spec.mjs:50:85)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-review-additions-probes/chromium/candidate-zvpqq9/tests/e2e/diagram-capacity.spec.mjs:60:449
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-4605a-ne-complete-bounded-outcome/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-4605a-ne-complete-bounded-outcome/error-context.md
+
+
+  1 failed
+    tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-01] nine complete bounded outcome ─
+
+    at file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-diagram-capacity-mutations.mjs:25:756
+
+Node.js v22.23.2

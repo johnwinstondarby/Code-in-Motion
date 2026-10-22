@@ -1,0 +1,16 @@
+
+Running 8 tests using 1 worker
+
+
+
+(node:51180) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1/8] tests\e2e\diagram-capacity.spec.mjs:45:188 › 1366x768 › [CAP-01] nine complete bounded outcome
+[2/8] tests\e2e\diagram-capacity.spec.mjs:45:188 › 1366x768 › [CAP-02] five complete bounded outcome
+[3/8] tests\e2e\diagram-capacity.spec.mjs:45:188 › 1366x768 › [CAP-03] long complete bounded outcome
+[4/8] tests\e2e\diagram-capacity.spec.mjs:45:188 › 1366x768 › [CAP-04] limit complete bounded outcome
+[5/8] tests\e2e\diagram-capacity.spec.mjs:45:188 › 1366x768 › [CAP-04] over complete bounded outcome
+[6/8] tests\e2e\diagram-capacity.spec.mjs:45:188 › 1366x768 › [CAP-04] custody complete bounded outcome
+[7/8] tests\e2e\diagram-capacity.spec.mjs:46:2 › 1366x768 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole
+[8/8] tests\e2e\diagram-capacity.spec.mjs:47:2 › 1366x768 › [CAP-07] multi-row mid-transfer token is routed clear of labels
+  8 passed (2.8s)

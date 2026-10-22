@@ -1,0 +1,32 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-01] nine complete bounded outcome
+  1) tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-01] nine complete bounded outcome 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 620
+    Received: 500
+
+    Expected precision:    1
+    Expected difference: < 0.05
+    Received difference:   120
+
+      48 |  const elements=[...svg.querySelectorAll('rect,text,path,circle')].map(e=>{const b=e.getBBox(),c=e.getBoundingClientRect();return{tag:e.tagName,text:e.textContent,x:b.x,y:b.y,width:b.width,height:b.height,left:c.left,right:c.right,top:c.top,bottom:c.bottom,font:e.tagName==='text'?parseFloat(getComputedStyle(e).fontSize):null};});
+      49 |  return{view:{x:view.x,y:view.y,width:view.width,height:view.height},box:{left:box.left,right:box.right,top:box.top,bottom:box.bottom},slot:{left:slot.left,right:slot.right,top:slot.top,bottom:slot.bottom},clip,elements,overflow:getComputedStyle(svg).overflow,slotOverflow:getComputedStyle(svg.closest('.engineering-graph')).overflow,labels:[...svg.querySelectorAll('[data-label-raw]')].map(t=>({raw:t.dataset.labelRaw,text:t.textContent}))};});
+    > 50 |  expect(result.box.right-result.box.left).toBeCloseTo(result.view.width,1);
+         |                                           ^
+      51 |  expect(result.overflow).not.toMatch(/hidden|clip/);expect(result.slotOverflow).not.toMatch(/hidden|clip/);
+      52 |  for(const e of result.elements){expect(e.x,e.text).toBeGreaterThanOrEqual(result.view.x);expect(e.y,e.text).toBeGreaterThanOrEqual(result.view.y);expect(e.x+e.width,e.text).toBeLessThanOrEqual(result.view.x+result.view.width+.1);expect(e.y+e.height,e.text).toBeLessThanOrEqual(result.view.y+result.view.height+.1);if(e.font)expect(e.font).toBeGreaterThanOrEqual(12);}
+      53 |  for(const b of [result.slot,result.clip]){expect(result.box.left).toBeGreaterThanOrEqual(b.left-.1);expect(result.box.right).toBeLessThanOrEqual(b.right+.1);expect(result.box.top).toBeGreaterThanOrEqual(b.top-.1);expect(result.box.bottom).toBeLessThanOrEqual(b.bottom+.1);}
+        at geometry (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-review-additions-probes/webkit/candidate-IdWgjP/tests/e2e/diagram-capacity.spec.mjs:50:43)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-review-additions-probes/webkit/candidate-IdWgjP/tests/e2e/diagram-capacity.spec.mjs:60:449
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-4605a-ne-complete-bounded-outcome/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-4605a-ne-complete-bounded-outcome/error-context.md
+
+
+  1 failed
+    tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-01] nine complete bounded outcome ─

@@ -22,7 +22,7 @@
 [data-composed-player] .engineering-diagram>p{font-size:12px;margin:0}
 [data-composed-player] .engineering-flows p{font-size:13px;line-height:1.2;margin:1px 0}
 [data-composed-player] .engineering-edge{display:none}
-[data-composed-player] .engineering-graph svg{display:block;width:100%;height:190px;max-height:190px}
+[data-composed-player] .engineering-graph svg{display:block;width:620px;max-width:100%;height:var(--cim-diagram-height);max-height:none;overflow:visible;margin-inline:auto}
 
 [data-composed-player] [data-mp-wait]:empty{display:none}
 

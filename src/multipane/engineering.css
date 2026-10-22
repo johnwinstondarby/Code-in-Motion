@@ -19,3 +19,9 @@
 .engineering-diagram details p{font-size:14px}
 
 .mp-fixture [data-mp-context="engineering"]>div{min-height:0;flex:1;overflow:auto}
+
+.engineering-graph{overflow:visible}
+.engineering-graph svg text{white-space:pre}
+.engineering-capacity-text{min-width:0;overflow-wrap:anywhere}
+.engineering-capacity-text [data-node-id]{margin:4px 0;overflow-wrap:anywhere}
+[data-diagram-full-state]{white-space:pre-wrap;overflow-wrap:anywhere}

@@ -1,0 +1,26 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/diagram-capacity.spec.mjs:48:2 › 1366x768 › [CAP-07] multi-row mid-transfer token is routed clear of labels
+  1) tests/e2e/diagram-capacity.spec.mjs:48:2 › 1366x768 › [CAP-07] multi-row mid-transfer token is routed clear of labels 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      46 |  for(const[tag,name,mode]of [['CAP-01','nine','graph'],['CAP-02','five','text'],['CAP-03','long','text'],['CAP-04','limit','graph'],['CAP-04','over','text'],['CAP-04','height','text'],['CAP-04','custody','graph']])test(`[${tag}] ${name} complete bounded outcome`,async({page},info)=>{await open(page,name);let measured={mode,width,height};if(mode==='graph'){expect(await page.locator('[data-diagram-svg]').count()).toBe(1);measured={...measured,...await geometry(page)};}else{const note=page.locator('.engineering-diagram').getByRole('status');expect(await note.count()).toBe(1);await expect(note).toBeVisible();await expect(note).toContainText('too large');expect(await note.ariaSnapshot()).toContain('too large');expect(await page.locator('[data-diagram-svg]').count()).toBe(0);expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);}await complete(page,mode);await writeFile(info.outputPath(name+'-geometry.json'),JSON.stringify(measured,null,2));await page.screenshot({path:info.outputPath(name+'.png')});});
+      47 |  test('[CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole',async({page})=>{for(const name of ['label','four']){await open(page,name);expect(await page.locator('[data-diagram-svg]').count()).toBe(1);await geometry(page);await complete(page,'graph');}await open(page,'nine');await page.evaluate(()=>fixture.session.dispatch({type:'start'}));const description=await page.locator('svg desc').textContent();expect(description).toContain('Artifact a0: absent');await geometry(page);});
+    > 48 |  test('[CAP-07] multi-row mid-transfer token is routed clear of labels',async({page},info)=>{await open(page,'nine');await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(80));await expect(page.locator('[data-graph-token]')).toHaveCount(1);const measured=await geometry(page);const token=await page.locator('[data-graph-token]').evaluate(t=>{const b=t.getBoundingClientRect();return {visible:document.elementFromPoint(b.x+b.width/2,b.y+b.height/2)===t,x:+t.getAttribute('cx'),y:+t.getAttribute('cy')};});expect(token.visible).toBe(true);expect(token.x).toBe(610);await writeFile(info.outputPath('mid-transfer-geometry.json'),JSON.stringify({width,height,...measured,token},null,2));await page.screenshot({path:info.outputPath('mid-transfer.png')});});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^
+      49 | });
+      50 |
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-accepted-probes/webkit/candidate-YBe2RQ/tests/e2e/diagram-capacity.spec.mjs:48:578
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-475a9-n-is-routed-clear-of-labels/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-475a9-n-is-routed-clear-of-labels/error-context.md
+
+
+  1 failed
+    tests/e2e/diagram-capacity.spec.mjs:48:2 › 1366x768 › [CAP-07] multi-row mid-transfer token is routed clear of labels 

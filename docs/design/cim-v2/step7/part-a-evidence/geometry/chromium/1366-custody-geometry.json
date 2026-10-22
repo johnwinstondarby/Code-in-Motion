@@ -1,0 +1,381 @@
+{
+  "mode": "graph",
+  "width": 1366,
+  "height": 768,
+  "view": {
+    "x": 0,
+    "y": 0,
+    "width": 620,
+    "height": 190
+  },
+  "box": {
+    "left": 709,
+    "right": 1329,
+    "top": 502.9375,
+    "bottom": 692.9375
+  },
+  "slot": {
+    "left": 695,
+    "right": 1343,
+    "top": 502.9375,
+    "bottom": 716.53125
+  },
+  "clip": {
+    "left": 689,
+    "right": 1349,
+    "top": 371,
+    "bottom": 699
+  },
+  "elements": [
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 15,
+      "y": 20,
+      "width": 132,
+      "height": 64,
+      "left": 724,
+      "right": 856,
+      "top": 522.9375,
+      "bottom": 586.9375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "login · inspire",
+      "x": 21,
+      "y": 23,
+      "width": 101.15625,
+      "height": 28,
+      "left": 730,
+      "right": 831.15625,
+      "top": 525.9375,
+      "bottom": 553.9375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "◎ run: verified",
+      "x": 21,
+      "y": 51,
+      "width": 101.15625,
+      "height": 28,
+      "left": 730,
+      "right": 831.15625,
+      "top": 553.9375,
+      "bottom": 581.9375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 165,
+      "y": 20,
+      "width": 132,
+      "height": 50,
+      "left": 874,
+      "right": 1006,
+      "top": 522.9375,
+      "bottom": 572.9375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "git · inspire",
+      "x": 171,
+      "y": 23,
+      "width": 93.921875,
+      "height": 14,
+      "left": 880,
+      "right": 973.921875,
+      "top": 525.9375,
+      "bottom": 539.9375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "◎ commit: verified",
+      "x": 171,
+      "y": 37,
+      "width": 101.15625,
+      "height": 28,
+      "left": 880,
+      "right": 981.15625,
+      "top": 539.9375,
+      "bottom": 567.9375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 315,
+      "y": 20,
+      "width": 132,
+      "height": 50,
+      "left": 1024,
+      "right": 1156,
+      "top": 522.9375,
+      "bottom": 572.9375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "scheduler · inspire",
+      "x": 321,
+      "y": 23,
+      "width": 101.15625,
+      "height": 28,
+      "left": 1030,
+      "right": 1131.15625,
+      "top": 525.9375,
+      "bottom": 553.9375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 321,
+      "y": 51,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1030,
+      "right": 1073.359375,
+      "top": 553.9375,
+      "bottom": 567.9375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 465,
+      "y": 20,
+      "width": 132,
+      "height": 50,
+      "left": 1174,
+      "right": 1306,
+      "top": 522.9375,
+      "bottom": 572.9375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "gpu · inspire",
+      "x": 471,
+      "y": 23,
+      "width": 93.921875,
+      "height": 14,
+      "left": 1180,
+      "right": 1273.921875,
+      "top": 525.9375,
+      "bottom": 539.9375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "◎ job: verified",
+      "x": 471,
+      "y": 37,
+      "width": 101.15625,
+      "height": 28,
+      "left": 1180,
+      "right": 1281.15625,
+      "top": 539.9375,
+      "bottom": 567.9375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 15,
+      "y": 104,
+      "width": 132,
+      "height": 64,
+      "left": 724,
+      "right": 856,
+      "top": 606.9375,
+      "bottom": 670.9375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "mlflow · inspire",
+      "x": 21,
+      "y": 107,
+      "width": 101.15625,
+      "height": 28,
+      "left": 730,
+      "right": 831.15625,
+      "top": 609.9375,
+      "bottom": 637.9375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "◎ metrics: verified",
+      "x": 21,
+      "y": 135,
+      "width": 101.15625,
+      "height": 28,
+      "left": 730,
+      "right": 831.15625,
+      "top": 637.9375,
+      "bottom": 665.9375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 165,
+      "y": 104,
+      "width": 132,
+      "height": 50,
+      "left": 874,
+      "right": 1006,
+      "top": 606.9375,
+      "bottom": 656.9375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "storage · inspire",
+      "x": 171,
+      "y": 107,
+      "width": 101.15625,
+      "height": 28,
+      "left": 880,
+      "right": 981.15625,
+      "top": 609.9375,
+      "bottom": 637.9375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 171,
+      "y": 135,
+      "width": 43.359375,
+      "height": 14,
+      "left": 880,
+      "right": 923.359375,
+      "top": 637.9375,
+      "bottom": 651.9375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 315,
+      "y": 104,
+      "width": 132,
+      "height": 50,
+      "left": 1024,
+      "right": 1156,
+      "top": 606.9375,
+      "bottom": 656.9375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "registry · inspire",
+      "x": 321,
+      "y": 107,
+      "width": 101.15625,
+      "height": 28,
+      "left": 1030,
+      "right": 1131.15625,
+      "top": 609.9375,
+      "bottom": 637.9375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 321,
+      "y": 135,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1030,
+      "right": 1073.359375,
+      "top": 637.9375,
+      "bottom": 651.9375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "All recorded artifacts have a location.",
+      "x": 15,
+      "y": 171,
+      "width": 281.765625,
+      "height": 14,
+      "left": 724,
+      "right": 1005.765625,
+      "top": 673.9375,
+      "bottom": 687.9375,
+      "font": 12
+    }
+  ],
+  "overflow": "visible",
+  "slotOverflow": "visible",
+  "labels": [
+    {
+      "raw": "login · inspire",
+      "text": "login · inspire"
+    },
+    {
+      "raw": "◎ run: verified",
+      "text": "◎ run: verified"
+    },
+    {
+      "raw": "git · inspire",
+      "text": "git · inspire"
+    },
+    {
+      "raw": "◎ commit: verified",
+      "text": "◎ commit: verified"
+    },
+    {
+      "raw": "scheduler · inspire",
+      "text": "scheduler · inspire"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "gpu · inspire",
+      "text": "gpu · inspire"
+    },
+    {
+      "raw": "◎ job: verified",
+      "text": "◎ job: verified"
+    },
+    {
+      "raw": "mlflow · inspire",
+      "text": "mlflow · inspire"
+    },
+    {
+      "raw": "◎ metrics: verified",
+      "text": "◎ metrics: verified"
+    },
+    {
+      "raw": "storage · inspire",
+      "text": "storage · inspire"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "registry · inspire",
+      "text": "registry · inspire"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "All recorded artifacts have a location.",
+      "text": "All recorded artifacts have a location."
+    }
+  ]
+}

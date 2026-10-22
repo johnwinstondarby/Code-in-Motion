@@ -1,0 +1,60 @@
+{
+  "runtime_source": "76131b0",
+  "unit_tests": {
+    "20.20.2": {
+      "passed": 1066,
+      "skipped": 0
+    },
+    "22.23.2": {
+      "passed": 1066,
+      "skipped": 0
+    }
+  },
+  "v1": {
+    "identical": 41,
+    "different": 0
+  },
+  "browsers": {
+    "chromium": {
+      "passed": 176,
+      "skipped": 0,
+      "capacity_cases": 27,
+      "capacity_browser_probes": 10,
+      "capacity_unit_probes": 7,
+      "existing_mutations": {
+        "transport": 34,
+        "engineering": 15,
+        "motion": 30,
+        "composition": 21
+      }
+    },
+    "firefox": {
+      "passed": 175,
+      "skipped": 1,
+      "capacity_cases": 27,
+      "capacity_browser_probes": 10,
+      "capacity_unit_probes": 7,
+      "existing_mutations": {
+        "transport": 34,
+        "engineering": 15,
+        "motion": 30,
+        "composition": 21
+      }
+    },
+    "webkit": {
+      "passed": 175,
+      "skipped": 1,
+      "capacity_cases": 27,
+      "capacity_browser_probes": 10,
+      "capacity_unit_probes": 7,
+      "existing_mutations": {
+        "transport": 34,
+        "engineering": 15,
+        "motion": 30,
+        "composition": 21
+      }
+    }
+  },
+  "issue98": "No recurrence observed in the accepted runs.",
+  "ci": "Pending exact final draft head; see PR101."
+}

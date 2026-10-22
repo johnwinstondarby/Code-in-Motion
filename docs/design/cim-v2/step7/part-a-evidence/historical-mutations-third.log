@@ -1,0 +1,97 @@
+{
+  "node": "v22.23.2",
+  "browser": "chromium",
+  "baselines": "passed",
+  "results": [
+    {
+      "id": "CAP-M01-fixed",
+      "kind": "unit",
+      "rule": "CAP-01",
+      "caught": true
+    },
+    {
+      "id": "CAP-M02-gate",
+      "kind": "unit",
+      "rule": "CAP-02",
+      "caught": true
+    },
+    {
+      "id": "CAP-M04-truncate",
+      "kind": "unit",
+      "rule": "CAP-04",
+      "caught": true
+    },
+    {
+      "id": "CAP-M05-description",
+      "kind": "unit",
+      "rule": "CAP-05",
+      "caught": true
+    },
+    {
+      "id": "CAP-M06-always-text",
+      "kind": "unit",
+      "rule": "CAP-04",
+      "caught": true
+    },
+    {
+      "id": "CAP-M08-unrouted-token",
+      "kind": "unit",
+      "rule": "CAP-07",
+      "caught": true
+    },
+    {
+      "id": "CAP-M01-fixed",
+      "kind": "browser",
+      "rule": "CAP-01",
+      "caught": true
+    },
+    {
+      "id": "CAP-M02-gate",
+      "kind": "browser",
+      "rule": "CAP-02",
+      "caught": true
+    },
+    {
+      "id": "CAP-M03-note",
+      "kind": "browser",
+      "rule": "CAP-02",
+      "caught": true
+    },
+    {
+      "id": "CAP-M04-truncate",
+      "kind": "browser",
+      "rule": "CAP-04",
+      "caught": true
+    },
+    {
+      "id": "CAP-M05-description",
+      "kind": "browser",
+      "rule": "CAP-05",
+      "caught": true
+    },
+    {
+      "id": "CAP-M06-always-text",
+      "kind": "browser",
+      "rule": "CAP-04",
+      "caught": true
+    },
+    {
+      "id": "CAP-M07-slot-overflow",
+      "kind": "browser",
+      "rule": "CAP-01",
+      "caught": true
+    },
+    {
+      "id": "CAP-M07-svg-overflow",
+      "kind": "browser",
+      "rule": "CAP-01",
+      "caught": true
+    },
+    {
+      "id": "CAP-M08-unrouted-token",
+      "kind": "browser",
+      "rule": "CAP-07",
+      "caught": true
+    }
+  ]
+}

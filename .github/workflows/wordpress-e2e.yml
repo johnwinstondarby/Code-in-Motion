@@ -1280,7 +1280,7 @@ jobs:
       - name: Verify learner presets in selected browser
         env:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
-        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs --reporter=line
+        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs tests/e2e/diagram-capacity.spec.mjs --reporter=line
 
       - name: Prove multi-pane fixture browser mutation guards
         env:
@@ -1301,6 +1301,11 @@ jobs:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
         run: node tools/check-composition-mutations.mjs --browser
 
+
+      - name: Prove diagram capacity and complete text alternatives
+        env:
+          CIM_PLAYER_BROWSER: ${{ matrix.browser }}
+        run: node tools/check-diagram-capacity-mutations.mjs --browser
 
       - name: Stop R20 browser environment
         if: always()

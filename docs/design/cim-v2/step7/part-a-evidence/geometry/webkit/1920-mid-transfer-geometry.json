@@ -1,0 +1,518 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "view": {
+    "x": 0,
+    "y": 0,
+    "width": 620,
+    "height": 190
+  },
+  "box": {
+    "left": 1124.5,
+    "right": 1744.5,
+    "top": 663.59375,
+    "bottom": 853.59375
+  },
+  "slot": {
+    "left": 972,
+    "right": 1897,
+    "top": 663.59375,
+    "bottom": 877.1875
+  },
+  "clip": {
+    "left": 966,
+    "right": 1903,
+    "top": 574.8125,
+    "bottom": 883.1875
+  },
+  "elements": [
+    {
+      "tag": "path",
+      "text": "",
+      "x": 81,
+      "y": 8,
+      "width": 529,
+      "height": 121,
+      "left": 1205.5,
+      "right": 1734.5,
+      "top": 671.59375,
+      "bottom": 792.59375,
+      "font": null
+    },
+    {
+      "tag": "path",
+      "text": "",
+      "x": 76,
+      "y": 121,
+      "width": 10,
+      "height": 8,
+      "left": 1200.5,
+      "right": 1210.5,
+      "top": 784.59375,
+      "bottom": 792.59375,
+      "font": null
+    },
+    {
+      "tag": "circle",
+      "text": "",
+      "x": 605,
+      "y": 59,
+      "width": 10,
+      "height": 10,
+      "left": 1729.5,
+      "right": 1739.5,
+      "top": 722.59375,
+      "bottom": 732.59375,
+      "font": null
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 15,
+      "y": 20,
+      "width": 132,
+      "height": 36,
+      "left": 1139.5,
+      "right": 1271.5,
+      "top": 683.59375,
+      "bottom": 719.59375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "s0 · h",
+      "x": 21,
+      "y": 23,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1145.5,
+      "right": 1188.859375,
+      "top": 686.59375,
+      "bottom": 700.59375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 21,
+      "y": 37,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1145.5,
+      "right": 1188.859375,
+      "top": 700.59375,
+      "bottom": 714.59375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 165,
+      "y": 20,
+      "width": 132,
+      "height": 36,
+      "left": 1289.5,
+      "right": 1421.5,
+      "top": 683.59375,
+      "bottom": 719.59375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "s1 · h",
+      "x": 171,
+      "y": 23,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1295.5,
+      "right": 1338.859375,
+      "top": 686.59375,
+      "bottom": 700.59375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 171,
+      "y": 37,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1295.5,
+      "right": 1338.859375,
+      "top": 700.59375,
+      "bottom": 714.59375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 315,
+      "y": 20,
+      "width": 132,
+      "height": 36,
+      "left": 1439.5,
+      "right": 1571.5,
+      "top": 683.59375,
+      "bottom": 719.59375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "s2 · h",
+      "x": 321,
+      "y": 23,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1445.5,
+      "right": 1488.859375,
+      "top": 686.59375,
+      "bottom": 700.59375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 321,
+      "y": 37,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1445.5,
+      "right": 1488.859375,
+      "top": 700.59375,
+      "bottom": 714.59375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 465,
+      "y": 20,
+      "width": 132,
+      "height": 36,
+      "left": 1589.5,
+      "right": 1721.5,
+      "top": 683.59375,
+      "bottom": 719.59375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "s3 · h",
+      "x": 471,
+      "y": 23,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1595.5,
+      "right": 1638.859375,
+      "top": 686.59375,
+      "bottom": 700.59375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 471,
+      "y": 37,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1595.5,
+      "right": 1638.859375,
+      "top": 700.59375,
+      "bottom": 714.59375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 15,
+      "y": 76,
+      "width": 132,
+      "height": 36,
+      "left": 1139.5,
+      "right": 1271.5,
+      "top": 739.59375,
+      "bottom": 775.59375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "s4 · h",
+      "x": 21,
+      "y": 79,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1145.5,
+      "right": 1188.859375,
+      "top": 742.59375,
+      "bottom": 756.59375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 21,
+      "y": 93,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1145.5,
+      "right": 1188.859375,
+      "top": 756.59375,
+      "bottom": 770.59375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 165,
+      "y": 76,
+      "width": 132,
+      "height": 36,
+      "left": 1289.5,
+      "right": 1421.5,
+      "top": 739.59375,
+      "bottom": 775.59375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "s5 · h",
+      "x": 171,
+      "y": 79,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1295.5,
+      "right": 1338.859375,
+      "top": 742.59375,
+      "bottom": 756.59375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 171,
+      "y": 93,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1295.5,
+      "right": 1338.859375,
+      "top": 756.59375,
+      "bottom": 770.59375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 315,
+      "y": 76,
+      "width": 132,
+      "height": 36,
+      "left": 1439.5,
+      "right": 1571.5,
+      "top": 739.59375,
+      "bottom": 775.59375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "s6 · h",
+      "x": 321,
+      "y": 79,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1445.5,
+      "right": 1488.859375,
+      "top": 742.59375,
+      "bottom": 756.59375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 321,
+      "y": 93,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1445.5,
+      "right": 1488.859375,
+      "top": 756.59375,
+      "bottom": 770.59375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 465,
+      "y": 76,
+      "width": 132,
+      "height": 36,
+      "left": 1589.5,
+      "right": 1721.5,
+      "top": 739.59375,
+      "bottom": 775.59375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "s7 · h",
+      "x": 471,
+      "y": 79,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1595.5,
+      "right": 1638.859375,
+      "top": 742.59375,
+      "bottom": 756.59375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "○ idle",
+      "x": 471,
+      "y": 93,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1595.5,
+      "right": 1638.859375,
+      "top": 756.59375,
+      "bottom": 770.59375,
+      "font": 12
+    },
+    {
+      "tag": "rect",
+      "text": "",
+      "x": 15,
+      "y": 132,
+      "width": 132,
+      "height": 36,
+      "left": 1139.5,
+      "right": 1271.5,
+      "top": 795.59375,
+      "bottom": 831.59375,
+      "font": null
+    },
+    {
+      "tag": "text",
+      "text": "s8 · h",
+      "x": 21,
+      "y": 135,
+      "width": 43.359375,
+      "height": 14,
+      "left": 1145.5,
+      "right": 1188.859375,
+      "top": 798.59375,
+      "bottom": 812.59375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "× a0: failed",
+      "x": 21,
+      "y": 149,
+      "width": 86.703125,
+      "height": 14,
+      "left": 1145.5,
+      "right": 1232.203125,
+      "top": 812.59375,
+      "bottom": 826.59375,
+      "font": 12
+    },
+    {
+      "tag": "text",
+      "text": "All recorded artifacts have a location.",
+      "x": 15,
+      "y": 171,
+      "width": 281.765625,
+      "height": 14,
+      "left": 1139.5,
+      "right": 1421.265625,
+      "top": 834.59375,
+      "bottom": 848.59375,
+      "font": 12
+    }
+  ],
+  "overflow": "visible",
+  "slotOverflow": "visible",
+  "labels": [
+    {
+      "raw": "s0 · h",
+      "text": "s0 · h"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "s1 · h",
+      "text": "s1 · h"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "s2 · h",
+      "text": "s2 · h"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "s3 · h",
+      "text": "s3 · h"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "s4 · h",
+      "text": "s4 · h"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "s5 · h",
+      "text": "s5 · h"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "s6 · h",
+      "text": "s6 · h"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "s7 · h",
+      "text": "s7 · h"
+    },
+    {
+      "raw": "○ idle",
+      "text": "○ idle"
+    },
+    {
+      "raw": "s8 · h",
+      "text": "s8 · h"
+    },
+    {
+      "raw": "× a0: failed",
+      "text": "× a0: failed"
+    },
+    {
+      "raw": "All recorded artifacts have a location.",
+      "text": "All recorded artifacts have a location."
+    }
+  ],
+  "token": {
+    "visible": true,
+    "x": 610,
+    "y": 64
+  }
+}
