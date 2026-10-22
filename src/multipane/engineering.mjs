@@ -39,7 +39,7 @@ export const DIAGRAM_CAPACITY=Object.freeze({locations:12,artifactsPerLocation:4
 const cues={pinned:'■',failed:'×',completed:'✓',published:'◆',verified:'◎',reproduced:'▣',absent:'○'};
 const wrapLabel=(text,size=14)=>Array.from({length:Math.ceil(text.length/size)},(_,i)=>text.slice(i*size,(i+1)*size));
 export function diagramDescription(snapshot){
- return 'Capture-derived model. '+snapshot.nodes.map(n=>`Location ${n.id} on host ${n.host}.`).join(' ')+' '+
+ return 'Capture-derived model. '+snapshot.nodes.map(n=>`Location ${n.id} on host ${n.host}: ${n.artifacts.length?'artifacts '+n.artifacts.map(a=>a.id).join(', '):'idle'}.`).join(' ')+' '+
   Object.entries(snapshot.state.artifacts).map(([id,a])=>`Artifact ${id}: ${a.status} (${words[a.status]}), ${a.location===null?'absent with no location':'at '+a.location}.`).join(' ')+' '+
   (snapshot.flows.length?snapshot.flows.map(f=>`Flow ${f.id}: ${flowWording(f)}; ${f.action}; ${f.result.status} (${words[f.result.status]}); by ${f.host}; evidence ${f.evidence}.`).join(' '):'Waiting on next diagram action.');
 }
