@@ -15,6 +15,8 @@ const cases=[
  ['CAP-M06-always-text',pane,"const within=reason==='';",'const within=false;','CAP-04'],
  ['CAP-M07-slot-overflow','src/multipane/engineering.css','.engineering-graph{overflow:visible}', '.engineering-graph{overflow:hidden}','CAP-01',false],
  ['CAP-M07-svg-overflow','src/multipane/composition.css','max-height:none;overflow:visible','max-height:none;overflow:hidden','CAP-01',false],
+ ['CAP-M09-scaled-slot','src/multipane/engineering.css','.engineering-graph{overflow:visible}', '.engineering-graph{overflow:visible;width:500px}','CAP-01',false],
+ ['CAP-M10-hidden-text','src/multipane/engineering.css','padding:10px;overflow:auto','padding:10px;overflow:hidden','CAP-03',false],
  ['CAP-M08-unrouted-token',pane,'const points=edge.points;','const points=[edge.fromCenter,edge.toCenter];','CAP-07']
 ];
 const run=(rule,kind)=>spawnSync(process.execPath,kind==='unit'?['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),'tests/diagram-capacity.test.mjs']:[resolve(root,'node_modules/@playwright/test/cli.js'),'test','tests/e2e/diagram-capacity.spec.mjs','--grep',`1366x768.*${rule??'CAP-'}`,'--workers=1','--reporter=line','--output='+resolve(work,'browser-results')],{cwd:sandbox,encoding:'utf8',timeout:120000});

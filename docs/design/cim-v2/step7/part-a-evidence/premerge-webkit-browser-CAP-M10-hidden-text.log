@@ -1,0 +1,28 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-03] long complete bounded outcome
+  1) tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-03] long complete bounded outcome 
+
+    Error: expect(received).toMatch(expected)
+
+    Expected pattern: /auto|scroll/
+    Received string:  "hidden"
+
+      40 |  });
+      41 |  if((await page.viewportSize()).height===768)expect(result.ancestors.length).toBeGreaterThan(0);
+    > 42 |  for(const a of result.ancestors)expect(a.overflow).toMatch(/auto|scroll/);
+         |                                                     ^
+      43 |  expect(result.bottom).toBeLessThanOrEqual(result.paneBottom+1);
+      44 |  expect(result.bottom).toBeGreaterThan(result.paneTop);
+      45 | }
+        at reachableText (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-review-additions-probes/webkit/candidate-IdWgjP/tests/e2e/diagram-capacity.spec.mjs:42:53)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7a-review-additions-probes/webkit/candidate-IdWgjP/tests/e2e/diagram-capacity.spec.mjs:60:922
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-63190-ng-complete-bounded-outcome/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-diagram-capacity-63190-ng-complete-bounded-outcome/error-context.md
+
+
+  1 failed
+    tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-03] long complete bounded outcome ─

@@ -83,3 +83,18 @@ npm run build:authoring -- --candidate
 ```
 
 Repeat browser/probe commands for Firefox and WebKit on Linux. Verify runs on Node20.20.2 and 22.23.2; builds use pinned22.23.2 in two separate clean checkouts. Runtime build source76131b0 differs from the final candidate only in tests, tooling and these unbundled review records. Final-head clean build confirmation is also recorded in the PR. SHA256SUMS hashes committed Git bytes; the downloadable review archive is built from those same bytes, without Windows checkout newline conversion. There is no release, tag, installation or merge in this task. The eventual merge tree must equal the independently approved final head.
+
+
+## Daisy pre-merge checks (after dd4e71c)
+
+Two browser assertions and two deliberate-break probes were added following Daisy's independent review. No runtime, CSS, fixture, existing assertion, timeout or tolerance changed.
+
+- Every graph outcome now compares the measured screen width against its SVG drawing width (one decimal place); SVG font units alone no longer count as proof of readable screen size. CAP-M09 narrows the graph slot to 500px and must fail that assertion.
+- Every text outcome scrolls the complete state to its end, confirms the end is inside the pane, and checks every overflowing ancestor permits scrolling. Laptop outcomes must actually overflow, exercising reachability rather than just DOM presence. CAP-M10 sets the diagram pane to overflow:hidden and must fail the long-ID case.
+- During test construction, an initial assertion incorrectly required overflow even at larger screen heights where all text fits. It was corrected before the accepted run to require actual overflow at 768px and validate reachability at every height. The initial four assertion failures were setup mistakes, not runtime defects or mutation evidence. No previously accepted assertion was changed.
+- The first narrowed-slot probe produced the correct 620px-versus-500px assertion, but its custom assertion message was not recognized by the existing strict mutation runner. The two new assertions now use standard Playwright messages; the runner and failure-detection criteria remain untouched. The initial probe log is retained as historical evidence.
+- These are new regression assertions on already-correct behavior; no new implementation or red-to-green runtime change was needed. The new probes require assertion failures and reject crashes/timeouts, like the existing probes.
+
+Review notes carried forward: overlapping transfer lanes when choosing later sample beats, and repeated polite announcements from a rebuilding fallback note. Both remain outside this test-only amendment.
+
+Validation of this amendment is recorded in `part-a-evidence/premerge-*` logs. The capacity matrix remains 27 cases per engine, with 7 unit and now 12 browser probes per engine. Candidate runtime and ZIP contents are unchanged from dd4e71c. Final CI must pass on this amendment's exact head before merging; merging does not authorize a release or install.
