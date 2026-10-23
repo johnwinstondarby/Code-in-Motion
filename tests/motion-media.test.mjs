@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createMotionAdapter,motionLabel} from '../src/multipane/motion.mjs';
-import {webcrypto} from 'node:crypto';
+import {webcrypto,createHash} from 'node:crypto';
 import {validateMediaMap,MEDIA_LIMITS} from '../src/multipane/media-map.mjs';
 import {createVerifiedMediaAccess} from '../src/multipane/motion-media.mjs';
 import {createMediaBarrier} from '../src/multipane/media-barrier.mjs';
@@ -11,7 +11,7 @@ const fixture=motionFixture();
 const clone=()=>structuredClone(fixture.map);
 function service(map=clone(),options={}){
  const calls=[],blobs=[],revoked=[];let counter=0;
- const access=createVerifiedMediaAccess(map,{origin:'http://localhost:1234',bindings:{'pack:media/placeholder.webm':'/__cim_fixture_media/clip.webm','pack:media/placeholder.vtt':'/__cim_fixture_media/captions.vtt','attachment:10':'/__cim_fixture_media/clip.webm','attachment:20':'/__cim_fixture_media/captions.vtt'},crypto:webcrypto,urls:{createObjectURL(blob){blobs.push(blob);return 'blob:test-'+(++counter);},revokeObjectURL(url){revoked.push(url);}},fetch:async(url,init)=>{calls.push({url,init});if(options.fail)throw new Error('Missing media');const bytes=url.endsWith('.vtt')?fixture.captions:options.tamper?new Uint8Array(fixture.bytes.length):fixture.bytes;return new Response(bytes,{status:200});},timeoutMs:30,...options.dependencies});return {access,calls,blobs,revoked};
+ const access=createVerifiedMediaAccess(map,{origin:'http://localhost:1234',bindings:{'pack:media/placeholder.webm':'/__cim_fixture_media/clip.webm','pack:media/placeholder.vtt':'/__cim_fixture_media/captions.vtt','attachment:10':'/__cim_fixture_media/clip.webm','attachment:20':'/__cim_fixture_media/captions.vtt'},crypto:{subtle:{async digest(algorithm,bytes){assert.equal(algorithm,'SHA-256');return Uint8Array.from(createHash('sha256').update(bytes).digest()).buffer;}}},urls:{createObjectURL(blob){blobs.push(blob);return 'blob:test-'+(++counter);},revokeObjectURL(url){revoked.push(url);}},fetch:async(url,init)=>{calls.push({url,init});if(options.fail)throw new Error('Missing media');const bytes=url.endsWith('.vtt')?fixture.captions:options.tamper?new Uint8Array(fixture.bytes.length):fixture.bytes;return new Response(bytes,{status:200});},timeoutMs:30,...options.dependencies});return {access,calls,blobs,revoked};
 }
 test('[MOT-01] media map accepts mixed declared sources and rejects unsafe metadata with fixes',()=>{
  const m=clone();assert.deepEqual(validateMediaMap(m),[]);m.assets[0].source={type:'attachment',id:10};m.assets[0].captions.source={type:'attachment',id:20};assert.deepEqual(validateMediaMap(m),[]);

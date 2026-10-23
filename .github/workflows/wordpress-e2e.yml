@@ -1384,6 +1384,7 @@ jobs:
       - name: Verify learner presets in selected browser
         env:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
+          CIM_MOTION_DIAGNOSTICS: ${{ matrix.browser == 'webkit' && '1' || '0' }}
         run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs tests/e2e/diagram-capacity.spec.mjs --reporter=line
 
       - name: Prove multi-pane fixture browser mutation guards

@@ -1,59 +1,46 @@
-# MOT-07 investigation — diagnostics only
+# PR #104 revision: opt-in, external observations only
 
-Issue: [#103](https://github.com/johnwinstondarby/Code-in-Motion/issues/103).
-Base: main `ea2f442b830e0423925968e1a2af39153967bdd2`, version 1.0.1.
+Base remains main `ea2f442`. This is diagnostic/test infrastructure, **not a fix for #103**. Johann reaffirmed that Part B remains held until #103 is fixed and main is green. No merge, release, installation or version bump.
 
-## Disposition
+The [original candidate record](REVIEW-7d3913b.md) and its evidence are retained as history. Its unconditional source rewriting is superseded by this revision.
 
-This is **not a playback fix** and does not close #103. No cause is established. Part B remains held until a reviewed fix is merged and main has green post-merge CI. No merge, tag, release or install is proposed.
+## What actually failed on 7d3913b
 
-## Failed run
+Workflow 40006928485 / WebKit job 120597098737 failed at `MOT-02-original-address`, a **unit** mutation in `tests/motion-media.test.mjs`, before browser mutation probes. Both runner baselines had passed. The mutated run threw `CIM-PANE-MEDIA-UNAVAILABLE` from `motion-media.mjs:25` before reaching the intended Blob-URL assertion; the runner correctly rejected this as a crash rather than counting it as a caught mutation.
 
-[WebKit job 120250917715](https://github.com/johnwinstondarby/Code-in-Motion/actions/runs/39903761679/job/120250917715), attempt 1, failed MOT-07 at 1920×1080. After progress became `settled`, `ended || currentTime >= duration - 0.15` returned false. The log records expected true / received false, without numeric playhead values. No browser trace or screenshot artifact was uploaded. Those missing values cannot be recovered or inferred reliably.
+There is no rewrite-anchor exception, `Motion mutation baseline failed`, or `MOT-07_DIAGNOSTICS` failure line. Thus this failure is neither an observed MOT-07 recurrence nor evidence of a rewrite-anchor crash. The three retained lesson-test JSON records show successful final-frame checks. No causal inference about #103 follows from this unit failure.
 
-The retained installation artifact shows APT succeeded on attempt 1 in 35.939 seconds and browser installation in 3.389 seconds. Package cache was cold. The failed main tests have not been rerun.
+## Diagnostics now leave the module untouched
 
-## Package comparison
+- `CIM_MOTION_DIAGNOSTICS=1` is required. It is set only on the WebKit lesson-test step; other browsers receive `0`. No job-wide setting or mutation-step setting is added.
+- Removed all source rewriting, routing interception, internal debug hooks and native setter overrides, even in diagnostic mode.
+- Enabled diagnostics observe native media events and session notifications from outside. A session completion snapshot records the video state, including failures; the final assertion snapshot retains coordinator clock events. The bounded event history still reports dropped records.
+- Disabled mode installs no route, init script, collector or prototype change and reads only the original MOT-07 predicate. Unit tests and ordinary MOT-07 browser checks enforce this.
+- The final-frame predicate remains `ended || currentTime >= duration - 0.15`. No wait, deadline or retry is added. Enabled diagnostic I/O still follows the captured check.
+- Failure traces, screenshots and JSON upload remain in place. The CI scope comparison permits only the exact new lesson-step environment entry, while continuing to compare every other original workflow field and command.
 
-All 187 selected package versions and hashes match all three green PR #102 proof runs (workflow 39896899553, attempts 1–3). All 187 versions also match the last usable green main installation log: `7bba6c2`, workflow 39696385957, job 119567675749. This includes GStreamer and FFmpeg. The older main log records versions, not archive hashes; no old-main hash comparison is claimed. Immediate predecessor `3304428` timed out before tests.
+The external session snapshot can distinguish a playhead already short when session completion is announced from one that moves later. It cannot identify the exact internal final-frame promise boundary; this limitation is intentional, rather than rewriting the module under test.
 
-No selected package-version difference explains the failure. This does not prove identical process timing or every aspect of the runner environment.
+## Unit fixture timing, separate from playback
 
-## Reproduction
+The success-path media unit fixture used real asynchronous WebCrypto under a 30 ms artificial deadline. Holding the native digest response deterministically reproduces an unavailable error before the expected assertion. The CI log's generic catch does not expose the underlying rejection, so it does not prove exactly which operation consumed that run's time budget.
 
-Linux WebKit 2359, Playwright 1.63.0, Node 22.23.2, Ubuntu 24.04 on WSL2. Two workers, fixed planned repeats, no failed-case retries.
+The fixture now injects a deterministic SHA-256 adapter based on Node's `createHash`, avoiding native-worker scheduling in byte-verification unit cases. It still hashes the actual bytes and preserves the existing 30 ms deadline. Production hashing, browser WebCrypto, media size/fingerprint checks and timeout tests are unchanged. The mutation runner itself is unchanged: setup failures still do not count as caught mutations.
 
-Final review-harness repeats: **150 passed, zero skipped, 50 per viewport**, with all 150 JSON records retained locally and a complete check/resolution summary committed.
+## Tests first and subsequent edits
 
-Two preliminary 150-case loops passed. Those used temporary direct source instrumentation; a display label was inadvertently re-encoded in both the module and assertion, so they are not exact-UI comparisons. The final review harness preserves the original UTF-8 labels and instruments only Playwright's served response. Temporary production-file edits are removed; `src/` is byte-identical to main.
-
-Neither early completion nor a later rewind has been established. Session `settled` can also include bounded pane failures, so diagnostics retain the failure list rather than treating that status alone as successful media completion.
-
-## Candidate changes
-
-- A test-only helper injects logging at six unique source anchors, refusing changed or duplicate anchors. It records finalisation start/resolution, completion results, pause correction, native media events and seek writes. Event history is capped at 512 entries with a dropped count.
-- MOT-07 reads the same final-frame predicate immediately after the existing settled poll, together with session/clock/event data. Diagnostic file writing happens after the snapshot and cannot turn a failing snapshot into a pass. No tolerance, delay, timeout or retry changes.
-- Motion tests retain failure traces and screenshots. A WebKit-only `always()` upload retains test results. Failure diagnostics also appear in the job log.
-- A unit test protects injection anchors. Original CI test commands and installation steps stay unchanged.
-
-Production code, lessons, WordPress, version and release build inputs are unchanged. Published ZIPs and rollback kit remain untouched. Reassess/remove diagnostic instrumentation when the real fix is ready for review.
-
-## Test edits after investigation runs
-
-There is no product-fix red-run claim.
-
-1. Preliminary logging and attachments surrounded the unchanged final-frame predicate.
-2. A JSON reporter retained the second preliminary loop's body attachments; the first line-reporter loop did not retain those bodies.
-3. Direct source edits were replaced by test-scoped response instrumentation, with original UTF-8 labels restored.
-4. Trace/screenshot options initially failed collection inside a describe block. The retained setup log records this. Moving those worker options to file scope corrected setup; this was not a playback assertion failure.
-5. The final predicate and diagnostics now share one immediate browser snapshot. The tolerance remains 0.15 seconds, with no extra wait before reading the playhead.
-6. Added the anchor unit test and WebKit artifact upload.
+1. `2209529` commits three diagnostic regression tests before implementation. All three fail against that commit's old helper on pinned Node 22.23.2, with assertion failures. They require zero hooks in disabled mode, no rewriting/prototype override in enabled mode, and no artifact I/O for an ordinary final check.
+2. Replaced the old injection-anchor test because source rewriting was removed; the new assertions supersede that implementation-specific check rather than dropping coverage of the disabled path.
+3. `5f047de` commits the native-worker scheduling regression before the fixture change. It fails as an assertion on Node 22.23.2 while the native digest is deliberately held. The fixture-only SHA adapter makes it pass. This is not a product playback regression or a claim to reproduce #103.
+4. Added ordinary-browser checks that no collector exists and the media setter remains native. Added external session observation in opt-in mode only.
+5. Updated the frozen workflow comparison to assert and remove exactly the one new environment field before its existing whole-workflow equality check. No existing assertion, test command, timeout or mutation probe was removed or loosened.
 
 ## Verification
 
-- Node 20.20.2 verify: 1,077 passed, zero skipped, including existing mutation runners.
-- Node 22.23.2 verify: **1,077 passed, zero skipped**, including existing mutation runners.
-- Diagnostic harness smoke: three passed, one per viewport.
-- Exact-head CI: PENDING.
+- Node 20.20.2 verify: **1,080 passed, zero skipped**.
+- Node 22.23.2 verify: **1,080 passed, zero skipped**.
+- Opt-in external-observer WebKit MOT-07: **three passed**, one per viewport.
+- Default-off WebKit Motion browser mutation runner: **both baselines passed, all 30 unit/browser probes caught as assertions**. Its eight ordinary browser tests include the unchanged-source/native-setter checks.
+- CI on the revised final head: pending. No failed-main job rerun or test retry is requested.
 
-A green diagnostic head proves evidence collection can run, not that playback is fixed. If CI reproduces the failure, compare final-frame resolution, subsequent seek/native events, completion result and assertion snapshot. Then add a deterministic red regression, the smallest fix and a mutation restoring the identified race. The three-consecutive-green proof applies to that eventual fix head.
+The earlier 150-case loop remains historical non-reproduction evidence with that candidate's instrumentation. It does not substitute for testing this revised observer or the eventual product fix. All application/release inputs remain unchanged; the two candidate ZIP hashes and the rollback kit remain the same as the original diagnostic candidate.

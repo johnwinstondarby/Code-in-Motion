@@ -1,0 +1,12 @@
+
+Running 8 tests using 1 worker
+
+[1/8] tests/e2e/motion-pane.spec.mjs:37:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[2/8] tests/e2e/motion-pane.spec.mjs:43:2 › 1366x768 › [MOT-08] reduced motion shows still and alternative with no automatic play
+[3/8] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+[4/8] tests/e2e/motion-pane.spec.mjs:45:2 › 1366x768 › [MOT-16] preparation holds peers and a jump cancels without waiting
+[5/8] tests/e2e/motion-pane.spec.mjs:51:2 › 1366x768 › [MOT-17] navigation cancels preparation and late results cannot replace the destination
+[6/8] tests/e2e/motion-pane.spec.mjs:55:2 › 1366x768 › [MOT-18] native playback cannot override a paused shared clock
+[7/8] tests/e2e/motion-pane.spec.mjs:58:2 › 1366x768 › [MOT-21] disposing Motion revokes its verified URLs and removes its DOM
+[8/8] tests/e2e/motion-pane.spec.mjs:61:2 › 1366x768 › [MOT-10] buffering holds every pane and never means completion
+  8 passed (11.7s)

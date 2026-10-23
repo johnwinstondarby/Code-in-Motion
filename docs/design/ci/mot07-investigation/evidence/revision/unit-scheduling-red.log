@@ -1,0 +1,38 @@
+TAP version 13
+# Subtest: [MOT-02] unit byte verification does not depend on native crypto worker scheduling
+not ok 1 - [MOT-02] unit byte verification does not depend on native crypto worker scheduling
+  ---
+  duration_ms: 53.4181
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\motion-media.test.mjs:22:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Got unwanted rejection.
+    Actual message: "CIM-PANE-MEDIA-UNAVAILABLE: GUI recording unavailable. Check the declared file, permissions and fingerprint."
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+  error: 'CIM-PANE-MEDIA-UNAVAILABLE: GUI recording unavailable. Check the declared file, permissions and fingerprint.'
+  stack: |-
+    unavailable (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/src/multipane/motion-media.mjs:3:23)
+    Object.load (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/src/multipane/motion-media.mjs:25:16)
+    async waitForActual (node:assert:644:5)
+    async Function.doesNotReject (node:assert:787:33)
+    async TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/motion-media.test.mjs:25:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  operator: 'doesNotReject'
+  stack: |-
+    async TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/motion-media.test.mjs:25:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 134.1271
