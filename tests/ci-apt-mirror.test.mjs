@@ -22,6 +22,6 @@ test('invalid non-text source input is rejected without coercion',()=>{
 });
 
 test('indirect runner mirror list changes only the exact Azure URI, retaining priorities',()=>{
- const source='http://azure.archive.ubuntu.com/ubuntu/\tpriority:1\nhttps://archive.ubuntu.com/ubuntu/\tpriority:2\nhttps://security.ubuntu.com/ubuntu/\tpriority:3\n# http://azure.archive.ubuntu.com/ubuntu/\nhttps://azure.archive.ubuntu.com.evil.invalid/ubuntu/\n';
+ const source='http://azure.archive.ubuntu.com/ubuntu/\tpriority:1\nhttps://archive.ubuntu.com/ubuntu/\tpriority:2\nhttps://security.ubuntu.com/ubuntu/\tpriority:3 # http://azure.archive.ubuntu.com/ubuntu/\n# http://azure.archive.ubuntu.com/ubuntu/\nhttps://azure.archive.ubuntu.com.evil.invalid/ubuntu/\n';
  assert.equal(rewriteMirrorList(source),source.replace('http://azure.archive.ubuntu.com/ubuntu/\tpriority:1','https://archive.ubuntu.com/ubuntu/\tpriority:1'));
 });
