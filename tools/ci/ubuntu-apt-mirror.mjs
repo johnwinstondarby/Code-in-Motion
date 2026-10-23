@@ -10,16 +10,21 @@ export function rewriteSources(source) {
   return content.replace(/https?:\/\/azure\.archive\.ubuntu\.com\/ubuntu(?=\/?(?:[ \t]|$))/g,'https://archive.ubuntu.com/ubuntu')+comment;
  });
 }
-export function rewriteMirrorList(source){return source;}
+export function rewriteMirrorList(source){
+ if(typeof source!=='string')throw new TypeError('APT mirror list must be a string.');
+ return source.replace(/^[ \t]*https?:\/\/[^\r\n]*/gm,line=>line.replace(/https?:\/\/azure\.archive\.ubuntu\.com\/ubuntu(?=\/?(?:[ \t]|$))/g,'https://archive.ubuntu.com/ubuntu'));
+}
 async function main(){
  if(process.argv.length!==2)throw new Error('This CI helper takes no path or URL arguments.');
- let found=0,changed=0;
+ let found=0,changed=0,indirect=false;
  for(const file of ['/etc/apt/sources.list.d/ubuntu.sources','/etc/apt/sources.list']){
   let before;try{before=await readFile(file,'utf8');}catch(error){if(error.code==='ENOENT')continue;throw error;}
-  found++;const after=rewriteSources(before);
+  found++;if(/^[ \t]*(?:URIs:|deb(?:-src)?[ \t])[^#\r\n]*mirror\+file:\/etc\/apt\/apt-mirrors\.txt(?=[ \t\r\n]|$)/m.test(before))indirect=true;
+  const after=rewriteSources(before);
   if(after!==before){await writeFile(file,after);changed++;}
  }
+ if(indirect){const file='/etc/apt/apt-mirrors.txt',before=await readFile(file,'utf8'),after=rewriteMirrorList(before);if(after!==before){await writeFile(file,after);changed++;}}
  if(!found)throw new Error('No standard Ubuntu APT source file found; refusing to guess another location.');
- console.log(`CI Ubuntu archive: ${changed} source file(s) changed; suites, components and signature settings preserved.`);
+ console.log(`CI Ubuntu archive: ${changed} source/mirror file(s) changed; suites, components and signature settings preserved.`);
 }
 if(process.argv[1]&&pathToFileURL(resolve(process.argv[1])).href===import.meta.url)main().catch(error=>{console.error(error.message);process.exitCode=1;});
