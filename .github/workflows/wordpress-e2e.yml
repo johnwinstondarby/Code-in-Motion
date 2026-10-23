@@ -1231,7 +1231,9 @@ jobs:
         id: webkit-apt-cache-tests
         if: matrix.browser == 'webkit'
         timeout-minutes: 1
-        run: /usr/bin/python3 -I tools/ci/tests/test_webkit_apt_cache.py
+        run: |
+          /usr/bin/python3 -I tools/ci/tests/test_webkit_apt_cache.py
+          /usr/bin/python3 -I tools/ci/tests/check_apt_cache_mutations.py
 
       - name: Bound WebKit APT connections and package retries
         id: webkit-apt-network

@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: APT key binds exact pinned WebKit package list and runner image
+ok 1 - APT key binds exact pinned WebKit package list and runner image
+  ---
+  duration_ms: 14.8973
+  type: 'test'
+  ...
+# Subtest: APT cache never skips install, saves only after success, and verifies before dpkg
+ok 2 - APT cache never skips install, saves only after success, and verifies before dpkg
+  ---
+  duration_ms: 30.568
+  type: 'test'
+  ...
+# Subtest: cache save requires a nonempty current-job pre-install verification record
+ok 3 - cache save requires a nonempty current-job pre-install verification record
+  ---
+  duration_ms: 0.4155
+  type: 'test'
+  ...
+# Subtest: WebKit cache identity is exact and rejects missing/ambiguous components
+ok 4 - WebKit cache identity is exact and rejects missing/ambiguous components
+  ---
+  duration_ms: 0.7034
+  type: 'test'
+  ...
+# Subtest: a successful attempt reports its phase, result and elapsed time without a retry
+ok 5 - a successful attempt reports its phase, result and elapsed time without a retry
+  ---
+  duration_ms: 41.8194
+  type: 'test'
+  ...
+# Subtest: a download failure retains its exit code and a second attempt is labelled once
+ok 6 - a download failure retains its exit code and a second attempt is labelled once
+  ---
+  duration_ms: 39.9021
+  type: 'test'
+  ...
+# Subtest: a stalled HTTP download is killed within each bound, retries once, then fails
+ok 7 - a stalled HTTP download is killed within each bound, retries once, then fails
+  ---
+  duration_ms: 6618.1288
+  type: 'test'
+  ...
+# Subtest: attempt count, deadlines and cancellation cannot become an unbounded retry
+ok 8 - attempt count, deadlines and cancellation cannot become an unbounded retry
+  ---
+  duration_ms: 0.5599
+  type: 'test'
+  ...
+# Subtest: only WebKit install steps get retries/cache; all other jobs and test commands stay frozen
+ok 9 - only WebKit install steps get retries/cache; all other jobs and test commands stay frozen
+  ---
+  duration_ms: 42.7908
+  type: 'test'
+  ...
+# Subtest: only WebKit gets the exact APT connection limits before either dependency attempt
+ok 10 - only WebKit gets the exact APT connection limits before either dependency attempt
+  ---
+  duration_ms: 15.0389
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6889.837
