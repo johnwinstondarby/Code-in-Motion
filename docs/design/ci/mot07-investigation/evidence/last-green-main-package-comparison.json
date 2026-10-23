@@ -1,0 +1,76 @@
+{
+  "baseline": "7bba6c2 / run 39696385957",
+  "compared": 187,
+  "missing_in_old_log": [],
+  "differences": {},
+  "media": {
+    "libavutil58": {
+      "old": "7:6.1.1-3ubuntu5",
+      "new": "7:6.1.1-3ubuntu5"
+    },
+    "libswresample4": {
+      "old": "7:6.1.1-3ubuntu5",
+      "new": "7:6.1.1-3ubuntu5"
+    },
+    "libavcodec60": {
+      "old": "7:6.1.1-3ubuntu5",
+      "new": "7:6.1.1-3ubuntu5"
+    },
+    "libavformat60": {
+      "old": "7:6.1.1-3ubuntu5",
+      "new": "7:6.1.1-3ubuntu5"
+    },
+    "libswscale7": {
+      "old": "7:6.1.1-3ubuntu5",
+      "new": "7:6.1.1-3ubuntu5"
+    },
+    "libavfilter9": {
+      "old": "7:6.1.1-3ubuntu5",
+      "new": "7:6.1.1-3ubuntu5"
+    },
+    "libgstreamer-plugins-base1.0-0": {
+      "old": "1.24.2-1ubuntu0.5",
+      "new": "1.24.2-1ubuntu0.5"
+    },
+    "gstreamer1.0-libav": {
+      "old": "1.24.1-1build1",
+      "new": "1.24.1-1build1"
+    },
+    "gstreamer1.0-plugins-base": {
+      "old": "1.24.2-1ubuntu0.5",
+      "new": "1.24.2-1ubuntu0.5"
+    },
+    "libavc1394-0": {
+      "old": "0.5.4-5build3",
+      "new": "0.5.4-5build3"
+    },
+    "libgstreamer-plugins-good1.0-0": {
+      "old": "1.24.2-1ubuntu1.8",
+      "new": "1.24.2-1ubuntu1.8"
+    },
+    "gstreamer1.0-plugins-good": {
+      "old": "1.24.2-1ubuntu1.8",
+      "new": "1.24.2-1ubuntu1.8"
+    },
+    "libavif16": {
+      "old": "1.0.4-1ubuntu3",
+      "new": "1.0.4-1ubuntu3"
+    },
+    "libavtp0": {
+      "old": "0.2.0-1build1",
+      "new": "0.2.0-1build1"
+    },
+    "libgstreamer-gl1.0-0": {
+      "old": "1.24.2-1ubuntu0.5",
+      "new": "1.24.2-1ubuntu0.5"
+    },
+    "libgstreamer-plugins-bad1.0-0": {
+      "old": "1.24.2-1ubuntu4",
+      "new": "1.24.2-1ubuntu4"
+    },
+    "gstreamer1.0-plugins-bad": {
+      "old": "1.24.2-1ubuntu4",
+      "new": "1.24.2-1ubuntu4"
+    }
+  }
+}

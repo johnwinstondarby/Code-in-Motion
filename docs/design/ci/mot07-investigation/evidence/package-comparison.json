@@ -1,0 +1,20 @@
+[
+  {
+    "record": "workflow 39896899553 attempt 1: apt-preinstall-verification.json",
+    "main_count": 187,
+    "reference_count": 187,
+    "differences": {}
+  },
+  {
+    "record": "workflow 39896899553 attempt 2: apt-preinstall-verification.json",
+    "main_count": 187,
+    "reference_count": 187,
+    "differences": {}
+  },
+  {
+    "record": "workflow 39896899553 attempt 3: apt-preinstall-verification.json",
+    "main_count": 187,
+    "reference_count": 187,
+    "differences": {}
+  }
+]
