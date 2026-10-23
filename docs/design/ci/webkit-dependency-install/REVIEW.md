@@ -1,24 +1,41 @@
-# CI repair review packet
+# PR 102: bounded WebKit installation review packet
 
-This is an infrastructure draft from main `3304428`, not Part B. The original merge remains at 31 successful checks, one cancelled WebKit check and the failed dependent summary after two attempts. No test ran in either WebKit attempt: dependency downloads exhausted the 30-minute job budget. Logs and GitHub's explicit timeout annotation are retained.
+Base main: `3304428`. Infrastructure only, not Part B. Draft pending independent review and Johann's merge approval. Version remains 1.0.1; no release, tag or installation.
 
-## Change and proof
+## Resulting behavior
 
-- Only WebKit receives a pre-install APT-source helper. It substitutes the exact observed Azure Ubuntu archive root with Ubuntu's HTTPS main archive in standard source files. Suites, components, Signed-By keys, comments and unrelated hosts remain unchanged. The original Playwright install invocation follows it.
-- No OS/Node/browser version, job deadline, test timeout, assertion, mutation command, required gate or failure policy changes.
-- Four trust-boundary unit tests preceded implementation. The inert stub produces three assertion failures and one pass; the implementation passes all four. **No test was edited after its red run.**
-- The first local full-verify attempts stopped at the existing workflow parser because the edited YAML checkout had CRLF endings. The checkout was normalized to the canonical Git LF bytes; no parser or assertion was changed. Both initial logs are retained. This was local setup, not evidence of a CI or product failure.
-- Full verify passes on Node 20.20.2 and 22.23.2: **1,070 tests each, zero skips**. Existing mutation runners inside verify pass. The v1 differential is **41 identical, zero differences**.
-- Two clean builds on pinned Node 22.23.2 match main's artifacts exactly: plugin 99 files; authoring candidate 128 files. See builds.json and the four build logs. Source build commit is `5f9e77d`; later commits add review records only.
+- WebKit Ubuntu dependencies: first attempt and one conditional retry, each with an 8-minute GitHub limit. Browser archive: first attempt and one conditional retry, each with a 5-minute limit. Only the first attempts continue on error. The second failure stops the job.
+- The single-attempt helper starts the pinned local Playwright command and kills its process group at 470/290 seconds, with up to five seconds for cleanup. This leaves margin within each outer step deadline. Logs and JSON records name the phase, attempt, result and elapsed time. Dependencies run under sudo so privileged descendants can be terminated; browser download/cache stays with the runner user.
+- Exact cache key: Playwright 1.63.0 + webkit + runner OS/architecture + ImageOS/ImageVersion. Cache only `~/.cache/ms-playwright`, with no partial restore keys. An exact hit skips both browser-download steps entirely; dependencies still install. Pinned cache action commit is recorded in the workflow.
+- No mirror rewrite remains. The old mirror-only run timed out during APT and reported zero files changed. Its correction for the runner's indirect mirror list was tested but not demonstrated beneficial. Diagnostic split head ccf4ccd succeeded on stock sources (APT 26 s; browser 5 s), without retry. We remove the unproven helper/tests rather than claim it fixed the timeout. Retained historical red/green logs describe experiments, not current coverage.
+- Chromium/Firefox install commands and all existing test commands, deadlines, signature checks, required gates and job limits are unchanged. A unit test compares the entire normalized workflow against the base. No test step is retried.
 
-Plugin SHA-256: `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a`
+## Test-first record and edits after red
 
-Authoring SHA-256: `b84bfc2164fe56274033ca6bb618a000e0ae3d0bf61876ece13a87a90bcdc1cc`
+| Commit / experiment | Record and later edits |
+|---|---|
+| Original mirror tests | Historical red/green retained. Helper and all five mirror tests are removed from final scope because benefit was not proven. |
+| 2a42062 tests + inert stubs; 5d1e765 red | Six tests fail meaningfully before split implementation 9922fb2. Two deadline-margin assertions were added in the implementation commit: strengthening beyond the original red record, not covered by that first failure. No assertion was removed. |
+| 98cf095 / f697618 indirect-mirror red | Fifth mirror test fails before 5ee8fa0. Inline-comment case added in 3605417, recorded failing in 09c3a34, fixed in ccf4ccd. These are historical experiments; mirror code is removed. |
+| 97e4d1c remove-mirror contract test | Workflow assertion deliberately changed from requiring the rewrite only on APT retry to forbidding it. `no-mirror-red.log` fails before 9ee1b3f removes the helper/tests. The first edit missed the differently indented retry invocation; both full verifies caught it (retained incomplete-removal logs). e6398b4 removes that remaining invocation, without changing tests. This is a scope correction, not merely a strengthening. Other five split tests are unchanged. |
 
-No source under src/, wordpress/, authoring/, experiences/, schemas/ or contracts/ changed. Package, lock, plugin header and readme metadata are unchanged. The separate CI helper is not a dependency of either artifact. The published rollback ZIP, page 3227 capture and rollback kit match their existing full hashes (rollback.json).
+The six retained tests cover exact cache identity; success/elapsed logging; failed-command exit propagation and retry labeling; bounded stalled HTTP subprocesses with forced cleanup; attempt/deadline/cancellation limits; and whole-workflow isolation. Existing mutation suites run inside verify. Historical local CRLF parser failures are retained; normalization restored canonical LF bytes without changing the parser or its assertions.
 
-## CI and remaining gate
+## Full-duration failure proof
 
-Exact final-head CI and all three existing browser/mutation jobs must pass; their status is tracked in this draft PR. No independent local browser rerun is claimed for this infrastructure-only change. The CI WebKit install is the direct experiment for this proposed remedy; until it passes, this is not called fixed. The same 30-minute job limit remains in force, so continued slow installs still fail visibly.
+`stall-full.json` and `.log` run the actual pinned `npx --no-install playwright install --force webkit` against an accepting loopback HTTP server that intentionally never responds. The production browser timeout and cleanup budgets are used unchanged, in an isolated temporary browser cache. Attempts take **295,034 ms** and **295,023 ms**, both below the 300,000 ms step limit. Both return timeout/124; exactly one retry is logged and the second failure is terminal. Two requests reached the server. This is an intentional install-timeout demonstration, not a failed lesson test or a mutation catch. Quick proof is retained separately.
 
-Review and Johann's merge approval remain required. A successful draft run does not retroactively turn the historical main check green. After an approved CI repair merge, its post-merge CI must be green before Part B starts. The Part B design draft is held outside the repository. Johann's 1.1.0-dev and pack-local-only 1.1.0 decisions are retained for that work; attachments are deferred to 1.2. No release or installation is performed here.
+## Verification and artifacts
+
+Full verification passes on Node 20.20.2 and 22.23.2: **1,072 tests each, zero skipped**, including existing mutation runners. Final logs accompany this packet. The v1 comparison remains **41 identical, zero differences**. Two clean builds at ccf4ccd on Node 22.23.2 match one another and the base; subsequent changes affect only CI helpers/tests/documents outside both fixed build lists.
+
+- Plugin (99 files): `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a`
+- Authoring candidate (128 files): `b84bfc2164fe56274033ca6bb618a000e0ae3d0bf61876ece13a87a90bcdc1cc`
+
+No src/, wordpress/, authoring/, experiences/, schemas/, contracts/, package or lock metadata changed. The published 1.0.1 ZIP, page 3227 capture and rollback kit remain unchanged (rollback.json).
+
+## Exact-head CI gate
+
+After committing this packet, freeze the PR head. Require all ordinary checks and **three consecutive complete successful WebKit jobs on that exact head**. Record per-step timings, retry outcomes and cache hit/skip evidence in PR #102 and an external local proof kit; do not change the commit merely to name its own CI results. The diagnostic run on ccf4ccd does not count toward final-head proof. Do not rerun a failing test as an automatic recovery; diagnose it.
+
+Main's historical run 39859585673 exhausted 30 minutes in APT on both attempts, before any CiM test. The dependent summary failed. A successful PR does not change that historical result. Part B stays held until approved merge and green post-merge CI. Future decisions remain 1.1.0-dev, pack-local media for 1.1.0, attachments in 1.2. No feature work is started.
