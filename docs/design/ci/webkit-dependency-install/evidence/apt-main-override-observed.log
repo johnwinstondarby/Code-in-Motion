@@ -1,0 +1,814 @@
+﻿2026-10-23T01:32:29.9321875Z Current runner version: '2.338.0'
+2026-10-23T01:32:29.9350188Z ##[group]Runner Image Provisioner
+2026-10-23T01:32:29.9351008Z Hosted Compute Agent
+2026-10-23T01:32:29.9351494Z Version: 20261012.601
+2026-10-23T01:32:29.9352176Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-23T01:32:29.9352807Z Build Date: 2026-10-12T17:48:21Z
+2026-10-23T01:32:29.9353493Z Worker ID: {92a6d378-8ad6-4c0c-89b4-b473e955769c}
+2026-10-23T01:32:29.9354110Z Region: westus3
+2026-10-23T01:32:29.9354570Z Cloud: Azure
+2026-10-23T01:32:29.9355100Z ##[endgroup]
+2026-10-23T01:32:29.9356677Z ##[group]Operating System
+2026-10-23T01:32:29.9357342Z Ubuntu
+2026-10-23T01:32:29.9357807Z 24.04.5
+2026-10-23T01:32:29.9358250Z LTS
+2026-10-23T01:32:29.9358750Z ##[endgroup]
+2026-10-23T01:32:29.9359318Z ##[group]Runner Image
+2026-10-23T01:32:29.9359935Z Image: ubuntu-24.04
+2026-10-23T01:32:29.9360441Z Version: 20261012.334.1
+2026-10-23T01:32:29.9361628Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-23T01:32:29.9363016Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-23T01:32:29.9363978Z ##[endgroup]
+2026-10-23T01:32:29.9364946Z ##[group]GITHUB_TOKEN Permissions
+2026-10-23T01:32:29.9367102Z Contents: read
+2026-10-23T01:32:29.9367484Z Metadata: read
+2026-10-23T01:32:29.9367855Z ##[endgroup]
+2026-10-23T01:32:29.9369466Z Secret source: Actions
+2026-10-23T01:32:29.9370049Z Cache mode: write
+2026-10-23T01:32:29.9370551Z Prepare workflow directory
+2026-10-23T01:32:29.9586287Z Prepare all required actions
+2026-10-23T01:32:29.9618729Z Getting action download info
+2026-10-23T01:32:30.2816284Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-23T01:32:30.4102901Z Download action repository 'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020' (SHA:820762786026740c76f36085b0efc47a31fe5020)
+2026-10-23T01:32:30.5823604Z Download action repository 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+2026-10-23T01:32:30.8145844Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-10-23T01:32:30.9682209Z Complete job name: Browser webkit
+2026-10-23T01:32:31.0325334Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-23T01:32:31.0325844Z with:
+2026-10-23T01:32:31.0326327Z   repository: johnwinstondarby/Code-in-Motion
+2026-10-23T01:32:31.0328470Z   token: ***
+2026-10-23T01:32:31.0328692Z   ssh-strict: true
+2026-10-23T01:32:31.0328923Z   ssh-user: git
+2026-10-23T01:32:31.0329160Z   persist-credentials: true
+2026-10-23T01:32:31.0329415Z   clean: true
+2026-10-23T01:32:31.0329650Z   sparse-checkout-cone-mode: true
+2026-10-23T01:32:31.0329926Z   fetch-depth: 1
+2026-10-23T01:32:31.0330158Z   fetch-tags: false
+2026-10-23T01:32:31.0330396Z   show-progress: true
+2026-10-23T01:32:31.0330663Z   lfs: false
+2026-10-23T01:32:31.0330891Z   submodules: false
+2026-10-23T01:32:31.0331133Z   set-safe-directory: true
+2026-10-23T01:32:31.0331401Z   allow-unsafe-pr-checkout: false
+2026-10-23T01:32:31.0331757Z ##[endgroup]
+2026-10-23T01:32:31.1011778Z Syncing repository: johnwinstondarby/Code-in-Motion
+2026-10-23T01:32:31.1013532Z ##[group]Getting Git version info
+2026-10-23T01:32:31.1014231Z Working directory is '/home/runner/work/Code-in-Motion/Code-in-Motion'
+2026-10-23T01:32:31.1015264Z [command]/usr/bin/git version
+2026-10-23T01:32:31.1065414Z git version 2.55.0
+2026-10-23T01:32:31.1079927Z ##[endgroup]
+2026-10-23T01:32:31.1091238Z Temporarily overriding HOME='/home/runner/work/_temp/dac5b684-499c-4297-92a5-c2b0fa4e7fd6' before making global git config changes
+2026-10-23T01:32:31.1104912Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T01:32:31.1105600Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Code-in-Motion/Code-in-Motion
+2026-10-23T01:32:31.1148124Z Deleting the contents of '/home/runner/work/Code-in-Motion/Code-in-Motion'
+2026-10-23T01:32:31.1150460Z ##[group]Determining repository object format
+2026-10-23T01:32:31.1151775Z ##[endgroup]
+2026-10-23T01:32:31.1152507Z ##[group]Initializing the repository
+2026-10-23T01:32:31.1156309Z [command]/usr/bin/git init /home/runner/work/Code-in-Motion/Code-in-Motion
+2026-10-23T01:32:31.1271817Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-23T01:32:31.1272887Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-23T01:32:31.1273759Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-23T01:32:31.1274301Z hint: call:
+2026-10-23T01:32:31.1274523Z hint:
+2026-10-23T01:32:31.1274825Z hint: 	git config --global init.defaultBranch <name>
+2026-10-23T01:32:31.1275293Z hint:
+2026-10-23T01:32:31.1275793Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-23T01:32:31.1276861Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-23T01:32:31.1277505Z hint:
+2026-10-23T01:32:31.1277859Z hint: 	git branch -m <name>
+2026-10-23T01:32:31.1278257Z hint:
+2026-10-23T01:32:31.1278780Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-23T01:32:31.1279931Z Initialized empty Git repository in /home/runner/work/Code-in-Motion/Code-in-Motion/.git/
+2026-10-23T01:32:31.1285228Z [command]/usr/bin/git remote add origin https://github.com/johnwinstondarby/Code-in-Motion
+2026-10-23T01:32:31.1338197Z ##[endgroup]
+2026-10-23T01:32:31.1338793Z ##[group]Disabling automatic garbage collection
+2026-10-23T01:32:31.1341809Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-23T01:32:31.1374885Z ##[endgroup]
+2026-10-23T01:32:31.1375385Z ##[group]Setting up auth
+2026-10-23T01:32:31.1381384Z Removing SSH command configuration
+2026-10-23T01:32:31.1389527Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T01:32:31.1421855Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T01:32:31.1722332Z Removing HTTP extra header
+2026-10-23T01:32:31.1727741Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T01:32:31.1757588Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T01:32:31.1929549Z Removing includeIf entries pointing to credentials config files
+2026-10-23T01:32:31.1933257Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T01:32:31.1962153Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T01:32:31.2148757Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-e85bb282-e12d-4a21-a566-11dc31b58f00.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-23T01:32:31.2182528Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path /home/runner/work/_temp/git-credentials-e85bb282-e12d-4a21-a566-11dc31b58f00.config
+2026-10-23T01:32:31.2210813Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-e85bb282-e12d-4a21-a566-11dc31b58f00.config
+2026-10-23T01:32:31.2241450Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-e85bb282-e12d-4a21-a566-11dc31b58f00.config
+2026-10-23T01:32:31.2269522Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-e85bb282-e12d-4a21-a566-11dc31b58f00.config
+2026-10-23T01:32:31.2297008Z ##[endgroup]
+2026-10-23T01:32:31.2297430Z ##[group]Fetching the repository
+2026-10-23T01:32:31.2301365Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +f33784dc757b9bbcc241b474489e18c32290aee8:refs/remotes/pull/102/merge
+2026-10-23T01:32:32.9283212Z From https://github.com/johnwinstondarby/Code-in-Motion
+2026-10-23T01:32:32.9284507Z  * [new ref]         f33784dc757b9bbcc241b474489e18c32290aee8 -> pull/102/merge
+2026-10-23T01:32:32.9287486Z ##[endgroup]
+2026-10-23T01:32:32.9292053Z ##[group]Determining the checkout info
+2026-10-23T01:32:32.9292837Z ##[endgroup]
+2026-10-23T01:32:32.9293278Z [command]/usr/bin/git sparse-checkout disable
+2026-10-23T01:32:32.9339872Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-23T01:32:32.9367843Z ##[group]Checking out the ref
+2026-10-23T01:32:32.9370703Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/102/merge
+2026-10-23T01:32:33.0932222Z Note: switching to 'refs/remotes/pull/102/merge'.
+2026-10-23T01:32:33.0932830Z 
+2026-10-23T01:32:33.0933231Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-23T01:32:33.0934197Z changes and commit them, and you can discard any commits you make in this
+2026-10-23T01:32:33.0935374Z state without impacting any branches by switching back to a branch.
+2026-10-23T01:32:33.0936253Z 
+2026-10-23T01:32:33.0936844Z If you want to create a new branch to retain commits you create, you may
+2026-10-23T01:32:33.0937895Z do so (now or later) by using -c with the switch command. Example:
+2026-10-23T01:32:33.0938408Z 
+2026-10-23T01:32:33.0938566Z   git switch -c <new-branch-name>
+2026-10-23T01:32:33.0938891Z 
+2026-10-23T01:32:33.0939036Z Or undo this operation with:
+2026-10-23T01:32:33.0939322Z 
+2026-10-23T01:32:33.0939438Z   git switch -
+2026-10-23T01:32:33.0939655Z 
+2026-10-23T01:32:33.0940041Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-23T01:32:33.0940725Z 
+2026-10-23T01:32:33.0941459Z HEAD is now at f33784d Merge 6bdead39e20503fb7e7607b01e81297bb7a0f15d into 33044288aea307b7cdfe7b959d87310879a36bbc
+2026-10-23T01:32:33.0947024Z ##[endgroup]
+2026-10-23T01:32:33.0989638Z [command]/usr/bin/git log -1 --format=%H
+2026-10-23T01:32:33.1016457Z f33784dc757b9bbcc241b474489e18c32290aee8
+2026-10-23T01:32:33.1222508Z ##[group]Run echo "CIM_R20_CONFIG=r20-wp-env.json" >> "${GITHUB_ENV}"
+2026-10-23T01:32:33.1223511Z [36;1mecho "CIM_R20_CONFIG=r20-wp-env.json" >> "${GITHUB_ENV}"[0m
+2026-10-23T01:32:33.1224523Z [36;1mecho "CIM_R20_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r20-artifact" >> "${GITHUB_ENV}"[0m
+2026-10-23T01:32:33.1225494Z [36;1mecho "CIM_R20_BROWSER=webkit" >> "${GITHUB_ENV}"[0m
+2026-10-23T01:32:33.1226424Z [36;1mecho "CIM_R20_WORDPRESS=7.1.1" >> "${GITHUB_ENV}"[0m
+2026-10-23T01:32:33.1227121Z [36;1mecho "CIM_R20_PHP=8.5" >> "${GITHUB_ENV}"[0m
+2026-10-23T01:32:33.1457673Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T01:32:33.1458448Z ##[endgroup]
+2026-10-23T01:32:33.1675909Z ##[group]Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+2026-10-23T01:32:33.1676824Z with:
+2026-10-23T01:32:33.1677125Z   node-version-file: .nvmrc
+2026-10-23T01:32:33.1677549Z   package-manager-cache: false
+2026-10-23T01:32:33.1677973Z   check-latest: false
+2026-10-23T01:32:33.1683406Z   token: ***
+2026-10-23T01:32:33.1683692Z env:
+2026-10-23T01:32:33.1683999Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:32:33.1684601Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:32:33.1685242Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:32:33.1685622Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:32:33.1686123Z   CIM_R20_PHP: 8.5
+2026-10-23T01:32:33.1686449Z ##[endgroup]
+2026-10-23T01:32:33.2518915Z Node version file is not JSON file
+2026-10-23T01:32:33.2519833Z Resolved .nvmrc as 22.23.2
+2026-10-23T01:32:33.2531370Z Attempting to download 22.23.2...
+2026-10-23T01:32:34.3248616Z Acquiring 22.23.2 - x64 from https://github.com/actions/node-versions/releases/download/22.23.2-30508424155/node-22.23.2-linux-x64.tar.gz
+2026-10-23T01:32:34.8158098Z Extracting ...
+2026-10-23T01:32:34.8243033Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/88045c73-61db-4724-9cfe-5f9ff71e4f49 -f /home/runner/work/_temp/fe0651ce-fe2a-41c6-80f8-f0edcc64e9ec
+2026-10-23T01:32:35.7354211Z Adding to the cache ...
+2026-10-23T01:32:37.5210179Z ##[group]Environment details
+2026-10-23T01:32:37.6740750Z node: v22.23.2
+2026-10-23T01:32:37.6741056Z npm: 10.9.8
+2026-10-23T01:32:37.6741261Z yarn: 1.22.22
+2026-10-23T01:32:37.6741853Z ##[endgroup]
+2026-10-23T01:32:37.6910726Z ##[group]Run npm ci --ignore-scripts --no-audit --no-fund
+2026-10-23T01:32:37.6911023Z [36;1mnpm ci --ignore-scripts --no-audit --no-fund[0m
+2026-10-23T01:32:37.6966411Z shell: /usr/bin/bash -e {0}
+2026-10-23T01:32:37.6966580Z env:
+2026-10-23T01:32:37.6966708Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:32:37.6966936Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:32:37.6967134Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:32:37.6967267Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:32:37.6967398Z   CIM_R20_PHP: 8.5
+2026-10-23T01:32:37.6967517Z ##[endgroup]
+2026-10-23T01:32:39.4370164Z npm warn deprecated @octokit/webhooks-types@7.6.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2026-10-23T01:32:40.1294304Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-10-23T01:32:41.9149414Z 
+2026-10-23T01:32:41.9150047Z added 393 packages in 4s
+2026-10-23T01:32:41.9675192Z ##[group]Run set -euo pipefail
+2026-10-23T01:32:41.9675423Z [36;1mset -euo pipefail[0m
+2026-10-23T01:32:41.9675567Z [36;1mnpm run build:wordpress[0m
+2026-10-23T01:32:41.9675838Z [36;1mVERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"[0m
+2026-10-23T01:32:41.9676330Z [36;1mecho "CIM_PLUGIN_VERSION=${VERSION}" >> "${GITHUB_ENV}"[0m
+2026-10-23T01:32:41.9728611Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T01:32:41.9728818Z env:
+2026-10-23T01:32:41.9728954Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:32:41.9729171Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:32:41.9729362Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:32:41.9729515Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:32:41.9730036Z   CIM_R20_PHP: 8.5
+2026-10-23T01:32:41.9730155Z ##[endgroup]
+2026-10-23T01:32:42.0399441Z 
+2026-10-23T01:32:42.0400348Z > code-in-motion@1.0.1 build:wordpress
+2026-10-23T01:32:42.0400894Z > node tools/build-wordpress-release.mjs
+2026-10-23T01:32:42.0401112Z 
+2026-10-23T01:32:42.6592192Z PASS: R13 WordPress release build (99 staged file(s), Node 22.23.2, code-in-motion-1.0.1.zip, SHA-256 d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a)
+2026-10-23T01:32:42.6902111Z ##[group]Run set -euo pipefail
+2026-10-23T01:32:42.6902326Z [36;1mset -euo pipefail[0m
+2026-10-23T01:32:42.6902503Z [36;1mZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"[0m
+2026-10-23T01:32:42.6902691Z [36;1m[0m
+2026-10-23T01:32:42.6902817Z [36;1mmkdir -p "${CIM_R20_ARTIFACT_DIR}"[0m
+2026-10-23T01:32:42.6903017Z [36;1mcp "dist/${ZIP_NAME}" "${CIM_R20_ARTIFACT_DIR}/${ZIP_NAME}"[0m
+2026-10-23T01:32:42.6903271Z [36;1mcp "dist/${ZIP_NAME}.sha256" "${CIM_R20_ARTIFACT_DIR}/${ZIP_NAME}.sha256"[0m
+2026-10-23T01:32:42.6903546Z [36;1m(cd "${CIM_R20_ARTIFACT_DIR}" && sha256sum --check "${ZIP_NAME}.sha256")[0m
+2026-10-23T01:32:42.6903746Z [36;1m[0m
+2026-10-23T01:32:42.6903865Z [36;1mnode --input-type=module <<'NODE'[0m
+2026-10-23T01:32:42.6904049Z [36;1mimport { writeFile } from 'node:fs/promises';[0m
+2026-10-23T01:32:42.6904212Z [36;1m[0m
+2026-10-23T01:32:42.6904472Z [36;1mconst config = {[0m
+2026-10-23T01:32:42.6904676Z [36;1m  $schema: 'https://schemas.wp.org/trunk/wp-env.json',[0m
+2026-10-23T01:32:42.6904911Z [36;1m  core: `WordPress/WordPress#${process.env.CIM_R20_WORDPRESS}`,[0m
+2026-10-23T01:32:42.6905129Z [36;1m  phpVersion: process.env.CIM_R20_PHP,[0m
+2026-10-23T01:32:42.6905291Z [36;1m  plugins: [],[0m
+2026-10-23T01:32:42.6905416Z [36;1m  port: 8894,[0m
+2026-10-23T01:32:42.6905546Z [36;1m  testsEnvironment: false,[0m
+2026-10-23T01:32:42.6905684Z [36;1m  config: {[0m
+2026-10-23T01:32:42.6905807Z [36;1m    WP_DEBUG: true,[0m
+2026-10-23T01:32:42.6905941Z [36;1m    SCRIPT_DEBUG: true[0m
+2026-10-23T01:32:42.6906373Z [36;1m  },[0m
+2026-10-23T01:32:42.6906543Z [36;1m  mappings: {[0m
+2026-10-23T01:32:42.6906781Z [36;1m    'wp-content/r20-artifact': process.env.CIM_R20_ARTIFACT_DIR[0m
+2026-10-23T01:32:42.6906976Z [36;1m  }[0m
+2026-10-23T01:32:42.6907082Z [36;1m};[0m
+2026-10-23T01:32:42.6907185Z [36;1m[0m
+2026-10-23T01:32:42.6907393Z [36;1mawait writeFile(process.env.CIM_R20_CONFIG, `${JSON.stringify(config, null, 2)}\n`, 'utf8');[0m
+2026-10-23T01:32:42.6907649Z [36;1mNODE[0m
+2026-10-23T01:32:42.6961907Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T01:32:42.6962099Z env:
+2026-10-23T01:32:42.6962224Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:32:42.6962411Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:32:42.6962602Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:32:42.6962735Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:32:42.6962863Z   CIM_R20_PHP: 8.5
+2026-10-23T01:32:42.6962980Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-23T01:32:42.6963114Z ##[endgroup]
+2026-10-23T01:32:42.7146901Z code-in-motion-1.0.1.zip: OK
+2026-10-23T01:32:42.7430780Z ##[group]Run npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
+2026-10-23T01:32:42.7431451Z [36;1mnpm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0[0m
+2026-10-23T01:32:42.7504178Z shell: /usr/bin/bash -e {0}
+2026-10-23T01:32:42.7504486Z env:
+2026-10-23T01:32:42.7504691Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:32:42.7505007Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:32:42.7505327Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:32:42.7505547Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:32:42.7505760Z   CIM_R20_PHP: 8.5
+2026-10-23T01:32:42.7505962Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-23T01:32:42.7506344Z ##[endgroup]
+2026-10-23T01:32:44.4589224Z 
+2026-10-23T01:32:44.4590148Z added 3 packages in 2s
+2026-10-23T01:32:44.4732706Z ##[group]Run node tools/ci/webkit-install.mjs cache-key
+2026-10-23T01:32:44.4732956Z [36;1mnode tools/ci/webkit-install.mjs cache-key[0m
+2026-10-23T01:32:44.4785488Z shell: /usr/bin/bash -e {0}
+2026-10-23T01:32:44.4785643Z env:
+2026-10-23T01:32:44.4785769Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:32:44.4785960Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:32:44.4786569Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:32:44.4786722Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:32:44.4786856Z   CIM_R20_PHP: 8.5
+2026-10-23T01:32:44.4786979Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-23T01:32:44.4787108Z ##[endgroup]
+2026-10-23T01:32:44.5082393Z WebKit browser cache key: playwright-1.63.0-webkit-Linux-X64-ubuntu24-20261012.334.1
+2026-10-23T01:32:44.5179391Z ##[group]Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-10-23T01:32:44.5179604Z with:
+2026-10-23T01:32:44.5179727Z   path: ~/.cache/ms-playwright
+2026-10-23T01:32:44.5179925Z   key: playwright-1.63.0-webkit-Linux-X64-ubuntu24-20261012.334.1
+2026-10-23T01:32:44.5180133Z   enableCrossOsArchive: false
+2026-10-23T01:32:44.5180274Z   fail-on-cache-miss: false
+2026-10-23T01:32:44.5180409Z   lookup-only: false
+2026-10-23T01:32:44.5180529Z   save-always: false
+2026-10-23T01:32:44.5180641Z env:
+2026-10-23T01:32:44.5180760Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:32:44.5180943Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:32:44.5181262Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:32:44.5181392Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:32:44.5181519Z   CIM_R20_PHP: 8.5
+2026-10-23T01:32:44.5181636Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-23T01:32:44.5181766Z ##[endgroup]
+2026-10-23T01:32:44.8044288Z Cache hit for: playwright-1.63.0-webkit-Linux-X64-ubuntu24-20261012.334.1
+2026-10-23T01:32:46.0455890Z Received 33554432 of 101416421 (33.1%), 32.0 MBs/sec
+2026-10-23T01:32:46.4863082Z Received 101416421 of 101416421 (100.0%), 67.1 MBs/sec
+2026-10-23T01:32:46.4864164Z Cache Size: ~97 MB (101416421 B)
+2026-10-23T01:32:46.4912468Z [command]/usr/bin/tar -xf /home/runner/work/_temp/38c40e53-242d-4ea5-a276-db6e2a523bbc/cache.tzst -P -C /home/runner/work/Code-in-Motion/Code-in-Motion --use-compress-program unzstd
+2026-10-23T01:32:46.8098408Z Cache restored successfully
+2026-10-23T01:32:46.8197015Z Cache restored from key: playwright-1.63.0-webkit-Linux-X64-ubuntu24-20261012.334.1
+2026-10-23T01:32:46.8377883Z ##[group]Run printf '%s\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/99zz-cim-webkit-network > /dev/null
+2026-10-23T01:32:46.8378568Z [36;1mprintf '%s\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/99zz-cim-webkit-network > /dev/null[0m
+2026-10-23T01:32:46.8379027Z [36;1mapt-config dump | grep -E '^Acquire::(http::Timeout|https::Timeout|Retries) '[0m
+2026-10-23T01:32:46.8436346Z shell: /usr/bin/bash -e {0}
+2026-10-23T01:32:46.8436507Z env:
+2026-10-23T01:32:46.8436641Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:32:46.8436851Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:32:46.8437054Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:32:46.8437198Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:32:46.8437338Z   CIM_R20_PHP: 8.5
+2026-10-23T01:32:46.8437470Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-23T01:32:46.8437655Z ##[endgroup]
+2026-10-23T01:32:46.8852337Z Acquire::http::Timeout "15";
+2026-10-23T01:32:46.8852716Z Acquire::Retries "1";
+2026-10-23T01:32:46.8852960Z Acquire::https::Timeout "15";
+2026-10-23T01:32:46.9142057Z ##[group]Run sudo --preserve-env=RUNNER_TEMP "$(command -v node)" tools/ci/webkit-install.mjs deps 1
+2026-10-23T01:32:46.9142506Z [36;1msudo --preserve-env=RUNNER_TEMP "$(command -v node)" tools/ci/webkit-install.mjs deps 1[0m
+2026-10-23T01:32:46.9196353Z shell: /usr/bin/bash -e {0}
+2026-10-23T01:32:46.9196508Z env:
+2026-10-23T01:32:46.9196640Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:32:46.9196841Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:32:46.9197037Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:32:46.9197175Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:32:46.9197313Z   CIM_R20_PHP: 8.5
+2026-10-23T01:32:46.9197435Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-23T01:32:46.9197572Z ##[endgroup]
+2026-10-23T01:32:46.9560804Z COMMAND npx --no-install playwright install-deps webkit
+2026-10-23T01:32:46.9566629Z START phase=deps attempt=1/2 timeoutMs=470000
+2026-10-23T01:32:47.4921845Z Installing dependencies...
+2026-10-23T01:32:47.5700125Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-23T01:32:47.5959461Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-23T01:32:47.5997998Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-10-23T01:32:47.6014683Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-10-23T01:32:47.6038540Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-10-23T01:32:47.6932921Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1400 kB]
+2026-10-23T01:32:47.7074772Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [310 kB]
+2026-10-23T01:32:47.7107529Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1706 kB]
+2026-10-23T01:32:47.7166760Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [342 kB]
+2026-10-23T01:32:47.7189342Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1805 kB]
+2026-10-23T01:32:47.7259117Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [411 kB]
+2026-10-23T01:32:47.7796558Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1146 kB]
+2026-10-23T01:32:47.7852449Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+2026-10-23T01:32:47.7861530Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1222 kB]
+2026-10-23T01:32:47.8080732Z Get:18 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-23T01:32:47.8151517Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+2026-10-23T01:32:47.8664938Z Get:19 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.4 kB]
+2026-10-23T01:32:47.8759205Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1713 kB]
+2026-10-23T01:32:47.9151945Z Get:20 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [572 kB]
+2026-10-23T01:32:47.9320459Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [392 kB]
+2026-10-23T01:32:47.9329016Z Get:21 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [635 kB]
+2026-10-23T01:32:53.2143210Z Fetched 12.5 MB in 1s (12.7 MB/s)
+2026-10-23T01:32:53.9126405Z Reading package lists...
+2026-10-23T01:32:53.9333232Z Reading package lists...
+2026-10-23T01:32:54.1611288Z Building dependency tree...
+2026-10-23T01:32:54.1617522Z Reading state information...
+2026-10-23T01:32:54.3459945Z libicu74 is already the newest version (74.2-1ubuntu3.1).
+2026-10-23T01:32:54.3460512Z libatomic1 is already the newest version (14.2.0-4ubuntu2~24.04.1).
+2026-10-23T01:32:54.3461049Z libatomic1 set to manually installed.
+2026-10-23T01:32:54.3461566Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-23T01:32:54.3464264Z libatk-bridge2.0-0t64 set to manually installed.
+2026-10-23T01:32:54.3464680Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-23T01:32:54.3465033Z libatk1.0-0t64 set to manually installed.
+2026-10-23T01:32:54.3465440Z libcairo-gobject2 is already the newest version (1.18.0-3build1).
+2026-10-23T01:32:54.3466317Z libcairo-gobject2 set to manually installed.
+2026-10-23T01:32:54.3466684Z libcairo2 is already the newest version (1.18.0-3build1).
+2026-10-23T01:32:54.3467054Z libcairo2 set to manually installed.
+2026-10-23T01:32:54.3467427Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2026-10-23T01:32:54.3467858Z libdbus-1-3 set to manually installed.
+2026-10-23T01:32:54.3468235Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.2).
+2026-10-23T01:32:54.3468590Z libdrm2 set to manually installed.
+2026-10-23T01:32:54.3468940Z libenchant-2-2 is already the newest version (2.3.3-2build2).
+2026-10-23T01:32:54.3469302Z libenchant-2-2 set to manually installed.
+2026-10-23T01:32:54.3469654Z libepoxy0 is already the newest version (1.5.10-1build1).
+2026-10-23T01:32:54.3469977Z libepoxy0 set to manually installed.
+2026-10-23T01:32:54.3470336Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2026-10-23T01:32:54.3470704Z libfontconfig1 set to manually installed.
+2026-10-23T01:32:54.3471086Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+2026-10-23T01:32:54.3471450Z libfreetype6 set to manually installed.
+2026-10-23T01:32:54.3471853Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.4).
+2026-10-23T01:32:54.3472203Z libgbm1 set to manually installed.
+2026-10-23T01:32:54.3472608Z libgdk-pixbuf-2.0-0 is already the newest version (2.42.10+dfsg-3ubuntu3.3).
+2026-10-23T01:32:54.3473004Z libgdk-pixbuf-2.0-0 set to manually installed.
+2026-10-23T01:32:54.3473415Z libgstreamer1.0-0 is already the newest version (1.24.2-1ubuntu0.1).
+2026-10-23T01:32:54.3474209Z libgstreamer1.0-0 set to manually installed.
+2026-10-23T01:32:54.3474629Z libharfbuzz0b is already the newest version (8.3.0-2build2).
+2026-10-23T01:32:54.3474989Z libharfbuzz0b set to manually installed.
+2026-10-23T01:32:54.3475360Z libjpeg-turbo8 is already the newest version (2.1.5-2ubuntu2).
+2026-10-23T01:32:54.3475760Z libjpeg-turbo8 set to manually installed.
+2026-10-23T01:32:54.3476306Z liblcms2-2 is already the newest version (2.14-2ubuntu0.1).
+2026-10-23T01:32:54.3476664Z liblcms2-2 set to manually installed.
+2026-10-23T01:32:54.3477045Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-23T01:32:54.3477434Z libpango-1.0-0 set to manually installed.
+2026-10-23T01:32:54.3477838Z libpangocairo-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-23T01:32:54.3478244Z libpangocairo-1.0-0 set to manually installed.
+2026-10-23T01:32:54.3478680Z libpng16-16t64 is already the newest version (1.6.43-5ubuntu0.7).
+2026-10-23T01:32:54.3479067Z libpng16-16t64 set to manually installed.
+2026-10-23T01:32:54.3479504Z libwayland-client0 is already the newest version (1.22.0-2.1build1).
+2026-10-23T01:32:54.3479941Z libwayland-client0 set to manually installed.
+2026-10-23T01:32:54.3480425Z libwayland-egl1 is already the newest version (1.22.0-2.1build1).
+2026-10-23T01:32:54.3480858Z libwayland-egl1 set to manually installed.
+2026-10-23T01:32:54.3481238Z libwebp7 is already the newest version (1.3.2-0.4build3).
+2026-10-23T01:32:54.3481614Z libwebp7 set to manually installed.
+2026-10-23T01:32:54.3481997Z libwebpdemux2 is already the newest version (1.3.2-0.4build3).
+2026-10-23T01:32:54.3482380Z libwebpdemux2 set to manually installed.
+2026-10-23T01:32:54.3482786Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-10-23T01:32:54.3483144Z libx11-6 set to manually installed.
+2026-10-23T01:32:54.3483516Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+2026-10-23T01:32:54.3483895Z libxkbcommon0 set to manually installed.
+2026-10-23T01:32:54.3484313Z libxml2 is already the newest version (2.9.14+dfsg-1.3ubuntu3.10).
+2026-10-23T01:32:54.3484929Z libxml2 set to manually installed.
+2026-10-23T01:32:54.3485340Z libxslt1.1 is already the newest version (1.1.39-0exp1ubuntu0.24.04.3).
+2026-10-23T01:32:54.3485755Z libxslt1.1 set to manually installed.
+2026-10-23T01:32:54.3486602Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2026-10-23T01:32:54.3487099Z fonts-liberation is already the newest version (1:2.1.5-3).
+2026-10-23T01:32:54.3487475Z fonts-liberation set to manually installed.
+2026-10-23T01:32:54.3487854Z The following additional packages will be installed:
+2026-10-23T01:32:54.3488263Z   gir1.2-glib-2.0 glib-networking glib-networking-common
+2026-10-23T01:32:54.3488755Z   glib-networking-services gsettings-desktop-schemas libaa1 libabsl20220623t64
+2026-10-23T01:32:54.3489294Z   libass9 libasyncns0 libavc1394-0 libavcodec60 libavfilter9 libavformat60
+2026-10-23T01:32:54.3489763Z   libavtp0 libavutil58 libblas3 libbluray2 libbs2b0 libcaca0
+2026-10-23T01:32:54.3490345Z   libcairo-script-interpreter2 libcdparanoia0 libchromaprint1 libcjson1
+2026-10-23T01:32:54.3490877Z   libcodec2-1.2 libdav1d7 libdc1394-25 libdca0 libde265-0 libdecor-0-0
+2026-10-23T01:32:54.3491390Z   libdirectfb-1.7-7t64 libdv4t64 libdvdnav4 libdvdread8t64 libegl-mesa0
+2026-10-23T01:32:54.3491914Z   libegl1 libfaad2 libflac12t64 libfluidsynth3 libfreeaptx0 libgav1-1
+2026-10-23T01:32:54.3492420Z   libglib2.0-bin libglib2.0-data libgme0 libgraphene-1.0-0 libgsm1
+2026-10-23T01:32:54.3492965Z   libgssdp-1.6-0 libgstreamer-plugins-good1.0-0 libgtk-4-common libgupnp-1.6-0
+2026-10-23T01:32:54.3493472Z   libgupnp-igd-1.6-0 libhwy1t64 libiec61883-0 libimath-3-1-29t64
+2026-10-23T01:32:54.3493937Z   libinstpatch-1.0-2 libjack-jackd2-0 libjxl0.7 liblapack3 liblc3-1
+2026-10-23T01:32:54.3494422Z   libldacbt-enc2 liblilv-0-0 liblrdf0 libltc11 libmbedcrypto7t64 libmfx1
+2026-10-23T01:32:54.3494891Z   libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0 libmpcdec6
+2026-10-23T01:32:54.3495584Z   libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64 libmysofa1
+2026-10-23T01:32:54.3496280Z   libneon27t64 libnice10 libopenal-data libopenal1 libopenexr-3-1-30
+2026-10-23T01:32:54.3496733Z   libopenh264-7 libopenmpt0t64 libopenni2-0 liborc-0.4-0t64
+2026-10-23T01:32:54.3497184Z   libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3 libpostproc57
+2026-10-23T01:32:54.3497689Z   libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0 libraw1394-11
+2026-10-23T01:32:54.3498240Z   librist4 librsvg2-2 librubberband2 libsamplerate0 libsbc1 libsdl2-2.0-0
+2026-10-23T01:32:54.3498765Z   libsecret-common libserd-0-0 libshine3 libshout3 libsndfile1 libsndio7.0
+2026-10-23T01:32:54.3499284Z   libsord-0-0 libsoundtouch1 libsoup-3.0-0 libsoup-3.0-common libsoxr0
+2026-10-23T01:32:54.3499834Z   libspa-0.2-modules libspandsp2t64 libspeex1 libsphinxbase3t64 libsratom-0-0
+2026-10-23T01:32:54.3500397Z   libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4 libsvtav1enc1d1 libswresample4
+2026-10-23T01:32:54.3500932Z   libswscale7 libtag1v5 libtag1v5-vanilla libtheora0 libtwolame0 libudfread0
+2026-10-23T01:32:54.3501433Z   libunibreak5 libv4l-0t64 libv4lconvert0t64 libva-drm2 libva-x11-2 libva2
+2026-10-23T01:32:54.3501934Z   libvdpau1 libvidstab1.1 libvisual-0.4-0 libvo-aacenc0 libvo-amrwbenc0
+2026-10-23T01:32:54.3502500Z   libvorbisenc2 libvpl2 libwavpack1 libwebrtc-audio-processing1 libwildmidi2
+2026-10-23T01:32:54.3503021Z   libx265-199 libxcb-xkb1 libxkbcommon-x11-0 libxvidcore4 libyuv0 libzbar0t64
+2026-10-23T01:32:54.3503562Z   libzimg2 libzix-0-0 libzvbi-common libzvbi0t64 libzxing3 ocl-icd-libopencl1
+2026-10-23T01:32:54.3504091Z   session-migration timgm6mb-soundfont xfonts-encodings xfonts-utils
+2026-10-23T01:32:54.3504319Z   xserver-common
+2026-10-23T01:32:54.3504460Z Suggested packages:
+2026-10-23T01:32:54.3504687Z   frei0r-plugins gvfs libcuda1 libnvcuvid1 libnvidia-encode1 libbluray-bdj
+2026-10-23T01:32:54.3504996Z   libdirectfb-extra libdv-bin oss-compat libdvdcss2 low-memory-monitor
+2026-10-23T01:32:54.3505330Z   libvisual-0.4-plugins jackd2 liblrdf0-dev libportaudio2 opus-tools pipewire
+2026-10-23T01:32:54.3505871Z   pulseaudio raptor2-utils libraw1394-doc librsvg2-bin serdi sndiod sordi
+2026-10-23T01:32:54.3506366Z   speex libwildmidi-config opencl-icd fluid-soundfont-gm
+2026-10-23T01:32:54.3506573Z Recommended packages:
+2026-10-23T01:32:54.3506788Z   fonts-ipafont-mincho fonts-tlwg-loma gstreamer1.0-x libaacs0
+2026-10-23T01:32:54.3507082Z   default-libdecor-0-plugin-1 | libdecor-0-plugin-1 gstreamer1.0-gl
+2026-10-23T01:32:54.3507403Z   libgtk-4-bin librsvg2-common libgtk-4-media-gstreamer libpipewire-0.3-common
+2026-10-23T01:32:54.3507731Z   pocketsphinx-en-us va-driver-all | va-driver vdpau-driver-all | vdpau-driver
+2026-10-23T01:32:54.3507993Z   libmagickcore-6.q16-7-extra xfonts-base
+2026-10-23T01:32:54.4068200Z The following NEW packages will be installed:
+2026-10-23T01:32:54.4069076Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-10-23T01:32:54.4069593Z   fonts-wqy-zenhei glib-networking glib-networking-common
+2026-10-23T01:32:54.4100858Z   glib-networking-services gsettings-desktop-schemas gstreamer1.0-libav
+2026-10-23T01:32:54.4109422Z   gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+2026-10-23T01:32:54.4109823Z   libaa1 libabsl20220623t64 libass9 libasyncns0 libavc1394-0 libavcodec60
+2026-10-23T01:32:54.4110131Z   libavfilter9 libavformat60 libavif16 libavtp0 libavutil58 libblas3
+2026-10-23T01:32:54.4110444Z   libbluray2 libbs2b0 libcaca0 libcairo-script-interpreter2 libcdparanoia0
+2026-10-23T01:32:54.4110792Z   libchromaprint1 libcjson1 libcodec2-1.2 libdav1d7 libdc1394-25 libdca0
+2026-10-23T01:32:54.4111113Z   libde265-0 libdecor-0-0 libdirectfb-1.7-7t64 libdv4t64 libdvdnav4
+2026-10-23T01:32:54.4111437Z   libdvdread8t64 libegl-mesa0 libegl1 libevent-2.1-7t64 libfaad2 libflac12t64
+2026-10-23T01:32:54.4111767Z   libflite1 libfluidsynth3 libfreeaptx0 libgav1-1 libgles2 libgme0
+2026-10-23T01:32:54.4112047Z   libgraphene-1.0-0 libgsm1 libgssdp-1.6-0 libgstreamer-gl1.0-0
+2026-10-23T01:32:54.4112665Z   libgstreamer-plugins-bad1.0-0 libgstreamer-plugins-base1.0-0
+2026-10-23T01:32:54.4113008Z   libgstreamer-plugins-good1.0-0 libgtk-4-1 libgtk-4-common libgupnp-1.6-0
+2026-10-23T01:32:54.4113400Z   libgupnp-igd-1.6-0 libharfbuzz-icu0 libhwy1t64 libhyphen0 libiec61883-0
+2026-10-23T01:32:54.4113731Z   libimath-3-1-29t64 libinstpatch-1.0-2 libjack-jackd2-0 libjxl0.7 liblapack3
+2026-10-23T01:32:54.4114042Z   liblc3-1 libldacbt-enc2 liblilv-0-0 liblrdf0 libltc11 libmanette-0.2-0
+2026-10-23T01:32:54.4114348Z   libmbedcrypto7t64 libmfx1 libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0
+2026-10-23T01:32:54.4114669Z   libmpcdec6 libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64
+2026-10-23T01:32:54.4114959Z   libmysofa1 libneon27t64 libnice10 libopenal-data libopenal1
+2026-10-23T01:32:54.4115247Z   libopenexr-3-1-30 libopenh264-7 libopenmpt0t64 libopenni2-0 libopus0
+2026-10-23T01:32:54.4115535Z   liborc-0.4-0t64 libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3
+2026-10-23T01:32:54.4115836Z   libpostproc57 libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0
+2026-10-23T01:32:54.4116469Z   libraw1394-11 librist4 librsvg2-2 librubberband2 libsamplerate0 libsbc1
+2026-10-23T01:32:54.4116993Z   libsdl2-2.0-0 libsecret-1-0 libsecret-common libserd-0-0 libshine3 libshout3
+2026-10-23T01:32:54.4117513Z   libsndfile1 libsndio7.0 libsord-0-0 libsoundtouch1 libsoup-3.0-0
+2026-10-23T01:32:54.4117817Z   libsoup-3.0-common libsoxr0 libspa-0.2-modules libspandsp2t64 libspeex1
+2026-10-23T01:32:54.4118154Z   libsphinxbase3t64 libsratom-0-0 libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4
+2026-10-23T01:32:54.4118490Z   libsvtav1enc1d1 libswresample4 libswscale7 libtag1v5 libtag1v5-vanilla
+2026-10-23T01:32:54.4118796Z   libtheora0 libtwolame0 libudfread0 libunibreak5 libv4l-0t64
+2026-10-23T01:32:54.4119084Z   libv4lconvert0t64 libva-drm2 libva-x11-2 libva2 libvdpau1 libvidstab1.1
+2026-10-23T01:32:54.4119394Z   libvisual-0.4-0 libvo-aacenc0 libvo-amrwbenc0 libvorbisenc2 libvpl2 libvpx9
+2026-10-23T01:32:54.4119743Z   libwavpack1 libwayland-server0 libwebrtc-audio-processing1 libwildmidi2
+2026-10-23T01:32:54.4120215Z   libwoff1 libx264-164 libx265-199 libxcb-xkb1 libxkbcommon-x11-0 libxvidcore4
+2026-10-23T01:32:54.4120551Z   libyuv0 libzbar0t64 libzimg2 libzix-0-0 libzvbi-common libzvbi0t64 libzxing3
+2026-10-23T01:32:54.4120899Z   ocl-icd-libopencl1 session-migration timgm6mb-soundfont xfonts-cyrillic
+2026-10-23T01:32:54.4121176Z   xfonts-encodings xfonts-scalable xfonts-utils
+2026-10-23T01:32:54.4121414Z The following packages will be upgraded:
+2026-10-23T01:32:54.4121668Z   gir1.2-glib-2.0 libglib2.0-0t64 libglib2.0-bin libglib2.0-data
+2026-10-23T01:32:54.4121901Z   xserver-common xvfb
+2026-10-23T01:32:54.4312266Z 6 upgraded, 181 newly installed, 0 to remove and 92 not upgraded.
+2026-10-23T01:32:54.4312572Z Need to get 117 MB of archives.
+2026-10-23T01:32:54.4312828Z After this operation, 364 MB of additional disk space will be used.
+2026-10-23T01:32:54.4313112Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-23T01:32:54.9666598Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2026-10-23T01:34:06.1910312Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-data all 2.80.0-6ubuntu3.10 [50.2 kB]
+2026-10-23T01:34:07.7419424Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-bin amd64 2.80.0-6ubuntu3.10 [97.9 kB]
+2026-10-23T01:34:10.0367942Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gir1.2-glib-2.0 amd64 2.80.0-6ubuntu3.10 [183 kB]
+2026-10-23T01:34:14.2175656Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-0t64 amd64 2.80.0-6ubuntu3.10 [1548 kB]
+2026-10-23T01:34:45.1477145Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+2026-10-23T01:36:38.4343477Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2026-10-23T01:36:41.3833456Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+2026-10-23T01:37:42.0518734Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2026-10-23T01:40:18.1347719Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libproxy1v5 amd64 0.5.4-4build1 [26.5 kB]
+2026-10-23T01:40:19.1871113Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking-common all 2.80.0-1build1 [6702 B]
+2026-10-23T01:40:19.9621605Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking-services amd64 2.80.0-1build1 [12.8 kB]
+2026-10-23T01:40:20.7100695Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 session-migration amd64 0.3.9build1 [9034 B]
+2026-10-23T01:40:21.4522740Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gsettings-desktop-schemas all 46.1-0ubuntu1 [35.6 kB]
+2026-10-23T01:40:22.8064910Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking amd64 2.80.0-1build1 [64.1 kB]
+2026-10-23T01:40:24.6170958Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva2 amd64 2.20.0-2ubuntu0.2 [66.4 kB]
+2026-10-23T01:40:26.6750353Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva-drm2 amd64 2.20.0-2ubuntu0.2 [7124 B]
+2026-10-23T01:40:27.6103867Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva-x11-2 amd64 2.20.0-2ubuntu0.2 [12.0 kB]
+2026-10-23T01:40:28.5360149Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvdpau1 amd64 1.5-2build1 [27.8 kB]
+2026-10-23T01:40:29.4880764Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libvpl2 amd64 2023.3.0-1build1 [99.8 kB]
+2026-10-23T01:40:32.1958494Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 ocl-icd-libopencl1 amd64 2.3.2-1build1 [38.5 kB]
+2026-10-23T01:40:33.6682212Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavutil58 amd64 7:6.1.1-3ubuntu5 [401 kB]
+2026-10-23T01:40:37.0180217Z STOP phase=deps attempt=1/2 reason=timeout
+2026-10-23T01:40:42.0243650Z END phase=deps attempt=1/2 result=timeout exitCode=124 elapsedMs=475068
+2026-10-23T01:40:42.0299580Z ##[error]Process completed with exit code 124.
+2026-10-23T01:40:42.0359542Z ##[group]Run echo 'Retrying WebKit Ubuntu dependencies after the first APT attempt failed or timed out.'
+2026-10-23T01:40:42.0360170Z [36;1mecho 'Retrying WebKit Ubuntu dependencies after the first APT attempt failed or timed out.'[0m
+2026-10-23T01:40:42.0360581Z [36;1msudo --preserve-env=RUNNER_TEMP "$(command -v node)" tools/ci/webkit-install.mjs deps 2[0m
+2026-10-23T01:40:42.0417289Z shell: /usr/bin/bash -e {0}
+2026-10-23T01:40:42.0417444Z env:
+2026-10-23T01:40:42.0417568Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:40:42.0417762Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:40:42.0417956Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:40:42.0418108Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:40:42.0418243Z   CIM_R20_PHP: 8.5
+2026-10-23T01:40:42.0418361Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-23T01:40:42.0418499Z ##[endgroup]
+2026-10-23T01:40:42.0487628Z Retrying WebKit Ubuntu dependencies after the first APT attempt failed or timed out.
+2026-10-23T01:40:42.0744016Z COMMAND npx --no-install playwright install-deps webkit
+2026-10-23T01:40:42.0747519Z RETRY phase=deps attempt=2/2 (one retry only)
+2026-10-23T01:40:42.0747876Z START phase=deps attempt=2/2 timeoutMs=470000
+2026-10-23T01:40:42.5783384Z Installing dependencies...
+2026-10-23T01:40:42.6467516Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-23T01:40:42.6765287Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-23T01:40:42.6848450Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-23T01:40:42.6874645Z Hit:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease
+2026-10-23T01:40:42.6877353Z Hit:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease
+2026-10-23T01:40:42.6893207Z Hit:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease
+2026-10-23T01:40:43.0220601Z Fetched 3600 B in 0s (12.6 kB/s)
+2026-10-23T01:40:43.7242830Z Reading package lists...
+2026-10-23T01:40:43.7427998Z Reading package lists...
+2026-10-23T01:40:43.9547187Z Building dependency tree...
+2026-10-23T01:40:43.9553024Z Reading state information...
+2026-10-23T01:40:44.1350385Z libicu74 is already the newest version (74.2-1ubuntu3.1).
+2026-10-23T01:40:44.1350861Z libatomic1 is already the newest version (14.2.0-4ubuntu2~24.04.1).
+2026-10-23T01:40:44.1351223Z libatomic1 set to manually installed.
+2026-10-23T01:40:44.1351604Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-23T01:40:44.1351989Z libatk-bridge2.0-0t64 set to manually installed.
+2026-10-23T01:40:44.1352371Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-23T01:40:44.1352770Z libatk1.0-0t64 set to manually installed.
+2026-10-23T01:40:44.1353335Z libcairo-gobject2 is already the newest version (1.18.0-3build1).
+2026-10-23T01:40:44.1353734Z libcairo-gobject2 set to manually installed.
+2026-10-23T01:40:44.1354112Z libcairo2 is already the newest version (1.18.0-3build1).
+2026-10-23T01:40:44.1354465Z libcairo2 set to manually installed.
+2026-10-23T01:40:44.1354848Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2026-10-23T01:40:44.1355230Z libdbus-1-3 set to manually installed.
+2026-10-23T01:40:44.1355661Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.2).
+2026-10-23T01:40:44.1356229Z libdrm2 set to manually installed.
+2026-10-23T01:40:44.1356584Z libenchant-2-2 is already the newest version (2.3.3-2build2).
+2026-10-23T01:40:44.1356937Z libenchant-2-2 set to manually installed.
+2026-10-23T01:40:44.1357287Z libepoxy0 is already the newest version (1.5.10-1build1).
+2026-10-23T01:40:44.1357622Z libepoxy0 set to manually installed.
+2026-10-23T01:40:44.1357998Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2026-10-23T01:40:44.1358283Z libfontconfig1 set to manually installed.
+2026-10-23T01:40:44.1358527Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+2026-10-23T01:40:44.1358867Z libfreetype6 set to manually installed.
+2026-10-23T01:40:44.1359774Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.4).
+2026-10-23T01:40:44.1360123Z libgbm1 set to manually installed.
+2026-10-23T01:40:44.1360384Z libgdk-pixbuf-2.0-0 is already the newest version (2.42.10+dfsg-3ubuntu3.3).
+2026-10-23T01:40:44.1360643Z libgdk-pixbuf-2.0-0 set to manually installed.
+2026-10-23T01:40:44.1360895Z libgstreamer1.0-0 is already the newest version (1.24.2-1ubuntu0.1).
+2026-10-23T01:40:44.1361130Z libgstreamer1.0-0 set to manually installed.
+2026-10-23T01:40:44.1361362Z libharfbuzz0b is already the newest version (8.3.0-2build2).
+2026-10-23T01:40:44.1361577Z libharfbuzz0b set to manually installed.
+2026-10-23T01:40:44.1361810Z libjpeg-turbo8 is already the newest version (2.1.5-2ubuntu2).
+2026-10-23T01:40:44.1362033Z libjpeg-turbo8 set to manually installed.
+2026-10-23T01:40:44.1362255Z liblcms2-2 is already the newest version (2.14-2ubuntu0.1).
+2026-10-23T01:40:44.1362470Z liblcms2-2 set to manually installed.
+2026-10-23T01:40:44.1362702Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-23T01:40:44.1362922Z libpango-1.0-0 set to manually installed.
+2026-10-23T01:40:44.1363162Z libpangocairo-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-23T01:40:44.1363406Z libpangocairo-1.0-0 set to manually installed.
+2026-10-23T01:40:44.1363647Z libpng16-16t64 is already the newest version (1.6.43-5ubuntu0.7).
+2026-10-23T01:40:44.1363871Z libpng16-16t64 set to manually installed.
+2026-10-23T01:40:44.1364112Z libwayland-client0 is already the newest version (1.22.0-2.1build1).
+2026-10-23T01:40:44.1364356Z libwayland-client0 set to manually installed.
+2026-10-23T01:40:44.1364600Z libwayland-egl1 is already the newest version (1.22.0-2.1build1).
+2026-10-23T01:40:44.1365050Z libwayland-egl1 set to manually installed.
+2026-10-23T01:40:44.1365272Z libwebp7 is already the newest version (1.3.2-0.4build3).
+2026-10-23T01:40:44.1365504Z libwebp7 set to manually installed.
+2026-10-23T01:40:44.1365725Z libwebpdemux2 is already the newest version (1.3.2-0.4build3).
+2026-10-23T01:40:44.1365947Z libwebpdemux2 set to manually installed.
+2026-10-23T01:40:44.1366391Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-10-23T01:40:44.1366614Z libx11-6 set to manually installed.
+2026-10-23T01:40:44.1366840Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+2026-10-23T01:40:44.1367066Z libxkbcommon0 set to manually installed.
+2026-10-23T01:40:44.1367337Z libxml2 is already the newest version (2.9.14+dfsg-1.3ubuntu3.10).
+2026-10-23T01:40:44.1367572Z libxml2 set to manually installed.
+2026-10-23T01:40:44.1367807Z libxslt1.1 is already the newest version (1.1.39-0exp1ubuntu0.24.04.3).
+2026-10-23T01:40:44.1368040Z libxslt1.1 set to manually installed.
+2026-10-23T01:40:44.1368422Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2026-10-23T01:40:44.1368723Z fonts-liberation is already the newest version (1:2.1.5-3).
+2026-10-23T01:40:44.1368952Z fonts-liberation set to manually installed.
+2026-10-23T01:40:44.1369178Z The following additional packages will be installed:
+2026-10-23T01:40:44.1369417Z   gir1.2-glib-2.0 glib-networking glib-networking-common
+2026-10-23T01:40:44.1369812Z   glib-networking-services gsettings-desktop-schemas libaa1 libabsl20220623t64
+2026-10-23T01:40:44.1370304Z   libass9 libasyncns0 libavc1394-0 libavcodec60 libavfilter9 libavformat60
+2026-10-23T01:40:44.1370622Z   libavtp0 libavutil58 libblas3 libbluray2 libbs2b0 libcaca0
+2026-10-23T01:40:44.1370893Z   libcairo-script-interpreter2 libcdparanoia0 libchromaprint1 libcjson1
+2026-10-23T01:40:44.1371210Z   libcodec2-1.2 libdav1d7 libdc1394-25 libdca0 libde265-0 libdecor-0-0
+2026-10-23T01:40:44.1371536Z   libdirectfb-1.7-7t64 libdv4t64 libdvdnav4 libdvdread8t64 libegl-mesa0
+2026-10-23T01:40:44.1371817Z   libegl1 libfaad2 libflac12t64 libfluidsynth3 libfreeaptx0 libgav1-1
+2026-10-23T01:40:44.1372118Z   libglib2.0-bin libglib2.0-data libgme0 libgraphene-1.0-0 libgsm1
+2026-10-23T01:40:44.1372711Z   libgssdp-1.6-0 libgstreamer-plugins-good1.0-0 libgtk-4-common libgupnp-1.6-0
+2026-10-23T01:40:44.1373003Z   libgupnp-igd-1.6-0 libhwy1t64 libiec61883-0 libimath-3-1-29t64
+2026-10-23T01:40:44.1373263Z   libinstpatch-1.0-2 libjack-jackd2-0 libjxl0.7 liblapack3 liblc3-1
+2026-10-23T01:40:44.1373538Z   libldacbt-enc2 liblilv-0-0 liblrdf0 libltc11 libmbedcrypto7t64 libmfx1
+2026-10-23T01:40:44.1373805Z   libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0 libmpcdec6
+2026-10-23T01:40:44.1374069Z   libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64 libmysofa1
+2026-10-23T01:40:44.1374347Z   libneon27t64 libnice10 libopenal-data libopenal1 libopenexr-3-1-30
+2026-10-23T01:40:44.1374670Z   libopenh264-7 libopenmpt0t64 libopenni2-0 liborc-0.4-0t64
+2026-10-23T01:40:44.1374949Z   libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3 libpostproc57
+2026-10-23T01:40:44.1375238Z   libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0 libraw1394-11
+2026-10-23T01:40:44.1375545Z   librist4 librsvg2-2 librubberband2 libsamplerate0 libsbc1 libsdl2-2.0-0
+2026-10-23T01:40:44.1375844Z   libsecret-common libserd-0-0 libshine3 libshout3 libsndfile1 libsndio7.0
+2026-10-23T01:40:44.1376286Z   libsord-0-0 libsoundtouch1 libsoup-3.0-0 libsoup-3.0-common libsoxr0
+2026-10-23T01:40:44.1376582Z   libspa-0.2-modules libspandsp2t64 libspeex1 libsphinxbase3t64 libsratom-0-0
+2026-10-23T01:40:44.1376895Z   libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4 libsvtav1enc1d1 libswresample4
+2026-10-23T01:40:44.1377203Z   libswscale7 libtag1v5 libtag1v5-vanilla libtheora0 libtwolame0 libudfread0
+2026-10-23T01:40:44.1377497Z   libunibreak5 libv4l-0t64 libv4lconvert0t64 libva-drm2 libva-x11-2 libva2
+2026-10-23T01:40:44.1377782Z   libvdpau1 libvidstab1.1 libvisual-0.4-0 libvo-aacenc0 libvo-amrwbenc0
+2026-10-23T01:40:44.1378176Z   libvorbisenc2 libvpl2 libwavpack1 libwebrtc-audio-processing1 libwildmidi2
+2026-10-23T01:40:44.1378481Z   libx265-199 libxcb-xkb1 libxkbcommon-x11-0 libxvidcore4 libyuv0 libzbar0t64
+2026-10-23T01:40:44.1378782Z   libzimg2 libzix-0-0 libzvbi-common libzvbi0t64 libzxing3 ocl-icd-libopencl1
+2026-10-23T01:40:44.1379088Z   session-migration timgm6mb-soundfont xfonts-encodings xfonts-utils
+2026-10-23T01:40:44.1379297Z   xserver-common
+2026-10-23T01:40:44.1379434Z Suggested packages:
+2026-10-23T01:40:44.1379676Z   frei0r-plugins gvfs libcuda1 libnvcuvid1 libnvidia-encode1 libbluray-bdj
+2026-10-23T01:40:44.1379982Z   libdirectfb-extra libdv-bin oss-compat libdvdcss2 low-memory-monitor
+2026-10-23T01:40:44.1380279Z   libvisual-0.4-plugins jackd2 liblrdf0-dev libportaudio2 opus-tools pipewire
+2026-10-23T01:40:44.1380580Z   pulseaudio raptor2-utils libraw1394-doc librsvg2-bin serdi sndiod sordi
+2026-10-23T01:40:44.1380847Z   speex libwildmidi-config opencl-icd fluid-soundfont-gm
+2026-10-23T01:40:44.1381043Z Recommended packages:
+2026-10-23T01:40:44.1381240Z   fonts-ipafont-mincho fonts-tlwg-loma gstreamer1.0-x libaacs0
+2026-10-23T01:40:44.1381514Z   default-libdecor-0-plugin-1 | libdecor-0-plugin-1 gstreamer1.0-gl
+2026-10-23T01:40:44.1381816Z   libgtk-4-bin librsvg2-common libgtk-4-media-gstreamer libpipewire-0.3-common
+2026-10-23T01:40:44.1382132Z   pocketsphinx-en-us va-driver-all | va-driver vdpau-driver-all | vdpau-driver
+2026-10-23T01:40:44.1382376Z   libmagickcore-6.q16-7-extra xfonts-base
+2026-10-23T01:40:44.1861860Z The following NEW packages will be installed:
+2026-10-23T01:40:44.1862407Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-10-23T01:40:44.1862885Z   fonts-wqy-zenhei glib-networking glib-networking-common
+2026-10-23T01:40:44.1863333Z   glib-networking-services gsettings-desktop-schemas gstreamer1.0-libav
+2026-10-23T01:40:44.1863866Z   gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+2026-10-23T01:40:44.1864403Z   libaa1 libabsl20220623t64 libass9 libasyncns0 libavc1394-0 libavcodec60
+2026-10-23T01:40:44.1864855Z   libavfilter9 libavformat60 libavif16 libavtp0 libavutil58 libblas3
+2026-10-23T01:40:44.1865326Z   libbluray2 libbs2b0 libcaca0 libcairo-script-interpreter2 libcdparanoia0
+2026-10-23T01:40:44.1866428Z   libchromaprint1 libcjson1 libcodec2-1.2 libdav1d7 libdc1394-25 libdca0
+2026-10-23T01:40:44.1866729Z   libde265-0 libdecor-0-0 libdirectfb-1.7-7t64 libdv4t64 libdvdnav4
+2026-10-23T01:40:44.1867033Z   libdvdread8t64 libegl-mesa0 libegl1 libevent-2.1-7t64 libfaad2 libflac12t64
+2026-10-23T01:40:44.1867398Z   libflite1 libfluidsynth3 libfreeaptx0 libgav1-1 libgles2 libgme0
+2026-10-23T01:40:44.1867824Z   libgraphene-1.0-0 libgsm1 libgssdp-1.6-0 libgstreamer-gl1.0-0
+2026-10-23T01:40:44.1868247Z   libgstreamer-plugins-bad1.0-0 libgstreamer-plugins-base1.0-0
+2026-10-23T01:40:44.1868704Z   libgstreamer-plugins-good1.0-0 libgtk-4-1 libgtk-4-common libgupnp-1.6-0
+2026-10-23T01:40:44.1869055Z   libgupnp-igd-1.6-0 libharfbuzz-icu0 libhwy1t64 libhyphen0 libiec61883-0
+2026-10-23T01:40:44.1869357Z   libimath-3-1-29t64 libinstpatch-1.0-2 libjack-jackd2-0 libjxl0.7 liblapack3
+2026-10-23T01:40:44.1869680Z   liblc3-1 libldacbt-enc2 liblilv-0-0 liblrdf0 libltc11 libmanette-0.2-0
+2026-10-23T01:40:44.1870041Z   libmbedcrypto7t64 libmfx1 libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0
+2026-10-23T01:40:44.1870501Z   libmpcdec6 libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64
+2026-10-23T01:40:44.1870849Z   libmysofa1 libneon27t64 libnice10 libopenal-data libopenal1
+2026-10-23T01:40:44.1871134Z   libopenexr-3-1-30 libopenh264-7 libopenmpt0t64 libopenni2-0 libopus0
+2026-10-23T01:40:44.1871430Z   liborc-0.4-0t64 libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3
+2026-10-23T01:40:44.1871710Z   libpostproc57 libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0
+2026-10-23T01:40:44.1872156Z   libraw1394-11 librist4 librsvg2-2 librubberband2 libsamplerate0 libsbc1
+2026-10-23T01:40:44.1872627Z   libsdl2-2.0-0 libsecret-1-0 libsecret-common libserd-0-0 libshine3 libshout3
+2026-10-23T01:40:44.1873110Z   libsndfile1 libsndio7.0 libsord-0-0 libsoundtouch1 libsoup-3.0-0
+2026-10-23T01:40:44.1873394Z   libsoup-3.0-common libsoxr0 libspa-0.2-modules libspandsp2t64 libspeex1
+2026-10-23T01:40:44.1873692Z   libsphinxbase3t64 libsratom-0-0 libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4
+2026-10-23T01:40:44.1873995Z   libsvtav1enc1d1 libswresample4 libswscale7 libtag1v5 libtag1v5-vanilla
+2026-10-23T01:40:44.1874269Z   libtheora0 libtwolame0 libudfread0 libunibreak5 libv4l-0t64
+2026-10-23T01:40:44.1874541Z   libv4lconvert0t64 libva-drm2 libva-x11-2 libva2 libvdpau1 libvidstab1.1
+2026-10-23T01:40:44.1874839Z   libvisual-0.4-0 libvo-aacenc0 libvo-amrwbenc0 libvorbisenc2 libvpl2 libvpx9
+2026-10-23T01:40:44.1875152Z   libwavpack1 libwayland-server0 libwebrtc-audio-processing1 libwildmidi2
+2026-10-23T01:40:44.1875457Z   libwoff1 libx264-164 libx265-199 libxcb-xkb1 libxkbcommon-x11-0 libxvidcore4
+2026-10-23T01:40:44.1875767Z   libyuv0 libzbar0t64 libzimg2 libzix-0-0 libzvbi-common libzvbi0t64 libzxing3
+2026-10-23T01:40:44.1876162Z   ocl-icd-libopencl1 session-migration timgm6mb-soundfont xfonts-cyrillic
+2026-10-23T01:40:44.1876419Z   xfonts-encodings xfonts-scalable xfonts-utils
+2026-10-23T01:40:44.1877025Z The following packages will be upgraded:
+2026-10-23T01:40:44.1882723Z   gir1.2-glib-2.0 libglib2.0-0t64 libglib2.0-bin libglib2.0-data
+2026-10-23T01:40:44.1883036Z   xserver-common xvfb
+2026-10-23T01:40:44.2066629Z 6 upgraded, 181 newly installed, 0 to remove and 92 not upgraded.
+2026-10-23T01:40:44.2067094Z Need to get 94.9 MB/117 MB of archives.
+2026-10-23T01:40:44.2067534Z After this operation, 364 MB of additional disk space will be used.
+2026-10-23T01:40:44.2067881Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-23T01:40:44.7137356Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavutil58 amd64 7:6.1.1-3ubuntu5 [401 kB]
+2026-10-23T01:40:49.9401844Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libcodec2-1.2 amd64 1.2.0-2build1 [8998 kB]
+2026-10-23T01:43:58.8020701Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdav1d7 amd64 1.4.1-1build1 [604 kB]
+2026-10-23T01:44:11.7284090Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgsm1 amd64 1.0.22-1build1 [27.8 kB]
+2026-10-23T01:44:12.9608067Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libhwy1t64 amd64 1.0.7-8.1build1 [584 kB]
+2026-10-23T01:44:25.7419327Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libjxl0.7 amd64 0.7.0-10.2ubuntu6.1 [1001 kB]
+2026-10-23T01:44:46.9378977Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libmp3lame0 amd64 3.100-6build1 [142 kB]
+2026-10-23T01:44:50.4329174Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libopus0 amd64 1.4-1build1 [208 kB]
+2026-10-23T01:44:55.4861715Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librav1e0 amd64 0.7.1-2 [1022 kB]
+2026-10-23T01:45:16.9618952Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 librsvg2-2 amd64 2.58.0+dfsg-1ubuntu0.1 [2141 kB]
+2026-10-23T01:46:02.6753182Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libshine3 amd64 3.1.1-2build1 [23.2 kB]
+2026-10-23T01:46:03.6213448Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libspeex1 amd64 1.2.1-2ubuntu2.24.04.1 [59.6 kB]
+2026-10-23T01:46:05.6038380Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsvtav1enc1d1 amd64 1.7.0+dfsg-2build1 [2425 kB]
+2026-10-23T01:46:57.5802453Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsoxr0 amd64 0.1.3-4build3 [80.0 kB]
+2026-10-23T01:46:59.9681801Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libswresample4 amd64 7:6.1.1-3ubuntu5 [63.8 kB]
+2026-10-23T01:47:02.2168850Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtheora0 amd64 1.1.1+dfsg.1-16.1build3 [211 kB]
+2026-10-23T01:47:07.4513342Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtwolame0 amd64 0.4.0-2build3 [52.3 kB]
+2026-10-23T01:47:09.3596486Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvorbisenc2 amd64 1.3.7-1build3 [80.8 kB]
+2026-10-23T01:47:11.8198961Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libvpx9 amd64 1.14.0-1ubuntu2.3 [1143 kB]
+2026-10-23T01:47:37.2831006Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx264-164 amd64 2:0.164.3108+git31e19f9-1 [604 kB]
+2026-10-23T01:47:51.5184978Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx265-199 amd64 3.5-2build1 [1226 kB]
+2026-10-23T01:48:19.1818980Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libxvidcore4 amd64 2:1.3.7-1build1 [219 kB]
+2026-10-23T01:48:24.6898362Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi-common all 0.2.42-2 [42.4 kB]
+2026-10-23T01:48:26.2611821Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi0t64 amd64 0.2.42-2 [261 kB]
+2026-10-23T01:48:32.1770631Z STOP phase=deps attempt=2/2 reason=timeout
+2026-10-23T01:48:37.1826679Z END phase=deps attempt=2/2 result=timeout exitCode=124 elapsedMs=475108
+2026-10-23T01:48:37.1871361Z ##[error]Process completed with exit code 124.
+2026-10-23T01:48:37.1945724Z ##[group]Run npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop
+2026-10-23T01:48:37.1946229Z [36;1mnpm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop[0m
+2026-10-23T01:48:37.1995490Z shell: /usr/bin/bash -e {0}
+2026-10-23T01:48:37.1995623Z env:
+2026-10-23T01:48:37.1995736Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:48:37.1995923Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:48:37.1996217Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:48:37.1996343Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:48:37.1996470Z   CIM_R20_PHP: 8.5
+2026-10-23T01:48:37.1996584Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-23T01:48:37.1996711Z ##[endgroup]
+2026-10-23T01:48:37.6255445Z ✖ Environment not initialized. Run `wp-env start` first.
+2026-10-23T01:48:37.6346314Z ##[error]Process completed with exit code 1.
+2026-10-23T01:48:37.6369298Z ##[group]Run node tools/ci/webkit-install.mjs summary
+2026-10-23T01:48:37.6369519Z [36;1mnode tools/ci/webkit-install.mjs summary[0m
+2026-10-23T01:48:37.6419745Z shell: /usr/bin/bash -e {0}
+2026-10-23T01:48:37.6419881Z env:
+2026-10-23T01:48:37.6420000Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:48:37.6420181Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:48:37.6420366Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:48:37.6420493Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:48:37.6420623Z   CIM_R20_PHP: 8.5
+2026-10-23T01:48:37.6420738Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-23T01:48:37.6420864Z ##[endgroup]
+2026-10-23T01:48:37.6673621Z ### WebKit installation attempts
+2026-10-23T01:48:37.6673751Z 
+2026-10-23T01:48:37.6673895Z | Phase | Attempt | Result | Elapsed ms | Command deadline ms |
+2026-10-23T01:48:37.6674128Z |---|---:|---|---:|---:|
+2026-10-23T01:48:37.6674308Z | deps | 1 | timeout | 475068 | 470000 |
+2026-10-23T01:48:37.6674499Z | deps | 2 | timeout | 475108 | 470000 |
+2026-10-23T01:48:37.6674595Z 
+2026-10-23T01:48:37.6733834Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-10-23T01:48:37.6734049Z with:
+2026-10-23T01:48:37.6734164Z   name: webkit-install-39884568228-1
+2026-10-23T01:48:37.6734326Z   path: /home/runner/work/_temp/cim-webkit-install
+2026-10-23T01:48:37.6734487Z   if-no-files-found: warn
+2026-10-23T01:48:37.6734615Z   compression-level: 6
+2026-10-23T01:48:37.6734730Z   overwrite: false
+2026-10-23T01:48:37.6734844Z   include-hidden-files: false
+2026-10-23T01:48:37.6734970Z   archive: true
+2026-10-23T01:48:37.6735073Z env:
+2026-10-23T01:48:37.6735181Z   CIM_R20_CONFIG: r20-wp-env.json
+2026-10-23T01:48:37.6735357Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+2026-10-23T01:48:37.6735534Z   CIM_R20_BROWSER: webkit
+2026-10-23T01:48:37.6735657Z   CIM_R20_WORDPRESS: 7.1.1
+2026-10-23T01:48:37.6735922Z   CIM_R20_PHP: 8.5
+2026-10-23T01:48:37.6736214Z   CIM_PLUGIN_VERSION: 1.0.1
+2026-10-23T01:48:37.6736355Z ##[endgroup]
+2026-10-23T01:48:37.7603378Z With the provided path, there will be 3 files uploaded
+2026-10-23T01:48:37.7626454Z Artifact name is valid!
+2026-10-23T01:48:37.7626986Z Root directory input is valid!
+2026-10-23T01:48:38.0859050Z Uploading artifact: webkit-install-39884568228-1.zip
+2026-10-23T01:48:38.0882223Z Beginning upload of artifact content to blob storage
+2026-10-23T01:48:38.3242491Z Uploaded bytes 818
+2026-10-23T01:48:38.3817504Z Finished uploading artifact content to blob storage!
+2026-10-23T01:48:38.3818146Z SHA256 digest of uploaded artifact is 0caf848da7726fb23c00ccb56ee74c2e7a5d082b525ab58b99bf55e22d9b3557
+2026-10-23T01:48:38.3818617Z Finalizing artifact upload
+2026-10-23T01:48:38.9169487Z Artifact webkit-install-39884568228-1 successfully finalized. Artifact ID 12473175148
+2026-10-23T01:48:38.9170341Z Artifact webkit-install-39884568228-1 has been successfully uploaded! Final size is 818 bytes. Artifact ID is 12473175148
+2026-10-23T01:48:38.9172041Z Artifact download URL: https://github.com/johnwinstondarby/Code-in-Motion/actions/runs/39884568228/artifacts/12473175148
+2026-10-23T01:48:38.9308162Z Post job cleanup.
+2026-10-23T01:48:38.9862676Z [command]/usr/bin/git version
+2026-10-23T01:48:38.9894778Z git version 2.55.0
+2026-10-23T01:48:38.9917041Z Temporarily overriding HOME='/home/runner/work/_temp/3a8c7343-69dc-47fc-99c5-6f60cc66e402' before making global git config changes
+2026-10-23T01:48:38.9917579Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T01:48:38.9920017Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Code-in-Motion/Code-in-Motion
+2026-10-23T01:48:38.9945688Z Removing SSH command configuration
+2026-10-23T01:48:38.9950111Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T01:48:38.9987297Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T01:48:39.0179824Z Removing HTTP extra header
+2026-10-23T01:48:39.0197673Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T01:48:39.0217947Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T01:48:39.0393943Z Removing includeIf entries pointing to credentials config files
+2026-10-23T01:48:39.0399723Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T01:48:39.0427835Z includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path
+2026-10-23T01:48:39.0428290Z includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path
+2026-10-23T01:48:39.0428639Z includeif.gitdir:/github/workspace/.git.path
+2026-10-23T01:48:39.0428871Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T01:48:39.0433395Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path
+2026-10-23T01:48:39.0454085Z /home/runner/work/_temp/git-credentials-e85bb282-e12d-4a21-a566-11dc31b58f00.config
+2026-10-23T01:48:39.0461034Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-e85bb282\-e12d\-4a21\-a566\-11dc31b58f00\.config
+2026-10-23T01:48:39.0491945Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path
+2026-10-23T01:48:39.0513700Z /home/runner/work/_temp/git-credentials-e85bb282-e12d-4a21-a566-11dc31b58f00.config
+2026-10-23T01:48:39.0551345Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-e85bb282\-e12d\-4a21\-a566\-11dc31b58f00\.config
+2026-10-23T01:48:39.0599324Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-23T01:48:39.0618870Z /github/runner_temp/git-credentials-e85bb282-e12d-4a21-a566-11dc31b58f00.config
+2026-10-23T01:48:39.0623815Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-e85bb282\-e12d\-4a21\-a566\-11dc31b58f00\.config
+2026-10-23T01:48:39.0651304Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T01:48:39.0671151Z /github/runner_temp/git-credentials-e85bb282-e12d-4a21-a566-11dc31b58f00.config
+2026-10-23T01:48:39.0675461Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-e85bb282\-e12d\-4a21\-a566\-11dc31b58f00\.config
+2026-10-23T01:48:39.0703061Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T01:48:39.0863365Z Removing credentials config '/home/runner/work/_temp/git-credentials-e85bb282-e12d-4a21-a566-11dc31b58f00.config'
+2026-10-23T01:48:39.0971278Z Cleaning up orphan processes
