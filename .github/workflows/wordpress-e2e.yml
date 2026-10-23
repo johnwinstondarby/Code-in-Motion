@@ -1267,9 +1267,15 @@ jobs:
           echo 'Retrying WebKit Ubuntu dependencies after the first APT attempt failed or timed out.'
           sudo --preserve-env=RUNNER_TEMP "$(command -v node)" tools/ci/webkit-install.mjs deps 2
 
+      - name: Require current-job authenticated package-cache capture
+        id: webkit-apt-proof
+        if: matrix.browser == 'webkit'
+        timeout-minutes: 1
+        run: node tools/ci/webkit-apt-key.mjs proof
+
       - name: Save verified WebKit Ubuntu package archives after successful installation
         id: webkit-apt-cache-save
-        if: ${{ !cancelled() && matrix.browser == 'webkit' && steps.webkit-apt-cache.outputs.cache-hit != 'true' && (steps.webkit-deps-first.outcome == 'success' || steps.webkit-deps-retry.outcome == 'success') }}
+        if: ${{ !cancelled() && matrix.browser == 'webkit' && steps.webkit-apt-proof.outcome == 'success' && steps.webkit-apt-cache.outputs.cache-hit != 'true' && (steps.webkit-deps-first.outcome == 'success' || steps.webkit-deps-retry.outcome == 'success') }}
         timeout-minutes: 5
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
