@@ -19,6 +19,13 @@ test('[MOT-01] media map accepts mixed declared sources and rejects unsafe metad
  const x=clone();x.assets=Array.from({length:5},(_,i)=>({...x.assets[0],id:'clip-'+i,size:MEDIA_LIMITS.clip}));assert(validateMediaMap(x).some(e=>e.id==='CIM-MEDIA-LIMIT'));
 });
 test('[MOT-02] only exact verified clip and caption bytes become playback Blob URLs',async()=>{const s=service();const loaded=await s.access.load('gpu-memory');assert.match(loaded.videoURL,/^blob:/);assert.match(loaded.captionURL,/^blob:/);assert.equal(s.blobs.length,2);assert.deepEqual(new Uint8Array(await s.blobs[0].arrayBuffer()),new Uint8Array(fixture.bytes));assert.deepEqual(new Uint8Array(await s.blobs[1].arrayBuffer()),new Uint8Array(fixture.captions));assert(s.calls.every(c=>c.init.redirect==='error'&&c.init.credentials==='omit'));s.access.dispose();assert.equal(s.revoked.length,2);});
+test('[MOT-02] unit byte verification does not depend on native crypto worker scheduling',async()=>{
+ const subtle=webcrypto.subtle,original=Object.getOwnPropertyDescriptor(subtle,'digest');
+ Object.defineProperty(subtle,'digest',{configurable:true,value:()=>new Promise(()=>{})});
+ try{const s=service();await assert.doesNotReject(s.access.load('gpu-memory'));s.access.dispose();}
+ finally{if(original)Object.defineProperty(subtle,'digest',original);else delete subtle.digest;}
+});
+
 test('[MOT-03] mismatch and missing data withhold every playback URL',async()=>{for(const options of [{tamper:true},{fail:true}]){const s=service(clone(),options);await assert.rejects(s.access.load('gpu-memory'),/CIM-PANE-MEDIA-UNAVAILABLE/);assert.equal(s.blobs.length,0);s.access.dispose();}});
 test('[MOT-04] restricted resolver cannot request unknown identities or foreign URLs',async()=>{const s=service();await assert.rejects(s.access.load('unknown'),/CIM-PANE-MEDIA-UNAVAILABLE/);assert.equal(s.calls.length,0);assert.throws(()=>createVerifiedMediaAccess(clone(),{origin:'http://localhost:1234',bindings:{'pack:media/placeholder.webm':'https://evil.invalid/clip.webm'}}),/CIM-MEDIA-SOURCE/);s.access.dispose();});
 test('[MOT-05] bounded timeout and disposal reject late results',async()=>{const s=service(clone(),{dependencies:{fetch:()=>new Promise(()=>{}),timeoutMs:5}});let rejected=false;const pending=s.access.load('gpu-memory').catch(error=>{rejected=true;throw error;});pending.catch(()=>{});await new Promise(resolve=>setTimeout(resolve,30));assert.equal(rejected,true);await assert.rejects(pending,/CIM-PANE-MEDIA-UNAVAILABLE/);assert.equal(s.blobs.length,0);s.access.dispose();await assert.rejects(s.access.load('gpu-memory'),/CIM-PANE-MEDIA-UNAVAILABLE/);});
