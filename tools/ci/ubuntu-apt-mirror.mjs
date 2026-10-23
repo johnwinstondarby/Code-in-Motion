@@ -12,7 +12,10 @@ export function rewriteSources(source) {
 }
 export function rewriteMirrorList(source){
  if(typeof source!=='string')throw new TypeError('APT mirror list must be a string.');
- return source.replace(/^[ \t]*https?:\/\/[^\r\n]*/gm,line=>line.replace(/https?:\/\/azure\.archive\.ubuntu\.com\/ubuntu(?=\/?(?:[ \t]|$))/g,'https://archive.ubuntu.com/ubuntu'));
+ return source.replace(/^[ \t]*https?:\/\/[^\r\n]*/gm,line=>{
+  const at=line.indexOf('#'),content=at<0?line:line.slice(0,at),comment=at<0?'':line.slice(at);
+  return content.replace(/https?:\/\/azure\.archive\.ubuntu\.com\/ubuntu(?=\/?(?:[ \t]|$))/g,'https://archive.ubuntu.com/ubuntu')+comment;
+ });
 }
 async function main(){
  if(process.argv.length!==2)throw new Error('This CI helper takes no path or URL arguments.');
