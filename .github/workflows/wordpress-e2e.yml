@@ -1199,6 +1199,12 @@ jobs:
       - name: Install pinned Playwright test runner
         run: npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
 
+      # Two main-run WebKit jobs exhausted their budget downloading APT packages.
+      # Keep authenticated Ubuntu packages and all test commands/deadlines unchanged.
+      - name: Use official Ubuntu archive for WebKit dependencies
+        if: matrix.browser == 'webkit'
+        run: sudo "$(command -v node)" tools/ci/ubuntu-apt-mirror.mjs
+
       - name: Install selected browser for Playwright
         run: npx playwright install --with-deps "${CIM_R20_BROWSER}"
 
