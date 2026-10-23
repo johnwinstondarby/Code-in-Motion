@@ -3,13 +3,13 @@
 Reading state information... 0% Reading state information... 0%Reading state information... Done
 {
   "cold": {
-    "seconds": 1.2695367009999998,
+    "seconds": 1.4620329520000013,
     "returncode": 0,
-    "stdout": "Reading package lists...\nBuilding dependency tree...\nReading state information...\nThe following packages were automatically installed and are no longer required:\n  libgl1-amber-dri libglapi-mesa libllvm17t64\nUse 'apt autoremove' to remove them.\nThe following additional packages will be installed:\n  motd-news-config\nThe following packages will be upgraded:\n  base-files motd-news-config\n2 upgraded, 0 newly installed, 0 to remove and 87 not upgraded.\nNeed to get 77.2 kB of archives.\nAfter this operation, 0 B of additional disk space will be used.\nGet:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 motd-news-config all 13ubuntu10.5 [3978 B]\nGet:2 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 base-files amd64 13ubuntu10.5 [73.2 kB]\nFetched 77.2 kB in 1s (92.4 kB/s)\nDownload complete and in download only mode\n",
+    "stdout": "Reading package lists...\nBuilding dependency tree...\nReading state information...\nThe following packages were automatically installed and are no longer required:\n  libgl1-amber-dri libglapi-mesa libllvm17t64\nUse 'apt autoremove' to remove them.\nThe following additional packages will be installed:\n  motd-news-config\nThe following packages will be upgraded:\n  base-files motd-news-config\n2 upgraded, 0 newly installed, 0 to remove and 87 not upgraded.\nNeed to get 77.2 kB of archives.\nAfter this operation, 0 B of additional disk space will be used.\nGet:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 motd-news-config all 13ubuntu10.5 [3978 B]\nGet:2 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 base-files amd64 13ubuntu10.5 [73.2 kB]\nFetched 77.2 kB in 1s (73.4 kB/s)\nDownload complete and in download only mode\n",
     "stderr": ""
   },
   "warm": {
-    "seconds": 0.4084118459999999,
+    "seconds": 0.4005272009999956,
     "returncode": 0,
     "stdout": "Reading package lists...\nBuilding dependency tree...\nReading state information...\nThe following packages were automatically installed and are no longer required:\n  libgl1-amber-dri libglapi-mesa libllvm17t64\nUse 'apt autoremove' to remove them.\nThe following additional packages will be installed:\n  motd-news-config\nThe following packages will be upgraded:\n  base-files motd-news-config\n2 upgraded, 0 newly installed, 0 to remove and 87 not upgraded.\nNeed to get 0 B/77.2 kB of archives.\nAfter this operation, 0 B of additional disk space will be used.\nDownload complete and in download only mode\n",
     "stderr": ""

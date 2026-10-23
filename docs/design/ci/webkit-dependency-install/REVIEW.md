@@ -1,3 +1,5 @@
+> Historical record for the no-package-cache experiment through 935a90a. The current proposal is [the authenticated package-cache packet](../webkit-package-cache/REVIEW.md).
+
 # PR 102: bounded WebKit installation review packet
 
 Base main: `3304428`. Infrastructure only, not Part B. Draft pending independent review and Johann's merge approval. Version remains 1.0.1; no release, tag or installation.

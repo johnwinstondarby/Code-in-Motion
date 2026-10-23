@@ -1,0 +1,5 @@
+
+> code-in-motion@1.0.1 qa:r42-v1-differential
+> node tools/r42-v1-differential.mjs
+
+PASS: R42 v1 differential against 57499893fec3 — 41 identical, 0 different, 28 skipped (v2 or non-JSON)

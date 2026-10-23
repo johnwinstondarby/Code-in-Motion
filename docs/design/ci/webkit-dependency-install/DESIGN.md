@@ -1,3 +1,5 @@
+> Historical record for the no-package-cache experiment through 935a90a. The current proposal is [the authenticated package-cache packet](../webkit-package-cache/REVIEW.md).
+
 # WebKit dependency installation: recurring CI timeout
 
 Base main `3304428`. This is a separate infrastructure change, not step 7 Part B. No merge without Daisy's review and Johann's approval. The post-merge gate stays red; Part B cannot start until the prerequisite is resolved. No version bump, tag, release or install; source remains `1.0.1`.
