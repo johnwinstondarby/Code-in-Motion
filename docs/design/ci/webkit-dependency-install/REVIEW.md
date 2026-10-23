@@ -10,6 +10,8 @@ Base main: `3304428`. Infrastructure only, not Part B. Draft pending independent
 - No mirror rewrite remains. The old mirror-only run timed out during APT and reported zero files changed. Its correction for the runner's indirect mirror list was tested but not demonstrated beneficial. Diagnostic split head ccf4ccd succeeded on stock sources (APT 26 s; browser 5 s), without retry. We remove the unproven helper/tests rather than claim it fixed the timeout. Retained historical red/green logs describe experiments, not current coverage.
 - Chromium/Firefox install commands and all existing test commands, deadlines, signature checks, required gates and job limits are unchanged. A unit test compares the entire normalized workflow against the base. No test step is retried.
 
+APT attempts on 8bcb744 both returned timeout/124 after approximately 475 seconds, with no tests run. The log confirms the stock Azure HTTP archive; the cached browser was not the bottleneck. In response to Johann's instruction, a WebKit-only one-minute configuration step now writes exactly HTTP/HTTPS Timeout=30 and Acquire::Retries=3 before the dependency attempts, and prints the effective values. The outer 8/5-minute limits and single workflow retry remain unchanged. Slow continuous transfers may still exceed the deadline; the three-run gate remains mandatory. No container change is included.
+
 ## Test-first record and edits after red
 
 | Commit / experiment | Record and later edits |
@@ -21,7 +23,9 @@ Base main: `3304428`. Infrastructure only, not Part B. Draft pending independent
 
 The first frozen-head CI exposed a portability error in the new workflow test: GitHub uses a shallow checkout, so `git show 3304428` cannot resolve its baseline. The CI failure is retained. The baseline is now an exact checked-in copy of that workflow, read directly by the same test; comparison assertions and workflows are unchanged. No failing tests were rerun unchanged. This test-source correction occurs after the original red record.
 
-The six retained tests cover exact cache identity; success/elapsed logging; failed-command exit propagation and retry labeling; bounded stalled HTTP subprocesses with forced cleanup; attempt/deadline/cancellation limits; and whole-workflow isolation. Existing mutation suites run inside verify. Historical local CRLF parser failures are retained; normalization restored canonical LF bytes without changing the parser or its assertions.
+A seventh test was added in c6961d5 after observing both real APT timeouts. It fails for the missing configuration step (apt-config-red.log), then passes after 72cb11a adds only that step. No earlier test changed. It requires the exact three directives, WebKit-only condition and placement before dependencies.
+
+The seven retained tests cover exact cache identity; success/elapsed logging; failed-command exit propagation and retry labeling; bounded stalled HTTP subprocesses with forced cleanup; attempt/deadline/cancellation limits; and whole-workflow isolation. Existing mutation suites run inside verify. Historical local CRLF parser failures are retained; normalization restored canonical LF bytes without changing the parser or its assertions.
 
 ## Full-duration failure proof
 
@@ -29,7 +33,7 @@ The six retained tests cover exact cache identity; success/elapsed logging; fail
 
 ## Verification and artifacts
 
-Full verification passes on Node 20.20.2 and 22.23.2: **1,072 tests each, zero skipped**, including existing mutation runners. Final logs accompany this packet. The v1 comparison remains **41 identical, zero differences**. Two clean builds at ccf4ccd on Node 22.23.2 match one another and the base; subsequent changes affect only CI helpers/tests/documents outside both fixed build lists.
+Full verification passes on Node 20.20.2 and 22.23.2: **1,073 tests each, zero skipped**, including existing mutation runners. Final logs accompany this packet. The v1 comparison remains **41 identical, zero differences**. Two clean builds at ccf4ccd on Node 22.23.2 match one another and the base; subsequent changes affect only CI helpers/tests/documents outside both fixed build lists.
 
 - Plugin (99 files): `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a`
 - Authoring candidate (128 files): `b84bfc2164fe56274033ca6bb618a000e0ae3d0bf61876ece13a87a90bcdc1cc`
