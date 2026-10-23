@@ -42,6 +42,8 @@ class ArchiveTests(unittest.TestCase):
   bad=self.archives/'bad.deb';bad.write_bytes(b'abcdef')
   with self.assertRaises(ValueError):guard.validate_archive(bad,self.lookup,self.archives)
   with self.assertRaises(ValueError):guard.verify_selected([str(self.file),str(self.file)],self.lookup,self.archives,self.stage)
+ def test_regular_archive_outside_root_fails(self):
+  with self.assertRaisesRegex(ValueError,'outside'):guard.validate_archive(self.file,self.lookup,self.stage)
  def test_hook_command_is_fixed_and_unsafe_paths_fail(self):
   text=guard.hook_text(Path('/work/tools/ci/webkit-apt-cache.py'),Path('/tmp/cim-webkit-debs'))
   self.assertEqual(text,'DPkg::Pre-Install-Pkgs { "/usr/bin/python3 -I /work/tools/ci/webkit-apt-cache.py verify /tmp/cim-webkit-debs"; };\n')

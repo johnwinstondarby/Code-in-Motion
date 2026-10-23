@@ -1213,6 +1213,26 @@ jobs:
           path: ~/.cache/ms-playwright
           key: ${{ steps.webkit-cache-key.outputs.key }}
 
+      - name: Identify exact WebKit package cache
+        id: webkit-apt-key
+        if: matrix.browser == 'webkit'
+        run: node tools/ci/webkit-apt-key.mjs
+
+      - name: Restore WebKit Ubuntu package archives
+        id: webkit-apt-cache
+        if: matrix.browser == 'webkit'
+        timeout-minutes: 5
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.webkit-apt-key.outputs.stage }}/*.deb
+          key: ${{ steps.webkit-apt-key.outputs.key }}
+
+      - name: Verify WebKit package-cache security tests
+        id: webkit-apt-cache-tests
+        if: matrix.browser == 'webkit'
+        timeout-minutes: 1
+        run: /usr/bin/python3 -I tools/ci/tests/test_webkit_apt_cache.py
+
       - name: Bound WebKit APT connections and package retries
         id: webkit-apt-network
         if: matrix.browser == 'webkit'
@@ -1223,6 +1243,14 @@ jobs:
           test "$(sudo apt-config shell VALUE Acquire::http::Timeout)" = "VALUE='30'"
           test "$(sudo apt-config shell VALUE Acquire::https::Timeout)" = "VALUE='30'"
           test "$(sudo apt-config shell VALUE Acquire::Retries)" = "VALUE='3'"
+
+      - name: Authenticate restored WebKit archives and configure pre-install guard
+        id: webkit-apt-cache-guard
+        if: matrix.browser == 'webkit'
+        timeout-minutes: 1
+        env:
+          CIM_APT_CACHE_HIT: ${{ steps.webkit-apt-cache.outputs.cache-hit }}
+        run: sudo --preserve-env=RUNNER_TEMP,CIM_APT_CACHE_HIT /usr/bin/python3 -I tools/ci/webkit-apt-cache.py configure
 
       - name: Install WebKit Ubuntu dependencies (attempt 1 of 2)
         id: webkit-deps-first
@@ -1238,6 +1266,15 @@ jobs:
         run: |
           echo 'Retrying WebKit Ubuntu dependencies after the first APT attempt failed or timed out.'
           sudo --preserve-env=RUNNER_TEMP "$(command -v node)" tools/ci/webkit-install.mjs deps 2
+
+      - name: Save verified WebKit Ubuntu package archives after successful installation
+        id: webkit-apt-cache-save
+        if: ${{ !cancelled() && matrix.browser == 'webkit' && steps.webkit-apt-cache.outputs.cache-hit != 'true' && (steps.webkit-deps-first.outcome == 'success' || steps.webkit-deps-retry.outcome == 'success') }}
+        timeout-minutes: 5
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.webkit-apt-key.outputs.stage }}/*.deb
+          key: ${{ steps.webkit-apt-key.outputs.key }}
 
       - name: Download WebKit browser (attempt 1 of 2)
         id: webkit-browser-first
