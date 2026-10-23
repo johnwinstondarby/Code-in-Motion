@@ -1213,6 +1213,14 @@ jobs:
           path: ~/.cache/ms-playwright
           key: ${{ steps.webkit-cache-key.outputs.key }}
 
+      - name: Bound WebKit APT connections and package retries
+        id: webkit-apt-network
+        if: matrix.browser == 'webkit'
+        timeout-minutes: 1
+        run: |
+          printf '%s\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/99zz-cim-webkit-network > /dev/null
+          apt-config dump | grep -E '^Acquire::(http::Timeout|https::Timeout|Retries) '
+
       - name: Install WebKit Ubuntu dependencies (attempt 1 of 2)
         id: webkit-deps-first
         if: matrix.browser == 'webkit'
