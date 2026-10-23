@@ -62,10 +62,10 @@ test('only WebKit gets the exact APT connection limits before either dependency 
  const steps=workflow.jobs['browser-family-matrix'].steps,config=steps.find(s=>s.id==='webkit-apt-network');
  assert(config,'missing APT connection timeout configuration');assert.equal(config.if,"matrix.browser == 'webkit'");assert.equal(config['timeout-minutes'],1);
  assert(steps.indexOf(config)<steps.findIndex(s=>s.id==='webkit-deps-first'));
- assert.equal(config.run,`printf '%s\\n' '' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee -a /etc/apt/apt.conf > /dev/null
-apt-config dump | grep -E '^Acquire::(http::Timeout|https::Timeout|Retries) '
-test "$(apt-config shell VALUE Acquire::http::Timeout)" = "VALUE='30'"
-test "$(apt-config shell VALUE Acquire::https::Timeout)" = "VALUE='30'"
-test "$(apt-config shell VALUE Acquire::Retries)" = "VALUE='3'"
+ assert.equal(config.run,`printf '%s\\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/zzzz-cim-webkit-network > /dev/null
+sudo apt-config dump | grep -E '^Acquire::(http::Timeout|https::Timeout|Retries) '
+test "$(sudo apt-config shell VALUE Acquire::http::Timeout)" = "VALUE='30'"
+test "$(sudo apt-config shell VALUE Acquire::https::Timeout)" = "VALUE='30'"
+test "$(sudo apt-config shell VALUE Acquire::Retries)" = "VALUE='3'"
 `);
 });
