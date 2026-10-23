@@ -1,0 +1,89 @@
+
+> code-in-motion@1.0.1 verify
+> npm run check:learner-theme-css && npm run check:schema && npm run check:git-content && npm run check:page-3227 && npm run check:cim-authoring && npm run check:authoring-v1 && npm run check:console-render-evidence && npm run check:wordpress-experience-registry && npm run check:wordpress-renderer-registry && npm run check:wordpress-release-info && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm run check:workflow-gates && npm run check:wordpress-production-transport && npm run check:v3-mutations && npm run check:pane-mutations && npm run check:multipane-mutations && npm run check:engineering-mutations && npm run check:motion-mutations && npm run check:composition-mutations && npm run check:diagram-capacity-mutations && npm test
+
+
+> code-in-motion@1.0.1 check:learner-theme-css
+> node tools/check-learner-theme-css.mjs
+
+PASS: learner theme CSS matches the complete palette source.
+
+> code-in-motion@1.0.1 check:schema
+> node tools/check-schema-fixtures.mjs
+
+PASS: published schemas + production validation contract (4 valid, 16 v1 invalid, 22 v2 invalid fixtures)
+
+> code-in-motion@1.0.1 check:git-content
+> node tools/generate-git-basic-cycle.mjs --check
+
+PASS: R27 Git shared-source projections are current (page 3227 + git-basic-cycle).
+
+> code-in-motion@1.0.1 check:page-3227
+> node tools/generate-page-3227-git-adapter.mjs --check
+
+PASS: R27 page 3227 Git adapter is current.
+
+> code-in-motion@1.0.1 check:cim-authoring
+> node tools/compile-cim.mjs --check
+
+PASS: R29 .cim authored fixture is current.
+
+> code-in-motion@1.0.1 check:authoring-v1
+> node tools/compile-authoring.mjs --check
+
+PASS: R42 authoring v1 (63 validator fixture(s), 2 compiled experience(s) byte-current, 23 boundaries conforming to CONSOLE-RENDERER-v1 with evidence correspondence).
+
+> code-in-motion@1.0.1 check:console-render-evidence
+> node tools/console-render-evidence.mjs --check
+
+PASS: R42 console/v1 canonical render evidence (1 experience(s)).
+
+> code-in-motion@1.0.1 check:wordpress-experience-registry
+> node tools/check-wordpress-experience-registry.mjs
+
+PASS: R30 WordPress Experience registry (4 registered Experience(s), generated browser projection current).
+
+> code-in-motion@1.0.1 check:wordpress-renderer-registry
+> node tools/check-wordpress-renderer-registry.mjs
+
+PASS: R32 WordPress renderer registry (3 renderer(s), 4 registered Experience binding(s), generated inventory current).
+
+> code-in-motion@1.0.1 check:wordpress-release-info
+> node tools/check-wordpress-release-info.mjs
+
+PASS: R33 WordPress release info (stable 1.0.1, tested WordPress 7.1, 3 current changelog note(s)).
+
+> code-in-motion@1.0.1 check:architecture
+> node tools/check-architecture-boundaries.mjs
+
+PASS: architecture boundaries (69 production source file(s) checked)
+
+> code-in-motion@1.0.1 check:core-authority
+> node tools/check-core-authority.mjs
+
+PASS: Core authority (69 production source file(s) checked)
+
+> code-in-motion@1.0.1 check:wordpress-packaging
+> node tools/check-wordpress-packaging.mjs
+
+PASS: WordPress packaging baseline (5 PHP file(s), 4 external asset(s), wp-env floor WordPress/WordPress#6.5.10, PHP 7.4)
+
+> code-in-motion@1.0.1 check:wordpress-release-tree
+> node tools/check-wordpress-release-tree.mjs
+
+PASS: R12 WordPress release-tree contract (67 module(s), 107 import edge(s), module root wordpress/assets/modules/1.0.1, entry wordpress/assets/modules/1.0.1/wordpress/assets/bootstrap-module.mjs, experiences wordpress/assets/modules/1.0.1/wordpress/experiences/git-basic-cycle.json, wordpress/assets/modules/1.0.1/wordpress/experiences/git-repository-practice.json, wordpress/assets/modules/1.0.1/wordpress/experiences/python-first-steps.json, wordpress/assets/modules/1.0.1/wordpress/experiences/synthetic-wordpress.json)
+
+> code-in-motion@1.0.1 check:wordpress-metadata
+> node tools/check-wordpress-release-metadata.mjs
+
+PASS: R22 release metadata (source, version 1.0.1, WordPress 6.5-tested 7.1, PHP 7.4, GPLv3).
+
+> code-in-motion@1.0.1 check:workflow-gates
+> node tools/check-required-workflow-gates.mjs
+
+Error: R28 workflow-gate contract: workflow has no on block.
+    at fail (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-required-workflow-gates.mjs:47:9)
+    at extractTriggerBlock (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-required-workflow-gates.mjs:57:18)
+    at assertWorkflowTriggerSource (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-required-workflow-gates.mjs:70:17)
+    at assertWorkflowGateSource (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-required-workflow-gates.mjs:136:3)
+    at checkRequiredWorkflowGates (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tools/check-required-workflow-gates.mjs:181:5)
