@@ -6,7 +6,7 @@ import {dependencyPackages,aptCacheKey,verifyCapture} from '../tools/ci/webkit-a
 const identity={version:'1.63.0',os:'Linux',arch:'X64',imageOS:'ubuntu24',imageVersion:'20261012.334.1'};
 const frozen=JSON.parse(await readFile('tools/ci/webkit-apt-packages.json','utf8'));
 test('APT key binds exact pinned WebKit package list and runner image',async()=>{
- const source=await readFile('node_modules/playwright-core/lib/coreBundle.js','utf8');
+ const source=await readFile('tests/fixtures/ci/playwright-1.63.0-ubuntu24-deps.txt','utf8');
  const packages=dependencyPackages(source,frozen);assert.deepEqual(packages,frozen.packages);
  const key=aptCacheKey({...identity,packages});assert.match(key,/^webkit-apt-v1-playwright-1\.63\.0-Linux-X64-ubuntu24-20261012\.334\.1-[a-f0-9]{64}$/);
  assert.notEqual(key,aptCacheKey({...identity,imageVersion:'new-image',packages}));assert.notEqual(key,aptCacheKey({...identity,packages:[...packages,'other']}));
