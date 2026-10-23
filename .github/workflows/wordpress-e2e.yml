@@ -1226,7 +1226,6 @@ jobs:
         timeout-minutes: 8
         run: |
           echo 'Retrying WebKit Ubuntu dependencies after the first APT attempt failed or timed out.'
-          sudo "$(command -v node)" tools/ci/ubuntu-apt-mirror.mjs
           sudo --preserve-env=RUNNER_TEMP "$(command -v node)" tools/ci/webkit-install.mjs deps 2
 
       - name: Download WebKit browser (attempt 1 of 2)
