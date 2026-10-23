@@ -57,7 +57,9 @@ def atomic_copy(stage,record):
   if temp.exists():temp.unlink()
 def verify_selected(paths,lookup,archive_root,stage):
  if len(paths)>MAX_FILES or len(paths)!=len(set(paths)):raise ValueError('duplicate/count selected archive limit')
- directory(stage);records=[validate_archive(p,lookup,archive_root) for p in paths]
+ directory(stage)
+ if sum(Path(p).lstat().st_size for p in paths)>MAX_TOTAL:raise ValueError('selected archive byte limit')
+ records=[validate_archive(p,lookup,archive_root) for p in paths]
  if sum(r['size'] for r in records)>MAX_TOTAL:raise ValueError('selected archive byte limit')
  for record in records:atomic_copy(stage,record)
  return [{k:v for k,v in r.items() if k!='data'} for r in records]
@@ -71,7 +73,8 @@ def trusted_lookup():
    for entry in v.file_list:
     index=sources.find_index(entry[0])
     if index is None or not index.is_trusted or entry[0].origin!='Ubuntu':continue
-    records.lookup(entry);section=apt_pkg.TagSection(records.record)
+    if not records.lookup(entry):continue
+    section=apt_pkg.TagSection(records.record)
     return {'package':section.get('Package'),'version':section.get('Version'),'architecture':section.get('Architecture'),'size':int(section.get('Size','0')),'sha256':records.sha256_hash,'trusted':True}
   return None
  return lookup
