@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {rewriteSources} from '../tools/ci/ubuntu-apt-mirror.mjs';
+import {rewriteSources,rewriteMirrorList} from '../tools/ci/ubuntu-apt-mirror.mjs';
 
 test('Deb822 mirror change preserves suite, components, signature key and CRLF',()=>{
  const source='Types: deb\r\nURIs: http://azure.archive.ubuntu.com/ubuntu/\r\nSuites: noble noble-updates noble-backports\r\nComponents: main restricted universe multiverse\r\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\r\n';
@@ -19,4 +19,9 @@ test('similar hosts, paths, comments and unrelated fields are never rewritten',(
 });
 test('invalid non-text source input is rejected without coercion',()=>{
  for(const source of [null,{},Buffer.from('URIs: anything'),42])assert.throws(()=>rewriteSources(source),TypeError);
+});
+
+test('indirect runner mirror list changes only the exact Azure URI, retaining priorities',()=>{
+ const source='http://azure.archive.ubuntu.com/ubuntu/\tpriority:1\nhttps://archive.ubuntu.com/ubuntu/\tpriority:2\nhttps://security.ubuntu.com/ubuntu/\tpriority:3\n# http://azure.archive.ubuntu.com/ubuntu/\nhttps://azure.archive.ubuntu.com.evil.invalid/ubuntu/\n';
+ assert.equal(rewriteMirrorList(source),source.replace('http://azure.archive.ubuntu.com/ubuntu/\tpriority:1','https://archive.ubuntu.com/ubuntu/\tpriority:1'));
 });

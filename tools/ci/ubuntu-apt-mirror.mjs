@@ -10,6 +10,7 @@ export function rewriteSources(source) {
   return content.replace(/https?:\/\/azure\.archive\.ubuntu\.com\/ubuntu(?=\/?(?:[ \t]|$))/g,'https://archive.ubuntu.com/ubuntu')+comment;
  });
 }
+export function rewriteMirrorList(source){return source;}
 async function main(){
  if(process.argv.length!==2)throw new Error('This CI helper takes no path or URL arguments.');
  let found=0,changed=0;
