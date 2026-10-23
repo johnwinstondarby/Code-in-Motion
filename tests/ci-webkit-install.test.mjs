@@ -56,3 +56,13 @@ test('only WebKit install steps get retries/cache; all other jobs and test comma
  const normalized=structuredClone(current);normalized.jobs['browser-family-matrix'].steps=steps.filter(s=>!s.id?.startsWith('webkit-')).map(s=>{const copy=structuredClone(s);if(copy.name==='Install selected browser for Playwright'){assert.equal(copy.if,"matrix.browser != 'webkit'");delete copy.if;}return copy;});
  assert.deepEqual(normalized,baseline);
 });
+
+test('only WebKit gets the exact APT connection limits before either dependency attempt',async()=>{
+ const workflow=parse(await readFile('.github/workflows/wordpress-e2e.yml','utf8'));
+ const steps=workflow.jobs['browser-family-matrix'].steps,config=steps.find(s=>s.id==='webkit-apt-network');
+ assert(config,'missing APT connection timeout configuration');assert.equal(config.if,"matrix.browser == 'webkit'");assert.equal(config['timeout-minutes'],1);
+ assert(steps.indexOf(config)<steps.findIndex(s=>s.id==='webkit-deps-first'));
+ assert.equal(config.run,`printf '%s\\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/99zz-cim-webkit-network > /dev/null
+apt-config dump | grep -E '^Acquire::(http::Timeout|https::Timeout|Retries) '
+`);
+});
