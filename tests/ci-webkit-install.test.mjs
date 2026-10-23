@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
 import {readFile} from 'node:fs/promises';
-import {execFileSync} from 'node:child_process';
 import {parse} from 'yaml';
 import {runAttempt,makeCacheKey,INSTALL_LIMITS} from '../tools/ci/webkit-install.mjs';
 
@@ -46,7 +45,7 @@ test('attempt count, deadlines and cancellation cannot become an unbounded retry
 });
 test('only WebKit install steps get retries/cache; all other jobs and test commands stay frozen',async()=>{
  const current=parse(await readFile('.github/workflows/wordpress-e2e.yml','utf8'));
- const baseline=parse(execFileSync('git',['show','3304428:.github/workflows/wordpress-e2e.yml'],{encoding:'utf8'}));
+ const baseline=parse(await readFile('tests/fixtures/ci/wordpress-e2e-3304428.yml','utf8'));
  const job=current.jobs['browser-family-matrix'],steps=job.steps;
  const ids=['webkit-deps-first','webkit-deps-retry','webkit-browser-first','webkit-browser-retry'];
  for(const id of ids){const s=steps.find(s=>s.id===id);assert(s,'missing bounded install step '+id);assert.equal(s['timeout-minutes'],id.includes('deps')?8:5);assert.equal(s['continue-on-error']===true,id.endsWith('first'));assert(s.if.includes("matrix.browser == 'webkit'"));}

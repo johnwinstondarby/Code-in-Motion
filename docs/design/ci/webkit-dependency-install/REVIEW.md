@@ -19,6 +19,8 @@ Base main: `3304428`. Infrastructure only, not Part B. Draft pending independent
 | 98cf095 / f697618 indirect-mirror red | Fifth mirror test fails before 5ee8fa0. Inline-comment case added in 3605417, recorded failing in 09c3a34, fixed in ccf4ccd. These are historical experiments; mirror code is removed. |
 | 97e4d1c remove-mirror contract test | Workflow assertion deliberately changed from requiring the rewrite only on APT retry to forbidding it. `no-mirror-red.log` fails before 9ee1b3f removes the helper/tests. The first edit missed the differently indented retry invocation; both full verifies caught it (retained incomplete-removal logs). e6398b4 removes that remaining invocation, without changing tests. This is a scope correction, not merely a strengthening. Other five split tests are unchanged. |
 
+The first frozen-head CI exposed a portability error in the new workflow test: GitHub uses a shallow checkout, so `git show 3304428` cannot resolve its baseline. The CI failure is retained. The baseline is now an exact checked-in copy of that workflow, read directly by the same test; comparison assertions and workflows are unchanged. No failing tests were rerun unchanged. This test-source correction occurs after the original red record.
+
 The six retained tests cover exact cache identity; success/elapsed logging; failed-command exit propagation and retry labeling; bounded stalled HTTP subprocesses with forced cleanup; attempt/deadline/cancellation limits; and whole-workflow isolation. Existing mutation suites run inside verify. Historical local CRLF parser failures are retained; normalization restored canonical LF bytes without changing the parser or its assertions.
 
 ## Full-duration failure proof
