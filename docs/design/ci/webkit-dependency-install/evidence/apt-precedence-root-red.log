@@ -1,0 +1,84 @@
+TAP version 13
+# Subtest: WebKit cache identity is exact and rejects missing/ambiguous components
+ok 1 - WebKit cache identity is exact and rejects missing/ambiguous components
+  ---
+  duration_ms: 0.7022
+  type: 'test'
+  ...
+# Subtest: a successful attempt reports its phase, result and elapsed time without a retry
+ok 2 - a successful attempt reports its phase, result and elapsed time without a retry
+  ---
+  duration_ms: 38.8837
+  type: 'test'
+  ...
+# Subtest: a download failure retains its exit code and a second attempt is labelled once
+ok 3 - a download failure retains its exit code and a second attempt is labelled once
+  ---
+  duration_ms: 34.7897
+  type: 'test'
+  ...
+# Subtest: a stalled HTTP download is killed within each bound, retries once, then fails
+ok 4 - a stalled HTTP download is killed within each bound, retries once, then fails
+  ---
+  duration_ms: 6375.068
+  type: 'test'
+  ...
+# Subtest: attempt count, deadlines and cancellation cannot become an unbounded retry
+ok 5 - attempt count, deadlines and cancellation cannot become an unbounded retry
+  ---
+  duration_ms: 0.5054
+  type: 'test'
+  ...
+# Subtest: only WebKit install steps get retries/cache; all other jobs and test commands stay frozen
+ok 6 - only WebKit install steps get retries/cache; all other jobs and test commands stay frozen
+  ---
+  duration_ms: 41.3289
+  type: 'test'
+  ...
+# Subtest: only WebKit gets the exact APT connection limits before either dependency attempt
+not ok 7 - only WebKit gets the exact APT connection limits before either dependency attempt
+  ---
+  duration_ms: 16.7443
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\Code-in-Motion\\tests\\ci-webkit-install.test.mjs:60:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + `printf '%s\\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/99zz-cim-webkit-network > /dev/null\n` +
+    +   "apt-config dump | grep -E '^Acquire::(http::Timeout|https::Timeout|Retries) '\n"
+    - `printf '%s\\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/zzzz-cim-webkit-network > /dev/null\n` +
+    -   "sudo apt-config dump | grep -E '^Acquire::(http::Timeout|https::Timeout|Retries) '\n" +
+    -   `test "$(sudo apt-config shell VALUE Acquire::http::Timeout)" = "VALUE='30'"\n` +
+    -   `test "$(sudo apt-config shell VALUE Acquire::https::Timeout)" = "VALUE='30'"\n` +
+    -   `test "$(sudo apt-config shell VALUE Acquire::Retries)" = "VALUE='3'"\n`
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: |-
+    printf '%s\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/zzzz-cim-webkit-network > /dev/null
+    sudo apt-config dump | grep -E '^Acquire::(http::Timeout|https::Timeout|Retries) '
+    test "$(sudo apt-config shell VALUE Acquire::http::Timeout)" = "VALUE='30'"
+    test "$(sudo apt-config shell VALUE Acquire::https::Timeout)" = "VALUE='30'"
+    test "$(sudo apt-config shell VALUE Acquire::Retries)" = "VALUE='3'"
+    
+  actual: |-
+    printf '%s\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/99zz-cim-webkit-network > /dev/null
+    apt-config dump | grep -E '^Acquire::(http::Timeout|https::Timeout|Retries) '
+    
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/tests/ci-webkit-install.test.mjs:65:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 6
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6648.5103
