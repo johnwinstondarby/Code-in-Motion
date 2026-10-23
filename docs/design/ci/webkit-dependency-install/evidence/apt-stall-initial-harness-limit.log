@@ -1,0 +1,24 @@
+Acquire::http::Timeout "30";
+Acquire::https::Timeout "30";
+Acquire::Retries "3";
+APT stalled request 1
+APT stalled request 2
+APT stalled request 3
+APT stalled request 4
+APT stalled request 5
+APT stalled request 6
+Traceback (most recent call last):
+  File "/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/Code-in-Motion/../../outputs/probe-apt-timeout.py", line 14, in <module>
+    start=time.monotonic();result=subprocess.run(command,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=180);elapsed=time.monotonic()-start
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 2116, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/usr/lib/python3.12/subprocess.py", line 1253, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['/usr/lib/apt/apt-helper', '-c', '/tmp/cim-apt-timeout-h3vae57u/apt.conf', 'download-file', 'http://127.0.0.1:35793/deliberately-stalled.deb', '/tmp/cim-apt-timeout-h3vae57u/download.deb']' timed out after 180 seconds
