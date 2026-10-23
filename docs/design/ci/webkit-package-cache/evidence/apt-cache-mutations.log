@@ -1,0 +1,59 @@
+{
+  "baselineTests": 13,
+  "mutations": [
+    {
+      "guard": "hash",
+      "caught": true,
+      "assertionFailures": 1,
+      "errors": 0
+    },
+    {
+      "guard": "trusted",
+      "caught": true,
+      "assertionFailures": 1,
+      "errors": 0
+    },
+    {
+      "guard": "identity",
+      "caught": true,
+      "assertionFailures": 1,
+      "errors": 0
+    },
+    {
+      "guard": "size",
+      "caught": true,
+      "assertionFailures": 1,
+      "errors": 0
+    },
+    {
+      "guard": "symlink",
+      "caught": true,
+      "assertionFailures": 1,
+      "errors": 0
+    },
+    {
+      "guard": "outside",
+      "caught": true,
+      "assertionFailures": 1,
+      "errors": 0
+    },
+    {
+      "guard": "duplicate",
+      "caught": true,
+      "assertionFailures": 1,
+      "errors": 0
+    },
+    {
+      "guard": "count",
+      "caught": true,
+      "assertionFailures": 1,
+      "errors": 0
+    },
+    {
+      "guard": "hook-command",
+      "caught": true,
+      "assertionFailures": 1,
+      "errors": 0
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: WebKit cache identity is exact and rejects missing/ambiguous components
+ok 1 - WebKit cache identity is exact and rejects missing/ambiguous components
+  ---
+  duration_ms: 0.6982
+  type: 'test'
+  ...
+# Subtest: a successful attempt reports its phase, result and elapsed time without a retry
+ok 2 - a successful attempt reports its phase, result and elapsed time without a retry
+  ---
+  duration_ms: 100.6255
+  type: 'test'
+  ...
+# Subtest: a download failure retains its exit code and a second attempt is labelled once
+ok 3 - a download failure retains its exit code and a second attempt is labelled once
+  ---
+  duration_ms: 35.7145
+  type: 'test'
+  ...
+# Subtest: a stalled HTTP download is killed within each bound, retries once, then fails
+ok 4 - a stalled HTTP download is killed within each bound, retries once, then fails
+  ---
+  duration_ms: 6296.2558
+  type: 'test'
+  ...
+# Subtest: attempt count, deadlines and cancellation cannot become an unbounded retry
+ok 5 - attempt count, deadlines and cancellation cannot become an unbounded retry
+  ---
+  duration_ms: 0.6044
+  type: 'test'
+  ...
+# Subtest: only WebKit install steps get retries/cache; all other jobs and test commands stay frozen
+ok 6 - only WebKit install steps get retries/cache; all other jobs and test commands stay frozen
+  ---
+  duration_ms: 51.4168
+  type: 'test'
+  ...
+# Subtest: only WebKit gets the exact APT connection limits before either dependency attempt
+ok 7 - only WebKit gets the exact APT connection limits before either dependency attempt
+  ---
+  duration_ms: 13.8617
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6626.8028

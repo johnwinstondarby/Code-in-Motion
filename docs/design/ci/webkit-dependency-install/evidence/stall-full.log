@@ -1,0 +1,10 @@
+START phase=browser attempt=1/2 timeoutMs=290000
+Downloading WebKit 26.6 (playwright webkit v2359) from http://127.0.0.1:44163/builds/webkit/2359/webkit-ubuntu-24.04.zip
+STOP phase=browser attempt=1/2 reason=timeout
+END phase=browser attempt=1/2 result=timeout exitCode=124 elapsedMs=295033
+RETRY phase=browser attempt=2/2 (one retry only)
+START phase=browser attempt=2/2 timeoutMs=290000
+Downloading WebKit 26.6 (playwright webkit v2359) from http://127.0.0.1:44163/builds/webkit/2359/webkit-ubuntu-24.04.zip
+STOP phase=browser attempt=2/2 reason=timeout
+END phase=browser attempt=2/2 result=timeout exitCode=124 elapsedMs=295023
+Expected terminal download failure: both deadlines enforced, one retry logged.

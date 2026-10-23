@@ -1,0 +1,18 @@
+test_bad_filename_and_duplicate_selection_fail (__main__.ArchiveTests.test_bad_filename_and_duplicate_selection_fail) ... ok
+test_hook_command_is_fixed_and_unsafe_paths_fail (__main__.ArchiveTests.test_hook_command_is_fixed_and_unsafe_paths_fail) ... ok
+test_metadata_identity_and_hash_shape_fail (__main__.ArchiveTests.test_metadata_identity_and_hash_shape_fail) ... ok
+test_no_file_staged_if_any_selected_archive_is_bad (__main__.ArchiveTests.test_no_file_staged_if_any_selected_archive_is_bad) ... ok
+test_regular_archive_outside_root_fails (__main__.ArchiveTests.test_regular_archive_outside_root_fails) ... ok
+test_same_size_corruption_fails (__main__.ArchiveTests.test_same_size_corruption_fails) ... ok
+test_stage_count_is_bounded (__main__.ArchiveTests.test_stage_count_is_bounded) ... ok
+test_stage_rejects_unknown_files_and_symlink_directory (__main__.ArchiveTests.test_stage_rejects_unknown_files_and_symlink_directory) ... ok
+test_symlink_and_outside_path_fail (__main__.ArchiveTests.test_symlink_and_outside_path_fail) ... ok
+test_untrusted_or_missing_metadata_fails (__main__.ArchiveTests.test_untrusted_or_missing_metadata_fails) ... ok
+test_valid_archive_matches_trusted_hash (__main__.ArchiveTests.test_valid_archive_matches_trusted_hash) ... ok
+test_verified_selected_files_are_staged (__main__.ArchiveTests.test_verified_selected_files_are_staged) ... ok
+test_wrong_size_fails (__main__.ArchiveTests.test_wrong_size_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.024s
+
+OK

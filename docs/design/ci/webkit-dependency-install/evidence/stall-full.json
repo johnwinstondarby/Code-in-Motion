@@ -1,0 +1,51 @@
+{
+  "fullDuration": true,
+  "command": "npx --no-install playwright install --force webkit",
+  "endpoint": "loopback HTTP connection accepted, no response",
+  "requests": 2,
+  "timeoutMs": 290000,
+  "killGraceMs": 5000,
+  "outerStepLimitMs": 300000,
+  "results": [
+    {
+      "phase": "browser",
+      "attempt": 1,
+      "ok": false,
+      "code": 124,
+      "signal": "SIGTERM",
+      "timedOut": true,
+      "cancelled": false,
+      "elapsedMs": 295033,
+      "timeoutMs": 290000,
+      "killGraceMs": 5000,
+      "startedAt": "2026-10-23T00:51:55.182Z",
+      "finishedAt": "2026-10-23T00:56:50.215Z",
+      "wallMs": 295034
+    },
+    {
+      "phase": "browser",
+      "attempt": 2,
+      "ok": false,
+      "code": 124,
+      "signal": "SIGTERM",
+      "timedOut": true,
+      "cancelled": false,
+      "elapsedMs": 295023,
+      "timeoutMs": 290000,
+      "killGraceMs": 5000,
+      "startedAt": "2026-10-23T00:56:50.216Z",
+      "finishedAt": "2026-10-23T01:01:45.238Z",
+      "wallMs": 295023
+    }
+  ],
+  "logs": [
+    "START phase=browser attempt=1/2 timeoutMs=290000",
+    "STOP phase=browser attempt=1/2 reason=timeout",
+    "END phase=browser attempt=1/2 result=timeout exitCode=124 elapsedMs=295033",
+    "RETRY phase=browser attempt=2/2 (one retry only)",
+    "START phase=browser attempt=2/2 timeoutMs=290000",
+    "STOP phase=browser attempt=2/2 reason=timeout",
+    "END phase=browser attempt=2/2 result=timeout exitCode=124 elapsedMs=295023"
+  ],
+  "terminalCode": 124
+}

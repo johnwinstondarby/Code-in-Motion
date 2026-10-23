@@ -1,0 +1,38 @@
+TAP version 13
+# Subtest: APT key binds exact pinned WebKit package list and runner image
+not ok 1 - APT key binds exact pinned WebKit package list and runner image
+  ---
+  duration_ms: 1.7503
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\step7a-build-a\\tests\\ci-webkit-apt-cache.test.mjs:8:1'
+  failureType: 'testCodeFailure'
+  error: "ENOENT: no such file or directory, open 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\work\\step7a-build-a\\node_modules\\playwright-core\\lib\\coreBundle.js'"
+  code: 'ENOENT'
+  stack: |-
+    async open (node:internal/fs/promises:639:25)
+    async readFile (node:internal/fs/promises:1252:14)
+    async TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/work/step7a-build-a/tests/ci-webkit-apt-cache.test.mjs:9:15)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: APT cache never skips install, saves only after success, and verifies before dpkg
+ok 2 - APT cache never skips install, saves only after success, and verifies before dpkg
+  ---
+  duration_ms: 21.8273
+  type: 'test'
+  ...
+# Subtest: cache save requires a nonempty current-job pre-install verification record
+ok 3 - cache save requires a nonempty current-job pre-install verification record
+  ---
+  duration_ms: 0.8232
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 2
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 139.7346

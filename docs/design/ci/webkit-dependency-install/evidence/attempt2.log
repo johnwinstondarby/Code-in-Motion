@@ -1,0 +1,561 @@
+Browser webkit	Set up job	﻿2026-10-22T23:38:16.2405744Z Current runner version: '2.338.0'
+Browser webkit	Set up job	2026-10-22T23:38:16.2426025Z ##[group]Runner Image Provisioner
+Browser webkit	Set up job	2026-10-22T23:38:16.2426830Z Hosted Compute Agent
+Browser webkit	Set up job	2026-10-22T23:38:16.2427321Z Version: 20261012.601
+Browser webkit	Set up job	2026-10-22T23:38:16.2427904Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+Browser webkit	Set up job	2026-10-22T23:38:16.2428543Z Build Date: 2026-10-12T17:48:21Z
+Browser webkit	Set up job	2026-10-22T23:38:16.2429107Z Worker ID: {49aa6d81-304b-46dd-a847-bcb33dc93f1e}
+Browser webkit	Set up job	2026-10-22T23:38:16.2429736Z Region: westus3
+Browser webkit	Set up job	2026-10-22T23:38:16.2430193Z Cloud: Azure
+Browser webkit	Set up job	2026-10-22T23:38:16.2430618Z ##[endgroup]
+Browser webkit	Set up job	2026-10-22T23:38:16.2431698Z ##[group]Operating System
+Browser webkit	Set up job	2026-10-22T23:38:16.2432207Z Ubuntu
+Browser webkit	Set up job	2026-10-22T23:38:16.2432686Z 24.04.5
+Browser webkit	Set up job	2026-10-22T23:38:16.2433121Z LTS
+Browser webkit	Set up job	2026-10-22T23:38:16.2433570Z ##[endgroup]
+Browser webkit	Set up job	2026-10-22T23:38:16.2434109Z ##[group]Runner Image
+Browser webkit	Set up job	2026-10-22T23:38:16.2434606Z Image: ubuntu-24.04
+Browser webkit	Set up job	2026-10-22T23:38:16.2435237Z Version: 20261012.334.1
+Browser webkit	Set up job	2026-10-22T23:38:16.2436135Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+Browser webkit	Set up job	2026-10-22T23:38:16.2437616Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+Browser webkit	Set up job	2026-10-22T23:38:16.2438399Z ##[endgroup]
+Browser webkit	Set up job	2026-10-22T23:38:16.2439311Z ##[group]GITHUB_TOKEN Permissions
+Browser webkit	Set up job	2026-10-22T23:38:16.2440860Z Contents: read
+Browser webkit	Set up job	2026-10-22T23:38:16.2441409Z Metadata: read
+Browser webkit	Set up job	2026-10-22T23:38:16.2441914Z ##[endgroup]
+Browser webkit	Set up job	2026-10-22T23:38:16.2443521Z Secret source: Actions
+Browser webkit	Set up job	2026-10-22T23:38:16.2444383Z Cache mode: write
+Browser webkit	Set up job	2026-10-22T23:38:16.2445184Z Prepare workflow directory
+Browser webkit	Set up job	2026-10-22T23:38:16.2713643Z Prepare all required actions
+Browser webkit	Set up job	2026-10-22T23:38:16.2766472Z Getting action download info
+Browser webkit	Set up job	2026-10-22T23:38:16.5644342Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+Browser webkit	Set up job	2026-10-22T23:38:16.6589268Z Download action repository 'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020' (SHA:820762786026740c76f36085b0efc47a31fe5020)
+Browser webkit	Set up job	2026-10-22T23:38:16.8389351Z Complete job name: Browser webkit
+Browser webkit	Check out repository	﻿2026-10-22T23:38:16.9103003Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+Browser webkit	Check out repository	2026-10-22T23:38:16.9103869Z with:
+Browser webkit	Check out repository	2026-10-22T23:38:16.9104253Z   repository: johnwinstondarby/Code-in-Motion
+Browser webkit	Check out repository	2026-10-22T23:38:16.9107504Z   token: ***
+Browser webkit	Check out repository	2026-10-22T23:38:16.9107854Z   ssh-strict: true
+Browser webkit	Check out repository	2026-10-22T23:38:16.9108202Z   ssh-user: git
+Browser webkit	Check out repository	2026-10-22T23:38:16.9108549Z   persist-credentials: true
+Browser webkit	Check out repository	2026-10-22T23:38:16.9108926Z   clean: true
+Browser webkit	Check out repository	2026-10-22T23:38:16.9109271Z   sparse-checkout-cone-mode: true
+Browser webkit	Check out repository	2026-10-22T23:38:16.9109668Z   fetch-depth: 1
+Browser webkit	Check out repository	2026-10-22T23:38:16.9110002Z   fetch-tags: false
+Browser webkit	Check out repository	2026-10-22T23:38:16.9110345Z   show-progress: true
+Browser webkit	Check out repository	2026-10-22T23:38:16.9110698Z   lfs: false
+Browser webkit	Check out repository	2026-10-22T23:38:16.9111015Z   submodules: false
+Browser webkit	Check out repository	2026-10-22T23:38:16.9111365Z   set-safe-directory: true
+Browser webkit	Check out repository	2026-10-22T23:38:16.9111754Z   allow-unsafe-pr-checkout: false
+Browser webkit	Check out repository	2026-10-22T23:38:16.9112561Z ##[endgroup]
+Browser webkit	Check out repository	2026-10-22T23:38:16.9926452Z Syncing repository: johnwinstondarby/Code-in-Motion
+Browser webkit	Check out repository	2026-10-22T23:38:16.9928590Z ##[group]Getting Git version info
+Browser webkit	Check out repository	2026-10-22T23:38:16.9929579Z Working directory is '/home/runner/work/Code-in-Motion/Code-in-Motion'
+Browser webkit	Check out repository	2026-10-22T23:38:16.9930880Z [command]/usr/bin/git version
+Browser webkit	Check out repository	2026-10-22T23:38:17.0099048Z git version 2.55.0
+Browser webkit	Check out repository	2026-10-22T23:38:17.0115766Z ##[endgroup]
+Browser webkit	Check out repository	2026-10-22T23:38:17.0124409Z Temporarily overriding HOME='/home/runner/work/_temp/8fb33ccd-ee1c-4a34-b007-4391775c8ac9' before making global git config changes
+Browser webkit	Check out repository	2026-10-22T23:38:17.0126239Z Adding repository directory to the temporary git global config as a safe directory
+Browser webkit	Check out repository	2026-10-22T23:38:17.0131049Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Code-in-Motion/Code-in-Motion
+Browser webkit	Check out repository	2026-10-22T23:38:17.0170980Z Deleting the contents of '/home/runner/work/Code-in-Motion/Code-in-Motion'
+Browser webkit	Check out repository	2026-10-22T23:38:17.0173626Z ##[group]Determining repository object format
+Browser webkit	Check out repository	2026-10-22T23:38:17.0175283Z ##[endgroup]
+Browser webkit	Check out repository	2026-10-22T23:38:17.0176188Z ##[group]Initializing the repository
+Browser webkit	Check out repository	2026-10-22T23:38:17.0178780Z [command]/usr/bin/git init /home/runner/work/Code-in-Motion/Code-in-Motion
+Browser webkit	Check out repository	2026-10-22T23:38:17.0270296Z hint: Using 'master' as the name for the initial branch. This default branch name
+Browser webkit	Check out repository	2026-10-22T23:38:17.0271243Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Browser webkit	Check out repository	2026-10-22T23:38:17.0271966Z hint: to use in all of your new repositories, which will suppress this warning,
+Browser webkit	Check out repository	2026-10-22T23:38:17.0272549Z hint: call:
+Browser webkit	Check out repository	2026-10-22T23:38:17.0272866Z hint:
+Browser webkit	Check out repository	2026-10-22T23:38:17.0273284Z hint: 	git config --global init.defaultBranch <name>
+Browser webkit	Check out repository	2026-10-22T23:38:17.0273767Z hint:
+Browser webkit	Check out repository	2026-10-22T23:38:17.0274210Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Browser webkit	Check out repository	2026-10-22T23:38:17.0275086Z hint: 'development'. The just-created branch can be renamed via this command:
+Browser webkit	Check out repository	2026-10-22T23:38:17.0275657Z hint:
+Browser webkit	Check out repository	2026-10-22T23:38:17.0275982Z hint: 	git branch -m <name>
+Browser webkit	Check out repository	2026-10-22T23:38:17.0276359Z hint:
+Browser webkit	Check out repository	2026-10-22T23:38:17.0276850Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Browser webkit	Check out repository	2026-10-22T23:38:17.0291749Z Initialized empty Git repository in /home/runner/work/Code-in-Motion/Code-in-Motion/.git/
+Browser webkit	Check out repository	2026-10-22T23:38:17.0301627Z [command]/usr/bin/git remote add origin https://github.com/johnwinstondarby/Code-in-Motion
+Browser webkit	Check out repository	2026-10-22T23:38:17.0348851Z ##[endgroup]
+Browser webkit	Check out repository	2026-10-22T23:38:17.0349827Z ##[group]Disabling automatic garbage collection
+Browser webkit	Check out repository	2026-10-22T23:38:17.0352669Z [command]/usr/bin/git config --local gc.auto 0
+Browser webkit	Check out repository	2026-10-22T23:38:17.0383793Z ##[endgroup]
+Browser webkit	Check out repository	2026-10-22T23:38:17.0385172Z ##[group]Setting up auth
+Browser webkit	Check out repository	2026-10-22T23:38:17.0385818Z Removing SSH command configuration
+Browser webkit	Check out repository	2026-10-22T23:38:17.0390498Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Browser webkit	Check out repository	2026-10-22T23:38:17.0422350Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Browser webkit	Check out repository	2026-10-22T23:38:17.0820300Z Removing HTTP extra header
+Browser webkit	Check out repository	2026-10-22T23:38:17.0825302Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Browser webkit	Check out repository	2026-10-22T23:38:17.0854834Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Browser webkit	Check out repository	2026-10-22T23:38:17.1039261Z Removing includeIf entries pointing to credentials config files
+Browser webkit	Check out repository	2026-10-22T23:38:17.1043542Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Browser webkit	Check out repository	2026-10-22T23:38:17.1078690Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Browser webkit	Check out repository	2026-10-22T23:38:17.1267582Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-c0771a3b-99fe-4a5b-9a69-6d364a7b3b89.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Browser webkit	Check out repository	2026-10-22T23:38:17.1300196Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path /home/runner/work/_temp/git-credentials-c0771a3b-99fe-4a5b-9a69-6d364a7b3b89.config
+Browser webkit	Check out repository	2026-10-22T23:38:17.1329256Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-c0771a3b-99fe-4a5b-9a69-6d364a7b3b89.config
+Browser webkit	Check out repository	2026-10-22T23:38:17.1363044Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-c0771a3b-99fe-4a5b-9a69-6d364a7b3b89.config
+Browser webkit	Check out repository	2026-10-22T23:38:17.1391680Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-c0771a3b-99fe-4a5b-9a69-6d364a7b3b89.config
+Browser webkit	Check out repository	2026-10-22T23:38:17.1418641Z ##[endgroup]
+Browser webkit	Check out repository	2026-10-22T23:38:17.1482876Z ##[group]Fetching the repository
+Browser webkit	Check out repository	2026-10-22T23:38:17.1484537Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +33044288aea307b7cdfe7b959d87310879a36bbc:refs/remotes/origin/main
+Browser webkit	Check out repository	2026-10-22T23:38:19.6007593Z From https://github.com/johnwinstondarby/Code-in-Motion
+Browser webkit	Check out repository	2026-10-22T23:38:19.6009105Z  * [new ref]         33044288aea307b7cdfe7b959d87310879a36bbc -> origin/main
+Browser webkit	Check out repository	2026-10-22T23:38:19.6036799Z [command]/usr/bin/git branch --list --remote origin/main
+Browser webkit	Check out repository	2026-10-22T23:38:19.6045799Z   origin/main
+Browser webkit	Check out repository	2026-10-22T23:38:19.6051144Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+Browser webkit	Check out repository	2026-10-22T23:38:19.6074175Z 33044288aea307b7cdfe7b959d87310879a36bbc
+Browser webkit	Check out repository	2026-10-22T23:38:19.6082376Z ##[endgroup]
+Browser webkit	Check out repository	2026-10-22T23:38:19.6083289Z ##[group]Determining the checkout info
+Browser webkit	Check out repository	2026-10-22T23:38:19.6084331Z ##[endgroup]
+Browser webkit	Check out repository	2026-10-22T23:38:19.6086276Z [command]/usr/bin/git sparse-checkout disable
+Browser webkit	Check out repository	2026-10-22T23:38:19.6221622Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Browser webkit	Check out repository	2026-10-22T23:38:19.6253635Z ##[group]Checking out the ref
+Browser webkit	Check out repository	2026-10-22T23:38:19.6257630Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+Browser webkit	Check out repository	2026-10-22T23:38:19.8195164Z Switched to a new branch 'main'
+Browser webkit	Check out repository	2026-10-22T23:38:19.8198100Z branch 'main' set up to track 'origin/main'.
+Browser webkit	Check out repository	2026-10-22T23:38:19.8209213Z ##[endgroup]
+Browser webkit	Check out repository	2026-10-22T23:38:19.8251634Z [command]/usr/bin/git log -1 --format=%H
+Browser webkit	Check out repository	2026-10-22T23:38:19.8278704Z 33044288aea307b7cdfe7b959d87310879a36bbc
+Browser webkit	Set R20 workspace paths	﻿2026-10-22T23:38:19.8516825Z ##[group]Run echo "CIM_R20_CONFIG=r20-wp-env.json" >> "${GITHUB_ENV}"
+Browser webkit	Set R20 workspace paths	2026-10-22T23:38:19.8518503Z ^[[36;1mecho "CIM_R20_CONFIG=r20-wp-env.json" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	Set R20 workspace paths	2026-10-22T23:38:19.8520236Z ^[[36;1mecho "CIM_R20_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r20-artifact" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	Set R20 workspace paths	2026-10-22T23:38:19.8521913Z ^[[36;1mecho "CIM_R20_BROWSER=webkit" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	Set R20 workspace paths	2026-10-22T23:38:19.8523258Z ^[[36;1mecho "CIM_R20_WORDPRESS=7.1.1" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	Set R20 workspace paths	2026-10-22T23:38:19.8524559Z ^[[36;1mecho "CIM_R20_PHP=8.5" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	Set R20 workspace paths	2026-10-22T23:38:19.8738968Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Browser webkit	Set R20 workspace paths	2026-10-22T23:38:19.8740189Z ##[endgroup]
+Browser webkit	Set up pinned release Node.js	﻿2026-10-22T23:38:19.9003583Z ##[group]Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9004809Z with:
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9005717Z   node-version-file: .nvmrc
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9006571Z   package-manager-cache: false
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9007433Z   check-latest: false
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9014652Z   token: ***
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9015418Z env:
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9016079Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9017145Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9018260Z   CIM_R20_BROWSER: webkit
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9019041Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9019802Z   CIM_R20_PHP: 8.5
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9020487Z ##[endgroup]
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9989827Z Node version file is not JSON file
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:19.9991559Z Resolved .nvmrc as 22.23.2
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:20.0003829Z Attempting to download 22.23.2...
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:21.0882575Z Acquiring 22.23.2 - x64 from https://github.com/actions/node-versions/releases/download/22.23.2-30508424155/node-22.23.2-linux-x64.tar.gz
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:21.7801220Z Extracting ...
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:21.7897572Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/fd91eede-6f01-48d7-95d7-e890371714d4 -f /home/runner/work/_temp/a99442fe-027f-411e-8484-2b0af5418e02
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:22.8422829Z Adding to the cache ...
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:24.8072179Z ##[group]Environment details
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:24.9774437Z node: v22.23.2
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:24.9775185Z npm: 10.9.8
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:24.9775422Z yarn: 1.22.22
+Browser webkit	Set up pinned release Node.js	2026-10-22T23:38:24.9776015Z ##[endgroup]
+Browser webkit	Install repository dependencies	﻿2026-10-22T23:38:24.9922419Z ##[group]Run npm ci --ignore-scripts --no-audit --no-fund
+Browser webkit	Install repository dependencies	2026-10-22T23:38:24.9922823Z ^[[36;1mnpm ci --ignore-scripts --no-audit --no-fund^[[0m
+Browser webkit	Install repository dependencies	2026-10-22T23:38:24.9983453Z shell: /usr/bin/bash -e {0}
+Browser webkit	Install repository dependencies	2026-10-22T23:38:24.9983675Z env:
+Browser webkit	Install repository dependencies	2026-10-22T23:38:24.9983860Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	Install repository dependencies	2026-10-22T23:38:24.9984163Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	Install repository dependencies	2026-10-22T23:38:24.9984674Z   CIM_R20_BROWSER: webkit
+Browser webkit	Install repository dependencies	2026-10-22T23:38:24.9985053Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	Install repository dependencies	2026-10-22T23:38:24.9985366Z   CIM_R20_PHP: 8.5
+Browser webkit	Install repository dependencies	2026-10-22T23:38:24.9985539Z ##[endgroup]
+Browser webkit	Install repository dependencies	2026-10-22T23:38:26.7891955Z npm warn deprecated @octokit/webhooks-types@7.6.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+Browser webkit	Install repository dependencies	2026-10-22T23:38:27.9639436Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+Browser webkit	Install repository dependencies	2026-10-22T23:38:30.1357096Z 
+Browser webkit	Install repository dependencies	2026-10-22T23:38:30.1357580Z added 393 packages in 5s
+Browser webkit	Build exact WordPress release ZIP	﻿2026-10-22T23:38:30.1833829Z ##[group]Run set -euo pipefail
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1834121Z ^[[36;1mset -euo pipefail^[[0m
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1834332Z ^[[36;1mnpm run build:wordpress^[[0m
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1834687Z ^[[36;1mVERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"^[[0m
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1835327Z ^[[36;1mecho "CIM_PLUGIN_VERSION=${VERSION}" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1890707Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1891021Z env:
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1891216Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1891604Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1891921Z   CIM_R20_BROWSER: webkit
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1892120Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1892314Z   CIM_R20_PHP: 8.5
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.1892487Z ##[endgroup]
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.2681017Z 
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.2681500Z > code-in-motion@1.0.1 build:wordpress
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.2681851Z > node tools/build-wordpress-release.mjs
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:30.2682089Z 
+Browser webkit	Build exact WordPress release ZIP	2026-10-22T23:38:31.0215911Z PASS: R13 WordPress release build (99 staged file(s), Node 22.23.2, code-in-motion-1.0.1.zip, SHA-256 d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a)
+Browser webkit	Prepare isolated R20 environment	﻿2026-10-22T23:38:31.0559978Z ##[group]Run set -euo pipefail
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0560263Z ^[[36;1mset -euo pipefail^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0560512Z ^[[36;1mZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0560779Z ^[[36;1m^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0560966Z ^[[36;1mmkdir -p "${CIM_R20_ARTIFACT_DIR}"^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0561254Z ^[[36;1mcp "dist/${ZIP_NAME}" "${CIM_R20_ARTIFACT_DIR}/${ZIP_NAME}"^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0561617Z ^[[36;1mcp "dist/${ZIP_NAME}.sha256" "${CIM_R20_ARTIFACT_DIR}/${ZIP_NAME}.sha256"^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0562009Z ^[[36;1m(cd "${CIM_R20_ARTIFACT_DIR}" && sha256sum --check "${ZIP_NAME}.sha256")^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0562293Z ^[[36;1m^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0562476Z ^[[36;1mnode --input-type=module <<'NODE'^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0562736Z ^[[36;1mimport { writeFile } from 'node:fs/promises';^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0562984Z ^[[36;1m^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0563143Z ^[[36;1mconst config = {^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0563400Z ^[[36;1m  $schema: 'https://schemas.wp.org/trunk/wp-env.json',^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0563780Z ^[[36;1m  core: `WordPress/WordPress#${process.env.CIM_R20_WORDPRESS}`,^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0564087Z ^[[36;1m  phpVersion: process.env.CIM_R20_PHP,^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0564322Z ^[[36;1m  plugins: [],^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0564500Z ^[[36;1m  port: 8894,^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0564683Z ^[[36;1m  testsEnvironment: false,^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0565103Z ^[[36;1m  config: {^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0565286Z ^[[36;1m    WP_DEBUG: true,^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0565475Z ^[[36;1m    SCRIPT_DEBUG: true^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0565670Z ^[[36;1m  },^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0565831Z ^[[36;1m  mappings: {^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0566075Z ^[[36;1m    'wp-content/r20-artifact': process.env.CIM_R20_ARTIFACT_DIR^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0566341Z ^[[36;1m  }^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0566492Z ^[[36;1m};^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0566643Z ^[[36;1m^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0566938Z ^[[36;1mawait writeFile(process.env.CIM_R20_CONFIG, `${JSON.stringify(config, null, 2)}\n`, 'utf8');^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0567467Z ^[[36;1mNODE^[[0m
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0623193Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0623473Z env:
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0623649Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0623929Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0624202Z   CIM_R20_BROWSER: webkit
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0624393Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0624574Z   CIM_R20_PHP: 8.5
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0624754Z   CIM_PLUGIN_VERSION: 1.0.1
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0625086Z ##[endgroup]
+Browser webkit	Prepare isolated R20 environment	2026-10-22T23:38:31.0766069Z code-in-motion-1.0.1.zip: OK
+Browser webkit	Install pinned Playwright test runner	﻿2026-10-22T23:38:31.1044507Z ##[group]Run npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:31.1045329Z ^[[36;1mnpm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0^[[0m
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:31.1099193Z shell: /usr/bin/bash -e {0}
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:31.1099407Z env:
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:31.1099584Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:31.1099889Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:31.1100180Z   CIM_R20_BROWSER: webkit
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:31.1100370Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:31.1100557Z   CIM_R20_PHP: 8.5
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:31.1100725Z   CIM_PLUGIN_VERSION: 1.0.1
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:31.1100915Z ##[endgroup]
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:32.8136015Z 
+Browser webkit	Install pinned Playwright test runner	2026-10-22T23:38:32.8136639Z added 3 packages in 2s
+Browser webkit	Install selected browser for Playwright	﻿2026-10-22T23:38:32.8323178Z ##[group]Run npx playwright install --with-deps "${CIM_R20_BROWSER}"
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:32.8323597Z ^[[36;1mnpx playwright install --with-deps "${CIM_R20_BROWSER}"^[[0m
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:32.8377886Z shell: /usr/bin/bash -e {0}
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:32.8378104Z env:
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:32.8378280Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:32.8378555Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:32.8378841Z   CIM_R20_BROWSER: webkit
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:32.8379049Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:32.8379251Z   CIM_R20_PHP: 8.5
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:32.8379427Z   CIM_PLUGIN_VERSION: 1.0.1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:32.8379614Z ##[endgroup]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.4441916Z Installing dependencies...
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.4489949Z Switching to root user to install dependencies...
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.5300726Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.5676328Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.5696128Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.5703527Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.5739666Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.5756505Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.6905588Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [635 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.7016678Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [572 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.7073353Z Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.4 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.7349419Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1400 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.7536670Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [310 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.7640829Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1706 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.7710291Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [342 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.7806047Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1805 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.7842913Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [411 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.8264435Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1146 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.8453453Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.8473524Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1222 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.8514421Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.8937663Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1713 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:33.9153858Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [392 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:40.4124704Z Fetched 12.5 MB in 1s (11.5 MB/s)
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.1359559Z Reading package lists...
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.1565425Z Reading package lists...
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.3353815Z Building dependency tree...
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.3360479Z Reading state information...
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4796735Z libicu74 is already the newest version (74.2-1ubuntu3.1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4797518Z libatomic1 is already the newest version (14.2.0-4ubuntu2~24.04.1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4801800Z libatomic1 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4802387Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4802946Z libatk-bridge2.0-0t64 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4803496Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4803996Z libatk1.0-0t64 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4805280Z libcairo-gobject2 is already the newest version (1.18.0-3build1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4805761Z libcairo-gobject2 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4806285Z libcairo2 is already the newest version (1.18.0-3build1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4806746Z libcairo2 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4807282Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4807803Z libdbus-1-3 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4808355Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.2).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4808877Z libdrm2 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4809392Z libenchant-2-2 is already the newest version (2.3.3-2build2).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4809960Z libenchant-2-2 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4810368Z libepoxy0 is already the newest version (1.5.10-1build1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4810693Z libepoxy0 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4811017Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4811535Z libfontconfig1 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4812091Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4812633Z libfreetype6 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4813151Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.4).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4813714Z libgbm1 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4814308Z libgdk-pixbuf-2.0-0 is already the newest version (2.42.10+dfsg-3ubuntu3.3).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4815067Z libgdk-pixbuf-2.0-0 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4815650Z libgstreamer1.0-0 is already the newest version (1.24.2-1ubuntu0.1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4816198Z libgstreamer1.0-0 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4816737Z libharfbuzz0b is already the newest version (8.3.0-2build2).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4817245Z libharfbuzz0b set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4817796Z libjpeg-turbo8 is already the newest version (2.1.5-2ubuntu2).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4818349Z libjpeg-turbo8 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4818879Z liblcms2-2 is already the newest version (2.14-2ubuntu0.1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4819373Z liblcms2-2 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4819911Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4820439Z libpango-1.0-0 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4821018Z libpangocairo-1.0-0 is already the newest version (1.52.1+ds-1build1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4821856Z libpangocairo-1.0-0 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4822434Z libpng16-16t64 is already the newest version (1.6.43-5ubuntu0.7).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4822962Z libpng16-16t64 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4823507Z libwayland-client0 is already the newest version (1.22.0-2.1build1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4824045Z libwayland-client0 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4824614Z libwayland-egl1 is already the newest version (1.22.0-2.1build1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4825361Z libwayland-egl1 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4825874Z libwebp7 is already the newest version (1.3.2-0.4build3).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4826349Z libwebp7 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4826862Z libwebpdemux2 is already the newest version (1.3.2-0.4build3).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4827371Z libwebpdemux2 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4827900Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4828399Z libx11-6 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4828926Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4829441Z libxkbcommon0 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4830020Z libxml2 is already the newest version (2.9.14+dfsg-1.3ubuntu3.10).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4830537Z libxml2 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4831102Z libxslt1.1 is already the newest version (1.1.39-0exp1ubuntu0.24.04.3).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4831643Z libxslt1.1 set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4832496Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4833196Z fonts-liberation is already the newest version (1:2.1.5-3).
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4833726Z fonts-liberation set to manually installed.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4834249Z The following additional packages will be installed:
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4834795Z   gir1.2-glib-2.0 glib-networking glib-networking-common
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4835592Z   glib-networking-services gsettings-desktop-schemas libaa1 libabsl20220623t64
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4836428Z   libass9 libasyncns0 libavc1394-0 libavcodec60 libavfilter9 libavformat60
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4837113Z   libavtp0 libavutil58 libblas3 libbluray2 libbs2b0 libcaca0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4837764Z   libcairo-script-interpreter2 libcdparanoia0 libchromaprint1 libcjson1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4838452Z   libcodec2-1.2 libdav1d7 libdc1394-25 libdca0 libde265-0 libdecor-0-0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4839105Z   libdirectfb-1.7-7t64 libdv4t64 libdvdnav4 libdvdread8t64 libegl-mesa0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4839769Z   libegl1 libfaad2 libflac12t64 libfluidsynth3 libfreeaptx0 libgav1-1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4840394Z   libglib2.0-bin libglib2.0-data libgme0 libgraphene-1.0-0 libgsm1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4841050Z   libgssdp-1.6-0 libgstreamer-plugins-good1.0-0 libgtk-4-common libgupnp-1.6-0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4841741Z   libgupnp-igd-1.6-0 libhwy1t64 libiec61883-0 libimath-3-1-29t64
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4842362Z   libinstpatch-1.0-2 libjack-jackd2-0 libjxl0.7 liblapack3 liblc3-1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4842824Z   libldacbt-enc2 liblilv-0-0 liblrdf0 libltc11 libmbedcrypto7t64 libmfx1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4843216Z   libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0 libmpcdec6
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4843576Z   libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64 libmysofa1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4843959Z   libneon27t64 libnice10 libopenal-data libopenal1 libopenexr-3-1-30
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4844320Z   libopenh264-7 libopenmpt0t64 libopenni2-0 liborc-0.4-0t64
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4845148Z   libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3 libpostproc57
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4845830Z   libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0 libraw1394-11
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4846425Z   librist4 librsvg2-2 librubberband2 libsamplerate0 libsbc1 libsdl2-2.0-0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4846840Z   libsecret-common libserd-0-0 libshine3 libshout3 libsndfile1 libsndio7.0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4847240Z   libsord-0-0 libsoundtouch1 libsoup-3.0-0 libsoup-3.0-common libsoxr0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4847648Z   libspa-0.2-modules libspandsp2t64 libspeex1 libsphinxbase3t64 libsratom-0-0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4848382Z   libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4 libsvtav1enc1d1 libswresample4
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4848808Z   libswscale7 libtag1v5 libtag1v5-vanilla libtheora0 libtwolame0 libudfread0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4849219Z   libunibreak5 libv4l-0t64 libv4lconvert0t64 libva-drm2 libva-x11-2 libva2
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4849618Z   libvdpau1 libvidstab1.1 libvisual-0.4-0 libvo-aacenc0 libvo-amrwbenc0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4850043Z   libvorbisenc2 libvpl2 libwavpack1 libwebrtc-audio-processing1 libwildmidi2
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4850469Z   libx265-199 libxcb-xkb1 libxkbcommon-x11-0 libxvidcore4 libyuv0 libzbar0t64
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4850883Z   libzimg2 libzix-0-0 libzvbi-common libzvbi0t64 libzxing3 ocl-icd-libopencl1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4851288Z   session-migration timgm6mb-soundfont xfonts-encodings xfonts-utils
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4851576Z   xserver-common
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4851771Z Suggested packages:
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4852070Z   frei0r-plugins gvfs libcuda1 libnvcuvid1 libnvidia-encode1 libbluray-bdj
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4852477Z   libdirectfb-extra libdv-bin oss-compat libdvdcss2 low-memory-monitor
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4852893Z   libvisual-0.4-plugins jackd2 liblrdf0-dev libportaudio2 opus-tools pipewire
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4853308Z   pulseaudio raptor2-utils libraw1394-doc librsvg2-bin serdi sndiod sordi
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4853683Z   speex libwildmidi-config opencl-icd fluid-soundfont-gm
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4854063Z Recommended packages:
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4854337Z   fonts-ipafont-mincho fonts-tlwg-loma gstreamer1.0-x libaacs0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4854711Z   default-libdecor-0-plugin-1 | libdecor-0-plugin-1 gstreamer1.0-gl
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4855370Z   libgtk-4-bin librsvg2-common libgtk-4-media-gstreamer libpipewire-0.3-common
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4855824Z   pocketsphinx-en-us va-driver-all | va-driver vdpau-driver-all | vdpau-driver
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.4856171Z   libmagickcore-6.q16-7-extra xfonts-base
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5376040Z The following NEW packages will be installed:
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5376803Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5377636Z   fonts-wqy-zenhei glib-networking glib-networking-common
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5378372Z   glib-networking-services gsettings-desktop-schemas gstreamer1.0-libav
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5379325Z   gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5380256Z   libaa1 libabsl20220623t64 libass9 libasyncns0 libavc1394-0 libavcodec60
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5381059Z   libavfilter9 libavformat60 libavif16 libavtp0 libavutil58 libblas3
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5381919Z   libbluray2 libbs2b0 libcaca0 libcairo-script-interpreter2 libcdparanoia0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5382772Z   libchromaprint1 libcjson1 libcodec2-1.2 libdav1d7 libdc1394-25 libdca0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5383564Z   libde265-0 libdecor-0-0 libdirectfb-1.7-7t64 libdv4t64 libdvdnav4
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5384320Z   libdvdread8t64 libegl-mesa0 libegl1 libevent-2.1-7t64 libfaad2 libflac12t64
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5385205Z   libflite1 libfluidsynth3 libfreeaptx0 libgav1-1 libgles2 libgme0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5385927Z   libgraphene-1.0-0 libgsm1 libgssdp-1.6-0 libgstreamer-gl1.0-0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5386668Z   libgstreamer-plugins-bad1.0-0 libgstreamer-plugins-base1.0-0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5387457Z   libgstreamer-plugins-good1.0-0 libgtk-4-1 libgtk-4-common libgupnp-1.6-0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5388288Z   libgupnp-igd-1.6-0 libharfbuzz-icu0 libhwy1t64 libhyphen0 libiec61883-0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5389149Z   libimath-3-1-29t64 libinstpatch-1.0-2 libjack-jackd2-0 libjxl0.7 liblapack3
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5389981Z   liblc3-1 libldacbt-enc2 liblilv-0-0 liblrdf0 libltc11 libmanette-0.2-0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5390930Z   libmbedcrypto7t64 libmfx1 libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5391860Z   libmpcdec6 libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5392624Z   libmysofa1 libneon27t64 libnice10 libopenal-data libopenal1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5393675Z   libopenexr-3-1-30 libopenh264-7 libopenmpt0t64 libopenni2-0 libopus0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5394405Z   liborc-0.4-0t64 libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5395958Z   libpostproc57 libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5396725Z   libraw1394-11 librist4 librsvg2-2 librubberband2 libsamplerate0 libsbc1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5397506Z   libsdl2-2.0-0 libsecret-1-0 libsecret-common libserd-0-0 libshine3 libshout3
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5398241Z   libsndfile1 libsndio7.0 libsord-0-0 libsoundtouch1 libsoup-3.0-0
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5398901Z   libsoup-3.0-common libsoxr0 libspa-0.2-modules libspandsp2t64 libspeex1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5399596Z   libsphinxbase3t64 libsratom-0-0 libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5400337Z   libsvtav1enc1d1 libswresample4 libswscale7 libtag1v5 libtag1v5-vanilla
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5401034Z   libtheora0 libtwolame0 libudfread0 libunibreak5 libv4l-0t64
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5401730Z   libv4lconvert0t64 libva-drm2 libva-x11-2 libva2 libvdpau1 libvidstab1.1
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5402477Z   libvisual-0.4-0 libvo-aacenc0 libvo-amrwbenc0 libvorbisenc2 libvpl2 libvpx9
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5403147Z   libwavpack1 libwayland-server0 libwebrtc-audio-processing1 libwildmidi2
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5403834Z   libwoff1 libx264-164 libx265-199 libxcb-xkb1 libxkbcommon-x11-0 libxvidcore4
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5404507Z   libyuv0 libzbar0t64 libzimg2 libzix-0-0 libzvbi-common libzvbi0t64 libzxing3
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5405781Z   ocl-icd-libopencl1 session-migration timgm6mb-soundfont xfonts-cyrillic
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5406359Z   xfonts-encodings xfonts-scalable xfonts-utils
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5406816Z The following packages will be upgraded:
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5407304Z   gir1.2-glib-2.0 libglib2.0-0t64 libglib2.0-bin libglib2.0-data
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5407737Z   xserver-common xvfb
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5596367Z 6 upgraded, 181 newly installed, 0 to remove and 93 not upgraded.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5597002Z Need to get 117 MB of archives.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5597525Z After this operation, 364 MB of additional disk space will be used.
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:41.5598120Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:38:42.3922694Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:40:04.8786730Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-data all 2.80.0-6ubuntu3.10 [50.2 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:40:06.6324417Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-bin amd64 2.80.0-6ubuntu3.10 [97.9 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:40:09.1269531Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gir1.2-glib-2.0 amd64 2.80.0-6ubuntu3.10 [183 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:40:14.5879952Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-0t64 amd64 2.80.0-6ubuntu3.10 [1548 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:40:50.8151509Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:43:02.0295642Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:43:05.2824797Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:44:15.7422039Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:46:55.4070385Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libproxy1v5 amd64 0.5.4-4build1 [26.5 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:46:56.5474649Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking-common all 2.80.0-1build1 [6702 B]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:46:57.0654171Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking-services amd64 2.80.0-1build1 [12.8 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:46:58.1018771Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 session-migration amd64 0.3.9build1 [9034 B]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:46:58.6800743Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gsettings-desktop-schemas all 46.1-0ubuntu1 [35.6 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:46:59.8845034Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking amd64 2.80.0-1build1 [64.1 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:47:01.6727480Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva2 amd64 2.20.0-2ubuntu0.2 [66.4 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:47:03.6488194Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva-drm2 amd64 2.20.0-2ubuntu0.2 [7124 B]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:47:04.2000646Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva-x11-2 amd64 2.20.0-2ubuntu0.2 [12.0 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:47:04.8565913Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvdpau1 amd64 1.5-2build1 [27.8 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:47:05.8937852Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libvpl2 amd64 2023.3.0-1build1 [99.8 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:47:08.4925902Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 ocl-icd-libopencl1 amd64 2.3.2-1build1 [38.5 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:47:10.0367255Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavutil58 amd64 7:6.1.1-3ubuntu5 [401 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:47:18.3814072Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libcodec2-1.2 amd64 1.2.0-2build1 [8998 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:50:39.8438226Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdav1d7 amd64 1.4.1-1build1 [604 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:50:51.5702037Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgsm1 amd64 1.0.22-1build1 [27.8 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:50:52.9710927Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libhwy1t64 amd64 1.0.7-8.1build1 [584 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:51:04.9676496Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libjxl0.7 amd64 0.7.0-10.2ubuntu6.1 [1001 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:51:24.1169675Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libmp3lame0 amd64 3.100-6build1 [142 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:51:27.1647252Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libopus0 amd64 1.4-1build1 [208 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:51:31.3153891Z Get:31 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librav1e0 amd64 0.7.1-2 [1022 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:51:50.4633646Z Get:32 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 librsvg2-2 amd64 2.58.0+dfsg-1ubuntu0.1 [2141 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:52:29.8582738Z Get:33 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libshine3 amd64 3.1.1-2build1 [23.2 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:52:30.8887943Z Get:34 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libspeex1 amd64 1.2.1-2ubuntu2.24.04.1 [59.6 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:52:32.5712802Z Get:35 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsvtav1enc1d1 amd64 1.7.0+dfsg-2build1 [2425 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:53:17.8996854Z Get:36 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsoxr0 amd64 0.1.3-4build3 [80.0 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:53:19.8691480Z Get:37 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libswresample4 amd64 7:6.1.1-3ubuntu5 [63.8 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:53:21.4371336Z Get:38 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtheora0 amd64 1.1.1+dfsg.1-16.1build3 [211 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:53:25.9072910Z Get:39 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtwolame0 amd64 0.4.0-2build3 [52.3 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:53:27.4860364Z Get:40 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvorbisenc2 amd64 1.3.7-1build3 [80.8 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:53:29.2392141Z Get:41 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libvpx9 amd64 1.14.0-1ubuntu2.3 [1143 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:53:50.2911672Z Get:42 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx264-164 amd64 2:0.164.3108+git31e19f9-1 [604 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:54:01.8259995Z Get:43 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx265-199 amd64 3.5-2build1 [1226 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:54:24.3979693Z Get:44 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libxvidcore4 amd64 2:1.3.7-1build1 [219 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:54:29.0190128Z Get:45 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi-common all 0.2.42-2 [42.4 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:54:30.3924586Z Get:46 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi0t64 amd64 0.2.42-2 [261 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:54:35.9046394Z Get:47 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavcodec60 amd64 7:6.1.1-3ubuntu5 [5851 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:56:30.6892371Z Get:48 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libunibreak5 amd64 5.1-2build1 [25.0 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:56:31.8511245Z Get:49 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libass9 amd64 1:0.17.1-2build1 [104 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:56:34.3886078Z Get:50 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libudfread0 amd64 1.1.2-1build1 [19.0 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:56:35.3723388Z Get:51 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libbluray2 amd64 1:1.3.4-1build1 [159 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:56:38.7001843Z Get:52 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libchromaprint1 amd64 1.5.1-5 [30.5 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:56:39.6885456Z Get:53 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgme0 amd64 0.6.3-7build1 [134 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:56:42.8485784Z Get:54 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libmpg123-0t64 amd64 1.32.5-1ubuntu1.1 [169 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:56:46.6502581Z Get:55 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libopenmpt0t64 amd64 0.7.3-1.1build3 [647 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:56:59.4535198Z Get:56 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libcjson1 amd64 1.7.17-1 [24.8 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:57:00.3830363Z Get:57 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libmbedcrypto7t64 amd64 2.28.8-1 [209 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:57:05.1033609Z Get:58 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librist4 amd64 0.2.10+dfsg-2 [74.9 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:57:06.9448733Z Get:59 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsrt1.5-gnutls amd64 1.5.3-1build2 [316 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:57:13.3026950Z Get:60 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libssh-gcrypt-4 amd64 0.10.6-2ubuntu0.5 [226 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:57:18.5432894Z Get:61 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavformat60 amd64 7:6.1.1-3ubuntu5 [1153 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:57:40.9437459Z Get:62 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libbs2b0 amd64 3.1.0+dfsg-7build1 [10.6 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-22T23:57:41.8981934Z Get:63 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libflite1 amd64 2.2-6build3 [13.6 MB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:02:24.7241536Z Get:64 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libserd-0-0 amd64 0.32.2-1 [43.6 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:02:26.1016249Z Get:65 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzix-0-0 amd64 0.4.2-2build1 [23.6 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:02:26.8350312Z Get:66 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsord-0-0 amd64 0.16.16-2build1 [15.8 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:02:27.5740974Z Get:67 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsratom-0-0 amd64 0.6.16-1build1 [17.3 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:02:28.4374798Z Get:68 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 liblilv-0-0 amd64 0.24.22-1build1 [41.0 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:02:29.4377140Z Get:69 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libmysofa1 amd64 1.3.2+dfsg-2ubuntu2 [1158 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:02:49.1377607Z Get:70 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libplacebo338 amd64 6.338.2-2build1 [2654 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:03:39.6687632Z Get:71 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libblas3 amd64 3.12.0-3build1.1 [238 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:03:44.9737126Z Get:72 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 liblapack3 amd64 3.12.0-3build1.1 [2646 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:06:21.0217030Z Ign:72 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 liblapack3 amd64 3.12.0-3build1.1
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:06:21.5813809Z Get:73 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libasyncns0 amd64 0.8-6build4 [11.3 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:06:22.4275649Z Get:74 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libflac12t64 amd64 1.4.3+ds-2.1ubuntu2 [197 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:06:26.8764423Z Get:75 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libsndfile1 amd64 1.2.2-1ubuntu5.24.04.1 [209 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:06:31.3014844Z Get:76 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libpulse0 amd64 1:16.1+dfsg1-2ubuntu10.1 [292 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:06:37.6821470Z Get:77 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsphinxbase3t64 amd64 0.8+5prealpha+1-17build2 [126 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:06:40.4669618Z Get:78 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libpocketsphinx3 amd64 0.8.0+real5prealpha+1-15ubuntu5 [133 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:06:43.9262855Z Get:79 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libpostproc57 amd64 7:6.1.1-3ubuntu5 [49.9 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:06:45.5176381Z Get:80 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libsamplerate0 amd64 0.2.2-4build1 [1344 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:07:12.4323822Z Get:81 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librubberband2 amd64 3.3.0+dfsg-2build1 [130 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:07:15.5908709Z Get:82 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libswscale7 amd64 7:6.1.1-3ubuntu5 [193 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:07:19.9119619Z Get:83 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libvidstab1.1 amd64 1.1.0-2build1 [38.5 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:07:21.3770838Z Get:84 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzimg2 amd64 3.0.5+ds1-1build1 [254 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:07:26.8623337Z Get:85 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavfilter9 amd64 7:6.1.1-3ubuntu5 [4235 kB]
+Browser webkit	Install selected browser for Playwright	2026-10-23T00:08:30.0815145Z ##[error]The operation was canceled.
+Browser webkit	Stop R20 browser environment	﻿2026-10-23T00:08:30.0887423Z ##[group]Run npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:30.0887835Z ^[[36;1mnpm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop^[[0m
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:30.0941940Z shell: /usr/bin/bash -e {0}
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:30.0942160Z env:
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:30.0942326Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:30.0942586Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:30.0942852Z   CIM_R20_BROWSER: webkit
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:30.0943036Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:30.0943217Z   CIM_R20_PHP: 8.5
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:30.0943381Z   CIM_PLUGIN_VERSION: 1.0.1
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:30.0943560Z ##[endgroup]
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:32.3217502Z ✖ Environment not initialized. Run `wp-env start` first.
+Browser webkit	Stop R20 browser environment	2026-10-23T00:08:32.3311382Z ##[error]Process completed with exit code 1.
+Browser webkit	Post Check out repository	﻿2026-10-23T00:08:32.3413413Z Post job cleanup.
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4108736Z [command]/usr/bin/git version
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4149225Z git version 2.55.0
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4181557Z Temporarily overriding HOME='/home/runner/work/_temp/2f637d71-9f29-4694-8d63-e361dd7edac5' before making global git config changes
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4182644Z Adding repository directory to the temporary git global config as a safe directory
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4187249Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Code-in-Motion/Code-in-Motion
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4219884Z Removing SSH command configuration
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4225979Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4256361Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4465160Z Removing HTTP extra header
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4470105Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4508627Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4730184Z Removing includeIf entries pointing to credentials config files
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4735754Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4763912Z includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4764856Z includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4765798Z includeif.gitdir:/github/workspace/.git.path
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4766401Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4772627Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4796915Z /home/runner/work/_temp/git-credentials-c0771a3b-99fe-4a5b-9a69-6d364a7b3b89.config
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4806162Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-c0771a3b\-99fe\-4a5b\-9a69\-6d364a7b3b89\.config
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4852129Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4876724Z /home/runner/work/_temp/git-credentials-c0771a3b-99fe-4a5b-9a69-6d364a7b3b89.config
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4886507Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-c0771a3b\-99fe\-4a5b\-9a69\-6d364a7b3b89\.config
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4923828Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4948371Z /github/runner_temp/git-credentials-c0771a3b-99fe-4a5b-9a69-6d364a7b3b89.config
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4955315Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-c0771a3b\-99fe\-4a5b\-9a69\-6d364a7b3b89\.config
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.4988732Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.5012456Z /github/runner_temp/git-credentials-c0771a3b-99fe-4a5b-9a69-6d364a7b3b89.config
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.5020128Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-c0771a3b\-99fe\-4a5b\-9a69\-6d364a7b3b89\.config
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.5054687Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Browser webkit	Post Check out repository	2026-10-23T00:08:32.5248466Z Removing credentials config '/home/runner/work/_temp/git-credentials-c0771a3b-99fe-4a5b-9a69-6d364a7b3b89.config'
+Browser webkit	Complete job	﻿2026-10-23T00:08:32.5377272Z Cleaning up orphan processes
+Browser webkit	Complete job	2026-10-23T00:08:32.5550357Z Terminate orphan process: pid (2320) (npm exec playwright install --with-deps webkit)
+Browser webkit	Complete job	2026-10-23T00:08:32.5576916Z Terminate orphan process: pid (2332) (sh)
+Browser webkit	Complete job	2026-10-23T00:08:32.5609484Z Terminate orphan process: pid (2333) (node)

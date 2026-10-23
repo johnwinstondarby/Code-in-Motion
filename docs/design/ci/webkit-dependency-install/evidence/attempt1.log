@@ -1,0 +1,605 @@
+Browser webkit	UNKNOWN STEP	﻿2026-10-22T21:43:53.2908669Z Current runner version: '2.338.0'
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2933784Z ##[group]Runner Image Provisioner
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2934692Z Hosted Compute Agent
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2935420Z Version: 20261012.601
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2936324Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2937157Z Build Date: 2026-10-12T17:48:21Z
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2937891Z Worker ID: {981b47f4-5eec-4f81-881b-25e078ce6927}
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2938680Z Region: westus
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2939318Z Cloud: Azure
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2939861Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2941433Z ##[group]Operating System
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2942128Z Ubuntu
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2942705Z 24.04.5
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2943296Z LTS
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2943826Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2944373Z ##[group]Runner Image
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2945096Z Image: ubuntu-24.04
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2945703Z Version: 20261012.334.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2947630Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2949232Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2950310Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2951475Z ##[group]GITHUB_TOKEN Permissions
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2953518Z Contents: read
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2954177Z Metadata: read
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2954938Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2957474Z Secret source: Actions
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2958523Z Cache mode: write
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.2959310Z Prepare workflow directory
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.3345549Z Prepare all required actions
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.3412570Z Getting action download info
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.6958251Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.8051175Z Download action repository 'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020' (SHA:820762786026740c76f36085b0efc47a31fe5020)
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:53.9951357Z Complete job name: Browser webkit
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0821404Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0822515Z with:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0823012Z   repository: johnwinstondarby/Code-in-Motion
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0827224Z   token: ***
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0827674Z   ssh-strict: true
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0828128Z   ssh-user: git
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0828584Z   persist-credentials: true
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0829077Z   clean: true
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0829528Z   sparse-checkout-cone-mode: true
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0830065Z   fetch-depth: 1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0830504Z   fetch-tags: false
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0830956Z   show-progress: true
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0831408Z   lfs: false
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0831829Z   submodules: false
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0832294Z   set-safe-directory: true
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0832814Z   allow-unsafe-pr-checkout: false
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.0833617Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.1876381Z Syncing repository: johnwinstondarby/Code-in-Motion
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.1878524Z ##[group]Getting Git version info
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.1879375Z Working directory is '/home/runner/work/Code-in-Motion/Code-in-Motion'
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.1880545Z [command]/usr/bin/git version
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.1969341Z git version 2.55.0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.1995258Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2007905Z Temporarily overriding HOME='/home/runner/work/_temp/bb5e4ace-202b-438d-9c02-31a2c1b716d5' before making global git config changes
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2010540Z Adding repository directory to the temporary git global config as a safe directory
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2014617Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Code-in-Motion/Code-in-Motion
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2069430Z Deleting the contents of '/home/runner/work/Code-in-Motion/Code-in-Motion'
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2073290Z ##[group]Determining repository object format
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2075337Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2076928Z ##[group]Initializing the repository
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2081161Z [command]/usr/bin/git init /home/runner/work/Code-in-Motion/Code-in-Motion
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2209183Z hint: Using 'master' as the name for the initial branch. This default branch name
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2210783Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2211833Z hint: to use in all of your new repositories, which will suppress this warning,
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2212608Z hint: call:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2213312Z hint:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2214214Z hint: 	git config --global init.defaultBranch <name>
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2215281Z hint:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2216669Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2218151Z hint: 'development'. The just-created branch can be renamed via this command:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2219281Z hint:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2219723Z hint: 	git branch -m <name>
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2220215Z hint:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2220864Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2222020Z Initialized empty Git repository in /home/runner/work/Code-in-Motion/Code-in-Motion/.git/
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2226507Z [command]/usr/bin/git remote add origin https://github.com/johnwinstondarby/Code-in-Motion
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2289505Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2290357Z ##[group]Disabling automatic garbage collection
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2293885Z [command]/usr/bin/git config --local gc.auto 0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2330121Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2331442Z ##[group]Setting up auth
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2332142Z Removing SSH command configuration
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2337356Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2374052Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2800320Z Removing HTTP extra header
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2807381Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.2843903Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3067427Z Removing includeIf entries pointing to credentials config files
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3073473Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3120655Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3352349Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-495af933-76ab-497f-b371-a18f0e2a03ef.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3393772Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path /home/runner/work/_temp/git-credentials-495af933-76ab-497f-b371-a18f0e2a03ef.config
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3428613Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-495af933-76ab-497f-b371-a18f0e2a03ef.config
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3475155Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-495af933-76ab-497f-b371-a18f0e2a03ef.config
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3512409Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-495af933-76ab-497f-b371-a18f0e2a03ef.config
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3546908Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3547687Z ##[group]Fetching the repository
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:54.3568201Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +33044288aea307b7cdfe7b959d87310879a36bbc:refs/remotes/origin/main
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1617616Z From https://github.com/johnwinstondarby/Code-in-Motion
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1619921Z  * [new ref]         33044288aea307b7cdfe7b959d87310879a36bbc -> origin/main
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1626736Z [command]/usr/bin/git branch --list --remote origin/main
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1657250Z   origin/main
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1667892Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1695433Z 33044288aea307b7cdfe7b959d87310879a36bbc
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1701567Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1703501Z ##[group]Determining the checkout info
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1705361Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1707148Z [command]/usr/bin/git sparse-checkout disable
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1768204Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1804663Z ##[group]Checking out the ref
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.1808823Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.3993217Z Switched to a new branch 'main'
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.3999249Z branch 'main' set up to track 'origin/main'.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4011834Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4064119Z [command]/usr/bin/git log -1 --format=%H
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4093908Z 33044288aea307b7cdfe7b959d87310879a36bbc
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4356573Z ##[group]Run echo "CIM_R20_CONFIG=r20-wp-env.json" >> "${GITHUB_ENV}"
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4357470Z ^[[36;1mecho "CIM_R20_CONFIG=r20-wp-env.json" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4358279Z ^[[36;1mecho "CIM_R20_ARTIFACT_DIR=${RUNNER_TEMP}/cim-r20-artifact" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4359035Z ^[[36;1mecho "CIM_R20_BROWSER=webkit" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4359675Z ^[[36;1mecho "CIM_R20_WORDPRESS=7.1.1" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4360290Z ^[[36;1mecho "CIM_R20_PHP=8.5" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4653007Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4653952Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4903191Z ##[group]Run actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4903811Z with:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4904199Z   node-version-file: .nvmrc
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4904647Z   package-manager-cache: false
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4905109Z   check-latest: false
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4908211Z   token: ***
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4908595Z env:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4908963Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4909490Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4910028Z   CIM_R20_BROWSER: webkit
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4910431Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4910834Z   CIM_R20_PHP: 8.5
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.4911202Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.6131548Z Node version file is not JSON file
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.6134046Z Resolved .nvmrc as 22.23.2
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:56.6152776Z Attempting to download 22.23.2...
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:57.3650889Z Acquiring 22.23.2 - x64 from https://github.com/actions/node-versions/releases/download/22.23.2-30508424155/node-22.23.2-linux-x64.tar.gz
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:57.8603474Z Extracting ...
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:57.8731031Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/4a965199-9fe1-4b3b-9967-98c09fbb75c2 -f /home/runner/work/_temp/4e58d06b-e5a4-4b74-8e6c-5a22420a1139
+Browser webkit	UNKNOWN STEP	2026-10-22T21:43:59.1012491Z Adding to the cache ...
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.1261625Z ##[group]Environment details
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3552571Z node: v22.23.2
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3553074Z npm: 10.9.8
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3553420Z yarn: 1.22.22
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3554123Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3728955Z ##[group]Run npm ci --ignore-scripts --no-audit --no-fund
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3729454Z ^[[36;1mnpm ci --ignore-scripts --no-audit --no-fund^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3798580Z shell: /usr/bin/bash -e {0}
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3798867Z env:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3799092Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3799480Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3800136Z   CIM_R20_BROWSER: webkit
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3800390Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3800638Z   CIM_R20_PHP: 8.5
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:01.3800867Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:03.7056969Z npm warn deprecated @octokit/webhooks-types@7.6.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:05.4053433Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.1845503Z 
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.1846716Z added 393 packages in 7s
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2566560Z ##[group]Run set -euo pipefail
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2566969Z ^[[36;1mset -euo pipefail^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2567255Z ^[[36;1mnpm run build:wordpress^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2567769Z ^[[36;1mVERSION="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2568397Z ^[[36;1mecho "CIM_PLUGIN_VERSION=${VERSION}" >> "${GITHUB_ENV}"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2633530Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2633975Z env:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2634220Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2634643Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2635050Z   CIM_R20_BROWSER: webkit
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2635320Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2635588Z   CIM_R20_PHP: 8.5
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.2635823Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.3684706Z 
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.3686010Z > code-in-motion@1.0.1 build:wordpress
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.3686911Z > node tools/build-wordpress-release.mjs
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:08.3687301Z 
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.4946622Z PASS: R13 WordPress release build (99 staged file(s), Node 22.23.2, code-in-motion-1.0.1.zip, SHA-256 d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a)
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5430459Z ##[group]Run set -euo pipefail
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5430812Z ^[[36;1mset -euo pipefail^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5431137Z ^[[36;1mZIP_NAME="code-in-motion-${CIM_PLUGIN_VERSION}.zip"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5431471Z ^[[36;1m^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5431689Z ^[[36;1mmkdir -p "${CIM_R20_ARTIFACT_DIR}"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5432045Z ^[[36;1mcp "dist/${ZIP_NAME}" "${CIM_R20_ARTIFACT_DIR}/${ZIP_NAME}"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5432507Z ^[[36;1mcp "dist/${ZIP_NAME}.sha256" "${CIM_R20_ARTIFACT_DIR}/${ZIP_NAME}.sha256"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5433004Z ^[[36;1m(cd "${CIM_R20_ARTIFACT_DIR}" && sha256sum --check "${ZIP_NAME}.sha256")^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5433368Z ^[[36;1m^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5433579Z ^[[36;1mnode --input-type=module <<'NODE'^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5433914Z ^[[36;1mimport { writeFile } from 'node:fs/promises';^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5434211Z ^[[36;1m^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5434397Z ^[[36;1mconst config = {^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5434745Z ^[[36;1m  $schema: 'https://schemas.wp.org/trunk/wp-env.json',^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5435185Z ^[[36;1m  core: `WordPress/WordPress#${process.env.CIM_R20_WORDPRESS}`,^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5435582Z ^[[36;1m  phpVersion: process.env.CIM_R20_PHP,^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5435870Z ^[[36;1m  plugins: [],^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5436285Z ^[[36;1m  port: 8894,^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5436512Z ^[[36;1m  testsEnvironment: false,^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5436761Z ^[[36;1m  config: {^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5436969Z ^[[36;1m    WP_DEBUG: true,^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5437207Z ^[[36;1m    SCRIPT_DEBUG: true^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5437440Z ^[[36;1m  },^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5437635Z ^[[36;1m  mappings: {^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5437951Z ^[[36;1m    'wp-content/r20-artifact': process.env.CIM_R20_ARTIFACT_DIR^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5438301Z ^[[36;1m  }^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5438483Z ^[[36;1m};^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5438657Z ^[[36;1m^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5439036Z ^[[36;1mawait writeFile(process.env.CIM_R20_CONFIG, `${JSON.stringify(config, null, 2)}\n`, 'utf8');^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5439675Z ^[[36;1mNODE^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5503717Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5504078Z env:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5504290Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5504658Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5505020Z   CIM_R20_BROWSER: webkit
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5505256Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5505486Z   CIM_R20_PHP: 8.5
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5505698Z   CIM_PLUGIN_VERSION: 1.0.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5506753Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.5679443Z code-in-motion-1.0.1.zip: OK
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6019105Z ##[group]Run npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6019787Z ^[[36;1mnpm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6084626Z shell: /usr/bin/bash -e {0}
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6084877Z env:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6085079Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6085436Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6085782Z   CIM_R20_BROWSER: webkit
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6086292Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6086526Z   CIM_R20_PHP: 8.5
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6086734Z   CIM_PLUGIN_VERSION: 1.0.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:09.6086961Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9756639Z 
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9757415Z added 3 packages in 2s
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9931589Z ##[group]Run npx playwright install --with-deps "${CIM_R20_BROWSER}"
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9932126Z ^[[36;1mnpx playwright install --with-deps "${CIM_R20_BROWSER}"^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9995503Z shell: /usr/bin/bash -e {0}
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9995796Z env:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9996280Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9996671Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9997075Z   CIM_R20_BROWSER: webkit
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9997342Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9997619Z   CIM_R20_PHP: 8.5
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9997860Z   CIM_PLUGIN_VERSION: 1.0.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:11.9998129Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:12.7680839Z Installing dependencies...
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:12.7745288Z Switching to root user to install dependencies...
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:12.8972472Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:12.9152228Z Get:3 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:12.9234229Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:12.9254186Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:12.9289362Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:12.9302394Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:12.9837090Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [571 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:12.9993475Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [633 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.0073834Z Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.4 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.1040532Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1400 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.1137479Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [310 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.1157720Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1706 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.1258379Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [342 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.1277737Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1805 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.1387996Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [411 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.2186511Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1146 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.2263388Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.2287069Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1222 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.2350701Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.2792586Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1713 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:13.2890696Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [392 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:17.7812439Z Fetched 12.5 MB in 1s (9767 kB/s)
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:18.7655722Z Reading package lists...
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:18.7905510Z Reading package lists...
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.0154185Z Building dependency tree...
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.0162343Z Reading state information...
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1827963Z libicu74 is already the newest version (74.2-1ubuntu3.1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1829560Z libatomic1 is already the newest version (14.2.0-4ubuntu2~24.04.1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1830770Z libatomic1 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1832063Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1833417Z libatk-bridge2.0-0t64 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1834615Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1836391Z libatk1.0-0t64 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1837508Z libcairo-gobject2 is already the newest version (1.18.0-3build1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1838506Z libcairo-gobject2 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1839479Z libcairo2 is already the newest version (1.18.0-3build1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1840356Z libcairo2 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1841296Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1842055Z libdbus-1-3 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1842656Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.2).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1843246Z libdrm2 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1843975Z libenchant-2-2 is already the newest version (2.3.3-2build2).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1844723Z libenchant-2-2 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1845153Z libepoxy0 is already the newest version (1.5.10-1build1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1845544Z libepoxy0 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1846164Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1846770Z libfontconfig1 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1847217Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1847645Z libfreetype6 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1848063Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.4).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1848509Z libgbm1 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1848972Z libgdk-pixbuf-2.0-0 is already the newest version (2.42.10+dfsg-3ubuntu3.3).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1849465Z libgdk-pixbuf-2.0-0 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1849923Z libgstreamer1.0-0 is already the newest version (1.24.2-1ubuntu0.1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1850368Z libgstreamer1.0-0 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1850789Z libharfbuzz0b is already the newest version (8.3.0-2build2).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1851185Z libharfbuzz0b set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1851615Z libjpeg-turbo8 is already the newest version (2.1.5-2ubuntu2).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1852025Z libjpeg-turbo8 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1852430Z liblcms2-2 is already the newest version (2.14-2ubuntu0.1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1852833Z liblcms2-2 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1853258Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1853671Z libpango-1.0-0 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1854123Z libpangocairo-1.0-0 is already the newest version (1.52.1+ds-1build1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1854783Z libpangocairo-1.0-0 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1855227Z libpng16-16t64 is already the newest version (1.6.43-5ubuntu0.7).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1855630Z libpng16-16t64 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1856365Z libwayland-client0 is already the newest version (1.22.0-2.1build1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1856807Z libwayland-client0 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1857245Z libwayland-egl1 is already the newest version (1.22.0-2.1build1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1857646Z libwayland-egl1 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1858035Z libwebp7 is already the newest version (1.3.2-0.4build3).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1858399Z libwebp7 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1858792Z libwebpdemux2 is already the newest version (1.3.2-0.4build3).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1859193Z libwebpdemux2 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1859641Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1860020Z libx11-6 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1860413Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1860795Z libxkbcommon0 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1861207Z libxml2 is already the newest version (2.9.14+dfsg-1.3ubuntu3.10).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1861604Z libxml2 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1862018Z libxslt1.1 is already the newest version (1.1.39-0exp1ubuntu0.24.04.3).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1862594Z libxslt1.1 set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1863084Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1863632Z fonts-liberation is already the newest version (1:2.1.5-3).
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1864037Z fonts-liberation set to manually installed.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1864440Z The following additional packages will be installed:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1864850Z   gir1.2-glib-2.0 glib-networking glib-networking-common
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1865354Z   glib-networking-services gsettings-desktop-schemas libaa1 libabsl20220623t64
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1866199Z   libass9 libasyncns0 libavc1394-0 libavcodec60 libavfilter9 libavformat60
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1866804Z   libavtp0 libavutil58 libblas3 libbluray2 libbs2b0 libcaca0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1867429Z   libcairo-script-interpreter2 libcdparanoia0 libchromaprint1 libcjson1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1867980Z   libcodec2-1.2 libdav1d7 libdc1394-25 libdca0 libde265-0 libdecor-0-0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1868521Z   libdirectfb-1.7-7t64 libdv4t64 libdvdnav4 libdvdread8t64 libegl-mesa0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1869015Z   libegl1 libfaad2 libflac12t64 libfluidsynth3 libfreeaptx0 libgav1-1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1869499Z   libglib2.0-bin libglib2.0-data libgme0 libgraphene-1.0-0 libgsm1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1870041Z   libgssdp-1.6-0 libgstreamer-plugins-good1.0-0 libgtk-4-common libgupnp-1.6-0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1870589Z   libgupnp-igd-1.6-0 libhwy1t64 libiec61883-0 libimath-3-1-29t64
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1871083Z   libinstpatch-1.0-2 libjack-jackd2-0 libjxl0.7 liblapack3 liblc3-1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1871629Z   libldacbt-enc2 liblilv-0-0 liblrdf0 libltc11 libmbedcrypto7t64 libmfx1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1872111Z   libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0 libmpcdec6
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1872584Z   libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64 libmysofa1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1873087Z   libneon27t64 libnice10 libopenal-data libopenal1 libopenexr-3-1-30
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1873557Z   libopenh264-7 libopenmpt0t64 libopenni2-0 liborc-0.4-0t64
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1874018Z   libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3 libpostproc57
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1874526Z   libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0 libraw1394-11
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1875066Z   librist4 librsvg2-2 librubberband2 libsamplerate0 libsbc1 libsdl2-2.0-0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1875600Z   libsecret-common libserd-0-0 libshine3 libshout3 libsndfile1 libsndio7.0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1876558Z   libsord-0-0 libsoundtouch1 libsoup-3.0-0 libsoup-3.0-common libsoxr0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1877172Z   libspa-0.2-modules libspandsp2t64 libspeex1 libsphinxbase3t64 libsratom-0-0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1877932Z   libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4 libsvtav1enc1d1 libswresample4
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1878481Z   libswscale7 libtag1v5 libtag1v5-vanilla libtheora0 libtwolame0 libudfread0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1879021Z   libunibreak5 libv4l-0t64 libv4lconvert0t64 libva-drm2 libva-x11-2 libva2
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1879548Z   libvdpau1 libvidstab1.1 libvisual-0.4-0 libvo-aacenc0 libvo-amrwbenc0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1880088Z   libvorbisenc2 libvpl2 libwavpack1 libwebrtc-audio-processing1 libwildmidi2
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1880641Z   libx265-199 libxcb-xkb1 libxkbcommon-x11-0 libxvidcore4 libyuv0 libzbar0t64
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1881193Z   libzimg2 libzix-0-0 libzvbi-common libzvbi0t64 libzxing3 ocl-icd-libopencl1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1881730Z   session-migration timgm6mb-soundfont xfonts-encodings xfonts-utils
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1882097Z   xserver-common
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1882322Z Suggested packages:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1882702Z   frei0r-plugins gvfs libcuda1 libnvcuvid1 libnvidia-encode1 libbluray-bdj
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1883242Z   libdirectfb-extra libdv-bin oss-compat libdvdcss2 low-memory-monitor
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1883791Z   libvisual-0.4-plugins jackd2 liblrdf0-dev libportaudio2 opus-tools pipewire
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1884340Z   pulseaudio raptor2-utils libraw1394-doc librsvg2-bin serdi sndiod sordi
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1884937Z   speex libwildmidi-config opencl-icd fluid-soundfont-gm
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1885287Z Recommended packages:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1885624Z   fonts-ipafont-mincho fonts-tlwg-loma gstreamer1.0-x libaacs0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1886274Z   default-libdecor-0-plugin-1 | libdecor-0-plugin-1 gstreamer1.0-gl
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1886865Z   libgtk-4-bin librsvg2-common libgtk-4-media-gstreamer libpipewire-0.3-common
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1887441Z   pocketsphinx-en-us va-driver-all | va-driver vdpau-driver-all | vdpau-driver
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.1887886Z   libmagickcore-6.q16-7-extra xfonts-base
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2566715Z The following NEW packages will be installed:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2567948Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2569202Z   fonts-wqy-zenhei glib-networking glib-networking-common
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2570363Z   glib-networking-services gsettings-desktop-schemas gstreamer1.0-libav
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2571709Z   gstreamer1.0-plugins-bad gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2573056Z   libaa1 libabsl20220623t64 libass9 libasyncns0 libavc1394-0 libavcodec60
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2574257Z   libavfilter9 libavformat60 libavif16 libavtp0 libavutil58 libblas3
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2575578Z   libbluray2 libbs2b0 libcaca0 libcairo-script-interpreter2 libcdparanoia0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2577098Z   libchromaprint1 libcjson1 libcodec2-1.2 libdav1d7 libdc1394-25 libdca0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2578287Z   libde265-0 libdecor-0-0 libdirectfb-1.7-7t64 libdv4t64 libdvdnav4
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2579520Z   libdvdread8t64 libegl-mesa0 libegl1 libevent-2.1-7t64 libfaad2 libflac12t64
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2580751Z   libflite1 libfluidsynth3 libfreeaptx0 libgav1-1 libgles2 libgme0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2581834Z   libgraphene-1.0-0 libgsm1 libgssdp-1.6-0 libgstreamer-gl1.0-0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2582733Z   libgstreamer-plugins-bad1.0-0 libgstreamer-plugins-base1.0-0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2583480Z   libgstreamer-plugins-good1.0-0 libgtk-4-1 libgtk-4-common libgupnp-1.6-0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2584319Z   libgupnp-igd-1.6-0 libharfbuzz-icu0 libhwy1t64 libhyphen0 libiec61883-0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2585129Z   libimath-3-1-29t64 libinstpatch-1.0-2 libjack-jackd2-0 libjxl0.7 liblapack3
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2586189Z   liblc3-1 libldacbt-enc2 liblilv-0-0 liblrdf0 libltc11 libmanette-0.2-0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2586777Z   libmbedcrypto7t64 libmfx1 libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2587319Z   libmpcdec6 libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2588061Z   libmysofa1 libneon27t64 libnice10 libopenal-data libopenal1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2589364Z   libopenexr-3-1-30 libopenh264-7 libopenmpt0t64 libopenni2-0 libopus0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2590229Z   liborc-0.4-0t64 libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2591122Z   libpostproc57 libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2592046Z   libraw1394-11 librist4 librsvg2-2 librubberband2 libsamplerate0 libsbc1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2592709Z   libsdl2-2.0-0 libsecret-1-0 libsecret-common libserd-0-0 libshine3 libshout3
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2593232Z   libsndfile1 libsndio7.0 libsord-0-0 libsoundtouch1 libsoup-3.0-0
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2593737Z   libsoup-3.0-common libsoxr0 libspa-0.2-modules libspandsp2t64 libspeex1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2594281Z   libsphinxbase3t64 libsratom-0-0 libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2594832Z   libsvtav1enc1d1 libswresample4 libswscale7 libtag1v5 libtag1v5-vanilla
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2595316Z   libtheora0 libtwolame0 libudfread0 libunibreak5 libv4l-0t64
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2595822Z   libv4lconvert0t64 libva-drm2 libva-x11-2 libva2 libvdpau1 libvidstab1.1
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2596525Z   libvisual-0.4-0 libvo-aacenc0 libvo-amrwbenc0 libvorbisenc2 libvpl2 libvpx9
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2597071Z   libwavpack1 libwayland-server0 libwebrtc-audio-processing1 libwildmidi2
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2598001Z   libwoff1 libx264-164 libx265-199 libxcb-xkb1 libxkbcommon-x11-0 libxvidcore4
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2599233Z   libyuv0 libzbar0t64 libzimg2 libzix-0-0 libzvbi-common libzvbi0t64 libzxing3
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2599849Z   ocl-icd-libopencl1 session-migration timgm6mb-soundfont xfonts-cyrillic
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2600315Z   xfonts-encodings xfonts-scalable xfonts-utils
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2600686Z The following packages will be upgraded:
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2601100Z   gir1.2-glib-2.0 libglib2.0-0t64 libglib2.0-bin libglib2.0-data
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2601452Z   xserver-common xvfb
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2814162Z 6 upgraded, 181 newly installed, 0 to remove and 93 not upgraded.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2814855Z Need to get 117 MB of archives.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2815315Z After this operation, 364 MB of additional disk space will be used.
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.2815839Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:44:19.9888603Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:45:22.8891972Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-data all 2.80.0-6ubuntu3.10 [50.2 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:45:24.1348790Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-bin amd64 2.80.0-6ubuntu3.10 [97.9 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:45:26.3364861Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gir1.2-glib-2.0 amd64 2.80.0-6ubuntu3.10 [183 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:45:29.8972143Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-0t64 amd64 2.80.0-6ubuntu3.10 [1548 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:45:58.4943562Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:47:35.4894368Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:47:37.6702542Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:48:28.6993871Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:29.4776673Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libproxy1v5 amd64 0.5.4-4build1 [26.5 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:30.5140094Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking-common all 2.80.0-1build1 [6702 B]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:31.2648823Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking-services amd64 2.80.0-1build1 [12.8 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:32.0347893Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 session-migration amd64 0.3.9build1 [9034 B]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:32.7619502Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gsettings-desktop-schemas all 46.1-0ubuntu1 [35.6 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:33.6915539Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 glib-networking amd64 2.80.0-1build1 [64.1 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:35.2876407Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva2 amd64 2.20.0-2ubuntu0.2 [66.4 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:36.9450525Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva-drm2 amd64 2.20.0-2ubuntu0.2 [7124 B]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:37.5803816Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva-x11-2 amd64 2.20.0-2ubuntu0.2 [12.0 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:38.2576462Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvdpau1 amd64 1.5-2build1 [27.8 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:39.3634324Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libvpl2 amd64 2023.3.0-1build1 [99.8 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:41.3227697Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 ocl-icd-libopencl1 amd64 2.3.2-1build1 [38.5 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:42.3039466Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavutil58 amd64 7:6.1.1-3ubuntu5 [401 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:50:49.3861936Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libcodec2-1.2 amd64 1.2.0-2build1 [8998 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:53:35.5119138Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdav1d7 amd64 1.4.1-1build1 [604 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:53:48.4734972Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgsm1 amd64 1.0.22-1build1 [27.8 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:53:49.4542696Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libhwy1t64 amd64 1.0.7-8.1build1 [584 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:54:02.9441327Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libjxl0.7 amd64 0.7.0-10.2ubuntu6.1 [1001 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:54:23.5625363Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libmp3lame0 amd64 3.100-6build1 [142 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:54:26.9265208Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libopus0 amd64 1.4-1build1 [208 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:54:31.7565208Z Get:31 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librav1e0 amd64 0.7.1-2 [1022 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:54:53.2377883Z Get:32 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 librsvg2-2 amd64 2.58.0+dfsg-1ubuntu0.1 [2141 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:55:38.1532683Z Get:33 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libshine3 amd64 3.1.1-2build1 [23.2 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:55:39.3177203Z Get:34 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libspeex1 amd64 1.2.1-2ubuntu2.24.04.1 [59.6 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:55:41.3701478Z Get:35 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsvtav1enc1d1 amd64 1.7.0+dfsg-2build1 [2425 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:56:34.1076928Z Get:36 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsoxr0 amd64 0.1.3-4build3 [80.0 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:56:36.5076347Z Get:37 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libswresample4 amd64 7:6.1.1-3ubuntu5 [63.8 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:56:38.1677434Z Get:38 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtheora0 amd64 1.1.1+dfsg.1-16.1build3 [211 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:56:43.8349393Z Get:39 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtwolame0 amd64 0.4.0-2build3 [52.3 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:56:45.7123584Z Get:40 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvorbisenc2 amd64 1.3.7-1build3 [80.8 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:56:48.1766576Z Get:41 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libvpx9 amd64 1.14.0-1ubuntu2.3 [1143 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:57:13.1680353Z Get:42 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx264-164 amd64 2:0.164.3108+git31e19f9-1 [604 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:57:26.1919064Z Get:43 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx265-199 amd64 3.5-2build1 [1226 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:57:52.6621989Z Get:44 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libxvidcore4 amd64 2:1.3.7-1build1 [219 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:57:58.6440947Z Get:45 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi-common all 0.2.42-2 [42.4 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:58:00.1521427Z Get:46 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi0t64 amd64 0.2.42-2 [261 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T21:58:06.2629344Z Get:47 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavcodec60 amd64 7:6.1.1-3ubuntu5 [5851 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:13.4175114Z Get:48 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libunibreak5 amd64 5.1-2build1 [25.0 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:14.7414841Z Get:49 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libass9 amd64 1:0.17.1-2build1 [104 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:17.5640998Z Get:50 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libudfread0 amd64 1.1.2-1build1 [19.0 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:18.5944420Z Get:51 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libbluray2 amd64 1:1.3.4-1build1 [159 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:22.7388197Z Get:52 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libchromaprint1 amd64 1.5.1-5 [30.5 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:24.1400863Z Get:53 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgme0 amd64 0.6.3-7build1 [134 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:27.7377059Z Get:54 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libmpg123-0t64 amd64 1.32.5-1ubuntu1.1 [169 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:32.0088226Z Get:55 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libopenmpt0t64 amd64 0.7.3-1.1build3 [647 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:46.8510551Z Get:56 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libcjson1 amd64 1.7.17-1 [24.8 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:48.1590050Z Get:57 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libmbedcrypto7t64 amd64 2.28.8-1 [209 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:53.4164080Z Get:58 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librist4 amd64 0.2.10+dfsg-2 [74.9 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:00:55.7510958Z Get:59 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsrt1.5-gnutls amd64 1.5.3-1build2 [316 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:01:03.1298257Z Get:60 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libssh-gcrypt-4 amd64 0.10.6-2ubuntu0.5 [226 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:01:08.5986656Z Get:61 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavformat60 amd64 7:6.1.1-3ubuntu5 [1153 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:01:33.4178124Z Get:62 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libbs2b0 amd64 3.1.0+dfsg-7build1 [10.6 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:01:34.2591510Z Get:63 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libflite1 amd64 2.2-6build3 [13.6 MB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:06:07.0005772Z Get:64 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libserd-0-0 amd64 0.32.2-1 [43.6 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:06:08.4135602Z Get:65 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzix-0-0 amd64 0.4.2-2build1 [23.6 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:06:09.4585659Z Get:66 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsord-0-0 amd64 0.16.16-2build1 [15.8 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:06:10.2770279Z Get:67 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsratom-0-0 amd64 0.6.16-1build1 [17.3 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:06:11.2120017Z Get:68 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 liblilv-0-0 amd64 0.24.22-1build1 [41.0 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:06:12.5053875Z Get:69 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libmysofa1 amd64 1.3.2+dfsg-2ubuntu2 [1158 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:06:34.3505356Z Get:70 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libplacebo338 amd64 6.338.2-2build1 [2654 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:07:25.9970610Z Get:71 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libblas3 amd64 3.12.0-3build1.1 [238 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:07:31.0262533Z Get:72 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 liblapack3 amd64 3.12.0-3build1.1 [2646 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:08:21.6545272Z Get:73 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libasyncns0 amd64 0.8-6build4 [11.3 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:08:22.4670636Z Get:74 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libflac12t64 amd64 1.4.3+ds-2.1ubuntu2 [197 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:08:26.6433796Z Get:75 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libsndfile1 amd64 1.2.2-1ubuntu5.24.04.1 [209 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:08:30.8291386Z Get:76 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libpulse0 amd64 1:16.1+dfsg1-2ubuntu10.1 [292 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:08:36.9700668Z Get:77 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsphinxbase3t64 amd64 0.8+5prealpha+1-17build2 [126 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:08:39.6578359Z Get:78 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libpocketsphinx3 amd64 0.8.0+real5prealpha+1-15ubuntu5 [133 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:08:43.0045210Z Get:79 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libpostproc57 amd64 7:6.1.1-3ubuntu5 [49.9 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:08:44.7087768Z Get:80 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libsamplerate0 amd64 0.2.2-4build1 [1344 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:09:09.6637771Z Get:81 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librubberband2 amd64 3.3.0+dfsg-2build1 [130 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:09:12.3835620Z Get:82 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libswscale7 amd64 7:6.1.1-3ubuntu5 [193 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:09:16.5643449Z Get:83 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libvidstab1.1 amd64 1.1.0-2build1 [38.5 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:09:17.7414894Z Get:84 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzimg2 amd64 3.0.5+ds1-1build1 [254 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:09:23.0297340Z Get:85 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavfilter9 amd64 7:6.1.1-3ubuntu5 [4235 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:10:39.3355375Z Get:86 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 liborc-0.4-0t64 amd64 1:0.4.38-1ubuntu0.1 [207 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:10:43.3103920Z Get:87 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgstreamer-plugins-base1.0-0 amd64 1.24.2-1ubuntu0.5 [862 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:10:59.0426195Z Get:88 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 gstreamer1.0-libav amd64 1.24.1-1build1 [103 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:01.3101176Z Get:89 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libcdparanoia0 amd64 3.10.2+debian-14build3 [48.5 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:02.4961164Z Get:90 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvisual-0.4-0 amd64 0.4.2-2build1 [115 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:05.1909102Z Get:91 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gstreamer1.0-plugins-base amd64 1.24.2-1ubuntu0.5 [721 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:18.0353485Z Get:92 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libaa1 amd64 1.4p5-51.1 [49.9 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:19.2708819Z Get:93 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libraw1394-11 amd64 2.1.2-2build3 [26.2 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:20.0965650Z Get:94 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libavc1394-0 amd64 0.5.4-5build3 [15.4 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:20.8757835Z Get:95 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libcaca0 amd64 0.99.beta20-4ubuntu0.2 [209 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:24.8988945Z Get:96 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libdv4t64 amd64 1.0.0-17.1build1 [63.2 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:26.5247989Z Get:97 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libgstreamer-plugins-good1.0-0 amd64 1.24.2-1ubuntu1.8 [34.3 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:27.6963032Z Get:98 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libiec61883-0 amd64 1.2.0-6build1 [24.5 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:28.7409789Z Get:99 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libshout3 amd64 2.4.6-1build2 [50.3 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:29.9783392Z Get:100 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtag1v5-vanilla amd64 1.13.1-1build1 [326 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:36.0483990Z Get:101 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtag1v5 amd64 1.13.1-1build1 [11.7 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:36.7657981Z Get:102 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libv4lconvert0t64 amd64 1.26.1-4build3 [87.6 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:38.7708658Z Get:103 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libv4l-0t64 amd64 1.26.1-4build3 [46.9 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:39.9285652Z Get:104 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libwavpack1 amd64 5.6.0-1build1 [84.6 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:41.5941112Z Get:105 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libsoup-3.0-common all 3.4.4-5ubuntu0.9 [12.3 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:42.2762989Z Get:106 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libsoup-3.0-0 amd64 3.4.4-5ubuntu0.9 [291 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:11:46.9834863Z Get:107 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gstreamer1.0-plugins-good amd64 1.24.2-1ubuntu1.8 [2236 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:18.7334850Z Get:108 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libabsl20220623t64 amd64 20220623.1-3.1ubuntu3.2 [423 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:25.0961288Z Get:109 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgav1-1 amd64 0.18.0-1build3 [357 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:30.7058136Z Get:110 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libyuv0 amd64 0.0~git202401110.af6ac82-1 [178 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:33.5633436Z Get:111 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavif16 amd64 1.0.4-1ubuntu3 [91.2 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:35.2236868Z Get:112 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavtp0 amd64 0.2.0-1build1 [6414 B]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:35.6336604Z Get:113 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libcairo-script-interpreter2 amd64 1.18.0-3build1 [60.3 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:37.0031120Z Get:114 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdc1394-25 amd64 2.2.6-4build1 [90.1 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:38.8277951Z Get:115 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libde265-0 amd64 1.0.15-1ubuntu0.2 [167 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:41.7384170Z Get:116 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libdecor-0-0 amd64 0.2.2-1build2 [16.5 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:42.5078502Z Get:117 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libgles2 amd64 1.7.0-1build1 [17.1 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:43.0948079Z Get:118 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdirectfb-1.7-7t64 amd64 1.7.7-11.1ubuntu2 [1035 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:58.0193466Z Get:119 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdvdread8t64 amd64 6.1.3-1.1build1 [54.7 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:12:59.2843963Z Get:120 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdvdnav4 amd64 6.1.1-3build1 [39.5 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:13:00.2211328Z Get:121 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libegl-mesa0 amd64 25.2.8-0ubuntu0.24.04.4 [117 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:13:02.1886653Z Get:122 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libevent-2.1-7t64 amd64 2.1.12-stable-9ubuntu2.2 [146 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:13:04.5968911Z Get:123 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libfaad2 amd64 2.11.1-1build1 [207 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:13:08.2322756Z Get:124 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libinstpatch-1.0-2 amd64 1.1.6-1build2 [251 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:13:12.1800689Z Get:125 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libjack-jackd2-0 amd64 1.9.21~dfsg-3ubuntu3 [289 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:13:16.7371602Z Get:126 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libwebrtc-audio-processing1 amd64 0.3.1-0ubuntu6 [290 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:13:21.6223230Z Get:127 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libspa-0.2-modules amd64 1.0.5-1ubuntu3.3 [628 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:13:30.7054039Z Get:128 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libpipewire-0.3-0t64 amd64 1.0.5-1ubuntu3.3 [252 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:13:34.4461787Z Get:129 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libsdl2-2.0-0 amd64 2.30.0+dfsg-1ubuntu3.1 [686 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:13:43.8316494Z Get:130 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 timgm6mb-soundfont all 1.3-5 [5427 kB]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3574353Z ##[error]The operation was canceled.
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3669815Z ##[group]Run npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3670415Z ^[[36;1mnpm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3737377Z shell: /usr/bin/bash -e {0}
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3737643Z env:
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3737855Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3738203Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3738566Z   CIM_R20_BROWSER: webkit
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3738811Z   CIM_R20_WORDPRESS: 7.1.1
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3739046Z   CIM_R20_PHP: 8.5
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3739257Z   CIM_PLUGIN_VERSION: 1.0.1
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.3739487Z ##[endgroup]
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.9801361Z ✖ Environment not initialized. Run `wp-env start` first.
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:07.9904988Z ##[error]Process completed with exit code 1.
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.0044957Z Post job cleanup.
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2085098Z [command]/usr/bin/git version
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2085744Z git version 2.55.0
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2090130Z Temporarily overriding HOME='/home/runner/work/_temp/e30fbe42-922a-4962-8d76-e15c3ca0b185' before making global git config changes
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2091734Z Adding repository directory to the temporary git global config as a safe directory
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2093266Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Code-in-Motion/Code-in-Motion
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2095437Z Removing SSH command configuration
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2096848Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2100117Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2103140Z Removing HTTP extra header
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2104839Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2108228Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2110755Z Removing includeIf entries pointing to credentials config files
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2111821Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2112977Z includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2114159Z includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2115115Z includeif.gitdir:/github/workspace/.git.path
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2116077Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2118111Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2119572Z /home/runner/work/_temp/git-credentials-495af933-76ab-497f-b371-a18f0e2a03ef.config
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2122419Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-495af933\-76ab\-497f\-b371\-a18f0e2a03ef\.config
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2125359Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2127134Z /home/runner/work/_temp/git-credentials-495af933-76ab-497f-b371-a18f0e2a03ef.config
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2130075Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Code-in-Motion/Code-in-Motion/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-495af933\-76ab\-497f\-b371\-a18f0e2a03ef\.config
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2133130Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2134820Z /github/runner_temp/git-credentials-495af933-76ab-497f-b371-a18f0e2a03ef.config
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2170081Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-495af933\-76ab\-497f\-b371\-a18f0e2a03ef\.config
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2214893Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2257209Z /github/runner_temp/git-credentials-495af933-76ab-497f-b371-a18f0e2a03ef.config
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2267750Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-495af933\-76ab\-497f\-b371\-a18f0e2a03ef\.config
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2319473Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2630510Z Removing credentials config '/home/runner/work/_temp/git-credentials-495af933-76ab-497f-b371-a18f0e2a03ef.config'
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.2818231Z Cleaning up orphan processes
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.3058059Z Terminate orphan process: pid (2562) (npm exec playwright install --with-deps webkit)
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.3105830Z Terminate orphan process: pid (2574) (sh)
+Browser webkit	UNKNOWN STEP	2026-10-22T22:14:08.3131530Z Terminate orphan process: pid (2575) (node)

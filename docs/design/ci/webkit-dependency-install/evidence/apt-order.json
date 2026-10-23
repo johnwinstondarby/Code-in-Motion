@@ -1,0 +1,10 @@
+{
+  "uid": 0,
+  "configuration": "isolated temporary APT configuration only",
+  "runnerFile": "zz-retries",
+  "oldFile": "99zz-cim-webkit-network",
+  "newFile": "zzzz-cim-webkit-network",
+  "before": "HTTP='15'\nHTTPS='15'\nRETRIES='1'\n",
+  "after": "HTTP='30'\nHTTPS='30'\nRETRIES='3'\n",
+  "result": "pass; exact root effective values asserted; no package/repository/key change"
+}

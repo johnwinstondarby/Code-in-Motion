@@ -1,0 +1,43 @@
+{
+  "command": "apt-helper -c isolated-config download-file loopback-stall temporary-output",
+  "httpTimeoutSeconds": 30,
+  "httpsTimeoutSeconds": 30,
+  "aptRetries": 3,
+  "requests": [
+    {
+      "at": 1792719162.0080423,
+      "path": "/deliberately-stalled.deb"
+    },
+    {
+      "at": 1792719192.0391455,
+      "path": "/deliberately-stalled.deb"
+    },
+    {
+      "at": 1792719223.067265,
+      "path": "/deliberately-stalled.deb"
+    },
+    {
+      "at": 1792719253.0967457,
+      "path": "/deliberately-stalled.deb"
+    },
+    {
+      "at": 1792719285.1260147,
+      "path": "/deliberately-stalled.deb"
+    },
+    {
+      "at": 1792719315.1505115,
+      "path": "/deliberately-stalled.deb"
+    },
+    {
+      "at": 1792719349.180084,
+      "path": "/deliberately-stalled.deb"
+    },
+    {
+      "at": 1792719379.2097876,
+      "path": "/deliberately-stalled.deb"
+    }
+  ],
+  "elapsedSeconds": 247.24535028500003,
+  "returncode": 100,
+  "network": "loopback only; no package installed; no repository/signature setting changed"
+}
