@@ -8,13 +8,27 @@ Both attempts of run `39859585673` exhaust the 30-minute job budget during Insta
 
 This satisfies Johann's condition permitting a separate download-timeout workflow change after recurrence. Do not broaden test deadlines, ignore failures, pin a different runner image, skip a browser or change the required summary.
 
-## Narrow change
+## Revised installation plan (Johann's split-step request)
 
-Before WebKit's existing Playwright dependency-install command, replace only the exact Azure Ubuntu archive root in the runner's standard APT source files with https://archive.ubuntu.com/ubuntu. Ubuntu's suite/components and Signed-By key configuration remain byte-identical. APT still verifies the same signed repository metadata and package hashes. No authentication or insecure flags are added. The browser version, OS label, Node version, install command, tests, mutation commands and 30-minute job limit remain unchanged. Chromium and Firefox use their existing steps.
+There are two phases: Ubuntu dependencies and the browser archive. GitHub kills a step at its timeout, so each phase has a distinct first-attempt step and one conditional retry step. Every dependency attempt has timeout-minutes:8; every browser attempt has timeout-minutes:5. Only the first attempts continue on error to allow that one retry. A second failure stops the job; test steps never retry. The existing whole-job30-minute limit and all test commands/deadlines remain unchanged.
 
-Use a small Node helper supporting the standard Deb822 and legacy source-list forms, and only the known /etc/apt/sources.list.d/ubuntu.sources and /etc/apt/sources.list files. Do not modify comments, unrelated repository URLs, similar attacker-controlled hostnames, suites, components or signature settings. If neither file exists, fail explicitly; if neither uses Azure, report no change. The script is run only by the ephemeral CI runner under sudo, never against Johann's local workstation.
+A single-attempt helper logs phase, attempt, outcome and elapsed time. It bounds the child process group at470 seconds for dependencies and290 seconds for the browser, with at most5 seconds for forced cleanup, leaving margin inside the GitHub8/5-minute limits. Dependency attempts run under sudo so cancellation can terminate privileged APT descendants. Browser downloads run as the runner user so their cache remains in ~/.cache/ms-playwright. The CLI executes only the pinned local Playwright npx entry point; no arbitrary command/URL argument is admitted in production.
 
-Tests precede implementation and exercise both source-file forms and the trust boundary. Record their assertion failures against an inert stub and list every later test edit. Then run full verification on both pinned Node versions, v1 differential, clean reproducible builds and exact-head CI. CI's existing full browser/mutation matrix remains the real installation check. The mirror change is a proposed remedy, not a claim that the upstream mirror is generally unavailable.
+Restore only ~/.cache/ms-playwright with an exact key containing Playwright1.63.0, webkit, runner OS/architecture and ImageOS/ImageVersion. No restore-prefix fallback and no APT cache. A hit skips both browser-download attempt steps, and records that skip. Dependencies are installed on every fresh runner. Cache identity fails explicitly if the pinned version or image identity is missing or wrong.
+
+The first dependency attempt uses the runner's original archive. The existing narrow HTTPS archive rewrite is restricted to its retry, and can therefore run only after an observed APT failure/timeout; a browser-download failure never triggers it. Preserve suites, components, signing keys, comments and unrelated hosts. Retain the rewrite only if the split-run evidence demonstrates it is useful for APT; remove its workflow use if the fault is in the browser phase instead. No signature or TLS bypass is introduced.
+
+Record structured attempt/cache results and a job summary; upload the small JSON evidence on success or failure. The required browser-family summary still fails on a terminal installation/test failure. Evidence distinguishes first-attempt failure followed by recovery from a completely green first attempt.
+
+## Tests first and proof
+
+Commit the revised tests and inert single-attempt/cache-key stubs, retain their meaningful assertion failures, then implement. Unit tests exercise successful and failed child commands, a deliberately stalled loopback HTTP download, one retry, forced process cleanup/cancellation, exact cache identity, and the workflow's independent step deadlines/conditional terminal failure. They also compare all existing test commands and limits and every non-WebKit job against the base.
+
+Run a full-duration deliberate stall using the same production browser attempt budget: each of two requests connects to a local HTTP server that intentionally never replies. Each child must fail within5 minutes, the retry must be logged exactly once, and the second failure is terminal. This is an intentional timeout proof, not a browser-test failure or a mutation catch. Record the actual wall times and structured outcomes separately from the ordinary test suite.
+
+Before any merge, obtain three consecutive successful complete WebKit jobs on the exact final PR head, retaining the per-step timings and cache status for each run. Reruns change neither the head nor tests. Record their proof in the PR and local review kit rather than creating a new code commit just to name its own successful CI result. Full Node20/22 verification, v1 comparison and unchanged ZIP/rollback checks still apply. Independent review and Johann's approval remain required; Part B stays held until an approved main merge has green post-merge CI.
+
+References: GitHub's step timeout/continue-on-error documentation (https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax) and the official cache action's exact-hit output contract (https://github.com/actions/cache).
 
 ## Feature work remains held
 
