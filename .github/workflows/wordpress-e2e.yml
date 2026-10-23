@@ -1199,13 +1199,56 @@ jobs:
       - name: Install pinned Playwright test runner
         run: npm install --no-save --ignore-scripts --no-audit --no-fund @playwright/test@1.63.0
 
-      # Two main-run WebKit jobs exhausted their budget downloading APT packages.
-      # Keep authenticated Ubuntu packages and all test commands/deadlines unchanged.
-      - name: Use official Ubuntu archive for WebKit dependencies
+      - name: Identify exact WebKit browser cache
+        id: webkit-cache-key
         if: matrix.browser == 'webkit'
-        run: sudo "$(command -v node)" tools/ci/ubuntu-apt-mirror.mjs
+        run: node tools/ci/webkit-install.mjs cache-key
+
+      - name: Restore WebKit browser download
+        id: webkit-browser-cache
+        timeout-minutes: 5
+        if: matrix.browser == 'webkit'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ steps.webkit-cache-key.outputs.key }}
+
+      - name: Install WebKit Ubuntu dependencies (attempt 1 of 2)
+        id: webkit-deps-first
+        if: matrix.browser == 'webkit'
+        timeout-minutes: 8
+        continue-on-error: true
+        run: sudo --preserve-env=RUNNER_TEMP "$(command -v node)" tools/ci/webkit-install.mjs deps 1
+
+      - name: Retry WebKit Ubuntu dependencies (attempt 2 of 2)
+        id: webkit-deps-retry
+        if: ${{ !cancelled() && matrix.browser == 'webkit' && steps.webkit-deps-first.outcome == 'failure' }}
+        timeout-minutes: 8
+        run: |
+          echo 'Retrying WebKit Ubuntu dependencies after the first APT attempt failed or timed out.'
+          sudo "$(command -v node)" tools/ci/ubuntu-apt-mirror.mjs
+          sudo --preserve-env=RUNNER_TEMP "$(command -v node)" tools/ci/webkit-install.mjs deps 2
+
+      - name: Download WebKit browser (attempt 1 of 2)
+        id: webkit-browser-first
+        if: matrix.browser == 'webkit' && steps.webkit-browser-cache.outputs.cache-hit != 'true'
+        timeout-minutes: 5
+        continue-on-error: true
+        run: node tools/ci/webkit-install.mjs browser 1
+
+      - name: Retry WebKit browser download (attempt 2 of 2)
+        id: webkit-browser-retry
+        if: ${{ !cancelled() && matrix.browser == 'webkit' && steps.webkit-browser-cache.outputs.cache-hit != 'true' && steps.webkit-browser-first.outcome == 'failure' }}
+        timeout-minutes: 5
+        run: node tools/ci/webkit-install.mjs browser 2
+
+      - name: Record WebKit browser cache hit
+        id: webkit-cache-hit
+        if: matrix.browser == 'webkit' && steps.webkit-browser-cache.outputs.cache-hit == 'true'
+        run: node tools/ci/webkit-install.mjs cache-hit
 
       - name: Install selected browser for Playwright
+        if: matrix.browser != 'webkit'
         run: npx playwright install --with-deps "${CIM_R20_BROWSER}"
 
       - name: Start R20 WordPress environment
@@ -1317,6 +1360,21 @@ jobs:
         if: always()
         continue-on-error: true
         run: npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop
+
+
+      - name: Summarize WebKit installation attempts
+        id: webkit-install-summary
+        if: ${{ always() && matrix.browser == 'webkit' }}
+        run: node tools/ci/webkit-install.mjs summary
+
+      - name: Retain WebKit installation evidence
+        id: webkit-install-evidence
+        if: ${{ always() && matrix.browser == 'webkit' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: webkit-install-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cim-webkit-install
+          if-no-files-found: warn
 
 
   lifecycle-differential:

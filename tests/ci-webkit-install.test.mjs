@@ -37,6 +37,8 @@ test('a stalled HTTP download is killed within each bound, retries once, then fa
  assert.equal(logs.filter(x=>x.includes('result=timeout')).length,2);
 });
 test('attempt count, deadlines and cancellation cannot become an unbounded retry',async()=>{
+ assert(INSTALL_LIMITS.deps+INSTALL_LIMITS.grace+500<8*60000);
+ assert(INSTALL_LIMITS.browser+INSTALL_LIMITS.grace+500<5*60000);
  for(const change of [{attempt:3},{phase:'test'},{timeoutMs:INSTALL_LIMITS.browser+1}])await assert.rejects(runAttempt({phase:'browser',attempt:1,command:process.execPath,args:['-e','process.exit(0)'],...change}));
  const controller=new AbortController();controller.abort();
  const result=await runAttempt({phase:'browser',attempt:1,command:process.execPath,args:['-e','process.exit(0)'],signal:controller.signal});
