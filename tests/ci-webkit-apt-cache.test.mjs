@@ -11,7 +11,7 @@ test('APT key binds exact pinned WebKit package list and runner image',async()=>
  const key=aptCacheKey({...identity,packages});assert.match(key,/^webkit-apt-v1-playwright-1\.63\.0-Linux-X64-ubuntu24-20261012\.334\.1-[a-f0-9]{64}$/);
  assert.notEqual(key,aptCacheKey({...identity,imageVersion:'new-image',packages}));assert.notEqual(key,aptCacheKey({...identity,packages:[...packages,'other']}));
  for(const change of [{version:'1.64.0'},{arch:'ARM64'},{imageVersion:''}])assert.throws(()=>aptCacheKey({...identity,packages,...change}));
- assert.throws(()=>dependencyPackages(source.replace('"xvfb"','"changed"'),frozen));assert.throws(()=>dependencyPackages('unknown bundle',frozen));
+ assert.throws(()=>dependencyPackages(source.slice(source.indexOf('"ubuntu24.04-x64": {')).replace('"xvfb"','"changed"'),frozen));assert.throws(()=>dependencyPackages('unknown bundle',frozen));
 });
 test('APT cache never skips install, saves only after success, and verifies before dpkg',async()=>{
  const w=parse(await readFile('.github/workflows/wordpress-e2e.yml','utf8')),steps=w.jobs['browser-family-matrix'].steps;

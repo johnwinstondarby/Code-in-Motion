@@ -23,7 +23,7 @@ class ArchiveTests(unittest.TestCase):
    with self.assertRaises(ValueError):guard.validate_archive(self.file,self.lookup,self.archives)
    self.meta[key]=old
  def test_symlink_and_outside_path_fail(self):
-  link=self.archives/'demo_1.0_all.deb';link.symlink_to(self.file)
+  external=self.root/'external';external.write_bytes(b'abcdef');self.file.unlink();link=self.file;link.symlink_to(external)
   with self.assertRaises(ValueError):guard.validate_archive(link,self.lookup,self.archives)
   with self.assertRaises(ValueError):guard.validate_archive(self.file,self.lookup,self.stage)
  def test_stage_rejects_unknown_files_and_symlink_directory(self):
@@ -42,4 +42,11 @@ class ArchiveTests(unittest.TestCase):
   bad=self.archives/'bad.deb';bad.write_bytes(b'abcdef')
   with self.assertRaises(ValueError):guard.validate_archive(bad,self.lookup,self.archives)
   with self.assertRaises(ValueError):guard.verify_selected([str(self.file),str(self.file)],self.lookup,self.archives,self.stage)
+ def test_hook_command_is_fixed_and_unsafe_paths_fail(self):
+  text=guard.hook_text(Path('/work/tools/ci/webkit-apt-cache.py'),Path('/tmp/cim-webkit-debs'))
+  self.assertEqual(text,'DPkg::Pre-Install-Pkgs { "/usr/bin/python3 -I /work/tools/ci/webkit-apt-cache.py verify /tmp/cim-webkit-debs"; };\n')
+  with self.assertRaises(ValueError):guard.hook_text(Path('/work/bad"path.py'),Path('/tmp/stage'))
+ def test_stage_count_is_bounded(self):
+  for n in range(501):(self.stage/('demo'+str(n)+'_1.0_amd64.deb')).write_bytes(b'x')
+  with self.assertRaisesRegex(ValueError,'count'):guard.check_stage(self.stage)
 if __name__=='__main__':unittest.main(verbosity=2)
