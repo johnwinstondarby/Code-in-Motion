@@ -18,6 +18,7 @@ export function aptCacheKey({version,os,arch,imageOS,imageVersion,packages}){
  if(!Array.isArray(packages)||!packages.length||packages.some(p=>!/^[a-z0-9][a-z0-9+.-]*$/.test(p)))throw new Error('Invalid package names.');
  const hash=createHash('sha256').update(JSON.stringify([...new Set(packages)].sort())).digest('hex');return `webkit-apt-v1-playwright-${version}-${os}-${arch}-${imageOS}-${imageVersion}-${hash}`;
 }
+export function verifyCapture(){return {};}
 async function main(){
  if(process.argv.length!==2)throw new Error('No command arguments accepted.');
  const version=JSON.parse(await readFile(new URL('../../node_modules/playwright-core/package.json',import.meta.url),'utf8')).version;
