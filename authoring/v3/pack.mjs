@@ -1,3 +1,4 @@
+import {findDuplicateKeys} from '../v2/validate-authoring.mjs';
 import {constants} from 'node:fs';
 import {consoleRendererInputViolations} from '../../src/renderers/subjects/console/validate-console-input.mjs';
 import {open,realpath,stat,writeFile,cp,access} from 'node:fs/promises';
@@ -33,7 +34,7 @@ export async function readPackFile(root,path,{max=LIMITS.bytes,size,sha256,at='$
  }catch(error){if(error instanceof V3ValidationError)throw error;pathFail(at,'Referenced file is missing or cannot be read safely.');}
  finally{await handle?.close();}
 }
-function json(bytes,path){try{return JSON.parse(decodeJSON(bytes,path));}catch(error){if(error instanceof V3ValidationError)throw error;fail('CIM-V3-PARSE',path,'Malformed JSON.','Use valid UTF-8 JSON with double quotes and no trailing comma.');}}
+function json(bytes,path){try{const text=decodeJSON(bytes,path),duplicates=findDuplicateKeys(text);if(duplicates.length)fail('CIM-V3-ID',path+duplicates[0].slice(1),'Duplicate JSON object key.','Keep every object key unique before packing.');return JSON.parse(text);}catch(error){if(error instanceof V3ValidationError)throw error;fail('CIM-V3-PARSE',path,'Malformed JSON.','Use valid UTF-8 JSON with double quotes and no trailing comma.');}}
 export async function compileV3Source(source){
  let root;try{root=await realpath(dirname(resolve(source)));}catch{pathFail('$source','Source folder does not exist.');}
  const lesson=json(await readPackFile(root,basename(source)), '$');assertValid(validateDocument(lesson,'authoring'));

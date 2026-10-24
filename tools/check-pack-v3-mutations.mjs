@@ -26,6 +26,7 @@ const cases=[
  ['PB-M16-php-template',pack,[['Companion multi-pane lesson data for Code in Motion.','${compiled.document.presentation.title}']],'PB-25'],
  ['PB-M17-host','tools/pack-preview-server.mjs',[["if(request.headers.host!==new URL(origin).host||request.headers.origin&&request.headers.origin!==origin)",'if(false)']],'PB-20'],
  ['PB-M21-capacity','tools/pack-preview-server.mjs',[['server.maxConnections=64','server.maxConnections=16']],'PB-27'],
+ ['PB-M22-duplicate-keys',pack,[['if(duplicates.length)','if(false)']],'PB-28'],
  ['PB-M18-snapshot','tools/pack-preview-server.mjs',[["{resolve,extname}","{resolve,extname,dirname}"],['send(result.entries.get(file),mime(file));return;','send(await readFile(resolve(dirname(source),file)),mime(file));return;']],'PB-21']
 ];
 if(browser)cases.push(
