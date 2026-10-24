@@ -1,0 +1,18 @@
+✔ [ORDER-01] final seek must resolve after its first pending check (4.1619ms)
+✔ [ORDER-02] early seeked and ended never complete ahead of the clock (0.8421ms)
+✔ [ORDER-03] pause and resume while finalising preserve the final frame (0.8761ms)
+✔ [ORDER-04] a later absolute settle can replace a completed video; identities differ (0.8614ms)
+✔ [ORDER-05] a late native play cannot restart completed media (0.8307ms)
+✔ disabled Motion diagnostics leave routes, init scripts and media prototypes untouched (0.7506ms)
+✔ enabled Motion diagnostics observe without rewriting source or overriding native setters (0.2468ms)
+✔ disabled MOT-07 reads its original predicate and writes no diagnostic artifact (0.2209ms)
+✔ identity diagnostics distinguish elements even when the blob URL is reused (1.3542ms)
+✔ manual MOT-07 workflow is optional, dispatch-only and preserves reviewed installation steps (21.3628ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 113.0215

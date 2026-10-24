@@ -1,0 +1,15 @@
+✔ [ORDER-01] final seek must resolve after its first pending check (4.0068ms)
+✔ [ORDER-02] early seeked and ended never complete ahead of the clock (0.824ms)
+✔ [ORDER-03] pause and resume while finalising preserve the final frame (0.8698ms)
+✔ [ORDER-04] a later absolute settle can replace a completed video; identities differ (0.8455ms)
+✔ [ORDER-05] a late native play cannot restart completed media (0.7029ms)
+✔ identity diagnostics distinguish elements even when the blob URL is reused (0.9734ms)
+✔ manual MOT-07 workflow is optional, dispatch-only and preserves reviewed installation steps (21.1732ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 105.8474

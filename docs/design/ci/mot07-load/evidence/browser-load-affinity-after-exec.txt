@@ -1,0 +1,4 @@
+pid 965's current affinity list: 0,1
+pid 963's current affinity list: 0,1
+    PID COMMAND         COMMAND
+    965 node            node node_modules/@playwright/test/cli.js test tests/e2e/motion-pane.spec.mjs --grep MOT-07 --repeat-each=50 --workers=4 --reporter=line --output=../../outputs/mot07-load/browser-load-results

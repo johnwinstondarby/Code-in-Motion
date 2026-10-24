@@ -1,0 +1,1 @@
+{"configuration":"2 fixed CPUs, four Playwright workers, one CPU burner","cpus":"0,1","workers":4,"repeatEach":50,"planned":150,"started":"2026-10-24T02:01:43Z","finished":"2026-10-24T02:04:44Z","exit":0}
