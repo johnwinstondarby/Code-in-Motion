@@ -60,3 +60,10 @@ test('[ORDER-08] repeated unauthorized playback cannot cause an unbounded restor
  for(let i=0;i<10;i++){s.video._time=0;s.video.ended=false;s.video.paused=false;s.video.dispatchEvent(new Event('play'));s.video.dispatchEvent(new Event('playing'));s.video.finishSeek();await flush();}
  assert.ok(s.video.seekWrites-writes<=2,'at most two corrective seeks per completed hold');assert.equal(s.result.status,'settled');s.adapter.pane.dispose();
 });
+
+test('[ORDER-09] harmless final-frame events do not consume corrective-seek budget',async()=>{
+ const s=await setup();s.advance(1200);await finish(s);const writes=s.video.seekWrites;
+ for(let i=0;i<3;i++){s.video.paused=false;s.video.dispatchEvent(new Event('play'));s.video.dispatchEvent(new Event('playing'));await flush();}
+ assert.equal(s.video.seekWrites,writes);s.video._time=0;s.video.ended=false;s.video.paused=false;s.video.dispatchEvent(new Event('play'));
+ assert.equal(s.video.currentTime,s.video.duration,'a real rewind must still be corrected after harmless final-frame events');s.video.finishSeek();await flush();s.adapter.pane.dispose();
+});
