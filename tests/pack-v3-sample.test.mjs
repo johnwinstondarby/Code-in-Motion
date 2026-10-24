@@ -36,3 +36,5 @@ test('[PB-18] CLI errors expose rule, JSON path and teacher fix including attach
  const folder=await mkdtemp(join(tmpdir(),'cim-v3-errors-'));const r=cli(['init',join(folder,'source'),'--format','v3']);assert.equal(r.status,0,r.stdout+r.stderr);const path=join(folder,'source','media.json'),map=JSON.parse(await readFile(path));map.assets[0].source={type:'attachment',id:4};delete map.assets[1].codec;await writeFile(path,JSON.stringify(map));
  const out=cli(['validate',join(folder,'source','lesson.json')]);assert.notEqual(out.status,0);assert.match(out.stderr,/CIM-V3-MEDIA-ATTACHMENT/);assert.match(out.stderr,/1\.2/);assert.match(out.stderr,/\$.*assets\[0\].source/);assert.match(out.stderr,/CIM-V3-MEDIA-CODEC/);assert.match(out.stderr,/Fix:/);
 });
+
+test('[PB-24] visible sample text separates INVENT custody from INSPIRE reproduction',async()=>{const c=await sample(),l=c.bundle.lesson;assert.match(l.beats[6].explanation.text,/INVENT/);assert.match(l.beats[6].actions[0].command,/INVENT/);assert.match(l.beats[7].explanation.text,/INSPIRE/);assert.match(l.beats[7].actions[0].command,/INSPIRE/);});

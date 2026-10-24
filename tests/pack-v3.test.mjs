@@ -5,6 +5,7 @@ import {join} from 'node:path';
 import {buildV3Pack,compileV3Source,writeV3Pack} from '../authoring/v3/pack.mjs';
 import {createDevelopmentAdmission,admitV3Pack} from '../authoring/v3/admission.mjs';
 import {validateProductionMedia} from '../authoring/v3/production-media.mjs';
+import {validateDocument} from '../authoring/v3/validate.mjs';
 import {validateExperience} from '../src/experience/validate-experience.mjs';
 import {packSource,hash} from './helpers/pack-v3-source.mjs';
 const license='GPLv3 test license\n';
@@ -61,4 +62,16 @@ test('[PB-14] pack writes checksum and never overwrites either earlier output',a
 
 test('[PB-22] authored commands and output must satisfy the existing single-line Console contract',async()=>{
  for(const kind of ['command','output']){const s=await packSource();if(kind==='command')s.lesson.beats[0].actions[0].command='one\ntwo';else s.lesson.beats[0].actions[0].output=['one\ntwo'];await s.saveLesson();await rejects(buildV3Pack(s.source,license),'CIM-V3-PACK-CONSOLE');}
+});
+
+test('[PB-23] production manifests cross-check every reference and enforce aggregate limits',async()=>{
+ const s=await packSource(),r=await buildV3Pack(s.source,license);
+ for(const kind of ['digest','case-collision','self-entry','aggregate']){
+  const m=structuredClone(r.manifest);
+  if(kind==='digest')m.files.find(f=>f.path===m.media.assets[0].source.path).sha256='0'.repeat(64);
+  if(kind==='case-collision')m.files.push({...m.files[0],path:m.files[0].path.toUpperCase()});
+  if(kind==='self-entry')m.files.push({path:'cim-lesson-pack.json',size:1,sha256:'0'.repeat(64)});
+  if(kind==='aggregate')m.files.find(f=>f.path==='LICENSE').size=33554432;
+  assert(validateDocument(m,'pack').diagnostics.some(d=>d.id===(kind==='aggregate'?'CIM-V3-PACK-LIMIT':'CIM-V3-PACK-FILES')),kind);
+ }
 });
