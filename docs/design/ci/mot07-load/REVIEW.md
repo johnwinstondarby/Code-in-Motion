@@ -46,8 +46,8 @@ The workflow unit test verifies the dispatch-only trigger, exact command, job li
 - Five ordering tests and two identity/workflow tests: passed on their first run; no playback fix made.
 - Verify Node 20.20.2: 1,087 passed, zero skipped.
 - Verify Node 22.23.2: 1,087 passed, zero skipped.
-- Post-merge main CI: pending.
-- Three GitHub dispatch runs: pending.
+- Post-merge main CI: **all 33 checks passed on 048eafb**.
+- Three GitHub dispatch runs: **not performed**. GitHub returned HTTP 404 because the workflow is not on the default branch. Daisy review and Johann approval are required before merging it; no unapproved default-branch write was made.
 - Root cause: unknown. Part B held.
 
 Report after the load and manual runs, or within two working days of the request, whichever comes first. If dispatch is blocked by the reviewed-merge requirement, report that explicitly rather than counting unperformed runs.
@@ -59,3 +59,13 @@ B produced three video-readiness timeouts (1366 repeats 31–33), one missing-vi
 A and B produced 295 successful final-check records. Every captured completion/check pair refers to the same element and blob source. The five failing cases produced no final-check JSON because they failed earlier or the video was missing; that is a limitation, not a claim those identities matched.
 
 Added an enabled-only after-failure snapshot that can record a null video and session/event history without waiting for a locator. This runs after a test has already failed, leaving the original predicate and deadlines unchanged. Strengthened the disabled-path unit test to cover this hook. One additional **fixed 150-case** B configuration is planned solely to exercise this capture path; it is not a rerun to claim a green result. All earlier outcomes remain in the report. No playback implementation change.
+
+## Confirmed recurrence in follow-up C
+
+The fixed additional B-style batch finished **148 passed / 2 failed**: 1366: 49/1, 1536: 49/1, 1920: 50/0. No skips or retries. The 1366 repeat 6 case reproduces the original final-frame predicate failure. The 1536 case is a missing-video timeout, recorded separately. The batch is retained in full and is not treated as green.
+
+The original-signature record shows the same video-1 and identical blob source, beat index 2 and generation 2 at both boundaries. Motion completion and session completion show currentTime 1.2, duration 1.2, ended true, seeking false, readyState 4, paused true. A later native seeking/play event rewinds that same element to zero; the final check reads 0.001853847 with ended false and no session failures. The unauthorized-play guard pauses playback but does not restore the final frame. This is a post-completion rewind, not a replacement element or early final-seek completion in this observed case.
+
+The earlier fake late-play unit case did not model a native play from the ended state rewinding to zero. That gap must be filled with a deterministic failing regression before any product fix. The fixture-only observation branch does not change playback code. A fix and mutation restoring the bug will be prepared separately; three green WebKit fix-head runs and reviewed approval remain required.
+
+Counts across A/B/C: **450 planned, 443 passed, seven failed**. Six failures are readiness/caption/missing-video outcomes; one has #103's exact predicate signature. Every configuration and first-run unit result is retained. The last failure-only logging addition was followed by targeted observer/order/workflow unit runs on both Node versions; full verify logs precede that observer-only addition. Final PR CI is still the authoritative exact-head check.

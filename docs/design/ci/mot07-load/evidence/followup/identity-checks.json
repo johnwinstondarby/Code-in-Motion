@@ -1,0 +1,5217 @@
+[
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42867/0bb19f17-dc39-408a-b70b-2d22553cc9f8",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42867/0bb19f17-dc39-408a-b70b-2d22553cc9f8",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat1",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37371/89d4bfc9-a987-4857-b08b-01dbc3382370",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37371/89d4bfc9-a987-4857-b08b-01dbc3382370",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat10",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:38449/7a424a11-9a33-449a-8693-0a98c0c67a34",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:38449/7a424a11-9a33-449a-8693-0a98c0c67a34",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat11",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41159/a61e236b-994d-4a00-8631-bbc442a3d109",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41159/a61e236b-994d-4a00-8631-bbc442a3d109",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat12",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:38341/48331d33-203f-4cf1-836d-c372a6f3f34f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:38341/48331d33-203f-4cf1-836d-c372a6f3f34f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat13",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42301/de8e4b1a-5d0c-4ed8-8d37-021d41757358",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42301/de8e4b1a-5d0c-4ed8-8d37-021d41757358",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat14",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40167/eb5e3421-d54d-45e6-b892-3ceb8747fad1",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40167/eb5e3421-d54d-45e6-b892-3ceb8747fad1",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat15",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37997/08e0e3cd-f280-48fd-961e-6b8ca5f745d7",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37997/08e0e3cd-f280-48fd-961e-6b8ca5f745d7",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat16",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36035/88776a41-6857-4163-aae4-d855662fb52d",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:36035/88776a41-6857-4163-aae4-d855662fb52d",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat17",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40489/c435965f-b871-4cbc-a619-03d68cded9a9",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40489/c435965f-b871-4cbc-a619-03d68cded9a9",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat18",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33035/3bd9ed3d-c91d-47cb-b312-523ba7f2a5c8",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33035/3bd9ed3d-c91d-47cb-b312-523ba7f2a5c8",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat19",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33413/b22f8581-6b5d-458a-a9a8-6456c06d4ae5",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33413/b22f8581-6b5d-458a-a9a8-6456c06d4ae5",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat2",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40253/5b92a1c1-8c80-4d37-a594-e56534b22b8c",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40253/5b92a1c1-8c80-4d37-a594-e56534b22b8c",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat20",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:44941/52833602-a663-43fc-8b3a-e7858c9bb179",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:44941/52833602-a663-43fc-8b3a-e7858c9bb179",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat21",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41297/23ac4797-f921-4028-a090-8271768ee325",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41297/23ac4797-f921-4028-a090-8271768ee325",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat22",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:35541/909483b2-f5da-423c-8e8b-399981f5b50c",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:35541/909483b2-f5da-423c-8e8b-399981f5b50c",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat23",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41839/02d558b3-427f-456a-b865-ba590797f69d",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41839/02d558b3-427f-456a-b865-ba590797f69d",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat24",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:32997/1e80b05a-3a8e-4125-8992-65b5ca8ee81f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32997/1e80b05a-3a8e-4125-8992-65b5ca8ee81f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat25",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37359/3735ad55-cc87-4aa1-a51c-c65ba6591cb8",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37359/3735ad55-cc87-4aa1-a51c-c65ba6591cb8",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat26",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:46783/abf39ab5-1340-47ca-bd91-639abd19f4c8",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:46783/abf39ab5-1340-47ca-bd91-639abd19f4c8",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat27",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36363/d4db2cdb-a97d-4ae3-8604-ffdf24d35009",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:36363/d4db2cdb-a97d-4ae3-8604-ffdf24d35009",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat28",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41985/99c02607-6899-4983-a0c2-9e190fe72ae0",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41985/99c02607-6899-4983-a0c2-9e190fe72ae0",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat29",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41539/3fc1a42a-b6be-443f-b982-70c5dfd61ef9",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41539/3fc1a42a-b6be-443f-b982-70c5dfd61ef9",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat3",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40617/3ecd31bf-2e20-4ccd-9533-917e64e7a0ac",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40617/3ecd31bf-2e20-4ccd-9533-917e64e7a0ac",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat30",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:35481/2854822d-a128-432f-9029-6cf6dfe0111f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:35481/2854822d-a128-432f-9029-6cf6dfe0111f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat31",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36735/bf569ab3-5684-4968-95d5-7b05a1f18b32",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:36735/bf569ab3-5684-4968-95d5-7b05a1f18b32",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat32",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:44569/a109c22b-0353-4bc1-97ff-a771a1a9497f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:44569/a109c22b-0353-4bc1-97ff-a771a1a9497f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat33",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42677/07b20e15-3d3c-45d3-98cd-3156ba22ca69",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42677/07b20e15-3d3c-45d3-98cd-3156ba22ca69",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat34",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:39073/393c977a-be35-430a-b8b9-fefc641a227e",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39073/393c977a-be35-430a-b8b9-fefc641a227e",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat35",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33995/561edef7-132f-4d4d-973f-31cb12c8b677",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33995/561edef7-132f-4d4d-973f-31cb12c8b677",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat36",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41583/a2633185-8221-4729-8e15-0c1187cc93a7",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41583/a2633185-8221-4729-8e15-0c1187cc93a7",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat37",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:44011/2b67cee7-80bd-494c-aae3-d73a15e528b0",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:44011/2b67cee7-80bd-494c-aae3-d73a15e528b0",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat38",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37193/b9e4ef0a-2ded-4a94-a9a5-bff7af6cf8b2",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37193/b9e4ef0a-2ded-4a94-a9a5-bff7af6cf8b2",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat39",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:32977/9f67d22c-a27d-4484-a204-eceb27c84272",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32977/9f67d22c-a27d-4484-a204-eceb27c84272",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat4",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:39219/dc10e0ad-fd06-4b85-b628-76fbc1867a5c",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39219/dc10e0ad-fd06-4b85-b628-76fbc1867a5c",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat40",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:34143/0ed55cb5-e9e8-4a1d-823a-d8fb94fc57c4",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:34143/0ed55cb5-e9e8-4a1d-823a-d8fb94fc57c4",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat41",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:45673/d72dc3ac-a6b3-42f9-a454-ebec75bc492f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:45673/d72dc3ac-a6b3-42f9-a454-ebec75bc492f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat42",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42527/6e94944a-b440-4422-bb0c-7c7a37336402",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42527/6e94944a-b440-4422-bb0c-7c7a37336402",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat43",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36011/b7d832cc-fab3-495f-8a2d-3b8a47e69b23",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:36011/b7d832cc-fab3-495f-8a2d-3b8a47e69b23",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat44",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33449/fd614f35-5b75-4c64-8f32-a539f86356e5",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33449/fd614f35-5b75-4c64-8f32-a539f86356e5",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat45",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:45475/b765dde1-b9c1-4103-8280-073bc11b9f88",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:45475/b765dde1-b9c1-4103-8280-073bc11b9f88",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat46",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:38579/e2b72d18-27ea-4c2f-a140-6b9284bbf99f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:38579/e2b72d18-27ea-4c2f-a140-6b9284bbf99f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat47",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42681/07264fda-10af-4fef-b925-d2cac2b9f640",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42681/07264fda-10af-4fef-b925-d2cac2b9f640",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat48",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:45757/68fd0363-23d5-43f2-b0a6-486b13ad4d7b",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:45757/68fd0363-23d5-43f2-b0a6-486b13ad4d7b",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat49",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41925/377d114b-532a-4417-b3fe-d3dee1e867d8",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41925/377d114b-532a-4417-b3fe-d3dee1e867d8",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat5",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:35715/6b9c3f9e-ad04-4b6f-97e2-080bbc92385a",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:35715/6b9c3f9e-ad04-4b6f-97e2-080bbc92385a",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat6",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:44765/ff7a56c7-a220-40a7-bd26-a9dfe4d3b4ba",
+      "time": 0.001853847,
+      "duration": 1.2,
+      "ended": false,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": false
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:44765/ff7a56c7-a220-40a7-bd26-a9dfe4d3b4ba",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat7",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33503/761106b7-1d21-45dd-86c8-3d9e0d18c6ca",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33503/761106b7-1d21-45dd-86c8-3d9e0d18c6ca",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat8",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40037/ae8fb822-38e0-4d6b-95eb-ce5bc6f0c16d",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40037/ae8fb822-38e0-4d6b-95eb-ce5bc6f0c16d",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat9",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37233/ee8f5753-0ab4-4414-b4aa-2f15e16cce71",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37233/ee8f5753-0ab4-4414-b4aa-2f15e16cce71",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42867/e3508764-fd43-400e-85c9-a51508223867",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42867/e3508764-fd43-400e-85c9-a51508223867",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat1",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37371/19aa4df4-0e10-4fa1-a93b-e8548b7af60e",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37371/19aa4df4-0e10-4fa1-a93b-e8548b7af60e",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat10",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:38449/f9b46c15-cbc5-49ee-b710-49defad1cfc7",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:38449/f9b46c15-cbc5-49ee-b710-49defad1cfc7",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat11",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41159/65e0321e-d80c-4014-acb9-85b655a40aee",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41159/65e0321e-d80c-4014-acb9-85b655a40aee",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat12",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:38341/ba13fea9-5264-442a-8f33-4cfdf7160579",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:38341/ba13fea9-5264-442a-8f33-4cfdf7160579",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat13",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42301/7b7a7f0b-0df1-4287-95fa-520fc885b5ec",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42301/7b7a7f0b-0df1-4287-95fa-520fc885b5ec",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat14",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40167/2df1e9bf-a44d-401c-b893-f3b2fba00f2a",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40167/2df1e9bf-a44d-401c-b893-f3b2fba00f2a",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat15",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37997/e6f54eda-2f59-4632-b10c-b155c99815ae",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37997/e6f54eda-2f59-4632-b10c-b155c99815ae",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat16",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36035/d8316b76-448b-41aa-8aa5-3a61fd3b7150",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:36035/d8316b76-448b-41aa-8aa5-3a61fd3b7150",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat17",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40489/7179d33d-dbbf-4b8c-90db-b163a0e30058",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40489/7179d33d-dbbf-4b8c-90db-b163a0e30058",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat18",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33035/8fbdadee-09b4-4940-88a2-3fca4d478f5e",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33035/8fbdadee-09b4-4940-88a2-3fca4d478f5e",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat19",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33413/17e055fb-eb06-4920-9a32-a3e503deac0e",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33413/17e055fb-eb06-4920-9a32-a3e503deac0e",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat2",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40253/d69e13c8-e562-42bc-b293-cb0d903198c1",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40253/d69e13c8-e562-42bc-b293-cb0d903198c1",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat20",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:44941/5dfa3664-fd14-4a66-bb6a-93f41b8a58a9",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:44941/5dfa3664-fd14-4a66-bb6a-93f41b8a58a9",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat21",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41297/41dac1a2-83f6-45f6-9b71-fb89e1728d34",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41297/41dac1a2-83f6-45f6-9b71-fb89e1728d34",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat22",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:35541/a29055d6-882a-4a8d-a958-d5e0cba69f0d",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:35541/a29055d6-882a-4a8d-a958-d5e0cba69f0d",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat23",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41839/b1a6af7e-3ca1-4e5c-9407-c03ff806157e",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41839/b1a6af7e-3ca1-4e5c-9407-c03ff806157e",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat24",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:32997/0fc61e87-9b6e-4fa5-9d6e-e308288ab1a2",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32997/0fc61e87-9b6e-4fa5-9d6e-e308288ab1a2",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat25",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37359/6b331524-d322-4ec4-8af0-18d65c44bdb2",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37359/6b331524-d322-4ec4-8af0-18d65c44bdb2",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat26",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:46783/8c8632d2-2c93-47f3-8c5c-7eba78f7fc77",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:46783/8c8632d2-2c93-47f3-8c5c-7eba78f7fc77",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat28",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41985/f96ec47a-95f7-49e0-a5db-6effc3d21b49",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41985/f96ec47a-95f7-49e0-a5db-6effc3d21b49",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat29",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41539/f55cec1d-d7db-43bc-b146-d2c884f3305c",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41539/f55cec1d-d7db-43bc-b146-d2c884f3305c",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat3",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40617/1e3552aa-5e83-4e2a-97b7-ed0ec642b669",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40617/1e3552aa-5e83-4e2a-97b7-ed0ec642b669",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat30",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:35481/e1af3c27-4258-4b8c-9176-349e6865c861",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:35481/e1af3c27-4258-4b8c-9176-349e6865c861",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat31",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36735/78ee4af7-b2dc-4257-8c63-b4515c2bd019",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:36735/78ee4af7-b2dc-4257-8c63-b4515c2bd019",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat32",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:44569/11d56834-7d52-4311-8e37-a257c4dee9eb",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:44569/11d56834-7d52-4311-8e37-a257c4dee9eb",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat33",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42677/4ef9fcb1-422b-42ee-81c8-942620a3760c",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42677/4ef9fcb1-422b-42ee-81c8-942620a3760c",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat34",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:39073/93b2e669-26e2-409a-8bf9-922f653017c8",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39073/93b2e669-26e2-409a-8bf9-922f653017c8",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat35",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33995/ebe8f5c6-aa41-46ab-adaf-37cd6492179e",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33995/ebe8f5c6-aa41-46ab-adaf-37cd6492179e",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat36",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41583/4207478e-dd39-4433-b7d3-b265e1c1636f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41583/4207478e-dd39-4433-b7d3-b265e1c1636f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat37",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:44011/ab8bf813-974f-40d3-bc0a-395cb93046d2",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:44011/ab8bf813-974f-40d3-bc0a-395cb93046d2",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat38",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37193/2034d78d-3b50-46ec-bb5f-09486714e3cc",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37193/2034d78d-3b50-46ec-bb5f-09486714e3cc",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat39",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:32977/9910bf06-eee7-49a7-94ef-73ec2b251e0f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32977/9910bf06-eee7-49a7-94ef-73ec2b251e0f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat4",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:39219/36a5e5eb-af7e-48de-aa07-6f7108506218",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39219/36a5e5eb-af7e-48de-aa07-6f7108506218",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat40",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:34143/e1d2a7fc-2359-4c53-a426-a8ef20f02a91",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:34143/e1d2a7fc-2359-4c53-a426-a8ef20f02a91",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat41",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:45673/5aedcf3b-64d5-472a-b6cf-8769ccdf6cde",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:45673/5aedcf3b-64d5-472a-b6cf-8769ccdf6cde",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat42",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42527/8f5a09b1-8cb6-4c60-b473-cc8bf40d2cbc",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42527/8f5a09b1-8cb6-4c60-b473-cc8bf40d2cbc",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat43",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36011/8b121b57-9b65-4391-948d-7d1fa37fa03d",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:36011/8b121b57-9b65-4391-948d-7d1fa37fa03d",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat44",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33449/595fb800-70eb-446a-bf06-7051f4ac3d2f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33449/595fb800-70eb-446a-bf06-7051f4ac3d2f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat45",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:45475/b461c815-8afd-4086-8567-fb456a1d7331",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:45475/b461c815-8afd-4086-8567-fb456a1d7331",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat46",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:38579/db37d61f-dc0a-4a8e-bcd1-aed701e4b472",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:38579/db37d61f-dc0a-4a8e-bcd1-aed701e4b472",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat47",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42681/744479b4-f11a-48cf-a86b-90858bb6aead",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42681/744479b4-f11a-48cf-a86b-90858bb6aead",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat48",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:45757/7a53c963-173c-42bb-a190-056fcd55a227",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:45757/7a53c963-173c-42bb-a190-056fcd55a227",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat49",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41925/25aa102b-4d49-490b-a661-c4b2853434b9",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41925/25aa102b-4d49-490b-a661-c4b2853434b9",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat5",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:35715/e1a1b7e6-08a7-4fb6-848c-ceed0c4ba39d",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:35715/e1a1b7e6-08a7-4fb6-848c-ceed0c4ba39d",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat6",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40041/9bf6bb19-071e-4de5-89a2-024386cda0cd",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40041/9bf6bb19-071e-4de5-89a2-024386cda0cd",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat7",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33503/22548420-2777-4735-bb52-99e03fbcaaab",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33503/22548420-2777-4735-bb52-99e03fbcaaab",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat8",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40037/a83503b0-3ca7-41de-bdb7-e80e63257f69",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40037/a83503b0-3ca7-41de-bdb7-e80e63257f69",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat9",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37233/d2788e65-f559-46a8-8e88-688c7baccc8f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37233/d2788e65-f559-46a8-8e88-688c7baccc8f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42867/21dca8b5-e117-463f-96cc-b2183a971169",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42867/21dca8b5-e117-463f-96cc-b2183a971169",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat1",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37371/a696b9d6-bd68-4097-ac01-3e41e1de9c03",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37371/a696b9d6-bd68-4097-ac01-3e41e1de9c03",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat10",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:38449/77c14c69-8d10-4b87-91a3-7276d251f0a1",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:38449/77c14c69-8d10-4b87-91a3-7276d251f0a1",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat11",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41159/c376019a-7bf3-4d2d-9d80-b54165e3e44f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41159/c376019a-7bf3-4d2d-9d80-b54165e3e44f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat12",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:38341/858849b3-36fd-429f-a0d7-cd74ab5d6041",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:38341/858849b3-36fd-429f-a0d7-cd74ab5d6041",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat13",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42301/394e1adb-d511-4e4d-9b77-6c0d6e5ae6d2",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42301/394e1adb-d511-4e4d-9b77-6c0d6e5ae6d2",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat14",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40167/3b47e314-9545-481c-848a-00cca87bb88f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40167/3b47e314-9545-481c-848a-00cca87bb88f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat15",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37997/220d5780-312b-4d70-b31e-ca40e95ae677",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37997/220d5780-312b-4d70-b31e-ca40e95ae677",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat16",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36035/95032e60-1c06-404e-b5d8-880a61193150",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:36035/95032e60-1c06-404e-b5d8-880a61193150",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat17",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40489/adbb01e6-1db1-41a7-886b-e17f3500e355",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40489/adbb01e6-1db1-41a7-886b-e17f3500e355",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat18",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33035/58eb057b-36e2-4e0a-b7be-247712403bcf",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33035/58eb057b-36e2-4e0a-b7be-247712403bcf",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat19",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33413/b321b698-4127-4e68-aaab-71bca1d9a7c8",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33413/b321b698-4127-4e68-aaab-71bca1d9a7c8",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat2",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40253/fa260f2c-2a1a-4b94-b97c-fab29fd2a8fb",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40253/fa260f2c-2a1a-4b94-b97c-fab29fd2a8fb",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat20",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:44941/0d65bf4f-b089-4926-bd27-14638e0a73b5",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:44941/0d65bf4f-b089-4926-bd27-14638e0a73b5",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat21",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41297/bf612ead-3a64-42f0-8d84-d4899ddb389e",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41297/bf612ead-3a64-42f0-8d84-d4899ddb389e",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat22",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:35541/89299455-0e53-4a6b-9a8a-072ec429450d",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:35541/89299455-0e53-4a6b-9a8a-072ec429450d",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat23",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41839/f5250d44-fef2-4203-9390-0884fcb29074",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41839/f5250d44-fef2-4203-9390-0884fcb29074",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat24",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:32997/37dea7f1-cde0-479b-81f3-1860a10e6022",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32997/37dea7f1-cde0-479b-81f3-1860a10e6022",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat25",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37359/6ef9d215-e424-4a48-bcc5-c34d8240ffc9",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37359/6ef9d215-e424-4a48-bcc5-c34d8240ffc9",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat26",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:46783/cb2ba53e-2fa2-4e85-9aa7-c5337deb36fc",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:46783/cb2ba53e-2fa2-4e85-9aa7-c5337deb36fc",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat27",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42169/3b4bf0c0-2514-46e4-bf84-63bb442cf0cc",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42169/3b4bf0c0-2514-46e4-bf84-63bb442cf0cc",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat28",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41985/a9690741-c12c-4e16-ba1f-d9ff631fced7",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41985/a9690741-c12c-4e16-ba1f-d9ff631fced7",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat29",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41539/eb059ff8-7d62-4492-a101-ea21c15c9be1",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41539/eb059ff8-7d62-4492-a101-ea21c15c9be1",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat3",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40617/1ed74a77-9d86-40c1-a7f9-b876a18b0681",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40617/1ed74a77-9d86-40c1-a7f9-b876a18b0681",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat30",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:35481/2e26f7b4-c932-4d97-aa50-69c79f48bba2",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:35481/2e26f7b4-c932-4d97-aa50-69c79f48bba2",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat31",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36735/ffcd093f-1291-456c-9804-5492dbce0c66",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:36735/ffcd093f-1291-456c-9804-5492dbce0c66",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat32",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:44569/92094552-6a1c-42e8-9ee6-d6308cb15d68",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:44569/92094552-6a1c-42e8-9ee6-d6308cb15d68",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat33",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42677/a6c7721e-90f1-44ee-98bc-1d1b26606fa5",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42677/a6c7721e-90f1-44ee-98bc-1d1b26606fa5",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat34",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:39073/55e1e14f-48fc-40e0-99ee-a63d9e36142c",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39073/55e1e14f-48fc-40e0-99ee-a63d9e36142c",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat35",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33995/c7cbd030-f343-4dcf-b052-7c8b1ad40cf7",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33995/c7cbd030-f343-4dcf-b052-7c8b1ad40cf7",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat36",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41583/c2ef93a9-e5c2-4e5c-b031-3d0944005903",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41583/c2ef93a9-e5c2-4e5c-b031-3d0944005903",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat37",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:44011/b80300aa-f978-41e2-b0f1-8206d96e770f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:44011/b80300aa-f978-41e2-b0f1-8206d96e770f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat38",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37193/e26dfba2-a705-46f2-b98f-549f3a3c81dd",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37193/e26dfba2-a705-46f2-b98f-549f3a3c81dd",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat39",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:32977/25292676-e5f9-405f-9361-70b2efa377b0",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32977/25292676-e5f9-405f-9361-70b2efa377b0",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat4",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:39219/d8069591-f5cf-48db-ac53-55cce2682036",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39219/d8069591-f5cf-48db-ac53-55cce2682036",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat40",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:34143/9dfe7d61-bd25-4e18-aeee-be9b316241fb",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:34143/9dfe7d61-bd25-4e18-aeee-be9b316241fb",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat41",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:45673/e03b95d5-451f-496b-84a0-3a642092d249",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:45673/e03b95d5-451f-496b-84a0-3a642092d249",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat42",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42527/39c704a1-9388-4e73-8280-338cae851c8a",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42527/39c704a1-9388-4e73-8280-338cae851c8a",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat43",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36011/ac650b1a-2184-4104-8b90-6c6c3b0da37f",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:36011/ac650b1a-2184-4104-8b90-6c6c3b0da37f",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat44",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33449/cbc04915-c3ae-4311-98c3-00512c21f046",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33449/cbc04915-c3ae-4311-98c3-00512c21f046",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat45",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:45475/63a4690c-0a8e-4606-a468-745864e553f3",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:45475/63a4690c-0a8e-4606-a468-745864e553f3",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat46",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:38579/d6c83f01-b1e7-498a-8e23-a8e22607ad44",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:38579/d6c83f01-b1e7-498a-8e23-a8e22607ad44",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat47",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:42681/8fae7854-d3ba-4758-a7b2-da129e16ca96",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:42681/8fae7854-d3ba-4758-a7b2-da129e16ca96",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat48",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:45757/c484f03f-6591-4036-83aa-12a1df7677d3",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:45757/c484f03f-6591-4036-83aa-12a1df7677d3",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat49",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41925/61da931f-42b4-4027-a199-066a634d17fd",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:41925/61da931f-42b4-4027-a199-066a634d17fd",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat5",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:35715/fd938ab4-c069-4645-9e7e-39089edd94d7",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:35715/fd938ab4-c069-4645-9e7e-39089edd94d7",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat6",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40041/ec1a2cd3-b9bb-4e7c-8b8b-3d89484e295a",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40041/ec1a2cd3-b9bb-4e7c-8b8b-3d89484e295a",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat7",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:33503/7e0f1d35-2fa8-44b2-a747-29290b219010",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:33503/7e0f1d35-2fa8-44b2-a747-29290b219010",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat8",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:40037/96535014-ed5e-46b9-92bd-bf497e888b56",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:40037/96535014-ed5e-46b9-92bd-bf497e888b56",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat9",
+    "check": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:37233/41a283b6-ec18-45f9-97d5-819abc41eeaf",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "index": 2,
+      "generation": 2,
+      "ok": true
+    },
+    "completion": [
+      {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:37233/41a283b6-ec18-45f9-97d5-819abc41eeaf",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      }
+    ]
+  }
+]
