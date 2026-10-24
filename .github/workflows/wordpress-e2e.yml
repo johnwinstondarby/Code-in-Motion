@@ -1384,6 +1384,7 @@ jobs:
       - name: Verify learner presets in selected browser
         env:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
+          CIM_MOTION_DIAGNOSTICS: ${{ matrix.browser == 'webkit' && '1' || '0' }}
         run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs tests/e2e/diagram-capacity.spec.mjs --reporter=line
 
       - name: Prove multi-pane fixture browser mutation guards
@@ -1421,6 +1422,15 @@ jobs:
         id: webkit-install-summary
         if: ${{ always() && matrix.browser == 'webkit' }}
         run: node tools/ci/webkit-install.mjs summary
+
+      - name: Retain WebKit playback diagnostics
+        id: webkit-motion-diagnostics
+        if: ${{ always() && matrix.browser == 'webkit' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: webkit-playback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: test-results/
+          if-no-files-found: warn
 
       - name: Retain WebKit installation evidence
         id: webkit-install-evidence

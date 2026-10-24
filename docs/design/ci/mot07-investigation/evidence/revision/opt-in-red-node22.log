@@ -1,0 +1,132 @@
+TAP version 13
+# Subtest: disabled Motion diagnostics leave routes, init scripts and media prototypes untouched
+not ok 1 - disabled Motion diagnostics leave routes, init scripts and media prototypes untouched
+  ---
+  duration_ms: 1.4813
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\mot07-investigation\\opt-in-red-sandbox\\tests\\motion-diagnostics.test.mjs:4:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    ordinary MOT-07 must install no interception or prototype-changing script
+    + actual - expected
+    
+    + [
+    +   'route',
+    +   'init'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'route'
+    1: 'init'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-investigation/opt-in-red-sandbox/tests/motion-diagnostics.test.mjs:6:74)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: enabled Motion diagnostics observe without rewriting source or overriding native setters
+not ok 2 - enabled Motion diagnostics observe without rewriting source or overriding native setters
+  ---
+  duration_ms: 0.8996
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\mot07-investigation\\opt-in-red-sandbox\\tests\\motion-diagnostics.test.mjs:8:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /defineProperty|\.prototype|__motionDebug/. Input:
+    
+    '() => {\n' +
+      '    const events = []; let dropped = 0;\n' +
+      '    window.__motionDebug = (event, data) => {\n' +
+      '      if (events.length === 512) { events.shift(); dropped++; }\n' +
+      '      events.push({event, data, stamp: performance.now()});\n' +
+      '    };\n' +
+      '    const state = v => ({time:v.currentTime,duration:v.duration,ended:v.ended,seeking:v.seeking,readyState:v.readyState,paused:v.paused});\n' +
+      "    const descriptor = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');\n" +
+      "    Object.defineProperty(HTMLMediaElement.prototype, 'currentTime', {...descriptor, set(time) {\n" +
+      "      window.__motionDebug('seek-write', {requested:time, before:state(this)});\n" +
+      '      descriptor.set.call(this, time);\n' +
+      '    }});\n' +
+      "    for (const event of ['seeking','seeked','timeupdate','ended','pause','play','playing','waiting','canplay']) {\n" +
+      '      document.addEventListener(event, e => {\n' +
+      "        if (e.target instanceof HTMLMediaElement) window.__motionDebug('native-'+event, state(e.target));\n" +
+      '      }, true);\n' +
+      '    }\n' +
+      '    window.__motionDiagnosticSnapshot = () => ({events:[...events],dropped});\n' +
+      '  }'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    () => {
+        const events = []; let dropped = 0;
+        window.__motionDebug = (event, data) => {
+          if (events.length === 512) { events.shift(); dropped++; }
+          events.push({event, data, stamp: performance.now()});
+        };
+        const state = v => ({time:v.currentTime,duration:v.duration,ended:v.ended,seeking:v.seeking,readyState:v.readyState,paused:v.paused});
+        const descriptor = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
+        Object.defineProperty(HTMLMediaElement.prototype, 'currentTime', {...descriptor, set(time) {
+          window.__motionDebug('seek-write', {requested:time, before:state(this)});
+          descriptor.set.call(this, time);
+        }});
+        for (const event of ['seeking','seeked','timeupdate','ended','pause','play','playing','waiting','canplay']) {
+          document.addEventListener(event, e => {
+            if (e.target instanceof HTMLMediaElement) window.__motionDebug('native-'+event, state(e.target));
+          }, true);
+        }
+        window.__motionDiagnosticSnapshot = () => ({events:[...events],dropped});
+      }
+  operator: 'doesNotMatch'
+  stack: |-
+    Object.addInitScript (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-investigation/opt-in-red-sandbox/tests/motion-diagnostics.test.mjs:9:115)
+    Module.installMotionDiagnostics (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-investigation/opt-in-red-sandbox/tests/helpers/motion-diagnostics.mjs:24:14)
+    async TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-investigation/opt-in-red-sandbox/tests/motion-diagnostics.test.mjs:10:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: disabled MOT-07 reads its original predicate and writes no diagnostic artifact
+not ok 3 - disabled MOT-07 reads its original predicate and writes no diagnostic artifact
+  ---
+  duration_ms: 0.3544
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\mot07-investigation\\opt-in-red-sandbox\\tests\\motion-diagnostics.test.mjs:12:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Got unwanted rejection.
+    Actual message: "fixture is not defined"
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+  error: 'fixture is not defined'
+  name: 'ReferenceError'
+  stack: |-
+    file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-investigation/opt-in-red-sandbox/tests/helpers/motion-diagnostics.mjs:48:13
+    Object.evaluate (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-investigation/opt-in-red-sandbox/tests/motion-diagnostics.test.mjs:13:61)
+    Module.recordMotionCheck (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-investigation/opt-in-red-sandbox/tests/helpers/motion-diagnostics.mjs:46:30)
+    file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-investigation/opt-in-red-sandbox/tests/motion-diagnostics.test.mjs:15:63
+    waitForActual (node:assert:630:21)
+    Function.doesNotReject (node:assert:787:39)
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-investigation/opt-in-red-sandbox/tests/motion-diagnostics.test.mjs:15:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+  operator: 'doesNotReject'
+  stack: |-
+    async TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-investigation/opt-in-red-sandbox/tests/motion-diagnostics.test.mjs:15:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 0
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 90.419

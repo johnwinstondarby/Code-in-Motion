@@ -1,0 +1,542 @@
+{
+  "check": {
+    "time": 1.2,
+    "duration": 1.2,
+    "ended": true,
+    "seeking": false,
+    "readyState": 4,
+    "paused": true,
+    "ok": true
+  },
+  "session": {
+    "index": 2,
+    "progress": "settled",
+    "playing": false,
+    "tab": "console",
+    "generation": 2,
+    "panelOpen": false,
+    "panes": {
+      "console": {
+        "lines": [
+          "git rev-parse HEAD",
+          "[placeholder output]"
+        ]
+      },
+      "explanation": {
+        "text": "The modeled job fails; real failure type and timing come from the future capture."
+      },
+      "engineering": {
+        "artifacts": {
+          "run": {
+            "location": "login",
+            "status": "pinned"
+          },
+          "commit": {
+            "location": "git",
+            "status": "pinned"
+          },
+          "job": {
+            "location": "gpu",
+            "status": "failed"
+          },
+          "metrics": {
+            "location": null,
+            "status": "absent"
+          }
+        }
+      },
+      "motion": {
+        "asset": "gpu-memory",
+        "alt": "Illustrative interface; no real recording exists.",
+        "label": "Placeholder GUI · simulated"
+      }
+    },
+    "waiting": {
+      "console": true,
+      "explanation": false,
+      "engineering": false,
+      "motion": false
+    },
+    "failures": [],
+    "status": "Beat 3 / 9 · paused"
+  },
+  "clock": [
+    {
+      "running": true,
+      "time": 0,
+      "intent": true
+    },
+    {
+      "running": false,
+      "time": 400,
+      "intent": false
+    },
+    {
+      "running": true,
+      "time": 400,
+      "intent": true
+    }
+  ],
+  "events": [
+    {
+      "event": "seek-write",
+      "data": {
+        "requested": 0,
+        "before": {
+          "time": 0,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 1009
+    },
+    {
+      "event": "native-canplay",
+      "data": {
+        "time": 0,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 1010
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "time": 0.00043614,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 1023
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "time": 0.00043614,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 1024
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "time": 0.002045671,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 1024
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "time": 0.002045671,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 1024
+    },
+    {
+      "event": "seek-write",
+      "data": {
+        "requested": 0.36,
+        "before": {
+          "time": 0.179000327,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 1202
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "time": 0.36,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 1204
+    },
+    {
+      "event": "pinPause",
+      "data": {
+        "clock": 400,
+        "start": 0,
+        "finalising": false,
+        "video": {
+          "time": 0.36,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 1208
+    },
+    {
+      "event": "seek-write",
+      "data": {
+        "requested": 0.4,
+        "before": {
+          "time": 0.36,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 1208
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1209
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1209
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1215
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1215
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1215
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "time": 0.401398878,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 1229
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "time": 0.401398878,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1230
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 0.401398878,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1231
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "time": 0.401398878,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1231
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "time": 0.402048726,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 1385
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "time": 0.402048726,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 1386
+    },
+    {
+      "event": "seek-write",
+      "data": {
+        "requested": 0.56,
+        "before": {
+          "time": 0.407208877,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 1390
+    },
+    {
+      "event": "seek-write",
+      "data": {
+        "requested": 0.72,
+        "before": {
+          "time": 0.56,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 1390
+    },
+    {
+      "event": "seek-write",
+      "data": {
+        "requested": 0.88,
+        "before": {
+          "time": 0.72,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 1390
+    },
+    {
+      "event": "seek-write",
+      "data": {
+        "requested": 1.04,
+        "before": {
+          "time": 0.88,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 1390
+    },
+    {
+      "event": "final-start",
+      "data": {
+        "video": {
+          "time": 1.04,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 1390
+    },
+    {
+      "event": "seek-write",
+      "data": {
+        "requested": 1.2,
+        "before": {
+          "time": 1.04,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 1391
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1391
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1391
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1392
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1422
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1422
+    },
+    {
+      "event": "final-resolved",
+      "data": {
+        "video": {
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 1422
+    },
+    {
+      "event": "finish",
+      "data": {
+        "result": {
+          "status": "settled",
+          "error": "undefined"
+        },
+        "video": {
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 1422
+    },
+    {
+      "event": "native-ended",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 1422
+    }
+  ],
+  "dropped": 0
+}

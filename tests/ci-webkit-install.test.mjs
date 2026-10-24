@@ -53,7 +53,7 @@ test('only WebKit install steps get retries/cache; all other jobs and test comma
  const cache=steps.find(s=>s.id==='webkit-browser-cache');assert(cache);assert.equal(cache.with.path,'~/.cache/ms-playwright');assert(!cache.with['restore-keys']);assert(cache.with.key.includes('webkit-cache-key.outputs.key'));
  for(const id of ids.filter(x=>x.includes('browser'))){assert(steps.find(s=>s.id===id).if.includes("steps.webkit-browser-cache.outputs.cache-hit != 'true'"));}
  const mirror=steps.filter(s=>s.run?.includes('ubuntu-apt-mirror.mjs'));assert.equal(mirror.length,0,'no unproven mirror rewrite');
- const normalized=structuredClone(current);normalized.jobs['browser-family-matrix'].steps=steps.filter(s=>!s.id?.startsWith('webkit-')).map(s=>{const copy=structuredClone(s);if(copy.name==='Install selected browser for Playwright'){assert.equal(copy.if,"matrix.browser != 'webkit'");delete copy.if;}return copy;});
+ const normalized=structuredClone(current);normalized.jobs['browser-family-matrix'].steps=steps.filter(s=>!s.id?.startsWith('webkit-')).map(s=>{const copy=structuredClone(s);if(copy.name==='Verify learner presets in selected browser'){assert.equal(copy.env.CIM_MOTION_DIAGNOSTICS,"${{ matrix.browser == 'webkit' && '1' || '0' }}");delete copy.env.CIM_MOTION_DIAGNOSTICS;}if(copy.name==='Install selected browser for Playwright'){assert.equal(copy.if,"matrix.browser != 'webkit'");delete copy.if;}return copy;});
  assert.deepEqual(normalized,baseline);
 });
 

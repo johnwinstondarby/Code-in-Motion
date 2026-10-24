@@ -1,0 +1,46 @@
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2001590Z Error: Probe survived or crashed: MOT-02-original-address
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2001935Z TAP version 13
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2002150Z 1..0
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2002453Z # Subtest: tests/motion-authoring.test.mjs
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2002827Z ok 1 - tests/motion-authoring.test.mjs
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2003106Z   ---
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2003317Z   duration_ms: 106.788308
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2003642Z   type: 'test'
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2003951Z   ...
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2004806Z # Subtest: [MOT-02] only exact verified clip and caption bytes become playback Blob URLs
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2005897Z not ok 2 - [MOT-02] only exact verified clip and caption bytes become playback Blob URLs
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2006551Z   ---
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2006860Z   duration_ms: 80.856698
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2007515Z   type: 'test'
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2008604Z   location: '/home/runner/work/Code-in-Motion/motion-mutations/candidate-qGITvW/tests/motion-media.test.mjs:21:1'
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2009202Z   failureType: 'testCodeFailure'
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2009816Z   error: 'CIM-PANE-MEDIA-UNAVAILABLE: GUI recording unavailable. Check the declared file, permissions and fingerprint.'
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2010355Z   code: 'ERR_TEST_FAILURE'
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2010599Z   stack: |-
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2011165Z     unavailable (file:///home/runner/work/Code-in-Motion/motion-mutations/candidate-qGITvW/src/multipane/motion-media.mjs:3:23)
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2012100Z     Object.load (file:///home/runner/work/Code-in-Motion/motion-mutations/candidate-qGITvW/src/multipane/motion-media.mjs:25:16)
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2013052Z     async TestContext.<anonymous> (file:///home/runner/work/Code-in-Motion/motion-mutations/candidate-qGITvW/tests/motion-media.test.mjs:21:127)
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2013735Z     async Test.run (node:internal/test_runner/test:1054:7)
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2014705Z     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2016662Z   ...
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2016857Z 1..2
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2017052Z # tests 2
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2017245Z # suites 0
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2017437Z # pass 1
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2017639Z # fail 1
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2017904Z # cancelled 0
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2018484Z # skipped 0
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2018677Z # todo 0
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2018906Z # duration_ms 160.211231
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2019387Z 
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2019992Z     at file:///home/runner/work/Code-in-Motion/Code-in-Motion/tools/check-motion-mutations.mjs:44:1088
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2020672Z 
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2020832Z Node.js v22.23.2
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2098150Z ##[error]Process completed with exit code 1.
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2522065Z ##[group]Run npm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.2524461Z ^[[36;1mnpm run --silent wp-env -- --config="${CIM_R20_CONFIG}" stop^[[0m
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.3011203Z shell: /usr/bin/bash -e {0}
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.3011630Z env:
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.3011955Z   CIM_R20_CONFIG: r20-wp-env.json
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.3012480Z   CIM_R20_ARTIFACT_DIR: /home/runner/work/_temp/cim-r20-artifact
+Browser webkit	UNKNOWN STEP	2026-10-23T18:59:05.3013017Z   CIM_R20_BROWSER: webkit

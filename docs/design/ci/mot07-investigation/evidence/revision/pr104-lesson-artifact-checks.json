@@ -1,0 +1,41 @@
+[
+  {
+    "case": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold",
+    "check": {
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "ok": true
+    },
+    "failures": []
+  },
+  {
+    "case": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold",
+    "check": {
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "ok": true
+    },
+    "failures": []
+  },
+  {
+    "case": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold",
+    "check": {
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true,
+      "ok": true
+    },
+    "failures": []
+  }
+]
