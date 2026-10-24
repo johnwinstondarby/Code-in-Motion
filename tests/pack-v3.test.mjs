@@ -58,3 +58,7 @@ test('[PB-13] preflight reports whole ZIP and media limits and blocks a known ho
 test('[PB-14] pack writes checksum and never overwrites either earlier output',async()=>{
  const s=await packSource(),file=join(s.folder,'test.zip');const result=await writeV3Pack(s.source,file,{license});assert.equal(await readFile(file+'.sha256','utf8'),result.sha256+'  test.zip\n');const before=await readFile(file);await assert.rejects(writeV3Pack(s.source,file,{license}));assert.deepEqual(await readFile(file),before);
 });
+
+test('[PB-22] authored commands and output must satisfy the existing single-line Console contract',async()=>{
+ for(const kind of ['command','output']){const s=await packSource();if(kind==='command')s.lesson.beats[0].actions[0].command='one\ntwo';else s.lesson.beats[0].actions[0].output=['one\ntwo'];await s.saveLesson();await rejects(buildV3Pack(s.source,license),'CIM-V3-PACK-CONSOLE');}
+});

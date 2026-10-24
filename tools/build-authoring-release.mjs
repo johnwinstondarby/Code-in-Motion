@@ -26,6 +26,8 @@ async function visit(file) {
 }
 await visit(resolve(root,'tools/cim-author.mjs'));
 await visit(resolve(root,'tools/lesson-preview-client.mjs'));
+await visit(resolve(root,'tools/pack-preview-client.mjs'));
+files.set(resolve(root,'tools/pack-preview.css'),readHeadFile('tools/pack-preview.css'));
 async function includeRuntime(directory) {
  for(const entry of await readdir(resolve(root,directory),{withFileTypes:true})) {
   const file=directory+'/'+entry.name;

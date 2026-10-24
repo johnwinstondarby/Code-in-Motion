@@ -1,0 +1,5 @@
+body{margin:8px;background:#0b1017;color:#edf2fa;font:14px/1.4 system-ui,sans-serif}
+[data-preview-identity]{height:24px;white-space:nowrap;color:#ffd06d}
+#preview-error:empty{display:none}
+#preview-error{white-space:pre-wrap;overflow-wrap:anywhere;color:#ffd06d}
+#preview-player[data-composed-player]{height:calc(100vh - 48px)}
