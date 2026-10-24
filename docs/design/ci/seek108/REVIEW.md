@@ -24,6 +24,7 @@ Only src/multipane/motion.mjs changes in product code. No WordPress, Core, Runti
 | 9ac4715 | ORDER-19 fix | Reduced motion shares the task cancellation path. A stronger assertion after the red run dispatches a late wrong seek and requires no new write. The prior assertions remain. MOT-08 mutation anchors follow the moved reduced-motion branch; its behavior/assertion is unchanged. |
 | a6bf4eb | MOT-26 added after implementation | Actual session Restart, Previous, jump and deepLink during pending re-seeking at all three sizes. The four laptop cases fail on unchanged 5847a59 and pass with the fix. Original MOT-07 remains byte-identical. |
 | MOT-26 double correction | navigation-double-failure.log retained | The initial blocked setter failed to report seeking true; legitimate native readiness events therefore used the second allowed retry, making the expected request count wrong. The corrected instance double reports a genuinely pending seek. All four controls were recorded red again; all four fixed cases then passed. No tolerance, timeout, retry or existing assertion was weakened. |
+| MOT-26 deterministic setup | Added after the recorded browser red | Pause/reset only the fault-injected video before advancing the virtual clock, so native playback cannot finish first on a slow runner and bypass the injected final seek. All navigation and final-frame assertions remain unchanged; ordinary MOT-07 and load runs are untouched. |
 
 ## Rule-to-proof map
 
