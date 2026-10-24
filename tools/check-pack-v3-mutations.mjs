@@ -9,7 +9,7 @@ const validator='authoring/v3/validate.mjs',pack='authoring/v3/pack.mjs',media='
 const suppress=id=>`if (condition && id !== '${id}') diagnostics.push`;
 const cases=[
  ['PB-M01-placeholder',validator,[['if (condition) diagnostics.push',suppress('CIM-V3-PLACEHOLDER')]],'PB-03'],
- ['PB-M02-forged-label',validator,[["a.kind === 'gui' && (doc.placeholder ? a.label !== 'Placeholder GUI Â· simulated' : a.label !== 'Recorded in the lab')",'false']],'PB-04'],
+ ['PB-M02-forged-label',validator,[["a.kind === 'gui' && (doc.placeholder ? a.label !== 'Placeholder GUI · simulated' : a.label !== 'Recorded in the lab')",'false']],'PB-04'],
  ['PB-M03-capture',validator,[['if (condition) diagnostics.push',suppress('CIM-V3-CAPTURE-REFERENCE')]],'PB-05'],
  ['PB-M04-digest',pack,[['if(sha256!==undefined&&digest(result)!==sha256)','if(false)']],'PB-06'],
  ['PB-M05-codec',media,[["if(typeof codec!=='string'||codec.length>80||!(d?.type==='video/mp4'?mp4:d?.type==='video/webm'&&webm))",'if(false)']],'PB-07'],
@@ -30,7 +30,7 @@ const cases=[
 ];
 if(browser)cases.push(
  ['PB-M19-json-verification','tools/pack-preview-client.mjs',[['await sha(bytes)!==descriptor.sha256','false']],'PB-PREVIEW-04','browser'],
- ['PB-M20-real-source','tools/pack-preview-client.mjs',[[' const media=projectPreviewMedia'," experience.presentation.title='Run Custody Â· Placeholder simulation';\n const media=projectPreviewMedia"]],'PB-PREVIEW-03','browser']
+ ['PB-M20-real-source','tools/pack-preview-client.mjs',[[' const media=projectPreviewMedia'," experience.presentation.title='Run Custody · Placeholder simulation';\n const media=projectPreviewMedia"]],'PB-PREVIEW-03','browser']
 );
 const tests=['tests/pack-v3.test.mjs','tests/pack-v3-sample.test.mjs','tests/pack-preview.test.mjs','tests/pack-v3-schema.test.mjs'];
 const run=(rule,kind='unit')=>spawnSync(process.execPath,kind==='browser'?['node_modules/@playwright/test/cli.js','test','tests/e2e/pack-v3-preview.spec.mjs','--workers=1','--reporter=line',...(rule?['--grep',rule]:[])]:['--test',...(rule?['--test-name-pattern='+rule]:[]),...tests],{cwd:sandbox,encoding:'utf8',timeout:180000,maxBuffer:8*1024*1024,env:process.env});

@@ -1,4 +1,4 @@
-# Lesson-pack v2 manifest â€” tool validation only
+# Lesson-pack v2 manifest — development pack construction
 
 Normative schema: `authoring/v3/pack.schema.json`, ID `cim.lesson-pack/v2`. This candidate adds a fixed inert companion template for tool-built packs. It does not change PHP discovery, installed packs or Player admission. Existing pack v1 remains unchanged.
 

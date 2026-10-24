@@ -1,4 +1,4 @@
-# Authoring JSON v3 â€” validation candidate
+# Authoring JSON v3 — development authoring route
 
 ADR 0061 step 7B adds local authoring and pack construction. Published CiM 1.0.1 does not admit this format. Existing authoring v1/v2 and pack v1 remain unchanged.
 
@@ -32,7 +32,7 @@ Context-only beats omit `action_tab` and have an empty actions array. Their acti
 
 Documents are limited to 2 MiB, depth 32 and 100,000 JSON nodes. Maximum counts: 128 beats, four panes, 32 hosts, 64 services, 128 artifacts, 32 reserved media IDs, 16 Explanation links per beat and 32 record references per beat. Schemas specify field-specific text limits (general text 16 KiB, titles 300 characters, IDs 100 characters).
 
-All placeholder documents explicitly set `placeholder: true`; records/actions/evidence identify placeholder provenance. Simulated GUI labels say `Placeholder GUI Â· simulated`, never `Recorded in the lab`. The proof carries a visible-badge requirement. Validation checks declarations and consistency; it cannot establish that an author telling an internally consistent story actually recorded a real event.
+All placeholder documents explicitly set `placeholder: true`; records/actions/evidence identify placeholder provenance. Simulated GUI labels say `Placeholder GUI · simulated`, never `Recorded in the lab`. The proof carries a visible-badge requirement. Validation checks declarations and consistency; it cannot establish that an author telling an internally consistent story actually recorded a real event.
 
 ## Envelope proof
 
