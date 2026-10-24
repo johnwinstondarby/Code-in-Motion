@@ -21,7 +21,7 @@ async function setup(){
   constructor(){super('video');this.duration=1.2;this.readyState=4;this.seeking=false;this.paused=true;this._time=0;this.ended=false;videos.push(this);}
   canPlayType(){return 'probably';}load(){}
   get currentTime(){return this._time;}
-  set currentTime(v){this._time=v;this.seeking=true;this.ended=false;}
+  set currentTime(v){this.seekWrites=(this.seekWrites??0)+1;this._time=v;this.seeking=true;this.ended=false;}
   finishSeek(){this.seeking=false;this.ended=this.currentTime===this.duration;this.dispatchEvent(new Event('seeked'));}
   pause(){this.paused=true;}
   play(){this.paused=false;this.dispatchEvent(new Event('play'));return Promise.resolve();}
@@ -53,4 +53,10 @@ test('[ORDER-06] native late play rewinding an ended video restores the final ho
 test('[ORDER-07] a genuine new transition clears the previous final hold',async()=>{
  const s=await setup();s.advance(1200);await finish(s);
  const next=s.adapter.pane.play({asset:'gpu-memory'},{clock:s.clock,cancellation:s.cancellation,reducedMotion:false});s.video.finishSeek();await flush();s.pause();void s.video.play();assert.equal(s.video.currentTime,0,'a paused new transition must not restore the preceding final frame');s.adapter.pane.dispose();assert.equal((await next).status,'cancelled');
+});
+
+test('[ORDER-08] repeated unauthorized playback cannot cause an unbounded restore loop',async()=>{
+ const s=await setup();s.advance(1200);await finish(s);const writes=s.video.seekWrites;
+ for(let i=0;i<10;i++){s.video._time=0;s.video.ended=false;s.video.paused=false;s.video.dispatchEvent(new Event('play'));s.video.dispatchEvent(new Event('playing'));s.video.finishSeek();await flush();}
+ assert.ok(s.video.seekWrites-writes<=2,'at most two corrective seeks per completed hold');assert.equal(s.result.status,'settled');s.adapter.pane.dispose();
 });
