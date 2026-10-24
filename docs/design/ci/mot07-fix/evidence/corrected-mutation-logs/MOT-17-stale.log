@@ -1,0 +1,48 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/motion-pane.spec.mjs:80:2 › 1366x768 › [MOT-17] navigation cancels preparation and late results cannot replace the destination
+  1) tests/e2e/motion-pane.spec.mjs:80:2 › 1366x768 › [MOT-17] navigation cancels preparation and late results cannot replace the destination 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.motion-pane')
+    Expected substring: "Second simulated GUI clip"
+    Received string:    "Placeholder GUI · simulatedPlaceholder contentSimulated GUI test pattern. No real lab activity is shown.GUI recording unavailableShow detailsCIM-PANE-MEDIA-UNAVAILABLE"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('.motion-pane') with timeout 5000ms
+      - waiting for locator('.motion-pane')
+        14 × locator resolved to <section class="motion-pane" aria-label="Motion recording and text alternative">…</section>
+           - unexpected value "Placeholder GUI · simulatedPlaceholder contentSimulated GUI test pattern. No real lab activity is shown.GUI recording unavailableShow detailsCIM-PANE-MEDIA-UNAVAILABLE"
+
+
+      80 |  test('[MOT-17] navigation cancels preparation and late results cannot replace the destination',async({page})=>{
+      81 |   let release;const held=new Promise(resolve=>{release=resolve;});await page.route('**/__cim_fixture_media/good.mp4',async route=>{await held;try{await route.continue();}catch{/* Navigation may already have aborted this request. */}});
+    > 82 |   await open(page);await gui(page);await page.evaluate(()=>fixture.session.dispatch({type:'jump',index:7}));expect(await page.evaluate(()=>fixture.session.read().index)).toBe(7);release();await expect(page.locator('.motion-pane')).toContainText('Second simulated GUI clip');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.waitForTimeout(150);await expect(page.locator('.motion-pane')).toContainText('Second simulated GUI clip');expect(await page.evaluate(()=>fixture.session.read().index)).toBe(7);
+         |                                                                                                                                                                                                                                        ^
+      83 |  });
+      84 |  test('[MOT-18] native playback cannot override a paused shared clock',async({page})=>{
+      85 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await expect.poll(()=>page.evaluate(()=>fixture.clockEvents.length)).toBeGreaterThan(0);const video=page.locator('.motion-pane video');await expect.poll(()=>video.evaluate(v=>!v.paused&&v.currentTime>0.05)).toBe(true);await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);await page.waitForTimeout(60);await video.evaluate(v=>{window.nativePlayAttempted=false;v.addEventListener('play',()=>{window.nativePlayAttempted=true;},{once:true});const probe=document.createElement('button');probe.id='native-play-probe';probe.textContent='Probe native play';probe.onclick=()=>{v.play().catch(()=>{});};document.body.append(probe);});await page.locator('#native-play-probe').click();await expect.poll(()=>page.evaluate(()=>window.nativePlayAttempted)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.paused),{timeout:400}).toBe(true);expect(await page.evaluate(()=>fixture.session.read().playing)).toBe(false);
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-lBFXAc/tests/e2e/motion-pane.spec.mjs:82:232
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../browser-results/tests-e2e-motion-pane-1366-ff18c-not-replace-the-destination/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-ff18c-not-replace-the-destination/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-ff18c-not-replace-the-destination/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../browser-results/tests-e2e-motion-pane-1366-ff18c-not-replace-the-destination/trace.zip
+    Usage:
+
+        npx playwright show-trace ../browser-results/tests-e2e-motion-pane-1366-ff18c-not-replace-the-destination/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    tests/e2e/motion-pane.spec.mjs:80:2 › 1366x768 › [MOT-17] navigation cancels preparation and late results cannot replace the destination 

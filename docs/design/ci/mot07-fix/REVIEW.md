@@ -2,6 +2,19 @@
 
 Depends on diagnostic/workflow PR #105 at `f26ea51`. Main is `048eafb`, all 33 post-merge checks green. This candidate is **not ready to merge**: further proof and Daisy/Johann review remain required. Part B stays held. No tag, release, installation or version bump.
 
+## Current corrected-candidate status
+
+- Node 20.20.2 and 22.23.2: **1,092/1,092 tests each**, zero skipped.
+- New real-video/replay/no-side-effects matrix: **54/54**, all three engines and sizes.
+- Corrected clean builds: plugin `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a` (99 files), authoring candidate `431e09c7269193606db958c8860f8972254bf220c512980e1b30859563e5bff9` (128 files), identical in two clean Node 22.23.2 checkouts at 25c633c. Subsequent packet-only changes are excluded from both archives; exact final-head rebuild confirmation follows separately.
+- Constrained corrected batch G: **143 passed / 7 failed**, zero retries. Six preparation failures and one caption check before completion; no original post-completion rewind signature captured. This is **not a green load proof**.
+- Corrected WebKit mutation proof: **35/35 caught as assertions**, unit and browser baselines pass; individual logs retained.
+- Three consecutive final-head WebKit CI jobs: **not yet established**.
+- Three manual diagnostic dispatch runs: **not performed**; reviewed/approved merge of #105 onto main is needed to enable its dispatch-only workflow. #105's f26ea51 now has all 35 checks passed.
+- Main remains 048eafb; published/installed version remains 1.0.1. Rollback ZIP and capture checksums are unchanged.
+
+Earlier counts and checksums below document superseded iterations; this summary is the current status. No further retries to obtain a green load batch, no deadline/tolerance increases and no merge approval are claimed.
+
 ## Observed cause
 
 The [captured recurrence](../mot07-load/evidence/followup/1366-repeat6/motion-diagnostics.json) shows the same video marker and blob source, beat index 2 / generation 2. At Motion and session completion it is at 1.2/1.2 seconds, ended, decoded and paused. A later native play rewinds that same video; the final predicate reads 0.001853847. The existing unauthorized-play guard pauses it but does not restore its frame. This observed occurrence is a late rewind, not a replaced element or early final-seek completion.
@@ -74,3 +87,10 @@ Committed ORDER-09 red in f25a370: harmless final-frame events must not consume 
 Earlier clean builds on 662177a were byte-identical (plugin d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a; authoring 96672d590ffa7745af2549fc8679df5aa4071b61cf778792efeb7d4bd8755883). **Those authoring builds are superseded by ORDER-09's source correction** and are not final-candidate checksums. The corrected candidate needs fresh clean builds. The 34-probe WebKit run describes the bounded revision before ORDER-09; the added guard requires a fresh 35-probe run.
 
 A single new fixed 150-case batch G is planned for the changed implementation, with the same load and no retries; all F outcomes remain in the report. Full verification and browser/mutation checks are being rerun after this product change. No green-loop or CI gate is claimed early.
+
+
+## Corrected load batch G
+
+Same two-CPU/four-foreground/two-background-worker configuration, 50 cases per size; other local verification/browser processes also ran on the host, so this is a loaded correctness experiment rather than a performance benchmark. 1366: 47 pass/3 fail; 1536: 47 pass/3 fail; 1920: 49 pass/1 fail. The 1366 repeat 10 caption failure shows the video at its end while the virtual session remains active, before Motion completion. The six others show failed preparation and a missing video. None records the original settled-then-rewound predicate failure. All seven diagnostics, traces, screenshots and errors are retained under evidence/budget-load; every prior batch remains disclosed. This does not satisfy the requested full-loop green gate and does not resolve #103.
+
+The caller finding, corrected bound, replay and side-effect coverage are ready for independent inspection in draft PR #106. Remaining load failures need assessment rather than retries until green. The workflow and product PRs remain separate, and Part B stays held until the approved fix is merged and main passes.

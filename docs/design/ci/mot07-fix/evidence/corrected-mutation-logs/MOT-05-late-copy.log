@@ -1,0 +1,47 @@
+TAP version 13
+1..0
+# Subtest: tests/motion-authoring.test.mjs
+ok 1 - tests/motion-authoring.test.mjs
+  ---
+  duration_ms: 2093.446822
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/motion-completion-order.test.mjs
+ok 2 - tests/motion-completion-order.test.mjs
+  ---
+  duration_ms: 74.700133
+  type: 'test'
+  ...
+# Subtest: [MOT-05] bounded timeout and disposal reject late results
+ok 3 - [MOT-05] bounded timeout and disposal reject late results
+  ---
+  duration_ms: 31.265538
+  type: 'test'
+  ...
+# Subtest: [MOT-05] disposal during ignored-abort I/O cannot create late playback URLs
+not ok 4 - [MOT-05] disposal during ignored-abort I/O cannot create late playback URLs
+  ---
+  duration_ms: 13.611533
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-lBFXAc/tests/motion-media.test.mjs:35:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-lBFXAc/tests/motion-media.test.mjs:35:387)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 3
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2103.517335

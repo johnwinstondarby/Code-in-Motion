@@ -1,0 +1,18 @@
+
+Running 14 tests using 1 worker
+
+[1/14] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[2/14] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-22] native play from an ended verified clip preserves its final hold
+[3/14] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+[4/14] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold
+[5/14] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold
+[6/14] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold
+[7/14] tests/e2e/motion-pane.spec.mjs:64:2 › 1366x768 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[8/14] tests/e2e/motion-pane.spec.mjs:72:2 › 1366x768 › [MOT-08] reduced motion shows still and alternative with no automatic play
+[9/14] tests/e2e/motion-pane.spec.mjs:73:2 › 1366x768 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+[10/14] tests/e2e/motion-pane.spec.mjs:74:2 › 1366x768 › [MOT-16] preparation holds peers and a jump cancels without waiting
+[11/14] tests/e2e/motion-pane.spec.mjs:80:2 › 1366x768 › [MOT-17] navigation cancels preparation and late results cannot replace the destination
+[12/14] tests/e2e/motion-pane.spec.mjs:84:2 › 1366x768 › [MOT-18] native playback cannot override a paused shared clock
+[13/14] tests/e2e/motion-pane.spec.mjs:87:2 › 1366x768 › [MOT-21] disposing Motion revokes its verified URLs and removes its DOM
+[14/14] tests/e2e/motion-pane.spec.mjs:90:2 › 1366x768 › [MOT-10] buffering holds every pane and never means completion
+  14 passed (49.5s)
