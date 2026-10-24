@@ -9,7 +9,7 @@ const validator='authoring/v3/validate.mjs',pack='authoring/v3/pack.mjs',media='
 const suppress=id=>`if (condition && id !== '${id}') diagnostics.push`;
 const cases=[
  ['PB-M01-placeholder',validator,[['if (condition) diagnostics.push',suppress('CIM-V3-PLACEHOLDER')]],'PB-03'],
- ['PB-M02-forged-label',validator,[["a.kind === 'gui' && (doc.placeholder ? a.label !== 'Placeholder GUI · simulated' : a.label !== 'Recorded in the lab')",'false']],'PB-04'],
+ ['PB-M02-forged-label',validator,[["a.kind === 'gui' && (doc.placeholder ? a.label !== 'Placeholder GUI Â· simulated' : a.label !== 'Recorded in the lab')",'false']],'PB-04'],
  ['PB-M03-capture',validator,[['if (condition) diagnostics.push',suppress('CIM-V3-CAPTURE-REFERENCE')]],'PB-05'],
  ['PB-M04-digest',pack,[['if(sha256!==undefined&&digest(result)!==sha256)','if(false)']],'PB-06'],
  ['PB-M05-codec',media,[["if(typeof codec!=='string'||codec.length>80||!(d?.type==='video/mp4'?mp4:d?.type==='video/webm'&&webm))",'if(false)']],'PB-07'],
@@ -25,11 +25,12 @@ const cases=[
  ['PB-M15-actor','examples/packs/run-custody-placeholder/lesson.json',[['On INVENT, custody','On OTHER, custody']],'PB-24'],
  ['PB-M16-php-template',pack,[['Companion multi-pane lesson data for Code in Motion.','${compiled.document.presentation.title}']],'PB-25'],
  ['PB-M17-host','tools/pack-preview-server.mjs',[["if(request.headers.host!==new URL(origin).host||request.headers.origin&&request.headers.origin!==origin)",'if(false)']],'PB-20'],
+ ['PB-M21-capacity','tools/pack-preview-server.mjs',[['server.maxConnections=64','server.maxConnections=16']],'PB-27'],
  ['PB-M18-snapshot','tools/pack-preview-server.mjs',[["{resolve,extname}","{resolve,extname,dirname}"],['send(result.entries.get(file),mime(file));return;','send(await readFile(resolve(dirname(source),file)),mime(file));return;']],'PB-21']
 ];
 if(browser)cases.push(
  ['PB-M19-json-verification','tools/pack-preview-client.mjs',[['await sha(bytes)!==descriptor.sha256','false']],'PB-PREVIEW-04','browser'],
- ['PB-M20-real-source','tools/pack-preview-client.mjs',[[' const media=projectPreviewMedia'," experience.presentation.title='Run Custody · Placeholder simulation';\n const media=projectPreviewMedia"]],'PB-PREVIEW-03','browser']
+ ['PB-M20-real-source','tools/pack-preview-client.mjs',[[' const media=projectPreviewMedia'," experience.presentation.title='Run Custody Â· Placeholder simulation';\n const media=projectPreviewMedia"]],'PB-PREVIEW-03','browser']
 );
 const tests=['tests/pack-v3.test.mjs','tests/pack-v3-sample.test.mjs','tests/pack-preview.test.mjs','tests/pack-v3-schema.test.mjs'];
 const run=(rule,kind='unit')=>spawnSync(process.execPath,kind==='browser'?['node_modules/@playwright/test/cli.js','test','tests/e2e/pack-v3-preview.spec.mjs','--workers=1','--reporter=line',...(rule?['--grep',rule]:[])]:['--test',...(rule?['--test-name-pattern='+rule]:[]),...tests],{cwd:sandbox,encoding:'utf8',timeout:180000,maxBuffer:8*1024*1024,env:process.env});

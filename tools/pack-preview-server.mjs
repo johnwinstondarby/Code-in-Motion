@@ -26,7 +26,7 @@ export async function startV3Preview(source,{port=0}={}){
    snapshots.delete(result.sha256);snapshots.set(result.sha256,result);while(snapshots.size>2)snapshots.delete(snapshots.keys().next().value);return result;
   })();try{return await pending;}finally{pending=null;}
  }
- const shell=(body,script=false)=>'<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>CiM v3 local authoring preview</title><link rel="stylesheet" href="/src/multipane/controls.css"><link rel="stylesheet" href="/src/multipane/composition.css"><link rel="stylesheet" href="/src/multipane/engineering.css"><link rel="stylesheet" href="/tools/pack-preview.css"><header data-preview-identity>CiM 1.1.0-dev · Local preview · Placeholder · simulated</header>'+body+(script?'<script type="module" src="/tools/pack-preview-client.mjs"></script>':'')+'</html>';
+ const shell=(body,script=false)=>'<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>CiM v3 local authoring preview</title><link rel="stylesheet" href="/src/multipane/controls.css"><link rel="stylesheet" href="/src/multipane/composition.css"><link rel="stylesheet" href="/src/multipane/engineering.css"><link rel="stylesheet" href="/tools/pack-preview.css"><header data-preview-identity>CiM 1.1.0-dev Â· Local preview Â· Placeholder Â· simulated</header>'+body+(script?'<script type="module" src="/tools/pack-preview-client.mjs"></script>':'')+'</html>';
  const server=createServer(async(request,response)=>{
   const origin='http://127.0.0.1:'+server.address().port;
   if(request.headers.host!==new URL(origin).host||request.headers.origin&&request.headers.origin!==origin){response.writeHead(403).end('Local preview only.');return;}
@@ -47,6 +47,6 @@ export async function startV3Preview(source,{port=0}={}){
    response.writeHead(404).end('Not found.');
   }catch(error){if(response.headersSent){response.destroy();return;}send(Buffer.from(shell('<pre id="preview-error" role="alert">'+escape(formatAuthoringError(error))+'</pre>')),'text/html; charset=utf-8',422);}
  });
- server.maxConnections=16;server.headersTimeout=5000;server.requestTimeout=10000;server.on('close',()=>snapshots.clear());
+ server.maxConnections=64;server.headersTimeout=5000;server.requestTimeout=10000;server.on('close',()=>snapshots.clear());
  await new Promise((done,reject)=>{server.once('error',reject);server.listen(port,'127.0.0.1',done);});return{server,url:'http://127.0.0.1:'+server.address().port};
 }
