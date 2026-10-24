@@ -1,0 +1,177 @@
+{
+  "node": "v22.23.2",
+  "browser": "webkit",
+  "baseline": "passed",
+  "results": [
+    {
+      "id": "MOT-01-source",
+      "rule": "MOT-01",
+      "caught": true
+    },
+    {
+      "id": "MOT-01-type",
+      "rule": "MOT-01",
+      "caught": true
+    },
+    {
+      "id": "MOT-01-file-size",
+      "rule": "MOT-01",
+      "caught": true
+    },
+    {
+      "id": "MOT-01-total",
+      "rule": "MOT-01",
+      "caught": true
+    },
+    {
+      "id": "MOT-02-original-address",
+      "rule": "MOT-02",
+      "caught": true
+    },
+    {
+      "id": "MOT-02-caption-bytes",
+      "rule": "MOT-02",
+      "caught": true
+    },
+    {
+      "id": "MOT-03-digest",
+      "rule": "MOT-03",
+      "caught": true
+    },
+    {
+      "id": "MOT-04-resolver",
+      "rule": "MOT-04",
+      "caught": true
+    },
+    {
+      "id": "MOT-05-timeout",
+      "rule": "MOT-05",
+      "caught": true
+    },
+    {
+      "id": "MOT-05-late-copy",
+      "rule": "MOT-05",
+      "caught": true
+    },
+    {
+      "id": "MOT-06-readiness",
+      "rule": "MOT-06",
+      "caught": true
+    },
+    {
+      "id": "MOT-06-user-pause",
+      "rule": "MOT-06",
+      "caught": true
+    },
+    {
+      "id": "MOT-11-map-open",
+      "rule": "MOT-11",
+      "caught": true
+    },
+    {
+      "id": "MOT-12-schema",
+      "rule": "MOT-12",
+      "caught": true
+    },
+    {
+      "id": "MOT-13-file-digest",
+      "rule": "MOT-13",
+      "caught": true
+    },
+    {
+      "id": "MOT-14-link",
+      "rule": "MOT-14",
+      "caught": true
+    },
+    {
+      "id": "MOT-20-unprepared-fallback",
+      "rule": "MOT-20",
+      "caught": true
+    },
+    {
+      "id": "MOT-19-label",
+      "rule": "MOT-19",
+      "caught": true
+    },
+    {
+      "id": "MOT-15-capability",
+      "rule": "MOT-15",
+      "caught": true
+    },
+    {
+      "id": "ORDER-07-clear-hold",
+      "rule": "ORDER-07",
+      "caught": true
+    },
+    {
+      "id": "ORDER-08-restore-bound",
+      "rule": "ORDER-08",
+      "caught": true
+    },
+    {
+      "id": "ORDER-06-final-hold",
+      "rule": "ORDER-06",
+      "caught": true
+    },
+    {
+      "id": "MOT-15-network",
+      "rule": "MOT-15",
+      "caught": true
+    },
+    {
+      "id": "MOT-22-final-hold",
+      "rule": "MOT-22",
+      "caught": true
+    },
+    {
+      "id": "MOT-07-captions",
+      "rule": "MOT-07",
+      "caught": true
+    },
+    {
+      "id": "MOT-07-end",
+      "rule": "MOT-07",
+      "caught": true
+    },
+    {
+      "id": "MOT-08-reduced",
+      "rule": "MOT-08",
+      "caught": true
+    },
+    {
+      "id": "MOT-09-fallback",
+      "rule": "MOT-09",
+      "caught": true
+    },
+    {
+      "id": "MOT-09-stall",
+      "rule": "MOT-09",
+      "caught": true
+    },
+    {
+      "id": "MOT-10-buffer-finished",
+      "rule": "MOT-10",
+      "caught": true
+    },
+    {
+      "id": "MOT-21-release",
+      "rule": "MOT-21",
+      "caught": true
+    },
+    {
+      "id": "MOT-18-native-guard",
+      "rule": "MOT-18",
+      "caught": true
+    },
+    {
+      "id": "MOT-17-stale",
+      "rule": "MOT-17",
+      "caught": true
+    },
+    {
+      "id": "MOT-16-preparation",
+      "rule": "MOT-16",
+      "caught": true
+    }
+  ]
+}

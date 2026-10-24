@@ -1,6 +1,6 @@
 # Candidate fix for #103: retain the final frame after late native play
 
-Depends on diagnostic/workflow PR #105 at `63ee6f9`. Main is `048eafb`, all 33 post-merge checks green. This candidate is **not ready to merge**: further proof and Daisy/Johann review remain required. Part B stays held. No tag, release, installation or version bump.
+Depends on diagnostic/workflow PR #105 at `f26ea51`. Main is `048eafb`, all 33 post-merge checks green. This candidate is **not ready to merge**: further proof and Daisy/Johann review remain required. Part B stays held. No tag, release, installation or version bump.
 
 ## Observed cause
 
@@ -63,3 +63,14 @@ Current full verify: **1,091 pass / zero skips on both Node 20.20.2 and Node 22.
 
 
 Latest readiness-corrected browser matrix: **18/18 Chromium, 18/18 Firefox, 18/18 WebKit** (54 total, zero skipped/retries), covering all three sizes. The v1 differential remains 41 identical / zero different, with 28 intentionally excluded v2/non-JSON inputs. The six new scenarios are additional coverage, not substitutes for unchanged MOT-07.
+
+
+## Corrective-seek budget regression from bounded batch F
+
+The bounded 150-case batch F finished **146 pass / 4 fail**: 1366 49/1, 1536 48/2, 1920 49/1. No retries. All four records/traces are retained. Three show preparation/readiness failures. The fourth (1536 repeat 2) completes Motion at the final frame, then harmless native play/playing at the already-correct final frame consumes the budget; a subsequent actual rewind exhausts it and removes the video via fallback. This is a candidate defect, not dismissed as a preparation failure.
+
+Committed ORDER-09 red in f25a370: harmless final-frame events must not consume corrective-seek budget. Revised source now pauses but returns immediately if already at the final frame; only actual corrective seeks consume the two-attempt budget. ORDER-09 and all other eight ordering tests pass. Added a mutation removing this no-op guard. This is an additional red/fix cycle, not part of the earlier red run.
+
+Earlier clean builds on 662177a were byte-identical (plugin d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a; authoring 96672d590ffa7745af2549fc8679df5aa4071b61cf778792efeb7d4bd8755883). **Those authoring builds are superseded by ORDER-09's source correction** and are not final-candidate checksums. The corrected candidate needs fresh clean builds. The 34-probe WebKit run describes the bounded revision before ORDER-09; the added guard requires a fresh 35-probe run.
+
+A single new fixed 150-case batch G is planned for the changed implementation, with the same load and no retries; all F outcomes remain in the report. Full verification and browser/mutation checks are being rerun after this product change. No green-loop or CI gate is claimed early.
