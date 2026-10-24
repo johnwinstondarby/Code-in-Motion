@@ -1,0 +1,39 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+  1) tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "showing"
+    Received: "disabled"
+
+      38 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{
+      39 |   await installMotionDiagnostics(page);await open(page);await observeMotionSession(page);if(process.env.CIM_MOTION_DIAGNOSTICS!=='1'){expect(await page.evaluate(()=>typeof window.__motionDiagnosticSnapshot)).toBe('undefined');expect(await page.evaluate(()=>Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime').set.toString())).toContain('[native code]');}await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI · simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await video.evaluate(v=>{window.videoEvents=[];for(const event of ['play','playing','pause','seeking','seeked','waiting','canplay'])v.addEventListener(event,()=>videoEvents.push({event,time:v.currentTime,paused:v.paused,intent:fixture.session.read().playing}));});await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);
+    > 40 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await expect.poll(()=>video.evaluate(v=>[...(v.textTracks[0].activeCues??[])].map(c=>c.text).join(' '))).toContain('Placeholder GUI recording');await page.screenshot({path:info.outputPath('motion-active.png')});await page.evaluate(()=>fixture.session.dispatch({type:'tab',tab:'console'}));await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-mp-panel=motion]')).toHaveAttribute('aria-hidden','true');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);const after=await video.evaluate(v=>({time:v.currentTime,paused:v.paused,seeking:v.seeking,intent:fixture.session.read().playing}));if(Math.abs(after.time-at)>=0.05)console.log('Pause drift',JSON.stringify({at,after,clock:await page.evaluate(()=>fixture.clockEvents),video:await page.evaluate(()=>window.videoEvents)}));expect(after.time).toBeCloseTo(at,1);
+         |                                                         ^
+      41 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await recordMotionCheck(page,video,info)).toBe(true);
+      42 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});
+      43 |  });
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-lBFXAc/tests/e2e/motion-pane.spec.mjs:40:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../browser-results/tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../browser-results/tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../browser-results/tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold 

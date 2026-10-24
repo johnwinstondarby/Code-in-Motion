@@ -1,0 +1,22 @@
+
+Running 18 tests using 1 worker
+
+[1/18] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-22] native play from an ended verified clip preserves its final hold
+[2/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+[3/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold
+[4/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold
+[5/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold
+[6/18] tests/e2e/motion-pane.spec.mjs:64:2 › 1366x768 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[7/18] tests/e2e/motion-pane.spec.mjs:44:2 › 1536x864 › [MOT-22] native play from an ended verified clip preserves its final hold
+[8/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold
+[9/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] previous permits genuine replay after a completed hold
+[10/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold
+[11/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold
+[12/18] tests/e2e/motion-pane.spec.mjs:64:2 › 1536x864 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[13/18] tests/e2e/motion-pane.spec.mjs:44:2 › 1920x1080 › [MOT-22] native play from an ended verified clip preserves its final hold
+[14/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold
+[15/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold
+[16/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold
+[17/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold
+[18/18] tests/e2e/motion-pane.spec.mjs:64:2 › 1920x1080 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+  18 passed (27.1s)

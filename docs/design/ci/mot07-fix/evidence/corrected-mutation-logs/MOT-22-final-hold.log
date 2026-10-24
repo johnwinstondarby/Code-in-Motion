@@ -1,0 +1,39 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-22] native play from an ended verified clip preserves its final hold
+  1) tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-22] native play from an ended verified clip preserves its final hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      45 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.waitForFunction(()=>fixture.clockEvents.length>0);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+      46 |   const state=await page.locator('.motion-pane video').evaluate(async v=>{let observed=false;v.addEventListener('play',()=>{observed=true;},{once:true});try{await v.play();}catch{}return{observed,time:v.currentTime,duration:v.duration,paused:v.paused};});
+    > 47 |   expect(state.observed).toBe(true);expect(state.paused).toBe(true);expect(state.time>=state.duration-0.15).toBe(true);
+         |                                                                                                             ^
+      48 |  });
+      49 |  for(const route of ['restart','previous','jump','deepLink'])test(`[MOT-23] ${route} permits genuine replay after a completed hold`,async({page})=>{
+      50 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.waitForFunction(()=>fixture.clockEvents.length>0);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-lBFXAc/tests/e2e/motion-pane.spec.mjs:47:109
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../browser-results/tests-e2e-motion-pane-1366-5296c-ip-preserves-its-final-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-5296c-ip-preserves-its-final-hold/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-5296c-ip-preserves-its-final-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../browser-results/tests-e2e-motion-pane-1366-5296c-ip-preserves-its-final-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../browser-results/tests-e2e-motion-pane-1366-5296c-ip-preserves-its-final-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-22] native play from an ended verified clip preserves its final hold 

@@ -1,0 +1,481 @@
+
+Running 36 tests using 1 worker
+
+[1/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":5,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":534},{"event":"playing","time":0,"paused":false,"stamp":534},{"event":"pause","time":0,"paused":true,"stamp":534},{"event":"play","time":0,"paused":false,"stamp":535},{"event":"playing","time":0,"paused":false,"stamp":535},{"event":"pause","time":1.2,"paused":true,"stamp":544},{"event":"ended","time":1.2,"paused":true,"stamp":544}]}
+
+  1) tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[2/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold
+[3/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold
+[4/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold
+[5/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":5,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":312},{"event":"playing","time":0,"paused":false,"stamp":312},{"event":"pause","time":0,"paused":true,"stamp":312},{"event":"play","time":0,"paused":false,"stamp":313},{"event":"playing","time":0,"paused":false,"stamp":313},{"event":"pause","time":1.2,"paused":true,"stamp":326},{"event":"ended","time":1.2,"paused":true,"stamp":326}]}
+
+  2) tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1536-bb65e-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1536-bb65e-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1536-bb65e-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1536-bb65e-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1536-bb65e-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[6/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] previous permits genuine replay after a completed hold
+[7/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold
+[8/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold
+[9/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold
+[10/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":4,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":297},{"event":"playing","time":0,"paused":false,"stamp":297},{"event":"pause","time":0,"paused":true,"stamp":297},{"event":"play","time":0,"paused":false,"stamp":298},{"event":"playing","time":0,"paused":false,"stamp":298},{"event":"pause","time":1.2,"paused":true,"stamp":309},{"event":"ended","time":1.2,"paused":true,"stamp":309}]}
+
+  3) tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1920-19fce-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1920-19fce-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1920-19fce-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1920-19fce-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1920-19fce-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[11/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":4,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":540},{"event":"playing","time":0,"paused":false,"stamp":540},{"event":"pause","time":0,"paused":true,"stamp":541},{"event":"play","time":0,"paused":false,"stamp":542},{"event":"playing","time":0,"paused":false,"stamp":542},{"event":"pause","time":1.2,"paused":true,"stamp":551},{"event":"ended","time":1.2,"paused":true,"stamp":551}]}
+
+  4) tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1920-848ee-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1920-848ee-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1920-848ee-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1920-848ee-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1920-848ee-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[12/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":4,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":563},{"event":"playing","time":0,"paused":false,"stamp":563},{"event":"pause","time":0,"paused":true,"stamp":563},{"event":"play","time":0,"paused":false,"stamp":565},{"event":"playing","time":0,"paused":false,"stamp":565},{"event":"pause","time":1.2,"paused":true,"stamp":571},{"event":"ended","time":1.2,"paused":true,"stamp":572}]}
+
+  5) tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1920-d2fd1-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1920-d2fd1-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1920-d2fd1-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1920-d2fd1-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1920-d2fd1-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[13/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":5,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":508},{"event":"playing","time":0,"paused":false,"stamp":508},{"event":"pause","time":0,"paused":true,"stamp":508},{"event":"play","time":0,"paused":false,"stamp":511},{"event":"playing","time":0,"paused":false,"stamp":511},{"event":"pause","time":1.2,"paused":true,"stamp":524},{"event":"ended","time":1.2,"paused":true,"stamp":524}]}
+
+  6) tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold-repeat1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold-repeat1/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold-repeat1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold-repeat1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold-repeat1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[14/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold
+[15/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":4,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":320},{"event":"playing","time":0,"paused":false,"stamp":320},{"event":"pause","time":0,"paused":true,"stamp":321},{"event":"play","time":0,"paused":false,"stamp":322},{"event":"playing","time":0,"paused":false,"stamp":322},{"event":"pause","time":1.2,"paused":true,"stamp":335},{"event":"ended","time":1.2,"paused":true,"stamp":335}]}
+
+  7) tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1366-f2e4c-play-after-a-completed-hold-repeat1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1366-f2e4c-play-after-a-completed-hold-repeat1/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1366-f2e4c-play-after-a-completed-hold-repeat1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1366-f2e4c-play-after-a-completed-hold-repeat1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1366-f2e4c-play-after-a-completed-hold-repeat1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[16/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold
+[17/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold
+[18/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] previous permits genuine replay after a completed hold
+[19/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":4,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":325},{"event":"playing","time":0,"paused":false,"stamp":325},{"event":"pause","time":0,"paused":true,"stamp":325},{"event":"play","time":0,"paused":false,"stamp":326},{"event":"playing","time":0,"paused":false,"stamp":326},{"event":"pause","time":1.2,"paused":true,"stamp":340},{"event":"ended","time":1.2,"paused":true,"stamp":340}]}
+
+  8) tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1536-66e64-play-after-a-completed-hold-repeat1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1536-66e64-play-after-a-completed-hold-repeat1/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1536-66e64-play-after-a-completed-hold-repeat1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1536-66e64-play-after-a-completed-hold-repeat1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1536-66e64-play-after-a-completed-hold-repeat1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[20/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold
+[21/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":5,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":314},{"event":"playing","time":0,"paused":false,"stamp":314},{"event":"pause","time":0,"paused":true,"stamp":314},{"event":"play","time":0,"paused":false,"stamp":316},{"event":"playing","time":0,"paused":false,"stamp":316},{"event":"pause","time":1.2,"paused":true,"stamp":327},{"event":"ended","time":1.2,"paused":true,"stamp":327}]}
+
+  9) tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1920-7f737-play-after-a-completed-hold-repeat1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1920-7f737-play-after-a-completed-hold-repeat1/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1920-7f737-play-after-a-completed-hold-repeat1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1920-7f737-play-after-a-completed-hold-repeat1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1920-7f737-play-after-a-completed-hold-repeat1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[22/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":4,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":519},{"event":"playing","time":0,"paused":false,"stamp":519},{"event":"pause","time":0,"paused":true,"stamp":519},{"event":"play","time":0,"paused":false,"stamp":520},{"event":"playing","time":0,"paused":false,"stamp":521},{"event":"pause","time":1.2,"paused":true,"stamp":534},{"event":"ended","time":1.2,"paused":true,"stamp":534}]}
+
+  10) tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1920-19fce-play-after-a-completed-hold-repeat1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1920-19fce-play-after-a-completed-hold-repeat1/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1920-19fce-play-after-a-completed-hold-repeat1/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1920-19fce-play-after-a-completed-hold-repeat1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1920-19fce-play-after-a-completed-hold-repeat1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[23/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold
+[24/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold
+[25/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+[26/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold
+[27/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold
+[28/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold
+[29/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold
+[30/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] previous permits genuine replay after a completed hold
+[31/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold
+[32/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold
+tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold
+REPLAY_OBSERVATION {"observed":{"paused":true,"time":1.2,"seeking":false,"ready":2,"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":4,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"events":[{"event":"play","time":0,"paused":false,"stamp":346},{"event":"playing","time":0,"paused":false,"stamp":346},{"event":"pause","time":0,"paused":true,"stamp":347},{"event":"play","time":0,"paused":false,"stamp":349},{"event":"playing","time":0,"paused":false,"stamp":349},{"event":"pause","time":1.2,"paused":true,"stamp":357},{"event":"ended","time":1.2,"paused":true,"stamp":357}]}
+
+  11) tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   let observed;try{await expect.poll(async()=>{observed=await page.locator('.motion-pane video').evaluate(v=>({paused:v.paused,time:v.currentTime,seeking:v.seeking,ready:v.readyState,session:fixture.session.read()}));return !observed.paused&&observed.time>0&&observed.time<0.5;}).toBe(true);}catch(error){console.log('REPLAY_OBSERVATION '+JSON.stringify({observed,events:await page.evaluate(()=>window.replayEvents)}));throw error;}expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                                                                                                                                                                                         ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-b/tests/e2e/motion-pane.spec.mjs:61:281
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1536-e07b3-play-after-a-completed-hold-repeat2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1536-e07b3-play-after-a-completed-hold-repeat2/error-context.md
+
+    Error Context: ../replay-old-source-results/tests-e2e-motion-pane-1536-e07b3-play-after-a-completed-hold-repeat2/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-old-source-results/tests-e2e-motion-pane-1536-e07b3-play-after-a-completed-hold-repeat2/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-old-source-results/tests-e2e-motion-pane-1536-e07b3-play-after-a-completed-hold-repeat2/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[33/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold
+[34/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold
+[35/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold
+[36/36] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold
+  11 failed
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold 
+  25 passed (2.0m)

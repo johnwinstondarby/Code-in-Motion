@@ -1,0 +1,567 @@
+{
+  "check": {
+    "time": 0.000293722,
+    "duration": 1.2,
+    "ended": false,
+    "seeking": false,
+    "readyState": 4,
+    "paused": true,
+    "ok": false
+  },
+  "session": {
+    "index": 2,
+    "progress": "settled",
+    "playing": false,
+    "tab": "console",
+    "generation": 2,
+    "panelOpen": false,
+    "panes": {
+      "console": {
+        "lines": [
+          "git rev-parse HEAD",
+          "[placeholder output]"
+        ]
+      },
+      "explanation": {
+        "text": "The modeled job fails; real failure type and timing come from the future capture."
+      },
+      "engineering": {
+        "artifacts": {
+          "run": {
+            "location": "login",
+            "status": "pinned"
+          },
+          "commit": {
+            "location": "git",
+            "status": "pinned"
+          },
+          "job": {
+            "location": "gpu",
+            "status": "failed"
+          },
+          "metrics": {
+            "location": null,
+            "status": "absent"
+          }
+        }
+      },
+      "motion": {
+        "asset": "gpu-memory",
+        "alt": "Illustrative interface; no real recording exists.",
+        "label": "Placeholder GUI · simulated"
+      }
+    },
+    "waiting": {
+      "console": true,
+      "explanation": false,
+      "engineering": false,
+      "motion": false
+    },
+    "failures": [],
+    "status": "Beat 3 / 9 · paused"
+  },
+  "clock": [
+    {
+      "running": true,
+      "time": 0,
+      "intent": true
+    },
+    {
+      "running": false,
+      "time": 400,
+      "intent": false
+    },
+    {
+      "running": true,
+      "time": 400,
+      "intent": true
+    }
+  ],
+  "events": [
+    {
+      "event": "session",
+      "data": {
+        "progress": "settled",
+        "playing": false,
+        "failures": [],
+        "video": null
+      },
+      "stamp": 547
+    },
+    {
+      "event": "session",
+      "data": {
+        "progress": "active",
+        "playing": true,
+        "failures": [],
+        "video": null
+      },
+      "stamp": 629
+    },
+    {
+      "event": "native-canplay",
+      "data": {
+        "time": 0,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2284
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "time": 0.001122442,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2285
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "time": 0.001122442,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2285
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "time": 0.001615274,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2285
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "time": 0.001615274,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2285
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 0.258412257,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2542
+    },
+    {
+      "event": "session",
+      "data": {
+        "progress": "active",
+        "playing": true,
+        "failures": [],
+        "video": {
+          "time": 0.496733484,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 2781
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 0.523894282,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2808
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "time": 0.36,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2923
+    },
+    {
+      "event": "session",
+      "data": {
+        "progress": "active",
+        "playing": false,
+        "failures": [],
+        "video": {
+          "time": 0.4,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 2930
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 0.361339757,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 2936
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "time": 0.361339757,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 2936
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 2937
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 2937
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 2937
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 0.400172081,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 2944
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "time": 0.400172081,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 2944
+    },
+    {
+      "event": "session",
+      "data": {
+        "progress": "active",
+        "playing": true,
+        "failures": [],
+        "video": {
+          "time": 0.400389228,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 3278
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "time": 0.400389228,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3279
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "time": 0.400389228,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3280
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3297
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3297
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3297
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3374
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3374
+    },
+    {
+      "event": "session",
+      "data": {
+        "progress": "settled",
+        "playing": false,
+        "failures": [],
+        "video": {
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 3374
+    },
+    {
+      "event": "native-ended",
+      "data": {
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3374
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "time": 0,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3381
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "time": 0,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3381
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "time": 0,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3381
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 0,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3382
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "time": 0,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3382
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "time": 0,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3382
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "time": 0.000293722,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3389
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "time": 0.000293722,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3389
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "time": 0.000293722,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3390
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "time": 0.000293722,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3390
+    }
+  ],
+  "dropped": 0
+}

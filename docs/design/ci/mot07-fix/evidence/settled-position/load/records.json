@@ -1,0 +1,1502 @@
+[
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold/attachments/motion-diagnostics-bd4063b4bf3fe0512d38371096f14420a1e8a520.json",
+    "sha256": "bcf52d15d59f5fe5155d0d2e3b267dfb950394a4770a8e93df6715e3fa05eac3",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold/motion-diagnostics.json",
+    "sha256": "bcf52d15d59f5fe5155d0d2e3b267dfb950394a4770a8e93df6715e3fa05eac3",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat1/attachments/motion-diagnostics-7fa3877f4e92ff5eb8dec9f58a3dd35816f0131d.json",
+    "sha256": "6fbe4a37555a103827ee250833e6fb2f8965006dbcb57f75dfca3554ce2a0ce4",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat1/motion-diagnostics.json",
+    "sha256": "6fbe4a37555a103827ee250833e6fb2f8965006dbcb57f75dfca3554ce2a0ce4",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat10/attachments/motion-diagnostics-3f79f05c82e7f42084f6c327fcbd5ad65e9e7645.json",
+    "sha256": "a1f9560864b9907fdcd07af0fd0dc144fe82c254b83ca9c90c81e6dc7537c63f",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat10/motion-diagnostics.json",
+    "sha256": "a1f9560864b9907fdcd07af0fd0dc144fe82c254b83ca9c90c81e6dc7537c63f",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat11/attachments/motion-diagnostics-bbafb9818de9aa687cd5c0cf45685198eb1938f0.json",
+    "sha256": "b5b550f717e81a5bed6a7d58d95e548dab99bb7c63e42271abdb1c62c3c341c9",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat11/motion-diagnostics.json",
+    "sha256": "b5b550f717e81a5bed6a7d58d95e548dab99bb7c63e42271abdb1c62c3c341c9",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat12/attachments/motion-diagnostics-027c512ba7d8c37db9ea7fc0f83e35928dafb87d.json",
+    "sha256": "fc407a9a5205211776565e3979331b0db67554f41d962ef6a0722dc82812bdf1",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat12/motion-diagnostics.json",
+    "sha256": "fc407a9a5205211776565e3979331b0db67554f41d962ef6a0722dc82812bdf1",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat13/attachments/motion-diagnostics-15d6e28102356a7d13a0fb5b6c53de4758a8bea7.json",
+    "sha256": "9787993aed1319b2c1a2e2c96355e47a48a605447e99c271606ff47375089336",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat13/motion-diagnostics.json",
+    "sha256": "9787993aed1319b2c1a2e2c96355e47a48a605447e99c271606ff47375089336",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat14/attachments/motion-diagnostics-b485f23a045b8ac0fd10b092b35031a8b7b4bcec.json",
+    "sha256": "80d13d7a1f2a1a94c0077c85f26ca92c010707ed90b7d6881803e707ca0cade8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat14/motion-diagnostics.json",
+    "sha256": "80d13d7a1f2a1a94c0077c85f26ca92c010707ed90b7d6881803e707ca0cade8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat15/attachments/motion-diagnostics-6e7fcd686d903f40326286b941d4c4b9588d80d7.json",
+    "sha256": "a63b4dc9893315b8cf0743add8f0c5abbde56c46c00e2b908c66d241e8412888",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat15/motion-diagnostics.json",
+    "sha256": "a63b4dc9893315b8cf0743add8f0c5abbde56c46c00e2b908c66d241e8412888",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat16/attachments/motion-diagnostics-3e798f8640332a5cc8f67042be150afb2c98461f.json",
+    "sha256": "ba0ac67bf27b15eabc932d7ff689336c0ad01d80c4f10fdb815803d3423caa80",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat16/motion-diagnostics.json",
+    "sha256": "ba0ac67bf27b15eabc932d7ff689336c0ad01d80c4f10fdb815803d3423caa80",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat17/attachments/motion-diagnostics-d99e2484e89cd006b1fa7a334b969a4e7e52d906.json",
+    "sha256": "2f295a118c3b80ff9defd40a83e0c517271c4b58a80ac9743d2aa1e97d9044d0",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat17/motion-diagnostics.json",
+    "sha256": "2f295a118c3b80ff9defd40a83e0c517271c4b58a80ac9743d2aa1e97d9044d0",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat18/attachments/motion-diagnostics-114da4d2e99e985cfc92892cb0b0a8236fc8837e.json",
+    "sha256": "60c1c8019140fb7e3e42e3df164504f66ed489da83cde6c330d4b34f05700dfe",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat18/motion-diagnostics.json",
+    "sha256": "60c1c8019140fb7e3e42e3df164504f66ed489da83cde6c330d4b34f05700dfe",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat19/attachments/motion-diagnostics-3c3b3e744b0cd604d0d7e8d8dc15cb8eefa9aea3.json",
+    "sha256": "15f393ef47a1bb4c7e45b2acba0399997026457304d1354fdabb575159ef6bf7",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat19/motion-diagnostics.json",
+    "sha256": "15f393ef47a1bb4c7e45b2acba0399997026457304d1354fdabb575159ef6bf7",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat2/attachments/motion-diagnostics-109c15932ffd65ac9a9abeb23f088ee3d0206ed7.json",
+    "sha256": "a14fa8e30946ec4622726dbbb1ce5586c6b21804f90b4f1c508675d7aea06f2e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat2/motion-diagnostics.json",
+    "sha256": "a14fa8e30946ec4622726dbbb1ce5586c6b21804f90b4f1c508675d7aea06f2e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat20/attachments/motion-diagnostics-acd8ec7f01c4d463baea3ecb38025b3d52afea80.json",
+    "sha256": "ed958e56f0db659a45bf8b6561e3e182f6f4402de3bd9f9e8b679904ed9e0067",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat20/motion-diagnostics.json",
+    "sha256": "ed958e56f0db659a45bf8b6561e3e182f6f4402de3bd9f9e8b679904ed9e0067",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat21/attachments/motion-diagnostics-c353f2245091f237cf46410ad065bf8a6ea04a1d.json",
+    "sha256": "c7a6d46e564a79d3c3a3f9e1ffa82bbae55c4a8d2e1d1c225366b163d415f9d6",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat21/motion-diagnostics.json",
+    "sha256": "c7a6d46e564a79d3c3a3f9e1ffa82bbae55c4a8d2e1d1c225366b163d415f9d6",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat22/attachments/motion-diagnostics-ca5ee5ffd63d9e7bcc1293b93cec91de26ff8ef7.json",
+    "sha256": "d495323efcdf1223c8a5fdd75dcce4e22b2032cc66fdf68a4e3a9f4d220b4be5",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat22/motion-diagnostics.json",
+    "sha256": "d495323efcdf1223c8a5fdd75dcce4e22b2032cc66fdf68a4e3a9f4d220b4be5",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat23/attachments/motion-diagnostics-83126983bdab6985fb9aeb396caa3bdb01e51fb1.json",
+    "sha256": "e98bfe9db29f14faacd52f5a4338d25c797aff1ce587788d46e6f276db30936e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat23/motion-diagnostics.json",
+    "sha256": "e98bfe9db29f14faacd52f5a4338d25c797aff1ce587788d46e6f276db30936e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat24/attachments/motion-diagnostics-23285b07e3311ffd544d596a54252411fb88a83d.json",
+    "sha256": "6049a245d0badf8bb432f53bf34048a82b625cb00edf5cfcad8cf304c3c40a1a",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat24/motion-diagnostics.json",
+    "sha256": "6049a245d0badf8bb432f53bf34048a82b625cb00edf5cfcad8cf304c3c40a1a",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat25/attachments/motion-diagnostics-9ff6412038e65a7683ab4d2fd106b488126c1f22.json",
+    "sha256": "ae274677528066a8d3ca25e5bf413b931f157459e8607c94980787dad7308a70",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat25/motion-diagnostics.json",
+    "sha256": "ae274677528066a8d3ca25e5bf413b931f157459e8607c94980787dad7308a70",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat26/attachments/motion-diagnostics-ab6b0c5ef919a8df790f1547a92d85d6bd773cba.json",
+    "sha256": "54c70e4c0118cce25454751e45b13b0098e0834b0af8bd5c02980aae880f1f28",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat26/motion-diagnostics.json",
+    "sha256": "54c70e4c0118cce25454751e45b13b0098e0834b0af8bd5c02980aae880f1f28",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat27/attachments/motion-diagnostics-2282c3a140d4fee2d3cad532bdc357592be4ffe5.json",
+    "sha256": "27aa447f51de2a6f939cfff63e4064043d3bfb0d495bd942e91d06e63acfc89f",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat27/motion-diagnostics.json",
+    "sha256": "27aa447f51de2a6f939cfff63e4064043d3bfb0d495bd942e91d06e63acfc89f",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat28/attachments/motion-diagnostics-8a766f6bdbbd4ee6f1282d49b808e103871cbfb4.json",
+    "sha256": "98bc4017e0bce9b9c24597c196d5256094a525ab0f8892192e2a541bd5f1f30a",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat28/motion-diagnostics.json",
+    "sha256": "98bc4017e0bce9b9c24597c196d5256094a525ab0f8892192e2a541bd5f1f30a",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat29/attachments/motion-diagnostics-c947f28e941d73d3cc9ecc460e8f94ca3227c0bc.json",
+    "sha256": "26044409bf34451501a7605be3e037f1f3f7a6aa868c94c386fcf6145c4523e4",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat29/motion-diagnostics.json",
+    "sha256": "26044409bf34451501a7605be3e037f1f3f7a6aa868c94c386fcf6145c4523e4",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat3/attachments/motion-diagnostics-a86568f426c84cff579375902c9a3def0e17eed8.json",
+    "sha256": "a5db0a67468eca77a80c5e241e87bc1f24a2de8ae516cc88270c3f4c7cb4d0fc",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat3/motion-diagnostics.json",
+    "sha256": "a5db0a67468eca77a80c5e241e87bc1f24a2de8ae516cc88270c3f4c7cb4d0fc",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat30/attachments/motion-diagnostics-cc02e8718f2a42645d01a7bd20399871aedbbe54.json",
+    "sha256": "2a0715afd73559c75b0be8ae54e167061ec9f42a75279ab856ee28724325224e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat30/motion-diagnostics.json",
+    "sha256": "2a0715afd73559c75b0be8ae54e167061ec9f42a75279ab856ee28724325224e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat31/attachments/motion-diagnostics-11216d2b4737fa3b9d8431f2ae6dc6b51e3187ca.json",
+    "sha256": "05e513084cdbf6f4d50967dcefeab224cd19aa9edac06e0c7910fcb044c53758",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat31/motion-diagnostics.json",
+    "sha256": "05e513084cdbf6f4d50967dcefeab224cd19aa9edac06e0c7910fcb044c53758",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat32/attachments/motion-diagnostics-872ea4f9befd028aacee9e54a03ac967f6101723.json",
+    "sha256": "da3503a36d487ae38db6e3e7f3b4d1e96a1de228f36237f35957f35fb35689ad",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat32/motion-diagnostics.json",
+    "sha256": "da3503a36d487ae38db6e3e7f3b4d1e96a1de228f36237f35957f35fb35689ad",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat33/attachments/motion-diagnostics-01f9264b8a9a0e482944591c7f1fab4928cd0976.json",
+    "sha256": "f92de2c29ba365f7e1a8d88a49e976c07f491fd5bdd8728a85faaec7fa483db7",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat33/motion-diagnostics.json",
+    "sha256": "f92de2c29ba365f7e1a8d88a49e976c07f491fd5bdd8728a85faaec7fa483db7",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat34/attachments/motion-diagnostics-0b354b009f6af840a339a562fce517f4f57d08a1.json",
+    "sha256": "9f02ca398d5d79d0061fad7dcd39f1831bd6bf9ad333656b20f6c8430557d9c3",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat34/motion-diagnostics.json",
+    "sha256": "9f02ca398d5d79d0061fad7dcd39f1831bd6bf9ad333656b20f6c8430557d9c3",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat35/attachments/motion-diagnostics-458f08276c1dc7143a50c8a6f1b89dd998758723.json",
+    "sha256": "04800e85456a36123835be7d2663732b90a01677841101f727321b60322405c8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat35/motion-diagnostics.json",
+    "sha256": "04800e85456a36123835be7d2663732b90a01677841101f727321b60322405c8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat36/attachments/motion-diagnostics-83c413fc6112005245e0a8d41dc7d5f88de5db77.json",
+    "sha256": "ac69ac64a7d62271d094c30bf7fe5ef4160f11a896cecee631e731aa2ae44e81",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat36/motion-diagnostics.json",
+    "sha256": "ac69ac64a7d62271d094c30bf7fe5ef4160f11a896cecee631e731aa2ae44e81",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat37/attachments/motion-diagnostics-eb1d792ae771c59ab7bad15235193dfa696cebb0.json",
+    "sha256": "04a72130d191f3c56c4cd979193f7d1bb0a51e775a5754fd2e4118f184d8a792",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat37/motion-diagnostics.json",
+    "sha256": "04a72130d191f3c56c4cd979193f7d1bb0a51e775a5754fd2e4118f184d8a792",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat38/attachments/motion-diagnostics-05da07e3cca9092e10b7cb52778921ce649f55b1.json",
+    "sha256": "60a320e9c59a682e6267ffd60abee55f0e45cefe5a4bb2f1124346af81165aac",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat38/motion-diagnostics.json",
+    "sha256": "60a320e9c59a682e6267ffd60abee55f0e45cefe5a4bb2f1124346af81165aac",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat39/attachments/motion-diagnostics-d6b575665a7d733f8e7770779f6703a1559dcdc9.json",
+    "sha256": "c62dcb62a467d93b77c23bca1eb4125412d0f221ffbd2acbf37f7ef96234f0d9",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat39/motion-diagnostics.json",
+    "sha256": "c62dcb62a467d93b77c23bca1eb4125412d0f221ffbd2acbf37f7ef96234f0d9",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat4/attachments/motion-diagnostics-a4a88775ee81272fe23565df67433632fc969d1a.json",
+    "sha256": "49fd510011abed419f1df4d23a166826e019507b901d8470226fb3d692fffb50",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat4/motion-diagnostics.json",
+    "sha256": "49fd510011abed419f1df4d23a166826e019507b901d8470226fb3d692fffb50",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat40/attachments/motion-diagnostics-2198075c9da45633ac55eb5e2a5033ad57a6d11d.json",
+    "sha256": "35f414507b5aad26cb1bece396e4c0e837b4a5e600dc0d4829d6bd967bd98845",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat40/motion-diagnostics.json",
+    "sha256": "35f414507b5aad26cb1bece396e4c0e837b4a5e600dc0d4829d6bd967bd98845",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat41/attachments/motion-diagnostics-a12d99c89f445a9bff434b4d9459c670e6abd895.json",
+    "sha256": "a8c12ef3a7def38df9857f9569b42cffb538599b9ff37d56bb9c05c4dc0aca90",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat41/motion-diagnostics.json",
+    "sha256": "a8c12ef3a7def38df9857f9569b42cffb538599b9ff37d56bb9c05c4dc0aca90",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat42/attachments/motion-diagnostics-dd0f20d4f2575158cc9ca2227f927aa1428809ce.json",
+    "sha256": "78913631e1356f26045b3165518401566a38b305c97ed27249ca3b4b06d66f7d",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat42/motion-diagnostics.json",
+    "sha256": "78913631e1356f26045b3165518401566a38b305c97ed27249ca3b4b06d66f7d",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat43/attachments/motion-diagnostics-856806891d95de68abbe05e35d2cd6dd0f24ebe5.json",
+    "sha256": "3a64c947226e511583598d765e6f6c7566533c6cfef07e9159a0085778feae6d",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat43/motion-diagnostics.json",
+    "sha256": "3a64c947226e511583598d765e6f6c7566533c6cfef07e9159a0085778feae6d",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat44/attachments/motion-diagnostics-893ad2b1b08d0ba760ac8b7328f2b7c062a28664.json",
+    "sha256": "2b2c758a7248eff7ad213d950addf70863c6663bc349eecb8eea1d59df6a8664",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat44/motion-diagnostics.json",
+    "sha256": "2b2c758a7248eff7ad213d950addf70863c6663bc349eecb8eea1d59df6a8664",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat45/attachments/motion-diagnostics-61f4f0d6e2568188702d1c1f6cdb4278880f3062.json",
+    "sha256": "8a7533a3174219c7346129e5fe1677fff5468f1223a5e4af76b5fd6871f285ff",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat45/motion-diagnostics.json",
+    "sha256": "8a7533a3174219c7346129e5fe1677fff5468f1223a5e4af76b5fd6871f285ff",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat46/attachments/motion-diagnostics-65ddc7d107b7bd9d35f1295d1ca7c6179f66e010.json",
+    "sha256": "b8a7fcb5136e658ef9f2288a14699dfe77aea28ba0f4c191b12f13f2686f2356",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat46/motion-diagnostics.json",
+    "sha256": "b8a7fcb5136e658ef9f2288a14699dfe77aea28ba0f4c191b12f13f2686f2356",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat47/attachments/motion-diagnostics-4e1470bc1a85f69a291ae140abec38a4f36994f1.json",
+    "sha256": "ca7fbef7b9c3f65936f9ef5d0cc0674c4237221b803d2fd2904e70b51080c01c",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat47/motion-diagnostics.json",
+    "sha256": "ca7fbef7b9c3f65936f9ef5d0cc0674c4237221b803d2fd2904e70b51080c01c",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat48/attachments/motion-diagnostics-5495df37f2fd14e3ebb571fdbc9f38e2c2961cc9.json",
+    "sha256": "3291a21c112cadbb4e89744cb756afb78d68f97e2798243cbad06a6ed880cc7c",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat48/motion-diagnostics.json",
+    "sha256": "3291a21c112cadbb4e89744cb756afb78d68f97e2798243cbad06a6ed880cc7c",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat49/attachments/motion-diagnostics-ad98e3fb8d531a608e01607cdef1fd89a776f4d0.json",
+    "sha256": "0687723934180e6e9d7ecf90ef5315f4099005a188f8d6abfe7ddb103c738394",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat49/motion-diagnostics.json",
+    "sha256": "0687723934180e6e9d7ecf90ef5315f4099005a188f8d6abfe7ddb103c738394",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat5/attachments/motion-diagnostics-b7f098680e89f9ee346282ad76711b4cd7065c28.json",
+    "sha256": "b1ee56782eed39a28479fe02f76881649e527778e963aff006e6dbf142775d46",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat5/motion-diagnostics.json",
+    "sha256": "b1ee56782eed39a28479fe02f76881649e527778e963aff006e6dbf142775d46",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat6/attachments/motion-diagnostics-aab8667c0dac2122e15c4b8d6a4df8ef9965377a.json",
+    "sha256": "e08e84ec89677f1e3a26a9ffe5ba647ca1ca3c2b7a1c4519cafc91924530ec7e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat6/motion-diagnostics.json",
+    "sha256": "e08e84ec89677f1e3a26a9ffe5ba647ca1ca3c2b7a1c4519cafc91924530ec7e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat7/attachments/motion-diagnostics-68414b6440c1a8f4ccdcc8d6c5d93b24d7dadbbe.json",
+    "sha256": "1f11e539f73ca26f7d7fd24195cc7dfa203aa4187dc405ff38acc482a472fd6b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat7/motion-diagnostics.json",
+    "sha256": "1f11e539f73ca26f7d7fd24195cc7dfa203aa4187dc405ff38acc482a472fd6b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat8/attachments/motion-diagnostics-fe0583ba757877fb9213e67808a4d740014c3f28.json",
+    "sha256": "43890e71ba8dececa93e82c441ac78d4ba09f6c30965e8e639fb7fd6ebc0372d",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat8/motion-diagnostics.json",
+    "sha256": "43890e71ba8dececa93e82c441ac78d4ba09f6c30965e8e639fb7fd6ebc0372d",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat9/attachments/motion-diagnostics-d077bed7b23a883f4c8d3dcfb3e62e22c81e345d.json",
+    "sha256": "2560c947425df8d1172914fe5a465e58fcc2b5bda3e7427face3873d930e74da",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1366-c01c9--resume-completion-and-hold-repeat9/motion-diagnostics.json",
+    "sha256": "2560c947425df8d1172914fe5a465e58fcc2b5bda3e7427face3873d930e74da",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold/attachments/motion-diagnostics-407e3b71c5210fbe1dfa916e49209b2025ee97d1.json",
+    "sha256": "579ff9000c7dd664a301b7badd19d10d2b3ed2ae89a12f2e05779edab9827feb",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold/motion-diagnostics.json",
+    "sha256": "579ff9000c7dd664a301b7badd19d10d2b3ed2ae89a12f2e05779edab9827feb",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat1/attachments/motion-diagnostics-fe5eaac2dcb1113d8ef435119fc573d14756dbc9.json",
+    "sha256": "fa08bf3b97a9b5f6f7707d823654c0b4f299cd217f4a77d217d6c5d619ff6c53",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat1/motion-diagnostics.json",
+    "sha256": "fa08bf3b97a9b5f6f7707d823654c0b4f299cd217f4a77d217d6c5d619ff6c53",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat10/attachments/motion-diagnostics-6ed8d5636dcdd753ae808d11af74daeb20324ffb.json",
+    "sha256": "c27fbd80ae318ff080378183b3223beb1c39b8626d81c8f87a2e665319d39514",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat10/motion-diagnostics.json",
+    "sha256": "c27fbd80ae318ff080378183b3223beb1c39b8626d81c8f87a2e665319d39514",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat11/attachments/motion-diagnostics-b250c69c448a58ed3e3e9d12a357d43404fa2a43.json",
+    "sha256": "27373751aa1db3fa1fbebbf1d61aa18a88c64d0104161013bd4d723988a0e39a",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat11/motion-diagnostics.json",
+    "sha256": "27373751aa1db3fa1fbebbf1d61aa18a88c64d0104161013bd4d723988a0e39a",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat12/attachments/motion-diagnostics-4ddcc2dbba1d7c5f9cc01d6ebc95bc3939a053df.json",
+    "sha256": "0aeec3b1b9098cd2f5c5a9f3b7f83117469fd8f234a43eecd1f52416b8713583",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat12/motion-diagnostics.json",
+    "sha256": "0aeec3b1b9098cd2f5c5a9f3b7f83117469fd8f234a43eecd1f52416b8713583",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat13/attachments/motion-diagnostics-0f4d5498b674b9854390d70aa4c231d798a95d3f.json",
+    "sha256": "edd3e842efe49ed7761ec1f00885cc78a623ce2f6a76c502d78bd26bac953aac",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat13/motion-diagnostics.json",
+    "sha256": "edd3e842efe49ed7761ec1f00885cc78a623ce2f6a76c502d78bd26bac953aac",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat14/attachments/motion-diagnostics-ff19517516bc2719ec8647629503ade1a287b1c8.json",
+    "sha256": "d820a526f2e01f93d4ddcb344424adbf7a48096b8d3a95260767fb57670974b5",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat14/motion-diagnostics.json",
+    "sha256": "d820a526f2e01f93d4ddcb344424adbf7a48096b8d3a95260767fb57670974b5",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat15/attachments/motion-diagnostics-a3ea1abef68a4eee363c16908711dcb99065f2ec.json",
+    "sha256": "60f67f75f97d476eb28f9d9dcce457d4a11f960aba9ad106f0f4baae69d0df89",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat15/motion-diagnostics.json",
+    "sha256": "60f67f75f97d476eb28f9d9dcce457d4a11f960aba9ad106f0f4baae69d0df89",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat16/attachments/motion-diagnostics-84f2dcc9149ed9562560d909ad8f4d9b7b2c651f.json",
+    "sha256": "5b2c8ff00be193025ec7cd1d4f956779856e13293ed473d1486c7708c768da40",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat16/motion-diagnostics.json",
+    "sha256": "5b2c8ff00be193025ec7cd1d4f956779856e13293ed473d1486c7708c768da40",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat17/attachments/motion-diagnostics-2fa290c637847d99f67f4488917850f9a3cf9383.json",
+    "sha256": "f8cea015d18469501b8e4d11de94ed703b055d19ddaeee77c1485e32c9236371",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat17/motion-diagnostics.json",
+    "sha256": "f8cea015d18469501b8e4d11de94ed703b055d19ddaeee77c1485e32c9236371",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat18/attachments/motion-diagnostics-e09230bd506dc197a37849a54055dfb44d8ff9e6.json",
+    "sha256": "52166949c914ebd2b60bc681917fbedbf4a7bbeec4bf0aad23452a83c449e842",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat18/motion-diagnostics.json",
+    "sha256": "52166949c914ebd2b60bc681917fbedbf4a7bbeec4bf0aad23452a83c449e842",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat19/attachments/motion-diagnostics-990fa359efda253a41b2d97a0c3aa9a39de60738.json",
+    "sha256": "02266e1cf7d69112b06f86db89dc3dbef30e02a7036884f8b140a83d51193354",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat19/motion-diagnostics.json",
+    "sha256": "02266e1cf7d69112b06f86db89dc3dbef30e02a7036884f8b140a83d51193354",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat2/attachments/motion-diagnostics-95aa9ea381b6224c4883393b656b4435b32c9a13.json",
+    "sha256": "c16c27dec6dfb16a98fddbc2f5f0a64dc8fc0f9f130424145ccc52d3012f37ee",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat2/motion-diagnostics.json",
+    "sha256": "c16c27dec6dfb16a98fddbc2f5f0a64dc8fc0f9f130424145ccc52d3012f37ee",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat20/attachments/motion-diagnostics-1c4fbd425f3499c2201aecbb97b0741b69524eeb.json",
+    "sha256": "7d89bd215daca9631143e19d30bca1eac3b029787017274bf99cfdc84f21e2ae",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat20/motion-diagnostics.json",
+    "sha256": "7d89bd215daca9631143e19d30bca1eac3b029787017274bf99cfdc84f21e2ae",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat21/attachments/motion-diagnostics-0b929e6b1cb157435b2f9bf76a0926e1c1fd7ddc.json",
+    "sha256": "07851b0ac65ed41d2f002e249a73a862c3ccd58262f3fea19c7b8320a3919042",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat21/motion-diagnostics.json",
+    "sha256": "07851b0ac65ed41d2f002e249a73a862c3ccd58262f3fea19c7b8320a3919042",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat22/attachments/motion-diagnostics-20eb7dcf94d272d206470c3bc0fbe1b24f74bd7e.json",
+    "sha256": "1251ff4b53ae003e3269bddfe8775da9043b0097619891ec683a73faf546800d",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat22/motion-diagnostics.json",
+    "sha256": "1251ff4b53ae003e3269bddfe8775da9043b0097619891ec683a73faf546800d",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat23/attachments/motion-diagnostics-96843066cbb95353a36c6296a4056f0ca1900d71.json",
+    "sha256": "ce434eba339e5f733762c32f4006870072c075519ec0390a799c12ff7b3a5046",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat23/motion-diagnostics.json",
+    "sha256": "ce434eba339e5f733762c32f4006870072c075519ec0390a799c12ff7b3a5046",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat24/attachments/motion-diagnostics-193f5ff573fb783ccdf3a121f27254ef4b9979a8.json",
+    "sha256": "828d7a8db50c1b3b64d925ffcebec5aa2d638f15d2ca19690f2f25b11d45fbfe",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat24/motion-diagnostics.json",
+    "sha256": "828d7a8db50c1b3b64d925ffcebec5aa2d638f15d2ca19690f2f25b11d45fbfe",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat25/attachments/motion-diagnostics-5763c6045846822ebefe44c9a514b37dbb8dd9a7.json",
+    "sha256": "fb2c5fb25ef38e33cc64d1329ad684fb0fa3c7b224f204d936d9a6efbfd2af71",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat25/motion-diagnostics.json",
+    "sha256": "fb2c5fb25ef38e33cc64d1329ad684fb0fa3c7b224f204d936d9a6efbfd2af71",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat26/attachments/motion-diagnostics-23cd831691b0c83390e51edcb9957c4732a15843.json",
+    "sha256": "88c445f5bdcaa88578f21e5d8aceda40da2bb3026043b04831e053a43a064a35",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat26/motion-diagnostics.json",
+    "sha256": "88c445f5bdcaa88578f21e5d8aceda40da2bb3026043b04831e053a43a064a35",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat27/attachments/motion-diagnostics-2db3b6b6f6b9cd78b458215d7aec440a261406ca.json",
+    "sha256": "d7968b9aa01a4add2ff2d3526f1c15612fc5afecc2e6432423b635cff504ef48",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat27/motion-diagnostics.json",
+    "sha256": "d7968b9aa01a4add2ff2d3526f1c15612fc5afecc2e6432423b635cff504ef48",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat28/attachments/motion-diagnostics-b78e8c98cf0be105f50349737870a986e3a18de5.json",
+    "sha256": "24e1ceead8c1cc4a2729d2e6e04858ef528d02f871a8fd3ab440f2d9948d6cac",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat28/motion-diagnostics.json",
+    "sha256": "24e1ceead8c1cc4a2729d2e6e04858ef528d02f871a8fd3ab440f2d9948d6cac",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat29/attachments/motion-diagnostics-67274f6dd24d35d974a72d65bf0b1cfdf05ff671.json",
+    "sha256": "9c66bebd304504de257d1bf70afbed62c1f037993a7f9ec9fd166da18284c22b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat29/motion-diagnostics.json",
+    "sha256": "9c66bebd304504de257d1bf70afbed62c1f037993a7f9ec9fd166da18284c22b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat3/attachments/motion-diagnostics-913cfc8a5059f9e18060187b45eb9f8b64b0efc8.json",
+    "sha256": "f3439d0c2b991eddc1616fb2dba93586041547f827721305779bbef020b15fbf",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat3/motion-diagnostics.json",
+    "sha256": "f3439d0c2b991eddc1616fb2dba93586041547f827721305779bbef020b15fbf",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat30/attachments/motion-failure-c055c07822405c2cea9a1c4f63c4c50801be4ba8.json",
+    "sha256": "006a91fdb7f6bbfb14a11e983cdd6c423ac1118c4b1cb49df6221b710f4dd47e",
+    "check": null
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat30/motion-failure.json",
+    "sha256": "006a91fdb7f6bbfb14a11e983cdd6c423ac1118c4b1cb49df6221b710f4dd47e",
+    "check": null
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat31/attachments/motion-diagnostics-1dba97e2c8af4c5d34cf156dd75955911d16c34e.json",
+    "sha256": "f8946ea44060c581c40e67c8446e12e8c027beabc3bce47b8b214b6b0b55c80e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat31/motion-diagnostics.json",
+    "sha256": "f8946ea44060c581c40e67c8446e12e8c027beabc3bce47b8b214b6b0b55c80e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat32/attachments/motion-diagnostics-5afc2dc8b6d1c3d6883313b938f7bcdc89ba6390.json",
+    "sha256": "a92fb78448ba8237f1d84fe97bbb2a3b5a116a88b1a4bff4c543a837cda78fc1",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat32/motion-diagnostics.json",
+    "sha256": "a92fb78448ba8237f1d84fe97bbb2a3b5a116a88b1a4bff4c543a837cda78fc1",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat33/attachments/motion-diagnostics-109ff09530dbaed6d550349abffb3bef222aed39.json",
+    "sha256": "a5dd5f66874cc5f51e2f0d4a8d0cc99910eaa2fc65ee4addf46c27eb1df59dfa",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat33/motion-diagnostics.json",
+    "sha256": "a5dd5f66874cc5f51e2f0d4a8d0cc99910eaa2fc65ee4addf46c27eb1df59dfa",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat34/attachments/motion-diagnostics-e8a322e362674328588c8acc7ea617e96e73d4d3.json",
+    "sha256": "a6fb3e5e7528e77765e93a2eb6206c8b3aa7f0eb169922cbbc4e369977c1f1b4",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat34/motion-diagnostics.json",
+    "sha256": "a6fb3e5e7528e77765e93a2eb6206c8b3aa7f0eb169922cbbc4e369977c1f1b4",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat35/attachments/motion-diagnostics-9fd036b5524066655a67125a09d91d377ffb91af.json",
+    "sha256": "fe554332c06c08ba23aa1b7c2906f09a1781fb0669a1b5d2dec5e6234e77c6d5",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat35/motion-diagnostics.json",
+    "sha256": "fe554332c06c08ba23aa1b7c2906f09a1781fb0669a1b5d2dec5e6234e77c6d5",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat36/attachments/motion-diagnostics-a6eaffedf8a9f91b5df3e2a5137d6a588b5b9ef4.json",
+    "sha256": "880ae161ccc5c6f737252fb1b8258eb0799bf78ca515b63900425e5dcacd75ad",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat36/motion-diagnostics.json",
+    "sha256": "880ae161ccc5c6f737252fb1b8258eb0799bf78ca515b63900425e5dcacd75ad",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat37/attachments/motion-diagnostics-9f6e9e2632111c990190884047cbb51668bdd0d9.json",
+    "sha256": "60a99247a05fdf25aa34d0c99deca40fd270a68a559099f14c989fe7cf78dc31",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat37/motion-diagnostics.json",
+    "sha256": "60a99247a05fdf25aa34d0c99deca40fd270a68a559099f14c989fe7cf78dc31",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat38/attachments/motion-diagnostics-4edffd64afa9d326c70ed5537f96e58c4fb520d2.json",
+    "sha256": "7235b32a25a1f1514d0ce64ee5959c98c1e44dab89181e863ac1e37ca32bdf68",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat38/motion-diagnostics.json",
+    "sha256": "7235b32a25a1f1514d0ce64ee5959c98c1e44dab89181e863ac1e37ca32bdf68",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat39/attachments/motion-diagnostics-5b0c6440d60a846c553cf3dfd2f0fde24e1021e8.json",
+    "sha256": "ff7a39142f1d532217026793cecc942e7ead20231b6a77509eac7ee6a619f325",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat39/motion-diagnostics.json",
+    "sha256": "ff7a39142f1d532217026793cecc942e7ead20231b6a77509eac7ee6a619f325",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat4/attachments/motion-diagnostics-9e7f35f73257872b1be95df47195b0dff7a4b2af.json",
+    "sha256": "e87410ce0560cce69d858cebe8206281d51098f889e988d1a94b1bd2e0fd3975",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat4/motion-diagnostics.json",
+    "sha256": "e87410ce0560cce69d858cebe8206281d51098f889e988d1a94b1bd2e0fd3975",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat40/attachments/motion-diagnostics-4d7c1a531cb2806f9a544df09ef1432020ec8b01.json",
+    "sha256": "c5f85ece024926bd3029d1ce163d703e7191a9a84092bb0f38f6213076a64c74",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat40/motion-diagnostics.json",
+    "sha256": "c5f85ece024926bd3029d1ce163d703e7191a9a84092bb0f38f6213076a64c74",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat41/attachments/motion-diagnostics-d763ee592712bf466ebfc18fd18139cf0d981be4.json",
+    "sha256": "6ec0aef54cc57631ab856c2a08bef6832e2e9af91c758ab13c28a4a0d46b82fd",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat41/motion-diagnostics.json",
+    "sha256": "6ec0aef54cc57631ab856c2a08bef6832e2e9af91c758ab13c28a4a0d46b82fd",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat42/attachments/motion-diagnostics-90b4fff34c28a6989922fa1ab73077ec5d19f762.json",
+    "sha256": "480499342bad5f79831c3dd7556a1f732d8d110ce5bb0af89b53b1f2905a68a8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat42/motion-diagnostics.json",
+    "sha256": "480499342bad5f79831c3dd7556a1f732d8d110ce5bb0af89b53b1f2905a68a8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat43/attachments/motion-diagnostics-8a5978efefe72700983cde8dff247297d18b5eca.json",
+    "sha256": "f72b6adc98b6142c8eb0d92b0f2cad2867a814c1ebff8b712cb0887f16d75a90",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat43/motion-diagnostics.json",
+    "sha256": "f72b6adc98b6142c8eb0d92b0f2cad2867a814c1ebff8b712cb0887f16d75a90",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat44/attachments/motion-diagnostics-29340df3613a4c4c967345db0a1a0ee152ac1e02.json",
+    "sha256": "dc70d65955e47c43be9f5c1ebac0c16ae2a6c405a61834a34710e4b40f283031",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat44/motion-diagnostics.json",
+    "sha256": "dc70d65955e47c43be9f5c1ebac0c16ae2a6c405a61834a34710e4b40f283031",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat45/attachments/motion-diagnostics-5bfb4c6ba078e89d13e4d3662f6d9f111b83f67d.json",
+    "sha256": "148db8febefd12f29b6cbb20d4b70984b7788dd1c423c9465893013e736ff02f",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat45/motion-diagnostics.json",
+    "sha256": "148db8febefd12f29b6cbb20d4b70984b7788dd1c423c9465893013e736ff02f",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat46/attachments/motion-diagnostics-d13ccbd3d1f07621e35f2d55d8432c52d890ca80.json",
+    "sha256": "8b85288bda450a4444287773062047e3bbb623d6e51495e1b57acde9757c23c8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat46/motion-diagnostics.json",
+    "sha256": "8b85288bda450a4444287773062047e3bbb623d6e51495e1b57acde9757c23c8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat47/attachments/motion-diagnostics-1569e607971d3933edcfd2c8b3f6acae4fd0e852.json",
+    "sha256": "8cb715d98898e48035a8a182b8d6c61504ac1d34c0e91d1fdd6565cccb24efcd",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat47/motion-diagnostics.json",
+    "sha256": "8cb715d98898e48035a8a182b8d6c61504ac1d34c0e91d1fdd6565cccb24efcd",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat48/attachments/motion-diagnostics-a463178dfc349f4ea2ad557bf748589daeb60b77.json",
+    "sha256": "8b5940f9f7f065b070fc62b623dc0c6af82ea0d175303fefdd0e83fd062446b1",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat48/motion-diagnostics.json",
+    "sha256": "8b5940f9f7f065b070fc62b623dc0c6af82ea0d175303fefdd0e83fd062446b1",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat49/attachments/motion-diagnostics-e907248ceb75e9942ed47719a4967b01f2dda69a.json",
+    "sha256": "4c6dc483cf19bf66606599deb8718c6fb5837c6aac8ee3c696158438d4c82dc9",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat49/motion-diagnostics.json",
+    "sha256": "4c6dc483cf19bf66606599deb8718c6fb5837c6aac8ee3c696158438d4c82dc9",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat5/attachments/motion-diagnostics-0c18834166f40a7e9c90c12db32298ea8fd7b2ef.json",
+    "sha256": "80124414111bd6b74d7ac9b270af536adfbf2cb05d88b8b7e9f5cdfe6b971cea",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat5/motion-diagnostics.json",
+    "sha256": "80124414111bd6b74d7ac9b270af536adfbf2cb05d88b8b7e9f5cdfe6b971cea",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat6/attachments/motion-diagnostics-905b221aae12309abfece8cb510e4a4b1a2450b5.json",
+    "sha256": "04d4014740032e63fc84912fdd243cd5a9af7ea321058858f7d5499f83c73869",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat6/motion-diagnostics.json",
+    "sha256": "04d4014740032e63fc84912fdd243cd5a9af7ea321058858f7d5499f83c73869",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat7/attachments/motion-diagnostics-4c0c5a1154b1d6d93c754935bb035759deee87de.json",
+    "sha256": "0154d58f79a2e4d45b0e56e24849a018698c9924b7c624ff6af59a98a62fdf93",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat7/motion-diagnostics.json",
+    "sha256": "0154d58f79a2e4d45b0e56e24849a018698c9924b7c624ff6af59a98a62fdf93",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat8/attachments/motion-diagnostics-4a40ad1b1137589d8e83e1b0d59a2dd2d5e1c058.json",
+    "sha256": "f26636a3cbfb006bf39e1172c13423b2db8654cd339387973bd76124520d3bbb",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat8/motion-diagnostics.json",
+    "sha256": "f26636a3cbfb006bf39e1172c13423b2db8654cd339387973bd76124520d3bbb",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat9/attachments/motion-diagnostics-eebd7c843a4f41f8c1981d78087d57680440a507.json",
+    "sha256": "c3f8ef759f976cde35c309b92a63087a40ead7a8df8a1027496988ff56f15dba",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat9/motion-diagnostics.json",
+    "sha256": "c3f8ef759f976cde35c309b92a63087a40ead7a8df8a1027496988ff56f15dba",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold/attachments/motion-diagnostics-405fb24fc1790c896153625dcf74fa719e0da00b.json",
+    "sha256": "53dfc3f7bcb0040224f5c4163956301a87197c52d12573e946cf32fb80d2b0ed",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold/motion-diagnostics.json",
+    "sha256": "53dfc3f7bcb0040224f5c4163956301a87197c52d12573e946cf32fb80d2b0ed",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat1/attachments/motion-diagnostics-687d14ea5bc23f2aa155af616b584cb9c034ad3b.json",
+    "sha256": "52a3e6624b3073253da55b0acdccaa00ad1e8d89f8f19901d66a0519f0b9e883",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat1/motion-diagnostics.json",
+    "sha256": "52a3e6624b3073253da55b0acdccaa00ad1e8d89f8f19901d66a0519f0b9e883",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat10/attachments/motion-diagnostics-8cc417a035ed6f317776250d949eca715b16d2d7.json",
+    "sha256": "6af88efbecd191aff79cc39db5fca269a031762648710c55f396622cc369fd64",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat10/motion-diagnostics.json",
+    "sha256": "6af88efbecd191aff79cc39db5fca269a031762648710c55f396622cc369fd64",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat11/attachments/motion-diagnostics-dd94dc1ecf0841031a6e609fadf610c6af94a3f6.json",
+    "sha256": "7000fd80bd8879ce1b02212a6f3f0456d44ef62ee57b89a2419159ce7d02c017",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat11/motion-diagnostics.json",
+    "sha256": "7000fd80bd8879ce1b02212a6f3f0456d44ef62ee57b89a2419159ce7d02c017",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat12/attachments/motion-diagnostics-98eeacb7d02b243e864bcb2eb3fe3c6d77f2c4b8.json",
+    "sha256": "701efb88f1ed3c47ae650ceda35b6a16a3b4ae2aef138eb4309b4900738008d7",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat12/motion-diagnostics.json",
+    "sha256": "701efb88f1ed3c47ae650ceda35b6a16a3b4ae2aef138eb4309b4900738008d7",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat13/attachments/motion-diagnostics-3be5abf937a1d9a5a085cf45540dd5edf1fd0fe5.json",
+    "sha256": "40e2a1fbbbf39beada0b4f82871ca8e6e8bd4f0ece48eaba16e610f7f023cbf3",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat13/motion-diagnostics.json",
+    "sha256": "40e2a1fbbbf39beada0b4f82871ca8e6e8bd4f0ece48eaba16e610f7f023cbf3",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat14/attachments/motion-diagnostics-76dd7829e13364bb46f5cb111ed7636cd85ef0b9.json",
+    "sha256": "38c7e57ae1af75727904f61a26388120e14a0964f6720fa5969d36ff42866583",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat14/motion-diagnostics.json",
+    "sha256": "38c7e57ae1af75727904f61a26388120e14a0964f6720fa5969d36ff42866583",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat15/attachments/motion-diagnostics-239bb356f367502c1da3c3a635f3899a3ab319a4.json",
+    "sha256": "6db7173eaa89bbd987c90675f791d01ea9407320b1c97aac81ab85a7fadcfe02",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat15/motion-diagnostics.json",
+    "sha256": "6db7173eaa89bbd987c90675f791d01ea9407320b1c97aac81ab85a7fadcfe02",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat16/attachments/motion-diagnostics-3de5b95c084992a0372767b5cdc9ab389d4a7e56.json",
+    "sha256": "cd4244ebc8051f51ddd1e8f919cafe7d74908595e9b2c29db01cfe394e1f5e76",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat16/motion-diagnostics.json",
+    "sha256": "cd4244ebc8051f51ddd1e8f919cafe7d74908595e9b2c29db01cfe394e1f5e76",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat17/attachments/motion-diagnostics-ba76a3aeca1f6b81e732553cbd591f9b81dea037.json",
+    "sha256": "53585d1358f02ace55764a67de95bf7b81aa4b5f2cb922771f7112e470affd6f",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat17/motion-diagnostics.json",
+    "sha256": "53585d1358f02ace55764a67de95bf7b81aa4b5f2cb922771f7112e470affd6f",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat18/attachments/motion-diagnostics-ad27cde2f1273862bbdf8dac8397d95d6480f21c.json",
+    "sha256": "a7bc1662342ae5523f967b40185a816fc8143434de9abc8356eb2340d0ea0123",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat18/motion-diagnostics.json",
+    "sha256": "a7bc1662342ae5523f967b40185a816fc8143434de9abc8356eb2340d0ea0123",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat19/attachments/motion-diagnostics-72cf5dc701e4e0d40b3e0c25403c5c731a28d43c.json",
+    "sha256": "073d49a7c69696e2ecd207a63b0756b07daa7891b72e98719b83d8667d2851bc",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat19/motion-diagnostics.json",
+    "sha256": "073d49a7c69696e2ecd207a63b0756b07daa7891b72e98719b83d8667d2851bc",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat2/attachments/motion-diagnostics-d3c969625864097bdc90301f136cb9c3ea4de85d.json",
+    "sha256": "c0f6f6a40b89250b0441c20cec3ee2f74bff81fcf494e1f29ef36d1aa75cd482",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat2/motion-diagnostics.json",
+    "sha256": "c0f6f6a40b89250b0441c20cec3ee2f74bff81fcf494e1f29ef36d1aa75cd482",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat20/attachments/motion-diagnostics-3f351033250839b91a93b9e0b80c90dad709bd89.json",
+    "sha256": "c5aef315cabfacfea3e6322ea82ac0c2a22a3cb2da2c2c2aafce2fce9c12ae75",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat20/motion-diagnostics.json",
+    "sha256": "c5aef315cabfacfea3e6322ea82ac0c2a22a3cb2da2c2c2aafce2fce9c12ae75",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat21/attachments/motion-diagnostics-2580a57c23a163f8d1355f1dc5b564183c0a4164.json",
+    "sha256": "0df712bded8c44d9db612c7c0f9c9e873c4e4e94001e7c33eddc059fe65f56cb",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat21/motion-diagnostics.json",
+    "sha256": "0df712bded8c44d9db612c7c0f9c9e873c4e4e94001e7c33eddc059fe65f56cb",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat22/attachments/motion-diagnostics-9ce6981a7add7dc55a0f2e7acfec4204216793a3.json",
+    "sha256": "accc20b323a74f0c48060c9a64077c7c6c637750073b6524cfbc91e8a7fc2c1c",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat22/motion-diagnostics.json",
+    "sha256": "accc20b323a74f0c48060c9a64077c7c6c637750073b6524cfbc91e8a7fc2c1c",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat23/attachments/motion-diagnostics-4b7662545c85560684fe201e692a39ff34e7a1c9.json",
+    "sha256": "ab3752b4b7b2fb96e8835217aadf03024f7ac1fba075745ae101e8f071173d3b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat23/motion-diagnostics.json",
+    "sha256": "ab3752b4b7b2fb96e8835217aadf03024f7ac1fba075745ae101e8f071173d3b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat24/attachments/motion-diagnostics-187a1741e06a66c8847894ba2a14a99bd66bae6b.json",
+    "sha256": "584fc24102a104303a53a567effec4481d1e0c79522a6a3497a6149b036ec4a5",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat24/motion-diagnostics.json",
+    "sha256": "584fc24102a104303a53a567effec4481d1e0c79522a6a3497a6149b036ec4a5",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat25/attachments/motion-diagnostics-c880ab9bd1b3ac7a04b92c36e0118c577bf2ed65.json",
+    "sha256": "95033d99a95a7332f177e244006248395a74c583e5a18381889922e8c2fe4657",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat25/motion-diagnostics.json",
+    "sha256": "95033d99a95a7332f177e244006248395a74c583e5a18381889922e8c2fe4657",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat26/attachments/motion-diagnostics-06b9b8af56f22352cd4a668ba2f39caf8bcb8a95.json",
+    "sha256": "fe8a3c0666ad2c6f2a4265cacad544cd45d06e0d0559dd31ef503e8aa22cee96",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat26/motion-diagnostics.json",
+    "sha256": "fe8a3c0666ad2c6f2a4265cacad544cd45d06e0d0559dd31ef503e8aa22cee96",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat27/attachments/motion-diagnostics-8d3561421045052997d545b3b791eabef16ca313.json",
+    "sha256": "d6b19b1ed3734b729167c640cdb3a72c3b8f844328ada9ea390adabc412af8e5",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat27/motion-diagnostics.json",
+    "sha256": "d6b19b1ed3734b729167c640cdb3a72c3b8f844328ada9ea390adabc412af8e5",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat28/attachments/motion-diagnostics-ff85396fa2ab48921053f04ab0319b6133335694.json",
+    "sha256": "3d0c668564674a108c7b29663ed3ac9c8122aab476a70ba5d7df2d007eb3cc73",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat28/motion-diagnostics.json",
+    "sha256": "3d0c668564674a108c7b29663ed3ac9c8122aab476a70ba5d7df2d007eb3cc73",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat29/attachments/motion-diagnostics-b84a56945ab32e23b29eeaeabd77d8f148c907c0.json",
+    "sha256": "aa8aebdd47760c3e26c9102789eb2d908679db50513279e94eb3440583101be6",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat29/motion-diagnostics.json",
+    "sha256": "aa8aebdd47760c3e26c9102789eb2d908679db50513279e94eb3440583101be6",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat3/attachments/motion-diagnostics-da993ac08055a7e4b6906ed0df5ca7a8d79564f6.json",
+    "sha256": "e63afc35f0d54c4a7d05bfa95936cfe3b950260ca56c02edee44e181902121d9",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat3/motion-diagnostics.json",
+    "sha256": "e63afc35f0d54c4a7d05bfa95936cfe3b950260ca56c02edee44e181902121d9",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat30/attachments/motion-diagnostics-fd46c80dfe8cf2fd43204d200adf7dfc44e81f14.json",
+    "sha256": "8f06e18cd5aff2dbef59751d0a4503e96afdc15227f416f029f6ed81779469eb",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat30/motion-diagnostics.json",
+    "sha256": "8f06e18cd5aff2dbef59751d0a4503e96afdc15227f416f029f6ed81779469eb",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat31/attachments/motion-diagnostics-9bc33db8b05cbf0eace0a56e01a6b0a3b1316029.json",
+    "sha256": "71b914fefd79241c27e6e2e87022238dfd2ce7d9cc6ce586b160ff6515a63fe6",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat31/motion-diagnostics.json",
+    "sha256": "71b914fefd79241c27e6e2e87022238dfd2ce7d9cc6ce586b160ff6515a63fe6",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat32/attachments/motion-diagnostics-92aacb8d32b027cf3ab3737bd0d4bacf11701aac.json",
+    "sha256": "e46b35820d93dc1eb6fd21d513704f2a52fc1c5d333852c1dbc89c391d6bf1cc",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat32/motion-diagnostics.json",
+    "sha256": "e46b35820d93dc1eb6fd21d513704f2a52fc1c5d333852c1dbc89c391d6bf1cc",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat33/attachments/motion-diagnostics-95b70d6184be26eb0a00314ec58d1f520fbc0610.json",
+    "sha256": "eb452d6588ef924fcf0c64bc5e2945caf1dcbb772bc01ff87cf41996edbd9950",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat33/motion-diagnostics.json",
+    "sha256": "eb452d6588ef924fcf0c64bc5e2945caf1dcbb772bc01ff87cf41996edbd9950",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat34/attachments/motion-diagnostics-e1598644a75820a1bf2098128e770fba916b95d9.json",
+    "sha256": "b5f409c9861a220ec9d8bb33d8f5ae6800f2841877d80b3adb9aa6baa6c4fea8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat34/motion-diagnostics.json",
+    "sha256": "b5f409c9861a220ec9d8bb33d8f5ae6800f2841877d80b3adb9aa6baa6c4fea8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat35/attachments/motion-diagnostics-1d5e85d42c96123965cf746806f518b4a3a46beb.json",
+    "sha256": "81dd3c21abc2f47f609f6b3eddee0a171eced51eb7e94c7e8193f6f7cefcfcf1",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat35/motion-diagnostics.json",
+    "sha256": "81dd3c21abc2f47f609f6b3eddee0a171eced51eb7e94c7e8193f6f7cefcfcf1",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat36/attachments/motion-diagnostics-bb2d68454c3b791d5c60be3cd0042fa70bf89bbe.json",
+    "sha256": "8a6b2e734cb33df6cbb4ec883af803c81ebc976f03ae1892fe0cfa37dbb7f670",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat36/motion-diagnostics.json",
+    "sha256": "8a6b2e734cb33df6cbb4ec883af803c81ebc976f03ae1892fe0cfa37dbb7f670",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat37/attachments/motion-diagnostics-5480ef5d50c1f371b764b49a71f267e257057249.json",
+    "sha256": "a431000202138f12781671db5de1bcf75f64b6d3bb90a1d8092987a76c35dacc",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat37/motion-diagnostics.json",
+    "sha256": "a431000202138f12781671db5de1bcf75f64b6d3bb90a1d8092987a76c35dacc",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat38/attachments/motion-diagnostics-f1e9c362fff11af84ba251a99fb5053a8d6610a5.json",
+    "sha256": "cc09ad5f09b608668af605e05eb8e17ab5bac2bd2610c6d5c2e7c3129d3c3a3b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat38/motion-diagnostics.json",
+    "sha256": "cc09ad5f09b608668af605e05eb8e17ab5bac2bd2610c6d5c2e7c3129d3c3a3b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat39/attachments/motion-diagnostics-421479c7730e83503469825a51b3cd7f430d1584.json",
+    "sha256": "9d37719ed0245bce6f7cde641de14678bd4581a8f34c83c36cbad8bcc6ef54b8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat39/motion-diagnostics.json",
+    "sha256": "9d37719ed0245bce6f7cde641de14678bd4581a8f34c83c36cbad8bcc6ef54b8",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat4/attachments/motion-diagnostics-4c5a8e3cd55c9755fe936cda24ce6c9627314763.json",
+    "sha256": "3d3e711340b4687d7a9848dc05580990bb01d643892080d3312bdb1aa3598eef",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat4/motion-diagnostics.json",
+    "sha256": "3d3e711340b4687d7a9848dc05580990bb01d643892080d3312bdb1aa3598eef",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat40/attachments/motion-diagnostics-7cb9e29b32754ef968c5343be84ebaa20ca69ede.json",
+    "sha256": "9ea8de5da33c0c9b9c287c5a994d687adb68e8a10ae88bd563d474de8b932096",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat40/motion-diagnostics.json",
+    "sha256": "9ea8de5da33c0c9b9c287c5a994d687adb68e8a10ae88bd563d474de8b932096",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat41/attachments/motion-diagnostics-698c0a512f40eea056b840006322d0449016edb4.json",
+    "sha256": "a62bffbc043b9120bfca2cf49a4c21c21dc76ec1634dc73441375531891eaf2e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat41/motion-diagnostics.json",
+    "sha256": "a62bffbc043b9120bfca2cf49a4c21c21dc76ec1634dc73441375531891eaf2e",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat42/attachments/motion-diagnostics-3710d8dc564541b69ffc69c43ab604e5f837868c.json",
+    "sha256": "1790520b35b1e9d1d4afaaa38a2491a08c84211b3eb6221ed1f07b99f5598c84",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat42/motion-diagnostics.json",
+    "sha256": "1790520b35b1e9d1d4afaaa38a2491a08c84211b3eb6221ed1f07b99f5598c84",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat43/attachments/motion-diagnostics-0936baae93134bc0c7223d3d53f22efd6512bec9.json",
+    "sha256": "5443d761806490f9db8b8c03324cb99128bd83334e70439ff55111de27b9291b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat43/motion-diagnostics.json",
+    "sha256": "5443d761806490f9db8b8c03324cb99128bd83334e70439ff55111de27b9291b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat44/attachments/motion-diagnostics-34c0f5b542eb2dba3dd064370e6c7abd07f89a9b.json",
+    "sha256": "ca3e4841efbff3975847bb40b488a16aadd33d23a1e5b0d821a3cee5d6f84316",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat44/motion-diagnostics.json",
+    "sha256": "ca3e4841efbff3975847bb40b488a16aadd33d23a1e5b0d821a3cee5d6f84316",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat45/attachments/motion-diagnostics-171a1c356cc1e652287b1829df15d00f5911b947.json",
+    "sha256": "c861fdfc40a9b26ce3911daa39d9dfdecbdad16a9d495faea149e2eddc4aabc7",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat45/motion-diagnostics.json",
+    "sha256": "c861fdfc40a9b26ce3911daa39d9dfdecbdad16a9d495faea149e2eddc4aabc7",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat46/attachments/motion-diagnostics-cf2ba53722be765c449a1c129b793d8035278d4b.json",
+    "sha256": "9e0a84bb40f41f933bbc021676d3386f18f7cacd64f5d7eecd3a5eeb9972f804",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat46/motion-diagnostics.json",
+    "sha256": "9e0a84bb40f41f933bbc021676d3386f18f7cacd64f5d7eecd3a5eeb9972f804",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat47/attachments/motion-diagnostics-8655c7249d8d064a2583d2466d7f9f4d2ee86e3c.json",
+    "sha256": "a62a5c59b49b76681170d30f5a6b7ea365a340698f7d774a0db38d8e56f65828",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat47/motion-diagnostics.json",
+    "sha256": "a62a5c59b49b76681170d30f5a6b7ea365a340698f7d774a0db38d8e56f65828",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat48/attachments/motion-diagnostics-159743d9911bbc11fc2c2812e92ccdf92dabcf5e.json",
+    "sha256": "216b7456f2d71733835ba33e79422654635a55017caa991c7e5e804d0a4fdc8b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat48/motion-diagnostics.json",
+    "sha256": "216b7456f2d71733835ba33e79422654635a55017caa991c7e5e804d0a4fdc8b",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat49/attachments/motion-diagnostics-b3ba7ad31f7f7aba887b49b21a40050aa1094370.json",
+    "sha256": "86a9664060725b8b77880e5a672f2368ecd59d173db88402ffd05516470b4331",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat49/motion-diagnostics.json",
+    "sha256": "86a9664060725b8b77880e5a672f2368ecd59d173db88402ffd05516470b4331",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat5/attachments/motion-diagnostics-6a1958782ced99e7bc02fe7d8e307848b5cba9bc.json",
+    "sha256": "3929b8c9ad55f0ad8e8aac5ac894ec60cee337a3b0db3832590339c5acd9b01d",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat5/motion-diagnostics.json",
+    "sha256": "3929b8c9ad55f0ad8e8aac5ac894ec60cee337a3b0db3832590339c5acd9b01d",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat6/attachments/motion-diagnostics-870b8faa773cc9d2005db91d6292d0d495243d5b.json",
+    "sha256": "f9d73fdfa56d673c6622eafa4eb60cf894b8b88142a5e39716780adbed0dd663",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat6/motion-diagnostics.json",
+    "sha256": "f9d73fdfa56d673c6622eafa4eb60cf894b8b88142a5e39716780adbed0dd663",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat7/attachments/motion-diagnostics-f1f2ab6799276d4f17c3a1af20e650cf7d4c0666.json",
+    "sha256": "d9f25e7cf22d8fe173893e43dbc34807822262622d52c9d943b58ae0ca409cb7",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat7/motion-diagnostics.json",
+    "sha256": "d9f25e7cf22d8fe173893e43dbc34807822262622d52c9d943b58ae0ca409cb7",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat8/attachments/motion-diagnostics-1e803d42a944dace35dbe1fc44094b2077864f6a.json",
+    "sha256": "7efdd0bb9278177e51cf0b44d06753353f1070270b198e41c3604f3fa155abef",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat8/motion-diagnostics.json",
+    "sha256": "7efdd0bb9278177e51cf0b44d06753353f1070270b198e41c3604f3fa155abef",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat9/attachments/motion-diagnostics-355347a63603a0031032cc644c44854debd5237e.json",
+    "sha256": "8ffa48e4072ab4f70d177c95c4cdbcfeafb8f807c083ba65fd30c7644bad1dff",
+    "check": true
+  },
+  {
+    "file": "tests-e2e-motion-pane-1920-4e0fe--resume-completion-and-hold-repeat9/motion-diagnostics.json",
+    "sha256": "8ffa48e4072ab4f70d177c95c4cdbcfeafb8f807c083ba65fd30c7644bad1dff",
+    "check": true
+  }
+]

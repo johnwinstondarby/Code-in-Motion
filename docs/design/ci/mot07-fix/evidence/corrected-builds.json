@@ -1,0 +1,38 @@
+[
+  {
+    "checkout": "clean-e",
+    "commit": "25c633c1dbeaa2b8019e0385e8eeb1308ecb6635",
+    "file": "cim-authoring-1.0.1-candidate.zip",
+    "files": 128,
+    "sha256": "431e09c7269193606db958c8860f8972254bf220c512980e1b30859563e5bff9",
+    "clean": true,
+    "node": "22.23.2"
+  },
+  {
+    "checkout": "clean-e",
+    "commit": "25c633c1dbeaa2b8019e0385e8eeb1308ecb6635",
+    "file": "code-in-motion-1.0.1.zip",
+    "files": 99,
+    "sha256": "d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a",
+    "clean": true,
+    "node": "22.23.2"
+  },
+  {
+    "checkout": "clean-f",
+    "commit": "25c633c1dbeaa2b8019e0385e8eeb1308ecb6635",
+    "file": "cim-authoring-1.0.1-candidate.zip",
+    "files": 128,
+    "sha256": "431e09c7269193606db958c8860f8972254bf220c512980e1b30859563e5bff9",
+    "clean": true,
+    "node": "22.23.2"
+  },
+  {
+    "checkout": "clean-f",
+    "commit": "25c633c1dbeaa2b8019e0385e8eeb1308ecb6635",
+    "file": "code-in-motion-1.0.1.zip",
+    "files": 99,
+    "sha256": "d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a",
+    "clean": true,
+    "node": "22.23.2"
+  }
+]

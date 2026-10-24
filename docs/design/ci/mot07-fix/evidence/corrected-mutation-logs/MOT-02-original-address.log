@@ -1,0 +1,52 @@
+TAP version 13
+1..0
+# Subtest: tests/motion-authoring.test.mjs
+ok 1 - tests/motion-authoring.test.mjs
+  ---
+  duration_ms: 3062.783026
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/motion-completion-order.test.mjs
+ok 2 - tests/motion-completion-order.test.mjs
+  ---
+  duration_ms: 73.502698
+  type: 'test'
+  ...
+# Subtest: [MOT-02] only exact verified clip and caption bytes become playback Blob URLs
+not ok 3 - [MOT-02] only exact verified clip and caption bytes become playback Blob URLs
+  ---
+  duration_ms: 14.760882
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-lBFXAc/tests/motion-media.test.mjs:21:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /^blob:/. Input:
+    
+    'http://localhost:1234/__cim_fixture_media/clip.webm'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'http://localhost:1234/__cim_fixture_media/clip.webm'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-lBFXAc/tests/motion-media.test.mjs:21:168)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [MOT-02] unit byte verification does not depend on native crypto worker scheduling
+ok 4 - [MOT-02] unit byte verification does not depend on native crypto worker scheduling
+  ---
+  duration_ms: 0.744947
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 3
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3071.841056

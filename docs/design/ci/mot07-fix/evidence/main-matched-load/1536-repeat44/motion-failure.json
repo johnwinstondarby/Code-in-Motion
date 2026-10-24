@@ -1,0 +1,704 @@
+{
+  "video": null,
+  "session": {
+    "index": 2,
+    "progress": "settled",
+    "playing": false,
+    "tab": "console",
+    "generation": 2,
+    "panelOpen": false,
+    "panes": {
+      "console": {
+        "lines": [
+          "git rev-parse HEAD",
+          "[placeholder output]"
+        ]
+      },
+      "explanation": {
+        "text": "The modeled job fails; real failure type and timing come from the future capture."
+      },
+      "engineering": {
+        "artifacts": {
+          "run": {
+            "location": "login",
+            "status": "pinned"
+          },
+          "commit": {
+            "location": "git",
+            "status": "pinned"
+          },
+          "job": {
+            "location": "gpu",
+            "status": "failed"
+          },
+          "metrics": {
+            "location": null,
+            "status": "absent"
+          }
+        }
+      },
+      "motion": {
+        "asset": "gpu-memory",
+        "alt": "Illustrative interface; no real recording exists.",
+        "label": "Placeholder GUI · simulated"
+      }
+    },
+    "waiting": {
+      "console": true,
+      "explanation": false,
+      "engineering": false,
+      "motion": false
+    },
+    "failures": [
+      "motion"
+    ],
+    "status": "Beat 3 / 9 · paused"
+  },
+  "clock": [
+    {
+      "running": true,
+      "time": 0,
+      "intent": true
+    },
+    {
+      "running": false,
+      "time": 400,
+      "intent": false
+    },
+    {
+      "running": true,
+      "time": 400,
+      "intent": true
+    }
+  ],
+  "events": [
+    {
+      "event": "session",
+      "data": {
+        "index": 1,
+        "generation": 1,
+        "progress": "settled",
+        "playing": false,
+        "failures": [],
+        "video": null
+      },
+      "stamp": 421
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "active",
+        "playing": true,
+        "failures": [],
+        "video": null
+      },
+      "stamp": 510
+    },
+    {
+      "event": "play-call",
+      "data": {
+        "id": 1,
+        "stack": "@web-inspector://bootstrap.js:607:29\nplayNative@http://127.0.0.1:39479/src/multipane/motion.mjs:72:104\n@http://127.0.0.1:39479/src/multipane/motion.mjs:80:91\n@http://127.0.0.1:39479/src/multipane/motion-coordinator.mjs:6:491\nobserve@http://127.0.0.1:39479/src/multipane/media-barrier.mjs:5:195\n@http://127.0.0.1:39479/src/multipane/motion.mjs:80:34\nPromise@[native code]\nplay@http://127.0.0.1:39479/src/multipane/motion.mjs:66:21",
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+          "time": 0,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": true
+        },
+        "session": {
+          "index": 2,
+          "progress": "active",
+          "playing": true,
+          "tab": "motion",
+          "generation": 2,
+          "panelOpen": false,
+          "panes": {
+            "console": {
+              "lines": [
+                "git rev-parse HEAD",
+                "[placeholder output]"
+              ]
+            },
+            "explanation": {
+              "text": "The modeled job fails; real failure type and timing come from the future capture."
+            },
+            "engineering": {
+              "artifacts": {
+                "run": {
+                  "location": "login",
+                  "status": "pinned"
+                },
+                "commit": {
+                  "location": "git",
+                  "status": "pinned"
+                },
+                "job": {
+                  "location": "gpu",
+                  "status": "failed"
+                },
+                "metrics": {
+                  "location": null,
+                  "status": "absent"
+                }
+              }
+            },
+            "motion": {
+              "asset": "gpu-memory",
+              "alt": "Illustrative interface; no real recording exists.",
+              "label": "Placeholder GUI · simulated"
+            }
+          },
+          "waiting": {
+            "console": true,
+            "explanation": false,
+            "engineering": false,
+            "motion": false
+          },
+          "failures": [],
+          "status": "Beat 3 / 9 · playing"
+        }
+      },
+      "stamp": 2302
+    },
+    {
+      "event": "native-canplay",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2302
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.000361684,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2355
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.000361684,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2356
+    },
+    {
+      "event": "play-resolved",
+      "data": {
+        "id": 1,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+          "time": 0.000361684,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 2356
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.000868028,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2356
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.000868028,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2356
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.250679621,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2606
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.544687472,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2900
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "active",
+        "playing": true,
+        "failures": [],
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+          "time": 0.583088107,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 2938
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.36,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3128
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "active",
+        "playing": false,
+        "failures": [],
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+          "time": 0.4,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 3130
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3132
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3132
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3132
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3140
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3140
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.401764597,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3171
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.401764597,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3174
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.401764597,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3175
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.401764597,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3175
+    },
+    {
+      "event": "play-call",
+      "data": {
+        "id": 2,
+        "stack": "@web-inspector://bootstrap.js:607:29\nplayNative@http://127.0.0.1:39479/src/multipane/motion.mjs:72:104\n@http://127.0.0.1:39479/src/multipane/motion.mjs:80:91\n@http://127.0.0.1:39479/src/multipane/motion-coordinator.mjs:6:491\nannounce@http://127.0.0.1:39479/src/multipane/media-barrier.mjs:4:187\nresume@http://127.0.0.1:39479/src/multipane/media-barrier.mjs:6:175\ndispatch@http://127.0.0.1:39479/src/multipane/session.mjs:39:43\n@\nevaluate@\n@",
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+          "time": 0.401764597,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        },
+        "session": {
+          "index": 2,
+          "progress": "active",
+          "playing": true,
+          "tab": "console",
+          "generation": 2,
+          "panelOpen": false,
+          "panes": {
+            "console": {
+              "lines": [
+                "git rev-parse HEAD",
+                "[placeholder output]"
+              ]
+            },
+            "explanation": {
+              "text": "The modeled job fails; real failure type and timing come from the future capture."
+            },
+            "engineering": {
+              "artifacts": {
+                "run": {
+                  "location": "login",
+                  "status": "pinned"
+                },
+                "commit": {
+                  "location": "git",
+                  "status": "pinned"
+                },
+                "job": {
+                  "location": "gpu",
+                  "status": "failed"
+                },
+                "metrics": {
+                  "location": null,
+                  "status": "absent"
+                }
+              }
+            },
+            "motion": {
+              "asset": "gpu-memory",
+              "alt": "Illustrative interface; no real recording exists.",
+              "label": "Placeholder GUI · simulated"
+            }
+          },
+          "waiting": {
+            "console": true,
+            "explanation": false,
+            "engineering": false,
+            "motion": false
+          },
+          "failures": [],
+          "status": "Beat 3 / 9 · playing"
+        }
+      },
+      "stamp": 3565
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "active",
+        "playing": true,
+        "failures": [],
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+          "time": 0.401805267,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 3569
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.402343135,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3573
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.402343135,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3573
+    },
+    {
+      "event": "play-resolved",
+      "data": {
+        "id": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+          "time": 0.402343135,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 3573
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3631
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3631
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3631
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.459745433,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3642
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:39479/7ce41d02-bc4a-4d6b-9693-627af476c2cc",
+        "time": 0.459745433,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3642
+    },
+    {
+      "event": "motion-completion",
+      "data": {
+        "result": {
+          "status": "failed"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": null
+      },
+      "stamp": 6132
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "settled",
+        "playing": false,
+        "failures": [
+          "motion"
+        ],
+        "video": null
+      },
+      "stamp": 6132
+    }
+  ],
+  "dropped": 0,
+  "failure": {
+    "status": "timedOut",
+    "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+  }
+}

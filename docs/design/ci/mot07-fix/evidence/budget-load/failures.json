@@ -1,0 +1,431 @@
+[
+  {
+    "case": "1366-repeat10",
+    "video": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:36501/fd91fb5a-b00e-4ef2-b22e-227205a02694",
+      "time": 1.2,
+      "duration": 1.2,
+      "ended": true,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true
+    },
+    "session": {
+      "index": 2,
+      "progress": "active",
+      "playing": true,
+      "tab": "motion",
+      "generation": 2,
+      "panelOpen": false,
+      "panes": {
+        "console": {
+          "lines": [
+            "git rev-parse HEAD",
+            "[placeholder output]"
+          ]
+        },
+        "explanation": {
+          "text": "The modeled job fails; real failure type and timing come from the future capture."
+        },
+        "engineering": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "failed"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        },
+        "motion": {
+          "asset": "gpu-memory",
+          "alt": "Illustrative interface; no real recording exists.",
+          "label": "Placeholder GUI \u00b7 simulated"
+        }
+      },
+      "waiting": {
+        "console": true,
+        "explanation": false,
+        "engineering": false,
+        "motion": false
+      },
+      "failures": [],
+      "status": "Beat 3 / 9 \u00b7 playing"
+    },
+    "failure": {
+      "status": "failed",
+      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"Placeholder GUI recording\"\u001b[39m\nReceived string:    \u001b[31m\"\"\u001b[39m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate"
+    }
+  },
+  {
+    "case": "1366-repeat15",
+    "video": null,
+    "session": {
+      "index": 2,
+      "progress": "active",
+      "playing": true,
+      "tab": "motion",
+      "generation": 2,
+      "panelOpen": false,
+      "panes": {
+        "console": {
+          "lines": [
+            "git rev-parse HEAD",
+            "[placeholder output]"
+          ]
+        },
+        "explanation": {
+          "text": "The modeled job fails; real failure type and timing come from the future capture."
+        },
+        "engineering": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "failed"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        },
+        "motion": {
+          "asset": "gpu-memory",
+          "alt": "Illustrative interface; no real recording exists.",
+          "label": "Placeholder GUI \u00b7 simulated"
+        }
+      },
+      "waiting": {
+        "console": true,
+        "explanation": false,
+        "engineering": false,
+        "motion": false
+      },
+      "failures": [],
+      "status": "Beat 3 / 9 \u00b7 playing"
+    },
+    "failure": {
+      "status": "timedOut",
+      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+    }
+  },
+  {
+    "case": "1366-repeat5",
+    "video": null,
+    "session": {
+      "index": 2,
+      "progress": "active",
+      "playing": true,
+      "tab": "motion",
+      "generation": 2,
+      "panelOpen": false,
+      "panes": {
+        "console": {
+          "lines": [
+            "git rev-parse HEAD",
+            "[placeholder output]"
+          ]
+        },
+        "explanation": {
+          "text": "The modeled job fails; real failure type and timing come from the future capture."
+        },
+        "engineering": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "failed"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        },
+        "motion": {
+          "asset": "gpu-memory",
+          "alt": "Illustrative interface; no real recording exists.",
+          "label": "Placeholder GUI \u00b7 simulated"
+        }
+      },
+      "waiting": {
+        "console": true,
+        "explanation": false,
+        "engineering": false,
+        "motion": false
+      },
+      "failures": [],
+      "status": "Beat 3 / 9 \u00b7 playing"
+    },
+    "failure": {
+      "status": "timedOut",
+      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+    }
+  },
+  {
+    "case": "1536-repeat19",
+    "video": null,
+    "session": {
+      "index": 2,
+      "progress": "active",
+      "playing": true,
+      "tab": "motion",
+      "generation": 2,
+      "panelOpen": false,
+      "panes": {
+        "console": {
+          "lines": [
+            "git rev-parse HEAD",
+            "[placeholder output]"
+          ]
+        },
+        "explanation": {
+          "text": "The modeled job fails; real failure type and timing come from the future capture."
+        },
+        "engineering": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "failed"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        },
+        "motion": {
+          "asset": "gpu-memory",
+          "alt": "Illustrative interface; no real recording exists.",
+          "label": "Placeholder GUI \u00b7 simulated"
+        }
+      },
+      "waiting": {
+        "console": true,
+        "explanation": false,
+        "engineering": false,
+        "motion": false
+      },
+      "failures": [],
+      "status": "Beat 3 / 9 \u00b7 playing"
+    },
+    "failure": {
+      "status": "timedOut",
+      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+    }
+  },
+  {
+    "case": "1536-repeat28",
+    "video": null,
+    "session": {
+      "index": 2,
+      "progress": "active",
+      "playing": true,
+      "tab": "motion",
+      "generation": 2,
+      "panelOpen": false,
+      "panes": {
+        "console": {
+          "lines": [
+            "git rev-parse HEAD",
+            "[placeholder output]"
+          ]
+        },
+        "explanation": {
+          "text": "The modeled job fails; real failure type and timing come from the future capture."
+        },
+        "engineering": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "failed"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        },
+        "motion": {
+          "asset": "gpu-memory",
+          "alt": "Illustrative interface; no real recording exists.",
+          "label": "Placeholder GUI \u00b7 simulated"
+        }
+      },
+      "waiting": {
+        "console": true,
+        "explanation": false,
+        "engineering": false,
+        "motion": false
+      },
+      "failures": [],
+      "status": "Beat 3 / 9 \u00b7 playing"
+    },
+    "failure": {
+      "status": "timedOut",
+      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+    }
+  },
+  {
+    "case": "1536-repeat36",
+    "video": null,
+    "session": {
+      "index": 2,
+      "progress": "active",
+      "playing": true,
+      "tab": "motion",
+      "generation": 2,
+      "panelOpen": false,
+      "panes": {
+        "console": {
+          "lines": [
+            "git rev-parse HEAD",
+            "[placeholder output]"
+          ]
+        },
+        "explanation": {
+          "text": "The modeled job fails; real failure type and timing come from the future capture."
+        },
+        "engineering": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "failed"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        },
+        "motion": {
+          "asset": "gpu-memory",
+          "alt": "Illustrative interface; no real recording exists.",
+          "label": "Placeholder GUI \u00b7 simulated"
+        }
+      },
+      "waiting": {
+        "console": true,
+        "explanation": false,
+        "engineering": false,
+        "motion": false
+      },
+      "failures": [],
+      "status": "Beat 3 / 9 \u00b7 playing"
+    },
+    "failure": {
+      "status": "timedOut",
+      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+    }
+  },
+  {
+    "case": "1920-repeat16",
+    "video": null,
+    "session": {
+      "index": 2,
+      "progress": "active",
+      "playing": true,
+      "tab": "motion",
+      "generation": 2,
+      "panelOpen": false,
+      "panes": {
+        "console": {
+          "lines": [
+            "git rev-parse HEAD",
+            "[placeholder output]"
+          ]
+        },
+        "explanation": {
+          "text": "The modeled job fails; real failure type and timing come from the future capture."
+        },
+        "engineering": {
+          "artifacts": {
+            "run": {
+              "location": "login",
+              "status": "pinned"
+            },
+            "commit": {
+              "location": "git",
+              "status": "pinned"
+            },
+            "job": {
+              "location": "gpu",
+              "status": "failed"
+            },
+            "metrics": {
+              "location": null,
+              "status": "absent"
+            }
+          }
+        },
+        "motion": {
+          "asset": "gpu-memory",
+          "alt": "Illustrative interface; no real recording exists.",
+          "label": "Placeholder GUI \u00b7 simulated"
+        }
+      },
+      "waiting": {
+        "console": true,
+        "explanation": false,
+        "engineering": false,
+        "motion": false
+      },
+      "failures": [],
+      "status": "Beat 3 / 9 \u00b7 playing"
+    },
+    "failure": {
+      "status": "timedOut",
+      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+    }
+  }
+]

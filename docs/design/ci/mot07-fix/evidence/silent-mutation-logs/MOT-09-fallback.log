@@ -1,0 +1,48 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/motion-pane.spec.mjs:78:2 › 1366x768 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+  1) tests/e2e/motion-pane.spec.mjs:78:2 › 1366x768 › [MOT-09] missing and tampered clips fail safely and retain fallback while held 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.motion-pane')
+    Expected substring: "GUI recording unavailable"
+    Received string:    "Placeholder GUI · simulatedPlaceholder contentSimulated GUI test pattern. No real lab activity is shown.Loading recordingShow detailsCIM-PANE-MEDIA-UNAVAILABLE"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('.motion-pane') with timeout 5000ms
+      - waiting for locator('.motion-pane')
+        14 × locator resolved to <section class="motion-pane" aria-label="Motion recording and text alternative">…</section>
+           - unexpected value "Placeholder GUI · simulatedPlaceholder contentSimulated GUI test pattern. No real lab activity is shown.Loading recordingShow detailsCIM-PANE-MEDIA-UNAVAILABLE"
+
+
+      76 |  });
+      77 |  test('[MOT-08] reduced motion shows still and alternative with no automatic play',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?attachment');await gui(page);await expect(page.locator('.motion-pane')).toContainText('Simulated GUI test pattern');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);expect(await page.locator('.motion-pane video').evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');});
+    > 78 |  test('[MOT-09] missing and tampered clips fail safely and retain fallback while held',async({page},info)=>{for(const mode of ['missing','tampered','undecodable']){await open(page,'?mode='+mode);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('GUI recording unavailable');await expect(pane).toContainText('CIM-PANE-MEDIA-UNAVAILABLE');await expect(pane).toContainText('Simulated GUI test pattern');await page.evaluate(()=>fixture.advance(500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(pane).toContainText('GUI recording unavailable');await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();await page.screenshot({path:info.outputPath('fallback-'+mode+'.png')});}});
+         |                                                                                                                                                                                                                                                                               ^
+      79 |  test('[MOT-16] preparation holds peers and a jump cancels without waiting',async({page})=>{
+      80 |   let release;const held=new Promise(resolve=>{release=resolve;});await page.route('**/__cim_fixture_media/good.mp4',async route=>{await held;await route.continue();});
+      81 |   await open(page);await gui(page);const writes=await page.evaluate(()=>fixture.log.length);await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.log.length)).toBe(writes);expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-wS3Iz8/tests/e2e/motion-pane.spec.mjs:78:271
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../browser-results/tests-e2e-motion-pane-1366-6bd59--retain-fallback-while-held/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-6bd59--retain-fallback-while-held/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-6bd59--retain-fallback-while-held/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../browser-results/tests-e2e-motion-pane-1366-6bd59--retain-fallback-while-held/trace.zip
+    Usage:
+
+        npx playwright show-trace ../browser-results/tests-e2e-motion-pane-1366-6bd59--retain-fallback-while-held/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    tests/e2e/motion-pane.spec.mjs:78:2 › 1366x768 › [MOT-09] missing and tampered clips fail safely and retain fallback while held 

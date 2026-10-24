@@ -1,0 +1,60 @@
+
+Running 18 tests using 1 worker
+
+[1/18] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-22] native play from an ended verified clip preserves its final hold
+[2/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+  1) tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "settled"
+    Received: "active"
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      48 |  });
+      49 |  for(const route of ['restart','previous','jump','deepLink'])test(`[MOT-23] ${route} permits genuine replay after a completed hold`,async({page})=>{
+    > 50 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+         |                                                                                                                                                                                                                                                         ^
+      51 |   const experience=fixtureExperience();await page.evaluate(()=>{window.replayEvents=[];for(const event of ['play','playing','pause','ended'])document.addEventListener(event,e=>{if(e.target===document.querySelector('.motion-pane video'))replayEvents.push({event,time:e.target.currentTime,paused:e.target.paused,stamp:performance.now()});},true);});await page.evaluate(({route,id,step})=>{
+      52 |    if(route==='restart')fixture.session.dispatch({type:'restart'});
+      53 |    else if(route==='previous')fixture.session.dispatch({type:'previous'});
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tests/e2e/motion-pane.spec.mjs:50:249
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-events-firefox-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-events-firefox-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-events-firefox-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-events-firefox-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-events-firefox-results/tests-e2e-motion-pane-1366-6352c-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[3/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold
+[4/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold
+[5/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold
+[6/18] tests/e2e/motion-pane.spec.mjs:64:2 › 1366x768 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[7/18] tests/e2e/motion-pane.spec.mjs:44:2 › 1536x864 › [MOT-22] native play from an ended verified clip preserves its final hold
+[8/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold
+[9/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] previous permits genuine replay after a completed hold
+[10/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold
+[11/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold
+[12/18] tests/e2e/motion-pane.spec.mjs:64:2 › 1536x864 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[13/18] tests/e2e/motion-pane.spec.mjs:44:2 › 1920x1080 › [MOT-22] native play from an ended verified clip preserves its final hold
+[14/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold
+[15/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold
+[16/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold
+[17/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold
+[18/18] tests/e2e/motion-pane.spec.mjs:64:2 › 1920x1080 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+  1 failed
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold 
+  17 passed (21.1s)

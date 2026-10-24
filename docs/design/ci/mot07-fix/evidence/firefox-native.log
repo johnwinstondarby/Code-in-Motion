@@ -1,0 +1,7 @@
+
+Running 3 tests using 1 worker
+
+[1/3] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-22] native play from an ended verified clip preserves its final hold
+[2/3] tests/e2e/motion-pane.spec.mjs:44:2 › 1536x864 › [MOT-22] native play from an ended verified clip preserves its final hold
+[3/3] tests/e2e/motion-pane.spec.mjs:44:2 › 1920x1080 › [MOT-22] native play from an ended verified clip preserves its final hold
+  3 passed (5.2s)

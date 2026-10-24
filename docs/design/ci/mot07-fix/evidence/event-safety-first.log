@@ -1,0 +1,92 @@
+TAP version 13
+# Subtest: [ORDER-01] final seek must resolve after its first pending check
+ok 1 - [ORDER-01] final seek must resolve after its first pending check
+  ---
+  duration_ms: 4.7
+  type: 'test'
+  ...
+# Subtest: [ORDER-02] early seeked and ended never complete ahead of the clock
+ok 2 - [ORDER-02] early seeked and ended never complete ahead of the clock
+  ---
+  duration_ms: 1.1366
+  type: 'test'
+  ...
+# Subtest: [ORDER-03] pause and resume while finalising preserve the final frame
+ok 3 - [ORDER-03] pause and resume while finalising preserve the final frame
+  ---
+  duration_ms: 0.9987
+  type: 'test'
+  ...
+# Subtest: [ORDER-04] a later absolute settle can replace a completed video; identities differ
+ok 4 - [ORDER-04] a later absolute settle can replace a completed video; identities differ
+  ---
+  duration_ms: 1.4904
+  type: 'test'
+  ...
+# Subtest: [ORDER-05] a late native play cannot restart completed media
+ok 5 - [ORDER-05] a late native play cannot restart completed media
+  ---
+  duration_ms: 0.7462
+  type: 'test'
+  ...
+# Subtest: [ORDER-06] native late play rewinding an ended video restores the final hold immediately
+ok 6 - [ORDER-06] native late play rewinding an ended video restores the final hold immediately
+  ---
+  duration_ms: 1.0014
+  type: 'test'
+  ...
+# Subtest: [ORDER-07] a genuine new transition clears the previous final hold
+ok 7 - [ORDER-07] a genuine new transition clears the previous final hold
+  ---
+  duration_ms: 0.8381
+  type: 'test'
+  ...
+# Subtest: [ORDER-08] repeated unauthorized playback cannot cause an unbounded restore loop
+ok 8 - [ORDER-08] repeated unauthorized playback cannot cause an unbounded restore loop
+  ---
+  duration_ms: 1.2774
+  type: 'test'
+  ...
+# Subtest: [ORDER-09] harmless final-frame events do not consume corrective-seek budget
+ok 9 - [ORDER-09] harmless final-frame events do not consume corrective-seek budget
+  ---
+  duration_ms: 1.8882
+  type: 'test'
+  ...
+# Subtest: [ORDER-10] completed hold restores a rewind without any play event
+ok 10 - [ORDER-10] completed hold restores a rewind without any play event
+  ---
+  duration_ms: 2.1981
+  type: 'test'
+  ...
+# Subtest: [ORDER-11] seek events neither restore nor spend budget in the next round or own final seek
+not ok 11 - [ORDER-11] seek events neither restore nor spend budget in the next round or own final seek
+  ---
+  duration_ms: 1.7022
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\mot07-fix\\build-a\\tests\\motion-completion-order.test.mjs:81:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    only the normal final seek is scheduled
+    
+    19 !== 11
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 11
+  actual: 19
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tests/motion-completion-order.test.mjs:85:39)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 10
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 193.9975

@@ -1,0 +1,32 @@
+{
+  "main": "048eafb502b4eb36e4bcabe72c0a07485b73d950",
+  "cleanMain": {
+    "passed": 147,
+    "failed": 3,
+    "classification": {
+      "rewind": 2,
+      "missing_video_at_final_check": 1
+    },
+    "trackedChanges": ""
+  },
+  "matchedMain": {
+    "passed": 147,
+    "failed": 3,
+    "classification": {
+      "rewind": 2,
+      "preparation": 1
+    },
+    "trackedChanges": [
+      "harness/motion-test-driver.mjs",
+      "tests/e2e/motion-pane.spec.mjs",
+      "tests/helpers/motion-diagnostics.mjs"
+    ],
+    "productionDiff": ""
+  },
+  "captionPreFix": {
+    "commit": "63ee6f9",
+    "case": "1920-repeat16",
+    "productionDiffAgainstMain": ""
+  },
+  "separateIssue": 107
+}

@@ -1,0 +1,201 @@
+
+Running 150 tests using 4 workers
+
+[1/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[2/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[3/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[4/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[5/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[6/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[7/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[8/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[9/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[10/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[11/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[12/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[13/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[14/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[15/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[16/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[17/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[18/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[19/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[20/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[21/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[22/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[23/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[24/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[25/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[26/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[27/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[28/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[29/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[30/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[31/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[32/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[33/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[34/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[35/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[36/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[37/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[38/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[39/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[40/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[41/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[42/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[43/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[44/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[45/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[46/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[47/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[48/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[49/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[50/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[51/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[52/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[53/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[54/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[55/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[56/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[57/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[58/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[59/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[60/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[61/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[62/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[63/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[64/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[65/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[66/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[67/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[68/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[69/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[70/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[71/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[72/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[73/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[74/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[75/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[76/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[77/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[78/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[79/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[80/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[81/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[82/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[83/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[84/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[85/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[86/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[87/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[88/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[89/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[90/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[91/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[92/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[93/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[94/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[95/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[96/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[97/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[98/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[99/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[100/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[101/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[102/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[103/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[104/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[105/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[106/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[107/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[108/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[109/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[110/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+MOT-07_FAILURE_DIAGNOSTICS {"video":null,"session":{"index":2,"progress":"settled","playing":false,"tab":"console","generation":2,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":["motion"],"status":"Beat 3 / 9 · paused"},"clock":[{"running":true,"time":0,"intent":true},{"running":false,"time":400,"intent":false},{"running":true,"time":400,"intent":true}],"events":[{"event":"session","data":{"index":1,"generation":1,"progress":"settled","playing":false,"failures":[],"video":null},"stamp":433},{"event":"session","data":{"index":2,"generation":2,"progress":"active","playing":true,"failures":[],"video":null},"stamp":489},{"event":"play-call","data":{"id":1,"stack":"@web-inspector://bootstrap.js:607:29\nplayNative@http://127.0.0.1:39791/src/multipane/motion.mjs:79:104\n@http://127.0.0.1:39791/src/multipane/motion.mjs:87:91\n@http://127.0.0.1:39791/src/multipane/motion-coordinator.mjs:6:491\nobserve@http://127.0.0.1:39791/src/multipane/media-barrier.mjs:5:195\n@http://127.0.0.1:39791/src/multipane/motion.mjs:87:34\nPromise@[native code]\nplay@http://127.0.0.1:39791/src/multipane/motion.mjs:73:21","video":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0,"duration":1.2,"ended":false,"seeking":true,"readyState":4,"paused":true},"session":{"index":2,"progress":"active","playing":true,"tab":"motion","generation":2,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"stamp":1741},{"event":"native-canplay","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0,"duration":1.2,"ended":false,"seeking":true,"readyState":4,"paused":false},"stamp":1741},{"event":"native-play","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.001302048,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false},"stamp":1767},{"event":"native-playing","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.001302048,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false},"stamp":1773},{"event":"play-resolved","data":{"id":1,"video":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.001302048,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false}},"stamp":1773},{"event":"native-seeking","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.014852658,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false},"stamp":1780},{"event":"native-seeked","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.014852658,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false},"stamp":1780},{"event":"native-timeupdate","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.407876471,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false},"stamp":2173},{"event":"session","data":{"index":2,"generation":2,"progress":"active","playing":true,"failures":[],"video":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.451844565,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false}},"stamp":2217},{"event":"native-seeking","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.36,"duration":1.2,"ended":false,"seeking":true,"readyState":4,"paused":false},"stamp":2336},{"event":"native-timeupdate","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.364048191,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false},"stamp":2359},{"event":"native-seeked","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.364048191,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false},"stamp":2359},{"event":"session","data":{"index":2,"generation":2,"progress":"active","playing":false,"failures":[],"video":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.4,"duration":1.2,"ended":false,"seeking":true,"readyState":4,"paused":true}},"stamp":2374},{"event":"native-timeupdate","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.4,"duration":1.2,"ended":false,"seeking":true,"readyState":4,"paused":true},"stamp":2389},{"event":"native-pause","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.4,"duration":1.2,"ended":false,"seeking":true,"readyState":4,"paused":true},"stamp":2389},{"event":"native-seeking","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.4,"duration":1.2,"ended":false,"seeking":true,"readyState":4,"paused":true},"stamp":2393},{"event":"native-timeupdate","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.4,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":true},"stamp":2406},{"event":"native-seeked","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.4,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":true},"stamp":2406},{"event":"play-call","data":{"id":2,"stack":"@web-inspector://bootstrap.js:607:29\nplayNative@http://127.0.0.1:39791/src/multipane/motion.mjs:79:104\n@http://127.0.0.1:39791/src/multipane/motion.mjs:87:91\n@http://127.0.0.1:39791/src/multipane/motion-coordinator.mjs:6:491\nannounce@http://127.0.0.1:39791/src/multipane/media-barrier.mjs:4:187\nresume@http://127.0.0.1:39791/src/multipane/media-barrier.mjs:6:175\ndispatch@http://127.0.0.1:39791/src/multipane/session.mjs:39:43\n@\nevaluate@\n@","video":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.4,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":true},"session":{"index":2,"progress":"active","playing":true,"tab":"console","generation":2,"panelOpen":false,"panes":{"console":{"lines":["git rev-parse HEAD","[placeholder output]"]},"explanation":{"text":"The modeled job fails; real failure type and timing come from the future capture."},"engineering":{"artifacts":{"run":{"location":"login","status":"pinned"},"commit":{"location":"git","status":"pinned"},"job":{"location":"gpu","status":"failed"},"metrics":{"location":null,"status":"absent"}}},"motion":{"asset":"gpu-memory","alt":"Illustrative interface; no real recording exists.","label":"Placeholder GUI · simulated"}},"waiting":{"console":true,"explanation":false,"engineering":false,"motion":false},"failures":[],"status":"Beat 3 / 9 · playing"}},"stamp":2729},{"event":"session","data":{"index":2,"generation":2,"progress":"active","playing":true,"failures":[],"video":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.4,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false}},"stamp":2729},{"event":"native-play","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.401292729,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false},"stamp":2733},{"event":"native-playing","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.401292729,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false},"stamp":2747},{"event":"play-resolved","data":{"id":2,"video":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.401292729,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":false}},"stamp":2747},{"event":"native-timeupdate","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":1.2,"duration":1.2,"ended":true,"seeking":true,"readyState":4,"paused":true},"stamp":2799},{"event":"native-pause","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":1.2,"duration":1.2,"ended":true,"seeking":true,"readyState":4,"paused":true},"stamp":2799},{"event":"native-seeking","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":1.2,"duration":1.2,"ended":true,"seeking":true,"readyState":4,"paused":true},"stamp":2799},{"event":"native-timeupdate","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.466826927,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":true},"stamp":2813},{"event":"native-seeked","data":{"identity":"video-1","src":"blob:http://127.0.0.1:39791/80572c4b-f2a9-4bca-b853-6a0bf08d8d30","time":0.466826927,"duration":1.2,"ended":false,"seeking":false,"readyState":4,"paused":true},"stamp":2816},{"event":"motion-completion","data":{"result":{"status":"failed"},"index":2,"generation":2,"video":null},"stamp":5300},{"event":"session","data":{"index":2,"generation":2,"progress":"settled","playing":false,"failures":["motion"],"video":null},"stamp":5300}],"dropped":0,"failure":{"status":"timedOut","message":"\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"}}
+
+  1) tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.evaluate: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('.motion-pane').locator('video')
+
+
+       at tests/helpers/motion-diagnostics.mjs:31
+
+      29 | export async function recordMotionCheck(page,video,info,{enabled=motionDiagnosticsEnabled()}={}){
+      30 |  if(enabled!==true)return video.evaluate(v=>v.ended||v.currentTime>=v.duration-0.15);
+    > 31 |  const record=await video.evaluate(v=>({check:{...window.__motionVideoSnapshot(v),index:fixture.session.read().index,generation:fixture.session.read().generation,ok:v.ended||v.currentTime>=v.duration-0.15},session:fixture.session.read(),clock:fixture.clockEvents,...window.__motionDiagnosticSnapshot()}));
+         |                           ^
+      32 |  const text=JSON.stringify(record,null,2),path=info.outputPath('motion-diagnostics.json');await writeFile(path,text);await info.attach('motion-diagnostics',{path,contentType:'application/json'});
+      33 |  if(!record.check.ok)console.log('MOT-07_DIAGNOSTICS '+JSON.stringify(record));return record.check.ok;
+      34 | }
+        at recordMotionCheck (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tests/helpers/motion-diagnostics.mjs:31:27)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tests/e2e/motion-pane.spec.mjs:41:218
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../settled-position-load/browser-load-results/tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat30/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: motion-failure (application/json) ───────────────────────────────────────────────
+    ../settled-position-load/browser-load-results/tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat30/attachments/motion-failure-c055c07822405c2cea9a1c4f63c4c50801be4ba8.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../settled-position-load/browser-load-results/tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat30/error-context.md
+
+    Error Context: ../settled-position-load/browser-load-results/tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat30/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../settled-position-load/browser-load-results/tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat30/trace.zip
+    Usage:
+
+        npx playwright show-trace ../settled-position-load/browser-load-results/tests-e2e-motion-pane-1536-c7186--resume-completion-and-hold-repeat30/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[111/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[112/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[113/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[114/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[115/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[116/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[117/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[118/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[119/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[120/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[121/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[122/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[123/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[124/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[125/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[126/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[127/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[128/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[129/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[130/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[131/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[132/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[133/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[134/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[135/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[136/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[137/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[138/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[139/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[140/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[141/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[142/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[143/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[144/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[145/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[146/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[147/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[148/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[149/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[150/150] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+  1 failed
+    tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold 
+  149 passed (3.8m)

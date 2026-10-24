@@ -1,0 +1,99 @@
+{
+  "video": null,
+  "session": {
+    "index": 2,
+    "progress": "active",
+    "playing": true,
+    "tab": "motion",
+    "generation": 2,
+    "panelOpen": false,
+    "panes": {
+      "console": {
+        "lines": [
+          "git rev-parse HEAD",
+          "[placeholder output]"
+        ]
+      },
+      "explanation": {
+        "text": "The modeled job fails; real failure type and timing come from the future capture."
+      },
+      "engineering": {
+        "artifacts": {
+          "run": {
+            "location": "login",
+            "status": "pinned"
+          },
+          "commit": {
+            "location": "git",
+            "status": "pinned"
+          },
+          "job": {
+            "location": "gpu",
+            "status": "failed"
+          },
+          "metrics": {
+            "location": null,
+            "status": "absent"
+          }
+        }
+      },
+      "motion": {
+        "asset": "gpu-memory",
+        "alt": "Illustrative interface; no real recording exists.",
+        "label": "Placeholder GUI · simulated"
+      }
+    },
+    "waiting": {
+      "console": true,
+      "explanation": false,
+      "engineering": false,
+      "motion": false
+    },
+    "failures": [],
+    "status": "Beat 3 / 9 · playing"
+  },
+  "clock": [],
+  "events": [
+    {
+      "event": "session",
+      "data": {
+        "index": 1,
+        "generation": 1,
+        "progress": "settled",
+        "playing": false,
+        "failures": [],
+        "video": null
+      },
+      "stamp": 468
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "active",
+        "playing": true,
+        "failures": [],
+        "video": null
+      },
+      "stamp": 516
+    },
+    {
+      "event": "motion-completion",
+      "data": {
+        "result": {
+          "status": "failed"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": null
+      },
+      "stamp": 2974
+    }
+  ],
+  "dropped": 0,
+  "failure": {
+    "status": "timedOut",
+    "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+  }
+}
