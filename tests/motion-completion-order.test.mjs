@@ -130,5 +130,5 @@ test('[ORDER-16] Restart Previous jump and deep-link cancellation retire a pendi
 });
 
 test('[ORDER-17] a re-seek uses the original final-settle deadline',async t=>{
- t.mock.timers.enable({apis:['setTimeout']});const s=await setup();try{s.advance(1200);await flush();t.mock.timers.tick(60);s.video.finishSeek(0.467);await flush();assert.equal(s.video.seeking,true);t.mock.timers.tick(39);await flush();assert.equal(s.done,false);t.mock.timers.tick(1);await flush();assert.equal((await s.promise).status,'failed');assert.match(s.root.textContent,/GUI recording unavailable/);}finally{s.adapter.pane.dispose();}
+ t.mock.timers.enable({apis:['setTimeout']});const s=await setup();try{s.advance(1200);await flush();t.mock.timers.tick(60);s.video.finishSeek(0.467);await flush();assert.equal(s.video.seeking,true);t.mock.timers.tick(39);await flush();assert.equal(s.done,false);t.mock.timers.tick(1);await flush();assert.equal(s.done,true,'the original deadline must finish the attempt');assert.equal((await s.promise).status,'failed');assert.match(s.root.textContent,/GUI recording unavailable/);}finally{s.adapter.pane.dispose();}
 });
