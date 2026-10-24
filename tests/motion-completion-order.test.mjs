@@ -132,3 +132,7 @@ test('[ORDER-16] Restart Previous jump and deep-link cancellation retire a pendi
 test('[ORDER-17] a re-seek uses the original final-settle deadline',async t=>{
  t.mock.timers.enable({apis:['setTimeout']});const s=await setup();try{s.advance(1200);await flush();t.mock.timers.tick(60);s.video.finishSeek(0.467);await flush();assert.equal(s.video.seeking,true);t.mock.timers.tick(39);await flush();assert.equal(s.done,false);t.mock.timers.tick(1);await flush();assert.equal(s.done,true,'the original deadline must finish the attempt');assert.equal((await s.promise).status,'failed');assert.match(s.root.textContent,/GUI recording unavailable/);}finally{s.adapter.pane.dispose();}
 });
+
+test('[ORDER-18] cancelling an absolute hold settle cannot turn the new playback into a fallback',async()=>{
+ const s=await setup();try{s.advance(1200);await finish(s);s.video._time=0;s.video.ended=false;s.adapter.pane.settle({asset:'gpu-memory'});assert.equal(s.video.seeking,true);const next=s.adapter.pane.play({asset:'gpu-memory'},{clock:s.clock,cancellation:s.cancellation,reducedMotion:false});await flush();assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);s.video.finishSeek();s.advance(2400);await flush();s.video.finishSeek();assert.equal((await next).status,'settled');}finally{s.adapter.pane.dispose();}
+});
