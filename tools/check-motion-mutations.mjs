@@ -24,9 +24,12 @@ const cases=[
  ['MOT-20-unprepared-fallback',pane,'fallback(descriptor?.alt??state?.alt);','/* missing pre-verification fallback */','MOT-20'],
  ['MOT-19-label',pane,"placeholder?'Placeholder GUI · simulated':'Recorded in the lab'","'Recorded in the lab'",'MOT-19'],
  ['MOT-15-capability',pane,'const pane=Object.freeze({mount','const pane=Object.freeze({host:globalThis,mount','MOT-15'],
+ ['ORDER-07-clear-hold',pane,'requireMounted();++playRevision;finalVideo=null;cancelPlay();','requireMounted();++playRevision;cancelPlay();','ORDER-07'],
+ ['ORDER-06-final-hold',pane,'if(!authorizedPlayback&&finalVideo===nextVideo)','if(false)','ORDER-06'],
  ['MOT-15-network',pane,"const code=","const generalRequest=()=>fetch('https://example.invalid'); const code=",'MOT-15'],
 ];
 if(browser)cases.push(
+ ['MOT-22-final-hold',pane,'if(!authorizedPlayback&&finalVideo===nextVideo)','if(false)','MOT-22','browser'],
  ['MOT-07-captions',pane,"default:'',src:loaded.captionURL",'src:loaded.captionURL','MOT-07','browser'],
  ['MOT-07-end',pane,"task.finish({status:'settled'})",'/* completion omitted */void 0','MOT-07','browser'],
  ['MOT-08-reduced',pane,'if(context.reducedMotion)return','if(false)return','MOT-08','browser'],
@@ -38,7 +41,7 @@ if(browser)cases.push(
  ['MOT-17-stale',pane,'if(!disposed&&revision===token&&(!signal.aborted||timedOut))','if(!disposed)','MOT-17','browser'],
  ['MOT-16-preparation','src/multipane/motion-coordinator.mjs',"barrier.hold('preparation');",'/* preparation hold omitted */','MOT-16','browser']
 );
-const run=(rule,kind='unit')=>spawnSync(process.execPath,kind==='browser'?[resolve(root,'node_modules/@playwright/test/cli.js'),'test','tests/e2e/motion-pane.spec.mjs','--grep',`1366x768.*${rule??'MOT-'}`,'--workers=1','--reporter=line','--timeout=12000','--output='+resolve(work,'browser-results')]:['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),'tests/motion-media.test.mjs','tests/motion-authoring.test.mjs'],{cwd:sandbox,encoding:'utf8',timeout:180000});
+const run=(rule,kind='unit')=>spawnSync(process.execPath,kind==='browser'?[resolve(root,'node_modules/@playwright/test/cli.js'),'test','tests/e2e/motion-pane.spec.mjs','--grep',`1366x768.*${rule??'MOT-'}`,'--workers=1','--reporter=line','--timeout=12000','--output='+resolve(work,'browser-results')]:['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),'tests/motion-media.test.mjs','tests/motion-authoring.test.mjs','tests/motion-completion-order.test.mjs'],{cwd:sandbox,encoding:'utf8',timeout:180000});
 for(const kind of browser?['unit','browser']:['unit']){const baseline=run(null,kind);await writeFile(resolve(work,'baseline-'+kind+'.log'),baseline.stdout+baseline.stderr);if(baseline.status!==0)throw new Error('Motion mutation baseline failed: '+baseline.stdout+baseline.stderr);}
 const results=[];
 for(const[id,file,from,to,rule,kind='unit']of cases){const path=resolve(sandbox,file),original=await readFile(path,'utf8');if(!original.includes(from))throw new Error('Missing probe target '+id);let result;try{let mutated=original.replaceAll(from,to);if(id==='MOT-18-native-guard')mutated=mutated.replace('if(!done&&!clockRunning)pinPause();','/* late native start permitted */').replace('if(!clockRunning)pinPause();else ','');if(id==='MOT-07-captions')mutated=mutated.replace("track.track.mode='showing'","track.track.mode='disabled'");if(id==='MOT-16-preparation')mutated=mutated.replace("if(buffering)barrier.hold('buffering')",'if(buffering)void 0');if(id==='MOT-14-link')mutated=mutated.replaceAll('!inside(root,resolved)','false');await writeFile(path,mutated);result=run(rule,kind);}finally{await writeFile(path,original);}const output=result.stdout+result.stderr,caught=result.status!==0&&/ERR_ASSERTION|AssertionError|Error: expect\(|Error: expect\.poll/.test(output)&&!/SyntaxError|ReferenceError/.test(output);await writeFile(resolve(work,id+'.log'),output);if(!caught)throw new Error('Probe survived or crashed: '+id+'\n'+output);results.push({id,rule,caught});}

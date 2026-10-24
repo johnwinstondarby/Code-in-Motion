@@ -4,11 +4,11 @@ const code='CIM-PANE-MEDIA-UNAVAILABLE';
 export const motionLabel=placeholder=>placeholder?'Placeholder GUI · simulated':'Recorded in the lab';
 export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={}){
  if(!access||typeof access.load!=='function')throw new TypeError('Motion requires restricted verified-media access.');
- let root,config,video,media,asset=null,failed=false,disposed=false,revision=0,loading=null,io=null,active=null,authorizedPlayback=false;
+ let root,config,video,media,asset=null,failed=false,disposed=false,revision=0,loading=null,io=null,active=null,authorizedPlayback=false,finalVideo=null,playRevision=0;
  const observers=new Set(),offEvents=[];
  const emit=buffering=>{for(const fn of [...observers])fn(Object.freeze({buffering}));};
  function cancelPlay(reason='cancelled'){active?.finish({status:'cancelled',reason});}
- function clear(){authorizedPlayback=false;cancelPlay();io?.abort();io=null;for(const off of offEvents.splice(0))off();if(video)retireMediaElement(video);video=null;media?.release();media=null;}
+ function clear(){++playRevision;finalVideo=null;authorizedPlayback=false;cancelPlay();io?.abort();io=null;for(const off of offEvents.splice(0))off();if(video)retireMediaElement(video);video=null;media?.release();media=null;}
  function element(tag,text,attrs={}){const node=root.ownerDocument.createElement(tag);if(text!==null)node.textContent=text;for(const[k,v]of Object.entries(attrs))node.setAttribute(k,v);return node;}
  function frame(alt){const section=element('section',null,{class:'motion-pane','aria-label':'Motion recording and text alternative'});if(showHeading)section.append(element('h4',motionLabel(config.placeholder)));if(config.placeholder)section.append(element('strong','Placeholder content'));section.append(element('p',alt));root.replaceChildren(section);return section;}
  function fallback(alt){if(disposed)return;failed=true;video?.pause();const section=frame(alt??'No recording is available for this beat.');const details=element('details',null,{'data-media-details':''});details.append(element('summary','Show details'),element('p',code));section.append(element('p','GUI recording unavailable'),details);emit(false);}
@@ -35,7 +35,8 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
     const nextVideo=element('video',null,{'aria-label':descriptor.alt,playsinline:'',preload:'auto'});nextVideo.muted=true;nextVideo.controls=false;
     if(!loaded.videoURL.startsWith('blob:')||!loaded.captionURL.startsWith('blob:'))throw new Error(code);
     const track=element('track',null,{kind:'captions',srclang:loaded.captions.language,label:loaded.captions.label,default:'',src:loaded.captionURL});nextVideo.append(track);nextVideo.src=loaded.videoURL;video=nextVideo;
-    for(const event of ['play','playing'])on(nextVideo,event,()=>{if(!authorizedPlayback)nextVideo.pause();});section.append(video);track.track.mode='showing';
+    // Native play from ended can rewind before its event: pausing alone loses the final still.
+    for(const event of ['play','playing'])on(nextVideo,event,()=>{if(!authorizedPlayback)nextVideo.pause();if(!authorizedPlayback&&finalVideo===nextVideo){finalStill().catch(()=>{if(!disposed&&video===nextVideo&&finalVideo===nextVideo)fallback(descriptor.alt);});}});section.append(video);track.track.mode='showing';
     try{
      const ready=waitReady(nextVideo,['loadeddata','canplay'],()=>nextVideo.readyState>=2,signal,remaining());nextVideo.load();await ready;
      await waitReady(track,['load'],()=>track.readyState===2,signal,remaining());
@@ -52,14 +53,14 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
   loading=Promise.race([work,bounded]).catch(error=>{if(!disposed&&revision===token&&(!signal.aborted||timedOut)){fallback(descriptor.alt);media?.release();media=null;}throw error;}).finally(()=>{clearTimeout(expiry);if(revision===token)loading=null;});
   return loading;
  }
- async function finalStill(){if(!video||failed)return;authorizedPlayback=false;const target=video;await settleFinalVideoFrame(target,{signal:io?.signal,timeoutMs});}
+ async function finalStill(){if(!video||failed)return;authorizedPlayback=false;const target=video,version=playRevision;await settleFinalVideoFrame(target,{signal:io?.signal,timeoutMs});if(!disposed&&!failed&&video===target&&playRevision===version)finalVideo=target;}
  function settle(state){requireMounted();cancelPlay();const next=readonlyPaneData(state);const version=revision;
   if(!next?.asset){++revision;clear();asset=null;failed=false;frame('No GUI recording has played yet.');return;}
   if(next.asset===asset&&(failed||media&&!loading)){if(video&&!failed)finalStill().catch(()=>{if(!disposed&&revision===version)fallback(next.alt);});return;}
   const prepared=prepare(next),token=revision;prepared.then(()=>{if(!disposed&&revision===token&&asset===next.asset)return finalStill();}).catch(()=>{if(!disposed&&revision===token&&!failed)fallback(config.assets.find(a=>a.id===next.asset)?.alt??next.alt);});
  }
  function play(state,context){
-  requireMounted();cancelPlay();const descriptor=config.assets.find(a=>a.id===state?.asset);
+  requireMounted();++playRevision;finalVideo=null;cancelPlay();const descriptor=config.assets.find(a=>a.id===state?.asset);
   if(!descriptor||failed||!media||!video){fallback(descriptor?.alt??state?.alt);return Promise.resolve({status:'failed',error:new Error(code)});}
   if(context.cancellation.aborted)return Promise.resolve({status:'cancelled'});
   if(context.reducedMotion)return finalStill().then(()=>({status:'settled'}),()=>{fallback(descriptor.alt);return{status:'failed',error:new Error(code)};});

@@ -35,7 +35,7 @@ async function setup(){
  const cancellation=createRendererAbortCapability();let done=false,result;
  const promise=adapter.pane.play({asset:'gpu-memory'},{clock,cancellation:cancellation.facade,reducedMotion:false}).then(v=>{done=true;result=v;return v;});
  video.finishSeek();await flush();
- return {adapter,video,videos,promise,advance(ms){scheduler.advanceTo(ms);},pause(){running=false;for(const fn of [...listeners])fn({running});},resume(){running=true;for(const fn of [...listeners])fn({running});},get done(){return done;},get result(){return result;}};
+ return {adapter,video,videos,promise,clock,cancellation:cancellation.facade,advance(ms){scheduler.advanceTo(ms);},pause(){running=false;for(const fn of [...listeners])fn({running});},resume(){running=true;for(const fn of [...listeners])fn({running});},get done(){return done;},get result(){return result;}};
 }
 async function finish(s){s.video.finishSeek();await flush();assert.equal((await s.promise).status,'settled');assert.equal(s.video.currentTime,s.video.duration);assert.equal(s.video.seeking,false);}
 test('[ORDER-01] final seek must resolve after its first pending check',async()=>{const s=await setup();s.advance(1200);await flush();assert.equal(s.done,false);assert.equal(s.video.seeking,true);await finish(s);s.adapter.pane.dispose();});
@@ -48,4 +48,9 @@ test('[ORDER-06] native late play rewinding an ended video restores the final ho
  // Native play from the ended state rewinds before dispatching play/playing.
  s.video._time=0;s.video.ended=false;s.video.paused=false;s.video.dispatchEvent(new Event('play'));s.video.dispatchEvent(new Event('playing'));
  assert.equal(s.video.currentTime,s.video.duration,'a completed video must not remain rewound after an unauthorized native play');assert.equal(s.video.paused,true);s.video.finishSeek();await flush();s.adapter.pane.dispose();
+});
+
+test('[ORDER-07] a genuine new transition clears the previous final hold',async()=>{
+ const s=await setup();s.advance(1200);await finish(s);
+ const next=s.adapter.pane.play({asset:'gpu-memory'},{clock:s.clock,cancellation:s.cancellation,reducedMotion:false});s.video.finishSeek();await flush();s.pause();void s.video.play();assert.equal(s.video.currentTime,0,'a paused new transition must not restore the preceding final frame');s.adapter.pane.dispose();assert.equal((await next).status,'cancelled');
 });
