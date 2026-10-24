@@ -1,0 +1,38 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/motion-pane.spec.mjs:95:2 › 1366x768 › [MOT-10] buffering holds every pane and never means completion
+  1) tests/e2e/motion-pane.spec.mjs:95:2 › 1366x768 › [MOT-10] buffering holds every pane and never means completion 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "active"
+    Received: "settled"
+
+      93 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await expect.poll(()=>page.evaluate(()=>fixture.clockEvents.length)).toBeGreaterThan(0);const url=await page.locator('.motion-pane video').getAttribute('src');await page.evaluate(()=>fixture.adapter.pane.dispose());await expect(page.locator('.motion-pane')).toHaveCount(0);expect(await page.evaluate(async url=>{try{await fetch(url);return false;}catch{return true;}},url)).toBe(true);await page.evaluate(()=>fixture.advance(500));await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();
+      94 |  });
+    > 95 |  test('[MOT-10] buffering holds every pane and never means completion',async({page})=>{await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.locator('.motion-pane video').evaluate(v=>{v.blockReady=e=>e.stopImmediatePropagation();v.addEventListener('canplay',v.blockReady,true);v.dispatchEvent(new Event('waiting'));});const before=await page.evaluate(()=>({state:fixture.session.read(),writes:fixture.log.length}));await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await page.locator('.motion-pane video').evaluate(v=>{v.removeEventListener('canplay',v.blockReady,true);v.dispatchEvent(new Event('canplay'));});await page.evaluate(()=>fixture.advance(500));expect(await page.evaluate(()=>fixture.log.length)).toBe(before.writes);await page.evaluate(()=>{fixture.session.dispatch({type:'play'});fixture.session.dispatch({type:'jump',index:7});});await expect.poll(()=>page.evaluate(()=>fixture.session.read().index)).toBe(7);});
+         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ^
+      96 | });
+      97 |
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-wS3Iz8/tests/e2e/motion-pane.spec.mjs:95:609
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../browser-results/tests-e2e-motion-pane-1366-4f8c9--and-never-means-completion/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-4f8c9--and-never-means-completion/error-context.md
+
+    Error Context: ../browser-results/tests-e2e-motion-pane-1366-4f8c9--and-never-means-completion/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../browser-results/tests-e2e-motion-pane-1366-4f8c9--and-never-means-completion/trace.zip
+    Usage:
+
+        npx playwright show-trace ../browser-results/tests-e2e-motion-pane-1366-4f8c9--and-never-means-completion/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    tests/e2e/motion-pane.spec.mjs:95:2 › 1366x768 › [MOT-10] buffering holds every pane and never means completion 

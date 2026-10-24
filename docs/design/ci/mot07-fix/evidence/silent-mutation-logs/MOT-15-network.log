@@ -1,0 +1,242 @@
+TAP version 13
+1..0
+# Subtest: tests/motion-authoring.test.mjs
+ok 1 - tests/motion-authoring.test.mjs
+  ---
+  duration_ms: 2623.853199
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/motion-completion-order.test.mjs
+ok 2 - tests/motion-completion-order.test.mjs
+  ---
+  duration_ms: 76.625046
+  type: 'test'
+  ...
+# Subtest: [MOT-15] Motion exposes only the pane contract and restricted media access
+not ok 3 - [MOT-15] Motion exposes only the pane contract and restricted media access
+  ---
+  duration_ms: 4.176296
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-wS3Iz8/tests/motion-media.test.mjs:34:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /\b(fetch|XMLHttpRequest|WebSocket|eval)\s*\(|from ['"].*(?:core|runtime|host)\//. Input:
+    
+    "import {readonlyPaneData} from '../contracts/pane.mjs';\n" +
+      "import {validateMediaMap} from './media-map.mjs';\n" +
+      "const generalRequest=()=>fetch('https://example.invalid'); const code='CIM-PANE-MEDIA-UNAVAILABLE';\n" +
+      "export const motionLabel=placeholder=>placeholder?'Placeholder GUI · simulated':'Recorded in the lab';\n" +
+      'export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={}){\n' +
+      " if(!access||typeof access.load!=='function')throw new TypeError('Motion requires restricted verified-media access.');\n" +
+      ' let root,config,video,media,asset=null,failed=false,disposed=false,revision=0,loading=null,io=null,active=null,authorizedPlayback=false,finalVideo=null,playRevision=0,finalRestores=0,restoring=false;\n' +
+      ' const observers=new Set(),offEvents=[];\n' +
+      ' const emit=buffering=>{for(const fn of [...observers])fn(Object.freeze({buffering}));};\n' +
+      " function cancelPlay(reason='cancelled'){active?.finish({status:'cancelled',reason});}\n" +
+      ' function clear(){++playRevision;finalVideo=null;finalRestores=0;restoring=false;authorizedPlayback=false;cancelPlay();io?.abort();io=null;for(const off of offEvents.splice(0))off();if(video)retireMediaElement(video);video=null;media?.release();media=null;}\n' +
+      ' function element(tag,text,attrs={}){const node=root.ownerDocument.createElement(tag);if(text!==null)node.textContent=text;for(const[k,v]of Object.entries(attrs))node.setAttribute(k,v);return node;}\n' +
+      " function frame(alt){const section=element('section',null,{class:'motion-pane','aria-label':'Motion recording and text alternative'});if(showHeading)section.append(element('h4',motionLabel(config.placeholder)));if(config.placeholder)section.append(element('strong','Placeholder content'));section.append(element('p',alt));root.replaceChildren(section);return section;}\n" +
+      " function fallback(alt){if(disposed)return;failed=true;video?.pause();const section=frame(alt??'No recording is available for this beat.');const details=element('details',null,{'data-media-details':''});details.append(element('summary','Show details'),element('p',code));section.append(element('p','GUI recording unavailable'),details);emit(false);}\n" +
+      " function requireMounted(){if(!root||disposed)throw new Error('Motion is not mounted.');}\n" +
+      ' function on(target,name,fn){target.addEventListener(name,fn);const off=()=>target.removeEventListener(name,fn);offEvents.push(off);return off;}\n' +
+      " function waitReady(target,events,check,signal,budget=timeoutMs){return new Promise((resolve,reject)=>{let timer;const clean=()=>{clearTimeout(timer);for(const e of events)target.removeEventListener(e,inspect);target.removeEventListener('error',bad);signal?.removeEventListener('abort',bad);};const bad=()=>{clean();reject(new Error(code));};const inspect=()=>{if(check()){clean();resolve();}};for(const e of events)target.addEventListener(e,inspect);target.addEventListener('error',bad);signal?.addEventListener('abort',bad,{once:true});timer=setTimeout(bad,budget);if(signal?.aborted)bad();else inspect();});}\n" +
+      ' async function prepare(state){\n' +
+      '  requireMounted();const next=readonlyPaneData(state);if(!next?.asset)return;\n' +
+      '  const descriptor=config.assets.find(a=>a.id===next.asset);if(!descriptor){fallback(next.alt);throw new Error(code);}\n' +
+      '  if(asset===next.asset){if(failed)throw new Error(code);if(loading)return loading;if(media&&video?.readyState>=2)return;}\n' +
+      '  const token=++revision;clear();asset=next.asset;failed=false;io=new AbortController();const signal=io.signal;\n' +
+      "  const section=frame(descriptor.alt),message=element('p','Preparing verified recording');section.append(message);emit(true);\n" +
+      '  const requestController=io,deadline=performance.now()+timeoutMs;let expiry,timedOut=false;\n' +
+      '  const remaining=()=>Math.max(1,deadline-performance.now());\n' +
+      `  const probe=element('video',null),mime=type=>type==='video/mp4'?'video/mp4; codecs="avc1.42E01E"':'video/webm; codecs="vp8, vorbis"';\n` +
+      "  const choices=[['primary',descriptor],...(descriptor.webm?[['webm',descriptor.webm]]:[])].filter(([,d])=>probe.canPlayType(mime(d.type))!=='');\n" +
+      '  const work=(async()=>{\n' +
+      '   if(!choices.length)throw new Error(code);\n' +
+      '   for(let index=0;index<choices.length;index++){\n' +
+      '    const [copy,selected]=choices[index];\n' +
+      '    // Verification failures are terminal. Only subsequent native decoding can authorize a retry.\n' +
+      '    const loaded=await access.load(asset,{signal,copy,deadlineMs:remaining()});\n' +
+      '    if(disposed||revision!==token||signal.aborted||performance.now()>=deadline){loaded.release();throw new Error(code);}media=loaded;\n' +
+      "    const nextVideo=element('video',null,{'aria-label':descriptor.alt,playsinline:'',preload:'auto'});nextVideo.muted=true;nextVideo.controls=false;\n" +
+      "    if(!loaded.videoURL.startsWith('blob:')||!loaded.captionURL.startsWith('blob:'))throw new Error(code);\n" +
+      "    const track=element('track',null,{kind:'captions',srclang:loaded.captions.language,label:loaded.captions.label,default:'',src:loaded.captionURL});nextVideo.append(track);nextVideo.src=loaded.videoURL;video=nextVideo;\n" +
+      '    // Native play from ended can rewind before its event: pausing alone loses the final still.\n' +
+      "    for(const event of ['play','playing','seeking','seeked','timeupdate'])on(nextVideo,event,()=>{if(!authorizedPlayback)nextVideo.pause();if(!authorizedPlayback&&finalVideo===nextVideo&&!restoring&&!failed){\n" +
+      '      if(Math.abs(nextVideo.currentTime-nextVideo.duration)<0.001)return;\n' +
+      '      if(finalRestores>=2){finalVideo=null;fallback(descriptor.alt);return;}\n' +
+      '      const intent=playRevision;finalRestores++;restoring=true;\n' +
+      '      finalStill().catch(()=>{if(!disposed&&playRevision===intent&&video===nextVideo&&finalVideo===nextVideo)fallback(descriptor.alt);}).finally(()=>{if(playRevision===intent)restoring=false;});\n' +
+      "     }});section.append(video);track.track.mode='showing';\n" +
+      '    try{\n' +
+      "     const ready=waitReady(nextVideo,['loadeddata','canplay'],()=>nextVideo.readyState>=2,signal,remaining());nextVideo.load();await ready;\n" +
+      "     await waitReady(track,['load'],()=>track.readyState===2,signal,remaining());\n" +
+      '     if(disposed||revision!==token||signal.aborted||performance.now()>=deadline)throw new Error(code);\n' +
+      '     if(!Number.isFinite(nextVideo.duration)||Math.abs(nextVideo.duration-selected.duration)>0.2)throw new Error(code);\n' +
+      '     message.remove();emit(false);return;\n' +
+      '    }catch(error){\n' +
+      '     retireMediaElement(nextVideo);nextVideo.remove();loaded.release();if(media===loaded)media=null;if(video===nextVideo)video=null;\n' +
+      '     if(index+1>=choices.length||signal.aborted||performance.now()>=deadline)throw error;\n' +
+      '    }\n' +
+      '   }\n' +
+      '  })();\n' +
+      '  const bounded=new Promise((_,reject)=>{expiry=setTimeout(()=>{timedOut=true;requestController.abort();reject(new Error(code));},timeoutMs);});\n' +
+      '  loading=Promise.race([work,bounded]).catch(error=>{if(!disposed&&revision===token&&(!signal.aborted||timedOut)){fallback(descriptor.alt);media?.release();media=null;}throw error;}).finally(()=>{clearTimeout(expiry);if(revision===token)loading=null;});\n' +
+      '  return loading;\n' +
+      ' }\n' +
+      ' async function finalStill(){if(!video||failed)return;authorizedPlayback=false;const target=video,version=playRevision;await settleFinalVideoFrame(target,{signal:io?.signal,timeoutMs});if(!disposed&&!failed&&video===target&&playRevision===version)finalVideo=target;}\n' +
+      ' function settle(state){requireMounted();cancelPlay();const next=readonlyPaneData(state);const version=revision;\n' +
+      "  if(!next?.asset){++revision;clear();asset=null;failed=false;frame('No GUI recording has played yet.');return;}\n" +
+      '  if(next.asset===asset&&(failed||media&&!loading)){if(video&&!failed)finalStill().catch(()=>{if(!disposed&&revision===version)fallback(next.alt);});return;}\n' +
+      '  const prepared=prepare(next),token=revision;prepared.then(()=>{if(!disposed&&revision===token&&asset===next.asset)return finalStill();}).catch(()=>{if(!disposed&&revision===token&&!failed)fallback(config.assets.find(a=>a.id===next.asset)?.alt??next.alt);});\n' +
+      ' }\n' +
+      ' function play(state,context){\n' +
+      '  requireMounted();++playRevision;finalVideo=null;finalRestores=0;restoring=false;cancelPlay();const descriptor=config.assets.find(a=>a.id===state?.asset);\n' +
+      "  if(!descriptor||failed||!media||!video){fallback(descriptor?.alt??state?.alt);return Promise.resolve({status:'failed',error:new Error(code)});}\n" +
+      "  if(context.cancellation.aborted)return Promise.resolve({status:'cancelled'});\n" +
+      "  if(context.reducedMotion)return finalStill().then(()=>({status:'settled'}),()=>{fallback(descriptor.alt);return{status:'failed',error:new Error(code)};});\n" +
+      '  return new Promise(resolve=>{\n' +
+      '   let scheduled=null,offClock=()=>{},offAbort=()=>{},done=false,bufferTimer=null,finalising=false,clockRunning=false;const removers=[];const current=video,start=context.clock.now();\n' +
+      '   const task={finish(result){if(done)return;done=true;authorizedPlayback=false;if(active===task)active=null;if(scheduled!==null)try{context.clock.cancel(scheduled);}catch{}clearTimeout(bufferTimer);offClock();offAbort();for(const off of removers)off();current.pause();emit(false);resolve(Object.freeze(result));}};active=task;\n' +
+      "   const fail=()=>{if(done)return;fallback(descriptor.alt);task.finish({status:'failed',error:new Error(code)});};\n" +
+      '   const listen=(event,fn)=>{current.addEventListener(event,fn);removers.push(()=>current.removeEventListener(event,fn));};\n' +
+      '   const pinPause=()=>{authorizedPlayback=false;current.pause();const held=Math.min(current.duration,Math.max(0,(context.clock.now()-start)/1000));if(Number.isFinite(held))current.currentTime=held;};\n' +
+      "   const playNative=()=>{if(done||finalising||!clockRunning)return;authorizedPlayback=true;current.play().then(()=>{if(!done&&!clockRunning)pinPause();},error=>{if(done)return;if(!clockRunning)pinPause();else if(error.name!=='AbortError')fail();});};\n" +
+      "   listen('waiting',()=>{if(done||finalising)return;emit(true);clearTimeout(bufferTimer);bufferTimer=setTimeout(fail,timeoutMs);});\n" +
+      "   listen('canplay',()=>{clearTimeout(bufferTimer);emit(false);});listen('error',fail);\n" +
+      "   const finishAtEnd=()=>{if(done||finalising)return;finalising=true;finalStill().then(()=>task.finish({status:'settled'}),fail);};\n" +
+      "   listen('ended',()=>{if(context.clock.now()-start"... 3272 more characters
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    import {readonlyPaneData} from '../contracts/pane.mjs';
+    import {validateMediaMap} from './media-map.mjs';
+    const generalRequest=()=>fetch('https://example.invalid'); const code='CIM-PANE-MEDIA-UNAVAILABLE';
+    export const motionLabel=placeholder=>placeholder?'Placeholder GUI · simulated':'Recorded in the lab';
+    export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={}){
+     if(!access||typeof access.load!=='function')throw new TypeError('Motion requires restricted verified-media access.');
+     let root,config,video,media,asset=null,failed=false,disposed=false,revision=0,loading=null,io=null,active=null,authorizedPlayback=false,finalVideo=null,playRevision=0,finalRestores=0,restoring=false;
+     const observers=new Set(),offEvents=[];
+     const emit=buffering=>{for(const fn of [...observers])fn(Object.freeze({buffering}));};
+     function cancelPlay(reason='cancelled'){active?.finish({status:'cancelled',reason});}
+     function clear(){++playRevision;finalVideo=null;finalRestores=0;restoring=false;authorizedPlayback=false;cancelPlay();io?.abort();io=null;for(const off of offEvents.splice(0))off();if(video)retireMediaElement(video);video=null;media?.release();media=null;}
+     function element(tag,text,attrs={}){const node=root.ownerDocument.createElement(tag);if(text!==null)node.textContent=text;for(const[k,v]of Object.entries(attrs))node.setAttribute(k,v);return node;}
+     function frame(alt){const section=element('section',null,{class:'motion-pane','aria-label':'Motion recording and text alternative'});if(showHeading)section.append(element('h4',motionLabel(config.placeholder)));if(config.placeholder)section.append(element('strong','Placeholder content'));section.append(element('p',alt));root.replaceChildren(section);return section;}
+     function fallback(alt){if(disposed)return;failed=true;video?.pause();const section=frame(alt??'No recording is available for this beat.');const details=element('details',null,{'data-media-details':''});details.append(element('summary','Show details'),element('p',code));section.append(element('p','GUI recording unavailable'),details);emit(false);}
+     function requireMounted(){if(!root||disposed)throw new Error('Motion is not mounted.');}
+     function on(target,name,fn){target.addEventListener(name,fn);const off=()=>target.removeEventListener(name,fn);offEvents.push(off);return off;}
+     function waitReady(target,events,check,signal,budget=timeoutMs){return new Promise((resolve,reject)=>{let timer;const clean=()=>{clearTimeout(timer);for(const e of events)target.removeEventListener(e,inspect);target.removeEventListener('error',bad);signal?.removeEventListener('abort',bad);};const bad=()=>{clean();reject(new Error(code));};const inspect=()=>{if(check()){clean();resolve();}};for(const e of events)target.addEventListener(e,inspect);target.addEventListener('error',bad);signal?.addEventListener('abort',bad,{once:true});timer=setTimeout(bad,budget);if(signal?.aborted)bad();else inspect();});}
+     async function prepare(state){
+      requireMounted();const next=readonlyPaneData(state);if(!next?.asset)return;
+      const descriptor=config.assets.find(a=>a.id===next.asset);if(!descriptor){fallback(next.alt);throw new Error(code);}
+      if(asset===next.asset){if(failed)throw new Error(code);if(loading)return loading;if(media&&video?.readyState>=2)return;}
+      const token=++revision;clear();asset=next.asset;failed=false;io=new AbortController();const signal=io.signal;
+      const section=frame(descriptor.alt),message=element('p','Preparing verified recording');section.append(message);emit(true);
+      const requestController=io,deadline=performance.now()+timeoutMs;let expiry,timedOut=false;
+      const remaining=()=>Math.max(1,deadline-performance.now());
+      const probe=element('video',null),mime=type=>type==='video/mp4'?'video/mp4; codecs="avc1.42E01E"':'video/webm; codecs="vp8, vorbis"';
+      const choices=[['primary',descriptor],...(descriptor.webm?[['webm',descriptor.webm]]:[])].filter(([,d])=>probe.canPlayType(mime(d.type))!=='');
+      const work=(async()=>{
+       if(!choices.length)throw new Error(code);
+       for(let index=0;index<choices.length;index++){
+        const [copy,selected]=choices[index];
+        // Verification failures are terminal. Only subsequent native decoding can authorize a retry.
+        const loaded=await access.load(asset,{signal,copy,deadlineMs:remaining()});
+        if(disposed||revision!==token||signal.aborted||performance.now()>=deadline){loaded.release();throw new Error(code);}media=loaded;
+        const nextVideo=element('video',null,{'aria-label':descriptor.alt,playsinline:'',preload:'auto'});nextVideo.muted=true;nextVideo.controls=false;
+        if(!loaded.videoURL.startsWith('blob:')||!loaded.captionURL.startsWith('blob:'))throw new Error(code);
+        const track=element('track',null,{kind:'captions',srclang:loaded.captions.language,label:loaded.captions.label,default:'',src:loaded.captionURL});nextVideo.append(track);nextVideo.src=loaded.videoURL;video=nextVideo;
+        // Native play from ended can rewind before its event: pausing alone loses the final still.
+        for(const event of ['play','playing','seeking','seeked','timeupdate'])on(nextVideo,event,()=>{if(!authorizedPlayback)nextVideo.pause();if(!authorizedPlayback&&finalVideo===nextVideo&&!restoring&&!failed){
+          if(Math.abs(nextVideo.currentTime-nextVideo.duration)<0.001)return;
+          if(finalRestores>=2){finalVideo=null;fallback(descriptor.alt);return;}
+          const intent=playRevision;finalRestores++;restoring=true;
+          finalStill().catch(()=>{if(!disposed&&playRevision===intent&&video===nextVideo&&finalVideo===nextVideo)fallback(descriptor.alt);}).finally(()=>{if(playRevision===intent)restoring=false;});
+         }});section.append(video);track.track.mode='showing';
+        try{
+         const ready=waitReady(nextVideo,['loadeddata','canplay'],()=>nextVideo.readyState>=2,signal,remaining());nextVideo.load();await ready;
+         await waitReady(track,['load'],()=>track.readyState===2,signal,remaining());
+         if(disposed||revision!==token||signal.aborted||performance.now()>=deadline)throw new Error(code);
+         if(!Number.isFinite(nextVideo.duration)||Math.abs(nextVideo.duration-selected.duration)>0.2)throw new Error(code);
+         message.remove();emit(false);return;
+        }catch(error){
+         retireMediaElement(nextVideo);nextVideo.remove();loaded.release();if(media===loaded)media=null;if(video===nextVideo)video=null;
+         if(index+1>=choices.length||signal.aborted||performance.now()>=deadline)throw error;
+        }
+       }
+      })();
+      const bounded=new Promise((_,reject)=>{expiry=setTimeout(()=>{timedOut=true;requestController.abort();reject(new Error(code));},timeoutMs);});
+      loading=Promise.race([work,bounded]).catch(error=>{if(!disposed&&revision===token&&(!signal.aborted||timedOut)){fallback(descriptor.alt);media?.release();media=null;}throw error;}).finally(()=>{clearTimeout(expiry);if(revision===token)loading=null;});
+      return loading;
+     }
+     async function finalStill(){if(!video||failed)return;authorizedPlayback=false;const target=video,version=playRevision;await settleFinalVideoFrame(target,{signal:io?.signal,timeoutMs});if(!disposed&&!failed&&video===target&&playRevision===version)finalVideo=target;}
+     function settle(state){requireMounted();cancelPlay();const next=readonlyPaneData(state);const version=revision;
+      if(!next?.asset){++revision;clear();asset=null;failed=false;frame('No GUI recording has played yet.');return;}
+      if(next.asset===asset&&(failed||media&&!loading)){if(video&&!failed)finalStill().catch(()=>{if(!disposed&&revision===version)fallback(next.alt);});return;}
+      const prepared=prepare(next),token=revision;prepared.then(()=>{if(!disposed&&revision===token&&asset===next.asset)return finalStill();}).catch(()=>{if(!disposed&&revision===token&&!failed)fallback(config.assets.find(a=>a.id===next.asset)?.alt??next.alt);});
+     }
+     function play(state,context){
+      requireMounted();++playRevision;finalVideo=null;finalRestores=0;restoring=false;cancelPlay();const descriptor=config.assets.find(a=>a.id===state?.asset);
+      if(!descriptor||failed||!media||!video){fallback(descriptor?.alt??state?.alt);return Promise.resolve({status:'failed',error:new Error(code)});}
+      if(context.cancellation.aborted)return Promise.resolve({status:'cancelled'});
+      if(context.reducedMotion)return finalStill().then(()=>({status:'settled'}),()=>{fallback(descriptor.alt);return{status:'failed',error:new Error(code)};});
+      return new Promise(resolve=>{
+       let scheduled=null,offClock=()=>{},offAbort=()=>{},done=false,bufferTimer=null,finalising=false,clockRunning=false;const removers=[];const current=video,start=context.clock.now();
+       const task={finish(result){if(done)return;done=true;authorizedPlayback=false;if(active===task)active=null;if(scheduled!==null)try{context.clock.cancel(scheduled);}catch{}clearTimeout(bufferTimer);offClock();offAbort();for(const off of removers)off();current.pause();emit(false);resolve(Object.freeze(result));}};active=task;
+       const fail=()=>{if(done)return;fallback(descriptor.alt);task.finish({status:'failed',error:new Error(code)});};
+       const listen=(event,fn)=>{current.addEventListener(event,fn);removers.push(()=>current.removeEventListener(event,fn));};
+       const pinPause=()=>{authorizedPlayback=false;current.pause();const held=Math.min(current.duration,Math.max(0,(context.clock.now()-start)/1000));if(Number.isFinite(held))current.currentTime=held;};
+       const playNative=()=>{if(done||finalising||!clockRunning)return;authorizedPlayback=true;current.play().then(()=>{if(!done&&!clockRunning)pinPause();},error=>{if(done)return;if(!clockRunning)pinPause();else if(error.name!=='AbortError')fail();});};
+       listen('waiting',()=>{if(done||finalising)return;emit(true);clearTimeout(bufferTimer);bufferTimer=setTimeout(fail,timeoutMs);});
+       listen('canplay',()=>{clearTimeout(bufferTimer);emit(false);});listen('error',fail);
+       const finishAtEnd=()=>{if(done||finalising)return;finalising=true;finalStill().then(()=>task.finish({status:'settled'}),fail);};
+       listen('ended',()=>{if(context.clock.now()-start>=descriptor.duration*1000)finishAtEnd();});
+       offAbort=context.cancellation.onAbort(reason=>task.finish({status:'cancelled',reason}));
+       if(done)return;current.currentTime=0;
+       if(typeof context.clock.observe!=='function'){fail();return;}
+       offClock=context.clock.observe(({running})=>{clockRunning=running;if(running)playNative();else pinPause();});
+       function tick(){if(done)return;const elapsed=context.clock.now()-start;
+        if(elapsed>=descriptor.duration*1000){finishAtEnd();return;}
+        if(Math.abs(current.currentTime-elapsed/1000)>0.15)current.currentTime=elapsed/1000;
+        scheduled=context.clock.schedule(tick,Math.min(40,descriptor.duration*1000-elapsed));
+       }
+       tick();
+      });
+     }
+     const pane=Object.freeze({mount(target,data,identity){if(root||disposed)throw new Error('Motion cannot mount twice or after disposal.');identity=readonlyPaneData(identity);if(typeof identity?.id!=='string'||!identity.id||identity?.type!=='motion/v1'||Object.keys(identity).some(k=>!['id','type'].includes(k)))throw new TypeError('Restricted Motion identity required.');config=readonlyPaneData(data);const diagnostics=validateMediaMap(config);if(diagnostics.length)throw new Error(diagnostics[0].message);root=target;frame('No GUI recording has played yet.');},settle,play,dispose(){if(disposed)return;disposed=true;++revision;clear();observers.clear();root?.replaceChildren();}});
+     return Object.freeze({pane,prepare,observe(fn){if(typeof fn!=='function')throw new TypeError('Readiness observer must be a function.');observers.add(fn);return()=>observers.delete(fn);}});
+    }
+    
+    // A pending native seek must not be synchronously reset: WebKit can block inside load().
+    // Paused, detached elements and revoked Blob URLs can be released by the browser without that reset.
+    function pauseRetiredPlay(){this.pause();this.onplay=null;}
+    function pauseRetiredPlaying(){this.pause();this.onplaying=null;}
+    export function retireMediaElement(target){target.onplay=pauseRetiredPlay;target.onplaying=pauseRetiredPlaying;target.pause();target.removeAttribute('src');}
+    
+    // Completion waits for the requested final frame, without re-seeking an already final frame.
+    export async function settleFinalVideoFrame(target,{signal,timeoutMs=2500}={}){
+     target.pause();const check=()=>!target.seeking&&target.readyState>=2&&Math.abs(target.currentTime-target.duration)<0.15;
+     if(signal?.aborted)throw new Error('CIM-PANE-MEDIA-UNAVAILABLE');if(check()&&(target.ended||Math.abs(target.currentTime-target.duration)<0.001))return;
+     if(!target.seeking||Math.abs(target.currentTime-target.duration)>=0.001)target.currentTime=target.duration;
+     const ready=new Promise((resolve,reject)=>{let timer;const events=['seeked','ended','canplay','loadeddata'];const clean=()=>{clearTimeout(timer);for(const name of events)target.removeEventListener(name,inspect);target.removeEventListener('error',bad);signal?.removeEventListener('abort',bad);};const bad=()=>{clean();reject(new Error('CIM-PANE-MEDIA-UNAVAILABLE'));};const inspect=()=>{if(check()){clean();resolve();}};for(const name of events)target.addEventListener(name,inspect);target.addEventListener('error',bad);signal?.addEventListener('abort',bad,{once:true});timer=setTimeout(bad,timeoutMs);if(signal?.aborted)bad();else inspect();});
+     await ready;
+    }
+    
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-wS3Iz8/tests/motion-media.test.mjs:34:336)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 2
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2632.192297

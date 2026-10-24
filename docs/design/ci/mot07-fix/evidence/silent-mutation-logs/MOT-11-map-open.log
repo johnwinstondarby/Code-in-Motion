@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: [MOT-11] fixture media map opens without changing deferred-map rejection
+not ok 1 - [MOT-11] fixture media map opens without changing deferred-map rejection
+  ---
+  duration_ms: 2.642105
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-wS3Iz8/tests/motion-authoring.test.mjs:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + [
+    +   {
+    +     fix: 'Leave media.status deferred and media.assets empty until the media-placement contract is implemented.',
+    +     id: 'CIM-V3-MEDIA-DEFERRED',
+    +     message: 'Media maps are reserved, not implemented. Fix: Leave media.status deferred and media.assets empty until the media-placement contract is implemented.',
+    +     path: '$.media',
+    +     severity: 'error'
+    +   }
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0:
+      id: 'CIM-V3-MEDIA-DEFERRED'
+      severity: 'error'
+      path: '$.media'
+      message: 'Media maps are reserved, not implemented. Fix: Leave media.status deferred and media.assets empty until the media-placement contract is implemented.'
+      fix: 'Leave media.status deferred and media.assets empty until the media-placement contract is implemented.'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/motion-mutations/candidate-wS3Iz8/tests/motion-authoring.test.mjs:15:153)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: [MOT-11] null pack input returns the normal shape diagnostic
+ok 2 - [MOT-11] null pack input returns the normal shape diagnostic
+  ---
+  duration_ms: 0.120731
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/motion-completion-order.test.mjs
+ok 2 - tests/motion-completion-order.test.mjs
+  ---
+  duration_ms: 63.418228
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/motion-media.test.mjs
+ok 3 - tests/motion-media.test.mjs
+  ---
+  duration_ms: 66.430351
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 3
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2675.29796

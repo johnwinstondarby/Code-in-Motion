@@ -1,0 +1,172 @@
+TAP version 13
+# Subtest: [MOT-11] fixture media map opens without changing deferred-map rejection
+ok 1 - [MOT-11] fixture media map opens without changing deferred-map rejection
+  ---
+  duration_ms: 2.7369
+  type: 'test'
+  ...
+# Subtest: [MOT-12] reference schema agrees on valid and malformed media maps
+ok 2 - [MOT-12] reference schema agrees on valid and malformed media maps
+  ---
+  duration_ms: 35.0661
+  type: 'test'
+  ...
+# Subtest: [MOT-13] author validate verifies bounded pack files and their digests
+ok 3 - [MOT-13] author validate verifies bounded pack files and their digests
+  ---
+  duration_ms: 204.2732
+  type: 'test'
+  ...
+# Subtest: [MOT-14] file validation refuses escaping directory links
+ok 4 - [MOT-14] file validation refuses escaping directory links
+  ---
+  duration_ms: 75.655
+  type: 'test'
+  ...
+# Subtest: [MOT-12] Unicode media labels use JSON Schema character counts
+ok 5 - [MOT-12] Unicode media labels use JSON Schema character counts
+  ---
+  duration_ms: 24.1414
+  type: 'test'
+  ...
+# Subtest: [MOT-11] null pack input returns the normal shape diagnostic
+ok 6 - [MOT-11] null pack input returns the normal shape diagnostic
+  ---
+  duration_ms: 0.1459
+  type: 'test'
+  ...
+# Subtest: [ORDER-01] final seek must resolve after its first pending check
+ok 7 - [ORDER-01] final seek must resolve after its first pending check
+  ---
+  duration_ms: 9.472
+  type: 'test'
+  ...
+# Subtest: [ORDER-02] early seeked and ended never complete ahead of the clock
+ok 8 - [ORDER-02] early seeked and ended never complete ahead of the clock
+  ---
+  duration_ms: 1.3428
+  type: 'test'
+  ...
+# Subtest: [ORDER-03] pause and resume while finalising preserve the final frame
+ok 9 - [ORDER-03] pause and resume while finalising preserve the final frame
+  ---
+  duration_ms: 1.0838
+  type: 'test'
+  ...
+# Subtest: [ORDER-04] a later absolute settle can replace a completed video; identities differ
+ok 10 - [ORDER-04] a later absolute settle can replace a completed video; identities differ
+  ---
+  duration_ms: 1.6437
+  type: 'test'
+  ...
+# Subtest: [ORDER-05] a late native play cannot restart completed media
+ok 11 - [ORDER-05] a late native play cannot restart completed media
+  ---
+  duration_ms: 0.7879
+  type: 'test'
+  ...
+# Subtest: [ORDER-06] native late play rewinding an ended video restores the final hold immediately
+ok 12 - [ORDER-06] native late play rewinding an ended video restores the final hold immediately
+  ---
+  duration_ms: 0.7743
+  type: 'test'
+  ...
+# Subtest: [ORDER-07] a genuine new transition clears the previous final hold
+ok 13 - [ORDER-07] a genuine new transition clears the previous final hold
+  ---
+  duration_ms: 0.8939
+  type: 'test'
+  ...
+# Subtest: [ORDER-08] repeated unauthorized playback cannot cause an unbounded restore loop
+ok 14 - [ORDER-08] repeated unauthorized playback cannot cause an unbounded restore loop
+  ---
+  duration_ms: 1.4364
+  type: 'test'
+  ...
+# Subtest: [ORDER-09] harmless final-frame events do not consume corrective-seek budget
+ok 15 - [ORDER-09] harmless final-frame events do not consume corrective-seek budget
+  ---
+  duration_ms: 1.0967
+  type: 'test'
+  ...
+# Subtest: [ORDER-10] completed hold restores a rewind without any play event
+ok 16 - [ORDER-10] completed hold restores a rewind without any play event
+  ---
+  duration_ms: 2.7115
+  type: 'test'
+  ...
+# Subtest: [MOT-01] media map accepts mixed declared sources and rejects unsafe metadata with fixes
+ok 17 - [MOT-01] media map accepts mixed declared sources and rejects unsafe metadata with fixes
+  ---
+  duration_ms: 2.2314
+  type: 'test'
+  ...
+# Subtest: [MOT-02] only exact verified clip and caption bytes become playback Blob URLs
+ok 18 - [MOT-02] only exact verified clip and caption bytes become playback Blob URLs
+  ---
+  duration_ms: 14.2596
+  type: 'test'
+  ...
+# Subtest: [MOT-02] unit byte verification does not depend on native crypto worker scheduling
+ok 19 - [MOT-02] unit byte verification does not depend on native crypto worker scheduling
+  ---
+  duration_ms: 0.6931
+  type: 'test'
+  ...
+# Subtest: [MOT-03] mismatch and missing data withhold every playback URL
+ok 20 - [MOT-03] mismatch and missing data withhold every playback URL
+  ---
+  duration_ms: 0.7987
+  type: 'test'
+  ...
+# Subtest: [MOT-04] restricted resolver cannot request unknown identities or foreign URLs
+ok 21 - [MOT-04] restricted resolver cannot request unknown identities or foreign URLs
+  ---
+  duration_ms: 0.3263
+  type: 'test'
+  ...
+# Subtest: [MOT-05] bounded timeout and disposal reject late results
+ok 22 - [MOT-05] bounded timeout and disposal reject late results
+  ---
+  duration_ms: 39.5679
+  type: 'test'
+  ...
+# Subtest: [MOT-06] readiness and buffering hold shared time; user pause survives readiness
+ok 23 - [MOT-06] readiness and buffering hold shared time; user pause survives readiness
+  ---
+  duration_ms: 0.6956
+  type: 'test'
+  ...
+# Subtest: [MOT-15] Motion exposes only the pane contract and restricted media access
+ok 24 - [MOT-15] Motion exposes only the pane contract and restricted media access
+  ---
+  duration_ms: 0.5304
+  type: 'test'
+  ...
+# Subtest: [MOT-05] disposal during ignored-abort I/O cannot create late playback URLs
+ok 25 - [MOT-05] disposal during ignored-abort I/O cannot create late playback URLs
+  ---
+  duration_ms: 0.9652
+  type: 'test'
+  ...
+# Subtest: [MOT-19] labels distinguish modeled fixtures from declared real recordings
+ok 26 - [MOT-19] labels distinguish modeled fixtures from declared real recordings
+  ---
+  duration_ms: 0.2138
+  type: 'test'
+  ...
+# Subtest: [MOT-20] an unprepared pane refuses playback and exposes the visible fallback
+ok 27 - [MOT-20] an unprepared pane refuses playback and exposes the visible fallback
+  ---
+  duration_ms: 0.5404
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 517.7453

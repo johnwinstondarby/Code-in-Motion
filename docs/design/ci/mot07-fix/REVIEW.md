@@ -7,7 +7,10 @@
 - Node 20.20.2: **1,093/1,093 pass**, zero skipped; Node 22.23.2: **1,093/1,093 pass**, zero skipped. Both complete verify logs are retained, not just the Node 20 result.
 - New browser cases: **63/63**, all three engines and sizes, including native seek without any play/playing event.
 - Old seven load failures: classified as pre-existing failure families and tracked in [issue #107](https://github.com/johnwinstondarby/Code-in-Motion/issues/107), with explicit control limitations below. They do not establish a new preparation/caption defect from #103's fix.
-- Final-source load, mutation proof, reproducible builds and three consecutive final-head WebKit CI runs: being completed; earlier counts below describe historical candidates.
+- Final-source constrained load: **150/150 pass**, 50 per size, no retries. Both unchanged-production controls reproduced #103; all raw earlier failures remain retained and #107 handles the pre-existing load families.
+- Final-source WebKit mutations: **37/37 caught**, unit/browser baselines pass. Real silent-rewind and restore-removal probes are included.
+- Reproducible Node 22.23.2 builds: plugin `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a`; authoring candidate `17921505f592602d4837f3512b0c1c0d54db98396d5f7252c4ecdf81a453a77f`, identical in two clean checkouts. Exact frozen-head build confirmation is posted in the PR after this packet-only commit.
+- Three consecutive green WebKit CI jobs on the final frozen head: pending, recorded in the PR to avoid changing the head during proof.
 - Manual diagnostic dispatch runs remain unperformed: GitHub requires the workflow on the default branch. Under the combined-review choice it becomes available only after this PR is reviewed, approved and merged. No unapproved main write is made to enable it.
 - Main/release/production remain 048eafb / 1.0.1. Rollback ZIP and page 3227 capture remain unchanged.
 
@@ -117,3 +120,14 @@ Those controls plus the retained pre-fix caption capture classify the six prepar
 2e81de4 commits ORDER-10 red: without play/playing, a seeking/seeked/timeupdate observation leaves the completed video at zero. Nine prior tests pass, the new one fails. The implementation adds those three native events to the same bounded hold guard, with no new timer or engine/host capability. The test exercises each event independently, requires no play event and keeps the same settled result.
 
 MOT-25 was added after that red run: on a real completed video, assigning currentTime=0 must produce a corrected paused final frame without a play/playing event and without a session change. This addition is not claimed to be in the original red run. It passes at all sizes/engines. Added unit and browser mutations removing the non-play event observations; no old assertion was loosened. ORDER-08's visible-fallback assertion was also strengthened after red as disclosed above.
+
+
+## Final local proof before freezing the review head
+
+The new-source batch (silent-load) passed **150/150**, 50 at each size, four foreground workers plus two composition load workers on CPUs 0,1; no retries. Other local test/build runs had finished before starting, matching the fresh control workload without the extra historical host work. The background composition run is load generation and is intentionally terminated when foreground testing finishes; it is not represented as a completed correctness suite. Every successful final-frame record has matching video identity and source at Motion completion/check; all 150 JSONs are archived with individual checksums. Earlier failed batches were not rerun to obtain this result: this batch tests the changed silent-rewind implementation after the recorded red/fix cycle.
+
+Both full verify logs explicitly show Node 20.20.2 and Node 22.23.2, 1,093 pass each, zero skipped. The 63 new browser checks pass at three sizes in all three engines. All 37 Motion mutation probes are caught; individual logs and baseline results are retained. The plugin checksum remains unchanged, and the installed 1.0.1 rollback ZIP/capture are untouched.
+
+The no-play regression covers seeks that emit seeking, seeked or timeupdate without play/playing. [HTML seeking](https://html.spec.whatwg.org/multipage/media.html#seeking) requires seek-related media events, including for discontinuous native position changes. This is event-based protection, not a claim to detect an engine that mutates currentTime while emitting no media event whatsoever; no polling timer was added.
+
+This packet is frozen for the exact-head CI proof. Later CI/build results are recorded in PR #106 comments, keeping the reviewed head fixed. No merge or release is implied by local success; Daisy review and Johann approval remain required. #103 remains open and Part B remains held through approved merge and green main.
