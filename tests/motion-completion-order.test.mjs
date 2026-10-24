@@ -43,3 +43,9 @@ test('[ORDER-02] early seeked and ended never complete ahead of the clock',async
 test('[ORDER-03] pause and resume while finalising preserve the final frame',async()=>{const s=await setup();s.advance(1200);await flush();s.pause();s.resume();await flush();assert.equal(s.done,false);await finish(s);assert.equal(s.video.paused,true);s.adapter.pane.dispose();});
 test('[ORDER-04] a later absolute settle can replace a completed video; identities differ',async()=>{const s=await setup();s.advance(1200);await finish(s);const completed=s.video;s.adapter.pane.settle({asset:'second'});await flush();const replacement=s.videos.at(-1);assert.notEqual(replacement,completed);assert.notEqual(replacement.src,completed.src);assert.equal(completed.currentTime,completed.duration);replacement.finishSeek();await flush();s.adapter.pane.dispose();});
 test('[ORDER-05] a late native play cannot restart completed media',async()=>{const s=await setup();s.advance(1200);await finish(s);await s.video.play();await flush();assert.equal(s.video.paused,true);assert.equal(s.video.currentTime,s.video.duration);s.adapter.pane.dispose();});
+test('[ORDER-06] native late play rewinding an ended video restores the final hold immediately',async()=>{
+ const s=await setup();s.advance(1200);await finish(s);assert.equal(s.video.ended,true);
+ // Native play from the ended state rewinds before dispatching play/playing.
+ s.video._time=0;s.video.ended=false;s.video.paused=false;s.video.dispatchEvent(new Event('play'));s.video.dispatchEvent(new Event('playing'));
+ assert.equal(s.video.currentTime,s.video.duration,'a completed video must not remain rewound after an unauthorized native play');assert.equal(s.video.paused,true);s.video.finishSeek();await flush();s.adapter.pane.dispose();
+});
