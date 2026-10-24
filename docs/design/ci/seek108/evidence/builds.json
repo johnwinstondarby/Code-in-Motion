@@ -1,0 +1,16 @@
+{
+  "code-in-motion-1.0.1.zip": {
+    "bytes": 219661,
+    "sha256": "d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a",
+    "twoCleanBuildsIdentical": true
+  },
+  "cim-authoring-1.0.1-candidate.zip": {
+    "bytes": 1039883,
+    "sha256": "15de8eaacf77f8f10ba96db8601a5f025a549a9c2937e8ebecdf45d78447bfed",
+    "twoCleanBuildsIdentical": true
+  },
+  "authoringChangedMembers": [
+    "cim-authoring-1.0.1-candidate/src/multipane/motion.mjs"
+  ],
+  "rollbackUnchanged": true
+}

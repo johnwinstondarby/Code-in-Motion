@@ -26,6 +26,8 @@ Only src/multipane/motion.mjs changes in product code. No WordPress, Core, Runti
 | MOT-26 double correction | navigation-double-failure.log retained | The initial blocked setter failed to report seeking true; legitimate native readiness events therefore used the second allowed retry, making the expected request count wrong. The corrected instance double reports a genuinely pending seek. All four controls were recorded red again; all four fixed cases then passed. No tolerance, timeout, retry or existing assertion was weakened. |
 | MOT-26 deterministic setup | Added after the recorded browser red | Pause/reset only the fault-injected video before advancing the virtual clock, so native playback cannot finish first on a slow runner and bypass the injected final seek. All navigation and final-frame assertions remain unchanged; ordinary MOT-07 and load runs are untouched. |
 
+The first full Firefox batch passed 147/148; MOT-26 deepLink at 1920 stayed active after its replay advance. The trace/screenshot are retained: context stubs remained at their begin state while the native video reached its end. The test waited only for video readyState, but the coordinator also waits for captions and holds the virtual clock during preparation. MOT-26 now requires native playback and a running shared clock **before** advancing virtual time. Its final completion predicate and all timeouts/tolerances are unchanged; no wait was inserted after that advance. This is a disclosed test-setup correction after red, not a product fix or a rerun of unchanged tests into green.
+
 ## Rule-to-proof map
 
 | Rule | Tests | Mutation |
