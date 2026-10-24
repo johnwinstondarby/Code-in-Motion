@@ -8,7 +8,6 @@ import {validateProductionMedia} from '../authoring/v3/production-media.mjs';
 import {validateExperience} from '../src/experience/validate-experience.mjs';
 import {packSource,hash} from './helpers/pack-v3-source.mjs';
 const license='GPLv3 test license\n';
-const manifest=()=>({schema:'cim.lesson-pack/v2',cim_min:'1.1.0',cim_max_exclusive:'2.0.0',placeholder:true,lessons:[],media:{status:'pack',assets:[]}});
 const rejects=(promise,id)=>assert.rejects(promise,error=>{assert(error.diagnostics?.some(d=>d.id===id&&typeof d.path==='string'&&/Fix:/.test(d.message)),JSON.stringify(error.diagnostics));return true;});
 
 test('[PB-01] production pack compiles deterministically into the unchanged v2 envelope',async()=>{
@@ -36,8 +35,8 @@ test('[PB-09] traversal and escaping links cannot enter a pack',async()=>{
  const s=await packSource();s.media.assets[0].source.path='../outside.mp4';await s.saveMedia();await assert.rejects(buildV3Pack(s.source,license),e=>{assert(e.diagnostics?.some(d=>/PATH|SOURCE/.test(d.id)));return true;});
  const t=await packSource(),u=await packSource();const path=join(t.folder,'media','outside.mp4');await symlink(join(u.folder,u.media.assets[0].source.path),path);t.media.assets[0].source.path='media/outside.mp4';await t.saveMedia();await rejects(buildV3Pack(t.source,license),'CIM-V3-PACK-PATH');
 });
-test('[PB-10] an explicit branded development identity is required; no prerelease coercion',()=>{
- const m=manifest();assert.equal(admitV3Pack(m,'1.0.1'),false);assert.equal(admitV3Pack(m,'1.1.0-dev'),false);assert.equal(admitV3Pack(m,{version:'1.1.0-dev',channel:'development',purpose:'authoring-preview'}),false);
+test('[PB-10] an explicit branded development identity is required; no prerelease coercion',async()=>{
+ const s=await packSource(),m=(await buildV3Pack(s.source,license)).manifest;assert.equal(admitV3Pack(m,'1.0.1'),false);assert.equal(admitV3Pack(m,'1.1.0-dev'),false);assert.equal(admitV3Pack(m,{version:'1.1.0-dev',channel:'development',purpose:'authoring-preview'}),false);
  const token=createDevelopmentAdmission('authoring-preview');assert.equal(token.version,'1.1.0-dev');assert.equal(admitV3Pack(m,token),true);assert.equal(admitV3Pack(m,'1.1.0'),true);assert.equal(admitV3Pack(m,'2.0.0'),false);
  assert.equal(admitV3Pack({...m,cim_min:'1.0.1'},token),false);assert.throws(()=>createDevelopmentAdmission('production'));
 });
