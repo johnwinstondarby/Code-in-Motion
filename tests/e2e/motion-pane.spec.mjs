@@ -42,13 +42,13 @@ for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${w
   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});
  });
  test('[MOT-22] native play from an ended verified clip preserves its final hold',async({page})=>{
-  await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+  await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.waitForFunction(()=>fixture.clockEvents.length>0);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
   const state=await page.locator('.motion-pane video').evaluate(async v=>{let observed=false;v.addEventListener('play',()=>{observed=true;},{once:true});try{await v.play();}catch{}return{observed,time:v.currentTime,duration:v.duration,paused:v.paused};});
   expect(state.observed).toBe(true);expect(state.paused).toBe(true);expect(state.time>=state.duration-0.15).toBe(true);
  });
  for(const route of ['restart','previous','jump','deepLink'])test(`[MOT-23] ${route} permits genuine replay after a completed hold`,async({page})=>{
-  await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
-  const experience=fixtureExperience();await page.evaluate(({route,id,step})=>{
+  await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.waitForFunction(()=>fixture.clockEvents.length>0);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+  const experience=fixtureExperience();await page.evaluate(()=>{window.replayEvents=[];for(const event of ['play','playing','pause','ended'])document.addEventListener(event,e=>{if(e.target===document.querySelector('.motion-pane video'))replayEvents.push({event,time:e.target.currentTime,paused:e.target.paused,stamp:performance.now()});},true);});await page.evaluate(({route,id,step})=>{
    if(route==='restart')fixture.session.dispatch({type:'restart'});
    else if(route==='previous')fixture.session.dispatch({type:'previous'});
    else if(route==='jump')fixture.session.dispatch({type:'jump',index:1});
@@ -58,10 +58,11 @@ for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${w
    await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
   }
   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
-  await expect.poll(()=>page.locator('.motion-pane video').evaluate(v=>!v.paused&&v.currentTime>0&&v.currentTime<0.5)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+  await expect.poll(()=>page.evaluate(()=>replayEvents.some(e=>e.event==='play')&&replayEvents.some(e=>e.event==='playing'))).toBe(true);
+  const starts=await page.evaluate(()=>({play:replayEvents.find(e=>e.event==='play'),playing:replayEvents.find(e=>e.event==='playing'),state:fixture.session.read()}));expect(starts.play.time).toBeLessThanOrEqual(0.15);expect(starts.playing.time).toBeLessThanOrEqual(0.15);expect(starts.state.index).toBe(2);expect(starts.state.progress).toBe('active');expect(starts.state.failures).toEqual([]);
  });
  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
-  await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+  await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.waitForFunction(()=>fixture.clockEvents.length>0);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
   const result=await page.evaluate(async()=>{
    const tab=document.querySelector('[role=tab][aria-selected=true]');tab.focus();const before=JSON.stringify(fixture.session.read());let notifications=0,announcements=0;const off=fixture.session.subscribe(()=>notifications++);
    const observer=new MutationObserver(records=>{announcements+=records.length;});for(const live of document.querySelectorAll('[aria-live]'))observer.observe(live,{childList:true,characterData:true,subtree:true});

@@ -42,3 +42,24 @@ Three consecutive green WebKit runs on the final fix head: pending.
 Three manual diagnostic workflow runs: not performed; GitHub returned 404 because #105's workflow is not on the default branch. Its reviewed and approved merge is needed first. After that, dispatch can target this fix branch.
 
 #103 remains open. Main green alone does not unblock Part B. No further merge without Daisy's review and Johann's approval.
+
+
+## Caller evidence and bounded revision
+
+PR #105's opt-in play-call observer captured two further original-signature failures in 150 constrained runs (148 pass, 2 fail). In both, initial play and learner resume are the only JavaScript play calls, and their promises resolve before completion. Native playback/rewind occurs afterwards without another JavaScript call. This rules out a new stale clock callback in those captures; internal WebKit processing remains opaque. See the complete caller evidence in the diagnostics PR. Its changes remain separate from this product fix.
+
+ORDER-08 was committed red at b4ee288 before the bound: repeated unauthorized events caused more than two corrective seeks. The revised hold permits at most two corrective seeks, coalesces play/playing while one restore is pending, and then shows the existing unavailable fallback if the browser continues. A genuine new transition clears the budget and hold; stale restore callbacks cannot overwrite its state. Successful restoration changes no DOM or accessibility text and reports no new completion. The bound mutation is caught. No original test tolerance was widened.
+
+### Additional tests and edits after red
+
+- Added MOT-23 for Restart (progressing normally back to the GUI beat), Previous then Play, a jump to the preceding beat then Play, and a deep link to that preceding beat then Play. This respects the transport contract: navigation settles a destination, and Play starts the following beat.
+- Added MOT-24: native late playback leaves session state, notifications, selected-tab focus and live-region mutations unchanged.
+- The initial MOT-23 assertion polled a transient 0–0.5-second playback window. First matrix: Chromium 18/18, Firefox 12/18, WebKit 18/18. A fixed 36-case Firefox characterization gave 20 pass/16 fail. The same test against the original unfixed Motion source gave 25 pass/11 fail. Event records show playback starting at zero and ending before the polling window; this is not evidence of a candidate-only replay regression.
+- Replaced that new transient-state poll with captured native play/playing milestones on the currently mounted video, requiring both to start within 0.15 seconds and the session to remain active at beat 3 without failures. The first event-based matrix gave Chromium 18/18, Firefox 17/18, WebKit 18/18. The Firefox failure occurred before replay, while waiting for initial completion: the test had advanced the virtual clock while media preparation still held it.
+- Corrected new MOT-22/23/24 setup to wait for Motion's clock observation before advancing the fixture clock. This does not add a wait before MOT-07's existing check, change MOT-07, widen a tolerance, retry a test or alter playback source. All earlier results are retained.
+- Updated the restoration/hold mutation anchors to match the bounded implementation, and added ORDER-08's bound-removal probe; no existing assertions were removed.
+
+Current full verify: **1,091 pass / zero skips on both Node 20.20.2 and Node 22.23.2**. The earlier 1,089 counts describe the previous candidate. Latest new-browser matrix, constrained-load outcome, clean builds and exact-head CI are recorded below as they finish. The candidate remains **not ready to merge** until all proof gates and independent review pass.
+
+
+Latest readiness-corrected browser matrix: **18/18 Chromium, 18/18 Firefox, 18/18 WebKit** (54 total, zero skipped/retries), covering all three sizes. The v1 differential remains 41 identical / zero different, with 28 intentionally excluded v2/non-JSON inputs. The six new scenarios are additional coverage, not substitutes for unchanged MOT-07.
