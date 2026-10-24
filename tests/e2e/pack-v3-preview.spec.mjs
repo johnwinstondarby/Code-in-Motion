@@ -27,3 +27,8 @@ test('[PB-PREVIEW-02] real Motion playback keeps one clock when its action tab i
 test('[PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors',async({page})=>{
  const file=resolve(folder,'lesson.json'),original=await readFile(file,'utf8');try{const doc=JSON.parse(original);doc.title='A real authored edit';await writeFile(file,JSON.stringify(doc));await open(page);await expect(page.locator('h2')).toHaveText(doc.title);for(const k of ['extra1','extra2','extra3','extra4'])doc[k]=true;await writeFile(file,JSON.stringify(doc));await page.reload();for(const k of ['extra1','extra2','extra3','extra4'])await expect(page.locator('#preview-error')).toContainText('$.'+k);await expect(page.locator('#preview-error')).toContainText('CIM-V3-SHAPE');await expect(page.locator('[data-composed-player]')).toHaveCount(0);}finally{await writeFile(file,original);}
 });
+
+for(const filename of ['lesson.json','capture.json'])test(`[PB-PREVIEW-04] verified ${filename} refuses same-size response tampering`,async({page})=>{
+ await page.route('**/pack/*/'+filename,async route=>{const response=await route.fetch(),text=await response.text(),modified=filename==='lesson.json'?text.replace('Run Custody','Xun Custody'):text.replace('placeholder-archive','xlaceholder-archive');expect(modified).not.toBe(text);expect(Buffer.byteLength(modified)).toBe(Buffer.byteLength(text));await route.fulfill({response,body:modified});});
+ await page.goto(url);await expect(page.locator('#preview-error')).toContainText('fingerprint mismatch');await expect(page.locator('[data-composed-player]')).toHaveCount(0);
+});

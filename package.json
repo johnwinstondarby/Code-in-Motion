@@ -17,6 +17,7 @@
     "node": ">=20"
   },
   "scripts": {
+    "build:placeholder-pack": "node tools/build-placeholder-pack.mjs",
     "build:authoring": "node tools/build-authoring-release.mjs",
     "cim-author": "node tools/cim-author.mjs",
     "build:wordpress": "node tools/build-wordpress-release.mjs",
@@ -29,7 +30,7 @@
     "check:wordpress-metadata": "node tools/check-wordpress-release-metadata.mjs",
     "test": "node --test",
     "check:learner-theme-css": "node tools/check-learner-theme-css.mjs",
-    "verify": "npm run check:learner-theme-css && npm run check:schema && npm run check:git-content && npm run check:page-3227 && npm run check:cim-authoring && npm run check:authoring-v1 && npm run check:console-render-evidence && npm run check:wordpress-experience-registry && npm run check:wordpress-renderer-registry && npm run check:wordpress-release-info && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm run check:workflow-gates && npm run check:wordpress-production-transport && npm run check:v3-mutations && npm run check:pane-mutations && npm run check:multipane-mutations && npm run check:engineering-mutations && npm run check:motion-mutations && npm run check:composition-mutations && npm run check:diagram-capacity-mutations && npm test",
+    "verify": "npm run check:learner-theme-css && npm run check:schema && npm run check:git-content && npm run check:page-3227 && npm run check:cim-authoring && npm run check:authoring-v1 && npm run check:console-render-evidence && npm run check:wordpress-experience-registry && npm run check:wordpress-renderer-registry && npm run check:wordpress-release-info && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm run check:workflow-gates && npm run check:wordpress-production-transport && npm run check:v3-mutations && npm run check:pane-mutations && npm run check:multipane-mutations && npm run check:engineering-mutations && npm run check:motion-mutations && npm run check:composition-mutations && npm run check:diagram-capacity-mutations && npm run check:pack-v3-mutations && npm test",
     "wp-env": "wp-env",
     "probe:wordpress-readiness": "node tools/probe-wordpress-readiness.mjs",
     "generate:git-basic-cycle": "node tools/generate-git-basic-cycle.mjs",
@@ -57,7 +58,8 @@
     "check:engineering-mutations": "node tools/check-engineering-mutations.mjs",
     "check:motion-mutations": "node tools/check-motion-mutations.mjs",
     "check:composition-mutations": "node tools/check-composition-mutations.mjs",
-    "check:diagram-capacity-mutations": "node tools/check-diagram-capacity-mutations.mjs"
+    "check:diagram-capacity-mutations": "node tools/check-diagram-capacity-mutations.mjs",
+    "check:pack-v3-mutations": "node tools/check-pack-v3-mutations.mjs"
   },
   "devDependencies": {
     "@wordpress/env": "11.15.0",

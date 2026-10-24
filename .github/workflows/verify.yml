@@ -52,7 +52,7 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
 
       - name: Build WordPress release artifact
-        run: npm run build:wordpress && npm run build:authoring
+        run: npm run build:wordpress && npm run build:authoring && npm run build:placeholder-pack
 
       - name: Verify R22 staged release metadata
         run: node tools/check-wordpress-release-metadata.mjs --release-root dist/code-in-motion

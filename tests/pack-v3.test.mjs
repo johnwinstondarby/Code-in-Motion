@@ -5,7 +5,7 @@ import {join} from 'node:path';
 import {buildV3Pack,compileV3Source,writeV3Pack} from '../authoring/v3/pack.mjs';
 import {createDevelopmentAdmission,admitV3Pack} from '../authoring/v3/admission.mjs';
 import {validateProductionMedia} from '../authoring/v3/production-media.mjs';
-import {validateDocument} from '../authoring/v3/validate.mjs';
+import {validateDocument,validateBundle} from '../authoring/v3/validate.mjs';
 import {validateExperience} from '../src/experience/validate-experience.mjs';
 import {packSource,hash} from './helpers/pack-v3-source.mjs';
 const license='GPLv3 test license\n';
@@ -23,7 +23,7 @@ for(const [id,change,rule]of [
  ['PB-03',s=>{delete s.lesson.placeholder;},'CIM-V3-PLACEHOLDER'],
  ['PB-04',s=>{s.lesson.beats[2].actions[0].label='Recorded in the lab';},'CIM-V3-PLACEHOLDER'],
  ['PB-05',s=>{s.lesson.beats[2].engineering.records=['missing-record'];},'CIM-V3-CAPTURE-REFERENCE']
-])test(`[${id}] pack rejects altered provenance or capture references`,async()=>{const s=await packSource();change(s);await s.saveLesson();await rejects(buildV3Pack(s.source,license),rule);});
+])test(`[${id}] pack rejects altered provenance or capture references`,async()=>{const s=await packSource();change(s);assert(validateBundle(s.lesson,JSON.parse(await readFile(join(s.folder,s.lesson.capture.file),'utf8'))).diagnostics.some(d=>d.id===rule));await s.saveLesson();await rejects(buildV3Pack(s.source,license),rule);});
 test('[PB-06] changed media bytes cannot enter a pack',async()=>{const s=await packSource();await writeFile(join(s.folder,s.media.assets[0].source.path),Buffer.alloc(s.media.assets[0].size));await rejects(buildV3Pack(s.source,license),'CIM-V3-PACK-FINGERPRINT');});
 test('[PB-07] each copy requires its own codec and correct MIME pairing',async()=>{
  const s=await packSource();for(const copy of ['primary','webm']){const m=structuredClone(s.media),d=copy==='primary'?m.assets[0]:m.assets[0].webm;delete d.codec;const errors=validateProductionMedia(m);assert(errors.some(e=>e.id==='CIM-V3-MEDIA-CODEC'&&e.path.endsWith('.codec')));}
@@ -42,7 +42,7 @@ test('[PB-10] an explicit branded development identity is required; no prereleas
  assert.equal(admitV3Pack({...m,cim_min:'1.0.1'},token),false);assert.throws(()=>createDevelopmentAdmission('production'));
 });
 test('[PB-11] manifest lists every payload with its actual bounded size and digest',async()=>{
- const s=await packSource(),r=await buildV3Pack(s.source,license);assert.equal(r.manifest.cim_min,'1.1.0');assert.equal(r.manifest.cim_max_exclusive,'2.0.0');
+ const s=await packSource();let r;await assert.doesNotReject(async()=>{r=await buildV3Pack(s.source,license);});assert.equal(r.manifest.cim_min,'1.1.0');assert.equal(r.manifest.cim_max_exclusive,'2.0.0');
  const payload=[...r.entries.keys()].filter(k=>k!=='cim-lesson-pack.json').sort();assert.deepEqual(r.manifest.files.map(f=>f.path).sort(),payload);
  for(const f of r.manifest.files){assert.equal(f.size,r.entries.get(f.path).length);assert.equal(f.sha256,hash(r.entries.get(f.path)));}
  assert.deepEqual(r.manifest.media,r.compiled.document.renderer_config.media);
@@ -75,3 +75,5 @@ test('[PB-23] production manifests cross-check every reference and enforce aggre
   assert(validateDocument(m,'pack').diagnostics.some(d=>d.id===(kind==='aggregate'?'CIM-V3-PACK-LIMIT':'CIM-V3-PACK-FILES')),kind);
  }
 });
+
+test('[PB-25] generated PHP never interpolates authored prose as code',async()=>{const s=await packSource();s.lesson.title='*/ <?php throw new Exception("teacher text"); /*';s.lesson.description='add_filter("unsafe", "teacher");';await s.saveLesson();const r=await buildV3Pack(s.source,license),php=r.entries.get('lesson-pack.php').toString();assert.equal(php.includes(s.lesson.title),false);assert.equal(php.includes(s.lesson.description),false);assert.match(php,/if \( ! defined\( 'ABSPATH' \) \) \{ exit; \}/);});
