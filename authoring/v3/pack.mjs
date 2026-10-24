@@ -1,3 +1,4 @@
+import {consoleRendererInputViolations} from '../../src/renderers/subjects/console/validate-console-input.mjs';
 import {open,realpath,stat,writeFile,cp,access} from 'node:fs/promises';
 import {resolve,relative,isAbsolute,dirname,basename} from 'node:path';
 import {createHash} from 'node:crypto';
@@ -37,6 +38,15 @@ export async function compileV3Source(source){
  if(lesson.media.status!=='pack')fail('CIM-V3-PACK-MEDIA','$.media.status','This source has no production pack media map.','Use media.status pack and a media.json file; deferred sources remain validation-only.');
  const capture=json(await readPackFile(root,lesson.capture.file,{at:'$.capture.file'}),'$capture');
  const bundle=assertValid(validateBundle(lesson,capture));
+ for(const[i,b]of lesson.beats.entries())for(const[j,a]of b.actions.entries())if(a.kind==='cli'){
+  const input={transcript:[{beat:b.id,command:a.command,copy:a.command,output:a.output.map(text=>({text,tone:'normal'}))}],focus:[]};
+  const violations=consoleRendererInputViolations(input,{title:'Placeholder CLI',prompt:'lab@inspire:~$'},null);
+  if(violations.length)fail('CIM-V3-PACK-CONSOLE',`$.beats[${i}].actions[${j}]`,violations.map(v=>v.path+': '+v.message).join('; '),'Keep commands on one line without tabs and split output into separate lines. For no visible output, use an empty output line [""].');
+ }
+ const consoleIndex=lesson.panes.findIndex(p=>p.type==='console/v1'),initialLines=lesson.panes[consoleIndex].initial_state.lines;
+ const initialInput={transcript:initialLines.length?[{beat:'initial',command:initialLines[0],copy:initialLines[0],output:initialLines.slice(1).map(text=>({text,tone:'normal'}))}]:[],focus:[]};
+ if(consoleRendererInputViolations(initialInput,{title:'Placeholder CLI',prompt:'lab@inspire:~$'},null).length)fail('CIM-V3-PACK-CONSOLE',`$.panes[${consoleIndex}].initial_state.lines`,'Initial Console state cannot be rendered.','Use an empty starting array or single-line command/output entries matching the Console contract.');
+
  const media=json(await readPackFile(root,lesson.media.file,{at:'$.media.file'}),'$media');
  const diagnostics=validateProductionMedia(media);if(diagnostics.length)throw new V3ValidationError(diagnostics);
  assertValid(validateDocument(media,'media'));

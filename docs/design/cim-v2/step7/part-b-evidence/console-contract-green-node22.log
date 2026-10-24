@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: [PB-19] preview serves the manifest-listed compiled/capture/media snapshot and refuses unknown files
+ok 1 - [PB-19] preview serves the manifest-listed compiled/capture/media snapshot and refuses unknown files
+  ---
+  duration_ms: 141.7051
+  type: 'test'
+  ...
+# Subtest: [PB-20] preview blocks forged Host, cross-origin requests and write methods
+ok 2 - [PB-20] preview blocks forged Host, cross-origin requests and write methods
+  ---
+  duration_ms: 33.4637
+  type: 'test'
+  ...
+# Subtest: [PB-21] an immutable served snapshot survives source edits but refresh rejects changed bytes
+ok 3 - [PB-21] an immutable served snapshot survives source edits but refresh rejects changed bytes
+  ---
+  duration_ms: 102.8473
+  type: 'test'
+  ...
+# Subtest: [PB-15] sample has the eight agreed beats, separate custody/reproduction and at most one transfer
+ok 4 - [PB-15] sample has the eight agreed beats, separate custody/reproduction and at most one transfer
+  ---
+  duration_ms: 42.4424
+  type: 'test'
+  ...
+# Subtest: [PB-16] committed video/caption bytes have truthful codecs, fingerprints and simulation labels
+ok 5 - [PB-16] committed video/caption bytes have truthful codecs, fingerprints and simulation labels
+  ---
+  duration_ms: 24.9124
+  type: 'test'
+  ...
+# Subtest: [PB-17] v3 init, validate, compile and pack work through the public CLI without overwriting
+ok 6 - [PB-17] v3 init, validate, compile and pack work through the public CLI without overwriting
+  ---
+  duration_ms: 494.0242
+  type: 'test'
+  ...
+# Subtest: [PB-18] CLI errors expose rule, JSON path and teacher fix including attachment deferral
+ok 7 - [PB-18] CLI errors expose rule, JSON path and teacher fix including attachment deferral
+  ---
+  duration_ms: 179.3201
+  type: 'test'
+  ...
+# Subtest: [PB-01] production pack compiles deterministically into the unchanged v2 envelope
+ok 8 - [PB-01] production pack compiles deterministically into the unchanged v2 envelope
+  ---
+  duration_ms: 67.0049
+  type: 'test'
+  ...
+# Subtest: [PB-02] production media has two independently fingerprinted captioned codec copies
+ok 9 - [PB-02] production media has two independently fingerprinted captioned codec copies
+  ---
+  duration_ms: 19.9032
+  type: 'test'
+  ...
+# Subtest: [PB-03] pack rejects altered provenance or capture references
+ok 10 - [PB-03] pack rejects altered provenance or capture references
+  ---
+  duration_ms: 20.3827
+  type: 'test'
+  ...
+# Subtest: [PB-04] pack rejects altered provenance or capture references
+ok 11 - [PB-04] pack rejects altered provenance or capture references
+  ---
+  duration_ms: 18.8359
+  type: 'test'
+  ...
+# Subtest: [PB-05] pack rejects altered provenance or capture references
+ok 12 - [PB-05] pack rejects altered provenance or capture references
+  ---
+  duration_ms: 23.0389
+  type: 'test'
+  ...
+# Subtest: [PB-06] changed media bytes cannot enter a pack
+ok 13 - [PB-06] changed media bytes cannot enter a pack
+  ---
+  duration_ms: 22.9591
+  type: 'test'
+  ...
+# Subtest: [PB-07] each copy requires its own codec and correct MIME pairing
+ok 14 - [PB-07] each copy requires its own codec and correct MIME pairing
+  ---
+  duration_ms: 16.568
+  type: 'test'
+  ...
+# Subtest: [PB-08] every attachment source is refused with a 1.2 diagnostic
+ok 15 - [PB-08] every attachment source is refused with a 1.2 diagnostic
+  ---
+  duration_ms: 15.0663
+  type: 'test'
+  ...
+# Subtest: [PB-09] traversal and escaping links cannot enter a pack
+ok 16 - [PB-09] traversal and escaping links cannot enter a pack
+  ---
+  duration_ms: 58.6552
+  type: 'test'
+  ...
+# Subtest: [PB-10] an explicit branded development identity is required; no prerelease coercion
+ok 17 - [PB-10] an explicit branded development identity is required; no prerelease coercion
+  ---
+  duration_ms: 42.6407
+  type: 'test'
+  ...
+# Subtest: [PB-11] manifest lists every payload with its actual bounded size and digest
+ok 18 - [PB-11] manifest lists every payload with its actual bounded size and digest
+  ---
+  duration_ms: 38.4243
+  type: 'test'
+  ...
+# Subtest: [PB-12] ZIP bytes and fixed metadata reproduce independent of source mtimes
+ok 19 - [PB-12] ZIP bytes and fixed metadata reproduce independent of source mtimes
+  ---
+  duration_ms: 67.4088
+  type: 'test'
+  ...
+# Subtest: [PB-13] preflight reports whole ZIP and media limits and blocks a known host limit
+ok 20 - [PB-13] preflight reports whole ZIP and media limits and blocks a known host limit
+  ---
+  duration_ms: 49.4754
+  type: 'test'
+  ...
+# Subtest: [PB-14] pack writes checksum and never overwrites either earlier output
+ok 21 - [PB-14] pack writes checksum and never overwrites either earlier output
+  ---
+  duration_ms: 60.5713
+  type: 'test'
+  ...
+# Subtest: [PB-22] authored commands and output must satisfy the existing single-line Console contract
+ok 22 - [PB-22] authored commands and output must satisfy the existing single-line Console contract
+  ---
+  duration_ms: 46.1099
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 831.5419

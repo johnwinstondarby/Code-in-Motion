@@ -113,7 +113,7 @@
           "pane": "console",
           "kind": "cli",
           "provenance": "placeholder",
-          "command": "# Placeholder · simulated\nexport RUN_ID=<placeholder>",
+          "command": "# Placeholder · simulated export RUN_ID=<placeholder>",
           "output": [
             "[Placeholder · simulated] [placeholder output]"
           ]
@@ -160,7 +160,7 @@
           "pane": "console",
           "kind": "cli",
           "provenance": "placeholder",
-          "command": "# Placeholder · simulated\ngit rev-parse HEAD",
+          "command": "# Placeholder · simulated git rev-parse HEAD",
           "output": [
             "[Placeholder · simulated] [placeholder output]"
           ]
@@ -254,7 +254,7 @@
           "pane": "console",
           "kind": "cli",
           "provenance": "placeholder",
-          "command": "# Placeholder · simulated\nsbatch train.sbatch",
+          "command": "# Placeholder · simulated sbatch train.sbatch",
           "output": [
             "[Placeholder · simulated] [placeholder output]"
           ]
@@ -383,7 +383,7 @@
           "pane": "console",
           "kind": "cli",
           "provenance": "placeholder",
-          "command": "# Placeholder · simulated\nverify-manifest <placeholder>",
+          "command": "# Placeholder · simulated verify-manifest <placeholder>",
           "output": [
             "[Placeholder · simulated] [placeholder output]"
           ]
@@ -433,7 +433,7 @@
           "pane": "console",
           "kind": "cli",
           "provenance": "placeholder",
-          "command": "# Placeholder · simulated\npython evaluate.py --manifest run-manifest.json",
+          "command": "# Placeholder · simulated python evaluate.py --manifest run-manifest.json",
           "output": [
             "[Placeholder · simulated] [placeholder output]"
           ]
