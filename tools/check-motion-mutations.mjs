@@ -25,12 +25,14 @@ const cases=[
  ['MOT-19-label',pane,"placeholder?'Placeholder GUI · simulated':'Recorded in the lab'","'Recorded in the lab'",'MOT-19'],
  ['MOT-15-capability',pane,'const pane=Object.freeze({mount','const pane=Object.freeze({host:globalThis,mount','MOT-15'],
  ['ORDER-07-clear-hold',pane,'requireMounted();++playRevision;finalVideo=null;finalRestores=0;restoring=false;cancelPlay();','requireMounted();++playRevision;finalRestores=0;restoring=false;cancelPlay();','ORDER-07'],
+ ['ORDER-10-silent-rewind',pane,"['play','playing','seeking','seeked','timeupdate']","['play','playing']",'ORDER-10'],
  ['ORDER-09-budget',pane,'if(Math.abs(nextVideo.currentTime-nextVideo.duration)<0.001)return;','/* harmless event consumes budget */','ORDER-09'],
  ['ORDER-08-restore-bound',pane,'if(finalRestores>=2)','if(false)','ORDER-08'],
  ['ORDER-06-final-hold',pane,'if(!authorizedPlayback&&finalVideo===nextVideo&&!restoring&&!failed)','if(false)','ORDER-06'],
  ['MOT-15-network',pane,"const code=","const generalRequest=()=>fetch('https://example.invalid'); const code=",'MOT-15'],
 ];
 if(browser)cases.push(
+ ['MOT-25-silent-rewind',pane,"['play','playing','seeking','seeked','timeupdate']","['play','playing']",'MOT-25','browser'],
  ['MOT-22-final-hold',pane,'if(!authorizedPlayback&&finalVideo===nextVideo&&!restoring&&!failed)','if(false)','MOT-22','browser'],
  ['MOT-07-captions',pane,"default:'',src:loaded.captionURL",'src:loaded.captionURL','MOT-07','browser'],
  ['MOT-07-end',pane,"task.finish({status:'settled'})",'/* completion omitted */void 0','MOT-07','browser'],

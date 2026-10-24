@@ -1,19 +1,17 @@
 # Candidate fix for #103: retain the final frame after late native play
 
-Depends on diagnostic/workflow PR #105 at `f26ea51`. Main is `048eafb`, all 33 post-merge checks green. This candidate is **not ready to merge**: further proof and Daisy/Johann review remain required. Part B stays held. No tag, release, installation or version bump.
+**Combined review in PR #106, targeting main.** Former draft #105 is closed without merging; its opt-in diagnostics and read-only, dispatch-only workflow are intentionally included here with the product fix. Main is 048eafb. No merge, version bump, tag, release or installation is authorized by this packet. Part B stays held pending review, approval and green post-merge main.
 
-## Current corrected-candidate status
+## Current candidate status (silent-rewind revision)
 
-- Node 20.20.2 and 22.23.2: **1,092/1,092 tests each**, zero skipped.
-- New real-video/replay/no-side-effects matrix: **54/54**, all three engines and sizes.
-- Corrected clean builds: plugin `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a` (99 files), authoring candidate `431e09c7269193606db958c8860f8972254bf220c512980e1b30859563e5bff9` (128 files), identical in two clean Node 22.23.2 checkouts at 25c633c. Subsequent packet-only changes are excluded from both archives; exact final-head rebuild confirmation follows separately.
-- Constrained corrected batch G: **143 passed / 7 failed**, zero retries. Six preparation failures and one caption check before completion; no original post-completion rewind signature captured. This is **not a green load proof**.
-- Corrected WebKit mutation proof: **35/35 caught as assertions**, unit and browser baselines pass; individual logs retained.
-- Three consecutive final-head WebKit CI jobs: **not yet established**.
-- Three manual diagnostic dispatch runs: **not performed**; reviewed/approved merge of #105 onto main is needed to enable its dispatch-only workflow. #105's f26ea51 now has all 35 checks passed.
-- Main remains 048eafb; published/installed version remains 1.0.1. Rollback ZIP and capture checksums are unchanged.
+- Node 20.20.2: **1,093/1,093 pass**, zero skipped; Node 22.23.2: **1,093/1,093 pass**, zero skipped. Both complete verify logs are retained, not just the Node 20 result.
+- New browser cases: **63/63**, all three engines and sizes, including native seek without any play/playing event.
+- Old seven load failures: classified as pre-existing failure families and tracked in [issue #107](https://github.com/johnwinstondarby/Code-in-Motion/issues/107), with explicit control limitations below. They do not establish a new preparation/caption defect from #103's fix.
+- Final-source load, mutation proof, reproducible builds and three consecutive final-head WebKit CI runs: being completed; earlier counts below describe historical candidates.
+- Manual diagnostic dispatch runs remain unperformed: GitHub requires the workflow on the default branch. Under the combined-review choice it becomes available only after this PR is reviewed, approved and merged. No unapproved main write is made to enable it.
+- Main/release/production remain 048eafb / 1.0.1. Rollback ZIP and page 3227 capture remain unchanged.
 
-Earlier counts and checksums below document superseded iterations; this summary is the current status. No further retries to obtain a green load batch, no deadline/tolerance increases and no merge approval are claimed.
+Historical runs, including every failure, are retained below rather than relabelled as green. No existing deadline, tolerance, MOT-07 predicate or test retry was changed.
 
 ## Observed cause
 
@@ -94,3 +92,28 @@ A single new fixed 150-case batch G is planned for the changed implementation, w
 Same two-CPU/four-foreground/two-background-worker configuration, 50 cases per size; other local verification/browser processes also ran on the host, so this is a loaded correctness experiment rather than a performance benchmark. 1366: 47 pass/3 fail; 1536: 47 pass/3 fail; 1920: 49 pass/1 fail. The 1366 repeat 10 caption failure shows the video at its end while the virtual session remains active, before Motion completion. The six others show failed preparation and a missing video. None records the original settled-then-rewound predicate failure. All seven diagnostics, traces, screenshots and errors are retained under evidence/budget-load; every prior batch remains disclosed. This does not satisfy the requested full-loop green gate and does not resolve #103.
 
 The caller finding, corrected bound, replay and side-effect coverage are ready for independent inspection in draft PR #106. Remaining load failures need assessment rather than retries until green. The workflow and product PRs remain separate, and Part B stays held until the approved fix is merged and main passes.
+
+
+## Review follow-up: causal reasoning, fallback trade-off and PR scope
+
+The caller evidence supports delayed native processing of an earlier legitimate play request: only initial playback and learner resume are logged, both promises resolved before Motion completion, yet the same video later resumes and rewinds. The [HTML internal play steps](https://html.spec.whatwg.org/multipage/media.html#internal-play-steps) seek a forward-ended resource to its earliest position before playback. This explains why pausing on the later event cannot preserve the frame. Restoring the promised completed state is the fix, not merely a hypothetical backstop. Attribution to delayed browser-side processing is an inference from calls/events; internal WebKit native stacks were not captured.
+
+**Deliberate two-restore trade-off:** after two actual corrective seeks, a third unauthorized rewind shows “GUI recording unavailable” even though the beat previously played correctly. The completed session result remains unchanged. This gives the learner an explicit bounded failure instead of an untrustworthy frozen image or an unlimited browser/seek loop. Already-final events cost no budget; one restore runs at a time; genuine playback/navigation clears the hold and budget. ORDER-08 now also asserts that the fallback is visible after exhaustion (an additional assertion after the earlier red runs).
+
+For a single coherent review, #105 is closed without merge and #106 targets main. Its scope intentionally includes test-only opt-in caller/identity observations, the optional manual investigation workflow (workflow_dispatch only, contents read), their tests/evidence and the product fix. No required gate is removed and no tests are retried to obtain passes.
+
+## Load classification before the silent-rewind change
+
+Two fresh 150-case controls completed first, with Node 22.23.2/Linux WebKit, CPUs 0,1, four foreground workers, two composition load workers and 50 repeats per size:
+
+- Clean, unchanged main 048eafb: **147 pass / 3 fail**. Two original final-predicate rewinds; one missing-video failure at the final check. Clean tracked-tree status retained.
+- Matched observer harness on byte-identical main production code: **147 pass / 3 fail**. Two original rewinds and one preparation failure (1536 repeat 44). Only three test/harness files differ; src/, wordpress/ and authoring/ have zero changes. This independently reproduces the preparation family without the fix.
+- The caption family was captured in the earlier pre-fix batch B (1920 repeat 16). Commit 63ee6f9 has zero production-source/authoring/WordPress differences from 048eafb; that comparison is recorded. The fresh controls did not reproduce the caption failure. No matching failure-rate or statistical-equivalence claim is made, and historical extra host work is disclosed.
+
+Those controls plus the retained pre-fix caption capture classify the six preparation failures and one caption failure as pre-existing families. Issue #107 records their real learner impact and requires measured production budgets before Part C. The fixture has both a 1,500ms verified-I/O cap and a 2,500ms preparation/final-frame budget. G's six preparation failures occurred about 2.44–2.48 seconds after observed active notification, consistent with that budget; the exact internal stage was not isolated. The caption failure sees an ended 1.2-second clip before the virtual session completes, so missed test observation must be distinguished from actual caption delivery. These findings are not dismissed as harmless fixture problems and no timeout is raised.
+
+## Silent-rewind red/fix cycle and test edits
+
+2e81de4 commits ORDER-10 red: without play/playing, a seeking/seeked/timeupdate observation leaves the completed video at zero. Nine prior tests pass, the new one fails. The implementation adds those three native events to the same bounded hold guard, with no new timer or engine/host capability. The test exercises each event independently, requires no play event and keeps the same settled result.
+
+MOT-25 was added after that red run: on a real completed video, assigning currentTime=0 must produce a corrected paused final frame without a play/playing event and without a session change. This addition is not claimed to be in the original red run. It passes at all sizes/engines. Added unit and browser mutations removing the non-play event observations; no old assertion was loosened. ORDER-08's visible-fallback assertion was also strengthened after red as disclosed above.

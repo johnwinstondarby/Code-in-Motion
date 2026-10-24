@@ -36,7 +36,7 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
     if(!loaded.videoURL.startsWith('blob:')||!loaded.captionURL.startsWith('blob:'))throw new Error(code);
     const track=element('track',null,{kind:'captions',srclang:loaded.captions.language,label:loaded.captions.label,default:'',src:loaded.captionURL});nextVideo.append(track);nextVideo.src=loaded.videoURL;video=nextVideo;
     // Native play from ended can rewind before its event: pausing alone loses the final still.
-    for(const event of ['play','playing'])on(nextVideo,event,()=>{if(!authorizedPlayback)nextVideo.pause();if(!authorizedPlayback&&finalVideo===nextVideo&&!restoring&&!failed){
+    for(const event of ['play','playing','seeking','seeked','timeupdate'])on(nextVideo,event,()=>{if(!authorizedPlayback)nextVideo.pause();if(!authorizedPlayback&&finalVideo===nextVideo&&!restoring&&!failed){
       if(Math.abs(nextVideo.currentTime-nextVideo.duration)<0.001)return;
       if(finalRestores>=2){finalVideo=null;fallback(descriptor.alt);return;}
       const intent=playRevision;finalRestores++;restoring=true;

@@ -61,6 +61,11 @@ for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${w
   await expect.poll(()=>page.evaluate(()=>replayEvents.some(e=>e.event==='play')&&replayEvents.some(e=>e.event==='playing'))).toBe(true);
   const starts=await page.evaluate(()=>({play:replayEvents.find(e=>e.event==='play'),playing:replayEvents.find(e=>e.event==='playing'),state:fixture.session.read()}));expect(starts.play.time).toBeLessThanOrEqual(0.15);expect(starts.playing.time).toBeLessThanOrEqual(0.15);expect(starts.state.index).toBe(2);expect(starts.state.progress).toBe('active');expect(starts.state.failures).toEqual([]);
  });
+ test('[MOT-25] a seek without play preserves the completed hold and session',async({page})=>{
+  await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.waitForFunction(()=>fixture.clockEvents.length>0);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+  const before=await page.evaluate(()=>JSON.stringify(fixture.session.read()));await page.locator('.motion-pane video').evaluate(v=>{window.silentPlayEvents=0;window.silentSeekEvents=0;v.addEventListener('play',()=>silentPlayEvents++);v.addEventListener('playing',()=>silentPlayEvents++);v.addEventListener('seeking',()=>silentSeekEvents++);v.currentTime=0;});
+  await expect.poll(()=>page.locator('.motion-pane video').evaluate(v=>!v.seeking&&v.paused&&Math.abs(v.currentTime-v.duration)<0.15)).toBe(true);expect(await page.evaluate(()=>silentSeekEvents)).toBeGreaterThan(0);expect(await page.evaluate(()=>silentPlayEvents)).toBe(0);expect(await page.evaluate(()=>JSON.stringify(fixture.session.read()))).toBe(before);
+ });
  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.waitForFunction(()=>fixture.clockEvents.length>0);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
   const result=await page.evaluate(async()=>{

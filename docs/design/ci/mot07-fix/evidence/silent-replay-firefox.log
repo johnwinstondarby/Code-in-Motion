@@ -1,0 +1,25 @@
+
+Running 21 tests using 1 worker
+
+[1/21] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-22] native play from an ended verified clip preserves its final hold
+[2/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+[3/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold
+[4/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold
+[5/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold
+[6/21] tests/e2e/motion-pane.spec.mjs:64:2 › 1366x768 › [MOT-25] a seek without play preserves the completed hold and session
+[7/21] tests/e2e/motion-pane.spec.mjs:69:2 › 1366x768 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[8/21] tests/e2e/motion-pane.spec.mjs:44:2 › 1536x864 › [MOT-22] native play from an ended verified clip preserves its final hold
+[9/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold
+[10/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] previous permits genuine replay after a completed hold
+[11/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold
+[12/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold
+[13/21] tests/e2e/motion-pane.spec.mjs:64:2 › 1536x864 › [MOT-25] a seek without play preserves the completed hold and session
+[14/21] tests/e2e/motion-pane.spec.mjs:69:2 › 1536x864 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[15/21] tests/e2e/motion-pane.spec.mjs:44:2 › 1920x1080 › [MOT-22] native play from an ended verified clip preserves its final hold
+[16/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold
+[17/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold
+[18/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold
+[19/21] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold
+[20/21] tests/e2e/motion-pane.spec.mjs:64:2 › 1920x1080 › [MOT-25] a seek without play preserves the completed hold and session
+[21/21] tests/e2e/motion-pane.spec.mjs:69:2 › 1920x1080 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+  21 passed (17.5s)
