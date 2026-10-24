@@ -5,7 +5,7 @@ import {motionFixture} from './helpers/motion-fixture.mjs';
 import {virtualScheduler} from './conformance/console-test-support.mjs';
 import {createRendererAbortCapability} from '../src/runtime/renderer-capabilities.mjs';
 const flush=async()=>{for(let i=0;i<20;i++)await Promise.resolve();};
-async function setup(){
+async function setup({finalOffset=0}={}){
  const videos=[];let document;
  class Element extends EventTarget{
   constructor(tag){super();this.tag=tag;this.children=[];this.attrs={};this.ownerDocument=document;}
@@ -21,7 +21,7 @@ async function setup(){
   constructor(){super('video');this.duration=1.2;this.readyState=4;this.seeking=false;this.paused=true;this._time=0;this.ended=false;videos.push(this);}
   canPlayType(){return 'probably';}load(){}
   get currentTime(){return this._time;}
-  set currentTime(v){this.seekWrites=(this.seekWrites??0)+1;this._time=v;this.seeking=true;this.ended=false;}
+  set currentTime(v){this.seekWrites=(this.seekWrites??0)+1;this.seekTargets??=[];this.seekTargets.push(v);this._time=v===this.duration?v-finalOffset:v;this.seeking=true;this.ended=false;}
   finishSeek(){this.seeking=false;this.ended=this.currentTime===this.duration;this.dispatchEvent(new Event('seeked'));}
   pause(){this.paused=true;}
   play(){this.paused=false;this.dispatchEvent(new Event('play'));return Promise.resolve();}
@@ -87,4 +87,23 @@ test('[ORDER-11] seek events neither restore nor spend budget in the next round 
  s.video.finishSeek();await flush();assert.equal((await next).status,'settled');assert.equal(s.video.seekWrites,finalWrites);
  for(let i=0;i<2;i++){s.video._time=0;s.video.ended=false;s.video.dispatchEvent(new Event('seeking'));assert.equal(s.video.currentTime,s.video.duration,'normal playback and final-seek events must leave both corrective seeks available');s.video.finishSeek();await flush();}
  assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);s.adapter.pane.dispose();
+});
+
+
+test('[ORDER-12] completed hold preserves the browser-reported exact or short final position',async()=>{
+ for(const finalOffset of [0,0.033]){
+  const s=await setup({finalOffset});s.advance(1200);await flush();s.video.finishSeek();await flush();
+  assert.equal((await s.promise).status,'settled');assert.equal(s.video.seeking,false);
+  const position=s.video.currentTime,writes=s.video.seekWrites;
+  assert.equal(position,s.video.duration-finalOffset);
+  for(let i=0;i<4;i++)for(const event of ['seeking','seeked','timeupdate']){s.video.dispatchEvent(new Event(event));await flush();}
+  assert.equal(s.video.seekWrites,writes,'ordinary events must not spend the restore budget');
+  assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);
+  for(let i=0;i<2;i++){
+   s.video._time=0;s.video.ended=false;s.video.dispatchEvent(new Event('timeupdate'));
+   assert.equal(s.video.seekTargets.at(-1),position,'restore must seek the actual settled position');
+   s.video.finishSeek();await flush();assert.equal(s.video.currentTime,position);
+  }
+  assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);s.adapter.pane.dispose();
+ }
 });
