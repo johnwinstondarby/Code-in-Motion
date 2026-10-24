@@ -1,0 +1,122 @@
+TAP version 13
+# (node:68204) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: [ORDER-13] a final seek landing away retries once and preserves both completed-hold restores
+not ok 1 - [ORDER-13] a final seek landing away retries once and preserves both completed-hold restores
+  ---
+  duration_ms: 17.2803
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\motion-final-seek\\tests\\motion-completion-order.test.mjs:112:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    9 !== 10
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 10
+  actual: 9
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/motion-completion-order.test.mjs:113:164)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [ORDER-14] repeated wrong seek landings exhaust two re-seeks and fail safely
+not ok 2 - [ORDER-14] repeated wrong seek landings exhaust two re-seeks and fail safely
+  ---
+  duration_ms: 1.3841
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\motion-final-seek\\tests\\motion-completion-order.test.mjs:118:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 2
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 2
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/motion-completion-order.test.mjs:119:159)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [ORDER-15] a wrong landing during hold restore retries the recorded short position without spending another restore
+not ok 3 - [ORDER-15] a wrong landing during hold restore retries the recorded short position without spending another restore
+  ---
+  duration_ms: 1.7471
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\motion-final-seek\\tests\\motion-completion-order.test.mjs:122:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    10 !== 11
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 11
+  actual: 10
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/motion-completion-order.test.mjs:124:185)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [ORDER-16] Restart Previous jump and deep-link cancellation retire a pending re-seek before the next transition
+not ok 4 - [ORDER-16] Restart Previous jump and deep-link cancellation retire a pending re-seek before the next transition
+  ---
+  duration_ms: 1.1772
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\motion-final-seek\\tests\\motion-completion-order.test.mjs:128:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Restart
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/motion-completion-order.test.mjs:129:172)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [ORDER-17] a re-seek uses the original final-settle deadline
+not ok 5 - [ORDER-17] a re-seek uses the original final-settle deadline
+  ---
+  duration_ms: 1.4118
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\motion-final-seek\\tests\\motion-completion-order.test.mjs:132:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/motion-completion-order.test.mjs:133:172)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 0
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 170.3441

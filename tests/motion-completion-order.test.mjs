@@ -22,7 +22,7 @@ async function setup({finalOffset=0}={}){
   canPlayType(){return 'probably';}load(){}
   get currentTime(){return this._time;}
   set currentTime(v){this.seekWrites=(this.seekWrites??0)+1;this.seekTargets??=[];this.seekTargets.push(v);this._time=v===this.duration?v-finalOffset:v;this.seeking=true;this.ended=false;}
-  finishSeek(){this.seeking=false;this.ended=this.currentTime===this.duration;this.dispatchEvent(new Event('seeked'));}
+  finishSeek(position=this._time){this._time=position;this.seeking=false;this.ended=this.currentTime===this.duration;this.dispatchEvent(new Event('seeked'));}
   pause(){this.paused=true;}
   play(){this.paused=false;this.dispatchEvent(new Event('play'));return Promise.resolve();}
  }
@@ -35,7 +35,7 @@ async function setup({finalOffset=0}={}){
  const cancellation=createRendererAbortCapability();let done=false,result;
  const promise=adapter.pane.play({asset:'gpu-memory'},{clock,cancellation:cancellation.facade,reducedMotion:false}).then(v=>{done=true;result=v;return v;});
  video.finishSeek();await flush();
- return {root,adapter,video,videos,promise,clock,cancellation:cancellation.facade,advance(ms){scheduler.advanceTo(ms);},pause(){running=false;for(const fn of [...listeners])fn({running});},resume(){running=true;for(const fn of [...listeners])fn({running});},get done(){return done;},get result(){return result;}};
+ return {root,adapter,video,videos,promise,clock,cancellation:cancellation.facade,cancel(reason){cancellation.controller.abort(reason);},advance(ms){scheduler.advanceTo(ms);},pause(){running=false;for(const fn of [...listeners])fn({running});},resume(){running=true;for(const fn of [...listeners])fn({running});},get done(){return done;},get result(){return result;}};
 }
 async function finish(s){s.video.finishSeek();await flush();assert.equal((await s.promise).status,'settled');assert.equal(s.video.currentTime,s.video.duration);assert.equal(s.video.seeking,false);}
 test('[ORDER-01] final seek must resolve after its first pending check',async()=>{const s=await setup();s.advance(1200);await flush();assert.equal(s.done,false);assert.equal(s.video.seeking,true);await finish(s);s.adapter.pane.dispose();});
@@ -106,4 +106,29 @@ test('[ORDER-12] completed hold preserves the browser-reported exact or short fi
   }
   assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);s.adapter.pane.dispose();
  }
+});
+
+
+test('[ORDER-13] a final seek landing away retries once and preserves both completed-hold restores',async()=>{
+ const s=await setup();try{s.advance(1200);await flush();const writes=s.video.seekWrites;s.video.finishSeek(0.467);await flush();assert.equal(s.done,false);assert.equal(s.video.seekWrites,writes+1);assert.equal(s.video.seekTargets.at(-1),1.2);await finish(s);
+ for(let i=0;i<2;i++){s.video._time=0;s.video.ended=false;s.video.dispatchEvent(new Event('timeupdate'));assert.equal(s.video.seekTargets.at(-1),1.2);s.video.finishSeek();await flush();}assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);
+ }finally{s.adapter.pane.dispose();}
+});
+
+test('[ORDER-14] repeated wrong seek landings exhaust two re-seeks and fail safely',async()=>{
+ const s=await setup();try{s.advance(1200);await flush();const writes=s.video.seekWrites;for(let i=0;i<8;i++){s.video.finishSeek(0.467);await flush();}assert.equal(s.video.seekWrites-writes,2);assert.equal(s.done,true);assert.equal((await s.promise).status,'failed');assert.match(s.root.textContent,/GUI recording unavailable/);}finally{s.adapter.pane.dispose();}
+});
+
+test('[ORDER-15] a wrong landing during hold restore retries the recorded short position without spending another restore',async()=>{
+ const s=await setup({finalOffset:0.033});try{s.advance(1200);await flush();s.video.finishSeek();await flush();assert.equal((await s.promise).status,'settled');const position=s.video.currentTime;
+ for(let i=0;i<2;i++){s.video._time=0;s.video.ended=false;s.video.dispatchEvent(new Event('timeupdate'));const writes=s.video.seekWrites;s.video.finishSeek(0.467);await flush();assert.equal(s.video.seekWrites,writes+1);assert.equal(s.video.seekTargets.at(-1),position);s.video.finishSeek();await flush();assert.equal(s.video.currentTime,position);assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);}
+ }finally{s.adapter.pane.dispose();}
+});
+
+test('[ORDER-16] Restart Previous jump and deep-link cancellation retire a pending re-seek before the next transition',async()=>{
+ for(const navigation of ['Restart','Previous','jump','deep-link']){const s=await setup();try{s.advance(1200);await flush();s.video.finishSeek(0.467);await flush();assert.equal(s.video.seeking,true,navigation);s.cancel(navigation);assert.equal((await s.promise).status,'cancelled');const nextAbort=createRendererAbortCapability(),next=s.adapter.pane.play({asset:'gpu-memory'},{clock:s.clock,cancellation:nextAbort.facade,reducedMotion:false});const writes=s.video.seekWrites;s.video.finishSeek(0.467);await flush();assert.equal(s.video.seekWrites,writes,'old attempt must not re-seek during '+navigation);s.advance(2400);await flush();s.video.finishSeek();await flush();assert.equal((await next).status,'settled');assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);}finally{s.adapter.pane.dispose();}}
+});
+
+test('[ORDER-17] a re-seek uses the original final-settle deadline',async t=>{
+ t.mock.timers.enable({apis:['setTimeout']});const s=await setup();try{s.advance(1200);await flush();t.mock.timers.tick(60);s.video.finishSeek(0.467);await flush();assert.equal(s.video.seeking,true);t.mock.timers.tick(39);await flush();assert.equal(s.done,false);t.mock.timers.tick(1);await flush();assert.equal((await s.promise).status,'failed');assert.match(s.root.textContent,/GUI recording unavailable/);}finally{s.adapter.pane.dispose();}
 });
