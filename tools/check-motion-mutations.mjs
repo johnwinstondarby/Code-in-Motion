@@ -5,6 +5,7 @@ import {spawnSync} from 'node:child_process';
 const root=fileURLToPath(new URL('../',import.meta.url)),work=resolve(root,'../motion-mutations'),browser=process.argv.includes('--browser');await mkdir(work,{recursive:true});const sandbox=await mkdtemp(resolve(work,'candidate-'));await cp(root,sandbox,{recursive:true,filter:p=>!['.git','node_modules','dist','test-results','work'].includes(basename(p))});await symlink(resolve(root,'node_modules'),resolve(sandbox,'node_modules'),process.platform==='win32'?'junction':'dir');
 const map='src/multipane/media-map.mjs',access='src/multipane/motion-media.mjs',barrier='src/multipane/media-barrier.mjs',pane='src/multipane/motion.mjs';
 const cases=[
+ ['ORDER-18-stale-fallback',pane,'revision===version&&playRevision===intent','revision===version','ORDER-18'],
  ['ORDER-13-no-reseek',pane,'reseeks++;try{target.currentTime=destination;}','reseeks++;try{void destination;}','ORDER-13'],
  ['ORDER-14-unbounded-reseek',pane,'if(reseeks>=2)','if(false)','ORDER-14'],
  ['ORDER-13-accept-wrong-frame',pane,'const check=()=>!target.seeking&&target.readyState>=2&&Math.abs(target.currentTime-destination)<tolerance','const check=()=>!target.seeking&&target.readyState>=2','ORDER-13'],

@@ -66,10 +66,10 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
   try{const position=finalVideo===target?finalPosition:undefined;await settleFinalVideoFrame(target,{signal:request.signal,timeoutMs,position});if(!request.signal.aborted&&!disposed&&!failed&&video===target&&playRevision===version){finalVideo=target;finalPosition=target.currentTime;}}
   finally{parent?.removeEventListener('abort',abort);if(finalSeek===request)finalSeek=null;}
  }
- function settle(state){requireMounted();cancelPlay();const next=readonlyPaneData(state);const version=revision;
+ function settle(state){requireMounted();++playRevision;cancelPlay();const next=readonlyPaneData(state);const version=revision,intent=playRevision;
   if(!next?.asset){++revision;clear();asset=null;failed=false;frame('No GUI recording has played yet.');return;}
-  if(next.asset===asset&&(failed||media&&!loading)){if(video&&!failed)finalStill().catch(()=>{if(!disposed&&revision===version)fallback(next.alt);});return;}
-  const prepared=prepare(next),token=revision;prepared.then(()=>{if(!disposed&&revision===token&&asset===next.asset)return finalStill();}).catch(()=>{if(!disposed&&revision===token&&!failed)fallback(config.assets.find(a=>a.id===next.asset)?.alt??next.alt);});
+  if(next.asset===asset&&(failed||media&&!loading)){if(video&&!failed)finalStill().catch(()=>{if(!disposed&&revision===version&&playRevision===intent)fallback(next.alt);});return;}
+  const prepared=prepare(next),token=revision,preparedIntent=playRevision;prepared.then(()=>{if(!disposed&&revision===token&&playRevision===preparedIntent&&asset===next.asset)return finalStill();}).catch(()=>{if(!disposed&&revision===token&&playRevision===preparedIntent&&!failed)fallback(config.assets.find(a=>a.id===next.asset)?.alt??next.alt);});
  }
  function play(state,context){
   requireMounted();++playRevision;finalVideo=null;finalPosition=null;finalRestores=0;restoring=false;cancelPlay();const descriptor=config.assets.find(a=>a.id===state?.asset);
