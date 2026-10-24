@@ -1,0 +1,36 @@
+[
+  {
+    "case": "1920-repeat27",
+    "video": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:34713/1cd82cb8-6e92-4cae-a354-b5bbb6bb3c2b",
+      "time": 0.000523527,
+      "duration": 1.2,
+      "ended": false,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true
+    },
+    "failure": {
+      "status": "failed",
+      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m"
+    }
+  },
+  {
+    "case": "1920-repeat49",
+    "video": {
+      "identity": "video-1",
+      "src": "blob:http://127.0.0.1:41147/e9364535-7887-41b0-9403-4f7acbb70860",
+      "time": 0.018339104,
+      "duration": 1.2,
+      "ended": false,
+      "seeking": false,
+      "readyState": 4,
+      "paused": true
+    },
+    "failure": {
+      "status": "failed",
+      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m"
+    }
+  }
+]

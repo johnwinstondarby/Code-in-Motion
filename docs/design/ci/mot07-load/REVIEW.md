@@ -69,3 +69,14 @@ The original-signature record shows the same video-1 and identical blob source, 
 The earlier fake late-play unit case did not model a native play from the ended state rewinding to zero. That gap must be filled with a deterministic failing regression before any product fix. The fixture-only observation branch does not change playback code. A fix and mutation restoring the bug will be prepared separately; three green WebKit fix-head runs and reviewed approval remain required.
 
 Counts across A/B/C: **450 planned, 443 passed, seven failed**. Six failures are readiness/caption/missing-video outcomes; one has #103's exact predicate signature. Every configuration and first-run unit result is retained. The last failure-only logging addition was followed by targeted observer/order/workflow unit runs on both Node versions; full verify logs precede that observer-only addition. Final PR CI is still the authoritative exact-head check.
+
+
+## Caller investigation, batch E
+
+Added opt-in per-Motion-element play-call stack observation, including promise resolution/rejection. No source rewriting, prototype override or default-path instrumentation. The native receiver, arguments and original promise are preserved; six targeted tests pass on Node 20.20.2 and 22.23.2. This is an investigation-only wrapper, explicitly requested after C captured the rewind.
+
+Same constrained configuration: 150 planned, **148 passed / 2 failed**, zero retries. Per viewport: 1366 50/0; 1536 50/0; 1920 48/2. All failures are retained under evidence/caller. This is not a green proof run.
+
+1920 repeat 27 captures the original signature. Exactly two JavaScript play calls are recorded: initial clock observation at stamp 2738 and the learner resume at 4215, both from playNative. Their promises resolve at 2816 and 4240. Motion completes at 4321 with the final frame at 1.2 seconds. At 4342 WebKit rewinds to zero and emits play/playing, with no additional JavaScript play call; another native play/playing follows at 4352/4354. Identity, blob source, beat and generation remain unchanged. No diagnostic events were dropped.
+
+This rules out a fresh stale-clock JavaScript play call in this captured case. It demonstrates late native playback processing after both JavaScript play promises resolved; it does not identify the internal WebKit subsystem or prove a particular engine implementation defect. The separate candidate final-hold restoration remains the appropriate bounded backstop. Part B remains held. The second failure and all earlier non-green batches remain disclosed.
