@@ -1,0 +1,211 @@
+{
+  "schema": "localis.cim/engineering-capture/v1",
+  "id": "custody-capture",
+  "placeholder": true,
+  "archive": {
+    "id": "placeholder-archive",
+    "root": "raw",
+    "files": [
+      {
+        "id": "transcript",
+        "path": "transcript.txt",
+        "sha256": "47be558ced1c97bd960e2ff089c62530e66da741e6a45c708f448dbb65699e08",
+        "provenance": "placeholder"
+      }
+    ]
+  },
+  "records": [
+    {
+      "id": "name-run-run",
+      "beat": "name-run",
+      "pane": "engineering",
+      "host": "inspire",
+      "service": "login",
+      "artifact": "run",
+      "action": "pin",
+      "from": null,
+      "result": {
+        "location": "login",
+        "status": "pinned"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "pin-code-commit",
+      "beat": "pin-code",
+      "pane": "engineering",
+      "host": "inspire",
+      "service": "git",
+      "artifact": "commit",
+      "action": "pin",
+      "from": null,
+      "result": {
+        "location": "git",
+        "status": "pinned"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "stage-job",
+      "beat": "pin-code",
+      "pane": "engineering",
+      "host": "inspire",
+      "service": "git",
+      "artifact": "job",
+      "action": "pin",
+      "from": null,
+      "result": {
+        "location": "git",
+        "status": "pinned"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "submit-fail-job",
+      "beat": "submit-fail",
+      "pane": "engineering",
+      "host": "inspire",
+      "service": "gpu",
+      "artifact": "job",
+      "action": "fail",
+      "from": "git",
+      "result": {
+        "location": "gpu",
+        "status": "failed"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "retry-job",
+      "beat": "retry",
+      "pane": "engineering",
+      "host": "inspire",
+      "service": "gpu",
+      "artifact": "job",
+      "action": "complete",
+      "from": "gpu",
+      "result": {
+        "location": "gpu",
+        "status": "completed"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "review-run-metadata-run",
+      "beat": "review-run-metadata",
+      "pane": "engineering",
+      "host": "inspire",
+      "service": "login",
+      "artifact": "run",
+      "action": "observe",
+      "from": "login",
+      "result": {
+        "location": "login",
+        "status": "pinned"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "track-mlflow-metrics",
+      "beat": "track-mlflow",
+      "pane": "engineering",
+      "host": "inspire",
+      "service": "mlflow",
+      "artifact": "metrics",
+      "action": "pin",
+      "from": null,
+      "result": {
+        "location": "mlflow",
+        "status": "pinned"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "prove-custody-run",
+      "beat": "prove-custody",
+      "pane": "engineering",
+      "host": "invent",
+      "service": "login",
+      "artifact": "run",
+      "action": "verify",
+      "from": "login",
+      "result": {
+        "location": "login",
+        "status": "verified"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "prove-custody-commit",
+      "beat": "prove-custody",
+      "pane": "engineering",
+      "host": "invent",
+      "service": "git",
+      "artifact": "commit",
+      "action": "verify",
+      "from": "git",
+      "result": {
+        "location": "git",
+        "status": "verified"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "prove-custody-job",
+      "beat": "prove-custody",
+      "pane": "engineering",
+      "host": "invent",
+      "service": "gpu",
+      "artifact": "job",
+      "action": "verify",
+      "from": "gpu",
+      "result": {
+        "location": "gpu",
+        "status": "verified"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "prove-custody-metrics",
+      "beat": "prove-custody",
+      "pane": "engineering",
+      "host": "invent",
+      "service": "mlflow",
+      "artifact": "metrics",
+      "action": "verify",
+      "from": "mlflow",
+      "result": {
+        "location": "mlflow",
+        "status": "verified"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    },
+    {
+      "id": "reproduce-job",
+      "beat": "reproduce",
+      "pane": "engineering",
+      "host": "inspire",
+      "service": "gpu",
+      "artifact": "job",
+      "action": "evaluate",
+      "from": "gpu",
+      "result": {
+        "location": "gpu",
+        "status": "reproduced"
+      },
+      "evidence": "transcript",
+      "provenance": "placeholder"
+    }
+  ]
+}

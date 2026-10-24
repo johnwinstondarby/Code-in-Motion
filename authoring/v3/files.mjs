@@ -62,7 +62,8 @@ export async function validateV3File(source, text) {
   if (!kind) fail('CIM-V3-SHAPE', '$.schema', 'Unsupported validation schema.');
   const validated = assertValid(validateDocument(text, kind));
   if(kind==='media'){await validateMediaFiles(validated.value,dirname(source));return{kind,id:validated.value.schema,count:validated.value.assets.length};}
-  if(kind==='pack'&&validated.value.media.status==='fixture')await validateMediaFiles(validated.value.media,dirname(source));
+  if(kind==='pack'&&['fixture','pack'].includes(validated.value.media.status))await validateMediaFiles(validated.value.media,dirname(source));
+  if(kind==='pack'&&validated.value.media.status==='pack'){const {readPackFile}=await import('./pack.mjs');const root=await realpath(dirname(source));for(const[i,file]of validated.value.files.entries())await readPackFile(root,file.path,{max:33554432,size:file.size,sha256:file.sha256,at:`$.files[${i}]`});}
   if (kind === 'pack') return { kind, id: 'cim.lesson-pack/v2', count: validated.value.lessons.length };
   if (kind === 'capture') {
     await validateArchiveFiles(validated.value, dirname(source));
@@ -75,5 +76,6 @@ export async function validateV3File(source, text) {
   const captureText = decodeJSON(await readBoundedFile(file), '$capture');
   const bundle = assertValid(validateBundle(text, captureText));
   await validateArchiveFiles(bundle.capture, dirname(file));
+  if(bundle.lesson.media.status==='pack'){const {compileV3Source}=await import('./pack.mjs');await compileV3Source(source);}
   return { kind, id: bundle.lesson.id, count: bundle.lesson.beats.length, bundle };
 }

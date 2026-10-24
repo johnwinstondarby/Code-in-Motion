@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {tryV3Command} from './cim-author-v3.mjs';
 import { formatAuthoringError } from './authoring-diagnostics.mjs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -8,6 +9,7 @@ import { compileLesson, createLessonPack, MAX_AUTHORING_BYTES } from './lesson-p
 import { decodeJSON, readBoundedFile, validateV3File } from '../authoring/v3/files.mjs';
 
 export async function main(args) {
+  if(await tryV3Command(args))return;
   const [command, source, ...rest] = args;
   if (!['init','validate','compile','pack','preview'].includes(command) || !source || (rest.length && !(rest.length===2 && rest[0]===(command==='preview'?'--port':'--out') && rest[1])) || (['init','validate'].includes(command) && rest.length)) {
     throw new Error('Usage: node tools/cim-author.mjs init lesson.json | validate lesson.json | compile lesson.json --out compiled.json | pack lesson.json --out lesson-pack.zip | preview lesson.json --port 8088');
