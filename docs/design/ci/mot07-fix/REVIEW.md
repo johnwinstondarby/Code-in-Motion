@@ -4,7 +4,7 @@
 
 ## Current candidate status (silent-rewind revision)
 
-- Node 20.20.2: **1,093/1,093 pass**, zero skipped; Node 22.23.2: **1,093/1,093 pass**, zero skipped. Both complete verify logs are retained, not just the Node 20 result.
+- Node 20.20.2: **1,094/1,094 pass**, zero skipped; Node 22.23.2: **1,094/1,094 pass**, zero skipped. Both complete verify logs are retained, not just the Node 20 result.
 - New browser cases: **63/63**, all three engines and sizes, including native seek without any play/playing event.
 - Old seven load failures: classified as pre-existing failure families and tracked in [issue #107](https://github.com/johnwinstondarby/Code-in-Motion/issues/107), with explicit control limitations below. They do not establish a new preparation/caption defect from #103's fix.
 - Final-source constrained load: **150/150 pass**, 50 per size, no retries. Both unchanged-production controls reproduced #103; all raw earlier failures remain retained and #107 handles the pre-existing load families.
@@ -131,3 +131,14 @@ Both full verify logs explicitly show Node 20.20.2 and Node 22.23.2, 1,093 pass 
 The no-play regression covers seeks that emit seeking, seeked or timeupdate without play/playing. [HTML seeking](https://html.spec.whatwg.org/multipage/media.html#seeking) requires seek-related media events, including for discontinuous native position changes. This is event-based protection, not a claim to detect an engine that mutates currentTime while emitting no media event whatsoever; no polling timer was added.
 
 This packet is frozen for the exact-head CI proof. Later CI/build results are recorded in PR #106 comments, keeping the reviewed head fixed. No merge or release is implied by local success; Daisy review and Johann approval remain required. #103 remains open and Part B remains held through approved merge and green main.
+
+
+## Final review follow-up: seven failures, harmless events and combined scope
+
+**Why the seven earlier failures disappeared: unknown.** The 150/150 result does not prove the silent-rewind change fixed preparation or captions. Load variance is plausible, and historical batches also ran extra verification on the host, but that cause was not established. The fresh unchanged-production control reproduces the preparation family; the earlier byte-identical pre-fix production tree captured the caption family. Issue #107 stays open for the exact causes, actual learner impact and measured production preparation/caption budgets before Part C. None of the seven is removed from the record, and no timeout was increased.
+
+ORDER-09 now explicitly dispatches play, playing, seeking, seeked and timeupdate repeatedly at the held final frame, requires zero extra seeks, then proves BOTH corrective seeks are still available without fallback. ORDER-11 checks each of the three added events during the next genuine playback round: no restore, no seek write and playback remains running. It also checks events during Motion's own final-frame seek (including seeked on completion), with no additional corrective seek, then proves both restores remain available. No production code changed in this follow-up; the 150/150 source and browser proof remain applicable byte for byte.
+
+The first ORDER-11 run failed because its new assertion counted the entire clock-driven animation as one seek (19 writes versus an expected 11). Commit 446ceba preserves that test and log. The correction samples the write count at the start of the final-seek phase, retaining all assertions against event-triggered extra writes and budget use. It is a test construction correction, not a new product defect or a changed production implementation. All 11 ordering tests then pass. A new mutation removes the active/final-hold eligibility guard; ORDER-11 catches it as an assertion. This probe joins the existing 37; final CI runs all 38. The unit mutation suite and both full verify runs pass, with **1,094 tests each on Node 20.20.2 and Node 22.23.2**, zero skipped.
+
+PR #106 includes #105's opt-in diagnostics and read-only, dispatch-only investigation workflow and targets main. #105 is CLOSED as folded in, not merged first. This is the combined-review option, not a fix-only diff. The three CI proofs start after the new test/evidence head is frozen; earlier-head successes are not counted. Main/release/installed version and rollback material remain unchanged. No merge before Daisy review and Johann approval; Part B stays held.

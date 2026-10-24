@@ -1,4 +1,4 @@
-f4772c6fd85ac119ac3bd3390bd63c282c6cf37272039a796f79bc42922d112a  docs/design/ci/mot07-fix/REVIEW.md
+9bd2d87a39df022c3270f33e93c88e1ce1383fbfbf2086f5a7854233f0f2277f  docs/design/ci/mot07-fix/REVIEW.md
 ea3b41ce040ef094a8cf7aff815609cc522dd9bc5628e9822ccf6173b5a0bcb5  docs/design/ci/mot07-fix/evidence/1920-repeat16/error-context.md
 701040762aa59e6ccacf75bd99ab57ccf8cf8c46dc8b9d684ffc2c3bf168ccd9  docs/design/ci/mot07-fix/evidence/1920-repeat16/motion-failure.json
 894d5030d89dbed9c66104c314490f8284a5b4511ad6657e45747702a8eb93a3  docs/design/ci/mot07-fix/evidence/1920-repeat16/test-failed-1.png
@@ -11,6 +11,7 @@ ea3b41ce040ef094a8cf7aff815609cc522dd9bc5628e9822ccf6173b5a0bcb5  docs/design/ci
 58177d1d68d14ec4eb05e08c7cc08cf53aa2f6b1e150ed5f7c321e525fe82e27  docs/design/ci/mot07-fix/evidence/1920-repeat32/motion-failure.json
 894d5030d89dbed9c66104c314490f8284a5b4511ad6657e45747702a8eb93a3  docs/design/ci/mot07-fix/evidence/1920-repeat32/test-failed-1.png
 2cea5aa510644e220a740c220190393e4a12a017c3a258de1710b3d937e64a36  docs/design/ci/mot07-fix/evidence/1920-repeat32/trace.zip
+63a8328c3fe752f657a09b15a7acc324ef8520fa515b57d363aa8149f0bf4335  docs/design/ci/mot07-fix/evidence/ORDER-11-active-events.log
 684369c3e8ce225e2b3a4a9af7d2643f6f12b8c00d94ce23ef55abe7cd2d2cb8  docs/design/ci/mot07-fix/evidence/bounded-green.log
 b0e6aa88504de0fddcad71eb04d2d00def1ecbe823e03f79fccdf9674d29b591  docs/design/ci/mot07-fix/evidence/bounded-load/1366-repeat47/error-context.md
 93735e47c28a0aec0b0d74d9a38e260ccb167b5d9b2f975dc86ca2231bed0d9c  docs/design/ci/mot07-fix/evidence/bounded-load/1366-repeat47/motion-failure.json
@@ -121,6 +122,11 @@ a6abc285635d4cd655aeb8abbecbf879539a4896555d3268d9a99156c275ed50  docs/design/ci
 9c7a034a0b0ac0fd45cb29ec76c5517107af99c51f4befe485b521e0f94029c9  docs/design/ci/mot07-fix/evidence/corrected-mutation-logs/ORDER-09-budget.log
 803ca087851f2b0c458e61fd758c231a620bac810f4adf6a91410dbc7438a75e  docs/design/ci/mot07-fix/evidence/corrected-mutation-logs/baseline-browser.log
 734de2ea849d619052730d15701e8ffacac2d320408afd8134233c00da01dcee  docs/design/ci/mot07-fix/evidence/corrected-mutation-logs/baseline-unit.log
+b22457038cbc97ffe445cf28ba8cb4dac3fcf7999f5afc9aed3fac2d7fce9ca7  docs/design/ci/mot07-fix/evidence/event-safety-first.log
+d886bc09e924c869a20d18814e7ff3371bfd60a65373d9d30faa61912e234f93  docs/design/ci/mot07-fix/evidence/event-safety-green.log
+6275e1e68973bc8e59425cd866a76fd1014c044b254d2711556fec8f360557b2  docs/design/ci/mot07-fix/evidence/event-safety-unit-mutations.log
+7ab79fc29098b81e4597b5d086b8778d840fc3586368a59d8dd7802b1398dd11  docs/design/ci/mot07-fix/evidence/event-safety-verify20.log
+6c43a3664c44ba5692ce03d14c27dbefc2fef8665168579e52136944d770cc3a  docs/design/ci/mot07-fix/evidence/event-safety-verify22.log
 43c5742bd4f95e7e30e92b12570d85fc90888d0a31fc152e7837fadb5876c884  docs/design/ci/mot07-fix/evidence/firefox-native.log
 aed003005911d4bc289360cfb1f2f0a08296869f91982728fb4623b9cc93c591  docs/design/ci/mot07-fix/evidence/load-classification.json
 8c2ee0707ea2e806d272f9342dde062f4686d818f5f9f2fcbdc76b249049de8d  docs/design/ci/mot07-fix/evidence/main-control-load/1366-repeat29/error-context.md

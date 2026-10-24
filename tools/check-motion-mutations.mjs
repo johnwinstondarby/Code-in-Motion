@@ -25,6 +25,7 @@ const cases=[
  ['MOT-19-label',pane,"placeholder?'Placeholder GUI · simulated':'Recorded in the lab'","'Recorded in the lab'",'MOT-19'],
  ['MOT-15-capability',pane,'const pane=Object.freeze({mount','const pane=Object.freeze({host:globalThis,mount','MOT-15'],
  ['ORDER-07-clear-hold',pane,'requireMounted();++playRevision;finalVideo=null;finalRestores=0;restoring=false;cancelPlay();','requireMounted();++playRevision;finalRestores=0;restoring=false;cancelPlay();','ORDER-07'],
+ ['ORDER-11-active-events',pane,'if(!authorizedPlayback&&finalVideo===nextVideo&&!restoring&&!failed)','if(!restoring&&!failed)','ORDER-11'],
  ['ORDER-10-silent-rewind',pane,"['play','playing','seeking','seeked','timeupdate']","['play','playing']",'ORDER-10'],
  ['ORDER-09-budget',pane,'if(Math.abs(nextVideo.currentTime-nextVideo.duration)<0.001)return;','/* harmless event consumes budget */','ORDER-09'],
  ['ORDER-08-restore-bound',pane,'if(finalRestores>=2)','if(false)','ORDER-08'],
