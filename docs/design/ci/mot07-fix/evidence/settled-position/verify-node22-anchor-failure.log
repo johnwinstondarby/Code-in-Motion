@@ -1,0 +1,395 @@
+
+> code-in-motion@1.0.1 verify
+> npm run check:learner-theme-css && npm run check:schema && npm run check:git-content && npm run check:page-3227 && npm run check:cim-authoring && npm run check:authoring-v1 && npm run check:console-render-evidence && npm run check:wordpress-experience-registry && npm run check:wordpress-renderer-registry && npm run check:wordpress-release-info && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm run check:workflow-gates && npm run check:wordpress-production-transport && npm run check:v3-mutations && npm run check:pane-mutations && npm run check:multipane-mutations && npm run check:engineering-mutations && npm run check:motion-mutations && npm run check:composition-mutations && npm run check:diagram-capacity-mutations && npm test
+
+
+> code-in-motion@1.0.1 check:learner-theme-css
+> node tools/check-learner-theme-css.mjs
+
+PASS: learner theme CSS matches the complete palette source.
+
+> code-in-motion@1.0.1 check:schema
+> node tools/check-schema-fixtures.mjs
+
+PASS: published schemas + production validation contract (4 valid, 16 v1 invalid, 22 v2 invalid fixtures)
+
+> code-in-motion@1.0.1 check:git-content
+> node tools/generate-git-basic-cycle.mjs --check
+
+PASS: R27 Git shared-source projections are current (page 3227 + git-basic-cycle).
+
+> code-in-motion@1.0.1 check:page-3227
+> node tools/generate-page-3227-git-adapter.mjs --check
+
+PASS: R27 page 3227 Git adapter is current.
+
+> code-in-motion@1.0.1 check:cim-authoring
+> node tools/compile-cim.mjs --check
+
+PASS: R29 .cim authored fixture is current.
+
+> code-in-motion@1.0.1 check:authoring-v1
+> node tools/compile-authoring.mjs --check
+
+PASS: R42 authoring v1 (63 validator fixture(s), 2 compiled experience(s) byte-current, 23 boundaries conforming to CONSOLE-RENDERER-v1 with evidence correspondence).
+
+> code-in-motion@1.0.1 check:console-render-evidence
+> node tools/console-render-evidence.mjs --check
+
+PASS: R42 console/v1 canonical render evidence (1 experience(s)).
+
+> code-in-motion@1.0.1 check:wordpress-experience-registry
+> node tools/check-wordpress-experience-registry.mjs
+
+PASS: R30 WordPress Experience registry (4 registered Experience(s), generated browser projection current).
+
+> code-in-motion@1.0.1 check:wordpress-renderer-registry
+> node tools/check-wordpress-renderer-registry.mjs
+
+PASS: R32 WordPress renderer registry (3 renderer(s), 4 registered Experience binding(s), generated inventory current).
+
+> code-in-motion@1.0.1 check:wordpress-release-info
+> node tools/check-wordpress-release-info.mjs
+
+PASS: R33 WordPress release info (stable 1.0.1, tested WordPress 7.1, 3 current changelog note(s)).
+
+> code-in-motion@1.0.1 check:architecture
+> node tools/check-architecture-boundaries.mjs
+
+PASS: architecture boundaries (69 production source file(s) checked)
+
+> code-in-motion@1.0.1 check:core-authority
+> node tools/check-core-authority.mjs
+
+PASS: Core authority (69 production source file(s) checked)
+
+> code-in-motion@1.0.1 check:wordpress-packaging
+> node tools/check-wordpress-packaging.mjs
+
+PASS: WordPress packaging baseline (5 PHP file(s), 4 external asset(s), wp-env floor WordPress/WordPress#6.5.10, PHP 7.4)
+
+> code-in-motion@1.0.1 check:wordpress-release-tree
+> node tools/check-wordpress-release-tree.mjs
+
+PASS: R12 WordPress release-tree contract (67 module(s), 107 import edge(s), module root wordpress/assets/modules/1.0.1, entry wordpress/assets/modules/1.0.1/wordpress/assets/bootstrap-module.mjs, experiences wordpress/assets/modules/1.0.1/wordpress/experiences/git-basic-cycle.json, wordpress/assets/modules/1.0.1/wordpress/experiences/git-repository-practice.json, wordpress/assets/modules/1.0.1/wordpress/experiences/python-first-steps.json, wordpress/assets/modules/1.0.1/wordpress/experiences/synthetic-wordpress.json)
+
+> code-in-motion@1.0.1 check:wordpress-metadata
+> node tools/check-wordpress-release-metadata.mjs
+
+PASS: R22 release metadata (source, version 1.0.1, WordPress 6.5-tested 7.1, PHP 7.4, GPLv3).
+
+> code-in-motion@1.0.1 check:workflow-gates
+> node tools/check-required-workflow-gates.mjs
+
+PASS: R28 required workflow gates and trigger topology (CiM / Verify, CiM / Floor QA, CiM / Browser E2E, CiM / Playground).
+
+> code-in-motion@1.0.1 check:wordpress-production-transport
+> node tools/check-wordpress-production-transport-composition.mjs
+
+PASS: R40 WordPress production Transport composition contract.
+
+> code-in-motion@1.0.1 check:v3-mutations
+> node tools/check-v3-mutations.mjs
+
+CAUGHT CIM-V3-PARSE
+CAUGHT CIM-V3-SHAPE
+CAUGHT CIM-V3-LIMIT
+CAUGHT CIM-V3-ID
+CAUGHT CIM-V3-PANE-TYPE
+CAUGHT CIM-V3-INITIAL
+CAUGHT CIM-V3-EXPLANATION
+CAUGHT CIM-V3-ACTION-COUNT
+CAUGHT CIM-V3-SIMULTANEOUS
+CAUGHT CIM-V3-ACTION-TAB
+CAUGHT CIM-V3-CAPTURE-REFERENCE
+CAUGHT CIM-V3-DIAGRAM-STATE
+CAUGHT CIM-V3-PLACEHOLDER
+CAUGHT CIM-V3-ARCHIVE-PATH
+CAUGHT CIM-V3-EVIDENCE
+CAUGHT CIM-V3-PACK-VERSION
+CAUGHT CIM-V3-MEDIA-DEFERRED
+PASS: 17 v3 validation rules independently bypassed and caught. Node 22.23.2.
+
+> code-in-motion@1.0.1 check:pane-mutations
+> node tools/check-pane-mutations.mjs
+
+CAUGHT stale-callback
+CAUGHT capability-leak
+CAUGHT missed-dispose
+CAUGHT retained-listener
+CAUGHT renderer-missed-dispose
+PASS: 5 pane contract mutations caught.
+
+> code-in-motion@1.0.1 check:multipane-mutations
+> node tools/check-multipane-mutations.mjs
+
+CAUGHT MP-01-tab
+CAUGHT MP-01-completion-tab
+CAUGHT MP-02-view-only
+CAUGHT MP-03-pause-tab
+CAUGHT MP-03-resume-tab
+CAUGHT MP-03-clock
+CAUGHT MP-04-next
+CAUGHT MP-05-held-state
+CAUGHT MP-06-initial-default
+CAUGHT MP-07-context-override
+CAUGHT MP-08-reconstruction
+CAUGHT MP-08-pane-wiring
+CAUGHT MP-09-start
+CAUGHT MP-10-restart
+CAUGHT MP-10-reset
+CAUGHT MP-11-open
+CAUGHT MP-12-close
+CAUGHT MP-13-status
+CAUGHT MP-17-stale-completion
+CAUGHT MP-18-late-results
+CAUGHT MP-19-reduced-motion
+CAUGHT MP-20-fixture-guard
+CAUGHT MP-20-packaging
+CAUGHT MP-21-dispose
+CAUGHT MP-22-all-panes
+CAUGHT MP-22-failure
+PASS: 26 multi-pane mutations caught.
+
+> code-in-motion@1.0.1 check:engineering-mutations
+> node tools/check-engineering-mutations.mjs
+
+{
+  "node": "v22.23.2",
+  "baseline": "passed",
+  "results": [
+    {
+      "id": "ENG-01-ids",
+      "rule": "ENG-01",
+      "caught": true
+    },
+    {
+      "id": "ENG-01-derived",
+      "rule": "ENG-01",
+      "caught": true
+    },
+    {
+      "id": "ENG-02-label",
+      "rule": "ENG-02",
+      "caught": true
+    },
+    {
+      "id": "ENG-02-placeholder",
+      "rule": "ENG-02",
+      "caught": true
+    },
+    {
+      "id": "ENG-03-final",
+      "rule": "ENG-03",
+      "caught": true
+    },
+    {
+      "id": "ENG-03-reduced",
+      "rule": "ENG-03",
+      "caught": true
+    },
+    {
+      "id": "ENG-04-text",
+      "rule": "ENG-04",
+      "caught": true
+    },
+    {
+      "id": "ENG-05-evidence",
+      "rule": "ENG-05",
+      "caught": true
+    },
+    {
+      "id": "ENG-06-wait",
+      "rule": "ENG-06",
+      "caught": true
+    },
+    {
+      "id": "ENG-07-fallback",
+      "rule": "ENG-07",
+      "caught": true
+    },
+    {
+      "id": "ENG-08-size",
+      "rule": "ENG-08",
+      "caught": true
+    },
+    {
+      "id": "ENG-09-leak",
+      "rule": "ENG-09",
+      "caught": true
+    },
+    {
+      "id": "ENG-09-network",
+      "rule": "ENG-09",
+      "caught": true
+    },
+    {
+      "id": "ENG-09-guard",
+      "rule": "ENG-09",
+      "caught": true
+    }
+  ]
+}
+
+> code-in-motion@1.0.1 check:motion-mutations
+> node tools/check-motion-mutations.mjs
+
+{
+  "node": "v22.23.2",
+  "browser": null,
+  "baseline": "passed",
+  "results": [
+    {
+      "id": "MOT-01-source",
+      "rule": "MOT-01",
+      "caught": true
+    },
+    {
+      "id": "MOT-01-type",
+      "rule": "MOT-01",
+      "caught": true
+    },
+    {
+      "id": "MOT-01-file-size",
+      "rule": "MOT-01",
+      "caught": true
+    },
+    {
+      "id": "MOT-01-total",
+      "rule": "MOT-01",
+      "caught": true
+    },
+    {
+      "id": "MOT-02-original-address",
+      "rule": "MOT-02",
+      "caught": true
+    },
+    {
+      "id": "MOT-02-caption-bytes",
+      "rule": "MOT-02",
+      "caught": true
+    },
+    {
+      "id": "MOT-03-digest",
+      "rule": "MOT-03",
+      "caught": true
+    },
+    {
+      "id": "MOT-04-resolver",
+      "rule": "MOT-04",
+      "caught": true
+    },
+    {
+      "id": "MOT-05-timeout",
+      "rule": "MOT-05",
+      "caught": true
+    },
+    {
+      "id": "MOT-05-late-copy",
+      "rule": "MOT-05",
+      "caught": true
+    },
+    {
+      "id": "MOT-06-readiness",
+      "rule": "MOT-06",
+      "caught": true
+    },
+    {
+      "id": "MOT-06-user-pause",
+      "rule": "MOT-06",
+      "caught": true
+    },
+    {
+      "id": "MOT-11-map-open",
+      "rule": "MOT-11",
+      "caught": true
+    },
+    {
+      "id": "MOT-12-schema",
+      "rule": "MOT-12",
+      "caught": true
+    },
+    {
+      "id": "MOT-13-file-digest",
+      "rule": "MOT-13",
+      "caught": true
+    },
+    {
+      "id": "MOT-14-link",
+      "rule": "MOT-14",
+      "caught": true
+    },
+    {
+      "id": "MOT-20-unprepared-fallback",
+      "rule": "MOT-20",
+      "caught": true
+    },
+    {
+      "id": "MOT-19-label",
+      "rule": "MOT-19",
+      "caught": true
+    },
+    {
+      "id": "MOT-15-capability",
+      "rule": "MOT-15",
+      "caught": true
+    },
+    {
+      "id": "ORDER-07-clear-hold",
+      "rule": "ORDER-07",
+      "caught": true
+    },
+    {
+      "id": "ORDER-11-active-events",
+      "rule": "ORDER-11",
+      "caught": true
+    },
+    {
+      "id": "ORDER-10-silent-rewind",
+      "rule": "ORDER-10",
+      "caught": true
+    },
+    {
+      "id": "ORDER-12-duration-comparison",
+      "rule": "ORDER-12",
+      "caught": true
+    },
+    {
+      "id": "ORDER-12-duration-restore",
+      "rule": "ORDER-12",
+      "caught": true
+    },
+    {
+      "id": "ORDER-09-budget",
+      "rule": "ORDER-09",
+      "caught": true
+    },
+    {
+      "id": "ORDER-08-restore-bound",
+      "rule": "ORDER-08",
+      "caught": true
+    },
+    {
+      "id": "ORDER-06-final-hold",
+      "rule": "ORDER-06",
+      "caught": true
+    },
+    {
+      "id": "MOT-15-network",
+      "rule": "MOT-15",
+      "caught": true
+    }
+  ]
+}
+
+> code-in-motion@1.0.1 check:composition-mutations
+> node tools/check-composition-mutations.mjs
+
+file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tools/check-composition-mutations.mjs:34
+for(const[id,file,from,to,rule,kind='unit']of cases){const path=resolve(sandbox,file),original=await readFile(path,'utf8');if(!original.includes(from))throw new Error('Missing probe target '+id);let result;try{let mutated=original.replaceAll(from,to);if(id==='CMP-16-final-seek')mutated=mutated.replace('if(!target.seeking||Math.abs(target.currentTime-target.duration)>=0.001)target.currentTime=target.duration;','target.currentTime=target.duration;');if(id==='CMP-13-missing')mutated=mutated.replace("if(canonical(state)!==canonical(beat.state))fail('Claimed state differs from capture-derived state.');",'').replace("if(used.size!==records.size)fail('Unused capture record.');",'');if(id==='CMP-12-deadline')mutated=mutated.replace('const requestController=io,deadline=performance.now()+timeoutMs;','const requestController=io;let deadline=performance.now()+timeoutMs;').replace('},timeoutMs);','},timeoutMs*3);');await writeFile(path,mutated);result=run(rule,kind);}finally{await writeFile(path,original);}const output=result.stdout+result.stderr,caught=result.status!==0&&/ERR_ASSERTION|AssertionError|Error: expect\(|Error: expect\.poll/.test(output)&&!/SyntaxError|ReferenceError|TypeError: Assignment to constant/.test(output);await writeFile(resolve(work,id+'.log'),output);if(!caught)throw new Error('Probe survived or crashed: '+id+'\n'+output);results.push({id,rule,caught});}
+                                                                                                                                                             ^
+
+Error: Missing probe target CMP-16-final-seek
+    at file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tools/check-composition-mutations.mjs:34:158
+
+Node.js v22.23.2

@@ -1,4 +1,4 @@
-9bd2d87a39df022c3270f33e93c88e1ce1383fbfbf2086f5a7854233f0f2277f  docs/design/ci/mot07-fix/REVIEW.md
+275145d7467196d05b32697f5b66da2da7c0554ada015cb232702fc773304e4b  docs/design/ci/mot07-fix/REVIEW.md
 ea3b41ce040ef094a8cf7aff815609cc522dd9bc5628e9822ccf6173b5a0bcb5  docs/design/ci/mot07-fix/evidence/1920-repeat16/error-context.md
 701040762aa59e6ccacf75bd99ab57ccf8cf8c46dc8b9d684ffc2c3bf168ccd9  docs/design/ci/mot07-fix/evidence/1920-repeat16/motion-failure.json
 894d5030d89dbed9c66104c314490f8284a5b4511ad6657e45747702a8eb93a3  docs/design/ci/mot07-fix/evidence/1920-repeat16/test-failed-1.png
@@ -177,6 +177,21 @@ bf2c73be12b07d185de53bdeeda014c3652169e20c89bd22e2adbdfcdba220b6  docs/design/ci
 489d68b54b72c2448539ceb76305c8d038fd2cffb93a253e67a236ddb2af1b12  docs/design/ci/mot07-fix/evidence/replay-ready-chromium.log
 d5a087fae1f139cb4ab45a6716d7dc8cb578c2ad9aafe1ad7846a6839fe32d50  docs/design/ci/mot07-fix/evidence/replay-ready-firefox.log
 01e51f6de7f45dbc9ca598fd4d7803d5556ba774859845b08ddf54b550f6652a  docs/design/ci/mot07-fix/evidence/replay-ready-webkit.log
+1dec51610183ac73a84c0dc27ae0f6554581fb5c14bb4c52dd3bdf9c3b89bf0c  docs/design/ci/mot07-fix/evidence/settled-position/browser-chromium.log
+1ba391b4e316cc476bb3005a4d07de158f3a3af1822a075520efa00eb4551c5e  docs/design/ci/mot07-fix/evidence/settled-position/browser-firefox.log
+06e9dc9496af6276218307b317e39b809fbcae905b545dd1069ab2ec360d3817  docs/design/ci/mot07-fix/evidence/settled-position/browser-webkit.log
+5b7ac7e59e6d839eb37070c67d318cdbdd2a0bf0e05e4f329a2e63e0f0fc0369  docs/design/ci/mot07-fix/evidence/settled-position/builds.json
+b456fecd99a177a363c00ea9b5c85f6fbbcc6959db7673ef11e5b2000909d061  docs/design/ci/mot07-fix/evidence/settled-position/green-order-node22.log
+4fcded8d8822ebcaf789d4066b2f7b49d420e42c4a8e43d539aabdc5806d8751  docs/design/ci/mot07-fix/evidence/settled-position/load/browser-load-affinity.txt
+60b389ca3ec6140a452774c1c48861cf88fb99980ceac940225cb4cc0a9eb630  docs/design/ci/mot07-fix/evidence/settled-position/load/browser-load-run.json
+d2d7c6c778e7efeb29c153262592e78c354a72b6f3d017e3bc72385ff834bbc4  docs/design/ci/mot07-fix/evidence/settled-position/load/browser-load.log
+862ac9f0912f9028ee10a396455821f21d3e1a1db76b025f9e78d8b87ce91d5b  docs/design/ci/mot07-fix/evidence/settled-position/load/diagnostic-records.zip
+9a35ae6747694e398c75346581174f01747b8f8dea784fa33fbe8b81d8e98d46  docs/design/ci/mot07-fix/evidence/settled-position/load/records.json
+1853450b0a9065a6959301147cb7f29b76ce8f00d2c94761ef1ffd41532e194d  docs/design/ci/mot07-fix/evidence/settled-position/mutations-node22.json
+a2c51cd7b4a998b8955b9f3c2bfc076f9641158e590bdd3e6d86e240d1f3a37f  docs/design/ci/mot07-fix/evidence/settled-position/red-node22.log
+f03c3edf0e2f8405dc4115e1bf676459d97be62a2fb564a99b67a7369ef0ef2d  docs/design/ci/mot07-fix/evidence/settled-position/verify-node20.log
+f05f55fc6ab51fa69afb1c7903ae411838d436a626524e1debbf430e09e88afd  docs/design/ci/mot07-fix/evidence/settled-position/verify-node22-anchor-failure.log
+b720caebafaa0a6a19e59f14cfb5f1aad0e4a3a01b9ef45e270539f5527b0e73  docs/design/ci/mot07-fix/evidence/settled-position/verify-node22.log
 db531df2e8b84e1a297c5f72b3207298cb8814453b69f555897bae13204ad9c9  docs/design/ci/mot07-fix/evidence/silent-build-clean-e.log
 db531df2e8b84e1a297c5f72b3207298cb8814453b69f555897bae13204ad9c9  docs/design/ci/mot07-fix/evidence/silent-build-clean-f.log
 1e638e311de4ab8ae7c48e5ca1da544be1f1b98bb8630369796c36b262aac20f  docs/design/ci/mot07-fix/evidence/silent-builds.json
