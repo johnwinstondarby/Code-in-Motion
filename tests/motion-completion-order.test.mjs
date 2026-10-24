@@ -63,9 +63,10 @@ test('[ORDER-08] repeated unauthorized playback cannot cause an unbounded restor
 
 test('[ORDER-09] harmless final-frame events do not consume corrective-seek budget',async()=>{
  const s=await setup();s.advance(1200);await finish(s);const writes=s.video.seekWrites;
- for(let i=0;i<3;i++){s.video.paused=false;s.video.dispatchEvent(new Event('play'));s.video.dispatchEvent(new Event('playing'));await flush();}
- assert.equal(s.video.seekWrites,writes);s.video._time=0;s.video.ended=false;s.video.paused=false;s.video.dispatchEvent(new Event('play'));
- assert.equal(s.video.currentTime,s.video.duration,'a real rewind must still be corrected after harmless final-frame events');s.video.finishSeek();await flush();s.adapter.pane.dispose();
+ for(let i=0;i<3;i++){for(const event of ['play','playing','seeking','seeked','timeupdate']){s.video.paused=false;s.video.dispatchEvent(new Event(event));await flush();}}
+ assert.equal(s.video.seekWrites,writes);
+ for(let i=0;i<2;i++){s.video._time=0;s.video.ended=false;s.video.paused=false;s.video.dispatchEvent(new Event('play'));assert.equal(s.video.currentTime,s.video.duration,'both corrective seeks remain available after harmless events');s.video.finishSeek();await flush();}
+ assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);s.adapter.pane.dispose();
 });
 
 test('[ORDER-10] completed hold restores a rewind without any play event',async()=>{
@@ -74,4 +75,16 @@ test('[ORDER-10] completed hold restores a rewind without any play event',async(
   s.video._time=0;s.video.ended=false;s.video.dispatchEvent(new Event(event));
   assert.equal(s.video.currentTime,s.video.duration,`${event} must restore the completed frame without play/playing`);assert.equal(plays,0);assert.equal(s.result.status,'settled');s.video.finishSeek();await flush();s.adapter.pane.dispose();
  }
+});
+
+
+test('[ORDER-11] seek events neither restore nor spend budget in the next round or own final seek',async()=>{
+ const s=await setup();s.advance(1200);await finish(s);
+ const next=s.adapter.pane.play({asset:'gpu-memory'},{clock:s.clock,cancellation:s.cancellation,reducedMotion:false});s.video.finishSeek();await flush();const writes=s.video.seekWrites;
+ for(const event of ['seeking','seeked','timeupdate']){s.video._time=0.3;s.video.ended=false;s.video.paused=false;s.video.dispatchEvent(new Event(event));await flush();assert.equal(s.video.currentTime,0.3,event+' must not restore during the next playback round');assert.equal(s.video.seekWrites,writes);assert.equal(s.video.paused,false);}
+ s.advance(2400);await flush();assert.equal(s.video.seekWrites,writes+1,'only the normal final seek is scheduled');
+ for(const event of ['seeking','timeupdate']){s.video.dispatchEvent(new Event(event));await flush();assert.equal(s.video.seekWrites,writes+1,'own final seek must not trigger a corrective seek');}
+ s.video.finishSeek();await flush();assert.equal((await next).status,'settled');assert.equal(s.video.seekWrites,writes+1);
+ for(let i=0;i<2;i++){s.video._time=0;s.video.ended=false;s.video.dispatchEvent(new Event('seeking'));assert.equal(s.video.currentTime,s.video.duration,'normal playback and final-seek events must leave both corrective seeks available');s.video.finishSeek();await flush();}
+ assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);s.adapter.pane.dispose();
 });
