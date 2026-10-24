@@ -1,0 +1,159 @@
+
+Running 5 tests using 1 worker
+
+[1/5] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1366x768 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+  1) tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1366x768 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-cim-preview]')
+    Expected: "ready"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-preview]') with timeout 5000ms
+      - waiting for locator('[data-cim-preview]')
+
+
+       8 | test.beforeAll(async()=>{folder=await mkdtemp(resolve(tmpdir(),'cim-v3-preview-e2e-'));await cp(resolve('examples/packs/run-custody-placeholder'),folder,{recursive:true});({server,url}=await startV3Preview(resolve(folder,'lesson.json')));});
+       9 | test.afterAll(async()=>{server.closeAllConnections();await new Promise(done=>server.close(done));});
+    > 10 | async function open(page){await page.goto(url);await expect(page.locator('[data-cim-preview]')).toHaveAttribute('data-cim-preview','ready');await expect(page.locator('[data-preview-identity]')).toContainText('1.1.0-dev');}
+         |                                                                                                 ^
+      11 | async function jump(page,index){await page.locator('[data-mp-command=beats]').click();await page.locator(`[data-mp-beat="${index}"]`).click();await expect(page.locator('[data-mp-status]')).toContainText(`Beat ${index+1} / 8`);}
+      12 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(width+'x'+height,()=>{
+      13 |  test.use({viewport:{width,height}});
+        at open (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:10:97)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:15:3
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--e4bea-anes-and-full-size-diagrams/error-context.md
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--e4bea-anes-and-full-size-diagrams/error-context.md
+
+
+[2/5] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1536x864 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+  2) tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1536x864 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-cim-preview]')
+    Expected: "ready"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-preview]') with timeout 5000ms
+      - waiting for locator('[data-cim-preview]')
+
+
+       8 | test.beforeAll(async()=>{folder=await mkdtemp(resolve(tmpdir(),'cim-v3-preview-e2e-'));await cp(resolve('examples/packs/run-custody-placeholder'),folder,{recursive:true});({server,url}=await startV3Preview(resolve(folder,'lesson.json')));});
+       9 | test.afterAll(async()=>{server.closeAllConnections();await new Promise(done=>server.close(done));});
+    > 10 | async function open(page){await page.goto(url);await expect(page.locator('[data-cim-preview]')).toHaveAttribute('data-cim-preview','ready');await expect(page.locator('[data-preview-identity]')).toContainText('1.1.0-dev');}
+         |                                                                                                 ^
+      11 | async function jump(page,index){await page.locator('[data-mp-command=beats]').click();await page.locator(`[data-mp-beat="${index}"]`).click();await expect(page.locator('[data-mp-status]')).toContainText(`Beat ${index+1} / 8`);}
+      12 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(width+'x'+height,()=>{
+      13 |  test.use({viewport:{width,height}});
+        at open (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:10:97)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:15:3
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--e0c1c-anes-and-full-size-diagrams/error-context.md
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--e0c1c-anes-and-full-size-diagrams/error-context.md
+
+
+[3/5] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1920x1080 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+  3) tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1920x1080 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-cim-preview]')
+    Expected: "ready"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-preview]') with timeout 5000ms
+      - waiting for locator('[data-cim-preview]')
+
+
+       8 | test.beforeAll(async()=>{folder=await mkdtemp(resolve(tmpdir(),'cim-v3-preview-e2e-'));await cp(resolve('examples/packs/run-custody-placeholder'),folder,{recursive:true});({server,url}=await startV3Preview(resolve(folder,'lesson.json')));});
+       9 | test.afterAll(async()=>{server.closeAllConnections();await new Promise(done=>server.close(done));});
+    > 10 | async function open(page){await page.goto(url);await expect(page.locator('[data-cim-preview]')).toHaveAttribute('data-cim-preview','ready');await expect(page.locator('[data-preview-identity]')).toContainText('1.1.0-dev');}
+         |                                                                                                 ^
+      11 | async function jump(page,index){await page.locator('[data-mp-command=beats]').click();await page.locator(`[data-mp-beat="${index}"]`).click();await expect(page.locator('[data-mp-status]')).toContainText(`Beat ${index+1} / 8`);}
+      12 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(width+'x'+height,()=>{
+      13 |  test.use({viewport:{width,height}});
+        at open (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:10:97)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:15:3
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--9225f-anes-and-full-size-diagrams/error-context.md
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--9225f-anes-and-full-size-diagrams/error-context.md
+
+
+[4/5] tests/e2e/pack-v3-preview.spec.mjs:24:1 › [PB-PREVIEW-02] real Motion playback keeps one clock when its action tab is hidden
+  4) tests/e2e/pack-v3-preview.spec.mjs:24:1 › [PB-PREVIEW-02] real Motion playback keeps one clock when its action tab is hidden 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-cim-preview]')
+    Expected: "ready"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-preview]') with timeout 5000ms
+      - waiting for locator('[data-cim-preview]')
+
+
+       8 | test.beforeAll(async()=>{folder=await mkdtemp(resolve(tmpdir(),'cim-v3-preview-e2e-'));await cp(resolve('examples/packs/run-custody-placeholder'),folder,{recursive:true});({server,url}=await startV3Preview(resolve(folder,'lesson.json')));});
+       9 | test.afterAll(async()=>{server.closeAllConnections();await new Promise(done=>server.close(done));});
+    > 10 | async function open(page){await page.goto(url);await expect(page.locator('[data-cim-preview]')).toHaveAttribute('data-cim-preview','ready');await expect(page.locator('[data-preview-identity]')).toContainText('1.1.0-dev');}
+         |                                                                                                 ^
+      11 | async function jump(page,index){await page.locator('[data-mp-command=beats]').click();await page.locator(`[data-mp-beat="${index}"]`).click();await expect(page.locator('[data-mp-status]')).toContainText(`Beat ${index+1} / 8`);}
+      12 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(width+'x'+height,()=>{
+      13 |  test.use({viewport:{width,height}});
+        at open (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:10:97)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:25:2
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--78593-en-its-action-tab-is-hidden/error-context.md
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--78593-en-its-action-tab-is-hidden/error-context.md
+
+
+[5/5] tests/e2e/pack-v3-preview.spec.mjs:27:1 › [PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors
+  5) tests/e2e/pack-v3-preview.spec.mjs:27:1 › [PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-cim-preview]')
+    Expected: "ready"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-preview]') with timeout 5000ms
+      - waiting for locator('[data-cim-preview]')
+
+
+       8 | test.beforeAll(async()=>{folder=await mkdtemp(resolve(tmpdir(),'cim-v3-preview-e2e-'));await cp(resolve('examples/packs/run-custody-placeholder'),folder,{recursive:true});({server,url}=await startV3Preview(resolve(folder,'lesson.json')));});
+       9 | test.afterAll(async()=>{server.closeAllConnections();await new Promise(done=>server.close(done));});
+    > 10 | async function open(page){await page.goto(url);await expect(page.locator('[data-cim-preview]')).toHaveAttribute('data-cim-preview','ready');await expect(page.locator('[data-preview-identity]')).toContainText('1.1.0-dev');}
+         |                                                                                                 ^
+      11 | async function jump(page,index){await page.locator('[data-mp-command=beats]').click();await page.locator(`[data-mp-beat="${index}"]`).click();await expect(page.locator('[data-mp-status]')).toContainText(`Beat ${index+1} / 8`);}
+      12 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(width+'x'+height,()=>{
+      13 |  test.use({viewport:{width,height}});
+        at open (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:10:97)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:28:190
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--ad823-ctionable-validation-errors/error-context.md
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--ad823-ctionable-validation-errors/error-context.md
+
+
+  5 failed
+    tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1366x768 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams 
+    tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1536x864 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams 
+    tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1920x1080 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams 
+    tests/e2e/pack-v3-preview.spec.mjs:24:1 › [PB-PREVIEW-02] real Motion playback keeps one clock when its action tab is hidden 
+    tests/e2e/pack-v3-preview.spec.mjs:27:1 › [PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors 

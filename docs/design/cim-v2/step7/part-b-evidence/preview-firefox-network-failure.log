@@ -1,0 +1,74 @@
+
+Running 7 tests using 1 worker
+
+[1/7] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1366x768 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[2/7] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1536x864 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[3/7] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1920x1080 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+  1) tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1920x1080 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-cim-preview]')
+    Expected: "ready"
+    Received: "failed"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-preview]') with timeout 5000ms
+      - waiting for locator('[data-cim-preview]')
+        14 × locator resolved to <main id="preview-player" data-cim-preview="failed" data-cim-manifest-sha="c53d9cc4e5afc32bd06b07cf441950dbb92e959933783b482f9c1d2dd22715e7" data-cim-pack-base="/pack/8131e7f07d8481b3f2ea7289edc9ff49592cc9dfbc8b7724a45656cac597982c/"></main>
+           - unexpected value "failed"
+
+
+       8 | test.beforeAll(async()=>{folder=await mkdtemp(resolve(tmpdir(),'cim-v3-preview-e2e-'));await cp(resolve('examples/packs/run-custody-placeholder'),folder,{recursive:true});({server,url}=await startV3Preview(resolve(folder,'lesson.json')));});
+       9 | test.afterAll(async()=>{server.closeAllConnections();await new Promise(done=>server.close(done));});
+    > 10 | async function open(page){await page.goto(url);await expect(page.locator('[data-cim-preview]')).toHaveAttribute('data-cim-preview','ready');await expect(page.locator('[data-preview-identity]')).toContainText('1.1.0-dev');}
+         |                                                                                                 ^
+      11 | async function jump(page,index){await page.locator('[data-mp-command=beats]').click();await page.locator(`[data-mp-beat="${index}"]`).click();await expect(page.locator('[data-mp-status]')).toContainText(`Beat ${index+1} / 8`);}
+      12 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(width+'x'+height,()=>{
+      13 |  test.use({viewport:{width,height}});
+        at open (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:10:97)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:15:3
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--9225f-anes-and-full-size-diagrams/error-context.md
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--9225f-anes-and-full-size-diagrams/error-context.md
+
+
+[4/7] tests/e2e/pack-v3-preview.spec.mjs:24:1 › [PB-PREVIEW-02] real Motion playback keeps one clock when its action tab is hidden
+[5/7] tests/e2e/pack-v3-preview.spec.mjs:27:1 › [PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors
+[6/7] tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified lesson.json refuses same-size response tampering
+  2) tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified lesson.json refuses same-size response tampering 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#preview-error')
+    Expected substring: "fingerprint mismatch"
+    Received string:    "NetworkError when attempting to fetch resource."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#preview-error') with timeout 5000ms
+      - waiting for locator('#preview-error')
+        14 × locator resolved to <pre role="status" id="preview-error">NetworkError when attempting to fetch resource.</pre>
+           - unexpected value "NetworkError when attempting to fetch resource."
+
+
+      31 | for(const filename of ['lesson.json','capture.json'])test(`[PB-PREVIEW-04] verified ${filename} refuses same-size response tampering`,async({page})=>{
+      32 |  await page.route('**/pack/*/'+filename,async route=>{const response=await route.fetch(),text=await response.text(),modified=filename==='lesson.json'?text.replace('Run Custody','Xun Custody'):text.replace('placeholder-archive','xlaceholder-archive');expect(modified).not.toBe(text);expect(Buffer.byteLength(modified)).toBe(Buffer.byteLength(text));await route.fulfill({response,body:modified});});
+    > 33 |  await page.goto(url);await expect(page.locator('#preview-error')).toContainText('fingerprint mismatch');await expect(page.locator('[data-composed-player]')).toHaveCount(0);
+         |                                                                    ^
+      34 | });
+      35 |
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tests/e2e/pack-v3-preview.spec.mjs:33:68
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--5fdff-ame-size-response-tampering/error-context.md
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--5fdff-ame-size-response-tampering/error-context.md
+
+
+[7/7] tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified capture.json refuses same-size response tampering
+  2 failed
+    tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1920x1080 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams 
+    tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified lesson.json refuses same-size response tampering 
+  5 passed (27.8s)

@@ -1,0 +1,526 @@
+verify (22)	Verify schema and architecture contracts	﻿2026-10-24T22:04:01.4626629Z ##[group]Run npm run verify
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.4626968Z ^[[36;1mnpm run verify^[[0m
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.4694200Z shell: /usr/bin/bash -e {0}
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.4694503Z ##[endgroup]
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.5704001Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.5704608Z > code-in-motion@1.0.1 verify
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.5709971Z > npm run check:learner-theme-css && npm run check:schema && npm run check:git-content && npm run check:page-3227 && npm run check:cim-authoring && npm run check:authoring-v1 && npm run check:console-render-evidence && npm run check:wordpress-experience-registry && npm run check:wordpress-renderer-registry && npm run check:wordpress-release-info && npm run check:architecture && npm run check:core-authority && npm run check:wordpress-packaging && npm run check:wordpress-release-tree && npm run check:wordpress-metadata && npm run check:workflow-gates && npm run check:wordpress-production-transport && npm run check:v3-mutations && npm run check:pane-mutations && npm run check:multipane-mutations && npm run check:engineering-mutations && npm run check:motion-mutations && npm run check:composition-mutations && npm run check:diagram-capacity-mutations && npm run check:pack-v3-mutations && npm test
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.5714665Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.6680153Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.6680872Z > code-in-motion@1.0.1 check:learner-theme-css
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.6681716Z > node tools/check-learner-theme-css.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.6682416Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.7000734Z PASS: learner theme CSS matches the complete palette source.
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.7996427Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.7997021Z > code-in-motion@1.0.1 check:schema
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.7997752Z > node tools/check-schema-fixtures.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.7998147Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:01.9685046Z PASS: published schemas + production validation contract (4 valid, 16 v1 invalid, 22 v2 invalid fixtures)
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.0758693Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.0759731Z > code-in-motion@1.0.1 check:git-content
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.0760706Z > node tools/generate-git-basic-cycle.mjs --check
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.0761252Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.1117490Z PASS: R27 Git shared-source projections are current (page 3227 + git-basic-cycle).
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.2141263Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.2142507Z > code-in-motion@1.0.1 check:page-3227
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.2143684Z > node tools/generate-page-3227-git-adapter.mjs --check
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.2144484Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.2458062Z PASS: R27 page 3227 Git adapter is current.
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.3468440Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.3493520Z > code-in-motion@1.0.1 check:cim-authoring
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.3523295Z > node tools/compile-cim.mjs --check
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.3532679Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.4277670Z PASS: R29 .cim authored fixture is current.
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.5294100Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.5294849Z > code-in-motion@1.0.1 check:authoring-v1
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.5295584Z > node tools/compile-authoring.mjs --check
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.5295960Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.6193052Z PASS: R42 authoring v1 (63 validator fixture(s), 2 compiled experience(s) byte-current, 23 boundaries conforming to CONSOLE-RENDERER-v1 with evidence correspondence).
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.7199831Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.7200634Z > code-in-motion@1.0.1 check:console-render-evidence
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.7201267Z > node tools/console-render-evidence.mjs --check
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.7201553Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.7890685Z PASS: R42 console/v1 canonical render evidence (1 experience(s)).
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.8970305Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.8971176Z > code-in-motion@1.0.1 check:wordpress-experience-registry
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.8972178Z > node tools/check-wordpress-experience-registry.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:02.8972623Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.1486814Z PASS: R30 WordPress Experience registry (4 registered Experience(s), generated browser projection current).
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.2515242Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.2516191Z > code-in-motion@1.0.1 check:wordpress-renderer-registry
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.2516887Z > node tools/check-wordpress-renderer-registry.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.2517187Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.4992408Z PASS: R32 WordPress renderer registry (3 renderer(s), 4 registered Experience binding(s), generated inventory current).
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.6045420Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.6046206Z > code-in-motion@1.0.1 check:wordpress-release-info
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.6046839Z > node tools/check-wordpress-release-info.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.6047122Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.6377217Z PASS: R33 WordPress release info (stable 1.0.1, tested WordPress 7.1, 3 current changelog note(s)).
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.7446128Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.7448513Z > code-in-motion@1.0.1 check:architecture
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.7449035Z > node tools/check-architecture-boundaries.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.7449295Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.8353887Z PASS: architecture boundaries (69 production source file(s) checked)
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.9399347Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.9400029Z > code-in-motion@1.0.1 check:core-authority
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.9400634Z > node tools/check-core-authority.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:03.9400884Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.0458722Z PASS: Core authority (69 production source file(s) checked)
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.1515535Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.1516771Z > code-in-motion@1.0.1 check:wordpress-packaging
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.1517711Z > node tools/check-wordpress-packaging.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.1518189Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.1902003Z PASS: WordPress packaging baseline (5 PHP file(s), 4 external asset(s), wp-env floor WordPress/WordPress#6.5.10, PHP 7.4)
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.2937015Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.2937752Z > code-in-motion@1.0.1 check:wordpress-release-tree
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.2938537Z > node tools/check-wordpress-release-tree.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.2938907Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.6139622Z PASS: R12 WordPress release-tree contract (67 module(s), 107 import edge(s), module root wordpress/assets/modules/1.0.1, entry wordpress/assets/modules/1.0.1/wordpress/assets/bootstrap-module.mjs, experiences wordpress/assets/modules/1.0.1/wordpress/experiences/git-basic-cycle.json, wordpress/assets/modules/1.0.1/wordpress/experiences/git-repository-practice.json, wordpress/assets/modules/1.0.1/wordpress/experiences/python-first-steps.json, wordpress/assets/modules/1.0.1/wordpress/experiences/synthetic-wordpress.json)
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.7154988Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.7155914Z > code-in-motion@1.0.1 check:wordpress-metadata
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.7156677Z > node tools/check-wordpress-release-metadata.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.7157052Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.7522606Z PASS: R22 release metadata (source, version 1.0.1, WordPress 6.5-tested 7.1, PHP 7.4, GPLv3).
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.8538821Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.8539552Z > code-in-motion@1.0.1 check:workflow-gates
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.8540110Z > node tools/check-required-workflow-gates.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.8540396Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.8880748Z PASS: R28 required workflow gates and trigger topology (CiM / Verify, CiM / Floor QA, CiM / Browser E2E, CiM / Playground).
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.9891329Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.9892360Z > code-in-motion@1.0.1 check:wordpress-production-transport
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.9893121Z > node tools/check-wordpress-production-transport-composition.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:04.9893526Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:05.0240789Z PASS: R40 WordPress production Transport composition contract.
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:05.1243451Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:05.1244129Z > code-in-motion@1.0.1 check:v3-mutations
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:05.1244826Z > node tools/check-v3-mutations.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:05.1245125Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:07.3667894Z CAUGHT CIM-V3-PACK-FILES
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:07.5238970Z CAUGHT CIM-V3-PACK-LIMIT
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:07.6776753Z CAUGHT CIM-V3-PARSE
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:07.8339958Z CAUGHT CIM-V3-SHAPE
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:08.0193066Z CAUGHT CIM-V3-LIMIT
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:08.1770563Z CAUGHT CIM-V3-ID
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:08.3374957Z CAUGHT CIM-V3-PANE-TYPE
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:08.4977185Z CAUGHT CIM-V3-INITIAL
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:08.6657925Z CAUGHT CIM-V3-EXPLANATION
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:08.8257834Z CAUGHT CIM-V3-ACTION-COUNT
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:08.9876130Z CAUGHT CIM-V3-SIMULTANEOUS
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:09.1519554Z CAUGHT CIM-V3-ACTION-TAB
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:09.3085289Z CAUGHT CIM-V3-CAPTURE-REFERENCE
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:09.4680631Z CAUGHT CIM-V3-DIAGRAM-STATE
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:09.6359888Z CAUGHT CIM-V3-PLACEHOLDER
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:09.7926316Z CAUGHT CIM-V3-ARCHIVE-PATH
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:09.9474555Z CAUGHT CIM-V3-EVIDENCE
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:10.1043733Z CAUGHT CIM-V3-PACK-VERSION
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:10.2595991Z CAUGHT CIM-V3-MEDIA-DEFERRED
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:10.2598290Z PASS: 19 v3 validation rules independently bypassed and caught. Node 22.23.3.
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:10.3630583Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:10.3631279Z > code-in-motion@1.0.1 check:pane-mutations
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:10.3634608Z > node tools/check-pane-mutations.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:10.3634998Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:11.4648925Z CAUGHT stale-callback
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:11.5666184Z CAUGHT capability-leak
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:11.6685262Z CAUGHT missed-dispose
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:11.7695658Z CAUGHT retained-listener
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:11.8720696Z CAUGHT renderer-missed-dispose
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:11.8723417Z PASS: 5 pane contract mutations caught.
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:11.9744698Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:11.9745713Z > code-in-motion@1.0.1 check:multipane-mutations
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:11.9746531Z > node tools/check-multipane-mutations.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:11.9746924Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:13.1647673Z CAUGHT MP-01-tab
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:13.2932273Z CAUGHT MP-01-completion-tab
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:13.4243958Z CAUGHT MP-02-view-only
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:13.5549091Z CAUGHT MP-03-pause-tab
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:13.6859792Z CAUGHT MP-03-resume-tab
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:13.8165555Z CAUGHT MP-03-clock
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:13.9446248Z CAUGHT MP-04-next
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:14.0741616Z CAUGHT MP-05-held-state
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:14.2062580Z CAUGHT MP-06-initial-default
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:14.3372745Z CAUGHT MP-07-context-override
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:14.4691161Z CAUGHT MP-08-reconstruction
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:14.5987688Z CAUGHT MP-08-pane-wiring
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:14.7285281Z CAUGHT MP-09-start
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:14.8590285Z CAUGHT MP-10-restart
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:14.9942196Z CAUGHT MP-10-reset
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:15.1226852Z CAUGHT MP-11-open
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:15.2526378Z CAUGHT MP-12-close
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:15.3796038Z CAUGHT MP-13-status
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:15.5098438Z CAUGHT MP-17-stale-completion
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:15.6411185Z CAUGHT MP-18-late-results
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:15.7718781Z CAUGHT MP-19-reduced-motion
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:15.8969072Z CAUGHT MP-20-fixture-guard
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:16.0226527Z CAUGHT MP-20-packaging
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:16.1513118Z CAUGHT MP-21-dispose
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:16.2824540Z CAUGHT MP-22-all-panes
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:16.4181302Z CAUGHT MP-22-failure
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:16.4183971Z PASS: 26 multi-pane mutations caught.
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:16.5194217Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:16.5194851Z > code-in-motion@1.0.1 check:engineering-mutations
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:16.5195370Z > node tools/check-engineering-mutations.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:16.5195611Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2813622Z {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2814057Z   "node": "v22.23.3",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2814369Z   "baseline": "passed",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2814604Z   "results": [
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2814797Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2815197Z       "id": "ENG-01-ids",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2815583Z       "rule": "ENG-01",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2815914Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2816233Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2816518Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2816832Z       "id": "ENG-01-derived",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2817241Z       "rule": "ENG-01",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2817683Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2818033Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2818306Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2818613Z       "id": "ENG-02-label",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2818982Z       "rule": "ENG-02",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2819327Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2819652Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2819915Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2820269Z       "id": "ENG-02-placeholder",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2820609Z       "rule": "ENG-02",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2820850Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2821046Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2821235Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2821432Z       "id": "ENG-03-final",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2821679Z       "rule": "ENG-03",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2822695Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2823054Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2823251Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2823444Z       "id": "ENG-03-reduced",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2823709Z       "rule": "ENG-03",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2823971Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2824194Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2824359Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2824563Z       "id": "ENG-04-text",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2824813Z       "rule": "ENG-04",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2825304Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2825520Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2825703Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2825921Z       "id": "ENG-05-evidence",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2826167Z       "rule": "ENG-05",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2826389Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2826580Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2826776Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2826955Z       "id": "ENG-06-wait",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2827189Z       "rule": "ENG-06",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2827414Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2827634Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2827829Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2828063Z       "id": "ENG-07-fallback",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2828326Z       "rule": "ENG-07",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2828557Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2828762Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2828937Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2829136Z       "id": "ENG-08-size",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2829381Z       "rule": "ENG-08",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2829603Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2829796Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2829988Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2830199Z       "id": "ENG-09-leak",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2830454Z       "rule": "ENG-09",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2830682Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2830893Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2831062Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2831287Z       "id": "ENG-09-network",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2831613Z       "rule": "ENG-09",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2832190Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2832427Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2832601Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2832783Z       "id": "ENG-09-guard",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2833025Z       "rule": "ENG-09",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2833259Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2833450Z     }
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2833613Z   ]
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.2833796Z }
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.3842222Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.3844347Z > code-in-motion@1.0.1 check:motion-mutations
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.3845145Z > node tools/check-motion-mutations.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:19.3845536Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7090503Z {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7091215Z   "node": "v22.23.3",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7091665Z   "browser": null,
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7092309Z   "baseline": "passed",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7092753Z   "results": [
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7093071Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7093395Z       "id": "MOT-01-source",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7093784Z       "rule": "MOT-01",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7094109Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7094309Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7094479Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7094661Z       "id": "MOT-01-type",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7094895Z       "rule": "MOT-01",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7095111Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7095322Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7095497Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7095708Z       "id": "MOT-01-file-size",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7095948Z       "rule": "MOT-01",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7096155Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7096350Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7096513Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7096700Z       "id": "MOT-01-total",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7096923Z       "rule": "MOT-01",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7097170Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7097362Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7097527Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7097764Z       "id": "MOT-02-original-address",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7098052Z       "rule": "MOT-02",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7098274Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7098468Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7098654Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7098922Z       "id": "MOT-02-caption-bytes",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7099207Z       "rule": "MOT-02",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7099449Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7099669Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7099858Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7100309Z       "id": "MOT-03-digest",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7100572Z       "rule": "MOT-03",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7100821Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7101049Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7101220Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7101455Z       "id": "MOT-04-resolver",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7101721Z       "rule": "MOT-04",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7102938Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7103203Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7103602Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7103834Z       "id": "MOT-05-timeout",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7104120Z       "rule": "MOT-05",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7104354Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7104575Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7104752Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7105005Z       "id": "MOT-05-late-copy",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7105274Z       "rule": "MOT-05",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7105506Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7105722Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7105892Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7106122Z       "id": "MOT-06-readiness",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7106383Z       "rule": "MOT-06",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7106626Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7106839Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7107024Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7107257Z       "id": "MOT-06-user-pause",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7107536Z       "rule": "MOT-06",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7107764Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7107989Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7108160Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7108387Z       "id": "MOT-11-map-open",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7108651Z       "rule": "MOT-11",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7108880Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7109089Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7109276Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7109463Z       "id": "MOT-12-schema",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7109705Z       "rule": "MOT-12",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7109956Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7110155Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7110324Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7110530Z       "id": "MOT-13-file-digest",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7110830Z       "rule": "MOT-13",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7111041Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7111237Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7111402Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7111617Z       "id": "MOT-14-link",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7113380Z       "rule": "MOT-14",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7113801Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7114219Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7114421Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7114690Z       "id": "MOT-20-unprepared-fallback",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7114981Z       "rule": "MOT-20",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7115210Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7115406Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7115576Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7115754Z       "id": "MOT-19-label",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7115979Z       "rule": "MOT-19",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7116188Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7116395Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7116565Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7116779Z       "id": "MOT-15-capability",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7117027Z       "rule": "MOT-15",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7117237Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7117432Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7117600Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7117809Z       "id": "ORDER-07-clear-hold",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7118062Z       "rule": "ORDER-07",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7118288Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7118480Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7118644Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7118859Z       "id": "ORDER-11-active-events",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7119126Z       "rule": "ORDER-11",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7119348Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7119555Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7119729Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7119940Z       "id": "ORDER-10-silent-rewind",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7120197Z       "rule": "ORDER-10",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7120491Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7120832Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7121105Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7121587Z       "id": "ORDER-12-duration-comparison",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7122488Z       "rule": "ORDER-12",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7122876Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7123207Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7123491Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7123862Z       "id": "ORDER-12-duration-restore",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7124561Z       "rule": "ORDER-12",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7124928Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7125250Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7125529Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7125865Z       "id": "ORDER-09-budget",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7126257Z       "rule": "ORDER-09",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7126621Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7126975Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7127262Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7127792Z       "id": "ORDER-08-restore-bound",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7128237Z       "rule": "ORDER-08",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7128735Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7129058Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7129333Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7129690Z       "id": "ORDER-06-final-hold",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7130126Z       "rule": "ORDER-06",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7130503Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7130832Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7159063Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7159457Z       "id": "MOT-15-network",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7159927Z       "rule": "MOT-15",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7160337Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7160748Z     }
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7161065Z   ]
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.7161376Z }
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.8096050Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.8096703Z > code-in-motion@1.0.1 check:composition-mutations
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.8097324Z > node tools/check-composition-mutations.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:25.8097572Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8464736Z {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8465188Z   "node": "v22.23.3",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8465633Z   "browser": null,
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8466010Z   "baseline": "passed",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8466381Z   "results": [
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8466699Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8467073Z       "id": "CMP-16-final-seek",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8467506Z       "rule": "CMP-16",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8467871Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8468219Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8468510Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8468882Z       "id": "CMP-05-invented-id",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8469305Z       "rule": "CMP-05",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8469667Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8470019Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8470307Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8470612Z       "id": "CMP-15-retired-pause",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8470921Z       "rule": "CMP-15",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8471160Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8471379Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8471560Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8472027Z       "id": "CMP-15-seek-reset",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8472487Z       "rule": "CMP-15",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8472738Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8472937Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8473128Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8473358Z       "id": "CMP-14-file-caption",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8473623Z       "rule": "CMP-14",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8473858Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8474064Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8474259Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8474468Z       "id": "CMP-01-caption",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8474739Z       "rule": "CMP-01",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8474981Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8475185Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8475376Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8475579Z       "id": "CMP-02-total",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8475836Z       "rule": "CMP-02",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8476087Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8476283Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8476485Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8476696Z       "id": "CMP-02-duration",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8476974Z       "rule": "CMP-02",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8477205Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8477422Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8477610Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8477842Z       "id": "CMP-03-diagnostic",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8478108Z       "rule": "CMP-03",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8478337Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8478554Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8478742Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8478925Z       "id": "CMP-05-arrow",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8479167Z       "rule": "CMP-05",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8479394Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8479606Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8479795Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8480000Z       "id": "CMP-06-wording",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8480254Z       "rule": "CMP-06",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8480762Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8480982Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8481177Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8481384Z       "id": "CMP-13-missing",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8481633Z       "rule": "CMP-13",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8482176Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8482390Z     }
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8482558Z   ]
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.8482759Z }
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.9492321Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.9493100Z > code-in-motion@1.0.1 check:diagram-capacity-mutations
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.9493650Z > node tools/check-diagram-capacity-mutations.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:28.9493925Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9433976Z {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9434294Z   "node": "v22.23.3",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9434554Z   "browser": null,
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9434782Z   "baselines": "passed",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9435032Z   "results": [
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9435231Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9435435Z       "id": "CAP-M01-fixed",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9435678Z       "kind": "unit",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9435891Z       "rule": "CAP-01",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9436130Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9436351Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9436522Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9436707Z       "id": "CAP-M02-gate",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9436935Z       "kind": "unit",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9437142Z       "rule": "CAP-02",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9437351Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9437548Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9437721Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9437909Z       "id": "CAP-M02-height",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9438150Z       "kind": "unit",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9438356Z       "rule": "CAP-04",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9438573Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9438774Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9438951Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9439163Z       "id": "CAP-M04-truncate",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9439403Z       "kind": "unit",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9439610Z       "rule": "CAP-06",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9439818Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9440011Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9440178Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9440397Z       "id": "CAP-M05-description",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9440682Z       "kind": "unit",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9440890Z       "rule": "CAP-05",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9441122Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9441330Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9441500Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9441733Z       "id": "CAP-M06-always-text",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9442266Z       "kind": "unit",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9442498Z       "rule": "CAP-04",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9442722Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9442934Z     },
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9443122Z     {
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9443362Z       "id": "CAP-M08-unrouted-token",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9443637Z       "kind": "unit",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9443869Z       "rule": "CAP-07",
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9444097Z       "caught": true
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9444307Z     }
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9444480Z   ]
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:30.9444668Z }
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:31.0437762Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:31.0438686Z > code-in-motion@1.0.1 check:pack-v3-mutations
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:31.0439468Z > node tools/check-pack-v3-mutations.mjs
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:31.0439880Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:33.5358611Z file:///home/runner/work/Code-in-Motion/Code-in-Motion/tools/check-pack-v3-mutations.mjs:40
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:33.5365711Z for(const[id,file,edits,rule,kind='unit']of cases){const path=resolve(sandbox,file),original=await readFile(path,'utf8');let modified=original;for(const[from,to]of edits){if(modified.split(from).length!==2)throw new Error('Expected one mutation anchor '+id+': '+from);modified=modified.replace(from,to);}let result;try{await writeFile(path,modified);result=run(rule,kind);}finally{await writeFile(path,original);}const output=(result.stdout??'')+(result.stderr??'');await writeFile(resolve(work,id+'.log'),output);const caught=result.status!==0&&/ERR_ASSERTION|AssertionError|Error: expect\(|Error: expect\.poll/.test(output)&&!/SyntaxError|ReferenceError|ERR_MODULE_NOT_FOUND|TypeError: Assignment to constant/.test(output);if(!caught)throw new Error('Mutation survived or crashed '+id+'\n'+output);results.push({id,rule,caught});}
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:33.5371570Z                                                                                                                                                                                                                     ^
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:33.5372504Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:33.5374260Z Error: Expected one mutation anchor PB-M02-forged-label: a.kind === 'gui' && (doc.placeholder ? a.label !== 'Placeholder GUI Â· simulated' : a.label !== 'Recorded in the lab')
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:33.5376344Z     at file:///home/runner/work/Code-in-Motion/Code-in-Motion/tools/check-pack-v3-mutations.mjs:40:213
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:33.5377063Z 
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:33.5377204Z Node.js v22.23.3
+verify (22)	Verify schema and architecture contracts	2026-10-24T22:04:33.5536751Z ##[error]Process completed with exit code 1.

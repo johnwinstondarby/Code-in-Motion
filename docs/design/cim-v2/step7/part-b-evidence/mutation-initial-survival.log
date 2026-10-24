@@ -1,0 +1,46 @@
+file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tools/check-pack-v3-mutations.mjs:39
+for(const[id,file,edits,rule,kind='unit']of cases){const path=resolve(sandbox,file),original=await readFile(path,'utf8');let modified=original;for(const[from,to]of edits){if(modified.split(from).length!==2)throw new Error('Expected one mutation anchor '+id+': '+from);modified=modified.replace(from,to);}let result;try{await writeFile(path,modified);result=run(rule,kind);}finally{await writeFile(path,original);}const output=(result.stdout??'')+(result.stderr??'');await writeFile(resolve(work,id+'.log'),output);const caught=result.status!==0&&/ERR_ASSERTION|AssertionError|Error: expect\(|Error: expect\.poll/.test(output)&&!/SyntaxError|ReferenceError|ERR_MODULE_NOT_FOUND|TypeError: Assignment to constant/.test(output);if(!caught)throw new Error('Mutation survived or crashed '+id+'\n'+output);results.push({id,rule,caught});}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+
+Error: Mutation survived or crashed PB-M01-placeholder
+TAP version 13
+1..0
+# Subtest: tests\\pack-preview.test.mjs
+ok 1 - tests\\pack-preview.test.mjs
+  ---
+  duration_ms: 75.1908
+  type: 'test'
+  ...
+1..0
+# Subtest: tests\\pack-v3-sample.test.mjs
+ok 2 - tests\\pack-v3-sample.test.mjs
+  ---
+  duration_ms: 63.0451
+  type: 'test'
+  ...
+1..0
+# Subtest: tests\\pack-v3-schema.test.mjs
+ok 3 - tests\\pack-v3-schema.test.mjs
+  ---
+  duration_ms: 103.5239
+  type: 'test'
+  ...
+# Subtest: [PB-03] pack rejects altered provenance or capture references
+ok 4 - [PB-03] pack rejects altered provenance or capture references
+  ---
+  duration_ms: 32.8603
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 120.628
+
+    at file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/step7b-pack/tools/check-pack-v3-mutations.mjs:39:743
+
+Node.js v22.23.2

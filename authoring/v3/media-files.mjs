@@ -1,3 +1,4 @@
+import {validateProductionMedia} from './production-media.mjs';
 import {open,realpath,stat} from 'node:fs/promises';
 import {resolve,relative,isAbsolute} from 'node:path';
 import {createHash} from 'node:crypto';
@@ -5,7 +6,7 @@ import {validateMediaMap} from '../../src/multipane/media-map.mjs';
 const reject=(id,path,message)=>{const error=new Error(`${id} at ${path}: ${message} Fix: use a confined pack file with its exact declared size and SHA-256.`);error.rule=id;throw error;};
 const inside=(root,path)=>{const part=relative(root,path);return part!==''&&!isAbsolute(part)&&part!=='..'&&!part.startsWith('../')&&!part.startsWith('..\\');};
 export async function validateMediaFiles(map,directory){
- const diagnostics=validateMediaMap(map);if(diagnostics.length)throw new Error(diagnostics[0].id+' at '+diagnostics[0].path+': '+diagnostics[0].message);
+ const diagnostics=map?.status==='pack'?validateProductionMedia(map):validateMediaMap(map);if(diagnostics.length)throw new Error(diagnostics[0].id+' at '+diagnostics[0].path+': '+diagnostics[0].message);
  const root=await realpath(directory);
  for(const[i,clip]of map.assets.entries())for(const[descriptor,path]of [[clip,`$.assets[${i}]`],[clip.captions,`$.assets[${i}].captions`],...(clip.webm?[[clip.webm,`$.assets[${i}].webm`],[clip.webm.captions,`$.assets[${i}].webm.captions`]]:[])]){
   if(descriptor.source.type==='attachment')continue; // Site access/attachment validation is deliberately deferred.

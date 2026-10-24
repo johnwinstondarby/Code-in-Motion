@@ -26,6 +26,8 @@ async function visit(file) {
 }
 await visit(resolve(root,'tools/cim-author.mjs'));
 await visit(resolve(root,'tools/lesson-preview-client.mjs'));
+await visit(resolve(root,'tools/pack-preview-client.mjs'));
+files.set(resolve(root,'tools/pack-preview.css'),readHeadFile('tools/pack-preview.css'));
 async function includeRuntime(directory) {
  for(const entry of await readdir(resolve(root,directory),{withFileTypes:true})) {
   const file=directory+'/'+entry.name;
@@ -37,6 +39,14 @@ await includeRuntime('src');await includeRuntime('wordpress/assets');
 for (const file of ['LICENSE','.nvmrc','docs/LESSON-PACKS-v1.md','docs/LESSON-PACKS-v2.md','docs/AUTHORING-JSON-v3.md','docs/ENGINEERING-CAPTURE-v1.md','docs/INSTALL.md','docs/AUTHORING-GUIDE.md','docs/AUTHORING-JSON-v1.md','docs/AUTHORING-JSON-v2.md','docs/AUTHORING-TO-RUNTIME-v1.md','docs/AUTHORING-TO-RUNTIME-v2.md','experiences/starter/python-first-steps.authoring.json']) files.set(resolve(root,file),readHeadFile(file,'utf8'));
 for (const sample of ['run-custody','context-chain']) for (const name of ['lesson.json','capture.json','raw/transcript.txt']) { const file = 'authoring/v3/fixtures/valid/'+sample+'/'+name; files.set(resolve(root,file),readHeadFile(file,'utf8')); }
 files.set(resolve(root,'authoring/v3/fixtures/valid/pack.json'),readHeadFile('authoring/v3/fixtures/valid/pack.json','utf8'));
+async function includePackSource(directory){
+ for(const entry of await readdir(resolve(root,directory),{withFileTypes:true})){
+  const file=directory+'/'+entry.name;
+  if(entry.isDirectory())await includePackSource(file);
+  else if(entry.isFile())files.set(resolve(root,file),readHeadFile(file));
+ }
+}
+await includePackSource('examples/packs/run-custody-placeholder');
 files.set(resolve(root,'README.md'), readHeadFile('docs/AUTHORING-TOOL-README.md','utf8'));
 const zip = createPortableArchive([...files].map(([file,data])=>({path:'cim-authoring-'+version+candidate+'/'+relative(root,file).replaceAll('\\','/'),data})));
 const name = 'cim-authoring-'+version+candidate+'.zip';

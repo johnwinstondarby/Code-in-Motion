@@ -1385,7 +1385,7 @@ jobs:
         env:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
           CIM_MOTION_DIAGNOSTICS: ${{ matrix.browser == 'webkit' && '1' || '0' }}
-        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs tests/e2e/diagram-capacity.spec.mjs --reporter=line
+        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs tests/e2e/diagram-capacity.spec.mjs tests/e2e/pack-v3-preview.spec.mjs --reporter=line
 
       - name: Prove multi-pane fixture browser mutation guards
         env:
@@ -1422,6 +1422,11 @@ jobs:
         id: webkit-install-summary
         if: ${{ always() && matrix.browser == 'webkit' }}
         run: node tools/ci/webkit-install.mjs summary
+
+      - name: Prove v3 pack authoring and preview guards
+        env:
+          CIM_PLAYER_BROWSER: ${{ matrix.browser }}
+        run: node tools/check-pack-v3-mutations.mjs --browser
 
       - name: Retain WebKit playback diagnostics
         id: webkit-motion-diagnostics

@@ -34,3 +34,7 @@ Install and activate `my-lesson-pack.zip` through WordPress Plugins alongside Co
 Your JSON stays on your computer; WordPress gets the generated pack ZIP. The local preview server does not need to run after installation. Keep your source and previous ZIPs for revisions.
 
 The tool and generated plugin integration are GPLv3; see LICENSE. Authors retain rights in their original lesson content.
+
+## Multi-pane development candidate
+
+For the eight-beat simulated Run Custody template, see [Authoring JSON v3](docs/AUTHORING-JSON-v3.md) and `examples/packs/run-custody-placeholder/README.md`. Start with `node tools/cim-author.mjs init my-lesson --format v3`; edit the copied JSON, validate, then preview locally. The candidate also compiles and builds a self-contained pack. Published CiM 1.0.1 cannot install this format; WordPress admission waits for Part C. Media Library attachments wait for 1.2.

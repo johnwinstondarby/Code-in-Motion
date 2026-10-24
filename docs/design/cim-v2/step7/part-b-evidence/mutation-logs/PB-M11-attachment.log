@@ -1,0 +1,53 @@
+TAP version 13
+1..0
+# Subtest: tests/pack-preview.test.mjs
+ok 1 - tests/pack-preview.test.mjs
+  ---
+  duration_ms: 130.250645
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/pack-v3-sample.test.mjs
+ok 2 - tests/pack-v3-sample.test.mjs
+  ---
+  duration_ms: 145.084344
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/pack-v3-schema.test.mjs
+ok 3 - tests/pack-v3-schema.test.mjs
+  ---
+  duration_ms: 2684.560846
+  type: 'test'
+  ...
+# Subtest: [PB-08] every attachment source is refused with a 1.2 diagnostic
+not ok 4 - [PB-08] every attachment source is refused with a 1.2 diagnostic
+  ---
+  duration_ms: 27.208885
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/pack-v3-mutations/candidate-Xc4pjY/tests/pack-v3.test.mjs:32:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(errors.some(e=>e.id==='CIM-V3-MEDIA-ATTACHMENT'&&/1\.2/.test(e.message)&&e.path.endsWith('.source')))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/pack-v3-mutations/candidate-Xc4pjY/tests/pack-v3.test.mjs:33:294)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 3
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2696.755334

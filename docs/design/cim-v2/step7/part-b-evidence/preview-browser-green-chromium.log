@@ -1,0 +1,9 @@
+
+Running 5 tests using 1 worker
+
+[1/5] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1366x768 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[2/5] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1536x864 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[3/5] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1920x1080 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[4/5] tests/e2e/pack-v3-preview.spec.mjs:24:1 › [PB-PREVIEW-02] real Motion playback keeps one clock when its action tab is hidden
+[5/5] tests/e2e/pack-v3-preview.spec.mjs:27:1 › [PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors
+  5 passed (10.5s)

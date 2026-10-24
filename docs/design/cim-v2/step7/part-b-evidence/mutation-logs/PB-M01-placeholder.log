@@ -1,0 +1,166 @@
+TAP version 13
+# Subtest: [PB-19] preview serves the manifest-listed compiled/capture/media snapshot and refuses unknown files
+ok 1 - [PB-19] preview serves the manifest-listed compiled/capture/media snapshot and refuses unknown files # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.7047
+  ...
+# Subtest: [PB-20] preview blocks forged Host, cross-origin requests and write methods
+ok 2 - [PB-20] preview blocks forged Host, cross-origin requests and write methods # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0723
+  ...
+# Subtest: [PB-21] an immutable served snapshot survives source edits but refresh rejects changed bytes
+ok 3 - [PB-21] an immutable served snapshot survives source edits but refresh rejects changed bytes # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0558
+  ...
+# Subtest: [PB-27] bounded preview capacity permits module fetches alongside idle browser connections
+ok 4 - [PB-27] bounded preview capacity permits module fetches alongside idle browser connections # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0582
+  ...
+# Subtest: [PB-15] sample has the eight agreed beats, separate custody/reproduction and at most one transfer
+ok 5 - [PB-15] sample has the eight agreed beats, separate custody/reproduction and at most one transfer # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.6944
+  ...
+# Subtest: [PB-16] committed video/caption bytes have truthful codecs, fingerprints and simulation labels
+ok 6 - [PB-16] committed video/caption bytes have truthful codecs, fingerprints and simulation labels # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0666
+  ...
+# Subtest: [PB-17] v3 init, validate, compile and pack work through the public CLI without overwriting
+ok 7 - [PB-17] v3 init, validate, compile and pack work through the public CLI without overwriting # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0647
+  ...
+# Subtest: [PB-18] CLI errors expose rule, JSON path and teacher fix including attachment deferral
+ok 8 - [PB-18] CLI errors expose rule, JSON path and teacher fix including attachment deferral # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0514
+  ...
+# Subtest: [PB-24] visible sample text separates INVENT custody from INSPIRE reproduction
+ok 9 - [PB-24] visible sample text separates INVENT custody from INSPIRE reproduction # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0533
+  ...
+# Subtest: [PB-26] pack media schema and bounded checker agree with Ajv on production shapes
+ok 10 - [PB-26] pack media schema and bounded checker agree with Ajv on production shapes # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.836
+  ...
+# Subtest: [PB-01] production pack compiles deterministically into the unchanged v2 envelope
+ok 11 - [PB-01] production pack compiles deterministically into the unchanged v2 envelope # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.6655
+  ...
+# Subtest: [PB-02] production media has two independently fingerprinted captioned codec copies
+ok 12 - [PB-02] production media has two independently fingerprinted captioned codec copies # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0572
+  ...
+# Subtest: [PB-03] pack rejects altered provenance or capture references
+not ok 13 - [PB-03] pack rejects altered provenance or capture references
+  ---
+  duration_ms: 36.9808
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\pack-v3-mutations\\candidate-eKcmeq\\tests\\pack-v3.test.mjs:26:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(validateBundle(s.lesson,JSON.parse(await readFile(join(s.folder,s.lesson.capture.file),'utf8'))).diagnostics.some(d=>d.id===rule))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/pack-v3-mutations/candidate-eKcmeq/tests/pack-v3.test.mjs:26:119)
+    async Test.run (node:internal/test_runner/test:797:9)
+    async Test.processPendingSubtests (node:internal/test_runner/test:526:7)
+  ...
+# Subtest: [PB-04] pack rejects altered provenance or capture references
+ok 14 - [PB-04] pack rejects altered provenance or capture references # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.526
+  ...
+# Subtest: [PB-05] pack rejects altered provenance or capture references
+ok 15 - [PB-05] pack rejects altered provenance or capture references # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.064
+  ...
+# Subtest: [PB-06] changed media bytes cannot enter a pack
+ok 16 - [PB-06] changed media bytes cannot enter a pack # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.1247
+  ...
+# Subtest: [PB-07] each copy requires its own codec and correct MIME pairing
+ok 17 - [PB-07] each copy requires its own codec and correct MIME pairing # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0453
+  ...
+# Subtest: [PB-08] every attachment source is refused with a 1.2 diagnostic
+ok 18 - [PB-08] every attachment source is refused with a 1.2 diagnostic # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0506
+  ...
+# Subtest: [PB-09] traversal and escaping links cannot enter a pack
+ok 19 - [PB-09] traversal and escaping links cannot enter a pack # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0772
+  ...
+# Subtest: [PB-10] an explicit branded development identity is required; no prerelease coercion
+ok 20 - [PB-10] an explicit branded development identity is required; no prerelease coercion # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0836
+  ...
+# Subtest: [PB-11] manifest lists every payload with its actual bounded size and digest
+ok 21 - [PB-11] manifest lists every payload with its actual bounded size and digest # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0467
+  ...
+# Subtest: [PB-12] ZIP bytes and fixed metadata reproduce independent of source mtimes
+ok 22 - [PB-12] ZIP bytes and fixed metadata reproduce independent of source mtimes # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.038
+  ...
+# Subtest: [PB-13] preflight reports whole ZIP and media limits and blocks a known host limit
+ok 23 - [PB-13] preflight reports whole ZIP and media limits and blocks a known host limit # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0488
+  ...
+# Subtest: [PB-14] pack writes checksum and never overwrites either earlier output
+ok 24 - [PB-14] pack writes checksum and never overwrites either earlier output # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0707
+  ...
+# Subtest: [PB-22] authored commands and output must satisfy the existing single-line Console contract
+ok 25 - [PB-22] authored commands and output must satisfy the existing single-line Console contract # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0366
+  ...
+# Subtest: [PB-23] production manifests cross-check every reference and enforce aggregate limits
+ok 26 - [PB-23] production manifests cross-check every reference and enforce aggregate limits # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0809
+  ...
+# Subtest: [PB-25] generated PHP never interpolates authored prose as code
+ok 27 - [PB-25] generated PHP never interpolates authored prose as code # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0392
+  ...
+# Subtest: [PB-28] duplicate JSON keys cannot be discarded before pack validation
+ok 28 - [PB-28] duplicate JSON keys cannot be discarded before pack validation # SKIP test name does not match pattern
+  ---
+  duration_ms: 0.0975
+  ...
+1..28
+# tests 28
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 27
+# todo 0
+# duration_ms 179.4792

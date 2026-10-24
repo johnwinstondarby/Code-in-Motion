@@ -1,3 +1,4 @@
+import {validateProductionMedia} from './production-media.mjs';
 import mediaSchema from './media.schema.json' with { type: 'json' };
 import {validateMediaMap} from '../../src/multipane/media-map.mjs';
 import authoringSchema from './authoring.schema.json' with { type: 'json' };
@@ -8,6 +9,8 @@ import { findDuplicateKeys } from '../v2/validate-authoring.mjs';
 export const LIMITS = Object.freeze({ bytes: 2 * 1024 * 1024, depth: 32, nodes: 100000, evidenceBytes: 2 * 1024 * 1024, archiveBytes: 16 * 1024 * 1024 });
 export const SCHEMAS = Object.freeze({ authoring: authoringSchema, capture: captureSchema, pack: packSchema, media: mediaSchema });
 export const RULES = Object.freeze({
+  'CIM-V3-PACK-FILES': 'List every payload exactly once, excluding the manifest itself; match lesson, capture and media paths, sizes and fingerprints.',
+  'CIM-V3-PACK-LIMIT': 'Keep the complete payload and ZIP within 32 MiB and 256 files, and media within its existing limits.',
   'CIM-V3-PARSE': 'Save valid UTF-8 JSON with double quotes and no trailing comma.',
   'CIM-V3-SHAPE': 'Use only the documented fields and types in the matching v3 schema.',
   'CIM-V3-LIMIT': 'Split the lesson or capture archive into smaller documents within the documented limits.',
@@ -75,7 +78,7 @@ function shape(value, schema, path, c, root = schema) {
   if(schema.anyOf){
     const alternatives=schema.anyOf.map(branch=>{const errors=[];shape(value,branch,path,{fixtureMedia:c.fixtureMedia,reject:(id,condition,at,message)=>{if(condition)errors.push([id,at,message]);}},root);return errors;});
     if(alternatives.some(errors=>errors.length===0))return;
-    const selected=schema.anyOf.findIndex(branch=>branch.properties?.status?.const!==undefined&&branch.properties.status.const===value?.status||branch.properties?.type?.const!==undefined&&branch.properties.type.const===value?.type);
+    const selected=schema.anyOf.findIndex(branch=>branch.properties?.status?.const!==undefined&&branch.properties.status.const===value?.status||branch.properties?.media?.properties?.status?.const!==undefined&&branch.properties.media.properties.status.const===value?.media?.status||branch.properties?.type?.const!==undefined&&branch.properties.type.const===value?.type);
     for(const[id,at,message]of alternatives[selected<0?0:selected])c.reject(id,true,at,message);return;
   }
   if(typeof value==='number')c.reject('CIM-V3-LIMIT',(schema.minimum!==undefined&&value<schema.minimum)||(schema.maximum!==undefined&&value>schema.maximum),path,'Number exceeds the documented range.');
@@ -191,13 +194,27 @@ function pack(doc, c) {
   const compare = (a, b) => { for (let i = 0; i < 3; i++) { const d = Number(a.split('.')[i]) - Number(b.split('.')[i]); if (d) return d; } return 0; };
   c.reject('CIM-V3-PACK-VERSION', !release(doc.cim_min) || !release(doc.cim_max_exclusive) || compare(doc.cim_min, '1.1.0') < 0 || compare(doc.cim_max_exclusive, '2.0.0') > 0 || compare(doc.cim_min, doc.cim_max_exclusive) >= 0, '$.cim_min', 'Pack version interval cannot claim unsupported hosts.');
   doc.lessons.forEach((l, i) => c.reject('CIM-V3-ARCHIVE-PATH', !jsonBasename(l.file) || !jsonBasename(l.capture), `$.lessons[${i}]`, 'Lesson and capture files must be JSON basenames.'));
+  if(doc.media.status==='pack'){
+    c.diagnostics.push(...validateProductionMedia(doc.media).map(d=>({...d,path:'$.media'+d.path.slice(1)})));
+    c.reject('CIM-V3-PLACEHOLDER',doc.media.placeholder!==doc.placeholder,'$.media.placeholder','Pack and media provenance disagree.');
+    const files=doc.files??[];unique(files,'$.files',c,'path');
+    files.forEach((f,i)=>c.reject('CIM-V3-ARCHIVE-PATH',!safePath(f.path),`$.files[${i}].path`,'Unsafe payload path.'));
+    c.reject('CIM-V3-PACK-FILES',new Set(files.map(f=>f.path.toLowerCase())).size!==files.length||files.some(f=>f.path==='cim-lesson-pack.json'),'$.files','Payload paths collide or list the manifest itself.');
+    c.reject('CIM-V3-PACK-LIMIT',files.reduce((n,f)=>n+f.size,0)>33554432,'$.files','Aggregate payload exceeds 32 MiB.');
+    for(const[i,l]of doc.lessons.entries())c.reject('CIM-V3-PACK-FILES',![l.file,l.capture].every(path=>files.some(f=>f.path===path)),`$.lessons[${i}]`,'Referenced lesson or capture file is not listed.');
+    for(const[i,a]of doc.media.assets.entries())for(const[d,path]of [[a,`$.media.assets[${i}]`],[a.captions,`$.media.assets[${i}].captions`],...(a.webm?[[a.webm,`$.media.assets[${i}].webm`],[a.webm.captions,`$.media.assets[${i}].webm.captions`]]:[])]){
+      const f=files.find(f=>f.path===d.source.path);c.reject('CIM-V3-PACK-FILES',!f||f.size!==d.size||f.sha256!==d.sha256,path,'Media descriptor and payload file list disagree.');
+    }
+
+    return;
+  }
   if(doc.media.status==='fixture'){c.diagnostics.push(...validateMediaMap(doc.media).map(d=>({...d,path:'$.media'+d.path.slice(1)})));c.reject('CIM-V3-PLACEHOLDER',doc.media.placeholder!==doc.placeholder,'$.media.placeholder','Pack and media provenance disagree.');return;}
   c.reject('CIM-V3-MEDIA-DEFERRED', doc.media.status !== 'deferred' || doc.media.assets.length !== 0, '$.media', 'Media maps are reserved, not implemented.');
 }
 
 export function validateDocument(source, kind) {
-  const c = collector(), value = read(source, c);c.fixtureMedia=kind==='pack'&&value?.media?.status==='fixture';
-  if(value!==undefined&&!c.diagnostics.length&&(kind==='media'||kind==='pack'&&value?.media?.status==='fixture'))c.diagnostics.push(...validateMediaMap(kind==='media'?value:value.media).map(d=>({...d,path:kind==='media'?d.path:'$.media'+d.path.slice(1)})));
+  const c = collector(), value = read(source, c);c.fixtureMedia=kind==='pack'&&['fixture','pack'].includes(value?.media?.status);
+  if(value!==undefined&&!c.diagnostics.length&&(kind==='media'||kind==='pack'&&['fixture','pack'].includes(value?.media?.status)))c.diagnostics.push(...((kind==='media'?value:value.media)?.status==='pack'?validateProductionMedia(kind==='media'?value:value.media):validateMediaMap(kind==='media'?value:value.media)).map(d=>({...d,path:kind==='media'?d.path:'$.media'+d.path.slice(1)})));
   if (value !== undefined && !c.diagnostics.length) shape(value, SCHEMAS[kind], '$', c);
   if (value !== undefined && !c.diagnostics.length) ({ authoring, capture, pack, media:()=>{} })[kind](value, c);
   return { value, diagnostics: c.diagnostics };
