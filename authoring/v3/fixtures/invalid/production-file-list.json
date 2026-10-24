@@ -1,0 +1,184 @@
+{
+  "schema": "cim.lesson-pack/v2",
+  "cim_min": "1.1.0",
+  "cim_max_exclusive": "2.0.0",
+  "placeholder": true,
+  "lessons": [
+    {
+      "id": "run-custody-placeholder",
+      "file": "lesson.json",
+      "capture": "capture.json"
+    }
+  ],
+  "media": {
+    "schema": "localis.cim/media/v1",
+    "status": "pack",
+    "placeholder": true,
+    "assets": [
+      {
+        "id": "gpu-memory",
+        "source": {
+          "type": "pack",
+          "path": "media/submit-fail.mp4"
+        },
+        "size": 9761,
+        "sha256": "56e26c54983bf9ae29aafba059a2ba9985af783ba5dc154578122e1b82a5dc2c",
+        "type": "video/mp4",
+        "codec": "avc1.42c01e",
+        "duration": 2.4,
+        "captions": {
+          "source": {
+            "type": "pack",
+            "path": "captions/submit-fail-mp4.vtt"
+          },
+          "size": 88,
+          "sha256": "569be7bdc959b2566ec5b6a8a03feb813b153cb3042262d8765136c38acc7eae",
+          "type": "text/vtt",
+          "language": "en",
+          "label": "Placeholder · simulated"
+        },
+        "alt": "Placeholder · simulated interface. No real lab recording exists.",
+        "webm": {
+          "source": {
+            "type": "pack",
+            "path": "media/submit-fail.webm"
+          },
+          "size": 21108,
+          "sha256": "532dea9a4a6c4fdccbf2beb5a3ef77d50af868539615f4e20ec89c5a5f3c378f",
+          "type": "video/webm",
+          "codec": "vp8",
+          "duration": 2.4,
+          "captions": {
+            "source": {
+              "type": "pack",
+              "path": "captions/submit-fail-webm.vtt"
+            },
+            "size": 88,
+            "sha256": "569be7bdc959b2566ec5b6a8a03feb813b153cb3042262d8765136c38acc7eae",
+            "type": "text/vtt",
+            "language": "en",
+            "label": "Placeholder · simulated"
+          }
+        }
+      },
+      {
+        "id": "mlflow-metadata",
+        "source": {
+          "type": "pack",
+          "path": "media/track-mlflow.mp4"
+        },
+        "size": 9695,
+        "sha256": "30e56bb40c3a0444540e704fd100477f1dca8f766e844925f9ca8d8abf17abaa",
+        "type": "video/mp4",
+        "codec": "avc1.42c01e",
+        "duration": 2.4,
+        "captions": {
+          "source": {
+            "type": "pack",
+            "path": "captions/track-mlflow-mp4.vtt"
+          },
+          "size": 85,
+          "sha256": "9a85fabbc15310ed57ce494e22c73291ef14b42d5541975bcfdc65e79e52e41d",
+          "type": "text/vtt",
+          "language": "en",
+          "label": "Placeholder · simulated"
+        },
+        "alt": "Placeholder · simulated interface. No real lab recording exists.",
+        "webm": {
+          "source": {
+            "type": "pack",
+            "path": "media/track-mlflow.webm"
+          },
+          "size": 20464,
+          "sha256": "202d342cd353831573e37f75c0063432f574f7f4aa50656fc4bab473c6929637",
+          "type": "video/webm",
+          "codec": "vp8",
+          "duration": 2.4,
+          "captions": {
+            "source": {
+              "type": "pack",
+              "path": "captions/track-mlflow-webm.vtt"
+            },
+            "size": 85,
+            "sha256": "9a85fabbc15310ed57ce494e22c73291ef14b42d5541975bcfdc65e79e52e41d",
+            "type": "text/vtt",
+            "language": "en",
+            "label": "Placeholder · simulated"
+          }
+        }
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "size": 35157,
+      "sha256": "22f65f0ba65b3fb08b8f2b681d5cefa436690fe67747fa9ad4674c75695643a4"
+    },
+    {
+      "path": "README.txt",
+      "size": 290,
+      "sha256": "fd7df440a7b892b3bd40466a4024ddc3e511cde93cccb37802931c96a3ca9380"
+    },
+    {
+      "path": "captions/submit-fail-mp4.vtt",
+      "size": 88,
+      "sha256": "569be7bdc959b2566ec5b6a8a03feb813b153cb3042262d8765136c38acc7eae"
+    },
+    {
+      "path": "captions/submit-fail-webm.vtt",
+      "size": 88,
+      "sha256": "569be7bdc959b2566ec5b6a8a03feb813b153cb3042262d8765136c38acc7eae"
+    },
+    {
+      "path": "captions/track-mlflow-mp4.vtt",
+      "size": 85,
+      "sha256": "9a85fabbc15310ed57ce494e22c73291ef14b42d5541975bcfdc65e79e52e41d"
+    },
+    {
+      "path": "captions/track-mlflow-webm.vtt",
+      "size": 85,
+      "sha256": "9a85fabbc15310ed57ce494e22c73291ef14b42d5541975bcfdc65e79e52e41d"
+    },
+    {
+      "path": "capture.json",
+      "size": 3305,
+      "sha256": "5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500"
+    },
+    {
+      "path": "lesson-pack.php",
+      "size": 367,
+      "sha256": "7254f80e5e7efa3885b9d8805cbc477094e4b4431ba31b9e808fbb44943f994e"
+    },
+    {
+      "path": "lesson.json",
+      "size": 17097,
+      "sha256": "80fce369977dfb415e2383825a0ef7dc2702f9168d9b312fec7f77411c80bf86"
+    },
+    {
+      "path": "media/submit-fail.mp4",
+      "size": 9761,
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "path": "media/submit-fail.webm",
+      "size": 21108,
+      "sha256": "532dea9a4a6c4fdccbf2beb5a3ef77d50af868539615f4e20ec89c5a5f3c378f"
+    },
+    {
+      "path": "media/track-mlflow.mp4",
+      "size": 9695,
+      "sha256": "30e56bb40c3a0444540e704fd100477f1dca8f766e844925f9ca8d8abf17abaa"
+    },
+    {
+      "path": "media/track-mlflow.webm",
+      "size": 20464,
+      "sha256": "202d342cd353831573e37f75c0063432f574f7f4aa50656fc4bab473c6929637"
+    },
+    {
+      "path": "raw/transcript.txt",
+      "size": 117,
+      "sha256": "47be558ced1c97bd960e2ff089c62530e66da741e6a45c708f448dbb65699e08"
+    }
+  ]
+}

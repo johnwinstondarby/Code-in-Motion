@@ -148,6 +148,22 @@
       "file": "invalid/parse.json",
       "path": "$",
       "mode": "document"
+    },
+    {
+      "name": "production-file-list",
+      "rule": "CIM-V3-PACK-FILES",
+      "kind": "pack",
+      "file": "invalid/production-file-list.json",
+      "path": "$.media",
+      "mode": "document"
+    },
+    {
+      "name": "production-total",
+      "rule": "CIM-V3-PACK-LIMIT",
+      "kind": "pack",
+      "file": "invalid/production-total.json",
+      "path": "$.files",
+      "mode": "document"
     }
   ]
 }

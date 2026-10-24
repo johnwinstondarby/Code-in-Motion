@@ -1,3 +1,4 @@
+import {constants} from 'node:fs';
 import {consoleRendererInputViolations} from '../../src/renderers/subjects/console/validate-console-input.mjs';
 import {open,realpath,stat,writeFile,cp,access} from 'node:fs/promises';
 import {resolve,relative,isAbsolute,dirname,basename} from 'node:path';
@@ -17,7 +18,8 @@ export async function readPackFile(root,path,{max=LIMITS.bytes,size,sha256,at='$
  const requested=resolve(root,path);let resolved,handle;
  try{
   resolved=await realpath(requested);if(!inside(root,resolved))pathFail(at,'Resolved path escapes its declared folder.');
-  handle=await open(resolved,'r');const before=await handle.stat({bigint:true});
+  if(!(await stat(resolved)).isFile())pathFail(at,'Expected a regular file before opening.');
+  handle=await open(resolved,constants.O_RDONLY|(constants.O_NONBLOCK??0));const before=await handle.stat({bigint:true});
   if(!before.isFile())pathFail(at,'Expected a regular file.');
   if(before.size>BigInt(max))fail('CIM-V3-PACK-LIMIT',at,'File exceeds the byte limit.','Split the content into smaller files within the documented limits.');
   const bytes=Buffer.alloc(max+1);let count=0;
@@ -33,7 +35,7 @@ export async function readPackFile(root,path,{max=LIMITS.bytes,size,sha256,at='$
 }
 function json(bytes,path){try{return JSON.parse(decodeJSON(bytes,path));}catch(error){if(error instanceof V3ValidationError)throw error;fail('CIM-V3-PARSE',path,'Malformed JSON.','Use valid UTF-8 JSON with double quotes and no trailing comma.');}}
 export async function compileV3Source(source){
- const root=await realpath(dirname(resolve(source)));
+ let root;try{root=await realpath(dirname(resolve(source)));}catch{pathFail('$source','Source folder does not exist.');}
  const lesson=json(await readPackFile(root,basename(source)), '$');assertValid(validateDocument(lesson,'authoring'));
  if(lesson.media.status!=='pack')fail('CIM-V3-PACK-MEDIA','$.media.status','This source has no production pack media map.','Use media.status pack and a media.json file; deferred sources remain validation-only.');
  const capture=json(await readPackFile(root,lesson.capture.file,{at:'$.capture.file'}),'$capture');
@@ -87,6 +89,7 @@ export async function buildV3Pack(source,license,{uploadLimit=null}={}){
  const total=[...entries.values()].reduce((n,b)=>n+b.length,0);
  if(entries.size>PACK_LIMITS.files||total>PACK_LIMITS.total)fail('CIM-V3-PACK-LIMIT','$files','Pack payload exceeds its aggregate limit.','Use at most 256 files and 32 MiB total, including generated data.');
  const root='cim-lesson-'+id,zip=createPortableArchive([...entries].map(([path,data])=>({path:root+'/'+path,data}))),sha256=digest(zip);
+ if(zip.length>PACK_LIMITS.total)fail('CIM-V3-PACK-LIMIT','$zip','Complete ZIP exceeds 32 MiB.','Reduce the complete pack, including ZIP headers and metadata.');
  if(uploadLimit!==null&&(!Number.isSafeInteger(uploadLimit)||uploadLimit<1))fail('CIM-V3-PACK-UPLOAD','$uploadLimit','Invalid target upload limit.','Supply the target host upload limit as a positive integer byte count.');
  if(uploadLimit!==null&&zip.length>uploadLimit)fail('CIM-V3-PACK-UPLOAD','$uploadLimit','The whole ZIP exceeds the target host upload limit.','Reduce the pack ZIP or increase the host limit; per-file media limits do not guarantee installation.');
  const preflight={zipBytes:zip.length,payloadBytes:total,files:entries.size,media:compiled.mediaFiles,mediaBytes:compiled.mediaFiles.reduce((n,f)=>n+f.size,0),limits:{videoBytes:4194304,captionBytes:65536,mediaBytes:16777216,packBytes:PACK_LIMITS.total},placeholder:manifest.placeholder,versionInterval:{min:manifest.cim_min,maxExclusive:manifest.cim_max_exclusive},uploadLimit,uploadMessage:uploadLimit===null?'Target host upload limit is unknown; passing per-file checks does not guarantee installation.':`ZIP fits the stated ${uploadLimit}-byte upload limit; host policy and admission still apply.`};
@@ -95,7 +98,7 @@ export async function buildV3Pack(source,license,{uploadLimit=null}={}){
 export async function writeV3Pack(source,output,{license,uploadLimit=null}={}){
  const result=await buildV3Pack(source,license,{uploadLimit});
  for(const path of [output,output+'.sha256']){try{await access(path);}catch(error){if(error.code==='ENOENT')continue;throw error;}fail('CIM-V3-PACK-EXISTS','$output','Output or checksum already exists.','Choose a new output filename instead of overwriting an earlier pack.');}
- await writeFile(output,result.zip,{flag:'wx'});await writeFile(output+'.sha256',result.sha256+'  '+basename(output)+'\n',{flag:'wx'});return result;
+ try{await writeFile(output,result.zip,{flag:'wx'});await writeFile(output+'.sha256',result.sha256+'  '+basename(output)+'\n',{flag:'wx'});}catch(error){fail(error.code==='EEXIST'?'CIM-V3-PACK-EXISTS':'CIM-V3-PACK-OUTPUT','$output','Cannot create a new pack output: '+error.code,'Use a new filename in an existing writable folder; never overwrite an earlier pack.');}return result;
 }
 export async function initV3Source(destination){
  try{await access(destination);}catch(error){if(error.code!=='ENOENT')throw error;await cp(new URL('../../examples/packs/run-custody-placeholder/',import.meta.url),destination,{recursive:true,errorOnExist:true,force:false});return;}

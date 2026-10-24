@@ -9,6 +9,8 @@ import { findDuplicateKeys } from '../v2/validate-authoring.mjs';
 export const LIMITS = Object.freeze({ bytes: 2 * 1024 * 1024, depth: 32, nodes: 100000, evidenceBytes: 2 * 1024 * 1024, archiveBytes: 16 * 1024 * 1024 });
 export const SCHEMAS = Object.freeze({ authoring: authoringSchema, capture: captureSchema, pack: packSchema, media: mediaSchema });
 export const RULES = Object.freeze({
+  'CIM-V3-PACK-FILES': 'List every payload exactly once, excluding the manifest itself; match lesson, capture and media paths, sizes and fingerprints.',
+  'CIM-V3-PACK-LIMIT': 'Keep the complete payload and ZIP within 32 MiB and 256 files, and media within its existing limits.',
   'CIM-V3-PARSE': 'Save valid UTF-8 JSON with double quotes and no trailing comma.',
   'CIM-V3-SHAPE': 'Use only the documented fields and types in the matching v3 schema.',
   'CIM-V3-LIMIT': 'Split the lesson or capture archive into smaller documents within the documented limits.',
@@ -197,6 +199,13 @@ function pack(doc, c) {
     c.reject('CIM-V3-PLACEHOLDER',doc.media.placeholder!==doc.placeholder,'$.media.placeholder','Pack and media provenance disagree.');
     const files=doc.files??[];unique(files,'$.files',c,'path');
     files.forEach((f,i)=>c.reject('CIM-V3-ARCHIVE-PATH',!safePath(f.path),`$.files[${i}].path`,'Unsafe payload path.'));
+    c.reject('CIM-V3-PACK-FILES',new Set(files.map(f=>f.path.toLowerCase())).size!==files.length||files.some(f=>f.path==='cim-lesson-pack.json'),'$.files','Payload paths collide or list the manifest itself.');
+    c.reject('CIM-V3-PACK-LIMIT',files.reduce((n,f)=>n+f.size,0)>33554432,'$.files','Aggregate payload exceeds 32 MiB.');
+    for(const[i,l]of doc.lessons.entries())c.reject('CIM-V3-PACK-FILES',![l.file,l.capture].every(path=>files.some(f=>f.path===path)),`$.lessons[${i}]`,'Referenced lesson or capture file is not listed.');
+    for(const[i,a]of doc.media.assets.entries())for(const[d,path]of [[a,`$.media.assets[${i}]`],[a.captions,`$.media.assets[${i}].captions`],...(a.webm?[[a.webm,`$.media.assets[${i}].webm`],[a.webm.captions,`$.media.assets[${i}].webm.captions`]]:[])]){
+      const f=files.find(f=>f.path===d.source.path);c.reject('CIM-V3-PACK-FILES',!f||f.size!==d.size||f.sha256!==d.sha256,path,'Media descriptor and payload file list disagree.');
+    }
+
     return;
   }
   if(doc.media.status==='fixture'){c.diagnostics.push(...validateMediaMap(doc.media).map(d=>({...d,path:'$.media'+d.path.slice(1)})));c.reject('CIM-V3-PLACEHOLDER',doc.media.placeholder!==doc.placeholder,'$.media.placeholder','Pack and media provenance disagree.');return;}

@@ -383,7 +383,7 @@
           "pane": "console",
           "kind": "cli",
           "provenance": "placeholder",
-          "command": "# Placeholder · simulated verify-manifest <placeholder>",
+          "command": "# Placeholder · simulated | actor INVENT | verify-manifest <placeholder>",
           "output": [
             "[Placeholder · simulated] [placeholder output]"
           ]
@@ -391,7 +391,7 @@
       ],
       "explanation": {
         "pane": "explanation",
-        "text": "Placeholder · simulated. Custody proves retrieval and integrity; no evaluation runs here.",
+        "text": "Placeholder · simulated. On INVENT, custody proves cold retrieval and integrity of the manifest and its artifacts; no evaluation runs here.",
         "links": []
       },
       "engineering": {
@@ -433,7 +433,7 @@
           "pane": "console",
           "kind": "cli",
           "provenance": "placeholder",
-          "command": "# Placeholder · simulated python evaluate.py --manifest run-manifest.json",
+          "command": "# Placeholder · simulated | actor INSPIRE | evaluate <placeholder>",
           "output": [
             "[Placeholder · simulated] [placeholder output]"
           ]
@@ -441,7 +441,7 @@
       ],
       "explanation": {
         "pane": "explanation",
-        "text": "Placeholder · simulated. Re-running evaluation is a separate reproduction check on INSPIRE.",
+        "text": "Placeholder · simulated. On INSPIRE, the GPU node performs the separately labelled reproduction check after custody has been proved on INVENT.",
         "links": []
       },
       "engineering": {
