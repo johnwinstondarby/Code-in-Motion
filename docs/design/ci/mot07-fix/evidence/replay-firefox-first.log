@@ -1,0 +1,245 @@
+
+Running 18 tests using 1 worker
+
+[1/18] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-22] native play from an ended verified clip preserves its final hold
+[2/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+[3/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold
+  1) tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   await expect.poll(()=>page.locator('.motion-pane video').evaluate(v=>!v.paused&&v.currentTime>0&&v.currentTime<0.5)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                        ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tests/e2e/motion-pane.spec.mjs:61:120
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1366-d640f-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1366-d640f-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1366-d640f-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1366-d640f-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-firefox-results/tests-e2e-motion-pane-1366-d640f-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[4/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold
+  2) tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   await expect.poll(()=>page.locator('.motion-pane video').evaluate(v=>!v.paused&&v.currentTime>0&&v.currentTime<0.5)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                        ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tests/e2e/motion-pane.spec.mjs:61:120
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1366-f2e4c-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1366-f2e4c-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1366-f2e4c-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1366-f2e4c-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-firefox-results/tests-e2e-motion-pane-1366-f2e4c-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[5/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold
+  3) tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   await expect.poll(()=>page.locator('.motion-pane video').evaluate(v=>!v.paused&&v.currentTime>0&&v.currentTime<0.5)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                        ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tests/e2e/motion-pane.spec.mjs:61:120
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1366-7d44f-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1366-7d44f-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1366-7d44f-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1366-7d44f-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-firefox-results/tests-e2e-motion-pane-1366-7d44f-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[6/18] tests/e2e/motion-pane.spec.mjs:63:2 › 1366x768 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[7/18] tests/e2e/motion-pane.spec.mjs:44:2 › 1536x864 › [MOT-22] native play from an ended verified clip preserves its final hold
+[8/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold
+[9/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] previous permits genuine replay after a completed hold
+  4) tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] previous permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   await expect.poll(()=>page.locator('.motion-pane video').evaluate(v=>!v.paused&&v.currentTime>0&&v.currentTime<0.5)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                        ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tests/e2e/motion-pane.spec.mjs:61:120
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1536-b68fc-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1536-b68fc-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1536-b68fc-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1536-b68fc-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-firefox-results/tests-e2e-motion-pane-1536-b68fc-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[10/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold
+[11/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold
+[12/18] tests/e2e/motion-pane.spec.mjs:63:2 › 1536x864 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[13/18] tests/e2e/motion-pane.spec.mjs:44:2 › 1920x1080 › [MOT-22] native play from an ended verified clip preserves its final hold
+[14/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold
+  5) tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   await expect.poll(()=>page.locator('.motion-pane video').evaluate(v=>!v.paused&&v.currentTime>0&&v.currentTime<0.5)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                        ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tests/e2e/motion-pane.spec.mjs:61:120
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1920-7f737-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1920-7f737-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1920-7f737-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1920-7f737-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-firefox-results/tests-e2e-motion-pane-1920-7f737-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[15/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold
+[16/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold
+[17/18] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold
+  6) tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      59 |   }
+      60 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+    > 61 |   await expect.poll(()=>page.locator('.motion-pane video').evaluate(v=>!v.paused&&v.currentTime>0&&v.currentTime<0.5)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+         |                                                                                                                        ^
+      62 |  });
+      63 |  test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+      64 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/mot07-fix/build-a/tests/e2e/motion-pane.spec.mjs:61:120
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1920-d2fd1-play-after-a-completed-hold/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1920-d2fd1-play-after-a-completed-hold/error-context.md
+
+    Error Context: ../replay-firefox-results/tests-e2e-motion-pane-1920-d2fd1-play-after-a-completed-hold/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../replay-firefox-results/tests-e2e-motion-pane-1920-d2fd1-play-after-a-completed-hold/trace.zip
+    Usage:
+
+        npx playwright show-trace ../replay-firefox-results/tests-e2e-motion-pane-1920-d2fd1-play-after-a-completed-hold/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[18/18] tests/e2e/motion-pane.spec.mjs:63:2 › 1920x1080 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+  6 failed
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] previous permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold 
+    tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold 
+  12 passed (1.0m)

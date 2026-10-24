@@ -46,6 +46,28 @@ for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${w
   const state=await page.locator('.motion-pane video').evaluate(async v=>{let observed=false;v.addEventListener('play',()=>{observed=true;},{once:true});try{await v.play();}catch{}return{observed,time:v.currentTime,duration:v.duration,paused:v.paused};});
   expect(state.observed).toBe(true);expect(state.paused).toBe(true);expect(state.time>=state.duration-0.15).toBe(true);
  });
+ for(const route of ['restart','previous','jump','deepLink'])test(`[MOT-23] ${route} permits genuine replay after a completed hold`,async({page})=>{
+  await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+  const experience=fixtureExperience();await page.evaluate(({route,id,step})=>{
+   if(route==='restart')fixture.session.dispatch({type:'restart'});
+   else if(route==='previous')fixture.session.dispatch({type:'previous'});
+   else if(route==='jump')fixture.session.dispatch({type:'jump',index:1});
+   else fixture.session.dispatch({type:'deepLink',fragment:'#cim/'+encodeURIComponent(id)+'/'+encodeURIComponent(step)});
+  },{route,id:experience.id,step:experience.steps[1].id});
+  if(route==='restart'){
+   await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+  }
+  await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+  await expect.poll(()=>page.locator('.motion-pane video').evaluate(v=>!v.paused&&v.currentTime>0&&v.currentTime<0.5)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().index)).toBe(2);
+ });
+ test('[MOT-24] correcting a late rewind changes neither transport, focus nor announcements',async({page})=>{
+  await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+  const result=await page.evaluate(async()=>{
+   const tab=document.querySelector('[role=tab][aria-selected=true]');tab.focus();const before=JSON.stringify(fixture.session.read());let notifications=0,announcements=0;const off=fixture.session.subscribe(()=>notifications++);
+   const observer=new MutationObserver(records=>{announcements+=records.length;});for(const live of document.querySelectorAll('[aria-live]'))observer.observe(live,{childList:true,characterData:true,subtree:true});
+   const video=document.querySelector('.motion-pane video');try{await video.play();}catch{}await Promise.resolve();const result={sameState:before===JSON.stringify(fixture.session.read()),sameFocus:document.activeElement===tab,notifications,announcements};off();observer.disconnect();return result;
+  });expect(result).toEqual({sameState:true,sameFocus:true,notifications:0,announcements:0});
+ });
  test('[MOT-08] reduced motion shows still and alternative with no automatic play',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await open(page,'?attachment');await gui(page);await expect(page.locator('.motion-pane')).toContainText('Simulated GUI test pattern');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);expect(await page.locator('.motion-pane video').evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');});
  test('[MOT-09] missing and tampered clips fail safely and retain fallback while held',async({page},info)=>{for(const mode of ['missing','tampered','undecodable']){await open(page,'?mode='+mode);await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('GUI recording unavailable');await expect(pane).toContainText('CIM-PANE-MEDIA-UNAVAILABLE');await expect(pane).toContainText('Simulated GUI test pattern');await page.evaluate(()=>fixture.advance(500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(pane).toContainText('GUI recording unavailable');await expect(page.locator('[data-mp-panel="motion"]')).toContainText('Waiting on next GUI action');await expect(page.locator('[data-mp-context="explanation"]')).toBeVisible();await page.screenshot({path:info.outputPath('fallback-'+mode+'.png')});}});
  test('[MOT-16] preparation holds peers and a jump cancels without waiting',async({page})=>{
