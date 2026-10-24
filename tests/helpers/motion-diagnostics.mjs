@@ -7,6 +7,15 @@ export async function installMotionDiagnostics(page,{enabled=motionDiagnosticsEn
   const state=v=>{if(!v)return null;if(!ids.has(v))ids.set(v,'video-'+(++nextId));return {identity:ids.get(v),src:v.currentSrc||v.src,time:v.currentTime,duration:v.duration,ended:v.ended,seeking:v.seeking,readyState:v.readyState,paused:v.paused};};
   const record=(event,data)=>{if(events.length===512){events.shift();dropped++;}events.push({event,data,stamp:performance.now()});};
   for(const event of ['seeking','seeked','timeupdate','ended','pause','play','playing','waiting','canplay'])document.addEventListener(event,e=>{if(e.target instanceof HTMLMediaElement)record('native-'+event,state(e.target));},true);
+  const wrapped=new WeakSet();let callId=0;
+  const wrapMotionVideos=()=>{for(const video of document.querySelectorAll('.motion-pane video')){
+   if(wrapped.has(video)||typeof video.play!=='function')continue;wrapped.add(video);const nativePlay=video.play;
+   video.play=function(...args){const id=++callId;record('play-call',{id,stack:new Error('Motion play call').stack,video:state(this),session:window.fixture?.session.read()??null});
+    let result;try{result=nativePlay.apply(this,args);}catch(error){record('play-throw',{id,error:String(error)});throw error;}
+    result.then(()=>record('play-resolved',{id,video:state(video)}),error=>record('play-rejected',{id,error:String(error),video:state(video)}));return result;
+   };
+  }};
+  new MutationObserver(wrapMotionVideos).observe(document,{childList:true,subtree:true});wrapMotionVideos();
   window.__motionVideoSnapshot=state;
   window.__motionCompleted=result=>{const session=window.fixture.session.read();record('motion-completion',{result:{status:result.status},index:session.index,generation:session.generation,video:state(document.querySelector('.motion-pane video'))});};
   window.__motionObserveSession=session=>session.subscribe(next=>record('session',{index:next.index,generation:next.generation,progress:next.progress,playing:next.playing,failures:next.failures,video:state(document.querySelector('.motion-pane video'))}));
