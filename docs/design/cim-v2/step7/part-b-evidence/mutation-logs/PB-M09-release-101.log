@@ -1,0 +1,53 @@
+TAP version 13
+1..0
+# Subtest: tests/pack-preview.test.mjs
+ok 1 - tests/pack-preview.test.mjs
+  ---
+  duration_ms: 134.935151
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/pack-v3-sample.test.mjs
+ok 2 - tests/pack-v3-sample.test.mjs
+  ---
+  duration_ms: 148.120984
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/pack-v3-schema.test.mjs
+ok 3 - tests/pack-v3-schema.test.mjs
+  ---
+  duration_ms: 2793.819993
+  type: 'test'
+  ...
+# Subtest: [PB-10] an explicit branded development identity is required; no prerelease coercion
+not ok 4 - [PB-10] an explicit branded development identity is required; no prerelease coercion
+  ---
+  duration_ms: 56.254547
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/pack-v3-mutations/candidate-Xc4pjY/tests/pack-v3.test.mjs:39:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/pack-v3-mutations/candidate-Xc4pjY/tests/pack-v3.test.mjs:40:85)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 3
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2808.196855

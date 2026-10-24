@@ -1,0 +1,506 @@
+[
+  {
+    "file": "screenshots/chromium-1366x768-beat-1.png",
+    "browser": "chromium",
+    "width": 1366,
+    "height": 768,
+    "sha256": "83abe5e877e00bc7ea21e6100309a68ccb2a756c303f452e94a20092a07830de"
+  },
+  {
+    "file": "screenshots/chromium-1366x768-beat-2.png",
+    "browser": "chromium",
+    "width": 1366,
+    "height": 768,
+    "sha256": "bdd4536f97bc736cc22e51a60e023d45999201f52d75cf823eb0f212ac136766"
+  },
+  {
+    "file": "screenshots/chromium-1366x768-beat-3.png",
+    "browser": "chromium",
+    "width": 1366,
+    "height": 768,
+    "sha256": "4fad990c02ffb72582e47d997ac0600c4a06f8c04d05cd5c6f56f5f8b659bc40"
+  },
+  {
+    "file": "screenshots/chromium-1366x768-beat-4.png",
+    "browser": "chromium",
+    "width": 1366,
+    "height": 768,
+    "sha256": "ce532224de1b169e3e59b19f1f7c0e1ead6006298f456caf7be10a5ce69e73f6"
+  },
+  {
+    "file": "screenshots/chromium-1366x768-beat-5.png",
+    "browser": "chromium",
+    "width": 1366,
+    "height": 768,
+    "sha256": "8a89a94cf152ce42794a7d2f9761855a4618ffa388015638e357e4a6b946a72f"
+  },
+  {
+    "file": "screenshots/chromium-1366x768-beat-6.png",
+    "browser": "chromium",
+    "width": 1366,
+    "height": 768,
+    "sha256": "3f22703c04d3769d8e698607af7cf7e905046f160e003138ad0b99a0be88e519"
+  },
+  {
+    "file": "screenshots/chromium-1366x768-beat-7.png",
+    "browser": "chromium",
+    "width": 1366,
+    "height": 768,
+    "sha256": "b23f4d2db8407516625f3405e67954cfd1a344a5e3cc49226ae40356608b64a7"
+  },
+  {
+    "file": "screenshots/chromium-1366x768-beat-8.png",
+    "browser": "chromium",
+    "width": 1366,
+    "height": 768,
+    "sha256": "f7e086768548eb60350aff90e253a68b6d02bdae54ecf0f96075cfa0a058d57b"
+  },
+  {
+    "file": "screenshots/chromium-1536x864-beat-1.png",
+    "browser": "chromium",
+    "width": 1536,
+    "height": 864,
+    "sha256": "5392f7cedba3a43a74c27350c8b20d3a98523585f86fd879273018da282e6377"
+  },
+  {
+    "file": "screenshots/chromium-1536x864-beat-2.png",
+    "browser": "chromium",
+    "width": 1536,
+    "height": 864,
+    "sha256": "d91f3de112d334c898067fe95ed4d671aba965e54d7ea399b600e8aad41fda66"
+  },
+  {
+    "file": "screenshots/chromium-1536x864-beat-3.png",
+    "browser": "chromium",
+    "width": 1536,
+    "height": 864,
+    "sha256": "8327977852f4038b052b9d454f341ed71565c4de75964de557f80e55b1d8aa12"
+  },
+  {
+    "file": "screenshots/chromium-1536x864-beat-4.png",
+    "browser": "chromium",
+    "width": 1536,
+    "height": 864,
+    "sha256": "e514375ee01f6849585d91fc96552f3361a9aa185ceb593fb4adf337fdd7bde4"
+  },
+  {
+    "file": "screenshots/chromium-1536x864-beat-5.png",
+    "browser": "chromium",
+    "width": 1536,
+    "height": 864,
+    "sha256": "1c8b162f9979f9f2ba384ab88c2dc9aa4f3120d988d6ebaaba5d6acb75ceb6b9"
+  },
+  {
+    "file": "screenshots/chromium-1536x864-beat-6.png",
+    "browser": "chromium",
+    "width": 1536,
+    "height": 864,
+    "sha256": "418c88958bdb708f45ab1f18142904fe76200a8729f00eaa86570f91f2f2b008"
+  },
+  {
+    "file": "screenshots/chromium-1536x864-beat-7.png",
+    "browser": "chromium",
+    "width": 1536,
+    "height": 864,
+    "sha256": "159063b03b5eda78944f5e10a2633fdc567a865dbc8e92fbb257255a0d8d0bf3"
+  },
+  {
+    "file": "screenshots/chromium-1536x864-beat-8.png",
+    "browser": "chromium",
+    "width": 1536,
+    "height": 864,
+    "sha256": "5535bb0a38bc6b8e2072dd989ee31a25a60951b6b3a328e00e531aa57e3cfb38"
+  },
+  {
+    "file": "screenshots/chromium-1920x1080-beat-1.png",
+    "browser": "chromium",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "f821a972d90d34976749aef27f64179b83eced94ec7000f5513ebc1d72d8b351"
+  },
+  {
+    "file": "screenshots/chromium-1920x1080-beat-2.png",
+    "browser": "chromium",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "2afe4e6d1648cec583dad3daa866268ee8066d0d592ee76c02fd4bf8f1175209"
+  },
+  {
+    "file": "screenshots/chromium-1920x1080-beat-3.png",
+    "browser": "chromium",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "24ea931f35f97a70a9b8f574ef2938ad230fca64088db6a7b744e32b3136ffb1"
+  },
+  {
+    "file": "screenshots/chromium-1920x1080-beat-4.png",
+    "browser": "chromium",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "7f9e4a0b1c1d73ad7497f92f6c0531422d758931db581d9d1249373a32480a0c"
+  },
+  {
+    "file": "screenshots/chromium-1920x1080-beat-5.png",
+    "browser": "chromium",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "98de07eafb85e347e5180dfe9d17028f8e45e1fe9ea666819fede012ac639c8f"
+  },
+  {
+    "file": "screenshots/chromium-1920x1080-beat-6.png",
+    "browser": "chromium",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "891875740ec885ac2653c573f11352b4a41c5d91a21a4f37668c96e84d5b04ea"
+  },
+  {
+    "file": "screenshots/chromium-1920x1080-beat-7.png",
+    "browser": "chromium",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "5ffdc33a0430e3930c8b25b26d68406b54e536be8b147518f374c5a009093193"
+  },
+  {
+    "file": "screenshots/chromium-1920x1080-beat-8.png",
+    "browser": "chromium",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "c38ef42bc1671915dc77dec0f60292c9ceb3b99a4ca035a8c9dd57f5ddc19c08"
+  },
+  {
+    "file": "screenshots/firefox-1366x768-beat-1.png",
+    "browser": "firefox",
+    "width": 1366,
+    "height": 768,
+    "sha256": "e17a515081b95ec9ab7108828f58903e9d1de16ee812840cd178c88286ff1f97"
+  },
+  {
+    "file": "screenshots/firefox-1366x768-beat-2.png",
+    "browser": "firefox",
+    "width": 1366,
+    "height": 768,
+    "sha256": "312abd4960a422ed7d2add4f8a7f125d291d32751000fae076298b93c0bb4317"
+  },
+  {
+    "file": "screenshots/firefox-1366x768-beat-3.png",
+    "browser": "firefox",
+    "width": 1366,
+    "height": 768,
+    "sha256": "3b88313428d5d16240aeca0db52894d75b70c7e37ee5033ad9f43db225a312cc"
+  },
+  {
+    "file": "screenshots/firefox-1366x768-beat-4.png",
+    "browser": "firefox",
+    "width": 1366,
+    "height": 768,
+    "sha256": "46dc052378d1f420ad77a94a4ba7fdcd0e7144d470a349f789684ceec7f00f10"
+  },
+  {
+    "file": "screenshots/firefox-1366x768-beat-5.png",
+    "browser": "firefox",
+    "width": 1366,
+    "height": 768,
+    "sha256": "17dfe00a74bc595ad566e22c081ed4842e9bdea14f8fbba9b89f24cec2dc2128"
+  },
+  {
+    "file": "screenshots/firefox-1366x768-beat-6.png",
+    "browser": "firefox",
+    "width": 1366,
+    "height": 768,
+    "sha256": "02f5b8a9c97be5e7cf7170119a53d3cd9ada9ddc052d6d5c4e55bbcd1b4db458"
+  },
+  {
+    "file": "screenshots/firefox-1366x768-beat-7.png",
+    "browser": "firefox",
+    "width": 1366,
+    "height": 768,
+    "sha256": "6525c3f1ae74509552f3a4e7ab26836d0602c4cfb12f93c1a7f66d63097b479d"
+  },
+  {
+    "file": "screenshots/firefox-1366x768-beat-8.png",
+    "browser": "firefox",
+    "width": 1366,
+    "height": 768,
+    "sha256": "ef2e6405c87d03dea31c8798ad876a408cb3ee07f0786926a52b26db3b26ce61"
+  },
+  {
+    "file": "screenshots/firefox-1536x864-beat-1.png",
+    "browser": "firefox",
+    "width": 1536,
+    "height": 864,
+    "sha256": "921f5f57e49c555064f72376e43bc8a82da4f0914990ba1dcfb5d4cf5ebc78bc"
+  },
+  {
+    "file": "screenshots/firefox-1536x864-beat-2.png",
+    "browser": "firefox",
+    "width": 1536,
+    "height": 864,
+    "sha256": "d1e37b6d90c6e80e5fe35ddf46b7982e3f8eda475ab2c007e8622ee102f113b1"
+  },
+  {
+    "file": "screenshots/firefox-1536x864-beat-3.png",
+    "browser": "firefox",
+    "width": 1536,
+    "height": 864,
+    "sha256": "2827442af89691b26d1153b7b2804f4d11770ac31cdca2b48a51c93e88615a98"
+  },
+  {
+    "file": "screenshots/firefox-1536x864-beat-4.png",
+    "browser": "firefox",
+    "width": 1536,
+    "height": 864,
+    "sha256": "80cf4e4dab0b02748f561c8efabd6278c4dc80b1e93e8da0deecabe491b7e56f"
+  },
+  {
+    "file": "screenshots/firefox-1536x864-beat-5.png",
+    "browser": "firefox",
+    "width": 1536,
+    "height": 864,
+    "sha256": "8de512e5719e0a9ec148e1265747b68ea72c4e9fe733b0be1b90d8c98e0b13d5"
+  },
+  {
+    "file": "screenshots/firefox-1536x864-beat-6.png",
+    "browser": "firefox",
+    "width": 1536,
+    "height": 864,
+    "sha256": "13c0a6ed9e8560c9a3310850fa36a1696c94a369e0887af64bcf7dc31f688d80"
+  },
+  {
+    "file": "screenshots/firefox-1536x864-beat-7.png",
+    "browser": "firefox",
+    "width": 1536,
+    "height": 864,
+    "sha256": "9e5fef9cd922deb9f53274dc92c15b5fd3a5cf5789d788ab1674efe2d4fb85ed"
+  },
+  {
+    "file": "screenshots/firefox-1536x864-beat-8.png",
+    "browser": "firefox",
+    "width": 1536,
+    "height": 864,
+    "sha256": "a271f539f0092bba301c1415a9e3ce2b8c99a67c33e5cd92877cfa716ed4aa09"
+  },
+  {
+    "file": "screenshots/firefox-1920x1080-beat-1.png",
+    "browser": "firefox",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "49b223edab0e898adb41d5ece24ad80ffc2882e0b35d4cd6a871a91cc732f189"
+  },
+  {
+    "file": "screenshots/firefox-1920x1080-beat-2.png",
+    "browser": "firefox",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "0381b943a9a65afac2969e2b0e1399ba157016051f8ce7988445f74d1b1d925e"
+  },
+  {
+    "file": "screenshots/firefox-1920x1080-beat-3.png",
+    "browser": "firefox",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "e4cb94e89413148aa707370c0d9cdca39952fe7365363dca8a43c68920ce1495"
+  },
+  {
+    "file": "screenshots/firefox-1920x1080-beat-4.png",
+    "browser": "firefox",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "2a6f29cbed98e9959b5acc688a6e272822dfc4a6c5647623bf1e7952d1627204"
+  },
+  {
+    "file": "screenshots/firefox-1920x1080-beat-5.png",
+    "browser": "firefox",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "1ec4b55f5285723f3862d9e967e86b6c9138ddff3428b71f8b16d5baf8cd7f6b"
+  },
+  {
+    "file": "screenshots/firefox-1920x1080-beat-6.png",
+    "browser": "firefox",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "c52cbd4489538c81f45b62bd8a058edb868d84bb299250784d5412e29b03b228"
+  },
+  {
+    "file": "screenshots/firefox-1920x1080-beat-7.png",
+    "browser": "firefox",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "bb059d08617590ac44e76b83599390ea6549a254c556736ac825583c4c6d187d"
+  },
+  {
+    "file": "screenshots/firefox-1920x1080-beat-8.png",
+    "browser": "firefox",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "8d89afcb13098ab5cf987356aafebfc66e03bcf1b80ca4b6528e5875da98abc9"
+  },
+  {
+    "file": "screenshots/webkit-1366x768-beat-1.png",
+    "browser": "webkit",
+    "width": 1366,
+    "height": 768,
+    "sha256": "f66372b82289859cba5b09235dd5831b125b1d9357a2ebd4245fe7faec51933f"
+  },
+  {
+    "file": "screenshots/webkit-1366x768-beat-2.png",
+    "browser": "webkit",
+    "width": 1366,
+    "height": 768,
+    "sha256": "651c06b753d52756e75e7d668cd9e696ac905c99a215e0b257149ab7bf700b08"
+  },
+  {
+    "file": "screenshots/webkit-1366x768-beat-3.png",
+    "browser": "webkit",
+    "width": 1366,
+    "height": 768,
+    "sha256": "c06cf2240bb07c89c2f14ccc5675706f0aff12346a99b7779ea9558877eef4d7"
+  },
+  {
+    "file": "screenshots/webkit-1366x768-beat-4.png",
+    "browser": "webkit",
+    "width": 1366,
+    "height": 768,
+    "sha256": "ec5529bc74179494401a4add468553999fff7442b413006b5130c9279f6a7fc4"
+  },
+  {
+    "file": "screenshots/webkit-1366x768-beat-5.png",
+    "browser": "webkit",
+    "width": 1366,
+    "height": 768,
+    "sha256": "88e1770e627991e90c88073da7168dcd4fae3664061d62af4c4377fba7a9c037"
+  },
+  {
+    "file": "screenshots/webkit-1366x768-beat-6.png",
+    "browser": "webkit",
+    "width": 1366,
+    "height": 768,
+    "sha256": "c1785bdb0c1d37cf988f1ec8f3500340b6b7b9d4f5771d7f1944b1c632e1a94e"
+  },
+  {
+    "file": "screenshots/webkit-1366x768-beat-7.png",
+    "browser": "webkit",
+    "width": 1366,
+    "height": 768,
+    "sha256": "6022f18cd80ef155bb225695ccf1d16eef603b8c767fde0f1c7bcabcf2faf5dc"
+  },
+  {
+    "file": "screenshots/webkit-1366x768-beat-8.png",
+    "browser": "webkit",
+    "width": 1366,
+    "height": 768,
+    "sha256": "89f9f472ca64b6a98bbb6ab9caa6fb4effeeecaaaa2edd2532e680e7ef47929a"
+  },
+  {
+    "file": "screenshots/webkit-1536x864-beat-1.png",
+    "browser": "webkit",
+    "width": 1536,
+    "height": 864,
+    "sha256": "6c04638860a4f8be1d0e5293c27392e32e496333b0a4c66e9ef5e94ad7dbba8e"
+  },
+  {
+    "file": "screenshots/webkit-1536x864-beat-2.png",
+    "browser": "webkit",
+    "width": 1536,
+    "height": 864,
+    "sha256": "118a8190106d1fb833e2f260bfb5af0cd167eb0694ebad548dd9bb2bfe907619"
+  },
+  {
+    "file": "screenshots/webkit-1536x864-beat-3.png",
+    "browser": "webkit",
+    "width": 1536,
+    "height": 864,
+    "sha256": "32cedf6f39fbff9f8854ce9e4486169df40376033607ba4d21fabb3768ba22f5"
+  },
+  {
+    "file": "screenshots/webkit-1536x864-beat-4.png",
+    "browser": "webkit",
+    "width": 1536,
+    "height": 864,
+    "sha256": "694db3adc5dbe7ad6cf11b9473bb0b90dd95a9a03f6af78bcd83bcc89463416a"
+  },
+  {
+    "file": "screenshots/webkit-1536x864-beat-5.png",
+    "browser": "webkit",
+    "width": 1536,
+    "height": 864,
+    "sha256": "f2398ffb793d45b1355a090bfb1470d640129f428d063270233a5782ec228112"
+  },
+  {
+    "file": "screenshots/webkit-1536x864-beat-6.png",
+    "browser": "webkit",
+    "width": 1536,
+    "height": 864,
+    "sha256": "c4df65489773d848ed0fee27d3232f07b53eae9a64e66d79a99992456b0b12ef"
+  },
+  {
+    "file": "screenshots/webkit-1536x864-beat-7.png",
+    "browser": "webkit",
+    "width": 1536,
+    "height": 864,
+    "sha256": "aee74c3dfad801a7aff26f13e0f686cc68d17afcca2e0bc83995337c18259fea"
+  },
+  {
+    "file": "screenshots/webkit-1536x864-beat-8.png",
+    "browser": "webkit",
+    "width": 1536,
+    "height": 864,
+    "sha256": "dfe4f7ec8e7bcb25cab6ef48e5292acdc435207e41d7372cf37a937d6f997408"
+  },
+  {
+    "file": "screenshots/webkit-1920x1080-beat-1.png",
+    "browser": "webkit",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "87361f13dfbfb904e8b01e35b0d391bf03b5250860162af82770cb9339bdccab"
+  },
+  {
+    "file": "screenshots/webkit-1920x1080-beat-2.png",
+    "browser": "webkit",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "51a851aaa657b5dca0c5e2d022dd0353fb2375952f1fc92f07beff89382656a5"
+  },
+  {
+    "file": "screenshots/webkit-1920x1080-beat-3.png",
+    "browser": "webkit",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "7ff3a6ad0657a4bd701d7e7e521c117e1fd0574fe7d27e2548c8acacb35ef1e3"
+  },
+  {
+    "file": "screenshots/webkit-1920x1080-beat-4.png",
+    "browser": "webkit",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "3110317436095ebbbd26d2fc3fcbeb8ea20e1df734ac0bbe7702628d4c344919"
+  },
+  {
+    "file": "screenshots/webkit-1920x1080-beat-5.png",
+    "browser": "webkit",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "2dbee8a0a2f61a6cdf301e93deb001eee937acfead67bcb7a3baec8fa240bebb"
+  },
+  {
+    "file": "screenshots/webkit-1920x1080-beat-6.png",
+    "browser": "webkit",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "29eaa3bae4325825fd5737aabfcc178e051ba5d74353b290b8867db313229b56"
+  },
+  {
+    "file": "screenshots/webkit-1920x1080-beat-7.png",
+    "browser": "webkit",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "14d95d8436be770090777c1e01fbb364e41160630f0223b517f4a311ec59d2bc"
+  },
+  {
+    "file": "screenshots/webkit-1920x1080-beat-8.png",
+    "browser": "webkit",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "c578db0d09a5e51550e32e5514b3059afbc135b6a391e8778e1433aa80408ca6"
+  }
+]

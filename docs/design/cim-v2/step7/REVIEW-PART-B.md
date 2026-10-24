@@ -48,6 +48,7 @@ The file list covers every payload except the manifest itself; the ZIP checksum 
 | 59f6ac2 | Existing CI freeze test explicitly permits new preview stage/spec | Full verify found its deliberate frozen-command comparison. New steps/command are asserted exactly before normalizing only those additions; all previous comparisons remain. |
 | 18897d8 | PB-27 recorded red | Sixteen idle sockets exhausted preview's connection cap and a module fetch was dropped. Initial Firefox network-failure log retained. |
 | d9e62d5 | Bounded cap 64 and PB-M21 guard | PB-27 green; no playback wait/tolerance changed. |
+| ad6a9b2 / ae7a7be | PB-28 duplicate-key regression recorded red, then fixed | Pack parsing must reject duplicate JSON keys before object conversion; lesson, capture and media cases covered. PB-M22 restores the omission. |
 | f5504f2 | UTF-8 labels/anchors and workflow working-copy LF corrected | Local/initial CI found a malformed mutation anchor after an editor encoding mistake. The guard aborted rather than counting a crash. No assertion or product validation weakened. |
 
 All red logs remain under part-b-evidence/. Later validation and browser runs are additional evidence, never retroactively attributed to an earlier red run. No playback tolerance, test timeout or test retry was increased.
@@ -71,6 +72,7 @@ All red logs remain under part-b-evidence/. Later validation and browser runs ar
 | Host/Origin/method allowlist and immutable preview snapshots | PB-19/20/21 | PB-M17/18 |
 | Verified compiled/capture bytes before mount | PB-PREVIEW-04 (two cases) | PB-M19 |
 | Bounded browser/module connection capacity | PB-27 | PB-M21 |
+| Duplicate source JSON keys | PB-28 | PB-M22 |
 | Actual eight beats, hidden-video shared clock, true-size graph | PB-PREVIEW-01/02 | Existing pane/transport/composition guards plus new preview guards |
 
 ## Deliberate boundaries and limitations
@@ -85,4 +87,16 @@ No production preparation deadline is chosen here. #107 and #108 must inform Par
 
 ## Verification and artifacts
 
-Final logs, screenshot inventory, exact checksums and CI links are added below as the runs finish. Review must use the final PR head, not an earlier green head. Independent rebuild and Daisy/Johann decisions remain outstanding.
+Product code head: ae7a7be. Later evidence/documentation commits do not enter these archives. Both pinned Node versions pass **1,125 tests**, none skipped. The v1 differential reports **41 identical / zero different**. Existing multi-pane browser suites pass **129 per engine**; new real-preview suites pass **7 per engine**. The packet includes **72 true-size screenshots** (eight beats × three sizes × three engines) with dimensions and digests in screenshots.json.
+
+| Artifact | SHA-256 | Bytes |
+| --- | --- | --- |
+| Plugin (unchanged) | d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a | 219661 |
+| Authoring candidate (152 files) | cea1729fe94a1cabc71547e2eb7cdb74bcf99fd49c97875986a2be90aab0ff3b | 1039066 |
+| Placeholder pack | 8131e7f07d8481b3f2ea7289edc9ff49592cc9dfbc8b7724a45656cac597982c | 124400 |
+
+Two clean Node 22.23.2 builds match for all three. builds.json records the exact sizes and hashes. An extracted candidate with no node_modules initialized, validated, compiled, packed and previewed actual captioned video. Its pack bytes match the repository build. Published 1.0.1 rollback ZIP and page 3227 capture hashes were checked unchanged.
+
+Mutation reports are retained per engine. The final suite contains 20 unit and two browser probes; a crash, missing anchor or empty test selection is not counted as a caught mutation. Local Chromium/Firefox reports contain 21 probes and predate PB-M22; WebKit contains all 22. Both pinned final verify runs exercise the 20 unit probes, and exact-head CI runs the complete final set in each browser. The latest individual probe logs are the WebKit run.
+
+Exact-head CI is visible in PR #109's Checks tab. Review must use the final PR head, not an earlier green head. The initial CI mutation-anchor failure is retained; it was fixed, not retried into a pass. Independent rebuild and Daisy/Johann decisions remain outstanding.

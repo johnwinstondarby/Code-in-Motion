@@ -1,0 +1,36 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/pack-v3-preview.spec.mjs:27:1 › [PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors
+  1) tests/e2e/pack-v3-preview.spec.mjs:27:1 › [PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('h2')
+    Expected: "A real authored edit"
+    Received: "Run Custody · Placeholder simulation"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" locator('h2') with timeout 5000ms
+      - waiting for locator('h2')
+        14 × locator resolved to <h2>Run Custody · Placeholder simulation</h2>
+           - unexpected value "Run Custody · Placeholder simulation"
+
+
+      26 | });
+      27 | test('[PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors',async({page})=>{
+    > 28 |  const file=resolve(folder,'lesson.json'),original=await readFile(file,'utf8');try{const doc=JSON.parse(original);doc.title='A real authored edit';await writeFile(file,JSON.stringify(doc));await open(page);await expect(page.locator('h2')).toHaveText(doc.title);for(const k of ['extra1','extra2','extra3','extra4'])doc[k]=true;await writeFile(file,JSON.stringify(doc));await page.reload();for(const k of ['extra1','extra2','extra3','extra4'])await expect(page.locator('#preview-error')).toContainText('$.'+k);await expect(page.locator('#preview-error')).toContainText('CIM-V3-SHAPE');await expect(page.locator('[data-composed-player]')).toHaveCount(0);}finally{await writeFile(file,original);}
+         |                                                                                                                                                                                                                                                ^
+      29 | });
+      30 |
+      31 | for(const filename of ['lesson.json','capture.json'])test(`[PB-PREVIEW-04] verified ${filename} refuses same-size response tampering`,async({page})=>{
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/pack-v3-mutations/candidate-Xc4pjY/tests/e2e/pack-v3-preview.spec.mjs:28:240
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--ad823-ctionable-validation-errors/error-context.md
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--ad823-ctionable-validation-errors/error-context.md
+
+
+  1 failed
+    tests/e2e/pack-v3-preview.spec.mjs:27:1 › [PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors 

@@ -1,0 +1,54 @@
+TAP version 13
+# Subtest: [PB-20] preview blocks forged Host, cross-origin requests and write methods
+not ok 1 - [PB-20] preview blocks forged Host, cross-origin requests and write methods
+  ---
+  duration_ms: 262.092068
+  type: 'test'
+  location: '/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/pack-v3-mutations/candidate-Xc4pjY/tests/pack-preview.test.mjs:13:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    200 !== 403
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 403
+  actual: 200
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/pack-v3-mutations/candidate-Xc4pjY/tests/pack-preview.test.mjs:13:126)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..0
+# Subtest: tests/pack-v3-sample.test.mjs
+ok 2 - tests/pack-v3-sample.test.mjs
+  ---
+  duration_ms: 154.885262
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/pack-v3-schema.test.mjs
+ok 3 - tests/pack-v3-schema.test.mjs
+  ---
+  duration_ms: 2865.507937
+  type: 'test'
+  ...
+1..0
+# Subtest: tests/pack-v3.test.mjs
+ok 4 - tests/pack-v3.test.mjs
+  ---
+  duration_ms: 131.954517
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 3
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2878.758551

@@ -1,0 +1,11 @@
+
+Running 7 tests using 1 worker
+
+[1/7] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1366x768 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[2/7] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1536x864 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[3/7] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1920x1080 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[4/7] tests/e2e/pack-v3-preview.spec.mjs:24:1 › [PB-PREVIEW-02] real Motion playback keeps one clock when its action tab is hidden
+[5/7] tests/e2e/pack-v3-preview.spec.mjs:27:1 › [PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors
+[6/7] tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified lesson.json refuses same-size response tampering
+[7/7] tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified capture.json refuses same-size response tampering
+  7 passed (10.9s)

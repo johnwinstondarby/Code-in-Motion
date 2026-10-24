@@ -1,0 +1,117 @@
+{
+  "node": "v22.23.2",
+  "browser": "webkit",
+  "baseline": "passed",
+  "results": [
+    {
+      "id": "PB-M01-placeholder",
+      "rule": "PB-03",
+      "caught": true
+    },
+    {
+      "id": "PB-M02-forged-label",
+      "rule": "PB-04",
+      "caught": true
+    },
+    {
+      "id": "PB-M03-capture",
+      "rule": "PB-05",
+      "caught": true
+    },
+    {
+      "id": "PB-M04-digest",
+      "rule": "PB-06",
+      "caught": true
+    },
+    {
+      "id": "PB-M05-codec",
+      "rule": "PB-07",
+      "caught": true
+    },
+    {
+      "id": "PB-M06-confinement",
+      "rule": "PB-09",
+      "caught": true
+    },
+    {
+      "id": "PB-M07-minimum",
+      "rule": "PB-11",
+      "caught": true
+    },
+    {
+      "id": "PB-M08-plain-dev",
+      "rule": "PB-10",
+      "caught": true
+    },
+    {
+      "id": "PB-M09-release-101",
+      "rule": "PB-10",
+      "caught": true
+    },
+    {
+      "id": "PB-M10-variable-date",
+      "rule": "PB-12",
+      "caught": true
+    },
+    {
+      "id": "PB-M11-attachment",
+      "rule": "PB-08",
+      "caught": true
+    },
+    {
+      "id": "PB-M12-console",
+      "rule": "PB-22",
+      "caught": true
+    },
+    {
+      "id": "PB-M13-file-list",
+      "rule": "PB-23",
+      "caught": true
+    },
+    {
+      "id": "PB-M14-total",
+      "rule": "PB-23",
+      "caught": true
+    },
+    {
+      "id": "PB-M15-actor",
+      "rule": "PB-24",
+      "caught": true
+    },
+    {
+      "id": "PB-M16-php-template",
+      "rule": "PB-25",
+      "caught": true
+    },
+    {
+      "id": "PB-M17-host",
+      "rule": "PB-20",
+      "caught": true
+    },
+    {
+      "id": "PB-M21-capacity",
+      "rule": "PB-27",
+      "caught": true
+    },
+    {
+      "id": "PB-M22-duplicate-keys",
+      "rule": "PB-28",
+      "caught": true
+    },
+    {
+      "id": "PB-M18-snapshot",
+      "rule": "PB-21",
+      "caught": true
+    },
+    {
+      "id": "PB-M19-json-verification",
+      "rule": "PB-PREVIEW-04",
+      "caught": true
+    },
+    {
+      "id": "PB-M20-real-source",
+      "rule": "PB-PREVIEW-03",
+      "caught": true
+    }
+  ]
+}

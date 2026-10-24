@@ -1,0 +1,81 @@
+{
+  "zipBytes": 124400,
+  "payloadBytes": 121594,
+  "files": 15,
+  "media": [
+    {
+      "path": "media/submit-fail.mp4",
+      "size": 9761,
+      "sha256": "56e26c54983bf9ae29aafba059a2ba9985af783ba5dc154578122e1b82a5dc2c",
+      "type": "video/mp4",
+      "codec": "avc1.42c01e",
+      "confined": true
+    },
+    {
+      "path": "captions/submit-fail-mp4.vtt",
+      "size": 88,
+      "sha256": "569be7bdc959b2566ec5b6a8a03feb813b153cb3042262d8765136c38acc7eae",
+      "type": "text/vtt",
+      "confined": true
+    },
+    {
+      "path": "media/submit-fail.webm",
+      "size": 21108,
+      "sha256": "532dea9a4a6c4fdccbf2beb5a3ef77d50af868539615f4e20ec89c5a5f3c378f",
+      "type": "video/webm",
+      "codec": "vp8",
+      "confined": true
+    },
+    {
+      "path": "captions/submit-fail-webm.vtt",
+      "size": 88,
+      "sha256": "569be7bdc959b2566ec5b6a8a03feb813b153cb3042262d8765136c38acc7eae",
+      "type": "text/vtt",
+      "confined": true
+    },
+    {
+      "path": "media/track-mlflow.mp4",
+      "size": 9695,
+      "sha256": "30e56bb40c3a0444540e704fd100477f1dca8f766e844925f9ca8d8abf17abaa",
+      "type": "video/mp4",
+      "codec": "avc1.42c01e",
+      "confined": true
+    },
+    {
+      "path": "captions/track-mlflow-mp4.vtt",
+      "size": 85,
+      "sha256": "9a85fabbc15310ed57ce494e22c73291ef14b42d5541975bcfdc65e79e52e41d",
+      "type": "text/vtt",
+      "confined": true
+    },
+    {
+      "path": "media/track-mlflow.webm",
+      "size": 20464,
+      "sha256": "202d342cd353831573e37f75c0063432f574f7f4aa50656fc4bab473c6929637",
+      "type": "video/webm",
+      "codec": "vp8",
+      "confined": true
+    },
+    {
+      "path": "captions/track-mlflow-webm.vtt",
+      "size": 85,
+      "sha256": "9a85fabbc15310ed57ce494e22c73291ef14b42d5541975bcfdc65e79e52e41d",
+      "type": "text/vtt",
+      "confined": true
+    }
+  ],
+  "mediaBytes": 61374,
+  "limits": {
+    "videoBytes": 4194304,
+    "captionBytes": 65536,
+    "mediaBytes": 16777216,
+    "packBytes": 33554432
+  },
+  "placeholder": true,
+  "versionInterval": {
+    "min": "1.1.0",
+    "maxExclusive": "2.0.0"
+  },
+  "uploadLimit": null,
+  "uploadMessage": "Target host upload limit is unknown; passing per-file checks does not guarantee installation."
+}

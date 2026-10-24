@@ -1,0 +1,66 @@
+
+Running 2 tests using 1 worker
+
+[1/2] tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified lesson.json refuses same-size response tampering
+  1) tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified lesson.json refuses same-size response tampering 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#preview-error')
+    Expected substring: "fingerprint mismatch"
+    Received string:    ""
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#preview-error') with timeout 5000ms
+      - waiting for locator('#preview-error')
+        14 × locator resolved to <pre role="status" id="preview-error"></pre>
+           - unexpected value ""
+
+
+      31 | for(const filename of ['lesson.json','capture.json'])test(`[PB-PREVIEW-04] verified ${filename} refuses same-size response tampering`,async({page})=>{
+      32 |  await page.route('**/pack/*/'+filename,async route=>{const response=await route.fetch(),text=await response.text(),modified=filename==='lesson.json'?text.replace('Run Custody','Xun Custody'):text.replace('placeholder-archive','xlaceholder-archive');expect(modified).not.toBe(text);expect(Buffer.byteLength(modified)).toBe(Buffer.byteLength(text));await route.fulfill({response,body:modified});});
+    > 33 |  await page.goto(url);await expect(page.locator('#preview-error')).toContainText('fingerprint mismatch');await expect(page.locator('[data-composed-player]')).toHaveCount(0);
+         |                                                                    ^
+      34 | });
+      35 |
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/pack-v3-mutations/candidate-Xc4pjY/tests/e2e/pack-v3-preview.spec.mjs:33:68
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--5fdff-ame-size-response-tampering/error-context.md
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--5fdff-ame-size-response-tampering/error-context.md
+
+
+[2/2] tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified capture.json refuses same-size response tampering
+  2) tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified capture.json refuses same-size response tampering 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#preview-error')
+    Expected substring: "fingerprint mismatch"
+    Received string:    ""
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#preview-error') with timeout 5000ms
+      - waiting for locator('#preview-error')
+        14 × locator resolved to <pre role="status" id="preview-error"></pre>
+           - unexpected value ""
+
+
+      31 | for(const filename of ['lesson.json','capture.json'])test(`[PB-PREVIEW-04] verified ${filename} refuses same-size response tampering`,async({page})=>{
+      32 |  await page.route('**/pack/*/'+filename,async route=>{const response=await route.fetch(),text=await response.text(),modified=filename==='lesson.json'?text.replace('Run Custody','Xun Custody'):text.replace('placeholder-archive','xlaceholder-archive');expect(modified).not.toBe(text);expect(Buffer.byteLength(modified)).toBe(Buffer.byteLength(text));await route.fulfill({response,body:modified});});
+    > 33 |  await page.goto(url);await expect(page.locator('#preview-error')).toContainText('fingerprint mismatch');await expect(page.locator('[data-composed-player]')).toHaveCount(0);
+         |                                                                    ^
+      34 | });
+      35 |
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/pack-v3-mutations/candidate-Xc4pjY/tests/e2e/pack-v3-preview.spec.mjs:33:68
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--874d2-ame-size-response-tampering/error-context.md
+
+    Error Context: test-results/tests-e2e-pack-v3-preview--874d2-ame-size-response-tampering/error-context.md
+
+
+  2 failed
+    tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified lesson.json refuses same-size response tampering 
+    tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified capture.json refuses same-size response tampering 
