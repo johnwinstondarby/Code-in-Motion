@@ -88,24 +88,56 @@
       "maxItems": 128
     },
     "media": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "status": {
-          "const": "deferred"
-        },
-        "asset_ids": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/id"
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "const": "deferred"
+            },
+            "asset_ids": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              },
+              "minItems": 0,
+              "maxItems": 32
+            }
           },
-          "minItems": 0,
-          "maxItems": 32
+          "required": [
+            "status",
+            "asset_ids"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "const": "pack"
+            },
+            "asset_ids": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              },
+              "minItems": 0,
+              "maxItems": 32
+            },
+            "file": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120,
+              "pattern": "^[a-zA-Z0-9_-]+\\.json$"
+            }
+          },
+          "required": [
+            "status",
+            "asset_ids",
+            "file"
+          ]
         }
-      },
-      "required": [
-        "status",
-        "asset_ids"
       ]
     },
     "panes": {

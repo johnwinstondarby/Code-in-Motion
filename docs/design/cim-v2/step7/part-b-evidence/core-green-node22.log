@@ -1,0 +1,328 @@
+TAP version 13
+# Subtest: v3 schemas use only explicitly supported evaluator keywords
+ok 1 - v3 schemas use only explicitly supported evaluator keywords
+  ---
+  duration_ms: 1.0827
+  type: 'test'
+  ...
+# Subtest: v3 structural checker agrees with Ajv on invalid fixtures and malformed shapes
+ok 2 - v3 structural checker agrees with Ajv on invalid fixtures and malformed shapes
+  ---
+  duration_ms: 95.439
+  type: 'test'
+  ...
+# Subtest: v3 Unicode bounds and patterns agree with JSON Schema
+ok 3 - v3 Unicode bounds and patterns agree with JSON Schema
+  ---
+  duration_ms: 2.6527
+  type: 'test'
+  ...
+# Subtest: legacy normalization preserves rule, path and non-parse messages
+ok 4 - legacy normalization preserves rule, path and non-parse messages
+  ---
+  duration_ms: 0.6622
+  type: 'test'
+  ...
+# Subtest: v3 valid run-custody: schemas, references, archive and deterministic Diagram derivation
+ok 5 - v3 valid run-custody: schemas, references, archive and deterministic Diagram derivation
+  ---
+  duration_ms: 18.1405
+  type: 'test'
+  ...
+# Subtest: v3 valid context-chain: schemas, references, archive and deterministic Diagram derivation
+ok 6 - v3 valid context-chain: schemas, references, archive and deterministic Diagram derivation
+  ---
+  duration_ms: 10.3383
+  type: 'test'
+  ...
+# Subtest: v3 envelope feasibility does not register or admit a new renderer
+ok 7 - v3 envelope feasibility does not register or admit a new renderer
+  ---
+  duration_ms: 3.4482
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-SHAPE: shape
+ok 8 - v3 fixture CIM-V3-SHAPE: shape
+  ---
+  duration_ms: 1.3044
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PANE-TYPE: pane-type
+ok 9 - v3 fixture CIM-V3-PANE-TYPE: pane-type
+  ---
+  duration_ms: 1.5452
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-ACTION-COUNT: repeated-cli
+ok 10 - v3 fixture CIM-V3-ACTION-COUNT: repeated-cli
+  ---
+  duration_ms: 1.9092
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-SIMULTANEOUS: simultaneous
+ok 11 - v3 fixture CIM-V3-SIMULTANEOUS: simultaneous
+  ---
+  duration_ms: 1.0992
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-ACTION-TAB: wrong-tab
+ok 12 - v3 fixture CIM-V3-ACTION-TAB: wrong-tab
+  ---
+  duration_ms: 0.8325
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-EXPLANATION: missing-explanation
+ok 13 - v3 fixture CIM-V3-EXPLANATION: missing-explanation
+  ---
+  duration_ms: 1.0624
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-INITIAL: missing-initial
+ok 14 - v3 fixture CIM-V3-INITIAL: missing-initial
+  ---
+  duration_ms: 0.9646
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-ID: duplicate-id
+ok 15 - v3 fixture CIM-V3-ID: duplicate-id
+  ---
+  duration_ms: 1.2051
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-CAPTURE-REFERENCE: capture-reference
+ok 16 - v3 fixture CIM-V3-CAPTURE-REFERENCE: capture-reference
+  ---
+  duration_ms: 1.4128
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-DIAGRAM-STATE: diagram-result
+ok 17 - v3 fixture CIM-V3-DIAGRAM-STATE: diagram-result
+  ---
+  duration_ms: 1.72
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PLACEHOLDER: missing-placeholder
+ok 18 - v3 fixture CIM-V3-PLACEHOLDER: missing-placeholder
+  ---
+  duration_ms: 0.7718
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PLACEHOLDER: real-label
+ok 19 - v3 fixture CIM-V3-PLACEHOLDER: real-label
+  ---
+  duration_ms: 0.7554
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-ARCHIVE-PATH: archive-path
+ok 20 - v3 fixture CIM-V3-ARCHIVE-PATH: archive-path
+  ---
+  duration_ms: 0.592
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-EVIDENCE: evidence-digest
+ok 21 - v3 fixture CIM-V3-EVIDENCE: evidence-digest
+  ---
+  duration_ms: 3.7212
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PACK-VERSION: pack-version
+ok 22 - v3 fixture CIM-V3-PACK-VERSION: pack-version
+  ---
+  duration_ms: 0.8819
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-MEDIA-DEFERRED: media-map
+ok 23 - v3 fixture CIM-V3-MEDIA-DEFERRED: media-map
+  ---
+  duration_ms: 0.5379
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-LIMIT: limit
+ok 24 - v3 fixture CIM-V3-LIMIT: limit
+  ---
+  duration_ms: 5.3822
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PARSE: parse
+ok 25 - v3 fixture CIM-V3-PARSE: parse
+  ---
+  duration_ms: 0.6552
+  type: 'test'
+  ...
+# Subtest: v3 fixture inventory exercises every declared diagnostic rule
+ok 26 - v3 fixture inventory exercises every declared diagnostic rule
+  ---
+  duration_ms: 0.2133
+  type: 'test'
+  ...
+# Subtest: v3 JSON guards reject duplicate keys, depth, bytes, nested unknown fields and invalid UTF-8
+ok 27 - v3 JSON guards reject duplicate keys, depth, bytes, nested unknown fields and invalid UTF-8
+  ---
+  duration_ms: 2.2369
+  type: 'test'
+  ...
+# Subtest: v3 cross-validation rejects every unresolved entity, orphan/reused records and false provenance
+ok 28 - v3 cross-validation rejects every unresolved entity, orphan/reused records and false provenance
+  ---
+  duration_ms: 12.6526
+  type: 'test'
+  ...
+# Subtest: v3 schema arrays and field limits are enforced at the declared boundaries
+ok 29 - v3 schema arrays and field limits are enforced at the declared boundaries
+  ---
+  duration_ms: 8.0767
+  type: 'test'
+  ...
+# Subtest: v3 archive refuses traversal, escaping junctions, missing/tampered files and oversize
+ok 30 - v3 archive refuses traversal, escaping junctions, missing/tampered files and oversize
+  ---
+  duration_ms: 28.1105
+  type: 'test'
+  ...
+# Subtest: v3 CLI validates lesson, capture and pack without enabling compile/pack or losing actionable causes
+ok 31 - v3 CLI validates lesson, capture and pack without enabling compile/pack or losing actionable causes
+  ---
+  duration_ms: 660.762
+  type: 'test'
+  ...
+# Subtest: v3 pack schema is validation-only with a closed deferred media map
+ok 32 - v3 pack schema is validation-only with a closed deferred media map
+  ---
+  duration_ms: 1.2457
+  type: 'test'
+  ...
+# Subtest: v3 work preserves all 77 frozen v1/v2 files and 66 source outputs or rejection messages
+ok 33 - v3 work preserves all 77 frozen v1/v2 files and 66 source outputs or rejection messages
+  ---
+  duration_ms: 52.9226
+  type: 'test'
+  ...
+# Subtest: [MOT-11] fixture media map opens without changing deferred-map rejection
+ok 34 - [MOT-11] fixture media map opens without changing deferred-map rejection
+  ---
+  duration_ms: 3.8728
+  type: 'test'
+  ...
+# Subtest: [MOT-12] reference schema agrees on valid and malformed media maps
+ok 35 - [MOT-12] reference schema agrees on valid and malformed media maps
+  ---
+  duration_ms: 49.5547
+  type: 'test'
+  ...
+# Subtest: [MOT-13] author validate verifies bounded pack files and their digests
+ok 36 - [MOT-13] author validate verifies bounded pack files and their digests
+  ---
+  duration_ms: 165.5557
+  type: 'test'
+  ...
+# Subtest: [MOT-14] file validation refuses escaping directory links
+ok 37 - [MOT-14] file validation refuses escaping directory links
+  ---
+  duration_ms: 80.4833
+  type: 'test'
+  ...
+# Subtest: [MOT-12] Unicode media labels use JSON Schema character counts
+ok 38 - [MOT-12] Unicode media labels use JSON Schema character counts
+  ---
+  duration_ms: 31.1114
+  type: 'test'
+  ...
+# Subtest: [MOT-11] null pack input returns the normal shape diagnostic
+ok 39 - [MOT-11] null pack input returns the normal shape diagnostic
+  ---
+  duration_ms: 0.1291
+  type: 'test'
+  ...
+# Subtest: [PB-01] production pack compiles deterministically into the unchanged v2 envelope
+ok 40 - [PB-01] production pack compiles deterministically into the unchanged v2 envelope
+  ---
+  duration_ms: 81.6445
+  type: 'test'
+  ...
+# Subtest: [PB-02] production media has two independently fingerprinted captioned codec copies
+ok 41 - [PB-02] production media has two independently fingerprinted captioned codec copies
+  ---
+  duration_ms: 24.3891
+  type: 'test'
+  ...
+# Subtest: [PB-03] pack rejects altered provenance or capture references
+ok 42 - [PB-03] pack rejects altered provenance or capture references
+  ---
+  duration_ms: 25.0786
+  type: 'test'
+  ...
+# Subtest: [PB-04] pack rejects altered provenance or capture references
+ok 43 - [PB-04] pack rejects altered provenance or capture references
+  ---
+  duration_ms: 23.3547
+  type: 'test'
+  ...
+# Subtest: [PB-05] pack rejects altered provenance or capture references
+ok 44 - [PB-05] pack rejects altered provenance or capture references
+  ---
+  duration_ms: 30.5444
+  type: 'test'
+  ...
+# Subtest: [PB-06] changed media bytes cannot enter a pack
+ok 45 - [PB-06] changed media bytes cannot enter a pack
+  ---
+  duration_ms: 31.8362
+  type: 'test'
+  ...
+# Subtest: [PB-07] each copy requires its own codec and correct MIME pairing
+ok 46 - [PB-07] each copy requires its own codec and correct MIME pairing
+  ---
+  duration_ms: 23.6483
+  type: 'test'
+  ...
+# Subtest: [PB-08] every attachment source is refused with a 1.2 diagnostic
+ok 47 - [PB-08] every attachment source is refused with a 1.2 diagnostic
+  ---
+  duration_ms: 18.3889
+  type: 'test'
+  ...
+# Subtest: [PB-09] traversal and escaping links cannot enter a pack
+ok 48 - [PB-09] traversal and escaping links cannot enter a pack
+  ---
+  duration_ms: 72.3203
+  type: 'test'
+  ...
+# Subtest: [PB-10] an explicit branded development identity is required; no prerelease coercion
+ok 49 - [PB-10] an explicit branded development identity is required; no prerelease coercion
+  ---
+  duration_ms: 47.3717
+  type: 'test'
+  ...
+# Subtest: [PB-11] manifest lists every payload with its actual bounded size and digest
+ok 50 - [PB-11] manifest lists every payload with its actual bounded size and digest
+  ---
+  duration_ms: 41.1719
+  type: 'test'
+  ...
+# Subtest: [PB-12] ZIP bytes and fixed metadata reproduce independent of source mtimes
+ok 51 - [PB-12] ZIP bytes and fixed metadata reproduce independent of source mtimes
+  ---
+  duration_ms: 75.2516
+  type: 'test'
+  ...
+# Subtest: [PB-13] preflight reports whole ZIP and media limits and blocks a known host limit
+ok 52 - [PB-13] preflight reports whole ZIP and media limits and blocks a known host limit
+  ---
+  duration_ms: 55.917
+  type: 'test'
+  ...
+# Subtest: [PB-14] pack writes checksum and never overwrites either earlier output
+ok 53 - [PB-14] pack writes checksum and never overwrites either earlier output
+  ---
+  duration_ms: 69.9463
+  type: 'test'
+  ...
+1..53
+# tests 53
+# suites 0
+# pass 53
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1072.0215

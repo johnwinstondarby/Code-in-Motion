@@ -1,82 +1,178 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "cim.lesson-pack/v2",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "schema": {
-      "const": "cim.lesson-pack/v2"
-    },
-    "cim_min": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 100,
-      "pattern": "^\\d+\\.\\d+\\.\\d+$"
-    },
-    "cim_max_exclusive": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 100,
-      "pattern": "^\\d+\\.\\d+\\.\\d+$"
-    },
-    "placeholder": {
-      "type": "boolean"
-    },
-    "lessons": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/$defs/id"
-          },
-          "file": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 120,
-            "pattern": "\\S"
-          },
-          "capture": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 120,
-            "pattern": "\\S"
-          }
+  "anyOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "cim.lesson-pack/v2"
         },
-        "required": [
-          "id",
-          "file",
-          "capture"
-        ]
-      },
-      "minItems": 1,
-      "maxItems": 100
-    },
-    "media": {
-      "anyOf": [
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "status": {
-              "const": "deferred"
-            },
-            "assets": {
-              "type": "array",
-              "items": {
+        "cim_min": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "cim_max_exclusive": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "placeholder": {
+          "type": "boolean"
+        },
+        "lessons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
                 "$ref": "#/$defs/id"
               },
-              "minItems": 0,
-              "maxItems": 0
-            }
+              "file": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120,
+                "pattern": "\\S"
+              },
+              "capture": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "id",
+              "file",
+              "capture"
+            ]
           },
-          "required": [
-            "status",
-            "assets"
-          ]
+          "minItems": 1,
+          "maxItems": 100
         },
-        {
+        "media": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "const": "deferred"
+                },
+                "assets": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "minItems": 0,
+                  "maxItems": 0
+                }
+              },
+              "required": [
+                "status",
+                "assets"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "schema": {
+                  "const": "localis.cim/media/v1"
+                },
+                "status": {
+                  "const": "fixture"
+                },
+                "placeholder": {
+                  "type": "boolean"
+                },
+                "assets": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 32,
+                  "items": {
+                    "$ref": "#/$defs/mediaClip"
+                  }
+                }
+              },
+              "required": [
+                "schema",
+                "status",
+                "placeholder",
+                "assets"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "cim_min",
+        "cim_max_exclusive",
+        "placeholder",
+        "lessons",
+        "media"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "cim.lesson-pack/v2"
+        },
+        "cim_min": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "cim_max_exclusive": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "placeholder": {
+          "type": "boolean"
+        },
+        "lessons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "file": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120,
+                "pattern": "\\S"
+              },
+              "capture": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "id",
+              "file",
+              "capture"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 100
+        },
+        "media": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
@@ -84,7 +180,7 @@
               "const": "localis.cim/media/v1"
             },
             "status": {
-              "const": "fixture"
+              "const": "pack"
             },
             "placeholder": {
               "type": "boolean"
@@ -94,7 +190,7 @@
               "minItems": 1,
               "maxItems": 32,
               "items": {
-                "$ref": "#/$defs/mediaClip"
+                "$ref": "#/$defs/packMediaClip"
               }
             }
           },
@@ -104,17 +200,48 @@
             "placeholder",
             "assets"
           ]
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 33554432
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "size",
+              "sha256"
+            ]
+          }
         }
+      },
+      "required": [
+        "schema",
+        "cim_min",
+        "cim_max_exclusive",
+        "placeholder",
+        "lessons",
+        "media",
+        "files"
       ]
     }
-  },
-  "required": [
-    "schema",
-    "cim_min",
-    "cim_max_exclusive",
-    "placeholder",
-    "lessons",
-    "media"
   ],
   "$defs": {
     "id": {
@@ -417,6 +544,232 @@
         "type",
         "duration",
         "captions"
+      ]
+    },
+    "packMediaSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "pack"
+        },
+        "path": {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^(?:[a-zA-Z0-9_-]+/)*[a-zA-Z0-9_-]+(?:\\.[a-zA-Z0-9_-]+)+$"
+        }
+      },
+      "required": [
+        "type",
+        "path"
+      ]
+    },
+    "packMediaCaption": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/packMediaSource"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65536
+        },
+        "type": {
+          "const": "text/vtt"
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "source",
+        "sha256",
+        "size",
+        "type",
+        "language",
+        "label"
+      ]
+    },
+    "packMediaClip": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "source": {
+              "$ref": "#/$defs/packMediaSource"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4194304
+            },
+            "type": {
+              "enum": [
+                "video/webm",
+                "video/mp4"
+              ]
+            },
+            "duration": {
+              "type": "number",
+              "minimum": 0.001,
+              "maximum": 30
+            },
+            "alt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            "captions": {
+              "$ref": "#/$defs/packMediaCaption"
+            },
+            "codec": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "pattern": "^(?:avc[13]\\.[0-9A-Fa-f]{6}|(?:hev1|hvc1|av01)\\.[A-Za-z0-9.]{1,72}|vp8(?:\\.0)?|vp09\\.[0-9.]{5,72})$"
+            }
+          },
+          "required": [
+            "id",
+            "source",
+            "sha256",
+            "size",
+            "type",
+            "duration",
+            "alt",
+            "captions",
+            "codec"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            },
+            "source": {
+              "$ref": "#/$defs/packMediaSource"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4194304
+            },
+            "type": {
+              "const": "video/mp4"
+            },
+            "duration": {
+              "type": "number",
+              "minimum": 0.001,
+              "maximum": 30
+            },
+            "alt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            "captions": {
+              "$ref": "#/$defs/packMediaCaption"
+            },
+            "webm": {
+              "$ref": "#/$defs/packMediaWebM"
+            },
+            "codec": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "pattern": "^(?:avc[13]\\.[0-9A-Fa-f]{6}|(?:hev1|hvc1|av01)\\.[A-Za-z0-9.]{1,72}|vp8(?:\\.0)?|vp09\\.[0-9.]{5,72})$"
+            }
+          },
+          "required": [
+            "id",
+            "source",
+            "sha256",
+            "size",
+            "type",
+            "duration",
+            "alt",
+            "captions",
+            "webm",
+            "codec"
+          ]
+        }
+      ]
+    },
+    "packMediaWebM": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/packMediaSource"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4194304
+        },
+        "type": {
+          "const": "video/webm"
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0.001,
+          "maximum": 30
+        },
+        "captions": {
+          "$ref": "#/$defs/packMediaCaption"
+        },
+        "codec": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^(?:avc[13]\\.[0-9A-Fa-f]{6}|(?:hev1|hvc1|av01)\\.[A-Za-z0-9.]{1,72}|vp8(?:\\.0)?|vp09\\.[0-9.]{5,72})$"
+        }
+      },
+      "required": [
+        "source",
+        "sha256",
+        "size",
+        "type",
+        "duration",
+        "captions",
+        "codec"
       ]
     }
   }
