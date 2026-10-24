@@ -77,3 +77,5 @@ test('[PB-23] production manifests cross-check every reference and enforce aggre
 });
 
 test('[PB-25] generated PHP never interpolates authored prose as code',async()=>{const s=await packSource();s.lesson.title='*/ <?php throw new Exception("teacher text"); /*';s.lesson.description='add_filter("unsafe", "teacher");';await s.saveLesson();const r=await buildV3Pack(s.source,license),php=r.entries.get('lesson-pack.php').toString();assert.equal(php.includes(s.lesson.title),false);assert.equal(php.includes(s.lesson.description),false);assert.match(php,/if \( ! defined\( 'ABSPATH' \) \) \{ exit; \}/);});
+
+test('[PB-28] duplicate JSON keys cannot be discarded before pack validation',async()=>{for(const name of ['lesson.json','capture.json','media.json']){const s=await packSource(),file=join(s.folder,name),text=await readFile(file,'utf8');await writeFile(file,text.replace('{','{"placeholder":false,'));await rejects(buildV3Pack(s.source,license),'CIM-V3-ID');}});
