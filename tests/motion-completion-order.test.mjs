@@ -67,3 +67,11 @@ test('[ORDER-09] harmless final-frame events do not consume corrective-seek budg
  assert.equal(s.video.seekWrites,writes);s.video._time=0;s.video.ended=false;s.video.paused=false;s.video.dispatchEvent(new Event('play'));
  assert.equal(s.video.currentTime,s.video.duration,'a real rewind must still be corrected after harmless final-frame events');s.video.finishSeek();await flush();s.adapter.pane.dispose();
 });
+
+test('[ORDER-10] completed hold restores a rewind without any play event',async()=>{
+ for(const event of ['seeking','seeked','timeupdate']){
+  const s=await setup();s.advance(1200);await finish(s);let plays=0;s.video.addEventListener('play',()=>plays++);
+  s.video._time=0;s.video.ended=false;s.video.dispatchEvent(new Event(event));
+  assert.equal(s.video.currentTime,s.video.duration,`${event} must restore the completed frame without play/playing`);assert.equal(plays,0);assert.equal(s.result.status,'settled');s.video.finishSeek();await flush();s.adapter.pane.dispose();
+ }
+});
