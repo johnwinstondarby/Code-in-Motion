@@ -75,11 +75,12 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
   requireMounted();++playRevision;finalVideo=null;finalPosition=null;finalRestores=0;restoring=false;cancelPlay();const descriptor=config.assets.find(a=>a.id===state?.asset);
   if(!descriptor||failed||!media||!video){fallback(descriptor?.alt??state?.alt);return Promise.resolve({status:'failed',error:new Error(code)});}
   if(context.cancellation.aborted)return Promise.resolve({status:'cancelled'});
-  if(context.reducedMotion)return finalStill().then(()=>({status:'settled'}),()=>{fallback(descriptor.alt);return{status:'failed',error:new Error(code)};});
   return new Promise(resolve=>{
    let scheduled=null,offClock=()=>{},offAbort=()=>{},done=false,bufferTimer=null,finalising=false,clockRunning=false;const removers=[];const current=video,start=context.clock.now();
    const task={finish(result){if(done)return;done=true;if(result.status==='cancelled'){finalSeek?.abort();finalSeek=null;}authorizedPlayback=false;if(active===task)active=null;if(scheduled!==null)try{context.clock.cancel(scheduled);}catch{}clearTimeout(bufferTimer);offClock();offAbort();for(const off of removers)off();current.pause();emit(false);resolve(Object.freeze(result));}};active=task;
    const fail=()=>{if(done)return;fallback(descriptor.alt);task.finish({status:'failed',error:new Error(code)});};
+   offAbort=context.cancellation.onAbort(reason=>task.finish({status:'cancelled',reason}));if(done)return;
+   if(context.reducedMotion){finalStill().then(()=>task.finish({status:'settled'}),fail);return;}
    const listen=(event,fn)=>{current.addEventListener(event,fn);removers.push(()=>current.removeEventListener(event,fn));};
    const pinPause=()=>{authorizedPlayback=false;current.pause();const held=Math.min(current.duration,Math.max(0,(context.clock.now()-start)/1000));if(Number.isFinite(held))current.currentTime=held;};
    const playNative=()=>{if(done||finalising||!clockRunning)return;authorizedPlayback=true;current.play().then(()=>{if(!done&&!clockRunning)pinPause();},error=>{if(done)return;if(!clockRunning)pinPause();else if(error.name!=='AbortError')fail();});};
@@ -87,7 +88,6 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
    listen('canplay',()=>{clearTimeout(bufferTimer);emit(false);});listen('error',fail);
    const finishAtEnd=()=>{if(done||finalising)return;finalising=true;finalStill().then(()=>task.finish({status:'settled'}),fail);};
    listen('ended',()=>{if(context.clock.now()-start>=descriptor.duration*1000)finishAtEnd();});
-   offAbort=context.cancellation.onAbort(reason=>task.finish({status:'cancelled',reason}));
    if(done)return;current.currentTime=0;
    if(typeof context.clock.observe!=='function'){fail();return;}
    offClock=context.clock.observe(({running})=>{clockRunning=running;if(running)playNative();else pinPause();});
