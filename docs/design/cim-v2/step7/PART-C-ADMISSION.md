@@ -25,7 +25,8 @@ Status: design committed before tests and implementation. Base: main 7bc0ce6. Au
 - Admin lesson checks and the public Player use this same function.
 - Added after review round 1: admission also replays the compiled beats (`src/multipane/projection.mjs`) and refuses any lesson whose stored pane states, action tab or waiting flags differ from the replay, so nothing the Player cannot settle is reported Ready. The 1.1.0 Player supports pane IDs `console`, `motion`, `explanation` and `engineering` only.
 - Pack reads end at one 15 s deadline covering request and body; each panes root mounts independently, and the legacy Host never waits for a panes download. A root removed while loading, or a disposed page, aborts its requests and never mounts.
-- Each panes root has a stable accessibility namespace in document order (`cim-<instance>` or `cim-panes-N`).
+- Each panes root has a stable accessibility namespace in document order (`cim-<instance>` or `cim-panes-N`), allocated against every name already taken so no two Players can share one.
+- Admission also applies the Player model's own preconditions (shared `panesModelProblem`: `action-context` layout, `engine_min` 1.1.0, at most 128 beats, declarations and absolute states), so whatever admission accepts, the model constructs.
 - Authoring rule `CIM-V3-PANE-ID` refuses non-standard pane IDs at validate and pack time, so no pack fails only after installation.
 
 ## Production session path

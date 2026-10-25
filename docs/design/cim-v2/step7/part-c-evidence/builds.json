@@ -1,20 +1,22 @@
 {
-  "source_commit": "8ad4bf6",
+  "source_commit": "472d2ba",
   "node": "22.23.2",
   "checkouts": 2,
   "identical": true,
   "plugin": {
     "file": "code-in-motion-1.0.1.zip",
     "files": 118,
-    "sha256": "c7abf2b694ffe72d2e65d8213bd32088a93869931cf430c0c9615618afaf4150",
+    "sha256": "4fe4787b281a61aee649aa1482c4b0ee5b0b5472c20c2445b0bb3ee6a27eb083",
     "previous_main_sha256": "d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a",
-    "change": "adds 13 multi-pane modules (incl. projection), 4 multi-pane stylesheets, panes-binding and panes-driver; PHP v2 discovery; cim.css panes containment"
+    "change": "adds 13 multi-pane modules (incl. projection), 4 multi-pane stylesheets, panes-binding and panes-driver; PHP v2 discovery; cim.css panes containment",
+    "bytes": 262875
   },
   "authoring": {
     "file": "cim-authoring-1.0.1.zip",
     "files": 156,
-    "sha256": "8b5e1e10ea08465eca0746b1a45d2a67e01664341bb6497c4d03d96d89273731",
-    "change": "bundles the changed multi-pane sources, admission module and preview client; adds the CIM-V3-PANE-ID rule and fixture"
+    "sha256": "10f6d12d92970bba59b2bced554695d991c6f271020e77dbb71537189f0420db",
+    "change": "bundles the changed multi-pane sources, admission module and preview client; adds the CIM-V3-PANE-ID rule and fixture",
+    "bytes": 1069991
   },
   "placeholder_pack": {
     "file": "cim-lesson-run-custody-placeholder.zip",
@@ -22,5 +24,12 @@
     "sha256": "8131e7f07d8481b3f2ea7289edc9ff49592cc9dfbc8b7724a45656cac597982c",
     "change": "none (identical to Part B)"
   },
-  "v1_differential": "41 identical, 0 different, 28 skipped"
+  "v1_differential": "41 identical, 0 different, 28 skipped",
+  "authoring_candidate": {
+    "file": "cim-authoring-1.0.1-candidate.zip",
+    "files": 156,
+    "bytes": 1073111,
+    "sha256": "40cf689ddeb2fdb8c19bda213852aa82ac897a0870edb6b055feffd5187070b6",
+    "change": "same contents as the standard authoring ZIP under a -candidate name and folder prefix"
+  }
 }

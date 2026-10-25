@@ -103,13 +103,18 @@ Unit probes run in verify; browser probes run in each CI browser job. 23 caught 
 | A root removed while loading cancels its request and never mounts | PC-E2E-08 | PCM-40 |
 | Page disposal cancels pending requests; nothing mounts later | PC-E2E-09 | PCM-41 |
 | Explicit shortcode instance names give stable, named namespaces | PC-E2E-07 | PCM-42 |
-| Pilgrim's four rows: Admin Rejected with beat/rule; fallback kept beside a working lesson | PC-ADMIN-05, PC-E2E-10 | PCM-24..28 |
+| Pilgrim's four rows: Admin Rejected with beat/rule; fallback kept beside a working lesson | PC-ADMIN-05, PC-E2E-10 | PCM-24..26, 28 |
+| Admission enforces the Player model's own preconditions (shared `panesModelProblem`) | PC-19, PC-20, PC-ADMIN-06, PC-E2E-11 | PCM-46 |
+| Layout must be `action-context` | PC-19 | PCM-47 |
+| `engine_min` must be exactly 1.1.0 for this Player | PC-19 | PCM-48 |
+| At most 128 beats (128 still admitted) | PC-19 | PCM-49 |
+| Namespaces allocated against final names | PC-21, PC-E2E-12 | PCM-50, PCM-51 |
 
 ## Verification
 
-Numbers below are for source commit `8ad4bf6` (after review round 2); the final head adds only this packet and its evidence. Earlier numbers are superseded: round 0 `ef57760` (1,157 tests, 23 probes, plugin `6e3c9a10…b6b8`) and round 1 `0ed52b0` (1,162 tests, 33 probes, plugin `06453941…eb40`).
+Numbers below are for source commit `472d2ba` (after review round 3); the final head adds only this packet and its evidence. Earlier numbers are superseded: round 0 `ef57760` (1,157 tests, 23 probes, plugin `6e3c9a10…b6b8`), round 1 `0ed52b0` (1,162, 33, `06453941…eb40`) and round 2 `8ad4bf6` (1,167, 43, `c7abf2b6…4150`).
 
-- Verify, Node 20.20.2 and pinned 22.23.2: **1,167 tests pass on each, zero skipped** (`verify20-summary.log`, `verify22-summary.log`).
+- Verify, Node 20.20.2 and pinned 22.23.2: **1,171 tests pass on each, zero skipped** (`verify20-summary.log`, `verify22-summary.log`).
 - Other browser guards run locally in Chromium: multi-pane, Engineering, diagram-capacity and Part B pack runners all pass with every probe caught. Composition and Motion browser runners need H.264, so their results are CI's.
 - v1 differential: 41 identical, 0 different, 28 skipped.
 - Local browsers: only Chromium is installed here, and it lacks H.264. Its 9 failures in the composition/preview/capacity specs are **identical on unchanged `main`** (same test names). Firefox, WebKit and real-WordPress results are CI's.
@@ -119,8 +124,9 @@ Numbers below are for source commit `8ad4bf6` (after review round 2); the final 
 
 | ZIP | SHA-256 |
 |---|---|
-| Plugin 1.0.1 candidate, 118 files (was `d23af341…f876a`, 99 files) | `c7abf2b694ffe72d2e65d8213bd32088a93869931cf430c0c9615618afaf4150` |
-| Authoring candidate, 156 files | `8b5e1e10ea08465eca0746b1a45d2a67e01664341bb6497c4d03d96d89273731` |
+| Plugin `code-in-motion-1.0.1.zip`, 118 files, 262,875 bytes (was `d23af341…f876a`, 99 files) | `4fe4787b281a61aee649aa1482c4b0ee5b0b5472c20c2445b0bb3ee6a27eb083` |
+| Authoring `cim-authoring-1.0.1.zip`, 156 files, 1,069,991 bytes | `10f6d12d92970bba59b2bced554695d991c6f271020e77dbb71537189f0420db` |
+| Authoring `cim-authoring-1.0.1-candidate.zip` (`--candidate`: same files, different name and folder prefix), 156 files, 1,073,111 bytes | `40cf689ddeb2fdb8c19bda213852aa82ac897a0870edb6b055feffd5187070b6` |
 | Placeholder pack, 124,400 bytes (unchanged from Part B) | `8131e7f07d8481b3f2ea7289edc9ff49592cc9dfbc8b7724a45656cac597982c` |
 
 See `part-c-evidence/builds.json`. The published 1.0.1 rollback ZIP (`95cdd84b…31d7`), page 3227 capture (`34ceed1c…f2ab`) and rollback kit (`3610987d…3148`) are untouched; `check:page-3227` passes in verify.
@@ -169,7 +175,24 @@ Test and probe edits after their red runs, this round:
 - **Probe dropped**: PCM-45 removed the late-mount guard after admission. It survives because cancellation already stops the retired root's read, so the guard is a backup check that no test can observe on its own. It stays in the code; IDs skip 29 and 45.
 - Mutation guards: **43 assertion-caught** locally in Chromium (`review2-mutations-chromium.json`); CI runs the browser probes in Chromium, Firefox and WebKit.
 
-CI note: on round 1's `442823b`, WebKit's existing composition guard step (`check-composition-mutations --browser`) failed once and passed on re-run with no change (attempt 2). Job logs cannot be downloaded from this workspace, so the failing probe is unknown. No composition probe, anchor or test touches the changed instance-ID code, and that step has a history of WebKit timing variance. Pilgrim may want to watch it on this head.
+CI failures, from the actual logs Pilgrim downloaded (not inferred):
+- **Firefox, `1f580c8`, run 40167933838, attempts 1 and 2**: PC-E2E-10 failed in both, expecting `/CIM-HST-005/` and receiving `[CiM] JSHandle@object`. That confirms the console-serialization cause; `d460941` reads the records in the page, with the same assertion.
+- **WebKit, `442823b`, run 40166154899, attempt 1**: the composition mutation runner's **unmutated baseline** failed CMP-11 at 1366×768 because `page.goto` waiting for `load` exceeded the existing 18,000 ms test timeout, before any composition assertion. It was not a surviving mutation, an admission refusal or a Motion final-frame error. Its cause is **not established**; the re-run passing does not explain or fix it, and the timeout was not changed. Recorded separately for follow-up.
+
+## Review round 3 (Pilgrim's re-review of `d460941`)
+
+Pilgrim confirmed the round-1/2 fixes independently (1,167 tests on both Node versions, 11/11 scenes and 43/43 probes in each engine, matching builds) and found two remaining gaps. Tests were recorded red on `d460941` (`review3-red-unit-on-d460941.log`, `review3-red-browser-chromium-on-d460941.log`) and committed first (`ca08dc0`), fixes after (`472d2ba`).
+
+| Finding | Tests | Fix |
+|---|---|---|
+| 1. Admission misses three model preconditions: `layout: "unsupported"`, `engine_min: "1.0.1"`, 129 consistent beats (128 is the control) | PC-19 (rows refused before a token with the layout/engine/count reason; 8 and 128 beats admitted and construct the model); PC-20 (the producer/consumer invariant: every variant admission accepts must construct `createMultiPaneModel` with its token); PC-ADMIN-06; PC-E2E-11 | The model's checks moved, unchanged, into `panesModelProblem()` in `projection.mjs`. The model throws its existing messages from it; admission runs it after the replay and refuses with an author-facing reason. Neither the model's restrictions nor the v2 envelope were weakened. |
+| 2. Namespace one-pass suffixing collides for `[unnamed, panes-1, panes-1-1]` | PC-21 (that case, repeatability, and a seeded 2,000-case sweep of colliding names); PC-E2E-12 (the three-embed page: document-wide uniqueness, references inside the owner, reload stability, keyboard and Beats isolation) | `panesNamespaces()` reserves names that occur once, then allocates repeated names in order against every name already taken. Explicit unique names keep `cim-<instance>`. |
+
+Notes for this round:
+- **PC-E2E-11 was never red**: on the page, the model's own refusal already kept the root on its fallback with CIM-HST-005; only admission and Admin disagreed. It is kept as a guard for the page path.
+- **PCM-27 dropped**: removing the replay's pane-type check now survives, because the shared model check refuses unknown pane types too. The behaviour stays covered by PC-12 and PC-20. Dropped probes: 27, 29, 45.
+- **Reason order**: the replay runs before the shared model check, so the specific beat/pane reasons from rounds 1–2 (PC-ADMIN-04/05) are kept.
+- Mutation guards: **48 assertion-caught** locally in Chromium (`review3-mutations-chromium.json`).
 
 ## For Pilgrim's attention
 
