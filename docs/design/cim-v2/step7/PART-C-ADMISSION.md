@@ -39,7 +39,8 @@ Status: design committed before tests and implementation. Base: main 7bc0ce6. Au
 
 - The coordinator's clock trace is opt-in (`traceClock: true`, set only by the fixture harness) and bounded to 256 entries.
 - The diagram capacity note is created as a live region only once per beat; frame redraws reuse plain text, so screen readers hear it once.
-- Transfer pacing: Engineering transfer frames span 1,200 ms (eight frames of 150 ms) so the token's travel is readable. Reduced motion stays a still. Johann reviews the timing at true size in Part E.
+- Transfer pacing (the token still crosses in 160 ms): **moved out of Part C** during implementation. Changing frame timing shifts every fixture timing test, and the readable duration needs Johann's true-size judgement, so it becomes its own small PR before the Part E review rather than riding inside admission.
+- Containment (added during implementation): the desktop composition keeps its 1,350 px minimum and scrolls inside its WordPress root instead of spilling past the page. Whether a theme's content column is wide enough for an unscaled 620 px diagram is a Part E true-size question.
 
 ## Evidence
 
