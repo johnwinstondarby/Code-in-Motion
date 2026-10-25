@@ -112,7 +112,9 @@ test('[MP-19] reduced motion settles without scheduling work',async()=>{
 test('[MP-20] activation requires a v3 projected fixture and never admits legacy lessons',()=>{
  assert.throws(()=>createMultiPaneModel({experience}),/fixture/);
  assert.throws(()=>createMultiPaneModel({experience:{...experience,renderer:'console/v1'},testFixture:true}),/panes/);
- for(const file of ['model','session','controls'])assert.equal(isWordPressSourceModule(`src/multipane/${file}.mjs`),false);
+ // Part C deliberately ships these modules; activation still needs a fixture opt-in or a Part C admission token.
+ for(const file of ['model','session','controls'])assert.equal(isWordPressSourceModule(`src/multipane/${file}.mjs`),true);
+ assert.throws(()=>createMultiPaneModel({experience,admission:Object.freeze({})}),/fixture|admission/);
  assert.equal(isWordPressSourceModule('src/renderers/subjects/console/renderer.mjs'),true);
 });
 test('[MP-21] dispose cancels work and withdraws subscribers',async()=>{

@@ -1,6 +1,5 @@
 import {mountComposedPlayer} from '../src/multipane/composition.mjs';
 import {createVerifiedMediaAccess} from '../src/multipane/motion-media.mjs';
-import {projectPreviewMedia} from '../authoring/v3/production-media.mjs';
 import {createPreviewDriver} from './pack-preview-driver.mjs';
 const root=document.querySelector('#preview-player'),error=document.querySelector('#preview-error');let player,access;
 const sha=async bytes=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(b=>b.toString(16).padStart(2,'0')).join('');
@@ -17,7 +16,8 @@ try{
  const base=root.dataset.cimPackBase,manifest=await verifiedJSON(base+'cim-lesson-pack.json',{sha256:root.dataset.cimManifestSha});
  const entry=manifest.lessons[0],file=path=>{const d=manifest.files.find(f=>f.path===path);if(!d)throw new Error('CIM-V3-PREVIEW: undeclared pack file. Fix: validate the source manifest.');return d;};
  const experience=await verifiedJSON(base+entry.file,file(entry.file)),capture=await verifiedJSON(base+entry.capture,file(entry.capture));
- const media=projectPreviewMedia(experience.renderer_config.media),bindings={};
+ // Part C: the pack media form (with declared codecs) is admitted directly, so preview selects copies as WordPress will.
+ const media=experience.renderer_config.media,bindings={};
  for(const clip of media.assets)for(const d of [clip,clip.captions,...(clip.webm?[clip.webm,clip.webm.captions]:[])])bindings['pack:'+d.source.path]='/__cim_fixture_media/'+base.split('/')[2]+'/'+d.source.path;
  access=createVerifiedMediaAccess(media,{origin:location.origin,bindings});
  const config=experience.renderer_config,engineering={fixtureOnly:true,placeholder:manifest.placeholder,hosts:config.architecture.hosts,services:config.architecture.services,artifacts:config.architecture.artifacts,initial:experience.initial_state.panes.engineering,archive:{id:capture.archive.id,root:capture.archive.root},records:capture.records,evidence:capture.archive.files,beats:experience.steps.map(s=>({id:s.id,records:s.state.engineering_records.map(r=>r.id),state:s.state.panes.engineering}))};

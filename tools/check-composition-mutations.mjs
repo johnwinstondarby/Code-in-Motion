@@ -22,7 +22,7 @@ if(browser)cases.push(
  ['CMP-07-hidden','src/multipane/action-surface.mjs',"panel.setAttribute('aria-hidden',String(inactive));panel.inert=inactive;","panel.removeAttribute('aria-hidden');panel.inert=false;",'CMP-07','browser'],
  ['CMP-07-duplicate','src/multipane/composition.mjs','showMotionHeading:false','showMotionHeading:true','CMP-07','browser'],
  ['CMP-08-details','src/multipane/motion.mjs',"{'data-media-details':''}","{'data-media-details':'',open:''}",'CMP-08','browser'],
- ['CMP-09-choice','src/multipane/motion.mjs',".filter(([,d])=>probe.canPlayType(mime(d.type))!=='')",'.filter(()=>true)','CMP-09','browser'],
+ ['CMP-09-choice','src/multipane/motion.mjs',".filter(([,d])=>probe.canPlayType(copyMimeType(d))!=='')",'.filter(()=>true)','CMP-09','browser'],
  ['CMP-10-second-hash','src/multipane/motion-media.mjs','if(actual!==descriptor.sha256)',"if(actual!==descriptor.sha256&&!url.endsWith('.webm'))",'CMP-10','browser'],
  ['CMP-09-webm-caption','src/multipane/motion-media.mjs','captions=await verified(clip.captions,controller.signal)',"captions=copy==='webm'?new Uint8Array():await verified(clip.captions,controller.signal)",'CMP-09','browser'],
  ['CMP-11-cues','src/multipane/engineering.mjs','`${cues[a.status]} ${a.id}: ${a.status}`','a.id','CMP-11','browser'],

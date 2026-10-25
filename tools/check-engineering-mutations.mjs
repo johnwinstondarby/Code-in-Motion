@@ -10,7 +10,7 @@ const cases=[
  ['ENG-01-derived',pane,"if(canonical(state)!==canonical(beat.state))fail('Claimed state differs from capture-derived state.');",'/* dishonest claimed state accepted */','ENG-01'],
  ['ENG-02-label',pane,"'Diagram · modeled'","'Diagram'",'ENG-02'],
  ['ENG-02-placeholder',pane,'if(config.placeholder)frame.append','if(false)frame.append','ENG-02'],
- ['ENG-03-final',pane,'draw(target,diagramSnapshot(c,context.stepId),c);','draw(target,diagramSnapshot(c,context.stepId),c,0.5);','ENG-03'],
+ ['ENG-03-final',pane,'draw(target,snapshot(c,context.stepId),c);','draw(target,snapshot(c,context.stepId),c,0.5);','ENG-03'],
  ['ENG-03-reduced',pane,'lifecycle.play(state,context)','lifecycle.play(state,{...context,reducedMotion:false})','ENG-03'],
  ['ENG-04-text',pane,"verified:'custody verified'","verified:''",'ENG-04'],
  ['ENG-05-evidence',pane,'raw evidence: ${f.evidence}','raw evidence: unavailable','ENG-05'],
@@ -19,7 +19,7 @@ const cases=[
  ['ENG-08-size','src/multipane/engineering.css','font-size:14px','font-size:8px','ENG-08'],
  ['ENG-09-leak',pane,'return Object.freeze({mount','return Object.freeze({host:globalThis,mount','ENG-09'],
  ['ENG-09-network',pane,'const statuses=',"const request = () => fetch('https://example.invalid'); const statuses=",'ENG-09'],
- ['ENG-09-guard',pane,"if(data.fixtureOnly!==true)throw new TypeError('Engineering requires a test fixture.');",'/* fixture admission removed */','ENG-09'],
+ ['ENG-09-guard',pane,"if(data.fixtureOnly!==true&&!admitted)throw new TypeError('Engineering requires a test fixture or a matching admission token.');",'/* fixture admission removed */','ENG-09'],
 ];
 const run=rule=>spawnSync(process.execPath,['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),'tests/engineering-pane.test.mjs'],{cwd:sandbox,encoding:'utf8',timeout:30000});
 let r=run();if(r.status!==0)throw new Error('Baseline failed: '+r.stdout+r.stderr);const results=[];

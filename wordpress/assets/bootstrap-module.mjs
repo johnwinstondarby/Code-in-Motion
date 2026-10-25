@@ -18,6 +18,8 @@ import { lessonPackUrlFor, readBoundedLesson } from './lesson-pack-loading.mjs';
 import { createWordPressRendererRegistry } from './renderer-registry.mjs';
 import { createWordPressRootLifecycleBinding } from './root-lifecycle-binding.mjs';
 import { createWordPressPlayerBinding } from './player-binding.mjs';
+import { createHostIdentity } from '../../src/multipane/admission.mjs';
+import { admitPanesRoot, isPanesRoot, mountPanesRoot } from './panes-binding.mjs';
 
 const experienceAssets = new Map(
   WORDPRESS_EXPERIENCE_REGISTRY.map(({ id, asset }) => [id, asset])
@@ -26,6 +28,10 @@ const ROOT_SELECTOR = '[data-cim-experience]';
 const packUrls = new Set();
 const moduleUrl = new URL(import.meta.url);
 const forceReducedMotion = moduleUrl.searchParams.get('cim-motion-policy') === 'reduce';
+// Multi-pane admission identity: the released engine, or the explicit 1.1.0-dev development identity.
+const panesIdentity = createHostIdentity({
+  developmentAdmission: moduleUrl.searchParams.get('cim-admission') === 'development'
+});
 const matchMedia = createWordPressMotionPolicyMatchMedia(
   (query) => window.matchMedia(query),
   forceReducedMotion
@@ -35,6 +41,7 @@ function versionedUrl(relativePath) {
   const url = new URL(relativePath, moduleUrl);
   url.search = moduleUrl.search;
   url.searchParams.delete('cim-motion-policy');
+  url.searchParams.delete('cim-admission');
   return url.href;
 }
 
@@ -78,8 +85,13 @@ const diagnostics = Object.freeze({
   }
 });
 
+// Multi-pane roots are mounted by the panes binding; the legacy Host never sees them.
+const legacyDocument = Object.freeze({
+  querySelectorAll: (selector) => Array.from(document.querySelectorAll(selector)).filter((root) => !isPanesRoot(root))
+});
+
 const host = createWordPressLiveHost({
-  document,
+  document: legacyDocument,
   matchMedia,
   experienceLoader,
   rendererResolver,
@@ -89,6 +101,7 @@ const host = createWordPressLiveHost({
 });
 
 const transportBindings = new Map();
+const panesPlayers = new Map();
 let rootLifecycleBinding = null;
 let deepLinkHandler = null;
 let disposalStarted = false;
@@ -131,7 +144,12 @@ async function applyLocationDeepLink() {
   }
   if (target === null) return;
 
-  const roots = Array.from(document.querySelectorAll(ROOT_SELECTOR));
+  for (const [root, player] of panesPlayers) {
+    if (root.getAttribute('data-cim-experience') !== target.experienceId) continue;
+    try { player.applyFragment(fragment); } catch (error) { reportDeepLinkError(root, 'deep_link_hashchange', error); }
+  }
+
+  const roots = Array.from(document.querySelectorAll(ROOT_SELECTOR)).filter((root) => !isPanesRoot(root));
   for (const root of roots) {
     const experienceId = root.getAttribute('data-cim-experience');
     if (typeof experienceId !== 'string' || experienceId.trim() !== target.experienceId) continue;
@@ -166,7 +184,40 @@ function disposeTransportBinding(root, operation) {
   }
 }
 
+function disposePanesPlayer(root, operation) {
+  const player = panesPlayers.get(root);
+  if (player === undefined) return;
+  panesPlayers.delete(root);
+  try { player.dispose(); } catch (error) { reportBootstrapError(root, operation, error); }
+}
+
+async function mountPanesRoots() {
+  const mounted = [];
+  for (const root of Array.from(document.querySelectorAll(ROOT_SELECTOR)).filter(isPanesRoot)) {
+    try {
+      const admitted = await admitPanesRoot(root, {
+        baseURI: document.baseURI,
+        fetch: (url, init) => window.fetch(url, init),
+        identity: panesIdentity
+      });
+      if (disposalStarted || root.isConnected === false) continue;
+      panesPlayers.set(root, mountPanesRoot(root, admitted, {
+        document,
+        location: window.location,
+        moduleUrl: moduleUrl.href,
+        reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches
+      }));
+      mounted.push(root);
+    } catch (error) {
+      // The static fallback stays visible; the reason is reported, never rendered as lesson content.
+      reportHostDiagnostic('CIM-HST-005', root, 'panes_admission', error);
+    }
+  }
+  return mounted;
+}
+
 function disposeDetachedRoot(root) {
+  if (panesPlayers.has(root)) { disposePanesPlayer(root, 'detached_panes_dispose'); return; }
   disposeTransportBinding(root, 'detached_transport_dispose');
   Promise.resolve(host.disposeRoot(root)).catch((error) => {
     reportBootstrapError(root, 'detached_root_dispose', error);
@@ -174,9 +225,9 @@ function disposeDetachedRoot(root) {
 }
 
 async function mountPageHost() {
-  const result = await host.mount();
-  const roots = Array.from(document.querySelectorAll(ROOT_SELECTOR));
-  const mountedRoots = [];
+  const [result, panesRoots] = await Promise.all([host.mount(), mountPanesRoots()]);
+  const roots = Array.from(document.querySelectorAll(ROOT_SELECTOR)).filter((root) => !isPanesRoot(root));
+  const mountedRoots = [...panesRoots];
 
   for (const root of roots) {
     const commandPort = host.commands(root);
@@ -251,6 +302,10 @@ function disposePageHost() {
 
   for (const root of [...transportBindings.keys()]) {
     disposeTransportBinding(root, 'transport_dispose');
+  }
+
+  for (const root of [...panesPlayers.keys()]) {
+    disposePanesPlayer(root, 'panes_dispose');
   }
 
   Promise.resolve(host.dispose()).catch((error) => {

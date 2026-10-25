@@ -1,0 +1,63 @@
+TAP version 13
+# Subtest: [PC-ADMIN-01] Admin marks a v2 lesson Ready only through the Player admission boundary
+not ok 1 - [PC-ADMIN-01] Admin marks a v2 lesson Ready only through the Player admission boundary
+  ---
+  duration_ms: 148.519542
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/7ebc54d4-43a8-543f-b99f-1879ffebcb28/scratchpad/partc/tests/part-c-admin.test.mjs:18:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    CIM-EXP-015 $.engine_min: localis.cim/engine@1.0.1: engine_min is not satisfied (1.1.0).
+    + actual - expected
+    
+    + 'Rejected'
+    - 'Ready'
+         ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'Ready'
+  actual: 'Rejected'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/7ebc54d4-43a8-543f-b99f-1879ffebcb28/scratchpad/partc/tests/part-c-admin.test.mjs:20:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [PC-ADMIN-02] Admin shows the same refusal reasons the Player would
+not ok 2 - [PC-ADMIN-02] Admin shows the same refusal reasons the Player would
+  ---
+  duration_ms: 7.698411
+  type: 'test'
+  location: '/tmp/claude-0/-home-claude/7ebc54d4-43a8-543f-b99f-1879ffebcb28/scratchpad/partc/tests/part-c-admin.test.mjs:24:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /placeholder/i. Input:
+    
+    'CIM-EXP-015 $.engine_min: localis.cim/engine@1.0.1: engine_min is not satisfied (1.1.0).'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'CIM-EXP-015 $.engine_min: localis.cim/engine@1.0.1: engine_min is not satisfied (1.1.0).'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/claude-0/-home-claude/7ebc54d4-43a8-543f-b99f-1879ffebcb28/scratchpad/partc/tests/part-c-admin.test.mjs:30:46)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-ADMIN-03] v1 lesson checks keep their existing path
+ok 3 - [PC-ADMIN-03] v1 lesson checks keep their existing path
+  ---
+  duration_ms: 1.006613
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 1
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 281.573486

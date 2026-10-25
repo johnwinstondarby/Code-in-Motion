@@ -32,6 +32,10 @@
     ? 'reduce'
     : 'system';
   moduleUrl.searchParams.set('cim-motion-policy', motionPolicy);
+  // Part C: PHP projects this only from the exact wp-config development constant.
+  if (current.getAttribute('data-cim-development-admission') === '1.1.0-dev') {
+    moduleUrl.searchParams.set('cim-admission', 'development');
+  }
 
   import(moduleUrl.href).catch((error) => {
     try {

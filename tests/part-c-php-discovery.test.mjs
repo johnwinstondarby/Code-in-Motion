@@ -9,12 +9,12 @@ import {installPack,placeholderPack} from './helpers/part-c-pack.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const phpSource=resolve(root,'wordpress/lesson-packs.php').replaceAll('\\','/');
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
-const header="<?php\n/**\n * Plugin Name: Code in Motion lesson - run-custody-placeholder\n * CiM Lesson Pack: cim.lesson-pack/v2\n */\nif ( ! defined( 'ABSPATH' ) ) { exit; }\n";
 
 async function site(t){
  const work=await mkdtemp(resolve(root,'../part-c-php-'));t.after(()=>rm(work,{recursive:true,force:true}));
  const plugins=resolve(work,'plugins'),pack=resolve(plugins,'cim-lesson-run-custody-placeholder');await mkdir(pack,{recursive:true});
- await installPack(pack);await writeFile(resolve(pack,'lesson-pack.php'),header);
+ // The generated pack's own inert lesson-pack.php carries the v2 header and is manifest-listed.
+ await installPack(pack);
  return {plugins,pack};
 }
 // Runs the real discovery code against WordPress stubs. Options choose the host version and the optional wp-config constant.
@@ -90,8 +90,9 @@ test('[PC-PHP-06] replacing a listed media file invalidates the cached acceptanc
  const {plugins,pack}=await site(t);
  const fingerprint=()=>discover(plugins,{constant:'1.1.0-dev',call:"localis_cim_pack_fingerprint(get_plugins())"});
  const before=fingerprint();
- const file=resolve(pack,'media/track-mlflow.webm'),bytes=await readFile(file);await unlink(file);await writeFile(file,bytes);
- await new Promise(r=>setTimeout(r,20));await writeFile(file,Buffer.concat([bytes]));
+ // A replacement with different bytes must change the stat identity. (Same-size, same-second rewrites can keep
+ // stat identity; the browser verifies lesson/capture bytes against their SHA-256 for that reason.)
+ const file=resolve(pack,'media/track-mlflow.webm'),bytes=await readFile(file);await unlink(file);await writeFile(file,Buffer.concat([bytes,Buffer.from('x')]));
  const after=fingerprint();
  assert.notEqual(before,after);
 });

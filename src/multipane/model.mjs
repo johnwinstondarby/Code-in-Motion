@@ -1,9 +1,11 @@
 import {readonlyPaneData} from '../contracts/pane.mjs';
 import {validateExperience} from '../experience/validate-experience.mjs';
 
-// Experimental fixture entry point only. No legacy resolver imports this module.
-export function createMultiPaneModel({experience,testFixture}) {
-  if(testFixture!==true)throw new TypeError('Multi-pane transport requires an explicit test fixture.');
+import {isAdmittedExperience} from './admission.mjs';
+
+// Fixture entry point, or production with a Part C admission token bound to this exact lesson.
+export function createMultiPaneModel({experience,testFixture,admission}) {
+  if(testFixture!==true&&!isAdmittedExperience(admission,readonlyPaneData(experience)))throw new TypeError('Multi-pane transport requires an explicit test fixture or a matching admission token.');
   if(experience?.renderer!=='panes/v1'||experience?.engine_min!=='1.1.0'||experience?.renderer_config?.layout!=='action-context'||experience?.initial_state?.placeholder!==true)throw new TypeError('Only placeholder v3 panes/v1 projections are accepted.');
   const doc=readonlyPaneData(experience);
   if(validateExperience(doc).length)throw new TypeError('Invalid frozen v2 fixture envelope.');
