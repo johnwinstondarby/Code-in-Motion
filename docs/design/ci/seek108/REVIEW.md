@@ -88,3 +88,17 @@ No load test was rerun to improve these counts. All 300 case records are catalog
 ### Final frozen-head CI
 
 After committing this evidence, the head is frozen for the required full CI and three consecutive manual WebKit MOT-07 runs. Exact final head and run links belong in the PR description, so posting results does not move the tested head. This packet does not claim those pending runs have passed. A failure stops the proof sequence and is disclosed; no assertion, deadline or retry is relaxed.
+
+## Final-review correction: ORDER-20 restore flag retirement
+
+Daisy found a regression introduced by the playback-intent scoping: an in-flight completed-hold restore could leave `restoring` true forever after `settle` advances `playRevision`. Its retired continuation correctly refuses to alter the new revision, but that also prevented the flag from being cleared. A later native rewind could remain at zero without restoration or fallback.
+
+- **9d1ba8e (test first):** ORDER-20 completes a clip, starts a corrective hold restore, settles the same held clip before that restore finishes, then requires a later rewind to start another restore and preserve the held position. It covers both exact-duration and 33 ms-short decoded positions. The unmodified PR source fails at the required second corrective seek; identical test code passes against unchanged main 5847a59. Both logs are retained.
+- **70ce77d (fix):** `settle` clears `restoring` immediately after advancing playback intent, just as `play` and `clear` already do. No restore budget, completion tolerance, deadline, caller authorization or stale-continuation guard changes. The new `ORDER-20-stale-restoring` mutation removes precisely that reset and is caught by ORDER-20.
+- ORDER-20 is unchanged after its recorded red run. No existing test is edited in this correction. All 20 completion-order regressions pass.
+- Verify passes **1,133/1,133 on Node 20.20.2 and 22.23.2, zero skipped**, including all **37 Motion unit probes**. Final CI runs 49 Motion probes per browser (37 unit + 12 browser), retaining the complete other suites.
+- Two separate clean checkouts at 70ce77d build byte-identically on Node 22.23.2: plugin **d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a**, unchanged; authoring **1ef50cb8469adeaa3158a5d112de2812f7d4f05111309ad8741a8ee9d6a77b82**. Only bundled `src/multipane/motion.mjs` differs from the previous candidate. See `evidence/order20-builds.json` and both build logs. Later evidence-only commits do not affect these archives.
+- The earlier constrained-load results remain explicitly historical at 39b7023; they are **not repeated** for this deterministic correction, as requested. Their disclosed failures remain on record, with no new claim of reproducing #108 under load.
+- The corrected head is frozen after this evidence commit. New full three-engine CI and three consecutive targeted manual WebKit MOT-07 jobs (60 cases each, zero retries) are required; exact frozen head, final results and links are posted in PR #110 without moving that head. Prior 39b7023 greens do not count as new-head proof.
+
+No merge, close of #108, version bump, tag, release or installation. Part C remains held for review and approval. PR #61 has now been **closed**, preserving its history, following Johann and Daisy's agreement; it was not merged.
