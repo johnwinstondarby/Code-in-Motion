@@ -140,3 +140,45 @@ test('[PC-11] the capacity note is a live region once per beat, not on every fra
  assert.equal(notes.size,1,'one live-region announcement for the beat');
  assert.match(root.textContent,/too large to draw here/);
 });
+
+// PR #111 review, finding 1: admission must refuse every projection the Player cannot settle.
+const stepWith=(experience,kind)=>experience.steps.findIndex(s=>s.state.actions.some(a=>a.kind===kind));
+test('[PC-12] malformed pane projections are refused at admission, not when the Player mounts',async()=>{
+ const changes={
+  'unknown pane type':({experience})=>{experience.renderer_config.panes.find(p=>p.type==='explanation/v1').type='table/v1';},
+  'missing Explanation state':({experience})=>{delete experience.steps[0].state.panes.explanation;},
+  'non-text Explanation state':({experience})=>{experience.steps[1].state.panes.explanation={text:42};},
+  'Explanation differs from its beat commentary':({experience})=>{experience.steps[1].state.panes.explanation.text='Something else';},
+  'conflicting CLI and GUI actions':({experience})=>{const s=experience.steps[stepWith(experience,'cli')].state,gui=experience.steps[stepWith(experience,'gui')].state.actions[0];s.actions.push(structuredClone(gui));},
+  'repeated CLI action':({experience})=>{const s=experience.steps[stepWith(experience,'cli')].state;s.actions.push(structuredClone(s.actions[0]));},
+  'wrong action tab':({experience})=>{experience.steps[stepWith(experience,'cli')].state.action_tab='motion';},
+  'action tab on the initial state':({experience})=>{experience.initial_state.action_tab='motion';},
+  'action names the other pane':({experience})=>{experience.steps[stepWith(experience,'cli')].state.actions[0].pane='motion';},
+  'Console state differs from its action':({experience})=>{experience.steps[stepWith(experience,'cli')].state.panes.console.lines=['rm -rf /'];},
+  'Motion state differs from its action':({experience})=>{experience.steps[stepWith(experience,'gui')].state.panes.motion.alt='Different text';},
+  'waiting flag contradicts the beat':({experience})=>{const s=experience.steps[stepWith(experience,'cli')].state;s.waiting.console=true;},
+  'unsupported pane IDs':({experience})=>{const text=JSON.stringify(experience).replaceAll('"console"','"cli"');Object.assign(experience,JSON.parse(text));}
+ };
+ const admitted=[];
+ for(const [name,change] of Object.entries(changes)){
+  const data=await fresh();change(data);
+  try{admission.admitPanesLesson({experience:data.experience,capture:data.capture,identity:development()});admitted.push(name);}
+  catch(error){assert.match(error.message,/CIM-PANES-ADMISSION/,name);}
+ }
+ assert.deepEqual(admitted,[],'malformed projections that were admitted');
+});
+
+test('[PC-13] every compiled placeholder fixture is still admitted',async()=>{
+ const {proveEnvelope}=await import('../authoring/v3/prove-envelope.mjs');
+ const {readFile}=await import('node:fs/promises');
+ const {experience:pack}=await fresh();
+ for(const name of ['run-custody','context-chain']){
+  const dir=new URL(`../authoring/v3/fixtures/valid/${name}/`,import.meta.url);
+  const lesson=JSON.parse(await readFile(new URL('lesson.json',dir),'utf8')),capture=JSON.parse(await readFile(new URL('capture.json',dir),'utf8'));
+  const {document}=proveEnvelope(lesson,capture),media=structuredClone(pack.renderer_config.media);
+  for(const id of lesson.media.asset_ids)if(!media.assets.some(a=>a.id===id))media.assets.push({...structuredClone(media.assets[0]),id});
+  document.renderer_config.media=media;
+  const admitted=admission.admitPanesLesson({experience:document,capture,identity:development()});
+  assert.doesNotThrow(()=>createMultiPaneModel({experience:admitted.experience,admission:admitted.token}),name);
+ }
+});

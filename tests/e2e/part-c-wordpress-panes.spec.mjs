@@ -9,14 +9,18 @@ test.use({browserName:process.env.CIM_PLAYER_BROWSER??'chromium',viewport:{width
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'../..');
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const types={'.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.json':'application/json'};
-let server,origin,pack;
+let server,origin,pack;const stalls=new Set();
 const packBase='/wp-content/plugins/cim-lesson-run-custody-placeholder/';
 // Mirrors the shortcode markup and script tag WordPress produces; only the attributes under test vary.
-function page({development=true,lessonSha,captureSha}={}){
+const panesRoot=(lesson,capture,instance='')=>`<div class="cim" data-cim-experience="run-custody-placeholder"${instance?` data-cim-instance="${instance}"`:''} data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-pack-url="${lesson}" data-cim-pack-capture-url="${capture}" data-cim-default-theme="light"><div data-cim-renderer-root></div><div class="cim-fallback">Multi-pane fallback.</div></div>`;
+// stalled: an extra Player placed first whose capture response the server never finishes.
+function page({development=true,lessonSha,captureSha,second=false,stalled=false}={}){
  const lesson=packBase+'lesson.json?cim-sha256='+(lessonSha??sha(pack.entries.get('lesson.json')));
  const capture=packBase+'capture.json?cim-sha256='+(captureSha??sha(pack.entries.get('capture.json')));
  return `<!doctype html><html lang="en"><meta charset="utf-8"><title>Part C</title><link rel="stylesheet" href="/wordpress/assets/cim.css"><body>
-<div class="cim" data-cim-experience="run-custody-placeholder" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-pack-url="${lesson}" data-cim-pack-capture-url="${capture}" data-cim-default-theme="light"><div data-cim-renderer-root></div><div class="cim-fallback">Multi-pane fallback.</div></div>
+${stalled?panesRoot(lesson,capture+'&cim-test-stall=1','stalled'):''}
+${panesRoot(lesson,capture)}
+${second?panesRoot(lesson,capture,'second'):''}
 <div class="cim" data-cim-experience="python-first-steps" data-cim-default-theme="light"><div data-cim-renderer-root></div><div class="cim-fallback">Legacy fallback.</div></div>
 <script src="/wordpress/assets/bootstrap.js?ver=1.0.1" data-cim-motion-policy="system"${development?' data-cim-development-admission="1.1.0-dev"':''} defer></script>`;
 }
@@ -25,15 +29,17 @@ test.beforeAll(async()=>{
  server=createServer(async(request,response)=>{
   const url=new URL(request.url,'http://localhost');
   if(url.pathname==='/'){response.setHeader('content-type','text/html');response.end(page(JSON.parse(url.searchParams.get('options')??'{}')));return;}
+  if(url.searchParams.has('cim-test-stall')){stalls.add(response);response.setHeader('content-type','application/json');response.write('{');return;}
   if(url.pathname.startsWith(packBase)){const bytes=pack.entries.get(url.pathname.slice(packBase.length));if(!bytes){response.statusCode=404;response.end();return;}response.setHeader('content-type',types[extname(url.pathname)]??'application/octet-stream');response.end(bytes);return;}
   if(!/^\/(src|wordpress)\//.test(url.pathname)||url.pathname.includes('..')){response.statusCode=404;response.end();return;}
   try{const bytes=await readFile(resolve(root,'.'+url.pathname));response.setHeader('content-type',types[extname(url.pathname)]??'application/octet-stream');response.end(bytes);}catch{response.statusCode=404;response.end();}
  });
  await new Promise(r=>server.listen(0,'127.0.0.1',r));origin='http://127.0.0.1:'+server.address().port;
 });
-test.afterAll(()=>server.close());
+test.afterAll(()=>{for(const r of stalls)r.destroy();server.closeAllConnections?.();server.close();});
 const open=(p,options={},hash='')=>p.goto(origin+'/?options='+encodeURIComponent(JSON.stringify(options))+hash);
-const panes=p=>p.locator('[data-cim-experience="run-custody-placeholder"]');
+const panes=p=>p.locator('[data-cim-experience="run-custody-placeholder"]:not([data-cim-instance])');
+const instance=(p,name)=>p.locator(`[data-cim-instance="${name}"]`);
 const legacy=p=>p.locator('[data-cim-experience="python-first-steps"]');
 
 test('[PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson',async({page:p},info)=>{
@@ -92,4 +98,38 @@ test('[PC-E2E-05] a later deep link moves the panes lesson without touching the 
  await p.evaluate(()=>{location.hash='#cim/run-custody-placeholder/prove-custody';});
  await expect(panes(p)).toContainText('Beat 7 / 8');
  await expect(legacy(p)).toHaveAttribute('data-cim-state','ready');
+});
+
+test('[PC-E2E-06] one stalled pack download does not hold back other lessons',async({page:p})=>{
+ await open(p,{stalled:true});
+ // Both healthy lessons become interactive while the stalled response is still open.
+ await expect(panes(p)).toHaveAttribute('data-cim-state','ready',{timeout:5000});
+ await expect(legacy(p)).toHaveAttribute('data-cim-state','ready',{timeout:5000});
+ await panes(p).locator('[data-mp-command="next"]').click();
+ await expect(panes(p)).toContainText('Beat 1 / 8');
+ await expect(instance(p,'stalled')).not.toHaveAttribute('data-cim-state','ready');
+ await expect(instance(p,'stalled').locator('.cim-fallback')).toBeVisible();
+});
+
+test('[PC-E2E-07] two Players on one page keep their own accessibility IDs',async({page:p})=>{
+ await open(p,{second:true});
+ await expect(panes(p)).toHaveAttribute('data-cim-state','ready');
+ await expect(instance(p,'second')).toHaveAttribute('data-cim-state','ready');
+ const report=await p.evaluate(()=>{
+  const ids=[...document.querySelectorAll('[id]')].map(n=>n.id),duplicates=ids.filter((id,i)=>ids.indexOf(id)!==i);
+  const wrong=[];
+  for(const player of document.querySelectorAll('[data-composed-player]')){
+   for(const node of player.querySelectorAll('[aria-controls],[aria-labelledby]')){
+    for(const attr of ['aria-controls','aria-labelledby']){const ref=node.getAttribute(attr);if(ref===null)continue;const target=document.getElementById(ref);if(!target||!player.contains(target))wrong.push(attr+'='+ref);}
+   }
+  }
+  return {players:document.querySelectorAll('[data-composed-player]').length,duplicates,wrong};
+ });
+ expect(report.players).toBe(2);
+ expect(report.duplicates).toEqual([]);
+ expect(report.wrong).toEqual([]);
+ // Selecting the second Player's Motion tab shows its own panel, not the first Player's.
+ await instance(p,'second').getByRole('tab',{name:'Motion – GUI'}).click();
+ await expect(instance(p,'second').getByRole('tabpanel').filter({has:p.locator('.motion-pane')})).toBeVisible();
+ await expect(panes(p).getByRole('tab',{name:'Console – CLI'})).toHaveAttribute('aria-selected','true');
 });

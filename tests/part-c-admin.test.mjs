@@ -37,3 +37,11 @@ test('[PC-ADMIN-03] v1 lesson checks keep their existing path',async()=>{
  assert.equal(result.status,'Rejected');
  assert.doesNotMatch(result.reason,/CIM-PANES-ADMISSION/);
 });
+
+test('[PC-ADMIN-04] Admin does not mark a lesson Ready when its panes cannot be settled',async()=>{
+ const pack=await placeholderPack(),lesson=JSON.parse(pack.entries.get('lesson.json'));
+ delete lesson.steps[0].state.panes.explanation;
+ const text=Buffer.from(JSON.stringify(lesson)),result=await check({lessonBytes:text,lessonSha:sha(text)});
+ assert.equal(result.status,'Rejected',result.reason);
+ assert.match(result.reason,/Explanation/);
+});
