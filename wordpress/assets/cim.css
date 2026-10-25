@@ -722,3 +722,10 @@
   bottom: 0.2em;
   margin-inline-start: 0;
 }
+
+/* ADR 0061 Part C: the desktop multi-pane composition keeps its minimum width and scrolls inside its own root. */
+.cim[data-cim-pack-agreement="cim.lesson-pack/v2"][data-cim-state="ready"] {
+  padding: 0;
+  overflow-x: auto;
+  background: #0b1017;
+}

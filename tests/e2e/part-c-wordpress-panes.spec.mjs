@@ -12,7 +12,7 @@ const types={'.mjs':'text/javascript','.js':'text/javascript','.css':'text/css',
 let server,origin,pack;
 const packBase='/wp-content/plugins/cim-lesson-run-custody-placeholder/';
 // Mirrors the shortcode markup and script tag WordPress produces; only the attributes under test vary.
-function page({development=true,lessonSha,captureSha,hash=''}={}){
+function page({development=true,lessonSha,captureSha}={}){
  const lesson=packBase+'lesson.json?cim-sha256='+(lessonSha??sha(pack.entries.get('lesson.json')));
  const capture=packBase+'capture.json?cim-sha256='+(captureSha??sha(pack.entries.get('capture.json')));
  return `<!doctype html><html lang="en"><meta charset="utf-8"><title>Part C</title><link rel="stylesheet" href="/wordpress/assets/cim.css"><body>
@@ -36,8 +36,8 @@ const open=(p,options={},hash='')=>p.goto(origin+'/?options='+encodeURIComponent
 const panes=p=>p.locator('[data-cim-experience="run-custody-placeholder"]');
 const legacy=p=>p.locator('[data-cim-experience="python-first-steps"]');
 
-test('[PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson',async({page:p})=>{
- const errors=[];p.on('pageerror',e=>errors.push(e.message));
+test('[PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson',async({page:p},info)=>{
+ const errors=[],diagnostics=[];p.on('pageerror',e=>errors.push(e.message));p.on('console',m=>{if(m.type()==='error')diagnostics.push(m.text());});
  await open(p);
  await expect(panes(p)).toHaveAttribute('data-cim-state','ready');
  await expect(panes(p).locator('[data-composed-player]')).toHaveCount(1);
@@ -46,9 +46,18 @@ test('[PC-E2E-01] the development host mounts the composed Player beside an unch
  await expect(panes(p).locator('.cim-fallback')).toBeHidden();
  await expect(legacy(p)).toHaveAttribute('data-cim-state','ready');
  expect(errors).toEqual([]);
+ // The legacy Host must never try to mount the panes root: no host diagnostics, and the panes root stays ready.
+ await p.waitForTimeout(500);
+ expect(diagnostics.filter(t=>t.includes('[CiM]'))).toEqual([]);
+ await expect(panes(p)).toHaveAttribute('data-cim-state','ready');
+ await p.screenshot({path:info.outputPath('wordpress-panes-initial.png'),fullPage:true});
+ // The desktop composition must stay inside its WordPress root: it may scroll there, never spill past the page.
+ const fit=await p.evaluate(()=>{const root=document.querySelector('[data-cim-experience="run-custody-placeholder"]'),box=root.getBoundingClientRect();return{pageOverflow:document.documentElement.scrollWidth-innerWidth,overflowX:getComputedStyle(root).overflowX,badge:document.querySelector('[data-composed-player] [data-placeholder-badge],[data-composed-player] .mp-placeholder')?.getBoundingClientRect().right??null,right:box.right};});
+ expect(fit.pageOverflow).toBeLessThanOrEqual(0);
+ expect(['auto','scroll']).toContain(fit.overflowX);
 });
 
-test('[PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists',async({page:p})=>{
+test('[PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists',async({page:p},info)=>{
  await open(p,{},'#cim/run-custody-placeholder/submit-fail');
  await expect(panes(p)).toHaveAttribute('data-cim-state','ready');
  await expect(panes(p)).toContainText('Beat 3 / 8');
@@ -56,14 +65,16 @@ test('[PC-E2E-02] a GUI beat shows the Motion fallback until media serving exist
  await expect(panes(p).locator('.motion-pane')).toContainText('GUI recording unavailable');
  await expect(panes(p).locator('.motion-pane')).toContainText('Placeholder');
  await expect(panes(p).locator('.motion-pane')).not.toContainText('Recorded in the lab');
+ await panes(p).screenshot({path:info.outputPath('wordpress-panes-motion-fallback.png')});
 });
 
-test('[PC-E2E-03] without the PHP-projected development flag the panes lesson stays on its fallback',async({page:p})=>{
+test('[PC-E2E-03] without the PHP-projected development flag the panes lesson stays on its fallback',async({page:p},info)=>{
  await open(p,{development:false});
  await expect(legacy(p)).toHaveAttribute('data-cim-state','ready');
  await expect(panes(p)).not.toHaveAttribute('data-cim-state','ready');
  await expect(panes(p).locator('[data-composed-player]')).toHaveCount(0);
  await expect(panes(p).locator('.cim-fallback')).toBeVisible();
+ await p.screenshot({path:info.outputPath('wordpress-panes-refused.png'),fullPage:true});
 });
 
 test('[PC-E2E-04] lesson and capture bytes must match the fingerprints PHP projected',async({page:p})=>{
