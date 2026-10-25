@@ -53,6 +53,19 @@ Design: [PART-C-ADMISSION.md](PART-C-ADMISSION.md), committed first (`c5206cc`).
 | `ci-webkit-install.test.mjs` frozen-workflow guard | Admits exactly the two named Part C workflow additions and asserts their content; every other job step stays frozen. |
 | PC-E2E-01 strengthened (legacy separation) | Probe `PCM-22` (letting the legacy Host see panes roots) first **survived**: the assertion caught the ready state before the legacy Host's failure landed. The test now waits, requires no `[CiM]` host diagnostics and requires the panes root to stay ready. Re-run: caught. |
 | Screenshots added to PC-E2E-01/02/03 | Evidence only. |
+| `PB-M20-real-source` anchor retargeted | Preview now passes the pack media form directly, so the Part B probe's anchor line moved. The probe still swaps in different lesson text and is still caught. |
+| PC-B-04 added | Covers the release-audit stylesheet allowlist added after CI's R23 failure (below). |
+
+## First CI run failures and fixes
+
+| Check | Cause | Fix |
+|---|---|---|
+| `release-build` (R23 supply-chain audit) | The audit refused the new `src/multipane/*.css` release inputs. | Approve exactly the four multi-pane stylesheets; PC-B-04 proves other stylesheet paths stay refused. |
+| `plugin-check` | Plugin Check flagged the pre-built `$v2` attribute string in the Admin row `printf` as unescaped output (reproduced locally with WPCS 3.1.0 `WordPress.Security.EscapeOutput`; no other new finding against `main`). | The agreement and capture URL are escaped `printf` arguments, empty on v1 rows. |
+| `zip-install-e2e` | The job's generated `r15-wp-env.json` makes the checkout dirty, so `build-placeholder-pack.mjs` refused to build. | The CI step builds the pack through `buildV3Pack` directly; the bytes are the same compiler output. |
+| Browser jobs (`Prove v3 pack authoring and preview guards`) | The `PB-M20` probe anchor had moved. | Retargeted as above. |
+
+No assertion, timeout or tolerance was loosened for any of these.
 
 ## Rule-to-guard map
 
@@ -76,16 +89,23 @@ Unit probes run in verify; browser probes run in each CI browser job. 23 caught 
 
 ## Verification
 
-Final numbers are filled in for the frozen review head below; see the PR description for the head commit.
+Numbers below are for source commit `ef57760`; the final head adds only this packet and its evidence.
 
-- Verify, Node 20.20.2 and pinned 22.23.2: see `verify20-summary.log`, `verify22-summary.log`. Zero skipped.
+- Verify, Node 20.20.2 and pinned 22.23.2: **1,157 tests pass on each, zero skipped** (`verify20-summary.log`, `verify22-summary.log`).
+- Other browser guards run locally in Chromium: multi-pane, Engineering, diagram-capacity and Part B pack runners all pass with every probe caught. Composition and Motion browser runners need H.264, so their results are CI's.
 - v1 differential: 41 identical, 0 different, 28 skipped.
 - Local browsers: only Chromium is installed here, and it lacks H.264. Its 9 failures in the composition/preview/capacity specs are **identical on unchanged `main`** (same test names). Firefox, WebKit and real-WordPress results are CI's.
 - Real WordPress (wp-env) could not run locally: Docker Hub is blocked from this workspace. The installed-ZIP proof runs in CI.
 
 ## Builds (two clean checkouts, Node 22.23.2)
 
-See `part-c-evidence/builds.json`. The placeholder pack is byte-identical to Part B: Part C changes no compiler or pack code.
+| ZIP | SHA-256 |
+|---|---|
+| Plugin 1.0.1 candidate, 117 files (was `d23af341…f876a`, 99 files) | `6e3c9a1050fc4f0bd71055524efee8d02cc4fc7789befd5f95b6709a36d0b6b8` |
+| Authoring candidate, 155 files | `f511ca2630ab1eb6661a60fecece0affb0bf99efb452534596ddca07f5557c6c` |
+| Placeholder pack, 124,400 bytes (unchanged from Part B) | `8131e7f07d8481b3f2ea7289edc9ff49592cc9dfbc8b7724a45656cac597982c` |
+
+See `part-c-evidence/builds.json`. The published 1.0.1 rollback ZIP (`95cdd84b…31d7`), page 3227 capture (`34ceed1c…f2ab`) and rollback kit (`3610987d…3148`) are untouched; `check:page-3227` passes in verify.
 
 ## For Pilgrim's attention
 
