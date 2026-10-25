@@ -1,0 +1,49 @@
+
+Running 13 tests using 1 worker
+
+[1/13] tests/e2e/part-c-wordpress-panes.spec.mjs:60:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson
+[2/13] tests/e2e/part-c-wordpress-panes.spec.mjs:81:1 › [PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists
+[3/13] tests/e2e/part-c-wordpress-panes.spec.mjs:92:1 › [PC-E2E-03] without the PHP-projected development flag the panes lesson stays on its fallback
+[4/13] tests/e2e/part-c-wordpress-panes.spec.mjs:101:1 › [PC-E2E-04] lesson and capture bytes must match the fingerprints PHP projected
+[5/13] tests/e2e/part-c-wordpress-panes.spec.mjs:110:1 › [PC-E2E-05] a later deep link moves the panes lesson without touching the legacy lesson
+[6/13] tests/e2e/part-c-wordpress-panes.spec.mjs:118:1 › [PC-E2E-06] one stalled pack download does not hold back other lessons
+[7/13] tests/e2e/part-c-wordpress-panes.spec.mjs:133:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (explicit instance names)
+[8/13] tests/e2e/part-c-wordpress-panes.spec.mjs:133:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (unnamed embeds)
+[9/13] tests/e2e/part-c-wordpress-panes.spec.mjs:171:1 › [PC-E2E-08] a Player removed while its download is pending is cancelled and never mounts
+[10/13] tests/e2e/part-c-wordpress-panes.spec.mjs:187:1 › [PC-E2E-09] page disposal cancels pending downloads and nothing mounts afterwards
+[11/13] tests/e2e/part-c-wordpress-panes.spec.mjs:213:1 › [PC-E2E-10] each of Pilgrim's malformed lessons keeps its fallback while an adjacent valid lesson works
+[12/13] tests/e2e/part-c-wordpress-panes.spec.mjs:217:1 › [PC-E2E-11] lessons the Player model would refuse keep their fallback beside a working lesson
+[13/13] tests/e2e/part-c-wordpress-panes.spec.mjs:221:1 › [PC-E2E-12] three embeds whose names collide after suffixing still keep their own IDs, focus and menus
+  1) tests/e2e/part-c-wordpress-panes.spec.mjs:221:1 › [PC-E2E-12] three embeds whose names collide after suffixing still keep their own IDs, focus and menus 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   "cim-panes-1-1-tab-console",
+    +   "cim-panes-1-1-tab-motion",
+    +   "cim-panes-1-1-panel-console",
+    +   "cim-panes-1-1-panel-motion",
+    +   "cim-panes-1-1-beats",
+    + ]
+
+      229 |   return {players:document.querySelectorAll('[data-composed-player]').length,duplicates,wrong};
+      230 |  });
+    > 231 |  expect(report.players).toBe(3);expect(report.duplicates).toEqual([]);expect(report.wrong).toEqual([]);
+          |                                                           ^
+      232 |  const first=await ids();await p.reload();for(const i of [0,1,2])await expect(player(p,i)).toHaveAttribute('data-cim-state','ready');
+      233 |  expect(await ids()).toEqual(first);
+      234 |  const [a,c]=[player(p,0),player(p,2)];
+        at <scratchpad>/r0070985/tests/e2e/part-c-wordpress-panes.spec.mjs:231:59
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-878fd-eir-own-IDs-focus-and-menus/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-878fd-eir-own-IDs-focus-and-menus/error-context.md
+
+
+  1 failed
+    tests/e2e/part-c-wordpress-panes.spec.mjs:221:1 › [PC-E2E-12] three embeds whose names collide after suffixing still keep their own IDs, focus and menus 
+  12 passed (13.9s)

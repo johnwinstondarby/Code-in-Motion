@@ -4,7 +4,8 @@ import {readFile} from 'node:fs/promises';
 import {resolve,dirname,extname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
-import {placeholderPack,PILGRIM_ROWS} from '../helpers/part-c-pack.mjs';
+import {placeholderPack,PILGRIM_ROWS,PILGRIM_ROUND2_ROWS} from '../helpers/part-c-pack.mjs';
+const MALFORMED=[...Object.entries(PILGRIM_ROWS),...Object.entries(PILGRIM_ROUND2_ROWS)];
 test.use({browserName:process.env.CIM_PLAYER_BROWSER??'chromium',viewport:{width:1366,height:768}});
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'../..');
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -28,7 +29,7 @@ ${roots.map(r=>panesRoot(r,{lessonSha,captureSha})).join('\n')}
 }
 test.beforeAll(async()=>{
  pack=await placeholderPack();
- Object.values(PILGRIM_ROWS).forEach(([change],i)=>{const lesson=JSON.parse(pack.entries.get('lesson.json'));change(lesson);bad.set(i,Buffer.from(JSON.stringify(lesson)));});
+ MALFORMED.forEach(([,[change]],i)=>{const lesson=JSON.parse(pack.entries.get('lesson.json'));change(lesson);bad.set(i,Buffer.from(JSON.stringify(lesson)));});
  server=createServer(async(request,response)=>{
   const url=new URL(request.url,'http://localhost');
   if(url.pathname==='/'){response.setHeader('content-type','text/html');response.end(page(JSON.parse(url.searchParams.get('options')??'{}')));return;}
@@ -194,9 +195,10 @@ test('[PC-E2E-09] page disposal cancels pending downloads and nothing mounts aft
  await expect(instance(p,'late').locator('[data-composed-player]')).toHaveCount(0);
 });
 
-test('[PC-E2E-10] each of Pilgrim\'s malformed lessons keeps its fallback while an adjacent valid lesson works',async({page:p})=>{
+async function malformedBesideValid(p,indices){
  await p.addInitScript(()=>{window.__cimDiagnostics=[];const error=console.error.bind(console);console.error=(...args)=>{try{window.__cimDiagnostics.push(args.map(a=>{try{return JSON.parse(JSON.stringify(a));}catch{return String(a);}}));}catch{}error(...args);};});
- for(const [i,name] of Object.keys(PILGRIM_ROWS).entries()){
+ for(const i of indices){
+  const name=MALFORMED[i][0];
   await open(p,{roots:[{bad:i},{instance:'good'}]});
   await expect(instance(p,'good')).toHaveAttribute('data-cim-state','ready');
   await instance(p,'good').locator('[data-mp-command="next"]').click();await expect(instance(p,'good')).toContainText('Beat 1 / 8');
@@ -207,4 +209,35 @@ test('[PC-E2E-10] each of Pilgrim\'s malformed lessons keeps its fallback while 
   // Read the diagnostic records in the page: console message text renders objects differently per engine.
   await expect.poll(()=>p.evaluate(()=>JSON.stringify(window.__cimDiagnostics)),{message:name}).toMatch(/CIM-HST-005/);
  }
+}
+test('[PC-E2E-10] each of Pilgrim\'s malformed lessons keeps its fallback while an adjacent valid lesson works',async({page:p})=>{
+ await malformedBesideValid(p,[0,1,2,3]);
+});
+
+test('[PC-E2E-11] lessons the Player model would refuse keep their fallback beside a working lesson',async({page:p})=>{
+ await malformedBesideValid(p,[4,5,6]);
+});
+
+test('[PC-E2E-12] three embeds whose names collide after suffixing still keep their own IDs, focus and menus',async({page:p})=>{
+ const roots=[{},{instance:'panes-1'},{instance:'panes-1-1'}];
+ const ids=async()=>p.evaluate(()=>[...document.querySelectorAll('[data-composed-player] [id]')].map(n=>n.id));
+ await open(p,{roots});
+ for(const i of [0,1,2])await expect(player(p,i)).toHaveAttribute('data-cim-state','ready');
+ const report=await p.evaluate(()=>{
+  const all=[...document.querySelectorAll('[id]')].map(n=>n.id),duplicates=all.filter((id,i)=>all.indexOf(id)!==i),wrong=[];
+  for(const owner of document.querySelectorAll('[data-composed-player]'))for(const node of owner.querySelectorAll('[aria-controls],[aria-labelledby]'))for(const attr of ['aria-controls','aria-labelledby']){const ref=node.getAttribute(attr);if(ref===null)continue;const target=document.getElementById(ref);if(!target||!owner.contains(target))wrong.push(attr+'='+ref);}
+  return {players:document.querySelectorAll('[data-composed-player]').length,duplicates,wrong};
+ });
+ expect(report.players).toBe(3);expect(report.duplicates).toEqual([]);expect(report.wrong).toEqual([]);
+ const first=await ids();await p.reload();for(const i of [0,1,2])await expect(player(p,i)).toHaveAttribute('data-cim-state','ready');
+ expect(await ids()).toEqual(first);
+ const [a,c]=[player(p,0),player(p,2)];
+ await c.getByRole('tab',{name:'Console – CLI'}).focus();await p.keyboard.press('ArrowRight');
+ await expect(c.getByRole('tab',{name:'Motion – GUI'})).toBeFocused();
+ await expect(c.getByRole('tab',{name:'Motion – GUI'})).toHaveAttribute('aria-selected','true');
+ await expect(a.getByRole('tab',{name:'Console – CLI'})).toHaveAttribute('aria-selected','true');
+ await expect(a.getByRole('tabpanel')).toHaveAttribute('data-mp-panel','console');
+ const beatsC=c.locator('[data-mp-command="beats"]');await beatsC.click();
+ await expect(c.locator('[data-mp-menu]')).toBeVisible();await expect(a.locator('[data-mp-menu]')).toBeHidden();await expect(player(p,1).locator('[data-mp-menu]')).toBeHidden();
+ await p.keyboard.press('Escape');await expect(beatsC).toBeFocused();
 });

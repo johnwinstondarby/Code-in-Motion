@@ -26,3 +26,23 @@ export const PILGRIM_ROWS={
  'GUI beat also carries a copied CLI action':[l=>{const g=l.steps.find(s=>s.state.actions.some(a=>a.kind==='gui')),c=l.steps.find(s=>s.state.actions.some(a=>a.kind==='cli'));g.state.actions.push(structuredClone(c.state.actions[0]));g.state.waiting.console=false;},/Beat 3 \(submit-fail\)/],
  'GUI beat action tab becomes Console':[l=>{l.steps.find(s=>s.state.actions.some(a=>a.kind==='gui')).state.action_tab='console';},/Beat 3 \(submit-fail\): the action tab/]
 };
+
+// Append consistent context-only beats until the lesson has `total` beats (review round 3 count cases).
+export function extendBeats(experience,total){
+ const last=experience.steps.at(-1);
+ for(let n=experience.steps.length+1;n<=total;n++){
+  const id=`context-${n}`,text=`Placeholder · simulated. Context-only beat ${n}.`,state=structuredClone(last.state);
+  state.actions=[];state.engineering_records=[];state.panes.explanation={text};
+  state.waiting={console:true,engineering:true,explanation:false,motion:true};
+  experience.steps.push({id,label:`Context ${n}`,beat:{final:true,heading:`Context ${n}`,id,ordinal:n,segment_count:1,segment_ordinal:1},commentary:{links:[],text},dwell_ms:0,state});
+ }
+ experience.presentation.beat_count=experience.steps.length;
+ return experience;
+}
+
+// Pilgrim's round-2 reproductions of model preconditions that admission must share.
+export const PILGRIM_ROUND2_ROWS={
+ 'unsupported layout':[l=>{l.renderer_config.layout='unsupported';},/layout/i],
+ 'engine_min 1.0.1':[l=>{l.engine_min='1.0.1';},/1\.1\.0/],
+ '129 consistent beats':[l=>{extendBeats(l,129);},/128 beats/]
+};

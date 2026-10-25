@@ -6,7 +6,7 @@ import * as coordinator from '../src/multipane/motion-coordinator.mjs';
 import {createMultiPaneModel} from '../src/multipane/model.mjs';
 import {createEngineeringPane} from '../src/multipane/engineering.mjs';
 import {validateMediaMap} from '../src/multipane/media-map.mjs';
-import {compiledPlaceholder} from './helpers/part-c-pack.mjs';
+import {compiledPlaceholder,extendBeats,PILGRIM_ROWS,PILGRIM_ROUND2_ROWS} from './helpers/part-c-pack.mjs';
 import {capacityFixture} from './helpers/diagram-capacity-fixture.mjs';
 import {virtualScheduler} from './conformance/console-test-support.mjs';
 
@@ -215,4 +215,44 @@ test('[PC-18] action rules hold even when every snapshot agrees with its actions
   catch(error){assert.match(error.message,/CIM-PANES-ADMISSION: Beat \d+ \([a-z-]+\)/,name);}
  }
  assert.deepEqual(admitted,[],'replay-consistent action faults that were admitted');
+});
+
+// Review round 3, finding 1: admission and the Player model must agree on every precondition.
+test('[PC-19] layout, engine_min and the beat limit are refused before any token; 128 beats is still admitted',async()=>{
+ for(const n of [8,128]){
+  const data=await fresh();extendBeats(data.experience,n);
+  const admitted=admission.admitPanesLesson({experience:data.experience,capture:data.capture,identity:development()});
+  assert.doesNotThrow(()=>createMultiPaneModel({experience:admitted.experience,admission:admitted.token}),n+' beats');
+ }
+ const admitted=[];
+ for(const [name,[change,reason]] of Object.entries(PILGRIM_ROUND2_ROWS)){
+  const data=await fresh();change(data.experience);
+  try{admission.admitPanesLesson({experience:data.experience,capture:data.capture,identity:development()});admitted.push(name);}
+  catch(error){assert.match(error.message,/^CIM-PANES-ADMISSION: /,name);assert.match(error.message,reason,name);}
+ }
+ assert.deepEqual(admitted,[],'lessons the Player model would refuse but admission accepted');
+});
+
+// The producer/consumer invariant: whatever admission accepts, the public model constructs with that token.
+test('[PC-20] every lesson admission accepts constructs the Player model with its token',async()=>{
+ const variants={
+  'unchanged pack':()=>{},
+  '128 beats':e=>extendBeats(e,128),
+  ...Object.fromEntries(Object.entries({...PILGRIM_ROWS,...PILGRIM_ROUND2_ROWS}).map(([n,[c]])=>[n,c])),
+  'initial state not placeholder':e=>{e.initial_state.placeholder=false;},
+  'no Console pane':e=>{e.renderer_config.panes=e.renderer_config.panes.filter(p=>p.id!=='console');},
+  'renderer changed':e=>{e.renderer='console/v1';},
+  'engine_min 1.2.0':e=>{e.engine_min='1.2.0';},
+  'action tab unknown':e=>{e.steps[0].state.action_tab='explanation';},
+  'waiting not boolean':e=>{e.steps[0].state.waiting.console='no';}
+ };
+ const disagreements=[];let accepted=0;
+ for(const [name,change] of Object.entries(variants)){
+  const data=await fresh();change(data.experience);
+  let admitted;try{admitted=admission.admitPanesLesson({experience:data.experience,capture:data.capture,identity:development()});}catch{continue;}
+  accepted++;
+  try{createMultiPaneModel({experience:admitted.experience,admission:admitted.token});}catch(error){disagreements.push(name+': '+error.message);}
+ }
+ assert.ok(accepted>=2,'the controls are accepted');
+ assert.deepEqual(disagreements,[],'admitted lessons the model refused');
 });

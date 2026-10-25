@@ -49,3 +49,22 @@ test('[PC-17] one deadline covers fetching and reading; arriving chunks never ex
  assert.equal(cancelled,true,'the reader is cancelled');
  assert.equal(signal.aborted,true,'the request is aborted');
 });
+
+// Review round 3, finding 2: namespaces are allocated against final names, never just input stems.
+const fakeRoots=names=>names.map(n=>({getAttribute:a=>a==='data-cim-instance'?n:null}));
+test('[PC-21] Player namespaces are unique and repeatable for every combination of names',()=>{
+ const allocate=names=>binding.panesNamespaces(fakeRoots(names));
+ const pilgrim=allocate([null,'panes-1','panes-1-1']);
+ assert.equal(new Set(pilgrim).size,3,'unique: '+pilgrim.join(' '));
+ assert.deepEqual(allocate([null,'panes-1','panes-1-1']),pilgrim,'repeatable');
+ assert.equal(pilgrim[2],'cim-panes-1-1','a unique explicit name keeps its name');
+ const pieces=[null,'a','a-2','a-2-2','panes-1','panes-1-2','panes-2','panes-2-2','x','Bad Name!'];
+ let seed=7;const random=()=>{seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;};
+ for(let trial=0;trial<2000;trial++){
+  const names=Array.from({length:1+Math.floor(random()*7)},()=>pieces[Math.floor(random()*pieces.length)]);
+  const result=allocate(names);
+  assert.equal(new Set(result).size,result.length,JSON.stringify(names)+' → '+result.join(' '));
+  assert.ok(result.every(n=>/^[a-z0-9-]+$/.test(n)),JSON.stringify(result));
+  assert.deepEqual(allocate(names),result);
+ }
+});
