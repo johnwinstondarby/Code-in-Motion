@@ -1,0 +1,190 @@
+
+Running 148 tests using 1 worker
+
+[1/148] tests/e2e/composition.spec.mjs:35:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[2/148] tests/e2e/composition.spec.mjs:36:2 › 1366x768 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[3/148] tests/e2e/composition.spec.mjs:37:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[4/148] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[5/148] tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+[6/148] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+[7/148] tests/e2e/composition.spec.mjs:41:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+[8/148] tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[9/148] tests/e2e/composition.spec.mjs:35:2 › 1536x864 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[10/148] tests/e2e/composition.spec.mjs:36:2 › 1536x864 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[11/148] tests/e2e/composition.spec.mjs:37:2 › 1536x864 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[12/148] tests/e2e/composition.spec.mjs:38:2 › 1536x864 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[13/148] tests/e2e/composition.spec.mjs:39:2 › 1536x864 › [CMP-11] graphical states flows text cues holds and reduced motion
+[14/148] tests/e2e/composition.spec.mjs:40:2 › 1536x864 › [CMP-12] decode retry shares the original preparation deadline
+[15/148] tests/e2e/composition.spec.mjs:41:2 › 1536x864 › [CMP-15] navigation during a final seek returns without blocking the page
+[16/148] tests/e2e/composition.spec.mjs:43:2 › 1536x864 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[17/148] tests/e2e/composition.spec.mjs:35:2 › 1920x1080 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[18/148] tests/e2e/composition.spec.mjs:36:2 › 1920x1080 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[19/148] tests/e2e/composition.spec.mjs:37:2 › 1920x1080 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[20/148] tests/e2e/composition.spec.mjs:38:2 › 1920x1080 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[21/148] tests/e2e/composition.spec.mjs:39:2 › 1920x1080 › [CMP-11] graphical states flows text cues holds and reduced motion
+[22/148] tests/e2e/composition.spec.mjs:40:2 › 1920x1080 › [CMP-12] decode retry shares the original preparation deadline
+[23/148] tests/e2e/composition.spec.mjs:41:2 › 1920x1080 › [CMP-15] navigation during a final seek returns without blocking the page
+[24/148] tests/e2e/composition.spec.mjs:43:2 › 1920x1080 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[25/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-01] nine complete bounded outcome
+[26/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-02] five complete bounded outcome
+[27/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-03] long complete bounded outcome
+[28/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-04] limit complete bounded outcome
+[29/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-04] over complete bounded outcome
+[30/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-04] height complete bounded outcome
+[31/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1366x768 › [CAP-04] custody complete bounded outcome
+[32/148] tests/e2e/diagram-capacity.spec.mjs:61:2 › 1366x768 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole
+[33/148] tests/e2e/diagram-capacity.spec.mjs:62:2 › 1366x768 › [CAP-07] multi-row mid-transfer token is routed clear of labels
+[34/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-01] nine complete bounded outcome
+[35/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-02] five complete bounded outcome
+[36/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-03] long complete bounded outcome
+[37/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-04] limit complete bounded outcome
+[38/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-04] over complete bounded outcome
+[39/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-04] height complete bounded outcome
+[40/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1536x864 › [CAP-04] custody complete bounded outcome
+[41/148] tests/e2e/diagram-capacity.spec.mjs:61:2 › 1536x864 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole
+[42/148] tests/e2e/diagram-capacity.spec.mjs:62:2 › 1536x864 › [CAP-07] multi-row mid-transfer token is routed clear of labels
+[43/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-01] nine complete bounded outcome
+[44/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-02] five complete bounded outcome
+[45/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-03] long complete bounded outcome
+[46/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-04] limit complete bounded outcome
+[47/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-04] over complete bounded outcome
+[48/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-04] height complete bounded outcome
+[49/148] tests/e2e/diagram-capacity.spec.mjs:60:215 › 1920x1080 › [CAP-04] custody complete bounded outcome
+[50/148] tests/e2e/diagram-capacity.spec.mjs:61:2 › 1920x1080 › [CAP-04][CAP-05] wrapped labels and four-artifact/absent descriptions stay whole
+[51/148] tests/e2e/diagram-capacity.spec.mjs:62:2 › 1920x1080 › [CAP-07] multi-row mid-transfer token is routed clear of labels
+[52/148] tests/e2e/engineering-pane.spec.mjs:23:2 › 1366x768 › [ENG-01][ENG-02][ENG-04][ENG-05][ENG-08] readable modeled records and provenance at true size
+[53/148] tests/e2e/engineering-pane.spec.mjs:24:2 › 1366x768 › [ENG-08-FLOW] current beat flows are fully visible before evidence and grid
+[54/148] tests/e2e/engineering-pane.spec.mjs:30:2 › 1366x768 › [ENG-03][ENG-06] shared pause cancel hold and selectable content
+[55/148] tests/e2e/engineering-pane.spec.mjs:31:2 › 1366x768 › [ENG-07][ENG-09] malformed records stay bounded and peers remain visible
+[56/148] tests/e2e/engineering-pane.spec.mjs:23:2 › 1536x864 › [ENG-01][ENG-02][ENG-04][ENG-05][ENG-08] readable modeled records and provenance at true size
+[57/148] tests/e2e/engineering-pane.spec.mjs:24:2 › 1536x864 › [ENG-08-FLOW] current beat flows are fully visible before evidence and grid
+[58/148] tests/e2e/engineering-pane.spec.mjs:30:2 › 1536x864 › [ENG-03][ENG-06] shared pause cancel hold and selectable content
+[59/148] tests/e2e/engineering-pane.spec.mjs:31:2 › 1536x864 › [ENG-07][ENG-09] malformed records stay bounded and peers remain visible
+[60/148] tests/e2e/engineering-pane.spec.mjs:23:2 › 1920x1080 › [ENG-01][ENG-02][ENG-04][ENG-05][ENG-08] readable modeled records and provenance at true size
+[61/148] tests/e2e/engineering-pane.spec.mjs:24:2 › 1920x1080 › [ENG-08-FLOW] current beat flows are fully visible before evidence and grid
+[62/148] tests/e2e/engineering-pane.spec.mjs:30:2 › 1920x1080 › [ENG-03][ENG-06] shared pause cancel hold and selectable content
+[63/148] tests/e2e/engineering-pane.spec.mjs:31:2 › 1920x1080 › [ENG-07][ENG-09] malformed records stay bounded and peers remain visible
+[64/148] tests/e2e/multipane-transport.spec.mjs:40:2 › 1366x768 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+[65/148] tests/e2e/multipane-transport.spec.mjs:52:2 › 1366x768 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+[66/148] tests/e2e/multipane-transport.spec.mjs:58:2 › 1366x768 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+[67/148] tests/e2e/multipane-transport.spec.mjs:67:2 › 1366x768 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+[68/148] tests/e2e/multipane-transport.spec.mjs:82:2 › 1366x768 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+[69/148] tests/e2e/multipane-transport.spec.mjs:100:2 › 1366x768 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+[70/148] tests/e2e/multipane-transport.spec.mjs:109:2 › 1366x768 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+[71/148] tests/e2e/multipane-transport.spec.mjs:40:2 › 1536x864 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+[72/148] tests/e2e/multipane-transport.spec.mjs:52:2 › 1536x864 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+[73/148] tests/e2e/multipane-transport.spec.mjs:58:2 › 1536x864 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+[74/148] tests/e2e/multipane-transport.spec.mjs:67:2 › 1536x864 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+[75/148] tests/e2e/multipane-transport.spec.mjs:82:2 › 1536x864 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+[76/148] tests/e2e/multipane-transport.spec.mjs:100:2 › 1536x864 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+[77/148] tests/e2e/multipane-transport.spec.mjs:109:2 › 1536x864 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+[78/148] tests/e2e/multipane-transport.spec.mjs:40:2 › 1920x1080 › [MP-14][MP-15] tabs have reciprocal semantics and native roving keyboard selection
+[79/148] tests/e2e/multipane-transport.spec.mjs:52:2 › 1920x1080 › [MP-01] beat-start auto selection never takes focus and never repeats during a beat
+[80/148] tests/e2e/multipane-transport.spec.mjs:58:2 › 1920x1080 › [MP-02][MP-03][MP-04] hidden work continues and pause resume Next preserve manual choice
+[81/148] tests/e2e/multipane-transport.spec.mjs:67:2 › 1920x1080 › [MP-11][MP-12][MP-13] Beats stays live marks current beat and closes without navigation
+[82/148] tests/e2e/multipane-transport.spec.mjs:82:2 › 1920x1080 › [MP-05][MP-07][MP-16] context waits remain selectable and direct menu jumps reset the default tab
+[83/148] tests/e2e/multipane-transport.spec.mjs:100:2 › 1920x1080 › [MP-08][MP-09][MP-10][MP-17][MP-18] Start End deep links and rapid navigation rebuild deterministic states
+[84/148] tests/e2e/multipane-transport.spec.mjs:109:2 › 1920x1080 › [MP-06][MP-19][MP-21] initial contexts reduced motion and disposal leave no running clock or stale controls
+[85/148] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1366x768 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[86/148] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1536x864 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[87/148] tests/e2e/pack-v3-preview.spec.mjs:14:2 › 1920x1080 › [PB-PREVIEW-01] all eight real compiled beats, visible context panes and full-size diagrams
+[88/148] tests/e2e/pack-v3-preview.spec.mjs:24:1 › [PB-PREVIEW-02] real Motion playback keeps one clock when its action tab is hidden
+[89/148] tests/e2e/pack-v3-preview.spec.mjs:27:1 › [PB-PREVIEW-03] save-refresh uses authored edits and shows all actionable validation errors
+[90/148] tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified lesson.json refuses same-size response tampering
+[91/148] tests/e2e/pack-v3-preview.spec.mjs:31:54 › [PB-PREVIEW-04] verified capture.json refuses same-size response tampering
+[92/148] tests/e2e/motion-pane.spec.mjs:38:2 › 1366x768 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[93/148] tests/e2e/motion-pane.spec.mjs:44:2 › 1366x768 › [MOT-22] native play from an ended verified clip preserves its final hold
+[94/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] restart permits genuine replay after a completed hold
+[95/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] previous permits genuine replay after a completed hold
+[96/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] jump permits genuine replay after a completed hold
+[97/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1366x768 › [MOT-23] deepLink permits genuine replay after a completed hold
+[98/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay
+[99/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay
+[100/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay
+[101/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay
+[102/148] tests/e2e/motion-pane.spec.mjs:72:2 › 1366x768 › [MOT-25] a seek without play preserves the completed hold and session
+[103/148] tests/e2e/motion-pane.spec.mjs:77:2 › 1366x768 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[104/148] tests/e2e/motion-pane.spec.mjs:85:2 › 1366x768 › [MOT-08] reduced motion shows still and alternative with no automatic play
+[105/148] tests/e2e/motion-pane.spec.mjs:86:2 › 1366x768 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+[106/148] tests/e2e/motion-pane.spec.mjs:87:2 › 1366x768 › [MOT-16] preparation holds peers and a jump cancels without waiting
+[107/148] tests/e2e/motion-pane.spec.mjs:93:2 › 1366x768 › [MOT-17] navigation cancels preparation and late results cannot replace the destination
+[108/148] tests/e2e/motion-pane.spec.mjs:97:2 › 1366x768 › [MOT-18] native playback cannot override a paused shared clock
+[109/148] tests/e2e/motion-pane.spec.mjs:100:2 › 1366x768 › [MOT-21] disposing Motion revokes its verified URLs and removes its DOM
+[110/148] tests/e2e/motion-pane.spec.mjs:103:2 › 1366x768 › [MOT-10] buffering holds every pane and never means completion
+[111/148] tests/e2e/motion-pane.spec.mjs:38:2 › 1536x864 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[112/148] tests/e2e/motion-pane.spec.mjs:44:2 › 1536x864 › [MOT-22] native play from an ended verified clip preserves its final hold
+[113/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] restart permits genuine replay after a completed hold
+[114/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] previous permits genuine replay after a completed hold
+[115/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] jump permits genuine replay after a completed hold
+[116/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1536x864 › [MOT-23] deepLink permits genuine replay after a completed hold
+[117/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1536x864 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay
+[118/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1536x864 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay
+[119/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1536x864 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay
+[120/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1536x864 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay
+[121/148] tests/e2e/motion-pane.spec.mjs:72:2 › 1536x864 › [MOT-25] a seek without play preserves the completed hold and session
+[122/148] tests/e2e/motion-pane.spec.mjs:77:2 › 1536x864 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[123/148] tests/e2e/motion-pane.spec.mjs:85:2 › 1536x864 › [MOT-08] reduced motion shows still and alternative with no automatic play
+[124/148] tests/e2e/motion-pane.spec.mjs:86:2 › 1536x864 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+[125/148] tests/e2e/motion-pane.spec.mjs:87:2 › 1536x864 › [MOT-16] preparation holds peers and a jump cancels without waiting
+[126/148] tests/e2e/motion-pane.spec.mjs:93:2 › 1536x864 › [MOT-17] navigation cancels preparation and late results cannot replace the destination
+[127/148] tests/e2e/motion-pane.spec.mjs:97:2 › 1536x864 › [MOT-18] native playback cannot override a paused shared clock
+[128/148] tests/e2e/motion-pane.spec.mjs:100:2 › 1536x864 › [MOT-21] disposing Motion revokes its verified URLs and removes its DOM
+[129/148] tests/e2e/motion-pane.spec.mjs:103:2 › 1536x864 › [MOT-10] buffering holds every pane and never means completion
+[130/148] tests/e2e/motion-pane.spec.mjs:38:2 › 1920x1080 › [MOT-07] verified Blob playback captions pause resume completion and hold
+[131/148] tests/e2e/motion-pane.spec.mjs:44:2 › 1920x1080 › [MOT-22] native play from an ended verified clip preserves its final hold
+[132/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] restart permits genuine replay after a completed hold
+[133/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] previous permits genuine replay after a completed hold
+[134/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] jump permits genuine replay after a completed hold
+[135/148] tests/e2e/motion-pane.spec.mjs:49:62 › 1920x1080 › [MOT-23] deepLink permits genuine replay after a completed hold
+[136/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1920x1080 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay
+[137/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1920x1080 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay
+[138/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1920x1080 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay
+[139/148] tests/e2e/motion-pane.spec.mjs:64:62 › 1920x1080 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay
+  1) tests/e2e/motion-pane.spec.mjs:64:62 › 1920x1080 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "settled"
+    Received: "active"
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      68 |   const experience=fixtureExperience();await page.evaluate(({route,id,step})=>{seekProbe.release=true;if(route==='restart')fixture.session.dispatch({type:'restart'});else if(route==='previous')fixture.session.dispatch({type:'previous'});else if(route==='jump')fixture.session.dispatch({type:'jump',index:1});else fixture.session.dispatch({type:'deepLink',fragment:'#cim/'+encodeURIComponent(id)+'/'+encodeURIComponent(step)});seekProbe.video.dispatchEvent(new Event('seeked'));},{route,id:experience.id,step:experience.steps[1].id});
+      69 |   if(route==='restart'){await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');}
+    > 70 |   expect(await page.evaluate(()=>seekProbe.requests.length)).toBe(2);await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await page.evaluate(()=>fixture.session.read().failures)).toEqual([]);await expect(page.locator('.motion-pane')).not.toContainText('GUI recording unavailable');
+         |                                                                                                                                                                                                                                                                                                                                                            ^
+      71 |  });
+      72 |  test('[MOT-25] a seek without play preserves the completed hold and session',async({page})=>{
+      73 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.waitForFunction(()=>fixture.clockEvents.length>0);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:70:348
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-browser-results/firefox/tests-e2e-motion-pane-1920-90b02--re-seek-and-permits-replay/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-browser-results/firefox/tests-e2e-motion-pane-1920-90b02--re-seek-and-permits-replay/error-context.md
+
+    Error Context: ../seek108-browser-results/firefox/tests-e2e-motion-pane-1920-90b02--re-seek-and-permits-replay/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-browser-results/firefox/tests-e2e-motion-pane-1920-90b02--re-seek-and-permits-replay/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-browser-results/firefox/tests-e2e-motion-pane-1920-90b02--re-seek-and-permits-replay/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[140/148] tests/e2e/motion-pane.spec.mjs:72:2 › 1920x1080 › [MOT-25] a seek without play preserves the completed hold and session
+[141/148] tests/e2e/motion-pane.spec.mjs:77:2 › 1920x1080 › [MOT-24] correcting a late rewind changes neither transport, focus nor announcements
+[142/148] tests/e2e/motion-pane.spec.mjs:85:2 › 1920x1080 › [MOT-08] reduced motion shows still and alternative with no automatic play
+[143/148] tests/e2e/motion-pane.spec.mjs:86:2 › 1920x1080 › [MOT-09] missing and tampered clips fail safely and retain fallback while held
+[144/148] tests/e2e/motion-pane.spec.mjs:87:2 › 1920x1080 › [MOT-16] preparation holds peers and a jump cancels without waiting
+[145/148] tests/e2e/motion-pane.spec.mjs:93:2 › 1920x1080 › [MOT-17] navigation cancels preparation and late results cannot replace the destination
+[146/148] tests/e2e/motion-pane.spec.mjs:97:2 › 1920x1080 › [MOT-18] native playback cannot override a paused shared clock
+[147/148] tests/e2e/motion-pane.spec.mjs:100:2 › 1920x1080 › [MOT-21] disposing Motion revokes its verified URLs and removes its DOM
+[148/148] tests/e2e/motion-pane.spec.mjs:103:2 › 1920x1080 › [MOT-10] buffering holds every pane and never means completion
+  1 failed
+    tests/e2e/motion-pane.spec.mjs:64:62 › 1920x1080 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay 
+  147 passed (2.0m)

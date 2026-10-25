@@ -1,0 +1,156 @@
+
+Running 4 tests using 1 worker
+
+[1/4] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay
+  1) tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      65 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+      66 |   await page.locator('.motion-pane video').evaluate(v=>{const native=Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime');window.seekProbe={video:v,requests:[],pending:false,release:false};Object.defineProperty(v,'currentTime',{configurable:true,get(){return native.get.call(v);},set(value){if(!seekProbe.release&&value>=v.duration-0.001){seekProbe.requests.push(value);if(seekProbe.requests.length===1)native.set.call(v,0.467);else seekProbe.pending=true;}else native.set.call(v,value);}});});
+    > 67 |   await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>seekProbe.pending)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');
+         |                                                                                                              ^
+      68 |   const experience=fixtureExperience();await page.evaluate(({route,id,step})=>{seekProbe.release=true;if(route==='restart')fixture.session.dispatch({type:'restart'});else if(route==='previous')fixture.session.dispatch({type:'previous'});else if(route==='jump')fixture.session.dispatch({type:'jump',index:1});else fixture.session.dispatch({type:'deepLink',fragment:'#cim/'+encodeURIComponent(id)+'/'+encodeURIComponent(step)});seekProbe.video.dispatchEvent(new Event('seeked'));},{route,id:experience.id,step:experience.steps[1].id});
+      69 |   if(route==='restart'){await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');}
+      70 |   expect(await page.evaluate(()=>seekProbe.requests.length)).toBe(2);await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await page.evaluate(()=>fixture.session.read().failures)).toEqual([]);await expect(page.locator('.motion-pane')).not.toContainText('GUI recording unavailable');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/seek108-control/tests/e2e/motion-pane.spec.mjs:67:110
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay/error-context.md
+
+    Error Context: ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[2/4] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay
+  2) tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      65 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+      66 |   await page.locator('.motion-pane video').evaluate(v=>{const native=Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime');window.seekProbe={video:v,requests:[],pending:false,release:false};Object.defineProperty(v,'currentTime',{configurable:true,get(){return native.get.call(v);},set(value){if(!seekProbe.release&&value>=v.duration-0.001){seekProbe.requests.push(value);if(seekProbe.requests.length===1)native.set.call(v,0.467);else seekProbe.pending=true;}else native.set.call(v,value);}});});
+    > 67 |   await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>seekProbe.pending)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');
+         |                                                                                                              ^
+      68 |   const experience=fixtureExperience();await page.evaluate(({route,id,step})=>{seekProbe.release=true;if(route==='restart')fixture.session.dispatch({type:'restart'});else if(route==='previous')fixture.session.dispatch({type:'previous'});else if(route==='jump')fixture.session.dispatch({type:'jump',index:1});else fixture.session.dispatch({type:'deepLink',fragment:'#cim/'+encodeURIComponent(id)+'/'+encodeURIComponent(step)});seekProbe.video.dispatchEvent(new Event('seeked'));},{route,id:experience.id,step:experience.steps[1].id});
+      69 |   if(route==='restart'){await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');}
+      70 |   expect(await page.evaluate(()=>seekProbe.requests.length)).toBe(2);await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await page.evaluate(()=>fixture.session.read().failures)).toEqual([]);await expect(page.locator('.motion-pane')).not.toContainText('GUI recording unavailable');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/seek108-control/tests/e2e/motion-pane.spec.mjs:67:110
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay/error-context.md
+
+    Error Context: ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[3/4] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay
+  3) tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      65 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+      66 |   await page.locator('.motion-pane video').evaluate(v=>{const native=Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime');window.seekProbe={video:v,requests:[],pending:false,release:false};Object.defineProperty(v,'currentTime',{configurable:true,get(){return native.get.call(v);},set(value){if(!seekProbe.release&&value>=v.duration-0.001){seekProbe.requests.push(value);if(seekProbe.requests.length===1)native.set.call(v,0.467);else seekProbe.pending=true;}else native.set.call(v,value);}});});
+    > 67 |   await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>seekProbe.pending)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');
+         |                                                                                                              ^
+      68 |   const experience=fixtureExperience();await page.evaluate(({route,id,step})=>{seekProbe.release=true;if(route==='restart')fixture.session.dispatch({type:'restart'});else if(route==='previous')fixture.session.dispatch({type:'previous'});else if(route==='jump')fixture.session.dispatch({type:'jump',index:1});else fixture.session.dispatch({type:'deepLink',fragment:'#cim/'+encodeURIComponent(id)+'/'+encodeURIComponent(step)});seekProbe.video.dispatchEvent(new Event('seeked'));},{route,id:experience.id,step:experience.steps[1].id});
+      69 |   if(route==='restart'){await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');}
+      70 |   expect(await page.evaluate(()=>seekProbe.requests.length)).toBe(2);await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await page.evaluate(()=>fixture.session.read().failures)).toEqual([]);await expect(page.locator('.motion-pane')).not.toContainText('GUI recording unavailable');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/seek108-control/tests/e2e/motion-pane.spec.mjs:67:110
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/error-context.md
+
+    Error Context: ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[4/4] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay
+  4) tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      65 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);
+      66 |   await page.locator('.motion-pane video').evaluate(v=>{const native=Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime');window.seekProbe={video:v,requests:[],pending:false,release:false};Object.defineProperty(v,'currentTime',{configurable:true,get(){return native.get.call(v);},set(value){if(!seekProbe.release&&value>=v.duration-0.001){seekProbe.requests.push(value);if(seekProbe.requests.length===1)native.set.call(v,0.467);else seekProbe.pending=true;}else native.set.call(v,value);}});});
+    > 67 |   await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>seekProbe.pending)).toBe(true);expect(await page.evaluate(()=>fixture.session.read().progress)).toBe('active');
+         |                                                                                                              ^
+      68 |   const experience=fixtureExperience();await page.evaluate(({route,id,step})=>{seekProbe.release=true;if(route==='restart')fixture.session.dispatch({type:'restart'});else if(route==='previous')fixture.session.dispatch({type:'previous'});else if(route==='jump')fixture.session.dispatch({type:'jump',index:1});else fixture.session.dispatch({type:'deepLink',fragment:'#cim/'+encodeURIComponent(id)+'/'+encodeURIComponent(step)});seekProbe.video.dispatchEvent(new Event('seeked'));},{route,id:experience.id,step:experience.steps[1].id});
+      69 |   if(route==='restart'){await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(200));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');}
+      70 |   expect(await page.evaluate(()=>seekProbe.requests.length)).toBe(2);await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await page.evaluate(()=>fixture.session.read().failures)).toEqual([]);await expect(page.locator('.motion-pane')).not.toContainText('GUI recording unavailable');
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/seek108-control/tests/e2e/motion-pane.spec.mjs:67:110
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay/error-context.md
+
+    Error Context: ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-navigation-red-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  4 failed
+    tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay 
+    tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay 
+    tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay 
+    tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay 

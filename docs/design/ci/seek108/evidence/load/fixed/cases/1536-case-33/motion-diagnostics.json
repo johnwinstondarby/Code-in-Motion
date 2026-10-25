@@ -1,0 +1,740 @@
+{
+  "check": {
+    "identity": "video-1",
+    "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+    "time": 1.2,
+    "duration": 1.2,
+    "ended": true,
+    "seeking": false,
+    "readyState": 4,
+    "paused": true,
+    "index": 2,
+    "generation": 2,
+    "ok": true
+  },
+  "session": {
+    "index": 2,
+    "progress": "settled",
+    "playing": false,
+    "tab": "console",
+    "generation": 2,
+    "panelOpen": false,
+    "panes": {
+      "console": {
+        "lines": [
+          "git rev-parse HEAD",
+          "[placeholder output]"
+        ]
+      },
+      "explanation": {
+        "text": "The modeled job fails; real failure type and timing come from the future capture."
+      },
+      "engineering": {
+        "artifacts": {
+          "run": {
+            "location": "login",
+            "status": "pinned"
+          },
+          "commit": {
+            "location": "git",
+            "status": "pinned"
+          },
+          "job": {
+            "location": "gpu",
+            "status": "failed"
+          },
+          "metrics": {
+            "location": null,
+            "status": "absent"
+          }
+        }
+      },
+      "motion": {
+        "asset": "gpu-memory",
+        "alt": "Illustrative interface; no real recording exists.",
+        "label": "Placeholder GUI · simulated"
+      }
+    },
+    "waiting": {
+      "console": true,
+      "explanation": false,
+      "engineering": false,
+      "motion": false
+    },
+    "failures": [],
+    "status": "Beat 3 / 9 · paused"
+  },
+  "clock": [
+    {
+      "running": true,
+      "time": 0,
+      "intent": true
+    },
+    {
+      "running": false,
+      "time": 400,
+      "intent": false
+    },
+    {
+      "running": true,
+      "time": 400,
+      "intent": true
+    }
+  ],
+  "events": [
+    {
+      "event": "session",
+      "data": {
+        "index": 1,
+        "generation": 1,
+        "progress": "settled",
+        "playing": false,
+        "failures": [],
+        "video": null
+      },
+      "stamp": 514
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "active",
+        "playing": true,
+        "failures": [],
+        "video": null
+      },
+      "stamp": 559
+    },
+    {
+      "event": "play-call",
+      "data": {
+        "id": 1,
+        "stack": "@web-inspector://bootstrap.js:607:29\nplayNative@http://127.0.0.1:32905/src/multipane/motion.mjs:86:104\n@http://127.0.0.1:32905/src/multipane/motion.mjs:93:91\n@http://127.0.0.1:32905/src/multipane/motion-coordinator.mjs:6:491\nobserve@http://127.0.0.1:32905/src/multipane/media-barrier.mjs:5:195\n@http://127.0.0.1:32905/src/multipane/motion.mjs:93:34\nPromise@[native code]\nplay@http://127.0.0.1:32905/src/multipane/motion.mjs:78:21",
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+          "time": 0,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": true
+        },
+        "session": {
+          "index": 2,
+          "progress": "active",
+          "playing": true,
+          "tab": "motion",
+          "generation": 2,
+          "panelOpen": false,
+          "panes": {
+            "console": {
+              "lines": [
+                "git rev-parse HEAD",
+                "[placeholder output]"
+              ]
+            },
+            "explanation": {
+              "text": "The modeled job fails; real failure type and timing come from the future capture."
+            },
+            "engineering": {
+              "artifacts": {
+                "run": {
+                  "location": "login",
+                  "status": "pinned"
+                },
+                "commit": {
+                  "location": "git",
+                  "status": "pinned"
+                },
+                "job": {
+                  "location": "gpu",
+                  "status": "failed"
+                },
+                "metrics": {
+                  "location": null,
+                  "status": "absent"
+                }
+              }
+            },
+            "motion": {
+              "asset": "gpu-memory",
+              "alt": "Illustrative interface; no real recording exists.",
+              "label": "Placeholder GUI · simulated"
+            }
+          },
+          "waiting": {
+            "console": true,
+            "explanation": false,
+            "engineering": false,
+            "motion": false
+          },
+          "failures": [],
+          "status": "Beat 3 / 9 · playing"
+        }
+      },
+      "stamp": 2661
+    },
+    {
+      "event": "native-canplay",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2764
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.003747941,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2764
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.003747941,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2764
+    },
+    {
+      "event": "play-resolved",
+      "data": {
+        "id": 1,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+          "time": 0.003747941,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 2764
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.004319784,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2765
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.004319784,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 2765
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.251997678,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3012
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.664806445,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3425
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "active",
+        "playing": true,
+        "failures": [],
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+          "time": 0.685036504,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 3445
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.36,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3594
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "active",
+        "playing": false,
+        "failures": [],
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+          "time": 0.4,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": true,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 3612
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3620
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3620
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3620
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3685
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.4,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3685
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.404134036,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 3690
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.404134036,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3691
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.404134036,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3691
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.404134036,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 3691
+    },
+    {
+      "event": "play-call",
+      "data": {
+        "id": 2,
+        "stack": "@web-inspector://bootstrap.js:607:29\nplayNative@http://127.0.0.1:32905/src/multipane/motion.mjs:86:104\n@http://127.0.0.1:32905/src/multipane/motion.mjs:93:91\n@http://127.0.0.1:32905/src/multipane/motion-coordinator.mjs:6:491\nannounce@http://127.0.0.1:32905/src/multipane/media-barrier.mjs:4:187\nresume@http://127.0.0.1:32905/src/multipane/media-barrier.mjs:6:175\ndispatch@http://127.0.0.1:32905/src/multipane/session.mjs:39:43\n@\nevaluate@\n@",
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+          "time": 0.404134036,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        },
+        "session": {
+          "index": 2,
+          "progress": "active",
+          "playing": true,
+          "tab": "console",
+          "generation": 2,
+          "panelOpen": false,
+          "panes": {
+            "console": {
+              "lines": [
+                "git rev-parse HEAD",
+                "[placeholder output]"
+              ]
+            },
+            "explanation": {
+              "text": "The modeled job fails; real failure type and timing come from the future capture."
+            },
+            "engineering": {
+              "artifacts": {
+                "run": {
+                  "location": "login",
+                  "status": "pinned"
+                },
+                "commit": {
+                  "location": "git",
+                  "status": "pinned"
+                },
+                "job": {
+                  "location": "gpu",
+                  "status": "failed"
+                },
+                "metrics": {
+                  "location": null,
+                  "status": "absent"
+                }
+              }
+            },
+            "motion": {
+              "asset": "gpu-memory",
+              "alt": "Illustrative interface; no real recording exists.",
+              "label": "Placeholder GUI · simulated"
+            }
+          },
+          "waiting": {
+            "console": true,
+            "explanation": false,
+            "engineering": false,
+            "motion": false
+          },
+          "failures": [],
+          "status": "Beat 3 / 9 · playing"
+        }
+      },
+      "stamp": 4113
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "active",
+        "playing": true,
+        "failures": [],
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+          "time": 0.404193053,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 4116
+    },
+    {
+      "event": "native-play",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.404789729,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 4124
+    },
+    {
+      "event": "native-playing",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 0.404789729,
+        "duration": 1.2,
+        "ended": false,
+        "seeking": false,
+        "readyState": 4,
+        "paused": false
+      },
+      "stamp": 4125
+    },
+    {
+      "event": "play-resolved",
+      "data": {
+        "id": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+          "time": 0.404789729,
+          "duration": 1.2,
+          "ended": false,
+          "seeking": false,
+          "readyState": 4,
+          "paused": false
+        }
+      },
+      "stamp": 4125
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 4169
+    },
+    {
+      "event": "native-pause",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 4169
+    },
+    {
+      "event": "native-seeking",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": true,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 4169
+    },
+    {
+      "event": "native-timeupdate",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 4190
+    },
+    {
+      "event": "native-seeked",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 4190
+    },
+    {
+      "event": "motion-completion",
+      "data": {
+        "result": {
+          "status": "settled"
+        },
+        "index": 2,
+        "generation": 2,
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 4192
+    },
+    {
+      "event": "session",
+      "data": {
+        "index": 2,
+        "generation": 2,
+        "progress": "settled",
+        "playing": false,
+        "failures": [],
+        "video": {
+          "identity": "video-1",
+          "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+          "time": 1.2,
+          "duration": 1.2,
+          "ended": true,
+          "seeking": false,
+          "readyState": 4,
+          "paused": true
+        }
+      },
+      "stamp": 4193
+    },
+    {
+      "event": "native-ended",
+      "data": {
+        "identity": "video-1",
+        "src": "blob:http://127.0.0.1:32905/47d8628c-f53f-4b0a-910c-8ca01e554beb",
+        "time": 1.2,
+        "duration": 1.2,
+        "ended": true,
+        "seeking": false,
+        "readyState": 4,
+        "paused": true
+      },
+      "stamp": 4193
+    }
+  ],
+  "dropped": 0
+}

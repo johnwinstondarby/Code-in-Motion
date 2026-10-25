@@ -5,7 +5,16 @@ import {spawnSync} from 'node:child_process';
 const root=fileURLToPath(new URL('../',import.meta.url)),work=resolve(root,'../motion-mutations'),browser=process.argv.includes('--browser');await mkdir(work,{recursive:true});const sandbox=await mkdtemp(resolve(work,'candidate-'));await cp(root,sandbox,{recursive:true,filter:p=>!['.git','node_modules','dist','test-results','work'].includes(basename(p))});await symlink(resolve(root,'node_modules'),resolve(sandbox,'node_modules'),process.platform==='win32'?'junction':'dir');
 const map='src/multipane/media-map.mjs',access='src/multipane/motion-media.mjs',barrier='src/multipane/media-barrier.mjs',pane='src/multipane/motion.mjs';
 const cases=[
- ['MOT-01-source',map,'const source=(s,path)=>{','const source=(s,path)=>{return;','MOT-01'],
+ ['ORDER-20-stale-restoring',pane,'function settle(state){requireMounted();++playRevision;restoring=false;cancelPlay();','function settle(state){requireMounted();++playRevision;cancelPlay();','ORDER-20'],
+ ['ORDER-19-ignore-reduced-abort',pane,'if(context.reducedMotion){finalStill()', 'if(context.reducedMotion){offAbort();finalStill()','ORDER-19'],
+ ['ORDER-18-stale-fallback',pane,'revision===version&&playRevision===intent','revision===version','ORDER-18'],
+ ['ORDER-13-no-reseek',pane,'reseeks++;try{target.currentTime=destination;}','reseeks++;try{void destination;}','ORDER-13'],
+ ['ORDER-14-unbounded-reseek',pane,'if(reseeks>=2)','if(false)','ORDER-14'],
+ ['ORDER-13-accept-wrong-frame',pane,'const check=()=>!target.seeking&&target.readyState>=2&&Math.abs(target.currentTime-destination)<tolerance','const check=()=>!target.seeking&&target.readyState>=2','ORDER-13'],
+ ['ORDER-15-spend-hold-budget',pane,'if(!authorizedPlayback)nextVideo.pause();','if(!authorizedPlayback)nextVideo.pause();if(restoring)finalRestores++;','ORDER-15'],
+ ['ORDER-16-stale-reseek',pane,'finalSeek?.abort();finalSeek=null;','/* stale settle remains active */','ORDER-16'],
+ ['ORDER-17-reset-deadline',pane,'reseeks++;try{','clearTimeout(timer);timer=setTimeout(bad,timeoutMs);reseeks++;try{','ORDER-17'],
+ ['MOT-01-source' ,map,'const source=(s,path)=>{','const source=(s,path)=>{return;','MOT-01'],
  ['MOT-01-type',map,"if(!(caption?d.type==='text/vtt':['video/webm','video/mp4'].includes(d.type)))",'if(false)','MOT-01'],
  ['MOT-01-file-size',map,'d.size>(caption?MEDIA_LIMITS.captions:MEDIA_LIMITS.clip)','false','MOT-01'],
  ['MOT-01-total',map,'if(total>MEDIA_LIMITS.total)','if(false)','MOT-01'],
@@ -39,7 +48,7 @@ if(browser)cases.push(
  ['MOT-22-final-hold',pane,'if(!authorizedPlayback&&finalVideo===nextVideo&&!restoring&&!failed)','if(false)','MOT-22','browser'],
  ['MOT-07-captions',pane,"default:'',src:loaded.captionURL",'src:loaded.captionURL','MOT-07','browser'],
  ['MOT-07-end',pane,"task.finish({status:'settled'})",'/* completion omitted */void 0','MOT-07','browser'],
- ['MOT-08-reduced',pane,'if(context.reducedMotion)return','if(false)return','MOT-08','browser'],
+ ['MOT-08-reduced',pane,'if(context.reducedMotion){','if(false){','MOT-08','browser'],
  ['MOT-09-fallback',pane,"element('p','GUI recording unavailable')","element('p','Loading recording')",'MOT-09','browser'],
  ['MOT-09-stall','src/multipane/motion-coordinator.mjs',"return{status:'failed',error};","return new Promise(()=>{});",'MOT-09','browser'],
  ['MOT-10-buffer-finished',pane,"listen('waiting',()=>{if(done||finalising)return;emit(true);","listen('waiting',()=>{if(done||finalising)return;task.finish({status:'settled'});",'MOT-10','browser'],

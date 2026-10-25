@@ -1,0 +1,1 @@
+{"variant":"control","configuration":"two fixed CPUs, four MOT-07 workers, two composition workers","cpus":"0,1","workers":4,"repeatEach":50,"planned":150,"started":"2026-10-25T00:13:51Z","finished":"2026-10-25T00:18:55Z","exit":1,"backgroundExit":143,"backgroundIsLoadOnly":true}

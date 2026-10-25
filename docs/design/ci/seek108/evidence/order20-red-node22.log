@@ -1,0 +1,32 @@
+TAP version 13
+# Subtest: [ORDER-20] settling a held clip during restore leaves later rewinds protected
+not ok 1 - [ORDER-20] settling a held clip during restore leaves later rewinds protected
+  ---
+  duration_ms: 5.4929
+  type: 'test'
+  location: 'C:\\Users\\johnw\\Documents\\Codex\\2026-10-16\\referenced-chatgpt-conversation-this-is-an\\outputs\\motion-final-seek\\tests\\motion-completion-order.test.mjs:145:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    a later rewind must still start a corrective seek after settle retires an in-flight restore
+    
+    10 !== 11
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 11
+  actual: 10
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/motion-completion-order.test.mjs:152:11)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 85.1962

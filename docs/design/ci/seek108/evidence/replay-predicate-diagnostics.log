@@ -1,0 +1,311 @@
+
+Running 12 tests using 1 worker
+
+[1/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay
+[2/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay
+[3/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay
+  1) tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      35 | const gui=page=>page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:1});fixture.session.dispatch({type:'play'});});
+      36 | async function replayReady(page,info){
+    > 37 |  try{await expect.poll(()=>page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return !!v&&v.readyState>=2&&!v.paused&&fixture.clockEvents.at(-1)?.running===true;})).toBe(true);}
+         |                                                                                                                                                                                           ^
+      38 |  catch(error){const data=await page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return{session:fixture.session.read(),clock:fixture.clockEvents,probe:{requests:seekProbe.requests,pending:seekProbe.pending,release:seekProbe.release,sameElement:seekProbe.video===v},video:v?{time:v.currentTime,duration:v.duration,paused:v.paused,ended:v.ended,seeking:v.seeking,readyState:v.readyState,trackReady:v.querySelector('track')?.readyState,src:v.currentSrc}:null};});const path=info.outputPath('replay-readiness.json');await writeFile(path,JSON.stringify(data,null,2));await info.attach('replay-readiness',{path,contentType:'application/json'});throw error;}
+      39 | }
+      40 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+        at replayReady (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:37:187)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:74:141
+
+    attachment #1: replay-readiness (application/json) ─────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/attachments/replay-readiness-827e5e2c92a4e2c59dd24139e1bb66bda4d0b33a.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/error-context.md
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[4/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay
+[5/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay
+  2) tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      35 | const gui=page=>page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:1});fixture.session.dispatch({type:'play'});});
+      36 | async function replayReady(page,info){
+    > 37 |  try{await expect.poll(()=>page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return !!v&&v.readyState>=2&&!v.paused&&fixture.clockEvents.at(-1)?.running===true;})).toBe(true);}
+         |                                                                                                                                                                                           ^
+      38 |  catch(error){const data=await page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return{session:fixture.session.read(),clock:fixture.clockEvents,probe:{requests:seekProbe.requests,pending:seekProbe.pending,release:seekProbe.release,sameElement:seekProbe.video===v},video:v?{time:v.currentTime,duration:v.duration,paused:v.paused,ended:v.ended,seeking:v.seeking,readyState:v.readyState,trackReady:v.querySelector('track')?.readyState,src:v.currentSrc}:null};});const path=info.outputPath('replay-readiness.json');await writeFile(path,JSON.stringify(data,null,2));await info.attach('replay-readiness',{path,contentType:'application/json'});throw error;}
+      39 | }
+      40 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+        at replayReady (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:37:187)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:74:141
+
+    attachment #1: replay-readiness (application/json) ─────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay-repeat1/attachments/replay-readiness-68d76c78e77869d68e2e580a2f6174080b4fcff1.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay-repeat1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay-repeat1/error-context.md
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay-repeat1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay-repeat1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-0f9e3--re-seek-and-permits-replay-repeat1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[6/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay
+  3) tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      35 | const gui=page=>page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:1});fixture.session.dispatch({type:'play'});});
+      36 | async function replayReady(page,info){
+    > 37 |  try{await expect.poll(()=>page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return !!v&&v.readyState>=2&&!v.paused&&fixture.clockEvents.at(-1)?.running===true;})).toBe(true);}
+         |                                                                                                                                                                                           ^
+      38 |  catch(error){const data=await page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return{session:fixture.session.read(),clock:fixture.clockEvents,probe:{requests:seekProbe.requests,pending:seekProbe.pending,release:seekProbe.release,sameElement:seekProbe.video===v},video:v?{time:v.currentTime,duration:v.duration,paused:v.paused,ended:v.ended,seeking:v.seeking,readyState:v.readyState,trackReady:v.querySelector('track')?.readyState,src:v.currentSrc}:null};});const path=info.outputPath('replay-readiness.json');await writeFile(path,JSON.stringify(data,null,2));await info.attach('replay-readiness',{path,contentType:'application/json'});throw error;}
+      39 | }
+      40 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+        at replayReady (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:37:187)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:74:141
+
+    attachment #1: replay-readiness (application/json) ─────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat1/attachments/replay-readiness-b07018434c237131d288a6e9b550f8a79f8fa887.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat1/error-context.md
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[7/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay
+  4) tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      35 | const gui=page=>page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:1});fixture.session.dispatch({type:'play'});});
+      36 | async function replayReady(page,info){
+    > 37 |  try{await expect.poll(()=>page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return !!v&&v.readyState>=2&&!v.paused&&fixture.clockEvents.at(-1)?.running===true;})).toBe(true);}
+         |                                                                                                                                                                                           ^
+      38 |  catch(error){const data=await page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return{session:fixture.session.read(),clock:fixture.clockEvents,probe:{requests:seekProbe.requests,pending:seekProbe.pending,release:seekProbe.release,sameElement:seekProbe.video===v},video:v?{time:v.currentTime,duration:v.duration,paused:v.paused,ended:v.ended,seeking:v.seeking,readyState:v.readyState,trackReady:v.querySelector('track')?.readyState,src:v.currentSrc}:null};});const path=info.outputPath('replay-readiness.json');await writeFile(path,JSON.stringify(data,null,2));await info.attach('replay-readiness',{path,contentType:'application/json'});throw error;}
+      39 | }
+      40 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+        at replayReady (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:37:187)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:74:141
+
+    attachment #1: replay-readiness (application/json) ─────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat1/attachments/replay-readiness-53970ea12ebb4a4bbdb819735385c93c9eb34e2f.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat1/error-context.md
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[8/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay
+  5) tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      35 | const gui=page=>page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:1});fixture.session.dispatch({type:'play'});});
+      36 | async function replayReady(page,info){
+    > 37 |  try{await expect.poll(()=>page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return !!v&&v.readyState>=2&&!v.paused&&fixture.clockEvents.at(-1)?.running===true;})).toBe(true);}
+         |                                                                                                                                                                                           ^
+      38 |  catch(error){const data=await page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return{session:fixture.session.read(),clock:fixture.clockEvents,probe:{requests:seekProbe.requests,pending:seekProbe.pending,release:seekProbe.release,sameElement:seekProbe.video===v},video:v?{time:v.currentTime,duration:v.duration,paused:v.paused,ended:v.ended,seeking:v.seeking,readyState:v.readyState,trackReady:v.querySelector('track')?.readyState,src:v.currentSrc}:null};});const path=info.outputPath('replay-readiness.json');await writeFile(path,JSON.stringify(data,null,2));await info.attach('replay-readiness',{path,contentType:'application/json'});throw error;}
+      39 | }
+      40 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+        at replayReady (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:37:187)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:74:141
+
+    attachment #1: replay-readiness (application/json) ─────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay-repeat1/attachments/replay-readiness-e44496c26251abb10e80d7e25783a121d75e4635.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay-repeat1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay-repeat1/error-context.md
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay-repeat1/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay-repeat1/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-6c63d--re-seek-and-permits-replay-repeat1/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[9/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay
+[10/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay
+  6) tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      35 | const gui=page=>page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:1});fixture.session.dispatch({type:'play'});});
+      36 | async function replayReady(page,info){
+    > 37 |  try{await expect.poll(()=>page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return !!v&&v.readyState>=2&&!v.paused&&fixture.clockEvents.at(-1)?.running===true;})).toBe(true);}
+         |                                                                                                                                                                                           ^
+      38 |  catch(error){const data=await page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return{session:fixture.session.read(),clock:fixture.clockEvents,probe:{requests:seekProbe.requests,pending:seekProbe.pending,release:seekProbe.release,sameElement:seekProbe.video===v},video:v?{time:v.currentTime,duration:v.duration,paused:v.paused,ended:v.ended,seeking:v.seeking,readyState:v.readyState,trackReady:v.querySelector('track')?.readyState,src:v.currentSrc}:null};});const path=info.outputPath('replay-readiness.json');await writeFile(path,JSON.stringify(data,null,2));await info.attach('replay-readiness',{path,contentType:'application/json'});throw error;}
+      39 | }
+      40 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+        at replayReady (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:37:187)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:74:141
+
+    attachment #1: replay-readiness (application/json) ─────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat2/attachments/replay-readiness-daa0f056a97842811b400df230caebe7427afc25.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat2/error-context.md
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat2/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat2/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-c8788--re-seek-and-permits-replay-repeat2/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[11/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay
+  7) tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      35 | const gui=page=>page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:1});fixture.session.dispatch({type:'play'});});
+      36 | async function replayReady(page,info){
+    > 37 |  try{await expect.poll(()=>page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return !!v&&v.readyState>=2&&!v.paused&&fixture.clockEvents.at(-1)?.running===true;})).toBe(true);}
+         |                                                                                                                                                                                           ^
+      38 |  catch(error){const data=await page.evaluate(()=>{const v=document.querySelector('.motion-pane video');return{session:fixture.session.read(),clock:fixture.clockEvents,probe:{requests:seekProbe.requests,pending:seekProbe.pending,release:seekProbe.release,sameElement:seekProbe.video===v},video:v?{time:v.currentTime,duration:v.duration,paused:v.paused,ended:v.ended,seeking:v.seeking,readyState:v.readyState,trackReady:v.querySelector('track')?.readyState,src:v.currentSrc}:null};});const path=info.outputPath('replay-readiness.json');await writeFile(path,JSON.stringify(data,null,2));await info.attach('replay-readiness',{path,contentType:'application/json'});throw error;}
+      39 | }
+      40 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+        at replayReady (/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:37:187)
+        at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:74:141
+
+    attachment #1: replay-readiness (application/json) ─────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat2/attachments/replay-readiness-bf4c9bc5c65ce6b12f4750a937d95fd98fec6872.json
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat2/error-context.md
+
+    Error Context: ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat2/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat2/trace.zip
+    Usage:
+
+        npx playwright show-trace ../seek108-replay-diagnostics2-results/tests-e2e-motion-pane-1366-b7b32--re-seek-and-permits-replay-repeat2/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[12/12] tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay
+  7 failed
+    tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay 
+    tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay 
+    tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay 
+    tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay 
+    tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay 
+    tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay 
+    tests/e2e/motion-pane.spec.mjs:68:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay 
+  5 passed (1.2m)

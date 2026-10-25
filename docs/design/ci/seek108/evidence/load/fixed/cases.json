@@ -1,0 +1,1550 @@
+[
+  {
+    "case": "1366-case-01",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-01/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-02",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-02/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-03",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-03/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-04",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-04/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-05",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-05/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-06",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-06/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-07",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-07/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-08",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-08/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-09",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-09/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-10",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-10/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-11",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-11/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-12",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "timedOut",
+    "retry": 0,
+    "errors": [
+      {
+        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+      },
+      {
+        "location": {
+          "file": "/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs",
+          "column": 564,
+          "line": 43
+        },
+        "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n  41 |  test.use({viewport:{width,height}});\n  42 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{\n> 43 |   await installMotionDiagnostics(page);await open(page);await observeMotionSession(page);if(process.env.CIM_MOTION_DIAGNOSTICS!=='1'){expect(await page.evaluate(()=>typeof window.__motionDiagnosticSnapshot)).toBe('undefined');expect(await page.evaluate(()=>Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime').set.toString())).toContain('[native code]');}await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI \u00b7 simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await video.evaluate(v=>{window.videoEvents=[];for(const event of ['play','playing','pause','seeking','seeked','waiting','canplay'])v.addEventListener(event,()=>videoEvents.push({event,time:v.currentTime,paused:v.paused,intent:fixture.session.read().playing}));});await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^\n  44 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await expect.poll(()=>video.evaluate(v=>[...(v.textTracks[0].activeCues??[])].map(c=>c.text).join(' '))).toContain('Placeholder GUI recording');await page.screenshot({path:info.outputPath('motion-active.png')});await page.evaluate(()=>fixture.session.dispatch({type:'tab',tab:'console'}));await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-mp-panel=motion]')).toHaveAttribute('aria-hidden','true');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);const after=await video.evaluate(v=>({time:v.currentTime,paused:v.paused,seeking:v.seeking,intent:fixture.session.read().playing}));if(Math.abs(after.time-at)>=0.05)console.log('Pause drift',JSON.stringify({at,after,clock:await page.evaluate(()=>fixture.clockEvents),video:await page.evaluate(()=>window.videoEvents)}));expect(after.time).toBeCloseTo(at,1);\n  45 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await recordMotionCheck(page,video,info)).toBe(true);\n  46 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel=\"motion\"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});\n    at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:43:564"
+      }
+    ],
+    "evidence": [
+      "fixed/cases/1366-case-12/test-failed-1.png",
+      "fixed/cases/1366-case-12/motion-failure.json",
+      "fixed/cases/1366-case-12/error-context.md",
+      "fixed/cases/1366-case-12/error-context.md",
+      "fixed/cases/1366-case-12/trace.zip"
+    ]
+  },
+  {
+    "case": "1366-case-13",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-13/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-14",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-14/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-15",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-15/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-16",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-16/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-17",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-17/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-18",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-18/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-19",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "timedOut",
+    "retry": 0,
+    "errors": [
+      {
+        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+      },
+      {
+        "location": {
+          "file": "/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs",
+          "column": 564,
+          "line": 43
+        },
+        "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n  41 |  test.use({viewport:{width,height}});\n  42 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{\n> 43 |   await installMotionDiagnostics(page);await open(page);await observeMotionSession(page);if(process.env.CIM_MOTION_DIAGNOSTICS!=='1'){expect(await page.evaluate(()=>typeof window.__motionDiagnosticSnapshot)).toBe('undefined');expect(await page.evaluate(()=>Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime').set.toString())).toContain('[native code]');}await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI \u00b7 simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await video.evaluate(v=>{window.videoEvents=[];for(const event of ['play','playing','pause','seeking','seeked','waiting','canplay'])v.addEventListener(event,()=>videoEvents.push({event,time:v.currentTime,paused:v.paused,intent:fixture.session.read().playing}));});await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^\n  44 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await expect.poll(()=>video.evaluate(v=>[...(v.textTracks[0].activeCues??[])].map(c=>c.text).join(' '))).toContain('Placeholder GUI recording');await page.screenshot({path:info.outputPath('motion-active.png')});await page.evaluate(()=>fixture.session.dispatch({type:'tab',tab:'console'}));await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-mp-panel=motion]')).toHaveAttribute('aria-hidden','true');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);const after=await video.evaluate(v=>({time:v.currentTime,paused:v.paused,seeking:v.seeking,intent:fixture.session.read().playing}));if(Math.abs(after.time-at)>=0.05)console.log('Pause drift',JSON.stringify({at,after,clock:await page.evaluate(()=>fixture.clockEvents),video:await page.evaluate(()=>window.videoEvents)}));expect(after.time).toBeCloseTo(at,1);\n  45 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await recordMotionCheck(page,video,info)).toBe(true);\n  46 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel=\"motion\"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});\n    at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:43:564"
+      }
+    ],
+    "evidence": [
+      "fixed/cases/1366-case-19/test-failed-1.png",
+      "fixed/cases/1366-case-19/motion-failure.json",
+      "fixed/cases/1366-case-19/error-context.md",
+      "fixed/cases/1366-case-19/error-context.md",
+      "fixed/cases/1366-case-19/trace.zip"
+    ]
+  },
+  {
+    "case": "1366-case-20",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-20/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-21",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-21/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-22",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-22/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-23",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-23/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-24",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-24/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-25",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-25/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-26",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-26/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-27",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-27/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-28",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-28/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-29",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-29/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-30",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-30/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-31",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-31/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-32",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-32/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-33",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-33/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-34",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-34/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-35",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-35/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-36",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-36/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-37",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-37/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-38",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-38/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-39",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-39/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-40",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-40/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-41",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-41/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-42",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-42/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-43",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-43/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-44",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-44/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-45",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-45/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-46",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-46/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-47",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-47/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-48",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-48/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-49",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-49/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1366-case-50",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1366-case-50/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-01",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-01/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-02",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-02/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-03",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-03/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-04",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-04/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-05",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "timedOut",
+    "retry": 0,
+    "errors": [
+      {
+        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+      },
+      {
+        "location": {
+          "file": "/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs",
+          "column": 564,
+          "line": 43
+        },
+        "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n  41 |  test.use({viewport:{width,height}});\n  42 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{\n> 43 |   await installMotionDiagnostics(page);await open(page);await observeMotionSession(page);if(process.env.CIM_MOTION_DIAGNOSTICS!=='1'){expect(await page.evaluate(()=>typeof window.__motionDiagnosticSnapshot)).toBe('undefined');expect(await page.evaluate(()=>Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime').set.toString())).toContain('[native code]');}await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI \u00b7 simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await video.evaluate(v=>{window.videoEvents=[];for(const event of ['play','playing','pause','seeking','seeked','waiting','canplay'])v.addEventListener(event,()=>videoEvents.push({event,time:v.currentTime,paused:v.paused,intent:fixture.session.read().playing}));});await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^\n  44 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await expect.poll(()=>video.evaluate(v=>[...(v.textTracks[0].activeCues??[])].map(c=>c.text).join(' '))).toContain('Placeholder GUI recording');await page.screenshot({path:info.outputPath('motion-active.png')});await page.evaluate(()=>fixture.session.dispatch({type:'tab',tab:'console'}));await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-mp-panel=motion]')).toHaveAttribute('aria-hidden','true');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);const after=await video.evaluate(v=>({time:v.currentTime,paused:v.paused,seeking:v.seeking,intent:fixture.session.read().playing}));if(Math.abs(after.time-at)>=0.05)console.log('Pause drift',JSON.stringify({at,after,clock:await page.evaluate(()=>fixture.clockEvents),video:await page.evaluate(()=>window.videoEvents)}));expect(after.time).toBeCloseTo(at,1);\n  45 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await recordMotionCheck(page,video,info)).toBe(true);\n  46 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel=\"motion\"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});\n    at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:43:564"
+      }
+    ],
+    "evidence": [
+      "fixed/cases/1536-case-05/test-failed-1.png",
+      "fixed/cases/1536-case-05/motion-failure.json",
+      "fixed/cases/1536-case-05/error-context.md",
+      "fixed/cases/1536-case-05/error-context.md",
+      "fixed/cases/1536-case-05/trace.zip"
+    ]
+  },
+  {
+    "case": "1536-case-06",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-06/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-07",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-07/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-08",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-08/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-09",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-09/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-10",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-10/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-11",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-11/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-12",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-12/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-13",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-13/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-14",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-14/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-15",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-15/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-16",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-16/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-17",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-17/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-18",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-18/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-19",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-19/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-20",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-20/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-21",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-21/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-22",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-22/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-23",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-23/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-24",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-24/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-25",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-25/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-26",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-26/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-27",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-27/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-28",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-28/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-29",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-29/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-30",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-30/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-31",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-31/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-32",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-32/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-33",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-33/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-34",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-34/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-35",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-35/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-36",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-36/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-37",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-37/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-38",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-38/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-39",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-39/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-40",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-40/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-41",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-41/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-42",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-42/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-43",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-43/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-44",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-44/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-45",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-45/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-46",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-46/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-47",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-47/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-48",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-48/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-49",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-49/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1536-case-50",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1536-case-50/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-01",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-01/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-02",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-02/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-03",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-03/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-04",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-04/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-05",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-05/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-06",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-06/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-07",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-07/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-08",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-08/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-09",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-09/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-10",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-10/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-11",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-11/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-12",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-12/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-13",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-13/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-14",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-14/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-15",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-15/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-16",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-16/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-17",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-17/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-18",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-18/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-19",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-19/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-20",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-20/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-21",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-21/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-22",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-22/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-23",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-23/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-24",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-24/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-25",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-25/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-26",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-26/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-27",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-27/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-28",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-28/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-29",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-29/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-30",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-30/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-31",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-31/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-32",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-32/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-33",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-33/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-34",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-34/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-35",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-35/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-36",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-36/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-37",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-37/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-38",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-38/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-39",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-39/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-40",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-40/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-41",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-41/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-42",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-42/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-43",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-43/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-44",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-44/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-45",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-45/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-46",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-46/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-47",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-47/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-48",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-48/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-49",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-49/motion-diagnostics.json"
+    ]
+  },
+  {
+    "case": "1920-case-50",
+    "title": "tests/e2e/motion-pane.spec.mjs / 1920x1080 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+    "status": "passed",
+    "retry": 0,
+    "errors": [],
+    "evidence": [
+      "fixed/cases/1920-case-50/motion-diagnostics.json"
+    ]
+  }
+]

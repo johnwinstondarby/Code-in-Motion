@@ -1,0 +1,8 @@
+
+Running 4 tests using 1 worker
+
+[1/4] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] restart cancels a pending wrong-landing re-seek and permits replay
+[2/4] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] previous cancels a pending wrong-landing re-seek and permits replay
+[3/4] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] jump cancels a pending wrong-landing re-seek and permits replay
+[4/4] tests/e2e/motion-pane.spec.mjs:64:62 › 1366x768 › [MOT-26] deepLink cancels a pending wrong-landing re-seek and permits replay
+  4 passed (4.1s)

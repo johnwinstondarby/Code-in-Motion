@@ -1,0 +1,2 @@
+Foreground affinity: pid 26433's current affinity list: 0,1
+Background affinity: pid 26431's current affinity list: 0,1

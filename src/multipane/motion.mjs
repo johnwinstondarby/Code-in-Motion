@@ -5,9 +5,10 @@ export const motionLabel=placeholder=>placeholder?'Placeholder GUI · simulated'
 export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={}){
  if(!access||typeof access.load!=='function')throw new TypeError('Motion requires restricted verified-media access.');
  let root,config,video,media,asset=null,failed=false,disposed=false,revision=0,loading=null,io=null,active=null,authorizedPlayback=false,finalVideo=null,finalPosition=null,playRevision=0,finalRestores=0,restoring=false;
+ let finalSeek=null;
  const observers=new Set(),offEvents=[];
  const emit=buffering=>{for(const fn of [...observers])fn(Object.freeze({buffering}));};
- function cancelPlay(reason='cancelled'){active?.finish({status:'cancelled',reason});}
+ function cancelPlay(reason='cancelled'){finalSeek?.abort();finalSeek=null;active?.finish({status:'cancelled',reason});}
  function clear(){++playRevision;finalVideo=null;finalPosition=null;finalRestores=0;restoring=false;authorizedPlayback=false;cancelPlay();io?.abort();io=null;for(const off of offEvents.splice(0))off();if(video)retireMediaElement(video);video=null;media?.release();media=null;}
  function element(tag,text,attrs={}){const node=root.ownerDocument.createElement(tag);if(text!==null)node.textContent=text;for(const[k,v]of Object.entries(attrs))node.setAttribute(k,v);return node;}
  function frame(alt){const section=element('section',null,{class:'motion-pane','aria-label':'Motion recording and text alternative'});if(showHeading)section.append(element('h4',motionLabel(config.placeholder)));if(config.placeholder)section.append(element('strong','Placeholder content'));section.append(element('p',alt));root.replaceChildren(section);return section;}
@@ -59,21 +60,27 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
   return loading;
  }
  // Remember the browser-reported decoded position after settle; it can precede duration.
- async function finalStill(){if(!video||failed)return;authorizedPlayback=false;const target=video,version=playRevision;const position=finalVideo===target?finalPosition:undefined;await settleFinalVideoFrame(target,{signal:io?.signal,timeoutMs,position});if(!disposed&&!failed&&video===target&&playRevision===version){finalVideo=target;finalPosition=target.currentTime;}}
- function settle(state){requireMounted();cancelPlay();const next=readonlyPaneData(state);const version=revision;
+ async function finalStill(){
+  if(!video||failed)return;authorizedPlayback=false;const target=video,version=playRevision,request=new AbortController(),parent=io?.signal;
+  finalSeek?.abort();finalSeek=request;const abort=()=>request.abort();parent?.addEventListener('abort',abort,{once:true});if(parent?.aborted)request.abort();
+  try{const position=finalVideo===target?finalPosition:undefined;await settleFinalVideoFrame(target,{signal:request.signal,timeoutMs,position});if(!request.signal.aborted&&!disposed&&!failed&&video===target&&playRevision===version){finalVideo=target;finalPosition=target.currentTime;}}
+  finally{parent?.removeEventListener('abort',abort);if(finalSeek===request)finalSeek=null;}
+ }
+ function settle(state){requireMounted();++playRevision;restoring=false;cancelPlay();const next=readonlyPaneData(state);const version=revision,intent=playRevision;
   if(!next?.asset){++revision;clear();asset=null;failed=false;frame('No GUI recording has played yet.');return;}
-  if(next.asset===asset&&(failed||media&&!loading)){if(video&&!failed)finalStill().catch(()=>{if(!disposed&&revision===version)fallback(next.alt);});return;}
-  const prepared=prepare(next),token=revision;prepared.then(()=>{if(!disposed&&revision===token&&asset===next.asset)return finalStill();}).catch(()=>{if(!disposed&&revision===token&&!failed)fallback(config.assets.find(a=>a.id===next.asset)?.alt??next.alt);});
+  if(next.asset===asset&&(failed||media&&!loading)){if(video&&!failed)finalStill().catch(()=>{if(!disposed&&revision===version&&playRevision===intent)fallback(next.alt);});return;}
+  const prepared=prepare(next),token=revision,preparedIntent=playRevision;prepared.then(()=>{if(!disposed&&revision===token&&playRevision===preparedIntent&&asset===next.asset)return finalStill();}).catch(()=>{if(!disposed&&revision===token&&playRevision===preparedIntent&&!failed)fallback(config.assets.find(a=>a.id===next.asset)?.alt??next.alt);});
  }
  function play(state,context){
   requireMounted();++playRevision;finalVideo=null;finalPosition=null;finalRestores=0;restoring=false;cancelPlay();const descriptor=config.assets.find(a=>a.id===state?.asset);
   if(!descriptor||failed||!media||!video){fallback(descriptor?.alt??state?.alt);return Promise.resolve({status:'failed',error:new Error(code)});}
   if(context.cancellation.aborted)return Promise.resolve({status:'cancelled'});
-  if(context.reducedMotion)return finalStill().then(()=>({status:'settled'}),()=>{fallback(descriptor.alt);return{status:'failed',error:new Error(code)};});
   return new Promise(resolve=>{
    let scheduled=null,offClock=()=>{},offAbort=()=>{},done=false,bufferTimer=null,finalising=false,clockRunning=false;const removers=[];const current=video,start=context.clock.now();
-   const task={finish(result){if(done)return;done=true;authorizedPlayback=false;if(active===task)active=null;if(scheduled!==null)try{context.clock.cancel(scheduled);}catch{}clearTimeout(bufferTimer);offClock();offAbort();for(const off of removers)off();current.pause();emit(false);resolve(Object.freeze(result));}};active=task;
+   const task={finish(result){if(done)return;done=true;if(result.status==='cancelled'){finalSeek?.abort();finalSeek=null;}authorizedPlayback=false;if(active===task)active=null;if(scheduled!==null)try{context.clock.cancel(scheduled);}catch{}clearTimeout(bufferTimer);offClock();offAbort();for(const off of removers)off();current.pause();emit(false);resolve(Object.freeze(result));}};active=task;
    const fail=()=>{if(done)return;fallback(descriptor.alt);task.finish({status:'failed',error:new Error(code)});};
+   offAbort=context.cancellation.onAbort(reason=>task.finish({status:'cancelled',reason}));if(done)return;
+   if(context.reducedMotion){finalStill().then(()=>task.finish({status:'settled'}),fail);return;}
    const listen=(event,fn)=>{current.addEventListener(event,fn);removers.push(()=>current.removeEventListener(event,fn));};
    const pinPause=()=>{authorizedPlayback=false;current.pause();const held=Math.min(current.duration,Math.max(0,(context.clock.now()-start)/1000));if(Number.isFinite(held))current.currentTime=held;};
    const playNative=()=>{if(done||finalising||!clockRunning)return;authorizedPlayback=true;current.play().then(()=>{if(!done&&!clockRunning)pinPause();},error=>{if(done)return;if(!clockRunning)pinPause();else if(error.name!=='AbortError')fail();});};
@@ -81,7 +88,6 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
    listen('canplay',()=>{clearTimeout(bufferTimer);emit(false);});listen('error',fail);
    const finishAtEnd=()=>{if(done||finalising)return;finalising=true;finalStill().then(()=>task.finish({status:'settled'}),fail);};
    listen('ended',()=>{if(context.clock.now()-start>=descriptor.duration*1000)finishAtEnd();});
-   offAbort=context.cancellation.onAbort(reason=>task.finish({status:'cancelled',reason}));
    if(done)return;current.currentTime=0;
    if(typeof context.clock.observe!=='function'){fail();return;}
    offClock=context.clock.observe(({running})=>{clockRunning=running;if(running)playNative();else pinPause();});
@@ -108,6 +114,6 @@ export async function settleFinalVideoFrame(target,{signal,timeoutMs=2500,positi
  target.pause();const destination=position??target.duration,tolerance=position===undefined?0.15:0.001;const check=()=>!target.seeking&&target.readyState>=2&&Math.abs(target.currentTime-destination)<tolerance;
  if(signal?.aborted)throw new Error('CIM-PANE-MEDIA-UNAVAILABLE');if(check()&&(target.ended||Math.abs(target.currentTime-destination)<0.001))return;
  if(!target.seeking||Math.abs(target.currentTime-destination)>=0.001)target.currentTime=destination;
- const ready=new Promise((resolve,reject)=>{let timer;const events=['seeked','ended','canplay','loadeddata'];const clean=()=>{clearTimeout(timer);for(const name of events)target.removeEventListener(name,inspect);target.removeEventListener('error',bad);signal?.removeEventListener('abort',bad);};const bad=()=>{clean();reject(new Error('CIM-PANE-MEDIA-UNAVAILABLE'));};const inspect=()=>{if(check()){clean();resolve();}};for(const name of events)target.addEventListener(name,inspect);target.addEventListener('error',bad);signal?.addEventListener('abort',bad,{once:true});timer=setTimeout(bad,timeoutMs);if(signal?.aborted)bad();else inspect();});
+ const ready=new Promise((resolve,reject)=>{let timer,reseeks=0,finished=false;const events=['seeked','ended','canplay','loadeddata'];const clean=()=>{finished=true;clearTimeout(timer);for(const name of events)target.removeEventListener(name,inspect);target.removeEventListener('error',bad);signal?.removeEventListener('abort',bad);};const bad=()=>{clean();reject(new Error('CIM-PANE-MEDIA-UNAVAILABLE'));};const inspect=()=>{if(finished)return;if(check()){clean();resolve();return;}if(!target.seeking&&target.readyState>=2&&Math.abs(target.currentTime-destination)>=tolerance){if(reseeks>=2){bad();return;}reseeks++;try{target.currentTime=destination;}catch{bad();}}};for(const name of events)target.addEventListener(name,inspect);target.addEventListener('error',bad);signal?.addEventListener('abort',bad,{once:true});timer=setTimeout(bad,timeoutMs);if(signal?.aborted)bad();else inspect();});
  await ready;
 }
