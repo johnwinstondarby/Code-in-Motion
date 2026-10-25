@@ -182,3 +182,37 @@ test('[PC-13] every compiled placeholder fixture is still admitted',async()=>{
   assert.doesNotThrow(()=>createMultiPaneModel({experience:admitted.experience,admission:admitted.token}),name);
  }
 });
+
+// Rebuild every stored snapshot from the actions and commentary, the way the compiler does, so the
+// only remaining fault in each case below is the rule under test (not a replay mismatch).
+function reproject(experience){
+ const held=Object.fromEntries(experience.renderer_config.panes.map(p=>[p.id,structuredClone(p.initial_state)]));let tab='console';
+ for(const step of experience.steps){
+  const s=step.state;
+  for(const a of s.actions){held[a.pane]=a.kind==='cli'?{lines:[a.command,...a.output]}:{asset:a.asset,alt:a.alt,label:a.label};tab=a.pane;}
+  held.explanation={text:step.commentary.text};held.engineering=s.panes.engineering;
+  s.panes=structuredClone(held);s.action_tab=tab;
+  s.waiting={console:!s.actions.some(a=>a.pane==='console'),motion:!s.actions.some(a=>a.pane==='motion'),explanation:false,engineering:s.engineering_records.length===0};
+ }
+}
+test('[PC-18] action rules hold even when every snapshot agrees with its actions',async()=>{
+ const gui=e=>e.steps[stepWith(e,'gui')],cli=e=>e.steps[stepWith(e,'cli')];
+ const changes={
+  'CLI and GUI in one beat':e=>{gui(e).state.actions.unshift(structuredClone(cli(e).state.actions[0]));},
+  'two CLI actions in one beat':e=>{const s=cli(e).state;s.actions.push({...structuredClone(s.actions[0]),command:'# Placeholder · simulated second'});},
+  'two GUI actions in one beat':e=>{const s=gui(e).state;s.actions.push({...structuredClone(s.actions[0]),alt:'Placeholder · simulated second.'});},
+  'CLI action names the Motion pane':e=>{cli(e).state.actions[0].pane='motion';},
+  'GUI action names the Console pane':e=>{gui(e).state.actions[0].pane='console';},
+  'GUI action claims a real recording':e=>{gui(e).state.actions[0].label='Recorded in the lab';},
+  'CLI action carries GUI fields':e=>{cli(e).state.actions[0].asset='gpu-memory';}
+ };
+ const control=await fresh();reproject(control.experience);
+ assert.doesNotThrow(()=>admission.admitPanesLesson({experience:control.experience,capture:control.capture,identity:development()}),'the re-projected unchanged lesson is admitted');
+ const admitted=[];
+ for(const [name,change] of Object.entries(changes)){
+  const data=await fresh();change(data.experience);reproject(data.experience);
+  try{admission.admitPanesLesson({experience:data.experience,capture:data.capture,identity:development()});admitted.push(name);}
+  catch(error){assert.match(error.message,/CIM-PANES-ADMISSION: Beat \d+ \([a-z-]+\)/,name);}
+ }
+ assert.deepEqual(admitted,[],'replay-consistent action faults that were admitted');
+});

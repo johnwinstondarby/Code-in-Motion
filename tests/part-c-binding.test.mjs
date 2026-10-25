@@ -31,3 +31,21 @@ test('[PC-15] a pack body that stalls mid-stream is abandoned at the deadline',a
  await assert.rejects(reading,/did not arrive/);
  assert.equal(cancelled,true,'the stalled body is cancelled');
 });
+
+test('[PC-17] one deadline covers fetching and reading; arriving chunks never extend it',async()=>{
+ const clock=timers();let pendingRead=null,cancelled=false,signal;const scheduled=[];
+ const setTimeout=(fn,ms)=>{scheduled.push(ms);return clock.setTimeout(fn,ms);};
+ const body={getReader:()=>({read:()=>new Promise(resolve=>{pendingRead=resolve;}),cancel:async()=>{cancelled=true;},releaseLock(){}})};
+ const reading=readVerifiedPackJSON(href,{baseURI,fetch:async(url,init)=>{signal=init.signal;return{ok:true,redirected:false,body,headers:{get:()=>null}};},setTimeout,clearTimeout:clock.clearTimeout});
+ // A slow trickle: each chunk arrives in time, but the whole read must still end at the one deadline.
+ for(let i=0;i<5;i++){await new Promise(r=>setImmediate(r));assert.equal(typeof pendingRead,'function','the reader is waiting for a chunk');const deliver=pendingRead;pendingRead=null;deliver({value:new Uint8Array([32]),done:false});}
+ await new Promise(r=>setImmediate(r));
+ assert.equal(scheduled.length,1,'exactly one deadline for the whole read: '+JSON.stringify(scheduled));
+ assert.equal(scheduled[0],DEADLINE());
+ assert.equal(await settled(reading),'pending');
+ clock.fire();
+ assert.equal(await settled(reading),'rejected','the read ends at the deadline despite arriving chunks');
+ await assert.rejects(reading,/did not arrive/);
+ assert.equal(cancelled,true,'the reader is cancelled');
+ assert.equal(signal.aborted,true,'the request is aborted');
+});

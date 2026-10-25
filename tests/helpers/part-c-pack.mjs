@@ -18,3 +18,11 @@ export async function installPack(directory,{entries}={}){
  for(const [path,bytes] of entries??pack.entries){const file=resolve(directory,path);await mkdir(dirname(file),{recursive:true});await writeFile(file,bytes);}
  return pack;
 }
+
+// Pilgrim's four reproductions (PR #111 review R1), each re-fingerprinted so only the semantic rule can refuse it.
+export const PILGRIM_ROWS={
+ 'Console declaration type becomes unknown/v1':[l=>{l.renderer_config.panes.find(p=>p.id==='console').type='unknown/v1';},/Console, Motion, Explanation and Diagram panes/],
+ 'first beat loses its Explanation state':[l=>{delete l.steps[0].state.panes.explanation;},/Beat 1 \(name-run\) is missing the Explanation state/],
+ 'GUI beat also carries a copied CLI action':[l=>{const g=l.steps.find(s=>s.state.actions.some(a=>a.kind==='gui')),c=l.steps.find(s=>s.state.actions.some(a=>a.kind==='cli'));g.state.actions.push(structuredClone(c.state.actions[0]));g.state.waiting.console=false;},/Beat 3 \(submit-fail\)/],
+ 'GUI beat action tab becomes Console':[l=>{l.steps.find(s=>s.state.actions.some(a=>a.kind==='gui')).state.action_tab='console';},/Beat 3 \(submit-fail\): the action tab/]
+};

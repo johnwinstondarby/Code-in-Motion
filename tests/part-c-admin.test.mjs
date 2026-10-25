@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {checkPackLesson} from '../wordpress/assets/lesson-pack-admin.mjs';
 import {createHostIdentity} from '../src/multipane/admission.mjs';
-import {placeholderPack} from './helpers/part-c-pack.mjs';
+import {placeholderPack,PILGRIM_ROWS} from './helpers/part-c-pack.mjs';
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const base='https://school.test/wp-admin/admin.php?page=code-in-motion';
 async function check({identity=createHostIdentity({developmentAdmission:true}),lessonBytes,captureBytes,lessonSha,captureSha}={}){
@@ -44,4 +44,16 @@ test('[PC-ADMIN-04] Admin does not mark a lesson Ready when its panes cannot be 
  const text=Buffer.from(JSON.stringify(lesson)),result=await check({lessonBytes:text,lessonSha:sha(text)});
  assert.equal(result.status,'Rejected',result.reason);
  assert.match(result.reason,/Explanation/);
+});
+
+test('[PC-ADMIN-05] Admin rejects each of Pilgrim\'s malformed lessons with the beat and rule, and keeps unchanged lessons Ready',async()=>{
+ const pack=await placeholderPack();
+ const control=await check();assert.equal(control.status,'Ready',control.reason);
+ for(const [name,[change,reason]] of Object.entries(PILGRIM_ROWS)){
+  const lesson=JSON.parse(pack.entries.get('lesson.json'));change(lesson);
+  const text=Buffer.from(JSON.stringify(lesson)),result=await check({lessonBytes:text,lessonSha:sha(text)});
+  assert.equal(result.status,'Rejected',name+': '+result.reason);
+  assert.match(result.reason,reason,name);
+  assert.doesNotMatch(result.reason,/fingerprint/i,name+' must fail its rule, not the checksum');
+ }
 });
