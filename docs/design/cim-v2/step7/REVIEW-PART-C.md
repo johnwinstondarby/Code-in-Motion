@@ -95,12 +95,21 @@ Unit probes run in verify; browser probes run in each CI browser job. 23 caught 
 | Legacy Host never waits for a panes download | PC-E2E-06 | PCM-32 |
 | Panes roots mount independently | PC-E2E-06 | PCM-33 |
 | Each Player has its own accessibility IDs | PC-E2E-07 | PCM-34 |
+| One CLI or one GUI action per beat, never both (even when snapshots agree) | PC-18 | PCM-35, PCM-36 |
+| Each action names the pane for its kind | PC-18 | PCM-37 |
+| One deadline for fetch and body; chunks never extend it | PC-17 | PCM-38 |
+| Deadline aborts the request and cancels the body reader | PC-14, PC-15 | PCM-43, PCM-44 |
+| Authoring refuses non-standard pane IDs at validate and pack time | PC-16, v3 fixture `pane-id` | PCM-39 |
+| A root removed while loading cancels its request and never mounts | PC-E2E-08 | PCM-40 |
+| Page disposal cancels pending requests; nothing mounts later | PC-E2E-09 | PCM-41 |
+| Explicit shortcode instance names give stable, named namespaces | PC-E2E-07 | PCM-42 |
+| Pilgrim's four rows: Admin Rejected with beat/rule; fallback kept beside a working lesson | PC-ADMIN-05, PC-E2E-10 | PCM-24..28 |
 
 ## Verification
 
-Numbers below are for source commit `0ed52b0` (after Pilgrim's review round 1); the final head adds only this packet and its evidence. Round-0 numbers (`ef57760`: 1,157 tests, 23 probes, plugin `6e3c9a10…b6b8`) are superseded.
+Numbers below are for source commit `8ad4bf6` (after review round 2); the final head adds only this packet and its evidence. Earlier numbers are superseded: round 0 `ef57760` (1,157 tests, 23 probes, plugin `6e3c9a10…b6b8`) and round 1 `0ed52b0` (1,162 tests, 33 probes, plugin `06453941…eb40`).
 
-- Verify, Node 20.20.2 and pinned 22.23.2: **1,162 tests pass on each, zero skipped** (`verify20-summary.log`, `verify22-summary.log`).
+- Verify, Node 20.20.2 and pinned 22.23.2: **1,167 tests pass on each, zero skipped** (`verify20-summary.log`, `verify22-summary.log`).
 - Other browser guards run locally in Chromium: multi-pane, Engineering, diagram-capacity and Part B pack runners all pass with every probe caught. Composition and Motion browser runners need H.264, so their results are CI's.
 - v1 differential: 41 identical, 0 different, 28 skipped.
 - Local browsers: only Chromium is installed here, and it lacks H.264. Its 9 failures in the composition/preview/capacity specs are **identical on unchanged `main`** (same test names). Firefox, WebKit and real-WordPress results are CI's.
@@ -110,8 +119,8 @@ Numbers below are for source commit `0ed52b0` (after Pilgrim's review round 1); 
 
 | ZIP | SHA-256 |
 |---|---|
-| Plugin 1.0.1 candidate, 118 files (was `d23af341…f876a`, 99 files) | `06453941aad5b73c7e600e4365c578a010e4f09078479effd9829f7fa5edeb40` |
-| Authoring candidate, 156 files | `509a1411840fc4f39d06ca5e9f987f44492ac8971d3c5ae6bffd83d89c6ffe37` |
+| Plugin 1.0.1 candidate, 118 files (was `d23af341…f876a`, 99 files) | `c7abf2b694ffe72d2e65d8213bd32088a93869931cf430c0c9615618afaf4150` |
+| Authoring candidate, 156 files | `8b5e1e10ea08465eca0746b1a45d2a67e01664341bb6497c4d03d96d89273731` |
 | Placeholder pack, 124,400 bytes (unchanged from Part B) | `8131e7f07d8481b3f2ea7289edc9ff49592cc9dfbc8b7724a45656cac597982c` |
 
 See `part-c-evidence/builds.json`. The published 1.0.1 rollback ZIP (`95cdd84b…31d7`), page 3227 capture (`34ceed1c…f2ab`) and rollback kit (`3610987d…3148`) are untouched; `check:page-3227` passes in verify.
@@ -131,8 +140,35 @@ Notes for this round:
 - **New 1.1.0 limit**: the composed Player binds pane IDs `console`, `motion`, `explanation`, `engineering`, so admission refuses other IDs with a reason. The compiler still accepts other IDs; both valid fixtures and the placeholder pack use these. Johann may prefer the compiler to refuse them too (a later, separate change).
 - **Probe dropped, not loosened**: a candidate probe removing the explicit "missing pane state" check survived, because the replay comparison still refuses that lesson with a different reason. It added nothing, so it was removed rather than tightening PC-ADMIN-04 to fit it. Probe IDs therefore skip PCM-29.
 - **Vacuous red avoided**: the first red for PC-14 was a missing-export `SyntaxError`; the test was rewritten to fail on assertions before the fix, and that run is the recorded one.
-- I could not open Pilgrim's full written review from this workspace; these tests were written from Johann's summary of it and should be checked against Pilgrim's own reproductions.
+- Round 1 was written from Johann's summary before Pilgrim's written review was available; round 2 below covers the written review in full.
 - Mutation guards: **33 assertion-caught** in local Chromium (`review1-mutations-chromium.json`); CI runs the browser probes in all three engines.
+
+## Review round 2 (Pilgrim's written review of `0070985`, and Johann's follow-ups)
+
+Pilgrim's full review arrived after round 1 was pushed. Round 2 adds every test it asked for, and Johann's four checks. All new tests were run against Pilgrim's reviewed head `0070985` and failed on assertions there (`review2-red-unit-on-0070985.log`, `review2-red-browser-chromium-on-0070985.log`, `review2-red-pc16-on-0070985.log`); the scenes still red on round 1's `442823b` are in `review2-red-browser-chromium-on-442823b.log`. Tests are committed first (`2117a59`), fixes after (`8ad4bf6`).
+
+| Request | Tests | Change |
+|---|---|---|
+| R1.1–2: one negative compiled-pack lesson per reproduction, re-fingerprinted; shared admission rejects before a token; Admin Rejected with an actionable reason; fallback kept while an adjacent valid lesson works; unchanged controls | `PILGRIM_ROWS` in `tests/helpers/part-c-pack.mjs`; PC-ADMIN-05 (reason names beat and rule, never the fingerprint); PC-E2E-10 (each row beside a working lesson, legacy still Ready, CIM-HST-005 reported) | Round 1's projection replay (no change needed). |
+| R1.3: complete shipped validator for declarations, starting/absolute states, Explanation, action cardinality/type, tab/action and waiting/held state | PC-12, PC-18 (faults that keep every snapshot consistent, so only the action rule can refuse), PC-13 | `src/multipane/projection.mjs`, shipped, with no authoring import. |
+| R1.4: a probe per rule | PCM-24..28, 35..37 | — |
+| Johann: pane IDs explained before installation | v3 fixture `pane-id` (CIM-V3-PANE-ID), PC-16 (`buildV3Pack` refuses; CLI `validate` prints rule and fix) | New authoring rule `CIM-V3-PANE-ID`, listed in `RULES`; its fix text names the four IDs and says the Player would refuse others after installation. |
+| R2.1: held first capture, second valid embed, legacy lesson | PC-E2E-06 (explicit server gate, asserted still unreleased) | Round 1. |
+| R2.2 / Johann: headers never arrive, body stops after headers, one deadline that chunks cannot restart, settlement asserted before awaiting | PC-14, PC-15, PC-17 (five chunks arrive, still exactly one timer, read ends at the deadline) | Round 1's single deadline; `timer` made `let` only so probe PCM-38 can model a per-chunk restart. |
+| R2.4 / Johann: detach or disposal with a late response; cancel the fetch/reader, not just the Promise | PC-E2E-08 (server sees the request closed before release; retired root never mounts; healthy root keeps working; no diagnostics), PC-E2E-09 (pagehide) | Each panes root gets its own abort controller and lifecycle binding from the moment it starts loading; detach or page disposal aborts it, and retirement is silent. |
+| R2.5: barrier, deadline and cancellation probes | PCM-32, 33 (barrier), 30, 31, 38 (deadline), 40, 41, 43, 44 (cancellation) | — |
+| R3 / Johann: explicit and unnamed embeds; ID uniqueness; refs inside the owning Player; Arrow/Home/End; Beats/Escape; the other Player unchanged | PC-E2E-07, run for both `alpha`/`beta` and two unnamed embeds; also asserts IDs are identical after reload | `panesNamespaces()` assigns stable namespaces in document order: `cim-<instance>` for a valid unique shortcode instance, else `cim-panes-N`, de-duplicated by ordinal; passed through `mountComposedPlayer`. Fixtures keep a unique counter. |
+| R3.4: guard restoring `composed` | PCM-34, retargeted to the production call site | — |
+
+Test and probe edits after their red runs, this round:
+
+- **PC-16 was vacuous at first**: it called the async `buildV3Pack` without `await`, so it could never see the refusal. Fixed with `await` and re-recorded red on `0070985` (`review2-red-pc16-on-0070985.log`); the PC-16 line in `review2-red-unit-on-0070985.log` is from the vacuous version.
+- **PC-E2E-06 and PC-E2E-07 rewritten**: round 1's ad hoc `stalled`/`second` page options became a general `roots` list with named server gates, and the `panes()` locator now means "first panes root". PC-E2E-01..05 assertions are unchanged.
+- **Probes retargeted** (anchors moved, intent unchanged): PCM-30 (`let timer`), PCM-33 (serial chain over namespaced roots), PCM-34 (production call site instead of the composition default).
+- **Probe dropped**: PCM-45 removed the late-mount guard after admission. It survives because cancellation already stops the retired root's read, so the guard is a backup check that no test can observe on its own. It stays in the code; IDs skip 29 and 45.
+- Mutation guards: **43 assertion-caught** locally in Chromium (`review2-mutations-chromium.json`); CI runs the browser probes in Chromium, Firefox and WebKit.
+
+CI note: on round 1's `442823b`, WebKit's existing composition guard step (`check-composition-mutations --browser`) failed once and passed on re-run with no change (attempt 2). Job logs cannot be downloaded from this workspace, so the failing probe is unknown. No composition probe, anchor or test touches the changed instance-ID code, and that step has a history of WebKit timing variance. Pilgrim may want to watch it on this head.
 
 ## For Pilgrim's attention
 
