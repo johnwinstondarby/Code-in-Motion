@@ -195,8 +195,8 @@ test('[PC-E2E-09] page disposal cancels pending downloads and nothing mounts aft
 });
 
 test('[PC-E2E-10] each of Pilgrim\'s malformed lessons keeps its fallback while an adjacent valid lesson works',async({page:p})=>{
+ await p.addInitScript(()=>{window.__cimDiagnostics=[];const error=console.error.bind(console);console.error=(...args)=>{try{window.__cimDiagnostics.push(args.map(a=>{try{return JSON.parse(JSON.stringify(a));}catch{return String(a);}}));}catch{}error(...args);};});
  for(const [i,name] of Object.keys(PILGRIM_ROWS).entries()){
-  const diagnostics=[];const listen=m=>{if(m.type()==='error')diagnostics.push(m.text());};p.on('console',listen);
   await open(p,{roots:[{bad:i},{instance:'good'}]});
   await expect(instance(p,'good')).toHaveAttribute('data-cim-state','ready');
   await instance(p,'good').locator('[data-mp-command="next"]').click();await expect(instance(p,'good')).toContainText('Beat 1 / 8');
@@ -204,7 +204,7 @@ test('[PC-E2E-10] each of Pilgrim\'s malformed lessons keeps its fallback while 
   await expect(player(p,0).locator('.cim-fallback'),name).toBeVisible();
   await expect(player(p,0).locator('[data-composed-player]'),name).toHaveCount(0);
   await expect(legacy(p)).toHaveAttribute('data-cim-state','ready');
-  await expect.poll(()=>diagnostics.join('\n'),{message:name}).toMatch(/CIM-HST-005/);
-  p.off('console',listen);
+  // Read the diagnostic records in the page: console message text renders objects differently per engine.
+  await expect.poll(()=>p.evaluate(()=>JSON.stringify(window.__cimDiagnostics)),{message:name}).toMatch(/CIM-HST-005/);
  }
 });
