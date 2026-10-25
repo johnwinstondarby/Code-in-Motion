@@ -455,8 +455,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node tools/build-placeholder-pack.mjs
-          cp dist/cim-lesson-run-custody-placeholder.zip "${CIM_R15_ARTIFACT_DIR}/panes-pack.zip"
+          # The job's generated wp-env config makes the checkout dirty, so build through the same compiler directly.
+          OUT="${CIM_R15_ARTIFACT_DIR}/panes-pack.zip" node --input-type=module <<'NODE'
+          import {readFile,writeFile} from 'node:fs/promises';
+          import {buildV3Pack} from './authoring/v3/pack.mjs';
+          const pack=await buildV3Pack('examples/packs/run-custody-placeholder/lesson.json',await readFile('LICENSE','utf8'));
+          await writeFile(process.env.OUT,pack.zip);console.log('Built placeholder pack SHA-256 '+pack.sha256);
+          NODE
           wp_env() { npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" "$@"; }
           wp_env run cli wp plugin install wp-content/r15-artifact/panes-pack.zip --activate
           wp_env run cli wp post create --post_type=page --post_status=publish --post_name=cim-panes-proof --post_title='Panes pack proof' --post_content='[cim experience="run-custody-placeholder"]Panes fallback.[/cim]'

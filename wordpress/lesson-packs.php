@@ -253,8 +253,8 @@ function localis_cim_render_pack_inventory() {
 	}
 	echo '</tbody></table><h3>Pack lessons</h3><table class="widefat striped"><thead><tr><th>Lesson ID</th><th>Pack</th><th>Status</th><th>Reason</th><th>Shortcode</th></tr></thead><tbody>';
 	foreach ( $inventory['rows'] as $row ) {
-		$v2 = 'cim.lesson-pack/v2' === ( $row['agreement'] ?? '' ) ? sprintf( ' data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-pack-capture-url="%s"', esc_url( $row['capture_url'] ) ) : '';
-		printf( '<tr data-cim-pack-lesson="%1$s" data-cim-pack-owner="%2$s" data-cim-pack-check-url="%3$s"%8$s><td><code>%4$s</code></td><td>%5$s</td><td data-cim-pack-status>%6$s</td><td data-cim-pack-reason>%7$s</td><td><code data-cim-pack-shortcode>Unavailable until validated</code></td></tr>', esc_attr( $row['id'] ), esc_attr( $row['pack'] ), esc_url( $row['url'] ), esc_html( $row['id'] ), esc_html( $inventory['packs'][ $row['pack'] ]['name'] ), esc_html( $row['status'] ), esc_html( $row['reason'] ), $v2 );
+		// v1 rows carry empty agreement/capture attributes, so the Admin check keeps its v1 path.
+		printf( '<tr data-cim-pack-lesson="%1$s" data-cim-pack-owner="%2$s" data-cim-pack-check-url="%3$s" data-cim-pack-agreement="%8$s" data-cim-pack-capture-url="%9$s"><td><code>%4$s</code></td><td>%5$s</td><td data-cim-pack-status>%6$s</td><td data-cim-pack-reason>%7$s</td><td><code data-cim-pack-shortcode>Unavailable until validated</code></td></tr>', esc_attr( $row['id'] ), esc_attr( $row['pack'] ), esc_url( $row['url'] ), esc_html( $row['id'] ), esc_html( $inventory['packs'][ $row['pack'] ]['name'] ), esc_html( $row['status'] ), esc_html( $row['reason'] ), esc_attr( $row['agreement'] ?? '' ), esc_url( $row['capture_url'] ?? '' ) );
 	}
 	echo '</tbody></table>';
 }
