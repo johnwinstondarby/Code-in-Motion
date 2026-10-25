@@ -120,6 +120,8 @@ export function classifyReleasePath(path, version = '0.1.0', registeredAssets = 
   const nested = path.slice(moduleRoot.length);
   if (/^src\/.+\.mjs$/.test(nested)) return 'approved-module';
   if (/^wordpress\/assets\/.+\.mjs$/.test(nested)) return 'approved-wordpress-module';
+  // ADR 0061 Part C: exactly the four multi-pane stylesheets ship beside their modules.
+  if (/^src\/multipane\/(?:controls|composition|engineering|motion)\.css$/.test(nested)) return 'approved-panes-stylesheet';
   const experiencePrefix = 'wordpress/experiences/';
   if (nested.startsWith(experiencePrefix)) {
     const asset = nested.slice(experiencePrefix.length);

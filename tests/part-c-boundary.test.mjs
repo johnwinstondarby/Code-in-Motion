@@ -39,3 +39,10 @@ test('[PC-B-03] comments mentioning fixtures are not violations',async t=>{
  await writeFile(resolve(work,'wordpress/assets/ok.mjs'),'export const ok=1;\n');
  assert.deepEqual((await checkProductionAdmissionBoundary(work)).violations,[]);
 });
+
+test('[PC-B-04] the release audit approves exactly the four multi-pane stylesheets',async()=>{
+ const {classifyReleasePath}=await import('../tools/check-wordpress-supply-chain.mjs');
+ const root='wordpress/assets/modules/1.0.1/';
+ for(const name of ['controls','composition','engineering','motion'])assert.equal(classifyReleasePath(root+`src/multipane/${name}.css`,'1.0.1'),'approved-panes-stylesheet');
+ for(const path of ['src/multipane/other.css','src/core/theme.css','src/multipane/nested/motion.css','wordpress/assets/panes.css'])assert.throws(()=>classifyReleasePath(root+path,'1.0.1'),/not an approved release input/,path);
+});
