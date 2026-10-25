@@ -1,0 +1,11 @@
+
+Running 7 tests using 1 worker
+
+[1/7] tests/e2e/part-c-wordpress-panes.spec.mjs:45:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson
+[2/7] tests/e2e/part-c-wordpress-panes.spec.mjs:66:1 › [PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists
+[3/7] tests/e2e/part-c-wordpress-panes.spec.mjs:77:1 › [PC-E2E-03] without the PHP-projected development flag the panes lesson stays on its fallback
+[4/7] tests/e2e/part-c-wordpress-panes.spec.mjs:86:1 › [PC-E2E-04] lesson and capture bytes must match the fingerprints PHP projected
+[5/7] tests/e2e/part-c-wordpress-panes.spec.mjs:95:1 › [PC-E2E-05] a later deep link moves the panes lesson without touching the legacy lesson
+[6/7] tests/e2e/part-c-wordpress-panes.spec.mjs:103:1 › [PC-E2E-06] one stalled pack download does not hold back other lessons
+[7/7] tests/e2e/part-c-wordpress-panes.spec.mjs:114:1 › [PC-E2E-07] two Players on one page keep their own accessibility IDs
+  7 passed (10.4s)

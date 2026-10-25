@@ -23,6 +23,8 @@ Status: design committed before tests and implementation. Base: main 7bc0ce6. Au
 - `admitPanesLesson({experience, capture, identity})` validates the frozen v2 envelope, `panes/v1`, `engine_min: 1.1.0` against the host identity, placeholder mode across lesson/capture/media, the pack media form, and builds the Engineering configuration from capture records. It returns an unforgeable admission token (module-private WeakSet) bound to the exact admitted experience text.
 - Host identity comes from `createProductionIdentity({developmentAdmission})`: the real `ENGINE_IDENTITY.version`, or the `1.1.0-dev` development identity only when the bootstrap script tag carries the PHP-projected development flag. The numeric interval is never widened; a plain `1.1.0-dev` string remains refused.
 - Admin lesson checks and the public Player use this same function.
+- Added after review round 1: admission also replays the compiled beats (`src/multipane/projection.mjs`) and refuses any lesson whose stored pane states, action tab or waiting flags differ from the replay, so nothing the Player cannot settle is reported Ready. The 1.1.0 Player supports pane IDs `console`, `motion`, `explanation` and `engineering` only.
+- Pack reads end at a 15 s deadline; each panes root mounts independently, and the legacy Host never waits for a panes download. Each composed Player has its own accessibility ID namespace.
 
 ## Production session path
 

@@ -9,7 +9,7 @@ Design: [PART-C-ADMISSION.md](PART-C-ADMISSION.md), committed first (`c5206cc`).
 1. **Development admission in WordPress**: only the exact `LOCALIS_CIM_DEVELOPMENT_ADMISSION === '1.1.0-dev'` wp-config constant, and only while `LOCALIS_CIM_PLUGIN_VERSION` is below 1.1.0. PHP projects it to the bootstrap and Admin scripts; pack data, page content and URLs cannot enable it. Admin shows a warning notice whenever it is on. In the browser, development admission is an issued identity object, never a string.
 2. **Placeholder packs only in 1.1.0**: lesson, capture records and media must all be placeholder. "Recorded in the lab" cannot appear.
 3. **Motion falls back in WordPress until Part D**: the Motion pane receives verified-media access with no bindings, so GUI beats show "GUI recording unavailable" with the text alternative. Local preview keeps real playback.
-4. **The plugin ZIP changes**: 99 → 117 files, adding 12 multi-pane modules (`action-surface`, `admission`, `composition`, `controls`, `engineering`, `media-barrier`, `media-map`, `model`, `motion`, `motion-coordinator`, `motion-media`, `session`), 4 multi-pane stylesheets, and the WordPress `panes-binding` and `panes-driver` modules.
+4. **The plugin ZIP changes**: 99 → 118 files, adding 13 multi-pane modules (`action-surface`, `admission`, `composition`, `controls`, `engineering`, `media-barrier`, `media-map`, `model`, `motion`, `motion-coordinator`, `motion-media`, `projection`, `session`), 4 multi-pane stylesheets, and the WordPress `panes-binding` and `panes-driver` modules.
 
 ## What changed
 
@@ -86,12 +86,21 @@ Unit probes run in verify; browser probes run in each CI browser job. 23 caught 
 | Browser re-verifies projected fingerprints | PC-E2E-04 | PCM-21 |
 | Legacy Host never sees panes roots | PC-E2E-01 | PCM-22 |
 | Composition stays inside its root | PC-E2E-01 | PCM-23 |
+| Admission replays every beat; a stored snapshot that differs is refused | PC-12, PC-ADMIN-04 | PCM-24 |
+| Action tab follows the beat's sole action pane | PC-12 | PCM-25 |
+| Waiting flags follow the beat | PC-12 | PCM-26 |
+| Exactly the four supported panes with their IDs | PC-12 | PCM-27 |
+| Explanation state equals the beat commentary | PC-12 | PCM-28 |
+| Pack reads end at the 15 s deadline (response and body) | PC-14, PC-15 | PCM-30, PCM-31 |
+| Legacy Host never waits for a panes download | PC-E2E-06 | PCM-32 |
+| Panes roots mount independently | PC-E2E-06 | PCM-33 |
+| Each Player has its own accessibility IDs | PC-E2E-07 | PCM-34 |
 
 ## Verification
 
-Numbers below are for source commit `ef57760`; the final head adds only this packet and its evidence.
+Numbers below are for source commit `0ed52b0` (after Pilgrim's review round 1); the final head adds only this packet and its evidence. Round-0 numbers (`ef57760`: 1,157 tests, 23 probes, plugin `6e3c9a10…b6b8`) are superseded.
 
-- Verify, Node 20.20.2 and pinned 22.23.2: **1,157 tests pass on each, zero skipped** (`verify20-summary.log`, `verify22-summary.log`).
+- Verify, Node 20.20.2 and pinned 22.23.2: **1,162 tests pass on each, zero skipped** (`verify20-summary.log`, `verify22-summary.log`).
 - Other browser guards run locally in Chromium: multi-pane, Engineering, diagram-capacity and Part B pack runners all pass with every probe caught. Composition and Motion browser runners need H.264, so their results are CI's.
 - v1 differential: 41 identical, 0 different, 28 skipped.
 - Local browsers: only Chromium is installed here, and it lacks H.264. Its 9 failures in the composition/preview/capacity specs are **identical on unchanged `main`** (same test names). Firefox, WebKit and real-WordPress results are CI's.
@@ -101,11 +110,29 @@ Numbers below are for source commit `ef57760`; the final head adds only this pac
 
 | ZIP | SHA-256 |
 |---|---|
-| Plugin 1.0.1 candidate, 117 files (was `d23af341…f876a`, 99 files) | `6e3c9a1050fc4f0bd71055524efee8d02cc4fc7789befd5f95b6709a36d0b6b8` |
-| Authoring candidate, 155 files | `f511ca2630ab1eb6661a60fecece0affb0bf99efb452534596ddca07f5557c6c` |
+| Plugin 1.0.1 candidate, 118 files (was `d23af341…f876a`, 99 files) | `06453941aad5b73c7e600e4365c578a010e4f09078479effd9829f7fa5edeb40` |
+| Authoring candidate, 156 files | `509a1411840fc4f39d06ca5e9f987f44492ac8971d3c5ae6bffd83d89c6ffe37` |
 | Placeholder pack, 124,400 bytes (unchanged from Part B) | `8131e7f07d8481b3f2ea7289edc9ff49592cc9dfbc8b7724a45656cac597982c` |
 
 See `part-c-evidence/builds.json`. The published 1.0.1 rollback ZIP (`95cdd84b…31d7`), page 3227 capture (`34ceed1c…f2ab`) and rollback kit (`3610987d…3148`) are untouched; `check:page-3227` passes in verify.
+
+## Review round 1 (Pilgrim, on `0070985`)
+
+Pilgrim independently confirmed 1,157 tests on both Node versions, matching clean builds and all 23 Part C guards in all three browsers, and asked to hold the PR for three findings. Tests were committed first (`bf8f1df`), red before any fix; fixes follow in `0ed52b0`.
+
+| Finding | Red evidence | Fix |
+|---|---|---|
+| 1. Malformed lessons can show Ready: unknown pane types and missing Explanation states pass admission and fail at mount; conflicting actions and wrong action tabs pass. | PC-12: all 13 malformed projections admitted (`review1-red-unit.log`). PC-ADMIN-04: Admin says Ready (`review1-red-admin.log`). | New `src/multipane/projection.mjs`, run by admission (so by Admin and Player alike): exactly the four supported panes and IDs; every action valid for its kind and pane; at most one action and never CLI with GUI; then a replay of the compiled projection, requiring every stored snapshot's Console, Motion and Explanation states, action tab and waiting flags to equal it. Reasons name the beat and pane. PC-13 proves both compiled valid fixtures (run-custody, context-chain) are still admitted. |
+| 2. One stalled download blocks healthy lessons. | PC-E2E-06: with one capture response held open, the healthy panes lesson and the legacy Python lesson never became ready (`review1-red-browser-chromium.log`). PC-14/PC-15: no read deadline (`review1-red-binding.log`). | Pack reads have a 15 s deadline that aborts the request and cancels a stalled body (`PANES_FETCH_TIMEOUT_MS`); page disposal aborts them too. Each panes root loads, admits and mounts on its own with its own lifecycle binding; the legacy Host no longer waits for panes downloads (previously `Promise.all` with a serial loop). |
+| 3. Multiple Players reuse accessibility IDs. | PC-E2E-07: `composed-tab-*`, `composed-panel-*`, `composed-beats` duplicated. | `mountComposedPlayer` assigns each Player its own `cim-player-N` namespace. |
+
+Notes for this round:
+
+- **New 1.1.0 limit**: the composed Player binds pane IDs `console`, `motion`, `explanation`, `engineering`, so admission refuses other IDs with a reason. The compiler still accepts other IDs; both valid fixtures and the placeholder pack use these. Johann may prefer the compiler to refuse them too (a later, separate change).
+- **Probe dropped, not loosened**: a candidate probe removing the explicit "missing pane state" check survived, because the replay comparison still refuses that lesson with a different reason. It added nothing, so it was removed rather than tightening PC-ADMIN-04 to fit it. Probe IDs therefore skip PCM-29.
+- **Vacuous red avoided**: the first red for PC-14 was a missing-export `SyntaxError`; the test was rewritten to fail on assertions before the fix, and that run is the recorded one.
+- I could not open Pilgrim's full written review from this workspace; these tests were written from Johann's summary of it and should be checked against Pilgrim's own reproductions.
+- Mutation guards: **33 assertion-caught** in local Chromium (`review1-mutations-chromium.json`); CI runs the browser probes in all three engines.
 
 ## For Pilgrim's attention
 
