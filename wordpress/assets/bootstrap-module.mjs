@@ -19,7 +19,7 @@ import { createWordPressRendererRegistry } from './renderer-registry.mjs';
 import { createWordPressRootLifecycleBinding } from './root-lifecycle-binding.mjs';
 import { createWordPressPlayerBinding } from './player-binding.mjs';
 import { createHostIdentity } from '../../src/multipane/admission.mjs';
-import { admitPanesRoot, isPanesRoot, mountPanesRoot as mountAdmittedPanesRoot } from './panes-binding.mjs';
+import { admitPanesRoot, isPanesRoot, mountPanesRoot as mountAdmittedPanesRoot, panesNamespaces } from './panes-binding.mjs';
 
 const experienceAssets = new Map(
   WORDPRESS_EXPERIENCE_REGISTRY.map(({ id, asset }) => [id, asset])
@@ -200,43 +200,55 @@ function disposePanesPlayer(root, operation) {
 
 // Each panes root loads, admits and mounts on its own: a slow or stalled pack response ends in
 // that root's fallback at the read deadline and never delays another lesson or the legacy Host.
-async function mountPanesRoot(root) {
+// A root removed while loading, or a disposed page, cancels its requests and never mounts.
+async function mountPanesRoot(root, instanceId) {
+  const retire = new AbortController();
+  const stopOnPageDisposal = () => retire.abort(new Error('CiM page host disposed.'));
+  panesAbort.signal.addEventListener('abort', stopOnPageDisposal, { once: true });
+  let lifecycle = null;
+  try {
+    lifecycle = createWordPressRootLifecycleBinding({
+      MutationObserver: window.MutationObserver,
+      observeTarget: document.documentElement,
+      roots: Object.freeze([root]),
+      onDetached(detached) {
+        if (panesPlayers.has(detached)) disposeDetachedRoot(detached);
+        else retire.abort(new Error('CiM panes root was removed while loading.'));
+      }
+    });
+  } catch (error) {
+    reportBootstrapError(root, 'root_lifecycle_bind', error);
+  }
   try {
     const admitted = await admitPanesRoot(root, {
       baseURI: document.baseURI,
       fetch: (url, init) => window.fetch(url, init),
       identity: panesIdentity,
-      signal: panesAbort.signal
+      signal: retire.signal
     });
-    if (disposalStarted || root.isConnected === false) return;
-    panesPlayers.set(root, mountAdmitted(root, admitted));
-    try {
-      panesLifecycles.set(root, createWordPressRootLifecycleBinding({
-        MutationObserver: window.MutationObserver,
-        observeTarget: document.documentElement,
-        roots: Object.freeze([root]),
-        onDetached: disposeDetachedRoot
-      }));
-    } catch (error) {
-      reportBootstrapError(root, 'root_lifecycle_bind', error);
-    }
+    if (retire.signal.aborted || disposalStarted || root.isConnected === false) throw retire.signal.reason ?? new Error('Retired.');
+    panesPlayers.set(root, mountAdmittedPanesRoot(root, admitted, {
+      document,
+      location: window.location,
+      moduleUrl: moduleUrl.href,
+      reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+      instanceId
+    }));
+    if (lifecycle !== null) panesLifecycles.set(root, lifecycle);
   } catch (error) {
-    // The static fallback stays visible; the reason is reported, never rendered as lesson content.
-    if (!disposalStarted) reportHostDiagnostic('CIM-HST-005', root, 'panes_admission', error);
+    try { lifecycle?.dispose(); } catch (cleanupError) { reportBootstrapError(root, 'root_lifecycle_dispose', cleanupError); }
+    // A retired root is gone on purpose: nothing to report. Otherwise the static fallback stays
+    // visible and the reason is reported, never rendered as lesson content.
+    if (!retire.signal.aborted) reportHostDiagnostic('CIM-HST-005', root, 'panes_admission', error);
+  } finally {
+    panesAbort.signal.removeEventListener('abort', stopOnPageDisposal);
   }
 }
 
-function mountAdmitted(root, admitted) {
-  return mountAdmittedPanesRoot(root, admitted, {
-    document,
-    location: window.location,
-    moduleUrl: moduleUrl.href,
-    reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches
-  });
-}
-
 function mountPanesRoots() {
-  return Array.from(document.querySelectorAll(ROOT_SELECTOR)).filter(isPanesRoot).map((root) => mountPanesRoot(root));
+  const roots = Array.from(document.querySelectorAll(ROOT_SELECTOR)).filter(isPanesRoot);
+  const namespaces = panesNamespaces(roots);
+  return roots.map((root, index) => mountPanesRoot(root, namespaces[index]));
 }
 
 function disposeDetachedRoot(root) {

@@ -11,8 +11,8 @@ function consoleAdapter(slot){const pane=createConsolePane();pane.mount(slot,{ti
 function explanationAdapter(slot){const doc=slot.ownerDocument,root=doc.createElement('div'),text=doc.createElement('p');root.append(text);slot.append(root);const pane=createExplanationPane();pane.mount([{root,text,select:doc.createElement('button'),links:[]}],{entryCount:1},{id:'explanation',type:'explanation/v1'});const project=(s,c)=>readonlyPaneData({revealFrontier:c.stepId,currentStepId:c.stepId,selectedStepId:null,entryCount:1,entries:[{stepId:c.stepId,index:1,text:s.text,links:[],selected:false,active:c.stepId!=='initial'}]});return Object.freeze({mount(){},settle(s,c){pane.settle(project(s,c),c);},play(s,c){return pane.play(project(s,c),c);},dispose:pane.dispose});}
 // Each mounted Player gets its own accessibility namespace so tabs never point at another Player's panels.
 let mounted=0;
-export function mountComposedPlayer({root,experience,media,engineering,access,createDriver,reducedMotion=false,admission=null,traceClock=false}){
- const instanceId='cim-player-'+(++mounted);
+// Hosts pass a stable per-root namespace; fixtures get a unique one.
+export function mountComposedPlayer({root,experience,media,engineering,access,createDriver,reducedMotion=false,admission=null,traceClock=false,instanceId='cim-player-'+(++mounted)}){
  if(experience.renderer!=='panes/v1'||!experience.renderer_config.placeholder.enabled)throw new TypeError('Composition requires the validated placeholder fixture.');
  const slots=Object.fromEntries(experience.renderer_config.panes.map(p=>[p.id,root.ownerDocument.createElement('div')]));
  const driver=createMotionCoordinator(experience,slots,{access,media,createDriver,reducedMotion,admission,traceClock,showMotionHeading:false,paneFactories:{console:()=>consoleAdapter(slots.console),explanation:()=>explanationAdapter(slots.explanation),engineering:()=>{const pane=createEngineeringPane({graphical:true,admission});pane.mount(slots.engineering,engineering,{id:'engineering',type:'diagram/v1'});return pane;}}});

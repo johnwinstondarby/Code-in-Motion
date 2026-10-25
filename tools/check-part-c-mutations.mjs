@@ -33,16 +33,26 @@ const cases=[
  ['PCM-26-projection-waiting','src/multipane/projection.mjs','ids.some(id=>snapshot.waiting[id]!==expected.waiting[id])','false','PC-12',unit],
  ['PCM-27-projection-layout','src/multipane/projection.mjs',"&&panes.find(p=>p.id===id).type===type",'','PC-12',unit],
  ['PCM-28-projection-explanation','src/multipane/projection.mjs',"for(const id of ['console','motion','explanation'])","for(const id of ['console','motion'])",'PC-12',unit],
- ['PCM-30-read-deadline','wordpress/assets/panes-binding.mjs','const timer=setTimeout(expire,timeoutMs)','const timer=0','PC-14','tests/part-c-binding.test.mjs'],
+ ['PCM-30-read-deadline','wordpress/assets/panes-binding.mjs','let timer=setTimeout(expire,timeoutMs);','let timer=0;','PC-14','tests/part-c-binding.test.mjs'],
  ['PCM-31-read-deadline-body','wordpress/assets/panes-binding.mjs','await within(reader.read())','await reader.read()','PC-15','tests/part-c-binding.test.mjs'],
+ ['PCM-35-projection-repeat','src/multipane/projection.mjs','  if(cli>1||gui>1)return','  if(false)return','PC-18',unit],
+ ['PCM-36-projection-simultaneous','src/multipane/projection.mjs','  if(cli&&gui)return','  if(false)return','PC-18',unit],
+ ['PCM-37-projection-kind-pane','src/multipane/projection.mjs',"  if(a.pane!=='console')return","  if(false)return",'PC-18',unit],
+ ['PCM-38-read-deadline-per-chunk','wordpress/assets/panes-binding.mjs','const {value,done}=await within(reader.read());','clearTimeout(timer);timer=setTimeout(expire,timeoutMs);const {value,done}=await within(reader.read());','PC-17','tests/part-c-binding.test.mjs'],
+ ['PCM-39-authoring-pane-id','authoring/v3/validate.mjs',"c.reject('CIM-V3-PANE-ID', p.id !== standardIds[p.type],","c.reject('CIM-V3-PANE-ID', false,",'PC-16','tests/part-c-authoring.test.mjs'],
+ ['PCM-43-read-abort-request','wordpress/assets/panes-binding.mjs','controller.abort(error);reject(error);','reject(error);','PC-14','tests/part-c-binding.test.mjs'],
+ ['PCM-44-read-cancel-body','wordpress/assets/panes-binding.mjs','reader?.cancel(error).catch(()=>{});','','PC-15','tests/part-c-binding.test.mjs'],
  ['PCM-21-browser-fingerprint','wordpress/assets/panes-binding.mjs',"if(actual!==expected)throw new TypeError('Pack JSON differs from its verified fingerprint.');",'','PC-E2E-04','browser'],
  ['PCM-23-browser-containment','wordpress/assets/cim.css','  padding: 0;\n  overflow-x: auto;\n','  padding: 0;\n','PC-E2E-01','browser'],
  ['PCM-22-browser-legacy-overlap','wordpress/assets/bootstrap-module.mjs','querySelectorAll: (selector) => Array.from(document.querySelectorAll(selector)).filter((root) => !isPanesRoot(root))','querySelectorAll: (selector) => document.querySelectorAll(selector)','PC-E2E-01','browser']
  ,['PCM-32-browser-legacy-waits','wordpress/assets/bootstrap-module.mjs','  const result = await host.mount();','  await Promise.all(panesMounts);\n  const result = await host.mount();','PC-E2E-06','browser']
- ,['PCM-33-browser-panes-serial','wordpress/assets/bootstrap-module.mjs','.filter(isPanesRoot).map((root) => mountPanesRoot(root));','.filter(isPanesRoot).reduce((chain, root) => chain.then(() => mountPanesRoot(root)), Promise.resolve());','PC-E2E-06','browser']
- ,['PCM-34-browser-shared-ids','src/multipane/composition.mjs',"const instanceId='cim-player-'+(++mounted);","const instanceId='composed';",'PC-E2E-07','browser']
+ ,['PCM-33-browser-panes-serial','wordpress/assets/bootstrap-module.mjs','return roots.map((root, index) => mountPanesRoot(root, namespaces[index]));','return roots.reduce((chain, root, index) => chain.then(() => mountPanesRoot(root, namespaces[index])), Promise.resolve());','PC-E2E-06','browser']
+ ,['PCM-34-browser-shared-ids','wordpress/assets/panes-binding.mjs','admission:admitted.token,instanceId});',"admission:admitted.token,instanceId:'composed'});",'PC-E2E-07','browser']
+ ,['PCM-40-browser-detach-cancel','wordpress/assets/bootstrap-module.mjs',"        else retire.abort(new Error('CiM panes root was removed while loading.'));","        else void 0;",'PC-E2E-08','browser']
+ ,['PCM-41-browser-dispose-cancel','wordpress/assets/bootstrap-module.mjs',"  panesAbort.abort(new Error('CiM page host disposed.'));\n",'','PC-E2E-09','browser']
+ ,['PCM-42-browser-named-namespace','wordpress/assets/panes-binding.mjs',"?'cim-'+explicit:","?'cim-panes-'+(i+1):",'PC-E2E-07','browser']
 ];
-const run=(rule,file)=>spawnSync(process.execPath,file==='browser'?[resolve(root,'node_modules/@playwright/test/cli.js'),'test',...(process.env.CIM_PART_C_PLAYWRIGHT_CONFIG?['-c',process.env.CIM_PART_C_PLAYWRIGHT_CONFIG]:[]),'tests/e2e/part-c-wordpress-panes.spec.mjs',...(rule?['--grep',`\\[${rule}\\]`]:[]),'--workers=1','--reporter=line','--output='+resolve(work,'browser-results')]:['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),...(file?[file]:['tests/part-c-admission.test.mjs','tests/part-c-php-discovery.test.mjs','tests/part-c-boundary.test.mjs','tests/part-c-admin.test.mjs','tests/part-c-binding.test.mjs'])],{cwd:sandbox,encoding:'utf8',timeout:180000});
+const run=(rule,file)=>spawnSync(process.execPath,file==='browser'?[resolve(root,'node_modules/@playwright/test/cli.js'),'test',...(process.env.CIM_PART_C_PLAYWRIGHT_CONFIG?['-c',process.env.CIM_PART_C_PLAYWRIGHT_CONFIG]:[]),'tests/e2e/part-c-wordpress-panes.spec.mjs',...(rule?['--grep',`\\[${rule}\\]`]:[]),'--workers=1','--reporter=line','--output='+resolve(work,'browser-results')]:['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),...(file?[file]:['tests/part-c-admission.test.mjs','tests/part-c-php-discovery.test.mjs','tests/part-c-boundary.test.mjs','tests/part-c-admin.test.mjs','tests/part-c-binding.test.mjs','tests/part-c-authoring.test.mjs'])],{cwd:sandbox,encoding:'utf8',timeout:180000});
 const results=[];
 for(const kind of browser?['unit','browser']:['unit']){
  const baseline=run(null,kind==='browser'?'browser':null);await writeFile(resolve(work,'baseline-'+kind+'.log'),baseline.stdout+baseline.stderr);

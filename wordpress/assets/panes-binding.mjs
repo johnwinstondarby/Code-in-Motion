@@ -23,7 +23,7 @@ export async function readVerifiedPackJSON(href,{baseURI,fetch,crypto=globalThis
  const controller=new AbortController();let reader=null,expire;
  const expired=new Promise((_,reject)=>{expire=()=>{const error=new Error('Pack JSON did not arrive within '+(timeoutMs/1000)+' seconds.');controller.abort(error);reject(error);reader?.cancel(error).catch(()=>{});};});
  expired.catch(()=>{});
- const timer=setTimeout(expire,timeoutMs),stop=()=>expire();
+ let timer=setTimeout(expire,timeoutMs);const stop=()=>expire();
  if(signal?.aborted)stop();else signal?.addEventListener?.('abort',stop,{once:true});
  const within=promise=>Promise.race([promise,expired]);
  try{
@@ -58,11 +58,17 @@ function ensureStylesheets(document,moduleUrl){
 }
 
 /** Mount an admitted lesson in place of the root's static fallback. Returns a disposable player. */
-export function mountPanesRoot(root,admitted,{document,location,reducedMotion,moduleUrl}){
+/** Stable, page-unique accessibility namespaces for panes roots, in document order. */
+export function panesNamespaces(roots){
+ const names=roots.map((root,i)=>{const explicit=root.getAttribute('data-cim-instance');return /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(explicit??'')?'cim-'+explicit:'cim-panes-'+(i+1);});
+ return names.map((name,i)=>names.indexOf(name)===names.lastIndexOf(name)?name:name+'-'+(i+1));
+}
+
+export function mountPanesRoot(root,admitted,{document,location,reducedMotion,moduleUrl,instanceId}){
  ensureStylesheets(document,moduleUrl);
  const host=root.querySelector('[data-cim-renderer-root]')??root;
  const access=createVerifiedMediaAccess(admitted.media,{origin:location.origin,bindings:{}});
- const player=mountComposedPlayer({root:host,experience:admitted.experience,media:admitted.media,engineering:admitted.engineering,access,createDriver:createPanesDriver,reducedMotion,admission:admitted.token});
+ const player=mountComposedPlayer({root:host,experience:admitted.experience,media:admitted.media,engineering:admitted.engineering,access,createDriver:createPanesDriver,reducedMotion,admission:admitted.token,instanceId});
  root.setAttribute('data-cim-state','ready');
  const applyFragment=fragment=>{if(typeof fragment==='string'&&fragment.startsWith('#cim/'))player.session.dispatch({type:'deepLink',fragment});};
  applyFragment(location.hash);

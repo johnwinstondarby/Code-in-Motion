@@ -16,6 +16,7 @@ export const RULES = Object.freeze({
   'CIM-V3-LIMIT': 'Split the lesson or capture archive into smaller documents within the documented limits.',
   'CIM-V3-ID': 'Give each entry a distinct lowercase hyphenated ID; do not use initial as a beat ID.',
   'CIM-V3-PANE-TYPE': 'Use one registered Console, Explanation, Diagram and Motion pane, with distinct IDs.',
+  'CIM-V3-PANE-ID': 'Use the pane IDs console, motion, explanation and engineering for the Console, Motion, Explanation and Diagram panes; the 1.1.0 Player binds these IDs and refuses other names after installation.',
   'CIM-V3-INITIAL': 'Declare the documented starting state for this pane, including every artifact for Diagram.',
   'CIM-V3-EXPLANATION': 'Add one non-empty Explanation entry naming the declared Explanation pane.',
   'CIM-V3-ACTION-COUNT': 'Keep at most one CLI action or one GUI action in each beat; split repeated actions into beats.',
@@ -134,6 +135,8 @@ function authoring(doc, c) {
     doc.panes.forEach((p, i) => c.reject('CIM-V3-PANE-TYPE', !paneTypes.includes(p.type), `$.panes[${i}].type`, 'Unknown registered pane type.'));
     return;
   }
+  const standardIds = { 'console/v1': 'console', 'motion/v1': 'motion', 'explanation/v1': 'explanation', 'diagram/v1': 'engineering' };
+  doc.panes.forEach((p, i) => c.reject('CIM-V3-PANE-ID', p.id !== standardIds[p.type], `$.panes[${i}].id`, `Pane ${JSON.stringify(p.id)} must be named ${JSON.stringify(standardIds[p.type])}.`));
   const panes = new Map(doc.panes.map(p => [p.id, p]));
   doc.panes.forEach((p, i) => {
     c.reject('CIM-V3-PANE-TYPE', !paneTypes.includes(p.type), `$.panes[${i}].type`, 'Unknown registered pane type.');
