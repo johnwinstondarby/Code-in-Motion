@@ -1,0 +1,265 @@
+{
+  "control": {
+    "planned": 150,
+    "executed": 150,
+    "stats": {
+      "startTime": "2026-10-25T00:13:53.338Z",
+      "duration": 294080.905,
+      "expected": 147,
+      "skipped": 0,
+      "unexpected": 3,
+      "flaky": 0
+    },
+    "sizes": {
+      "1366": {
+        "passed": 49,
+        "failed": 0,
+        "timedOut": 1,
+        "skipped": 0,
+        "interrupted": 0,
+        "notRun": 0
+      },
+      "1536": {
+        "passed": 48,
+        "failed": 0,
+        "timedOut": 2,
+        "skipped": 0,
+        "interrupted": 0,
+        "notRun": 0
+      },
+      "1920": {
+        "passed": 50,
+        "failed": 0,
+        "timedOut": 0,
+        "skipped": 0,
+        "interrupted": 0,
+        "notRun": 0
+      }
+    },
+    "run": {
+      "variant": "control",
+      "configuration": "two fixed CPUs, four MOT-07 workers, two composition workers",
+      "cpus": "0,1",
+      "workers": 4,
+      "repeatEach": 50,
+      "planned": 150,
+      "started": "2026-10-25T00:13:51Z",
+      "finished": "2026-10-25T00:18:55Z",
+      "exit": 1,
+      "backgroundExit": 143,
+      "backgroundIsLoadOnly": true
+    },
+    "failures": [
+      {
+        "case": "1366-case-45",
+        "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+        "status": "timedOut",
+        "retry": 0,
+        "errors": [
+          {
+            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+          },
+          {
+            "location": {
+              "file": "/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/seek108-control/tests/e2e/motion-pane.spec.mjs",
+              "column": 564,
+              "line": 39
+            },
+            "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n  37 |  test.use({viewport:{width,height}});\n  38 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{\n> 39 |   await installMotionDiagnostics(page);await open(page);await observeMotionSession(page);if(process.env.CIM_MOTION_DIAGNOSTICS!=='1'){expect(await page.evaluate(()=>typeof window.__motionDiagnosticSnapshot)).toBe('undefined');expect(await page.evaluate(()=>Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime').set.toString())).toContain('[native code]');}await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI \u00b7 simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await video.evaluate(v=>{window.videoEvents=[];for(const event of ['play','playing','pause','seeking','seeked','waiting','canplay'])v.addEventListener(event,()=>videoEvents.push({event,time:v.currentTime,paused:v.paused,intent:fixture.session.read().playing}));});await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^\n  40 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await expect.poll(()=>video.evaluate(v=>[...(v.textTracks[0].activeCues??[])].map(c=>c.text).join(' '))).toContain('Placeholder GUI recording');await page.screenshot({path:info.outputPath('motion-active.png')});await page.evaluate(()=>fixture.session.dispatch({type:'tab',tab:'console'}));await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-mp-panel=motion]')).toHaveAttribute('aria-hidden','true');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);const after=await video.evaluate(v=>({time:v.currentTime,paused:v.paused,seeking:v.seeking,intent:fixture.session.read().playing}));if(Math.abs(after.time-at)>=0.05)console.log('Pause drift',JSON.stringify({at,after,clock:await page.evaluate(()=>fixture.clockEvents),video:await page.evaluate(()=>window.videoEvents)}));expect(after.time).toBeCloseTo(at,1);\n  41 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await recordMotionCheck(page,video,info)).toBe(true);\n  42 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel=\"motion\"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});\n    at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/seek108-control/tests/e2e/motion-pane.spec.mjs:39:564"
+          }
+        ],
+        "evidence": [
+          "control/cases/1366-case-45/test-failed-1.png",
+          "control/cases/1366-case-45/motion-failure.json",
+          "control/cases/1366-case-45/error-context.md",
+          "control/cases/1366-case-45/error-context.md",
+          "control/cases/1366-case-45/trace.zip"
+        ]
+      },
+      {
+        "case": "1536-case-25",
+        "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+        "status": "timedOut",
+        "retry": 0,
+        "errors": [
+          {
+            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+          },
+          {
+            "location": {
+              "file": "/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/seek108-control/tests/e2e/motion-pane.spec.mjs",
+              "column": 564,
+              "line": 39
+            },
+            "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n  37 |  test.use({viewport:{width,height}});\n  38 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{\n> 39 |   await installMotionDiagnostics(page);await open(page);await observeMotionSession(page);if(process.env.CIM_MOTION_DIAGNOSTICS!=='1'){expect(await page.evaluate(()=>typeof window.__motionDiagnosticSnapshot)).toBe('undefined');expect(await page.evaluate(()=>Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime').set.toString())).toContain('[native code]');}await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI \u00b7 simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await video.evaluate(v=>{window.videoEvents=[];for(const event of ['play','playing','pause','seeking','seeked','waiting','canplay'])v.addEventListener(event,()=>videoEvents.push({event,time:v.currentTime,paused:v.paused,intent:fixture.session.read().playing}));});await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^\n  40 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await expect.poll(()=>video.evaluate(v=>[...(v.textTracks[0].activeCues??[])].map(c=>c.text).join(' '))).toContain('Placeholder GUI recording');await page.screenshot({path:info.outputPath('motion-active.png')});await page.evaluate(()=>fixture.session.dispatch({type:'tab',tab:'console'}));await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-mp-panel=motion]')).toHaveAttribute('aria-hidden','true');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);const after=await video.evaluate(v=>({time:v.currentTime,paused:v.paused,seeking:v.seeking,intent:fixture.session.read().playing}));if(Math.abs(after.time-at)>=0.05)console.log('Pause drift',JSON.stringify({at,after,clock:await page.evaluate(()=>fixture.clockEvents),video:await page.evaluate(()=>window.videoEvents)}));expect(after.time).toBeCloseTo(at,1);\n  41 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await recordMotionCheck(page,video,info)).toBe(true);\n  42 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel=\"motion\"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});\n    at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/seek108-control/tests/e2e/motion-pane.spec.mjs:39:564"
+          }
+        ],
+        "evidence": [
+          "control/cases/1536-case-25/test-failed-1.png",
+          "control/cases/1536-case-25/motion-failure.json",
+          "control/cases/1536-case-25/error-context.md",
+          "control/cases/1536-case-25/error-context.md",
+          "control/cases/1536-case-25/trace.zip"
+        ]
+      },
+      {
+        "case": "1536-case-48",
+        "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+        "status": "timedOut",
+        "retry": 0,
+        "errors": [
+          {
+            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+          },
+          {
+            "location": {
+              "file": "/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/seek108-control/tests/e2e/motion-pane.spec.mjs",
+              "column": 25,
+              "line": 42
+            },
+            "message": "Error: locator.evaluate: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.motion-pane').locator('video')\u001b[22m\n\n\n  40 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await expect.poll(()=>video.evaluate(v=>[...(v.textTracks[0].activeCues??[])].map(c=>c.text).join(' '))).toContain('Placeholder GUI recording');await page.screenshot({path:info.outputPath('motion-active.png')});await page.evaluate(()=>fixture.session.dispatch({type:'tab',tab:'console'}));await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-mp-panel=motion]')).toHaveAttribute('aria-hidden','true');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);const after=await video.evaluate(v=>({time:v.currentTime,paused:v.paused,seeking:v.seeking,intent:fixture.session.read().playing}));if(Math.abs(after.time-at)>=0.05)console.log('Pause drift',JSON.stringify({at,after,clock:await page.evaluate(()=>fixture.clockEvents),video:await page.evaluate(()=>window.videoEvents)}));expect(after.time).toBeCloseTo(at,1);\n  41 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await recordMotionCheck(page,video,info)).toBe(true);\n> 42 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel=\"motion\"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});\n     |                         ^\n  43 |  });\n  44 |  test('[MOT-22] native play from an ended verified clip preserves its final hold',async({page})=>{\n  45 |   await open(page);await gui(page);await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);await page.waitForFunction(()=>fixture.clockEvents.length>0);await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');\n    at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/seek108-control/tests/e2e/motion-pane.spec.mjs:42:25"
+          }
+        ],
+        "evidence": [
+          "control/cases/1536-case-48/motion-diagnostics.json",
+          "control/cases/1536-case-48/test-failed-1.png",
+          "control/cases/1536-case-48/motion-failure.json",
+          "control/cases/1536-case-48/error-context.md",
+          "control/cases/1536-case-48/error-context.md",
+          "control/cases/1536-case-48/trace.zip"
+        ]
+      }
+    ]
+  },
+  "fixed": {
+    "planned": 150,
+    "executed": 150,
+    "stats": {
+      "startTime": "2026-10-25T00:18:57.683Z",
+      "duration": 276550.244,
+      "expected": 147,
+      "skipped": 0,
+      "unexpected": 3,
+      "flaky": 0
+    },
+    "sizes": {
+      "1366": {
+        "passed": 48,
+        "failed": 0,
+        "timedOut": 2,
+        "skipped": 0,
+        "interrupted": 0,
+        "notRun": 0
+      },
+      "1536": {
+        "passed": 49,
+        "failed": 0,
+        "timedOut": 1,
+        "skipped": 0,
+        "interrupted": 0,
+        "notRun": 0
+      },
+      "1920": {
+        "passed": 50,
+        "failed": 0,
+        "timedOut": 0,
+        "skipped": 0,
+        "interrupted": 0,
+        "notRun": 0
+      }
+    },
+    "run": {
+      "variant": "fixed",
+      "configuration": "two fixed CPUs, four MOT-07 workers, two composition workers",
+      "cpus": "0,1",
+      "workers": 4,
+      "repeatEach": 50,
+      "planned": 150,
+      "started": "2026-10-25T00:18:55Z",
+      "finished": "2026-10-25T00:23:42Z",
+      "exit": 1,
+      "backgroundExit": 143,
+      "backgroundIsLoadOnly": true
+    },
+    "failures": [
+      {
+        "case": "1366-case-12",
+        "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+        "status": "timedOut",
+        "retry": 0,
+        "errors": [
+          {
+            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+          },
+          {
+            "location": {
+              "file": "/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs",
+              "column": 564,
+              "line": 43
+            },
+            "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n  41 |  test.use({viewport:{width,height}});\n  42 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{\n> 43 |   await installMotionDiagnostics(page);await open(page);await observeMotionSession(page);if(process.env.CIM_MOTION_DIAGNOSTICS!=='1'){expect(await page.evaluate(()=>typeof window.__motionDiagnosticSnapshot)).toBe('undefined');expect(await page.evaluate(()=>Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime').set.toString())).toContain('[native code]');}await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI \u00b7 simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await video.evaluate(v=>{window.videoEvents=[];for(const event of ['play','playing','pause','seeking','seeked','waiting','canplay'])v.addEventListener(event,()=>videoEvents.push({event,time:v.currentTime,paused:v.paused,intent:fixture.session.read().playing}));});await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^\n  44 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await expect.poll(()=>video.evaluate(v=>[...(v.textTracks[0].activeCues??[])].map(c=>c.text).join(' '))).toContain('Placeholder GUI recording');await page.screenshot({path:info.outputPath('motion-active.png')});await page.evaluate(()=>fixture.session.dispatch({type:'tab',tab:'console'}));await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-mp-panel=motion]')).toHaveAttribute('aria-hidden','true');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);const after=await video.evaluate(v=>({time:v.currentTime,paused:v.paused,seeking:v.seeking,intent:fixture.session.read().playing}));if(Math.abs(after.time-at)>=0.05)console.log('Pause drift',JSON.stringify({at,after,clock:await page.evaluate(()=>fixture.clockEvents),video:await page.evaluate(()=>window.videoEvents)}));expect(after.time).toBeCloseTo(at,1);\n  45 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await recordMotionCheck(page,video,info)).toBe(true);\n  46 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel=\"motion\"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});\n    at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:43:564"
+          }
+        ],
+        "evidence": [
+          "fixed/cases/1366-case-12/test-failed-1.png",
+          "fixed/cases/1366-case-12/motion-failure.json",
+          "fixed/cases/1366-case-12/error-context.md",
+          "fixed/cases/1366-case-12/error-context.md",
+          "fixed/cases/1366-case-12/trace.zip"
+        ]
+      },
+      {
+        "case": "1366-case-19",
+        "title": "tests/e2e/motion-pane.spec.mjs / 1366x768 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+        "status": "timedOut",
+        "retry": 0,
+        "errors": [
+          {
+            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+          },
+          {
+            "location": {
+              "file": "/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs",
+              "column": 564,
+              "line": 43
+            },
+            "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n  41 |  test.use({viewport:{width,height}});\n  42 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{\n> 43 |   await installMotionDiagnostics(page);await open(page);await observeMotionSession(page);if(process.env.CIM_MOTION_DIAGNOSTICS!=='1'){expect(await page.evaluate(()=>typeof window.__motionDiagnosticSnapshot)).toBe('undefined');expect(await page.evaluate(()=>Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime').set.toString())).toContain('[native code]');}await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI \u00b7 simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await video.evaluate(v=>{window.videoEvents=[];for(const event of ['play','playing','pause','seeking','seeked','waiting','canplay'])v.addEventListener(event,()=>videoEvents.push({event,time:v.currentTime,paused:v.paused,intent:fixture.session.read().playing}));});await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^\n  44 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await expect.poll(()=>video.evaluate(v=>[...(v.textTracks[0].activeCues??[])].map(c=>c.text).join(' '))).toContain('Placeholder GUI recording');await page.screenshot({path:info.outputPath('motion-active.png')});await page.evaluate(()=>fixture.session.dispatch({type:'tab',tab:'console'}));await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-mp-panel=motion]')).toHaveAttribute('aria-hidden','true');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);const after=await video.evaluate(v=>({time:v.currentTime,paused:v.paused,seeking:v.seeking,intent:fixture.session.read().playing}));if(Math.abs(after.time-at)>=0.05)console.log('Pause drift',JSON.stringify({at,after,clock:await page.evaluate(()=>fixture.clockEvents),video:await page.evaluate(()=>window.videoEvents)}));expect(after.time).toBeCloseTo(at,1);\n  45 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await recordMotionCheck(page,video,info)).toBe(true);\n  46 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel=\"motion\"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});\n    at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:43:564"
+          }
+        ],
+        "evidence": [
+          "fixed/cases/1366-case-19/test-failed-1.png",
+          "fixed/cases/1366-case-19/motion-failure.json",
+          "fixed/cases/1366-case-19/error-context.md",
+          "fixed/cases/1366-case-19/error-context.md",
+          "fixed/cases/1366-case-19/trace.zip"
+        ]
+      },
+      {
+        "case": "1536-case-05",
+        "title": "tests/e2e/motion-pane.spec.mjs / 1536x864 / [MOT-07] verified Blob playback captions pause resume completion and hold",
+        "status": "timedOut",
+        "retry": 0,
+        "errors": [
+          {
+            "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+          },
+          {
+            "location": {
+              "file": "/mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs",
+              "column": 564,
+              "line": 43
+            },
+            "message": "Error: page.waitForFunction: Test timeout of 30000ms exceeded.\n\n  41 |  test.use({viewport:{width,height}});\n  42 |  test('[MOT-07] verified Blob playback captions pause resume completion and hold',async({page},info)=>{\n> 43 |   await installMotionDiagnostics(page);await open(page);await observeMotionSession(page);if(process.env.CIM_MOTION_DIAGNOSTICS!=='1'){expect(await page.evaluate(()=>typeof window.__motionDiagnosticSnapshot)).toBe('undefined');expect(await page.evaluate(()=>Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime').set.toString())).toContain('[native code]');}await gui(page);const pane=page.locator('.motion-pane');await expect(pane).toContainText('Placeholder GUI \u00b7 simulated');await expect(pane).toContainText('Placeholder content');await page.waitForFunction(()=>document.querySelector('.motion-pane video')?.readyState>=2);const video=pane.locator('video');await video.evaluate(v=>{window.videoEvents=[];for(const event of ['play','playing','pause','seeking','seeked','waiting','canplay'])v.addEventListener(event,()=>videoEvents.push({event,time:v.currentTime,paused:v.paused,intent:fixture.session.read().playing}));});await expect(video).toHaveAttribute('src',/^blob:/);await expect(pane.locator('track')).toHaveAttribute('src',/^blob:/);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^\n  44 |   expect(await video.evaluate(v=>v.textTracks[0].mode)).toBe('showing');await expect.poll(()=>video.evaluate(v=>[...(v.textTracks[0].activeCues??[])].map(c=>c.text).join(' '))).toContain('Placeholder GUI recording');await page.screenshot({path:info.outputPath('motion-active.png')});await page.evaluate(()=>fixture.session.dispatch({type:'tab',tab:'console'}));await expect(page.getByRole('tabpanel')).toHaveCount(1);await expect(page.locator('[data-mp-panel=motion]')).toHaveAttribute('aria-hidden','true');await page.evaluate(()=>fixture.advance(400));await page.evaluate(()=>fixture.session.dispatch({type:'pause'}));await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);await expect.poll(()=>video.evaluate(v=>v.seeking)).toBe(false);const at=await video.evaluate(v=>v.currentTime);await page.waitForTimeout(120);const after=await video.evaluate(v=>({time:v.currentTime,paused:v.paused,seeking:v.seeking,intent:fixture.session.read().playing}));if(Math.abs(after.time-at)>=0.05)console.log('Pause drift',JSON.stringify({at,after,clock:await page.evaluate(()=>fixture.clockEvents),video:await page.evaluate(()=>window.videoEvents)}));expect(after.time).toBeCloseTo(at,1);\n  45 |   await page.evaluate(()=>fixture.session.dispatch({type:'play'}));await page.evaluate(()=>fixture.advance(1500));await expect.poll(()=>page.evaluate(()=>fixture.session.read().progress)).toBe('settled');expect(await recordMotionCheck(page,video,info)).toBe(true);\n  46 |   const sha=await video.evaluate(async v=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',await(await fetch(v.src)).arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join(''));expect(sha).toBe(await page.evaluate(()=>fixture.media.assets[0].sha256));await page.evaluate(()=>{fixture.session.dispatch({type:'next'});fixture.session.dispatch({type:'tab',tab:'motion'});});await expect(page.locator('[data-mp-panel=\"motion\"]')).toContainText('Waiting on next GUI action');expect(await video.evaluate(v=>v.paused)).toBe(true);await page.screenshot({path:info.outputPath('motion.png')});\n    at /mnt/c/Users/johnw/Documents/Codex/2026-10-16/referenced-chatgpt-conversation-this-is-an/outputs/motion-final-seek/tests/e2e/motion-pane.spec.mjs:43:564"
+          }
+        ],
+        "evidence": [
+          "fixed/cases/1536-case-05/test-failed-1.png",
+          "fixed/cases/1536-case-05/motion-failure.json",
+          "fixed/cases/1536-case-05/error-context.md",
+          "fixed/cases/1536-case-05/error-context.md",
+          "fixed/cases/1536-case-05/trace.zip"
+        ]
+      }
+    ]
+  }
+}

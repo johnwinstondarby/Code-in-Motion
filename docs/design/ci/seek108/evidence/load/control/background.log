@@ -1,0 +1,123 @@
+
+Running 480 tests using 2 workers
+
+[1/480] tests/e2e/composition.spec.mjs:35:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[2/480] tests/e2e/composition.spec.mjs:35:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[3/480] tests/e2e/composition.spec.mjs:36:2 › 1366x768 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[4/480] tests/e2e/composition.spec.mjs:36:2 › 1366x768 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[5/480] tests/e2e/composition.spec.mjs:37:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[6/480] tests/e2e/composition.spec.mjs:37:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[7/480] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[8/480] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[9/480] tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+[10/480] tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+[11/480] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+[12/480] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+[13/480] tests/e2e/composition.spec.mjs:41:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+[14/480] tests/e2e/composition.spec.mjs:41:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+[15/480] tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[16/480] tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[17/480] tests/e2e/composition.spec.mjs:35:2 › 1536x864 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[18/480] tests/e2e/composition.spec.mjs:35:2 › 1536x864 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[19/480] tests/e2e/composition.spec.mjs:36:2 › 1536x864 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[20/480] tests/e2e/composition.spec.mjs:36:2 › 1536x864 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[21/480] tests/e2e/composition.spec.mjs:37:2 › 1536x864 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[22/480] tests/e2e/composition.spec.mjs:37:2 › 1536x864 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[23/480] tests/e2e/composition.spec.mjs:38:2 › 1536x864 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[24/480] tests/e2e/composition.spec.mjs:38:2 › 1536x864 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[25/480] tests/e2e/composition.spec.mjs:39:2 › 1536x864 › [CMP-11] graphical states flows text cues holds and reduced motion
+[26/480] tests/e2e/composition.spec.mjs:39:2 › 1536x864 › [CMP-11] graphical states flows text cues holds and reduced motion
+[27/480] tests/e2e/composition.spec.mjs:40:2 › 1536x864 › [CMP-12] decode retry shares the original preparation deadline
+[28/480] tests/e2e/composition.spec.mjs:40:2 › 1536x864 › [CMP-12] decode retry shares the original preparation deadline
+[29/480] tests/e2e/composition.spec.mjs:41:2 › 1536x864 › [CMP-15] navigation during a final seek returns without blocking the page
+[30/480] tests/e2e/composition.spec.mjs:41:2 › 1536x864 › [CMP-15] navigation during a final seek returns without blocking the page
+[31/480] tests/e2e/composition.spec.mjs:43:2 › 1536x864 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[32/480] tests/e2e/composition.spec.mjs:43:2 › 1536x864 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[33/480] tests/e2e/composition.spec.mjs:35:2 › 1920x1080 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[34/480] tests/e2e/composition.spec.mjs:35:2 › 1920x1080 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[35/480] tests/e2e/composition.spec.mjs:36:2 › 1920x1080 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[36/480] tests/e2e/composition.spec.mjs:36:2 › 1920x1080 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[37/480] tests/e2e/composition.spec.mjs:37:2 › 1920x1080 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[38/480] tests/e2e/composition.spec.mjs:37:2 › 1920x1080 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[39/480] tests/e2e/composition.spec.mjs:38:2 › 1920x1080 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[40/480] tests/e2e/composition.spec.mjs:38:2 › 1920x1080 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[41/480] tests/e2e/composition.spec.mjs:39:2 › 1920x1080 › [CMP-11] graphical states flows text cues holds and reduced motion
+[42/480] tests/e2e/composition.spec.mjs:39:2 › 1920x1080 › [CMP-11] graphical states flows text cues holds and reduced motion
+[43/480] tests/e2e/composition.spec.mjs:40:2 › 1920x1080 › [CMP-12] decode retry shares the original preparation deadline
+[44/480] tests/e2e/composition.spec.mjs:40:2 › 1920x1080 › [CMP-12] decode retry shares the original preparation deadline
+[45/480] tests/e2e/composition.spec.mjs:41:2 › 1920x1080 › [CMP-15] navigation during a final seek returns without blocking the page
+[46/480] tests/e2e/composition.spec.mjs:41:2 › 1920x1080 › [CMP-15] navigation during a final seek returns without blocking the page
+[47/480] tests/e2e/composition.spec.mjs:43:2 › 1920x1080 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[48/480] tests/e2e/composition.spec.mjs:43:2 › 1920x1080 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[49/480] tests/e2e/composition.spec.mjs:35:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[50/480] tests/e2e/composition.spec.mjs:35:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[51/480] tests/e2e/composition.spec.mjs:36:2 › 1366x768 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[52/480] tests/e2e/composition.spec.mjs:36:2 › 1366x768 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[53/480] tests/e2e/composition.spec.mjs:37:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[54/480] tests/e2e/composition.spec.mjs:37:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[55/480] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[56/480] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[57/480] tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+[58/480] tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+[59/480] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+[60/480] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+[61/480] tests/e2e/composition.spec.mjs:41:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+[62/480] tests/e2e/composition.spec.mjs:41:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+[63/480] tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[64/480] tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[65/480] tests/e2e/composition.spec.mjs:35:2 › 1536x864 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[66/480] tests/e2e/composition.spec.mjs:35:2 › 1536x864 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[67/480] tests/e2e/composition.spec.mjs:36:2 › 1536x864 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[68/480] tests/e2e/composition.spec.mjs:36:2 › 1536x864 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[69/480] tests/e2e/composition.spec.mjs:37:2 › 1536x864 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[70/480] tests/e2e/composition.spec.mjs:37:2 › 1536x864 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[71/480] tests/e2e/composition.spec.mjs:38:2 › 1536x864 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[72/480] tests/e2e/composition.spec.mjs:38:2 › 1536x864 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[73/480] tests/e2e/composition.spec.mjs:39:2 › 1536x864 › [CMP-11] graphical states flows text cues holds and reduced motion
+[74/480] tests/e2e/composition.spec.mjs:39:2 › 1536x864 › [CMP-11] graphical states flows text cues holds and reduced motion
+[75/480] tests/e2e/composition.spec.mjs:40:2 › 1536x864 › [CMP-12] decode retry shares the original preparation deadline
+[76/480] tests/e2e/composition.spec.mjs:40:2 › 1536x864 › [CMP-12] decode retry shares the original preparation deadline
+[77/480] tests/e2e/composition.spec.mjs:41:2 › 1536x864 › [CMP-15] navigation during a final seek returns without blocking the page
+[78/480] tests/e2e/composition.spec.mjs:41:2 › 1536x864 › [CMP-15] navigation during a final seek returns without blocking the page
+[79/480] tests/e2e/composition.spec.mjs:43:2 › 1536x864 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[80/480] tests/e2e/composition.spec.mjs:43:2 › 1536x864 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[81/480] tests/e2e/composition.spec.mjs:35:2 › 1920x1080 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[82/480] tests/e2e/composition.spec.mjs:35:2 › 1920x1080 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[83/480] tests/e2e/composition.spec.mjs:36:2 › 1920x1080 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[84/480] tests/e2e/composition.spec.mjs:36:2 › 1920x1080 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[85/480] tests/e2e/composition.spec.mjs:37:2 › 1920x1080 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[86/480] tests/e2e/composition.spec.mjs:37:2 › 1920x1080 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[87/480] tests/e2e/composition.spec.mjs:38:2 › 1920x1080 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[88/480] tests/e2e/composition.spec.mjs:38:2 › 1920x1080 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[89/480] tests/e2e/composition.spec.mjs:39:2 › 1920x1080 › [CMP-11] graphical states flows text cues holds and reduced motion
+[90/480] tests/e2e/composition.spec.mjs:39:2 › 1920x1080 › [CMP-11] graphical states flows text cues holds and reduced motion
+[91/480] tests/e2e/composition.spec.mjs:40:2 › 1920x1080 › [CMP-12] decode retry shares the original preparation deadline
+[92/480] tests/e2e/composition.spec.mjs:40:2 › 1920x1080 › [CMP-12] decode retry shares the original preparation deadline
+[93/480] tests/e2e/composition.spec.mjs:41:2 › 1920x1080 › [CMP-15] navigation during a final seek returns without blocking the page
+[94/480] tests/e2e/composition.spec.mjs:41:2 › 1920x1080 › [CMP-15] navigation during a final seek returns without blocking the page
+[95/480] tests/e2e/composition.spec.mjs:43:2 › 1920x1080 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[96/480] tests/e2e/composition.spec.mjs:43:2 › 1920x1080 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[97/480] tests/e2e/composition.spec.mjs:35:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[98/480] tests/e2e/composition.spec.mjs:35:2 › 1366x768 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[99/480] tests/e2e/composition.spec.mjs:36:2 › 1366x768 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[100/480] tests/e2e/composition.spec.mjs:36:2 › 1366x768 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[101/480] tests/e2e/composition.spec.mjs:37:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[102/480] tests/e2e/composition.spec.mjs:37:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[103/480] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[104/480] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[105/480] tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+[106/480] tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+[107/480] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+[108/480] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+[109/480] tests/e2e/composition.spec.mjs:41:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+[110/480] tests/e2e/composition.spec.mjs:41:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+[111/480] tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[112/480] tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+[113/480] tests/e2e/composition.spec.mjs:35:2 › 1536x864 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[114/480] tests/e2e/composition.spec.mjs:35:2 › 1536x864 › [CMP-07] composed layout and graph stay contained with accessible selected surface
+[115/480] tests/e2e/composition.spec.mjs:36:2 › 1536x864 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[116/480] tests/e2e/composition.spec.mjs:36:2 › 1536x864 › [CMP-08] fallback details are collapsed and disclosure never changes transport
+[117/480] tests/e2e/composition.spec.mjs:37:2 › 1536x864 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[118/480] tests/e2e/composition.spec.mjs:37:2 › 1536x864 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+[119/480] tests/e2e/composition.spec.mjs:38:2 › 1536x864 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+[120/480] tests/e2e/composition.spec.mjs:38:2 › 1536x864 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal

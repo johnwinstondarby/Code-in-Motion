@@ -58,3 +58,33 @@ The existing manual investigation workflow provides three **consecutive WebKit M
 ## PR #61 housekeeping
 
 PR #61 at 8e5921e proposes a separate normative Git reference document and predates accepted ADRs 0048/0049 and 0061. Its document is not on main, so it is not accurate to call it already merged. It has been returned to draft to prevent accidental merge. Recommendation: close that stale PR while preserving its history, then audit any still-useful reference/copy requirements against current accepted documents in a separately reviewed change. It is not merged or closed as part of #108.
+
+## Completed local evidence
+
+- Node 20.20.2 and 22.23.2: **1,132 passed, zero skipped**, including all 36 Motion unit probes.
+- Chromium, Firefox and WebKit: **148/148 local multi-pane/preview cases per engine**. Chromium's separate Motion browser mutation run catches **48/48** probes (36 unit + 12 browser). Firefox/WebKit browser mutation coverage is required in final-head CI, not claimed as a separate local result.
+- v1 differential: **41 identical, zero differences** (28 v2/non-JSON entries intentionally excluded by the existing comparator). Frozen comparisons remain part of verify.
+- Two clean Node 22.23.2 builds from a6bf4eb match. Later commits change only tests, probe anchors and this unbundled evidence. Plugin: `d23af3410cbbe0217931826b0bfe8dbe5f4b8a9d16e125c502c661cc451f876a`. Authoring candidate: `15de8eaacf77f8f10ba96db8601a5f025a549a9c2937e8ebecdf45d78447bfed`. Compared with Part B's authoring archive, only `src/multipane/motion.mjs` differs. Exact published 1.0.1 rollback ZIP and page 3227 capture remain unchanged.
+
+### Matched constrained load: limitation, not a reproduced #108 proof
+
+| Source | 1366 | 1536 | 1920 | Total |
+| --- | --- | --- | --- | --- |
+| unchanged main 5847a59 | 49 pass / 1 timeout | 48 pass / 2 timeouts | 50 pass | **147/150** |
+| fixed Motion | 48 pass / 2 timeouts | 49 pass / 1 timeout | 50 pass | **147/150** |
+
+Both batches ran once, serially, with zero test retries. Each used two fixed CPUs (0,1), four foreground workers and two concurrent composition workers, 50 repeats per size. The composition process group was stopped when its foreground batch ended (exit 143); it was background load, not a passing correctness suite. Its full output is retained. Source heads, affinity and timings are in `evidence/load/*/environment.txt`, `run.json` and `summary.json`. The unchanged MOT-07 body is identical between control and fix.
+
+**#108 did not reproduce in these load batches.** No case records a finished final seek landing away from its requested destination before completion. Thus the load comparison does not demonstrate a with/without cure; the deterministic red regressions and mutation guards justify the targeted fix.
+
+Every failure has its diagnostic JSON, screenshot, error context and trace retained under `evidence/load`:
+
+- Control `1366-case-45` and `1536-case-25`: Motion reports failed with no video during preparation, before any final seek; test subsequently times out waiting for readyState. Consistent with the preparation failures tracked in #107, not #108. Exact preparation subcause is not established by these records.
+- Control `1536-case-48`: same video/beat/generation completes at 1.2/1.2, then WebKit starts it again repeatedly at zero. Two existing post-completion restores reach 1.2; a third rewind exhausts the deliberate hold budget and removes the video for the safe fallback. The test already observed valid completion, then times out locating the video for its SHA check. This is post-completion repeated-play/restore-budget exhaustion, **not** #108's pre-completion short seek. It is not claimed fixed here.
+- Fixed `1366-case-12`, `1366-case-19`, `1536-case-05`: Motion reports failed with no video during preparation before any final seek, followed by a readyState wait timeout. These remain consistent with #107; not concealed as green or attributed to re-seeking. Production preparation deadlines still need measured treatment before Part C.
+
+No load test was rerun to improve these counts. All 300 case records are catalogued; successful diagnostic JSONs are retained too. SHA256SUMS hashes committed Git blobs (LF-normalized logs), not potentially CRLF checkout bytes.
+
+### Final frozen-head CI
+
+After committing this evidence, the head is frozen for the required full CI and three consecutive manual WebKit MOT-07 runs. Exact final head and run links belong in the PR description, so posting results does not move the tested head. This packet does not claim those pending runs have passed. A failure stops the proof sequence and is disclosed; no assertion, deadline or retry is relaxed.
