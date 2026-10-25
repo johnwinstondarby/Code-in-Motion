@@ -1,12 +1,13 @@
-// Fixture-only diagram/v1. No registration, admission, network or engine authority.
+// diagram/v1: fixture data, or production data carrying a Part C admission token. No network or engine authority.
 import {createPaneLifecycle,readonlyPaneData} from '../contracts/pane.mjs';
+import {isAdmittedEngineering} from './admission.mjs';
 const fail=message=>{throw new Error('CIM-PANE-DIAGRAM-RECORDS: '+message);};
 const canonical=x=>JSON.stringify(x,(_,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.entries(v).sort(([a],[b])=>a.localeCompare(b))):v);
 const statuses={pin:'pinned',fail:'failed',complete:'completed',publish:'published',verify:'verified',evaluate:'reproduced'};
 const words={absent:'idle',pinned:'used',completed:'used',published:'used',failed:'failed',verified:'custody verified',reproduced:'reproduction checked'};
 const allowed=new Set(['fixtureOnly','placeholder','hosts','services','artifacts','initial','records','evidence','beats','archive']);
-function inspect(config){
- if(config.fixtureOnly!==true)throw new TypeError('Engineering requires a test fixture.');
+function inspect(config,admitted=false){
+ if(config.fixtureOnly!==true&&!admitted)throw new TypeError('Engineering requires a test fixture.');
  if(Object.keys(config).some(k=>!allowed.has(k)))throw new TypeError('Unexpected Engineering capability or configuration.');
  const id=x=>typeof x==='string'&&/^[a-z][a-z0-9-]{0,99}$/.test(x);
  const unique=(list,key)=>Array.isArray(list)&&list.length<=256&&list.every(x=>id(key?x[key]:x))&&new Set(list.map(x=>key?x[key]:x)).size===list.length;
@@ -34,6 +35,9 @@ function inspect(config){
  return snapshots;
 }
 export function diagramSnapshot(config,stepId){const snapshots=inspect(config),snapshot=snapshots.get(stepId);if(!snapshot)fail('Unknown beat.');return readonlyPaneData(snapshot);}
+function admittedSnapshot(config,stepId){const snapshot=inspect(config,true).get(stepId);if(!snapshot)fail('Unknown beat.');return readonlyPaneData(snapshot);}
+/** Pure validation used by production admission before any token exists. */
+export function validateEngineeringRecords(config){return inspect(readonlyPaneData(config),true).size;}
 export function flowWording(f){return f.from===f.to?`${f.artifact} stayed at ${f.to}`:f.from===null?`${f.artifact} placed at ${f.to}`:`${f.artifact} moved from ${f.from} to ${f.to}`;}
 export const DIAGRAM_CAPACITY=Object.freeze({locations:12,artifactsPerLocation:4,labelLines:4,maxHeight:190,width:620,fontSize:12});
 const cues={pinned:'■',failed:'×',completed:'✓',published:'◆',verified:'◎',reproduced:'▣',absent:'○'};
@@ -88,7 +92,7 @@ function graphicalDiagram(doc,snapshot,geometry,phase){
  const footer=svg('text',{'font-size':12,'font-family':'monospace','xml:space':'preserve',fill:'#c2d0dc','data-label-raw':geometry.footer.text});geometry.footer.lines.forEach((line,i)=>footer.append(svg('tspan',{x:15,y:geometry.footer.y+i*14},line)));image.append(footer);
  return image;
 }
-function draw(root,snapshot,config,phase=null,error=null,graphical=false){
+function draw(root,snapshot,config,phase=null,error=null,graphical=false,announce=true){
  const doc=root.ownerDocument,element=(tag,text,attrs={})=>{const n=doc.createElement(tag);if(text!==null)n.textContent=text;for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);return n;};
  const frame=element('section',null,{class:'engineering-diagram','aria-label':'Engineering diagram and text alternative'});
  frame.append(element('h4','Diagram · modeled'));
@@ -96,7 +100,7 @@ function draw(root,snapshot,config,phase=null,error=null,graphical=false){
  frame.append(element('p','Capture-derived model · not a live connection'));
  if(error){frame.append(element('p','Diagram unavailable · CIM-PANE-DIAGRAM-RECORDS'),element('p','Text alternative: capture records could not be resolved. Use the Explanation and check the capture references.'));root.replaceChildren(frame);return;}
  const geometry=graphical?diagramGeometry(snapshot):null;
- if(graphical&&geometry.mode==='text')frame.append(element('p','This diagram is too large to draw here. The full state is listed below. '+geometry.reason,{role:'status','aria-live':'polite','data-diagram-capacity-note':''}));
+ if(graphical&&geometry.mode==='text')frame.append(element('p','This diagram is too large to draw here. The full state is listed below. '+geometry.reason,announce?{role:'status','aria-live':'polite','data-diagram-capacity-note':''}:{'data-diagram-capacity-note':''}));
  const grid=element('div',null,{class:'engineering-nodes'});
  for(const node of snapshot.nodes){const labels=node.artifacts.length?node.artifacts.map(a=>`${a.id}: ${words[a.status]}`).join('; '):'idle';grid.append(element('div',`${node.id} · ${node.host} — ${phase&&snapshot.flows.some(f=>f.to===node.id)?'in progress; ':''}${labels}`,{'data-node-id':node.id,'data-status':phase&&snapshot.flows.some(f=>f.to===node.id)?'progress':node.artifacts.at(-1)?.status??'absent'}));}
  const flow=element('div',null,{class:'engineering-flows','aria-label':'Current beat flow and evidence'});
@@ -115,14 +119,17 @@ function draw(root,snapshot,config,phase=null,error=null,graphical=false){
   else {grid.className='engineering-capacity-text';grid.append(full);}
  }root.replaceChildren(frame);
 }
-export function createEngineeringPane({graphical=false}={}){
- let config,root,disposed=false;
- const lifecycle=createPaneLifecycle({validate(state,c,context){diagramSnapshot(c,context.stepId);},
+export function createEngineeringPane({graphical=false,admission=null}={}){
+ let config,root,disposed=false,admitted=false,announced=null;
+ const snapshot=(c,stepId)=>admitted?admittedSnapshot(c,stepId):diagramSnapshot(c,stepId);
+ // The capacity note is a live region only on the first drawing of each beat; frame redraws stay quiet.
+ const announceFor=stepId=>{const first=announced!==stepId;announced=stepId;return first;};
+ const lifecycle=createPaneLifecycle({validate(state,c,context){snapshot(c,context.stepId);},
  frames:()=>[{delayMs:0,position:0.1},{delayMs:80,position:0.5},{delayMs:80}],
- settle(target,state,c,context){if(graphical)draw(target,diagramSnapshot(c,context.stepId),c,null,null,true);else draw(target,diagramSnapshot(c,context.stepId),c);},
- frame(target,frame,state,c,context){draw(target,diagramSnapshot(c,context.stepId),c,frame.position,null,graphical);},dispose(target){target.replaceChildren();}});
+ settle(target,state,c,context){if(graphical)draw(target,snapshot(c,context.stepId),c,null,null,true,announceFor(context.stepId));else draw(target,snapshot(c,context.stepId),c);},
+ frame(target,frame,state,c,context){draw(target,snapshot(c,context.stepId),c,frame.position,null,graphical,announceFor(context.stepId));},dispose(target){target.replaceChildren();}});
  const showError=()=>draw(root,null,config,null,true);
- return Object.freeze({mount(target,data,identity){if(data.fixtureOnly!==true)throw new TypeError('Engineering requires a test fixture.');config=readonlyPaneData(data);if(Object.keys(config).some(k=>!allowed.has(k)))throw new TypeError('Unexpected Engineering capability.');root=target;lifecycle.mount(target,config,identity);},
+ return Object.freeze({mount(target,data,identity){admitted=data.fixtureOnly!==true&&isAdmittedEngineering(admission,readonlyPaneData(data));if(data.fixtureOnly!==true&&!admitted)throw new TypeError('Engineering requires a test fixture or a matching admission token.');config=readonlyPaneData(data);if(Object.keys(config).some(k=>!allowed.has(k)))throw new TypeError('Unexpected Engineering capability.');root=target;lifecycle.mount(target,config,identity);},
  settle(state,context){if(disposed)throw new Error('Engineering disposed.');try{lifecycle.settle(state,context);}catch(error){showError();}},
  async play(state,context){if(disposed)throw new Error('Engineering disposed.');const result=await lifecycle.play(state,context);if(result.status==='failed'&&!disposed)showError();return result;},
  dispose(){disposed=true;lifecycle.dispose();}});

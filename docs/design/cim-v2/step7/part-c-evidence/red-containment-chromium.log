@@ -1,0 +1,27 @@
+
+Running 1 test using 1 worker
+
+[1/1] tests/e2e/part-c-wordpress-panes.spec.mjs:39:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson
+  1) tests/e2e/part-c-wordpress-panes.spec.mjs:39:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 0
+    Received:    9
+
+      50 |  // The desktop composition must stay inside its WordPress root: it may scroll there, never spill past the page.
+      51 |  const fit=await p.evaluate(()=>{const root=document.querySelector('[data-cim-experience="run-custody-placeholder"]'),box=root.getBoundingClientRect();return{pageOverflow:document.documentElement.scrollWidth-innerWidth,overflowX:getComputedStyle(root).overflowX,badge:document.querySelector('[data-composed-player] [data-placeholder-badge],[data-composed-player] .mp-placeholder')?.getBoundingClientRect().right??null,right:box.right};});
+    > 52 |  expect(fit.pageOverflow).toBeLessThanOrEqual(0);
+         |                           ^
+      53 |  expect(['auto','scroll']).toContain(fit.overflowX);
+      54 | });
+      55 |
+        at /tmp/claude-0/-home-claude/7ebc54d4-43a8-543f-b99f-1879ffebcb28/scratchpad/partc/tests/e2e/part-c-wordpress-panes.spec.mjs:52:27
+
+    Error Context: test-results/part-c-wordpress-panes--PC-0d33e--an-unchanged-legacy-lesson/error-context.md
+
+    Error Context: test-results/part-c-wordpress-panes--PC-0d33e--an-unchanged-legacy-lesson/error-context.md
+
+
+  1 failed
+    tests/e2e/part-c-wordpress-panes.spec.mjs:39:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson 

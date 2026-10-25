@@ -1,8 +1,22 @@
 import { createWordPressExperienceLoader } from '../../src/host/wordpress-browser-bindings.mjs';
 import { readBoundedLesson } from './lesson-pack-loading.mjs';
+import { admitPanesLesson, createHostIdentity } from '../../src/multipane/admission.mjs';
+import { PANES_AGREEMENT, readVerifiedPackJSON } from './panes-binding.mjs';
+
+// The enqueue URL carries cim-admission=development only when PHP's development constant is active.
+const moduleIdentity = () => createHostIdentity({ developmentAdmission: new URL(import.meta.url).searchParams.get('cim-admission') === 'development' });
 
 /** Admin and Player use the identical ingestion/admission boundary. No lesson is executed. */
-export async function checkPackLesson({ id, url, baseURI, fetch }) {
+export async function checkPackLesson({ id, url, baseURI, fetch, captureUrl, agreement, identity }) {
+  if (agreement === PANES_AGREEMENT) {
+    try {
+      const read = href => readVerifiedPackJSON(href, { baseURI, fetch });
+      const [experience, capture] = await Promise.all([read(url), read(captureUrl)]);
+      const admitted = admitPanesLesson({ experience, capture, identity: identity ?? moduleIdentity() });
+      if (admitted.experience.id !== id) throw new Error('Lesson ID does not match its manifest entry.');
+      return { status: 'Ready', reason: 'Placeholder multi-pane lesson passed pack, capture, media-map and engine admission. Recordings are served in a later step.' };
+    } catch (error) { return { status: 'Rejected', reason: error.message }; }
+  }
   try {
     const target = new URL(url, baseURI);
     if (!['http:', 'https:'].includes(target.protocol) || target.origin !== new URL(baseURI).origin || !target.pathname.endsWith('.json')) throw new Error('Lesson URL must be same-origin JSON.');
@@ -25,7 +39,7 @@ export async function checkPackInventory(document, fetch) {
     await Promise.all(rows.slice(offset, offset + 4).map(async row => {
       const url = row.getAttribute('data-cim-pack-check-url');
       if (!url) return;
-      const result = await checkPackLesson({ id: row.getAttribute('data-cim-pack-lesson'), url, baseURI: document.baseURI, fetch });
+      const result = await checkPackLesson({ id: row.getAttribute('data-cim-pack-lesson'), url, baseURI: document.baseURI, fetch, agreement: row.getAttribute('data-cim-pack-agreement') ?? '', captureUrl: row.getAttribute('data-cim-pack-capture-url') ?? '' });
       row.querySelector('[data-cim-pack-status]').textContent = result.status;
       row.querySelector('[data-cim-pack-reason]').textContent = result.reason;
       const shortcode = row.querySelector('[data-cim-pack-shortcode]');

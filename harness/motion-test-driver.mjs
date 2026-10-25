@@ -1,7 +1,7 @@
 import {createMultiPaneFixtureDriver} from './multipane-test-driver.mjs';
 import {createMotionCoordinator} from '../src/multipane/motion-coordinator.mjs';
 export {attachMotionFixtureSurface} from '../src/multipane/action-surface.mjs';
-export function createMotionFixtureDriver(experience,slots,options){return createMotionCoordinator(experience,slots,{...options,createDriver(experience,slots,driverOptions){
+export function createMotionFixtureDriver(experience,slots,options){return createMotionCoordinator(experience,slots,{...options,traceClock:true,createDriver(experience,slots,driverOptions){
  if(typeof options.observeMotionCompletion!=='function')return createMultiPaneFixtureDriver(experience,slots,driverOptions);
  const factory=driverOptions.paneFactories.motion;
  return createMultiPaneFixtureDriver(experience,slots,{...driverOptions,paneFactories:{...driverOptions.paneFactories,motion(){

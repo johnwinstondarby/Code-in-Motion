@@ -451,6 +451,29 @@ jobs:
           wp_env run cli wp eval '$pack=localis_cim_read_lesson_packs()["lessons"]["invalid-lesson"]; $file=WP_PLUGIN_DIR."/cim-lesson-invalid-lesson/".$pack["asset"]; $data=json_decode(file_get_contents($file),true);unset($data["presentation"]);file_put_contents($file,wp_json_encode($data));'
           CIM_PACK_ADMIN_CHECK=1 CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
 
+      - name: Prove v2 placeholder pack refusal and development admission
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The job's generated wp-env config makes the checkout dirty, so build through the same compiler directly.
+          OUT="${CIM_R15_ARTIFACT_DIR}/panes-pack.zip" node --input-type=module <<'NODE'
+          import {readFile,writeFile} from 'node:fs/promises';
+          import {buildV3Pack} from './authoring/v3/pack.mjs';
+          const pack=await buildV3Pack('examples/packs/run-custody-placeholder/lesson.json',await readFile('LICENSE','utf8'));
+          await writeFile(process.env.OUT,pack.zip);console.log('Built placeholder pack SHA-256 '+pack.sha256);
+          NODE
+          wp_env() { npm run --silent wp-env -- --config="${CIM_R15_CONFIG}" "$@"; }
+          wp_env run cli wp plugin install wp-content/r15-artifact/panes-pack.zip --activate
+          wp_env run cli wp post create --post_type=page --post_status=publish --post_name=cim-panes-proof --post_title='Panes pack proof' --post_content='[cim experience="run-custody-placeholder"]Panes fallback.[/cim]'
+          wp_env run cli wp eval '$i=localis_cim_read_lesson_packs(true);if(isset($i["lessons"]["run-custody-placeholder"])){throw new Exception("Released host admitted a 1.1.0 pack");}if(strpos(wp_json_encode($i["errors"]),"1.1.0")===false){throw new Exception(wp_json_encode($i));}'
+          CIM_PANES_EXPECT=refused CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-panes-pack.spec.mjs --reporter=line
+          wp_env run cli wp config set LOCALIS_CIM_DEVELOPMENT_ADMISSION 1.1.0-dev --type=constant
+          wp_env run cli wp eval '$i=localis_cim_read_lesson_packs(true);if(!isset($i["lessons"]["run-custody-placeholder"])){throw new Exception(wp_json_encode($i));}'
+          CIM_PANES_EXPECT=admitted CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-panes-pack.spec.mjs --reporter=line
+          CIM_WP_BASE_URL=http://localhost:8890 npx playwright test tests/e2e/wordpress-lesson-pack-install.spec.mjs --reporter=line
+          wp_env run cli wp config delete LOCALIS_CIM_DEVELOPMENT_ADMISSION --type=constant
+          wp_env run cli wp plugin deactivate cim-lesson-run-custody-placeholder
+
       - name: Preserve the exact installed RC2 ZIP
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -1385,7 +1408,7 @@ jobs:
         env:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
           CIM_MOTION_DIAGNOSTICS: ${{ matrix.browser == 'webkit' && '1' || '0' }}
-        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs tests/e2e/diagram-capacity.spec.mjs tests/e2e/pack-v3-preview.spec.mjs --reporter=line
+        run: npx playwright test tests/e2e/wordpress-player-mvp.spec.mjs tests/e2e/lesson-packs.spec.mjs tests/e2e/lesson-preview.spec.mjs tests/e2e/teacher-admin.spec.mjs tests/e2e/multipane-transport.spec.mjs tests/e2e/engineering-pane.spec.mjs tests/e2e/motion-pane.spec.mjs tests/e2e/composition.spec.mjs tests/e2e/diagram-capacity.spec.mjs tests/e2e/pack-v3-preview.spec.mjs tests/e2e/part-c-wordpress-panes.spec.mjs --reporter=line
 
       - name: Prove multi-pane fixture browser mutation guards
         env:
@@ -1411,6 +1434,11 @@ jobs:
         env:
           CIM_PLAYER_BROWSER: ${{ matrix.browser }}
         run: node tools/check-diagram-capacity-mutations.mjs --browser
+
+      - name: Prove Part C admission and WordPress panes guards
+        env:
+          CIM_PLAYER_BROWSER: ${{ matrix.browser }}
+        run: node tools/check-part-c-mutations.mjs --browser
 
       - name: Stop R20 browser environment
         if: always()

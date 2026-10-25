@@ -1,0 +1,109 @@
+
+Running 5 tests using 1 worker
+
+[1/5] tests/e2e/part-c-wordpress-panes.spec.mjs:39:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson
+  1) tests/e2e/part-c-wordpress-panes.spec.mjs:39:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-cim-experience="run-custody-placeholder"]')
+    Expected: "ready"
+    Received: "fallback"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-experience="run-custody-placeholder"]') with timeout 5000ms
+      - waiting for locator('[data-cim-experience="run-custody-placeholder"]')
+        4 × locator resolved to <div class="cim" data-cim-default-theme="light" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-experience="run-custody-placeholder" data-cim-pack-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/lesson.json?cim-sha256=80fce369977dfb415e2383825a0ef7dc2702f9168d9b312fec7f77411c80bf86" data-cim-pack-capture-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/capture.json?cim-sha256=5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500">…</div>
+          - unexpected value "null"
+        10 × locator resolved to <div class="cim" data-cim-state="fallback" data-cim-default-theme="light" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-experience="run-custody-placeholder" data-cim-pack-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/lesson.json?cim-sha256=80fce369977dfb415e2383825a0ef7dc2702f9168d9b312fec7f77411c80bf86" data-cim-pack-capture-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/capture.json?cim-sha256=5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500">…</div>
+           - unexpected value "fallback"
+
+
+      40 |  const errors=[];p.on('pageerror',e=>errors.push(e.message));
+      41 |  await open(p);
+    > 42 |  await expect(panes(p)).toHaveAttribute('data-cim-state','ready');
+         |                         ^
+      43 |  await expect(panes(p).locator('[data-composed-player]')).toHaveCount(1);
+      44 |  await expect(panes(p)).toContainText('Placeholder content');
+      45 |  await expect(panes(p)).toContainText('Start · 8 beats');
+        at <repo>/tests/e2e/part-c-wordpress-panes.spec.mjs:42:25
+
+    Error Context: test-results/part-c-wordpress-panes--PC-0d33e--an-unchanged-legacy-lesson/error-context.md
+
+    Error Context: test-results/part-c-wordpress-panes--PC-0d33e--an-unchanged-legacy-lesson/error-context.md
+
+
+[2/5] tests/e2e/part-c-wordpress-panes.spec.mjs:51:1 › [PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists
+  2) tests/e2e/part-c-wordpress-panes.spec.mjs:51:1 › [PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-cim-experience="run-custody-placeholder"]')
+    Expected: "ready"
+    Received: "fallback"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-experience="run-custody-placeholder"]') with timeout 5000ms
+      - waiting for locator('[data-cim-experience="run-custody-placeholder"]')
+        3 × locator resolved to <div class="cim" data-cim-default-theme="light" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-experience="run-custody-placeholder" data-cim-pack-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/lesson.json?cim-sha256=80fce369977dfb415e2383825a0ef7dc2702f9168d9b312fec7f77411c80bf86" data-cim-pack-capture-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/capture.json?cim-sha256=5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500">…</div>
+          - unexpected value "null"
+        10 × locator resolved to <div class="cim" data-cim-state="fallback" data-cim-default-theme="light" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-experience="run-custody-placeholder" data-cim-pack-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/lesson.json?cim-sha256=80fce369977dfb415e2383825a0ef7dc2702f9168d9b312fec7f77411c80bf86" data-cim-pack-capture-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/capture.json?cim-sha256=5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500">…</div>
+           - unexpected value "fallback"
+
+
+      51 | test('[PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists',async({page:p})=>{
+      52 |  await open(p,{},'#cim/run-custody-placeholder/submit-fail');
+    > 53 |  await expect(panes(p)).toHaveAttribute('data-cim-state','ready');
+         |                         ^
+      54 |  await expect(panes(p)).toContainText('Beat 3 / 8');
+      55 |  await panes(p).getByRole('tab',{name:'Motion – GUI'}).click();
+      56 |  await expect(panes(p).locator('.motion-pane')).toContainText('GUI recording unavailable');
+        at <repo>/tests/e2e/part-c-wordpress-panes.spec.mjs:53:25
+
+    Error Context: test-results/part-c-wordpress-panes--PC-07b4b--until-media-serving-exists/error-context.md
+
+    Error Context: test-results/part-c-wordpress-panes--PC-07b4b--until-media-serving-exists/error-context.md
+
+
+[3/5] tests/e2e/part-c-wordpress-panes.spec.mjs:61:1 › [PC-E2E-03] without the PHP-projected development flag the panes lesson stays on its fallback
+[4/5] tests/e2e/part-c-wordpress-panes.spec.mjs:69:1 › [PC-E2E-04] lesson and capture bytes must match the fingerprints PHP projected
+[5/5] tests/e2e/part-c-wordpress-panes.spec.mjs:78:1 › [PC-E2E-05] a later deep link moves the panes lesson without touching the legacy lesson
+  3) tests/e2e/part-c-wordpress-panes.spec.mjs:78:1 › [PC-E2E-05] a later deep link moves the panes lesson without touching the legacy lesson 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-cim-experience="run-custody-placeholder"]')
+    Expected: "ready"
+    Received: "fallback"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-experience="run-custody-placeholder"]') with timeout 5000ms
+      - waiting for locator('[data-cim-experience="run-custody-placeholder"]')
+        4 × locator resolved to <div class="cim" data-cim-default-theme="light" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-experience="run-custody-placeholder" data-cim-pack-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/lesson.json?cim-sha256=80fce369977dfb415e2383825a0ef7dc2702f9168d9b312fec7f77411c80bf86" data-cim-pack-capture-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/capture.json?cim-sha256=5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500">…</div>
+          - unexpected value "null"
+        10 × locator resolved to <div class="cim" data-cim-state="fallback" data-cim-default-theme="light" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-experience="run-custody-placeholder" data-cim-pack-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/lesson.json?cim-sha256=80fce369977dfb415e2383825a0ef7dc2702f9168d9b312fec7f77411c80bf86" data-cim-pack-capture-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/capture.json?cim-sha256=5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500">…</div>
+           - unexpected value "fallback"
+
+
+      78 | test('[PC-E2E-05] a later deep link moves the panes lesson without touching the legacy lesson',async({page:p})=>{
+      79 |  await open(p);
+    > 80 |  await expect(panes(p)).toHaveAttribute('data-cim-state','ready');
+         |                         ^
+      81 |  await p.evaluate(()=>{location.hash='#cim/run-custody-placeholder/prove-custody';});
+      82 |  await expect(panes(p)).toContainText('Beat 7 / 8');
+      83 |  await expect(legacy(p)).toHaveAttribute('data-cim-state','ready');
+        at <repo>/tests/e2e/part-c-wordpress-panes.spec.mjs:80:25
+
+    Error Context: test-results/part-c-wordpress-panes--PC-bbe85--touching-the-legacy-lesson/error-context.md
+
+    Error Context: test-results/part-c-wordpress-panes--PC-bbe85--touching-the-legacy-lesson/error-context.md
+
+
+  3 failed
+    tests/e2e/part-c-wordpress-panes.spec.mjs:39:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson 
+    tests/e2e/part-c-wordpress-panes.spec.mjs:51:1 › [PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists 
+    tests/e2e/part-c-wordpress-panes.spec.mjs:78:1 › [PC-E2E-05] a later deep link moves the panes lesson without touching the legacy lesson 
+  2 passed (22.1s)

@@ -1,18 +1,16 @@
 import {readonlyPaneData} from '../contracts/pane.mjs';
-import {validateExperience} from '../experience/validate-experience.mjs';
 
-// Experimental fixture entry point only. No legacy resolver imports this module.
-export function createMultiPaneModel({experience,testFixture}) {
-  if(testFixture!==true)throw new TypeError('Multi-pane transport requires an explicit test fixture.');
-  if(experience?.renderer!=='panes/v1'||experience?.engine_min!=='1.1.0'||experience?.renderer_config?.layout!=='action-context'||experience?.initial_state?.placeholder!==true)throw new TypeError('Only placeholder v3 panes/v1 projections are accepted.');
+import {isAdmittedExperience} from './admission.mjs';
+import {panesModelProblem} from './projection.mjs';
+
+// Fixture entry point, or production with a Part C admission token bound to this exact lesson.
+export function createMultiPaneModel({experience,testFixture,admission}) {
+  if(testFixture!==true&&!isAdmittedExperience(admission,readonlyPaneData(experience)))throw new TypeError('Multi-pane transport requires an explicit test fixture or a matching admission token.');
+  const problem=panesModelProblem(experience);
+  if(problem)throw new TypeError(problem.message);
   const doc=readonlyPaneData(experience);
-  if(validateExperience(doc).length)throw new TypeError('Invalid frozen v2 fixture envelope.');
-  const declarations=doc.renderer_config.panes,consoleId=declarations.find(p=>p.type==='console/v1')?.id,motionId=declarations.find(p=>p.type==='motion/v1')?.id;
-  if(!consoleId||!motionId||declarations.length!==4||new Set(declarations.map(p=>p.id)).size!==4||new Set(declarations.map(p=>p.type)).size!==4||declarations.some(p=>!['console/v1','motion/v1','explanation/v1','diagram/v1'].includes(p.type))||doc.steps.length>128)throw new TypeError('Invalid pane fixture declarations.');
+  const declarations=doc.renderer_config.panes,consoleId=declarations.find(p=>p.type==='console/v1').id,motionId=declarations.find(p=>p.type==='motion/v1').id;
   const tabs=[consoleId,motionId],ids=declarations.map(p=>p.id);
-  for(const snapshot of [doc.initial_state,...doc.steps.map(s=>s.state)]){
-    if(!tabs.includes(snapshot.action_tab)||ids.some(id=>!Object.hasOwn(snapshot.panes,id)||typeof snapshot.waiting[id]!=='boolean'))throw new TypeError('Invalid pane fixture absolute state.');
-  }
   const present=s=>Object.freeze({...s,status:s.index<0?`Start · ${doc.steps.length} beats`:`Beat ${s.index+1} / ${doc.steps.length} · ${s.playing?'playing':'paused'}`});
   const initial=present({index:-1,progress:'initial',playing:false,tab:consoleId,generation:0,panelOpen:false,panes:doc.initial_state.panes,waiting:doc.initial_state.waiting,failures:Object.freeze([])});
   function enter(s,index,mode,active=false){

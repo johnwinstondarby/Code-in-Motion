@@ -1,0 +1,198 @@
+
+Running 11 tests using 1 worker
+
+[1/11] tests/e2e/part-c-wordpress-panes.spec.mjs:59:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson
+[2/11] tests/e2e/part-c-wordpress-panes.spec.mjs:80:1 › [PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists
+[3/11] tests/e2e/part-c-wordpress-panes.spec.mjs:91:1 › [PC-E2E-03] without the PHP-projected development flag the panes lesson stays on its fallback
+[4/11] tests/e2e/part-c-wordpress-panes.spec.mjs:100:1 › [PC-E2E-04] lesson and capture bytes must match the fingerprints PHP projected
+[5/11] tests/e2e/part-c-wordpress-panes.spec.mjs:109:1 › [PC-E2E-05] a later deep link moves the panes lesson without touching the legacy lesson
+[6/11] tests/e2e/part-c-wordpress-panes.spec.mjs:117:1 › [PC-E2E-06] one stalled pack download does not hold back other lessons
+  1) tests/e2e/part-c-wordpress-panes.spec.mjs:117:1 › [PC-E2E-06] one stalled pack download does not hold back other lessons 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-cim-pack-agreement]').nth(1)
+    Expected: "ready"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-pack-agreement]').nth(1) with timeout 5000ms
+      - waiting for locator('[data-cim-pack-agreement]').nth(1)
+        14 × locator resolved to <div class="cim" data-cim-default-theme="light" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-experience="run-custody-placeholder" data-cim-pack-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/lesson.json?cim-sha256=80fce369977dfb415e2383825a0ef7dc2702f9168d9b312fec7f77411c80bf86" data-cim-pack-capture-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/capture.json?cim-sha256=5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500">…</div>
+           - unexpected value "null"
+
+
+      120 |  await expect.poll(async()=>(await gate(p,name)).seen).toBe(true);
+      121 |  // Both healthy lessons become interactive while the stalled response is still held open.
+    > 122 |  await expect(player(p,1)).toHaveAttribute('data-cim-state','ready',{timeout:5000});
+          |                            ^
+      123 |  await expect(legacy(p)).toHaveAttribute('data-cim-state','ready',{timeout:5000});
+      124 |  await player(p,1).locator('[data-mp-command="next"]').click();
+      125 |  await expect(player(p,1)).toContainText('Beat 1 / 8');
+        at <scratchpad>/r0070985/tests/e2e/part-c-wordpress-panes.spec.mjs:122:28
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-b9802-not-hold-back-other-lessons/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-b9802-not-hold-back-other-lessons/error-context.md
+
+
+[7/11] tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (explicit instance names)
+  2) tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (explicit instance names) 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   "composed-tab-console",
+    +   "composed-tab-motion",
+    +   "composed-panel-console",
+    +   "composed-panel-motion",
+    +   "composed-beats",
+    + ]
+
+      139 |    return {players:document.querySelectorAll('[data-composed-player]').length,duplicates,wrong};
+      140 |   });
+    > 141 |   expect(report.players).toBe(2);expect(report.duplicates).toEqual([]);expect(report.wrong).toEqual([]);
+          |                                                            ^
+      142 |   // Namespaces are stable across reloads, and an explicit shortcode instance name is visible in them.
+      143 |   const first=await ids();
+      144 |   if(roots[0].instance)expect(first.some(id=>id.includes(roots[0].instance))).toBe(true);
+        at <scratchpad>/r0070985/tests/e2e/part-c-wordpress-panes.spec.mjs:141:60
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-bc5cc-us-explicit-instance-names-/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-bc5cc-us-explicit-instance-names-/error-context.md
+
+
+[8/11] tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (unnamed embeds)
+  3) tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (unnamed embeds) 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   "composed-tab-console",
+    +   "composed-tab-motion",
+    +   "composed-panel-console",
+    +   "composed-panel-motion",
+    +   "composed-beats",
+    + ]
+
+      139 |    return {players:document.querySelectorAll('[data-composed-player]').length,duplicates,wrong};
+      140 |   });
+    > 141 |   expect(report.players).toBe(2);expect(report.duplicates).toEqual([]);expect(report.wrong).toEqual([]);
+          |                                                            ^
+      142 |   // Namespaces are stable across reloads, and an explicit shortcode instance name is visible in them.
+      143 |   const first=await ids();
+      144 |   if(roots[0].instance)expect(first.some(id=>id.includes(roots[0].instance))).toBe(true);
+        at <scratchpad>/r0070985/tests/e2e/part-c-wordpress-panes.spec.mjs:141:60
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-ccaa5-Beats-menus-unnamed-embeds-/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-ccaa5-Beats-menus-unnamed-embeds-/error-context.md
+
+
+[9/11] tests/e2e/part-c-wordpress-panes.spec.mjs:170:1 › [PC-E2E-08] a Player removed while its download is pending is cancelled and never mounts
+  4) tests/e2e/part-c-wordpress-panes.spec.mjs:170:1 › [PC-E2E-08] a Player removed while its download is pending is cancelled and never mounts 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-cim-pack-agreement]').nth(1)
+    Expected: "ready"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-pack-agreement]').nth(1) with timeout 5000ms
+      - waiting for locator('[data-cim-pack-agreement]').nth(1)
+        14 × locator resolved to <div class="cim" data-cim-default-theme="light" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-experience="run-custody-placeholder" data-cim-pack-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/lesson.json?cim-sha256=80fce369977dfb415e2383825a0ef7dc2702f9168d9b312fec7f77411c80bf86" data-cim-pack-capture-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/capture.json?cim-sha256=5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500">…</div>
+           - unexpected value "null"
+
+
+      173 |  await open(p,{roots:[{instance:'late',gate:name},{}]});
+      174 |  await expect.poll(async()=>(await gate(p,name)).seen).toBe(true);
+    > 175 |  await expect(player(p,1)).toHaveAttribute('data-cim-state','ready');
+          |                            ^
+      176 |  await p.evaluate(()=>{window.__retired=document.querySelector('[data-cim-instance="late"]');window.__retired.remove();});
+      177 |  // The request itself is cancelled, not merely ignored.
+      178 |  await expect.poll(async()=>(await gate(p,name)).aborted,{timeout:5000}).toBe(true);
+        at <scratchpad>/r0070985/tests/e2e/part-c-wordpress-panes.spec.mjs:175:28
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-ade88--cancelled-and-never-mounts/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-ade88--cancelled-and-never-mounts/error-context.md
+
+
+[10/11] tests/e2e/part-c-wordpress-panes.spec.mjs:186:1 › [PC-E2E-09] page disposal cancels pending downloads and nothing mounts afterwards
+  5) tests/e2e/part-c-wordpress-panes.spec.mjs:186:1 › [PC-E2E-09] page disposal cancels pending downloads and nothing mounts afterwards 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      189 |  await expect.poll(async()=>(await gate(p,name)).seen).toBe(true);
+      190 |  await p.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pagehide',{persisted:false})));
+    > 191 |  await expect.poll(async()=>(await gate(p,name)).aborted,{timeout:5000}).toBe(true);
+          |                                                                          ^
+      192 |  await gate(p,name,true);await p.waitForTimeout(300);
+      193 |  await expect(instance(p,'late')).not.toHaveAttribute('data-cim-state','ready');
+      194 |  await expect(instance(p,'late').locator('[data-composed-player]')).toHaveCount(0);
+        at <scratchpad>/r0070985/tests/e2e/part-c-wordpress-panes.spec.mjs:191:74
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-023e4-d-nothing-mounts-afterwards/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-023e4-d-nothing-mounts-afterwards/error-context.md
+
+
+[11/11] tests/e2e/part-c-wordpress-panes.spec.mjs:197:1 › [PC-E2E-10] each of Pilgrim's malformed lessons keeps its fallback while an adjacent valid lesson works
+  6) tests/e2e/part-c-wordpress-panes.spec.mjs:197:1 › [PC-E2E-10] each of Pilgrim's malformed lessons keeps its fallback while an adjacent valid lesson works 
+
+    Error: GUI beat also carries a copied CLI action
+
+    expect(locator).not.toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-cim-pack-agreement]').first()
+    Expected: not "ready"
+    Received: "ready"
+    Timeout:  5000ms
+
+    Call log:
+      - GUI beat also carries a copied CLI action locator('[data-cim-pack-agreement]').first() with timeout 5000ms
+      - waiting for locator('[data-cim-pack-agreement]').first()
+        14 × locator resolved to <div class="cim" data-cim-state="ready" data-cim-default-theme="light" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-experience="run-custody-placeholder" data-cim-pack-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/bad-2.json?cim-sha256=715cae661781c11fad32f79d0f06cea2af32022e8ceb06e6b479715ae06f64da" data-cim-pack-capture-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/capture.json?cim-sha256=5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500">…</div>
+           - unexpected value "ready"
+
+
+      201 |   await expect(instance(p,'good')).toHaveAttribute('data-cim-state','ready');
+      202 |   await instance(p,'good').locator('[data-mp-command="next"]').click();await expect(instance(p,'good')).toContainText('Beat 1 / 8');
+    > 203 |   await expect(player(p,0),name).not.toHaveAttribute('data-cim-state','ready');
+          |                                      ^
+      204 |   await expect(player(p,0).locator('.cim-fallback'),name).toBeVisible();
+      205 |   await expect(player(p,0).locator('[data-composed-player]'),name).toHaveCount(0);
+      206 |   await expect(legacy(p)).toHaveAttribute('data-cim-state','ready');
+        at <scratchpad>/r0070985/tests/e2e/part-c-wordpress-panes.spec.mjs:203:38
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-6fefc-adjacent-valid-lesson-works/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-6fefc-adjacent-valid-lesson-works/error-context.md
+
+
+  6 failed
+    tests/e2e/part-c-wordpress-panes.spec.mjs:117:1 › [PC-E2E-06] one stalled pack download does not hold back other lessons 
+    tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (explicit instance names) 
+    tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (unnamed embeds) 
+    tests/e2e/part-c-wordpress-panes.spec.mjs:170:1 › [PC-E2E-08] a Player removed while its download is pending is cancelled and never mounts 
+    tests/e2e/part-c-wordpress-panes.spec.mjs:186:1 › [PC-E2E-09] page disposal cancels pending downloads and nothing mounts afterwards 
+    tests/e2e/part-c-wordpress-panes.spec.mjs:197:1 › [PC-E2E-10] each of Pilgrim's malformed lessons keeps its fallback while an adjacent valid lesson works 
+  5 passed (41.4s)

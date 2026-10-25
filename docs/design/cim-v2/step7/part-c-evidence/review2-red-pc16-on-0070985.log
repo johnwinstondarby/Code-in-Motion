@@ -1,0 +1,27 @@
+TAP version 13
+# Subtest: [PC-16] packing refuses non-standard pane IDs with the reason, before any ZIP exists
+not ok 1 - [PC-16] packing refuses non-standard pane IDs with the reason, before any ZIP exists
+  ---
+  duration_ms: 138.39361
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-authoring.test.mjs:12:1'
+  failureType: 'testCodeFailure'
+  error: 'the pack must not be built'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-authoring.test.mjs:18:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 236.8331

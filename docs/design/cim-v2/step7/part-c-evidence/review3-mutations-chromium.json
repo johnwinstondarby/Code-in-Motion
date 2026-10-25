@@ -1,0 +1,295 @@
+{
+  "node": "v22.22.0",
+  "browser": "chromium",
+  "baselines": "passed",
+  "results": [
+    {
+      "id": "PCM-01-interval",
+      "kind": "unit",
+      "rule": "PC-01",
+      "caught": true
+    },
+    {
+      "id": "PCM-02-forged-identity",
+      "kind": "unit",
+      "rule": "PC-03",
+      "caught": true
+    },
+    {
+      "id": "PCM-03-real-capture",
+      "kind": "unit",
+      "rule": "PC-04",
+      "caught": true
+    },
+    {
+      "id": "PCM-04-non-placeholder",
+      "kind": "unit",
+      "rule": "PC-04",
+      "caught": true
+    },
+    {
+      "id": "PCM-05-unbound-token",
+      "kind": "unit",
+      "rule": "PC-06",
+      "caught": true
+    },
+    {
+      "id": "PCM-06-model-guard",
+      "kind": "unit",
+      "rule": "PC-06",
+      "caught": true
+    },
+    {
+      "id": "PCM-07-engineering-guard",
+      "kind": "unit",
+      "rule": "PC-07",
+      "caught": true
+    },
+    {
+      "id": "PCM-08-codec-ignored",
+      "kind": "unit",
+      "rule": "PC-09",
+      "caught": true
+    },
+    {
+      "id": "PCM-09-codec-optional",
+      "kind": "unit",
+      "rule": "PC-08",
+      "caught": true
+    },
+    {
+      "id": "PCM-10-trace-unbounded",
+      "kind": "unit",
+      "rule": "PC-10",
+      "caught": true
+    },
+    {
+      "id": "PCM-11-note-every-frame",
+      "kind": "unit",
+      "rule": "PC-11",
+      "caught": true
+    },
+    {
+      "id": "PCM-12-php-any-constant",
+      "kind": "unit",
+      "rule": "PC-PHP-03",
+      "caught": true
+    },
+    {
+      "id": "PCM-13-php-after-release",
+      "kind": "unit",
+      "rule": "PC-PHP-03",
+      "caught": true
+    },
+    {
+      "id": "PCM-14-php-hash",
+      "kind": "unit",
+      "rule": "PC-PHP-04",
+      "caught": true
+    },
+    {
+      "id": "PCM-15-php-confinement",
+      "kind": "unit",
+      "rule": "PC-PHP-04",
+      "caught": true
+    },
+    {
+      "id": "PCM-16-php-placeholder",
+      "kind": "unit",
+      "rule": "PC-PHP-05",
+      "caught": true
+    },
+    {
+      "id": "PCM-17-php-interval",
+      "kind": "unit",
+      "rule": "PC-PHP-01",
+      "caught": true
+    },
+    {
+      "id": "PCM-18-boundary-authoring",
+      "kind": "unit",
+      "rule": "PC-B-02",
+      "caught": true
+    },
+    {
+      "id": "PCM-19-boundary-fixture",
+      "kind": "unit",
+      "rule": "PC-B-02",
+      "caught": true
+    },
+    {
+      "id": "PCM-20-admin-legacy-path",
+      "kind": "unit",
+      "rule": "PC-ADMIN-01",
+      "caught": true
+    },
+    {
+      "id": "PCM-24-projection-skipped",
+      "kind": "unit",
+      "rule": "PC-12",
+      "caught": true
+    },
+    {
+      "id": "PCM-25-projection-tab",
+      "kind": "unit",
+      "rule": "PC-12",
+      "caught": true
+    },
+    {
+      "id": "PCM-26-projection-waiting",
+      "kind": "unit",
+      "rule": "PC-12",
+      "caught": true
+    },
+    {
+      "id": "PCM-28-projection-explanation",
+      "kind": "unit",
+      "rule": "PC-12",
+      "caught": true
+    },
+    {
+      "id": "PCM-30-read-deadline",
+      "kind": "unit",
+      "rule": "PC-14",
+      "caught": true
+    },
+    {
+      "id": "PCM-31-read-deadline-body",
+      "kind": "unit",
+      "rule": "PC-15",
+      "caught": true
+    },
+    {
+      "id": "PCM-35-projection-repeat",
+      "kind": "unit",
+      "rule": "PC-18",
+      "caught": true
+    },
+    {
+      "id": "PCM-36-projection-simultaneous",
+      "kind": "unit",
+      "rule": "PC-18",
+      "caught": true
+    },
+    {
+      "id": "PCM-37-projection-kind-pane",
+      "kind": "unit",
+      "rule": "PC-18",
+      "caught": true
+    },
+    {
+      "id": "PCM-38-read-deadline-per-chunk",
+      "kind": "unit",
+      "rule": "PC-17",
+      "caught": true
+    },
+    {
+      "id": "PCM-39-authoring-pane-id",
+      "kind": "unit",
+      "rule": "PC-16",
+      "caught": true
+    },
+    {
+      "id": "PCM-43-read-abort-request",
+      "kind": "unit",
+      "rule": "PC-14",
+      "caught": true
+    },
+    {
+      "id": "PCM-44-read-cancel-body",
+      "kind": "unit",
+      "rule": "PC-15",
+      "caught": true
+    },
+    {
+      "id": "PCM-46-model-preconditions-skipped",
+      "kind": "unit",
+      "rule": "PC-19",
+      "caught": true
+    },
+    {
+      "id": "PCM-47-model-layout",
+      "kind": "unit",
+      "rule": "PC-19",
+      "caught": true
+    },
+    {
+      "id": "PCM-48-model-engine",
+      "kind": "unit",
+      "rule": "PC-19",
+      "caught": true
+    },
+    {
+      "id": "PCM-49-model-beat-limit",
+      "kind": "unit",
+      "rule": "PC-19",
+      "caught": true
+    },
+    {
+      "id": "PCM-50-namespace-one-pass",
+      "kind": "unit",
+      "rule": "PC-21",
+      "caught": true
+    },
+    {
+      "id": "PCM-21-browser-fingerprint",
+      "kind": "browser",
+      "rule": "PC-E2E-04",
+      "caught": true
+    },
+    {
+      "id": "PCM-23-browser-containment",
+      "kind": "browser",
+      "rule": "PC-E2E-01",
+      "caught": true
+    },
+    {
+      "id": "PCM-22-browser-legacy-overlap",
+      "kind": "browser",
+      "rule": "PC-E2E-01",
+      "caught": true
+    },
+    {
+      "id": "PCM-32-browser-legacy-waits",
+      "kind": "browser",
+      "rule": "PC-E2E-06",
+      "caught": true
+    },
+    {
+      "id": "PCM-33-browser-panes-serial",
+      "kind": "browser",
+      "rule": "PC-E2E-06",
+      "caught": true
+    },
+    {
+      "id": "PCM-34-browser-shared-ids",
+      "kind": "browser",
+      "rule": "PC-E2E-07",
+      "caught": true
+    },
+    {
+      "id": "PCM-40-browser-detach-cancel",
+      "kind": "browser",
+      "rule": "PC-E2E-08",
+      "caught": true
+    },
+    {
+      "id": "PCM-41-browser-dispose-cancel",
+      "kind": "browser",
+      "rule": "PC-E2E-09",
+      "caught": true
+    },
+    {
+      "id": "PCM-42-browser-named-namespace",
+      "kind": "browser",
+      "rule": "PC-E2E-07",
+      "caught": true
+    },
+    {
+      "id": "PCM-51-browser-namespace-one-pass",
+      "kind": "browser",
+      "rule": "PC-E2E-12",
+      "caught": true
+    }
+  ]
+}

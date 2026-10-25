@@ -1,0 +1,15 @@
+
+Running 11 tests using 1 worker
+
+[1/11] tests/e2e/part-c-wordpress-panes.spec.mjs:59:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson
+[2/11] tests/e2e/part-c-wordpress-panes.spec.mjs:80:1 › [PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists
+[3/11] tests/e2e/part-c-wordpress-panes.spec.mjs:91:1 › [PC-E2E-03] without the PHP-projected development flag the panes lesson stays on its fallback
+[4/11] tests/e2e/part-c-wordpress-panes.spec.mjs:100:1 › [PC-E2E-04] lesson and capture bytes must match the fingerprints PHP projected
+[5/11] tests/e2e/part-c-wordpress-panes.spec.mjs:109:1 › [PC-E2E-05] a later deep link moves the panes lesson without touching the legacy lesson
+[6/11] tests/e2e/part-c-wordpress-panes.spec.mjs:117:1 › [PC-E2E-06] one stalled pack download does not hold back other lessons
+[7/11] tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (explicit instance names)
+[8/11] tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (unnamed embeds)
+[9/11] tests/e2e/part-c-wordpress-panes.spec.mjs:170:1 › [PC-E2E-08] a Player removed while its download is pending is cancelled and never mounts
+[10/11] tests/e2e/part-c-wordpress-panes.spec.mjs:186:1 › [PC-E2E-09] page disposal cancels pending downloads and nothing mounts afterwards
+[11/11] tests/e2e/part-c-wordpress-panes.spec.mjs:197:1 › [PC-E2E-10] each of Pilgrim's malformed lessons keeps its fallback while an adjacent valid lesson works
+  11 passed (16.6s)

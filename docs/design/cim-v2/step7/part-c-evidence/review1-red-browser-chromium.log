@@ -1,0 +1,79 @@
+
+Running 7 tests using 1 worker
+
+[1/7] tests/e2e/part-c-wordpress-panes.spec.mjs:45:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson
+[2/7] tests/e2e/part-c-wordpress-panes.spec.mjs:66:1 › [PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists
+[3/7] tests/e2e/part-c-wordpress-panes.spec.mjs:77:1 › [PC-E2E-03] without the PHP-projected development flag the panes lesson stays on its fallback
+[4/7] tests/e2e/part-c-wordpress-panes.spec.mjs:86:1 › [PC-E2E-04] lesson and capture bytes must match the fingerprints PHP projected
+[5/7] tests/e2e/part-c-wordpress-panes.spec.mjs:95:1 › [PC-E2E-05] a later deep link moves the panes lesson without touching the legacy lesson
+[6/7] tests/e2e/part-c-wordpress-panes.spec.mjs:103:1 › [PC-E2E-06] one stalled pack download does not hold back other lessons
+  1) tests/e2e/part-c-wordpress-panes.spec.mjs:103:1 › [PC-E2E-06] one stalled pack download does not hold back other lessons 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-cim-experience="run-custody-placeholder"]:not([data-cim-instance])')
+    Expected: "ready"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-cim-experience="run-custody-placeholder"]:not([data-cim-instance])') with timeout 5000ms
+      - waiting for locator('[data-cim-experience="run-custody-placeholder"]:not([data-cim-instance])')
+        14 × locator resolved to <div class="cim" data-cim-default-theme="light" data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-experience="run-custody-placeholder" data-cim-pack-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/lesson.json?cim-sha256=80fce369977dfb415e2383825a0ef7dc2702f9168d9b312fec7f77411c80bf86" data-cim-pack-capture-url="/wp-content/plugins/cim-lesson-run-custody-placeholder/capture.json?cim-sha256=5481b816cddc661f50e927958dbbb8d13db319ba6e3e28a45d6ea07047b78500">…</div>
+           - unexpected value "null"
+
+
+      104 |  await open(p,{stalled:true});
+      105 |  // Both healthy lessons become interactive while the stalled response is still open.
+    > 106 |  await expect(panes(p)).toHaveAttribute('data-cim-state','ready',{timeout:5000});
+          |                         ^
+      107 |  await expect(legacy(p)).toHaveAttribute('data-cim-state','ready',{timeout:5000});
+      108 |  await panes(p).locator('[data-mp-command="next"]').click();
+      109 |  await expect(panes(p)).toContainText('Beat 1 / 8');
+        at <scratchpad>/partc/tests/e2e/part-c-wordpress-panes.spec.mjs:106:25
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-b9802-not-hold-back-other-lessons/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-b9802-not-hold-back-other-lessons/error-context.md
+
+
+[7/7] tests/e2e/part-c-wordpress-panes.spec.mjs:114:1 › [PC-E2E-07] two Players on one page keep their own accessibility IDs
+  2) tests/e2e/part-c-wordpress-panes.spec.mjs:114:1 › [PC-E2E-07] two Players on one page keep their own accessibility IDs 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   "composed-tab-console",
+    +   "composed-tab-motion",
+    +   "composed-panel-console",
+    +   "composed-panel-motion",
+    +   "composed-beats",
+    + ]
+
+      127 |  });
+      128 |  expect(report.players).toBe(2);
+    > 129 |  expect(report.duplicates).toEqual([]);
+          |                            ^
+      130 |  expect(report.wrong).toEqual([]);
+      131 |  // Selecting the second Player's Motion tab shows its own panel, not the first Player's.
+      132 |  await instance(p,'second').getByRole('tab',{name:'Motion – GUI'}).click();
+        at <scratchpad>/partc/tests/e2e/part-c-wordpress-panes.spec.mjs:129:28
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-b7a0c-their-own-accessibility-IDs/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-b7a0c-their-own-accessibility-IDs/error-context.md
+
+
+  2 failed
+    tests/e2e/part-c-wordpress-panes.spec.mjs:103:1 › [PC-E2E-06] one stalled pack download does not hold back other lessons 
+    tests/e2e/part-c-wordpress-panes.spec.mjs:114:1 › [PC-E2E-07] two Players on one page keep their own accessibility IDs 
+  5 passed (17.6s)
+npm notice
+npm notice New major version of npm available! 10.9.4 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

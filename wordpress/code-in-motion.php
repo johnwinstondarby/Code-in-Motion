@@ -97,8 +97,10 @@ function localis_cim_project_motion_policy_script_tag( $tag, $handle ) {
 	}
 
 	$attribute = sprintf(
-		' data-cim-motion-policy="%s" src=',
-		esc_attr( localis_cim_get_motion_policy() )
+		' data-cim-motion-policy="%s"%s src=',
+		esc_attr( localis_cim_get_motion_policy() ),
+		// Part C: only the exact wp-config development constant projects this flag.
+		localis_cim_development_admission_active() ? ' data-cim-development-admission="1.1.0-dev"' : ''
 	);
 	$projected = preg_replace( '/\ssrc=/', $attribute, $tag, 1 );
 
@@ -172,6 +174,9 @@ function localis_cim_shortcode( $atts, $content = null ) {
 	$packs = in_array( $experience_id, array_column( $bundled['experiences'], 'id' ), true ) ? array( 'lessons' => array() ) : localis_cim_read_lesson_packs();
 	if ( isset( $packs['lessons'][ $experience_id ] ) ) {
 		$instance_attribute .= sprintf( ' data-cim-pack-url="%s"', esc_url( $packs['lessons'][ $experience_id ]['url'] ) );
+		if ( 'cim.lesson-pack/v2' === ( $packs['lessons'][ $experience_id ]['agreement'] ?? '' ) ) {
+			$instance_attribute .= sprintf( ' data-cim-pack-agreement="cim.lesson-pack/v2" data-cim-pack-capture-url="%s"', esc_url( $packs['lessons'][ $experience_id ]['capture_url'] ) );
+		}
 	}
 	// Existing bundled lessons keep their exact markup/default; new lessons start neutral.
 	if ( '' === $theme && ! in_array( $experience_id, array( 'git-basic-cycle', 'git-repository-practice', 'synthetic-wordpress' ), true ) ) { $theme = 'light'; }

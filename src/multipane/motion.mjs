@@ -1,6 +1,8 @@
 import {readonlyPaneData} from '../contracts/pane.mjs';
 import {validateMediaMap} from './media-map.mjs';
 const code='CIM-PANE-MEDIA-UNAVAILABLE';
+// Pack copies declare their encoded codec; codec-less fixture maps keep the original probe strings.
+export function copyMimeType(d){return d.codec?`${d.type}; codecs="${d.codec}"`:d.type==='video/mp4'?'video/mp4; codecs="avc1.42E01E"':'video/webm; codecs="vp8, vorbis"';}
 export const motionLabel=placeholder=>placeholder?'Placeholder GUI · simulated':'Recorded in the lab';
 export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={}){
  if(!access||typeof access.load!=='function')throw new TypeError('Motion requires restricted verified-media access.');
@@ -24,8 +26,8 @@ export function createMotionAdapter({access,timeoutMs=2500,showHeading=true}={})
   const section=frame(descriptor.alt),message=element('p','Preparing verified recording');section.append(message);emit(true);
   const requestController=io,deadline=performance.now()+timeoutMs;let expiry,timedOut=false;
   const remaining=()=>Math.max(1,deadline-performance.now());
-  const probe=element('video',null),mime=type=>type==='video/mp4'?'video/mp4; codecs="avc1.42E01E"':'video/webm; codecs="vp8, vorbis"';
-  const choices=[['primary',descriptor],...(descriptor.webm?[['webm',descriptor.webm]]:[])].filter(([,d])=>probe.canPlayType(mime(d.type))!=='');
+  const probe=element('video',null);
+  const choices=[['primary',descriptor],...(descriptor.webm?[['webm',descriptor.webm]]:[])].filter(([,d])=>probe.canPlayType(copyMimeType(d))!=='');
   const work=(async()=>{
    if(!choices.length)throw new Error(code);
    for(let index=0;index<choices.length;index++){

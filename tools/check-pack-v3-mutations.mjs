@@ -31,7 +31,7 @@ const cases=[
 ];
 if(browser)cases.push(
  ['PB-M19-json-verification','tools/pack-preview-client.mjs',[['await sha(bytes)!==descriptor.sha256','false']],'PB-PREVIEW-04','browser'],
- ['PB-M20-real-source','tools/pack-preview-client.mjs',[[' const media=projectPreviewMedia'," experience.presentation.title='Run Custody · Placeholder simulation';\n const media=projectPreviewMedia"]],'PB-PREVIEW-03','browser']
+ ['PB-M20-real-source','tools/pack-preview-client.mjs',[[' const media=experience.renderer_config.media'," experience.presentation.title='Run Custody · Placeholder simulation';\n const media=experience.renderer_config.media"]],'PB-PREVIEW-03','browser']
 );
 const tests=['tests/pack-v3.test.mjs','tests/pack-v3-sample.test.mjs','tests/pack-preview.test.mjs','tests/pack-v3-schema.test.mjs'];
 const run=(rule,kind='unit')=>spawnSync(process.execPath,kind==='browser'?['node_modules/@playwright/test/cli.js','test','tests/e2e/pack-v3-preview.spec.mjs','--workers=1','--reporter=line',...(rule?['--grep',rule]:[])]:['--test',...(rule?['--test-name-pattern='+rule]:[]),...tests],{cwd:sandbox,encoding:'utf8',timeout:180000,maxBuffer:8*1024*1024,env:process.env});

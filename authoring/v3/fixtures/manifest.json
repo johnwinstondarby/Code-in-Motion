@@ -22,6 +22,14 @@
       "mode": "document"
     },
     {
+      "name": "pane-id",
+      "rule": "CIM-V3-PANE-ID",
+      "kind": "authoring",
+      "file": "invalid/pane-id.json",
+      "path": "$.panes",
+      "mode": "document"
+    },
+    {
       "name": "repeated-cli",
       "rule": "CIM-V3-ACTION-COUNT",
       "kind": "authoring",

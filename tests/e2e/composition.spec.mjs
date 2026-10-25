@@ -18,7 +18,7 @@ if(q.has('seek-fail')){const nativeTime=Object.getOwnPropertyDescriptor(HTMLMedi
 if(q.has('no-h264')){const original=HTMLMediaElement.prototype.canPlayType;HTMLMediaElement.prototype.canPlayType=function(type){return type.includes('mp4')?'':original.call(this,type);};}
 const bindings={'pack:media/placeholder.mp4':'/__cim_fixture_media/'+mode+'.mp4','pack:media/placeholder.webm':'/__cim_fixture_media/'+mode+'.webm','pack:media/placeholder.vtt':'/__cim_fixture_media/captions.vtt'};
 const access=createVerifiedMediaAccess(data.media,{origin:location.origin,bindings,timeoutMs:q.has('retry-deadline')?3000:1000});
-window.fixture=mountComposedPlayer({root:document.querySelector('#fixture'),...data,access,createDriver:createMultiPaneFixtureDriver,reducedMotion:matchMedia('(prefers-reduced-motion: reduce)').matches});
+window.fixture=mountComposedPlayer({root:document.querySelector('#fixture'),...data,access,createDriver:createMultiPaneFixtureDriver,traceClock:true,reducedMotion:matchMedia('(prefers-reduced-motion: reduce)').matches});
 window.fixture.access=access;
 </script>`;
 const released=new Set();

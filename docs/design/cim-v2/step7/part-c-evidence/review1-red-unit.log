@@ -1,0 +1,67 @@
+TAP version 13
+# Subtest: [PC-12] malformed pane projections are refused at admission, not when the Player mounts
+not ok 1 - [PC-12] malformed pane projections are refused at admission, not when the Player mounts
+  ---
+  duration_ms: 572.788754
+  type: 'test'
+  location: '<scratchpad>/partc/tests/part-c-admission.test.mjs:146:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    malformed projections that were admitted
+    + actual - expected
+    
+    + [
+    +   'unknown pane type',
+    +   'missing Explanation state',
+    +   'non-text Explanation state',
+    +   'Explanation differs from its beat commentary',
+    +   'conflicting CLI and GUI actions',
+    +   'repeated CLI action',
+    +   'wrong action tab',
+    +   'action tab on the initial state',
+    +   'action names the other pane',
+    +   'Console state differs from its action',
+    +   'Motion state differs from its action',
+    +   'waiting flag contradicts the beat',
+    +   'unsupported pane IDs'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'unknown pane type'
+    1: 'missing Explanation state'
+    2: 'non-text Explanation state'
+    3: 'Explanation differs from its beat commentary'
+    4: 'conflicting CLI and GUI actions'
+    5: 'repeated CLI action'
+    6: 'wrong action tab'
+    7: 'action tab on the initial state'
+    8: 'action names the other pane'
+    9: 'Console state differs from its action'
+    10: 'Motion state differs from its action'
+    11: 'waiting flag contradicts the beat'
+    12: 'unsupported pane IDs'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/partc/tests/part-c-admission.test.mjs:168:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [PC-13] every compiled placeholder fixture is still admitted
+ok 2 - [PC-13] every compiled placeholder fixture is still admitted
+  ---
+  duration_ms: 99.283599
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 857.639625

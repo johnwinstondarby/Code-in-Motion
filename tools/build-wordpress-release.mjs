@@ -88,10 +88,13 @@ export function assertReleaseNodeVersion(actualVersion, requiredVersion) {
   return required;
 }
 
-// ADR 0061 step 5 is fixture-only. Admission and packaging must be reviewed
-// together at the later opt-in consumer step, never enabled by adding a file.
+// ADR 0061 step 7 Part C ships the multi-pane Player behind production admission.
+// Its stylesheets ship beside its modules; nothing else under src/ is a release asset.
 export function isWordPressSourceModule(source) {
-  return source.startsWith('src/') && source.endsWith('.mjs') && !source.startsWith('src/multipane/');
+  return source.startsWith('src/') && source.endsWith('.mjs');
+}
+export function isWordPressSourceStylesheet(source) {
+  return source.startsWith('src/multipane/') && source.endsWith('.css');
 }
 
 export function rewriteBootstrapForRelease(source, version) {
@@ -377,7 +380,7 @@ async function releaseInputs(version) {
   ));
 
   const moduleRoot = `wordpress/assets/modules/${version}`;
-  const srcModules = await collectFiles(resolve(ROOT, 'src'), (path) => isWordPressSourceModule(repoPath(path)));
+  const srcModules = await collectFiles(resolve(ROOT, 'src'), (path) => isWordPressSourceModule(repoPath(path)) || isWordPressSourceStylesheet(repoPath(path)));
   const wordpressModules = await collectFiles(
     resolve(ROOT, 'wordpress', 'assets'),
     (path) => extname(path) === '.mjs'

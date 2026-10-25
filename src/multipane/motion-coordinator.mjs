@@ -1,9 +1,11 @@
 import {createMotionAdapter} from './motion.mjs';
 import {createMediaBarrier} from './media-barrier.mjs';
+// Clock observations are a test aid: off by default and bounded when a fixture harness enables them.
+export function createClockTrace({enabled=false,limit=256}={}){const events=[];return Object.freeze({events,record(event){if(!enabled)return;events.push(event);if(events.length>limit)events.splice(0,events.length-limit);}});}
 export function createMotionCoordinator(experience,slots,options){
- const adapter=createMotionAdapter({access:options.access,showHeading:options.showMotionHeading!==false});let scope;const clockEvents=[];
+ const adapter=createMotionAdapter({access:options.access,showHeading:options.showMotionHeading!==false});let scope;const trace=createClockTrace({enabled:options.traceClock===true}),clockEvents=trace.events;
  const motion={mount:adapter.pane.mount,settle:adapter.pane.settle,dispose:adapter.pane.dispose,
-  async play(state,context){const current=scope;try{await adapter.prepare(state);}catch(error){current.barrier.release('preparation');return{status:'failed',error};}if(current!==scope||context.cancellation.aborted)return{status:'cancelled'};current.barrier.release('preparation');const clock=Object.freeze({...current.barrier.clock,observe(fn){return current.barrier.clock.observe(event=>{clockEvents.push({...event,time:current.barrier.clock.now(),intent:driver.session.read().playing});fn(event);});}});return adapter.pane.play(state,Object.freeze({...context,clock}));}};
+  async play(state,context){const current=scope;try{await adapter.prepare(state);}catch(error){current.barrier.release('preparation');return{status:'failed',error};}if(current!==scope||context.cancellation.aborted)return{status:'cancelled'};current.barrier.release('preparation');const clock=Object.freeze({...current.barrier.clock,observe(fn){return current.barrier.clock.observe(event=>{trace.record({...event,time:current.barrier.clock.now(),intent:driver.session.read().playing});fn(event);});}});return adapter.pane.play(state,Object.freeze({...context,clock}));}};
  const driver=options.createDriver(experience,slots,{...options,paneFactories:{...options.paneFactories,motion:()=>{motion.mount(slots.motion,options.media,{id:'motion',type:'motion/v1'});return motion;}},wrapTransition(base){
   const barrier=createMediaBarrier(base);scope={barrier};barrier.hold('preparation');
   const off=adapter.observe(({buffering})=>{if(driver.session.read().waiting.motion)return;if(buffering)barrier.hold('buffering');else barrier.release('buffering');});

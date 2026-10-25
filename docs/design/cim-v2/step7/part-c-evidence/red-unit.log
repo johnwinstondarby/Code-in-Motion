@@ -1,0 +1,363 @@
+TAP version 13
+# Subtest: [PC-01] a released host identity refuses 1.1.0 multi-pane lessons with an actionable reason
+not ok 1 - [PC-01] a released host identity refuses 1.1.0 multi-pane lessons with an actionable reason
+  ---
+  duration_ms: 271.593887
+  type: 'test'
+  location: '<repo>/tests/part-c-admission.test.mjs:20:1'
+  failureType: 'testCodeFailure'
+  error: 'Not implemented.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Module.createHostIdentity (file://<repo>/src/multipane/admission.mjs:2:44)
+    release (file://<repo>/tests/part-c-admission.test.mjs:18:29)
+    TestContext.<anonymous> (file://<repo>/tests/part-c-admission.test.mjs:23:17)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [PC-02] the explicit development identity admits the real placeholder pack and builds Engineering data
+not ok 2 - [PC-02] the explicit development identity admits the real placeholder pack and builds Engineering data
+  ---
+  duration_ms: 44.609907
+  type: 'test'
+  location: '<repo>/tests/part-c-admission.test.mjs:28:1'
+  failureType: 'testCodeFailure'
+  error: 'Not implemented.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Module.createHostIdentity (file://<repo>/src/multipane/admission.mjs:2:44)
+    development (file://<repo>/tests/part-c-admission.test.mjs:17:33)
+    TestContext.<anonymous> (file://<repo>/tests/part-c-admission.test.mjs:30:73)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-03] development admission cannot be claimed by data, strings or forged identity objects
+ok 3 - [PC-03] development admission cannot be claimed by data, strings or forged identity objects
+  ---
+  duration_ms: 34.215861
+  type: 'test'
+  ...
+# Subtest: [PC-04] non-placeholder lessons, captures and media are refused in 1.1.0
+not ok 4 - [PC-04] non-placeholder lessons, captures and media are refused in 1.1.0
+  ---
+  duration_ms: 26.712548
+  type: 'test'
+  location: '<repo>/tests/part-c-admission.test.mjs:47:1'
+  failureType: 'testCodeFailure'
+  error: '({experience})=>{experience.renderer_config.placeholder={enabled:false,label:null};}'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  error: 'Not implemented.'
+  stack: |-
+    Module.createHostIdentity (file://<repo>/src/multipane/admission.mjs:2:44)
+    development (file://<repo>/tests/part-c-admission.test.mjs:17:33)
+    file://<repo>/tests/part-c-admission.test.mjs:57:106
+    getActual (node:assert:609:5)
+    Function.throws (node:assert:757:24)
+    TestContext.<anonymous> (file://<repo>/tests/part-c-admission.test.mjs:57:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-admission.test.mjs:57:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-05] invalid envelopes, captures and media are refused before any token is issued
+ok 5 - [PC-05] invalid envelopes, captures and media are refused before any token is issued
+  ---
+  duration_ms: 157.912374
+  type: 'test'
+  ...
+# Subtest: [PC-06] the session model accepts a bound admission token and still refuses everything else
+not ok 6 - [PC-06] the session model accepts a bound admission token and still refuses everything else
+  ---
+  duration_ms: 22.294084
+  type: 'test'
+  location: '<repo>/tests/part-c-admission.test.mjs:78:1'
+  failureType: 'testCodeFailure'
+  error: 'Not implemented.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Module.createHostIdentity (file://<repo>/src/multipane/admission.mjs:2:44)
+    development (file://<repo>/tests/part-c-admission.test.mjs:17:33)
+    TestContext.<anonymous> (file://<repo>/tests/part-c-admission.test.mjs:80:73)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-07] Engineering mounts production data only with a valid admission token
+not ok 7 - [PC-07] Engineering mounts production data only with a valid admission token
+  ---
+  duration_ms: 22.893765
+  type: 'test'
+  location: '<repo>/tests/part-c-admission.test.mjs:89:1'
+  failureType: 'testCodeFailure'
+  error: 'Not implemented.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Module.createHostIdentity (file://<repo>/src/multipane/admission.mjs:2:44)
+    development (file://<repo>/tests/part-c-admission.test.mjs:17:33)
+    TestContext.<anonymous> (file://<repo>/tests/part-c-admission.test.mjs:91:73)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-08] the pack media form requires declared codecs and keeps the fixture form unchanged
+not ok 8 - [PC-08] the pack media form requires declared codecs and keeps the fixture form unchanged
+  ---
+  duration_ms: 19.926878
+  type: 'test'
+  location: '<repo>/tests/part-c-admission.test.mjs:100:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + [
+    +   {
+    +     fix: 'Use the documented closed fixture media-map fields and distinct lowercase clip IDs.',
+    +     id: 'CIM-MEDIA-SHAPE',
+    +     message: 'Expected a fixture-only media map. Fix: Use the documented closed fixture media-map fields and distinct lowercase clip IDs.',
+    +     path: '$'
+    +   }
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0:
+      id: 'CIM-MEDIA-SHAPE'
+      path: '$'
+      fix: 'Use the documented closed fixture media-map fields and distinct lowercase clip IDs.'
+      message: 'Expected a fixture-only media map. Fix: Use the documented closed fixture media-map fields and distinct lowercase clip IDs.'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-admission.test.mjs:102:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-09] Motion probes each copy with its declared codec string
+not ok 9 - [PC-09] Motion probes each copy with its declared codec string
+  ---
+  duration_ms: 19.236015
+  type: 'test'
+  location: '<repo>/tests/part-c-admission.test.mjs:113:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-admission.test.mjs:114:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-10] the coordinator clock trace is opt-in and bounded
+not ok 10 - [PC-10] the coordinator clock trace is opt-in and bounded
+  ---
+  duration_ms: 1.201012
+  type: 'test'
+  location: '<repo>/tests/part-c-admission.test.mjs:121:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'undefined'
+    - 'function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'function'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-admission.test.mjs:122:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-11] the capacity note is a live region once per beat, not on every frame
+not ok 11 - [PC-11] the capacity note is a live region once per beat, not on every frame
+  ---
+  duration_ms: 27.913025
+  type: 'test'
+  location: '<repo>/tests/part-c-admission.test.mjs:130:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    one live-region announcement for the beat
+    
+    4 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 4
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-admission.test.mjs:140:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-B-01] the repository has no production path to development admission, fixtures or tools
+not ok 12 - [PC-B-01] the repository has no production path to development admission, fixtures or tools
+  ---
+  duration_ms: 1.548617
+  type: 'test'
+  location: '<repo>/tests/part-c-boundary.test.mjs:9:1'
+  failureType: 'testCodeFailure'
+  error: 'both src/ and wordpress/ are scanned'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-boundary.test.mjs:11:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [PC-B-02] the check catches each forbidden route
+not ok 13 - [PC-B-02] the check catches each forbidden route
+  ---
+  duration_ms: 15.156266
+  type: 'test'
+  location: '<repo>/tests/part-c-boundary.test.mjs:15:1'
+  failureType: 'testCodeFailure'
+  error: 'production-to-authoring: []'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-boundary.test.mjs:31:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-B-03] comments mentioning fixtures are not violations
+ok 14 - [PC-B-03] comments mentioning fixtures are not violations
+  ---
+  duration_ms: 8.642457
+  type: 'test'
+  ...
+# Subtest: [PC-PHP-01] a released 1.0.1 host refuses a v2 pack with its interval reason
+not ok 15 - [PC-PHP-01] a released 1.0.1 host refuses a v2 pack with its interval reason
+  ---
+  duration_ms: 194.904989
+  type: 'test'
+  location: '<repo>/tests/part-c-php-discovery.test.mjs:28:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /1\.1\.0/. Input:
+    
+    'Unsupported lesson-pack agreement; expected cim.lesson-pack/v1.'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'Unsupported lesson-pack agreement; expected cim.lesson-pack/v1.'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-php-discovery.test.mjs:32:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [PC-PHP-02] the exact development constant admits the v2 pack with verified lesson and capture URLs
+not ok 16 - [PC-PHP-02] the exact development constant admits the v2 pack with verified lesson and capture URLs
+  ---
+  duration_ms: 66.087846
+  type: 'test'
+  location: '<repo>/tests/part-c-php-discovery.test.mjs:35:1'
+  failureType: 'testCodeFailure'
+  error: '["Run Custody pack: Unsupported lesson-pack agreement; expected cim.lesson-pack/v1."]'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-php-discovery.test.mjs:38:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-PHP-03] the development rule cannot be widened by other values or by a released version
+not ok 17 - [PC-PHP-03] the development rule cannot be widened by other values or by a released version
+  ---
+  duration_ms: 345.467045
+  type: 'test'
+  location: '<repo>/tests/part-c-php-discovery.test.mjs:47:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(discover(plugins,{version:'1.1.0'}).lessons[id])
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-php-discovery.test.mjs:51:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-PHP-04] every manifest-listed file is confined and must match its size and fingerprint
+ok 18 - [PC-PHP-04] every manifest-listed file is confined and must match its size and fingerprint
+  ---
+  duration_ms: 449.959572
+  type: 'test'
+  ...
+# Subtest: [PC-PHP-05] placeholder mode, agreement, renderer and capture schema are required
+ok 19 - [PC-PHP-05] placeholder mode, agreement, renderer and capture schema are required
+  ---
+  duration_ms: 362.308348
+  type: 'test'
+  ...
+# Subtest: [PC-PHP-06] replacing a listed media file invalidates the cached acceptance fingerprint
+not ok 20 - [PC-PHP-06] replacing a listed media file invalidates the cached acceptance fingerprint
+  ---
+  duration_ms: 142.994741
+  type: 'test'
+  location: '<repo>/tests/part-c-php-discovery.test.mjs:89:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected "actual" to be strictly unequal to:
+    
+    '5afb1194adb262eedaf903283df092189994632d020c7dbe154dd05df8e1fc09'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '5afb1194adb262eedaf903283df092189994632d020c7dbe154dd05df8e1fc09'
+  actual: '5afb1194adb262eedaf903283df092189994632d020c7dbe154dd05df8e1fc09'
+  operator: 'notStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<repo>/tests/part-c-php-discovery.test.mjs:96:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 5
+# fail 15
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2627.275384

@@ -1,0 +1,630 @@
+TAP version 13
+# Subtest: v3 schemas use only explicitly supported evaluator keywords
+ok 1 - v3 schemas use only explicitly supported evaluator keywords
+  ---
+  duration_ms: 4.044959
+  type: 'test'
+  ...
+# Subtest: v3 structural checker agrees with Ajv on invalid fixtures and malformed shapes
+ok 2 - v3 structural checker agrees with Ajv on invalid fixtures and malformed shapes
+  ---
+  duration_ms: 330.784265
+  type: 'test'
+  ...
+# Subtest: v3 Unicode bounds and patterns agree with JSON Schema
+ok 3 - v3 Unicode bounds and patterns agree with JSON Schema
+  ---
+  duration_ms: 5.147413
+  type: 'test'
+  ...
+# Subtest: legacy normalization preserves rule, path and non-parse messages
+ok 4 - legacy normalization preserves rule, path and non-parse messages
+  ---
+  duration_ms: 3.34364
+  type: 'test'
+  ...
+# Subtest: v3 valid run-custody: schemas, references, archive and deterministic Diagram derivation
+ok 5 - v3 valid run-custody: schemas, references, archive and deterministic Diagram derivation
+  ---
+  duration_ms: 53.901976
+  type: 'test'
+  ...
+# Subtest: v3 valid context-chain: schemas, references, archive and deterministic Diagram derivation
+ok 6 - v3 valid context-chain: schemas, references, archive and deterministic Diagram derivation
+  ---
+  duration_ms: 27.084121
+  type: 'test'
+  ...
+# Subtest: v3 envelope feasibility does not register or admit a new renderer
+ok 7 - v3 envelope feasibility does not register or admit a new renderer
+  ---
+  duration_ms: 7.274169
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-SHAPE: shape
+ok 8 - v3 fixture CIM-V3-SHAPE: shape
+  ---
+  duration_ms: 6.399753
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PANE-TYPE: pane-type
+ok 9 - v3 fixture CIM-V3-PANE-TYPE: pane-type
+  ---
+  duration_ms: 3.05785
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PANE-ID: pane-id
+not ok 10 - v3 fixture CIM-V3-PANE-ID: pane-id
+  ---
+  duration_ms: 4.785925
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/authoring-v3.test.mjs:114:39'
+  failureType: 'testCodeFailure'
+  error: 'Invalid fixture must be rejected.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/authoring-v3.test.mjs:121:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: v3 fixture CIM-V3-ACTION-COUNT: repeated-cli
+ok 11 - v3 fixture CIM-V3-ACTION-COUNT: repeated-cli
+  ---
+  duration_ms: 3.055354
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-SIMULTANEOUS: simultaneous
+ok 12 - v3 fixture CIM-V3-SIMULTANEOUS: simultaneous
+  ---
+  duration_ms: 1.966272
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-ACTION-TAB: wrong-tab
+ok 13 - v3 fixture CIM-V3-ACTION-TAB: wrong-tab
+  ---
+  duration_ms: 1.9608
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-EXPLANATION: missing-explanation
+ok 14 - v3 fixture CIM-V3-EXPLANATION: missing-explanation
+  ---
+  duration_ms: 5.189689
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-INITIAL: missing-initial
+ok 15 - v3 fixture CIM-V3-INITIAL: missing-initial
+  ---
+  duration_ms: 2.786627
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-ID: duplicate-id
+ok 16 - v3 fixture CIM-V3-ID: duplicate-id
+  ---
+  duration_ms: 6.655077
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-CAPTURE-REFERENCE: capture-reference
+ok 17 - v3 fixture CIM-V3-CAPTURE-REFERENCE: capture-reference
+  ---
+  duration_ms: 5.671296
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-DIAGRAM-STATE: diagram-result
+ok 18 - v3 fixture CIM-V3-DIAGRAM-STATE: diagram-result
+  ---
+  duration_ms: 5.390636
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PLACEHOLDER: missing-placeholder
+ok 19 - v3 fixture CIM-V3-PLACEHOLDER: missing-placeholder
+  ---
+  duration_ms: 13.663383
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PLACEHOLDER: real-label
+ok 20 - v3 fixture CIM-V3-PLACEHOLDER: real-label
+  ---
+  duration_ms: 6.69396
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-ARCHIVE-PATH: archive-path
+ok 21 - v3 fixture CIM-V3-ARCHIVE-PATH: archive-path
+  ---
+  duration_ms: 2.777638
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-EVIDENCE: evidence-digest
+ok 22 - v3 fixture CIM-V3-EVIDENCE: evidence-digest
+  ---
+  duration_ms: 5.164916
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PACK-VERSION: pack-version
+ok 23 - v3 fixture CIM-V3-PACK-VERSION: pack-version
+  ---
+  duration_ms: 2.324491
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-MEDIA-DEFERRED: media-map
+ok 24 - v3 fixture CIM-V3-MEDIA-DEFERRED: media-map
+  ---
+  duration_ms: 3.215227
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-LIMIT: limit
+ok 25 - v3 fixture CIM-V3-LIMIT: limit
+  ---
+  duration_ms: 20.149609
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PARSE: parse
+ok 26 - v3 fixture CIM-V3-PARSE: parse
+  ---
+  duration_ms: 6.571306
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PACK-FILES: production-file-list
+ok 27 - v3 fixture CIM-V3-PACK-FILES: production-file-list
+  ---
+  duration_ms: 7.308251
+  type: 'test'
+  ...
+# Subtest: v3 fixture CIM-V3-PACK-LIMIT: production-total
+ok 28 - v3 fixture CIM-V3-PACK-LIMIT: production-total
+  ---
+  duration_ms: 9.763042
+  type: 'test'
+  ...
+# Subtest: v3 fixture inventory exercises every declared diagnostic rule
+not ok 29 - v3 fixture inventory exercises every declared diagnostic rule
+  ---
+  duration_ms: 2.124711
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/authoring-v3.test.mjs:125:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    ... Skipped lines
+    
+      [
+        'CIM-V3-ACTION-COUNT',
+        'CIM-V3-ACTION-TAB',
+        'CIM-V3-ARCHIVE-PATH',
+        'CIM-V3-CAPTURE-REFERENCE',
+    ...
+        'CIM-V3-PACK-VERSION',
+    +   'CIM-V3-PANE-ID',
+        'CIM-V3-PANE-TYPE',
+        'CIM-V3-PARSE',
+        'CIM-V3-PLACEHOLDER',
+        'CIM-V3-SHAPE',
+        'CIM-V3-SIMULTANEOUS'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'CIM-V3-ACTION-COUNT'
+    1: 'CIM-V3-ACTION-TAB'
+    2: 'CIM-V3-ARCHIVE-PATH'
+    3: 'CIM-V3-CAPTURE-REFERENCE'
+    4: 'CIM-V3-DIAGRAM-STATE'
+    5: 'CIM-V3-EVIDENCE'
+    6: 'CIM-V3-EXPLANATION'
+    7: 'CIM-V3-ID'
+    8: 'CIM-V3-INITIAL'
+    9: 'CIM-V3-LIMIT'
+    10: 'CIM-V3-MEDIA-DEFERRED'
+    11: 'CIM-V3-PACK-FILES'
+    12: 'CIM-V3-PACK-LIMIT'
+    13: 'CIM-V3-PACK-VERSION'
+    14: 'CIM-V3-PANE-TYPE'
+    15: 'CIM-V3-PARSE'
+    16: 'CIM-V3-PLACEHOLDER'
+    17: 'CIM-V3-SHAPE'
+    18: 'CIM-V3-SIMULTANEOUS'
+  actual:
+    0: 'CIM-V3-ACTION-COUNT'
+    1: 'CIM-V3-ACTION-TAB'
+    2: 'CIM-V3-ARCHIVE-PATH'
+    3: 'CIM-V3-CAPTURE-REFERENCE'
+    4: 'CIM-V3-DIAGRAM-STATE'
+    5: 'CIM-V3-EVIDENCE'
+    6: 'CIM-V3-EXPLANATION'
+    7: 'CIM-V3-ID'
+    8: 'CIM-V3-INITIAL'
+    9: 'CIM-V3-LIMIT'
+    10: 'CIM-V3-MEDIA-DEFERRED'
+    11: 'CIM-V3-PACK-FILES'
+    12: 'CIM-V3-PACK-LIMIT'
+    13: 'CIM-V3-PACK-VERSION'
+    14: 'CIM-V3-PANE-ID'
+    15: 'CIM-V3-PANE-TYPE'
+    16: 'CIM-V3-PARSE'
+    17: 'CIM-V3-PLACEHOLDER'
+    18: 'CIM-V3-SHAPE'
+    19: 'CIM-V3-SIMULTANEOUS'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/authoring-v3.test.mjs:126:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: v3 JSON guards reject duplicate keys, depth, bytes, nested unknown fields and invalid UTF-8
+ok 30 - v3 JSON guards reject duplicate keys, depth, bytes, nested unknown fields and invalid UTF-8
+  ---
+  duration_ms: 5.714444
+  type: 'test'
+  ...
+# Subtest: v3 cross-validation rejects every unresolved entity, orphan/reused records and false provenance
+ok 31 - v3 cross-validation rejects every unresolved entity, orphan/reused records and false provenance
+  ---
+  duration_ms: 32.125007
+  type: 'test'
+  ...
+# Subtest: v3 schema arrays and field limits are enforced at the declared boundaries
+ok 32 - v3 schema arrays and field limits are enforced at the declared boundaries
+  ---
+  duration_ms: 20.239838
+  type: 'test'
+  ...
+# Subtest: v3 archive refuses traversal, escaping junctions, missing/tampered files and oversize
+ok 33 - v3 archive refuses traversal, escaping junctions, missing/tampered files and oversize
+  ---
+  duration_ms: 32.760626
+  type: 'test'
+  ...
+# Subtest: v3 CLI validates lesson, capture and pack without enabling compile/pack or losing actionable causes
+ok 34 - v3 CLI validates lesson, capture and pack without enabling compile/pack or losing actionable causes
+  ---
+  duration_ms: 822.811571
+  type: 'test'
+  ...
+# Subtest: v3 pack schema is validation-only with a closed deferred media map
+ok 35 - v3 pack schema is validation-only with a closed deferred media map
+  ---
+  duration_ms: 4.151706
+  type: 'test'
+  ...
+# Subtest: v3 work preserves all 77 frozen v1/v2 files and 66 source outputs or rejection messages
+ok 36 - v3 work preserves all 77 frozen v1/v2 files and 66 source outputs or rejection messages
+  ---
+  duration_ms: 167.539003
+  type: 'test'
+  ...
+# Subtest: [PC-ADMIN-01] Admin marks a v2 lesson Ready only through the Player admission boundary
+ok 37 - [PC-ADMIN-01] Admin marks a v2 lesson Ready only through the Player admission boundary
+  ---
+  duration_ms: 188.979209
+  type: 'test'
+  ...
+# Subtest: [PC-ADMIN-02] Admin shows the same refusal reasons the Player would
+ok 38 - [PC-ADMIN-02] Admin shows the same refusal reasons the Player would
+  ---
+  duration_ms: 11.000337
+  type: 'test'
+  ...
+# Subtest: [PC-ADMIN-03] v1 lesson checks keep their existing path
+ok 39 - [PC-ADMIN-03] v1 lesson checks keep their existing path
+  ---
+  duration_ms: 2.679695
+  type: 'test'
+  ...
+# Subtest: [PC-ADMIN-04] Admin does not mark a lesson Ready when its panes cannot be settled
+not ok 40 - [PC-ADMIN-04] Admin does not mark a lesson Ready when its panes cannot be settled
+  ---
+  duration_ms: 7.395726
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-admin.test.mjs:41:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Placeholder multi-pane lesson passed pack, capture, media-map and engine admission. Recordings are served in a later step.
+    + actual - expected
+    
+    + 'Ready'
+    - 'Rejected'
+         ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'Rejected'
+  actual: 'Ready'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-admin.test.mjs:45:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-ADMIN-05] Admin rejects each of Pilgrim's malformed lessons with the beat and rule, and keeps unchanged lessons Ready
+not ok 41 - [PC-ADMIN-05] Admin rejects each of Pilgrim's malformed lessons with the beat and rule, and keeps unchanged lessons Ready
+  ---
+  duration_ms: 9.658711
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-admin.test.mjs:49:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Console declaration type becomes unknown/v1: Placeholder multi-pane lesson passed pack, capture, media-map and engine admission. Recordings are served in a later step.
+    + actual - expected
+    
+    + 'Ready'
+    - 'Rejected'
+         ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'Rejected'
+  actual: 'Ready'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-admin.test.mjs:55:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-01] a released host identity refuses 1.1.0 multi-pane lessons with an actionable reason
+ok 42 - [PC-01] a released host identity refuses 1.1.0 multi-pane lessons with an actionable reason
+  ---
+  duration_ms: 154.8527
+  type: 'test'
+  ...
+# Subtest: [PC-02] the explicit development identity admits the real placeholder pack and builds Engineering data
+ok 43 - [PC-02] the explicit development identity admits the real placeholder pack and builds Engineering data
+  ---
+  duration_ms: 49.021556
+  type: 'test'
+  ...
+# Subtest: [PC-03] development admission cannot be claimed by data, strings or forged identity objects
+ok 44 - [PC-03] development admission cannot be claimed by data, strings or forged identity objects
+  ---
+  duration_ms: 23.032473
+  type: 'test'
+  ...
+# Subtest: [PC-04] non-placeholder lessons, captures and media are refused in 1.1.0
+ok 45 - [PC-04] non-placeholder lessons, captures and media are refused in 1.1.0
+  ---
+  duration_ms: 107.560813
+  type: 'test'
+  ...
+# Subtest: [PC-05] invalid envelopes, captures and media are refused before any token is issued
+ok 46 - [PC-05] invalid envelopes, captures and media are refused before any token is issued
+  ---
+  duration_ms: 150.410739
+  type: 'test'
+  ...
+# Subtest: [PC-06] the session model accepts a bound admission token and still refuses everything else
+ok 47 - [PC-06] the session model accepts a bound admission token and still refuses everything else
+  ---
+  duration_ms: 23.556044
+  type: 'test'
+  ...
+# Subtest: [PC-07] Engineering mounts production data only with a valid admission token
+ok 48 - [PC-07] Engineering mounts production data only with a valid admission token
+  ---
+  duration_ms: 29.282588
+  type: 'test'
+  ...
+# Subtest: [PC-08] the pack media form requires declared codecs and keeps the fixture form unchanged
+ok 49 - [PC-08] the pack media form requires declared codecs and keeps the fixture form unchanged
+  ---
+  duration_ms: 19.0564
+  type: 'test'
+  ...
+# Subtest: [PC-09] Motion probes each copy with its declared codec string
+ok 50 - [PC-09] Motion probes each copy with its declared codec string
+  ---
+  duration_ms: 0.655147
+  type: 'test'
+  ...
+# Subtest: [PC-10] the coordinator clock trace is opt-in and bounded
+ok 51 - [PC-10] the coordinator clock trace is opt-in and bounded
+  ---
+  duration_ms: 0.977635
+  type: 'test'
+  ...
+# Subtest: [PC-11] the capacity note is a live region once per beat, not on every frame
+ok 52 - [PC-11] the capacity note is a live region once per beat, not on every frame
+  ---
+  duration_ms: 12.748603
+  type: 'test'
+  ...
+# Subtest: [PC-12] malformed pane projections are refused at admission, not when the Player mounts
+not ok 53 - [PC-12] malformed pane projections are refused at admission, not when the Player mounts
+  ---
+  duration_ms: 262.28092
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-admission.test.mjs:146:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    malformed projections that were admitted
+    + actual - expected
+    
+    + [
+    +   'unknown pane type',
+    +   'missing Explanation state',
+    +   'non-text Explanation state',
+    +   'Explanation differs from its beat commentary',
+    +   'conflicting CLI and GUI actions',
+    +   'repeated CLI action',
+    +   'wrong action tab',
+    +   'action tab on the initial state',
+    +   'action names the other pane',
+    +   'Console state differs from its action',
+    +   'Motion state differs from its action',
+    +   'waiting flag contradicts the beat',
+    +   'unsupported pane IDs'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'unknown pane type'
+    1: 'missing Explanation state'
+    2: 'non-text Explanation state'
+    3: 'Explanation differs from its beat commentary'
+    4: 'conflicting CLI and GUI actions'
+    5: 'repeated CLI action'
+    6: 'wrong action tab'
+    7: 'action tab on the initial state'
+    8: 'action names the other pane'
+    9: 'Console state differs from its action'
+    10: 'Motion state differs from its action'
+    11: 'waiting flag contradicts the beat'
+    12: 'unsupported pane IDs'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-admission.test.mjs:168:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-13] every compiled placeholder fixture is still admitted
+ok 54 - [PC-13] every compiled placeholder fixture is still admitted
+  ---
+  duration_ms: 61.448746
+  type: 'test'
+  ...
+# Subtest: [PC-18] action rules hold even when every snapshot agrees with its actions
+not ok 55 - [PC-18] action rules hold even when every snapshot agrees with its actions
+  ---
+  duration_ms: 175.256777
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-admission.test.mjs:198:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    replay-consistent action faults that were admitted
+    + actual - expected
+    
+    + [
+    +   'CLI and GUI in one beat',
+    +   'two CLI actions in one beat',
+    +   'two GUI actions in one beat',
+    +   'CLI action names the Motion pane',
+    +   'GUI action names the Console pane',
+    +   'GUI action claims a real recording',
+    +   'CLI action carries GUI fields'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'CLI and GUI in one beat'
+    1: 'two CLI actions in one beat'
+    2: 'two GUI actions in one beat'
+    3: 'CLI action names the Motion pane'
+    4: 'GUI action names the Console pane'
+    5: 'GUI action claims a real recording'
+    6: 'CLI action carries GUI fields'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-admission.test.mjs:217:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-16] packing refuses non-standard pane IDs with the reason, before any ZIP exists
+not ok 56 - [PC-16] packing refuses non-standard pane IDs with the reason, before any ZIP exists
+  ---
+  duration_ms: 46.141523
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-authoring.test.mjs:12:1'
+  failureType: 'testCodeFailure'
+  error: 'the pack must not be built'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-authoring.test.mjs:18:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: [PC-14] a pack response that never arrives is abandoned at the deadline
+not ok 57 - [PC-14] a pack response that never arrives is abandoned at the deadline
+  ---
+  duration_ms: 2.181697
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-binding.test.mjs:12:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    a deadline constant is exported
+    + actual - expected
+    
+    + 'undefined'
+    - 'number'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'number'
+  actual: 'undefined'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-binding.test.mjs:13:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: [PC-15] a pack body that stalls mid-stream is abandoned at the deadline
+not ok 58 - [PC-15] a pack body that stalls mid-stream is abandoned at the deadline
+  ---
+  duration_ms: 8.396273
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-binding.test.mjs:24:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    the read ends when the deadline passes
+    + actual - expected
+    
+    + 'pending'
+    - 'rejected'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'rejected'
+  actual: 'pending'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-binding.test.mjs:30:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-17] one deadline covers fetching and reading; arriving chunks never extend it
+not ok 59 - [PC-17] one deadline covers fetching and reading; arriving chunks never extend it
+  ---
+  duration_ms: 3.924639
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-binding.test.mjs:35:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    exactly one deadline for the whole read: []
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-binding.test.mjs:43:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..59
+# tests 59
+# suites 0
+# pass 49
+# fail 10
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3653.436303

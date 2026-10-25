@@ -1,0 +1,255 @@
+TAP version 13
+# Subtest: [PC-ADMIN-01] Admin marks a v2 lesson Ready only through the Player admission boundary
+ok 1 - [PC-ADMIN-01] Admin marks a v2 lesson Ready only through the Player admission boundary
+  ---
+  duration_ms: 106.47007
+  type: 'test'
+  ...
+# Subtest: [PC-ADMIN-02] Admin shows the same refusal reasons the Player would
+ok 2 - [PC-ADMIN-02] Admin shows the same refusal reasons the Player would
+  ---
+  duration_ms: 7.397633
+  type: 'test'
+  ...
+# Subtest: [PC-ADMIN-03] v1 lesson checks keep their existing path
+ok 3 - [PC-ADMIN-03] v1 lesson checks keep their existing path
+  ---
+  duration_ms: 1.851749
+  type: 'test'
+  ...
+# Subtest: [PC-ADMIN-04] Admin does not mark a lesson Ready when its panes cannot be settled
+ok 4 - [PC-ADMIN-04] Admin does not mark a lesson Ready when its panes cannot be settled
+  ---
+  duration_ms: 2.973214
+  type: 'test'
+  ...
+# Subtest: [PC-ADMIN-05] Admin rejects each of Pilgrim's malformed lessons with the beat and rule, and keeps unchanged lessons Ready
+ok 5 - [PC-ADMIN-05] Admin rejects each of Pilgrim's malformed lessons with the beat and rule, and keeps unchanged lessons Ready
+  ---
+  duration_ms: 16.392431
+  type: 'test'
+  ...
+# Subtest: [PC-ADMIN-06] Admin rejects lessons the Player model would refuse, with the layout, engine or count reason
+not ok 6 - [PC-ADMIN-06] Admin rejects lessons the Player model would refuse, with the layout, engine or count reason
+  ---
+  duration_ms: 23.566227
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-admin.test.mjs:61:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    unsupported layout: Placeholder multi-pane lesson passed pack, capture, media-map and engine admission. Recordings are served in a later step.
+    + actual - expected
+    
+    + 'Ready'
+    - 'Rejected'
+         ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'Rejected'
+  actual: 'Ready'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-admin.test.mjs:68:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-01] a released host identity refuses 1.1.0 multi-pane lessons with an actionable reason
+ok 7 - [PC-01] a released host identity refuses 1.1.0 multi-pane lessons with an actionable reason
+  ---
+  duration_ms: 108.627687
+  type: 'test'
+  ...
+# Subtest: [PC-02] the explicit development identity admits the real placeholder pack and builds Engineering data
+ok 8 - [PC-02] the explicit development identity admits the real placeholder pack and builds Engineering data
+  ---
+  duration_ms: 42.297949
+  type: 'test'
+  ...
+# Subtest: [PC-03] development admission cannot be claimed by data, strings or forged identity objects
+ok 9 - [PC-03] development admission cannot be claimed by data, strings or forged identity objects
+  ---
+  duration_ms: 15.741347
+  type: 'test'
+  ...
+# Subtest: [PC-04] non-placeholder lessons, captures and media are refused in 1.1.0
+ok 10 - [PC-04] non-placeholder lessons, captures and media are refused in 1.1.0
+  ---
+  duration_ms: 49.31134
+  type: 'test'
+  ...
+# Subtest: [PC-05] invalid envelopes, captures and media are refused before any token is issued
+ok 11 - [PC-05] invalid envelopes, captures and media are refused before any token is issued
+  ---
+  duration_ms: 51.12657
+  type: 'test'
+  ...
+# Subtest: [PC-06] the session model accepts a bound admission token and still refuses everything else
+ok 12 - [PC-06] the session model accepts a bound admission token and still refuses everything else
+  ---
+  duration_ms: 9.06865
+  type: 'test'
+  ...
+# Subtest: [PC-07] Engineering mounts production data only with a valid admission token
+ok 13 - [PC-07] Engineering mounts production data only with a valid admission token
+  ---
+  duration_ms: 9.954833
+  type: 'test'
+  ...
+# Subtest: [PC-08] the pack media form requires declared codecs and keeps the fixture form unchanged
+ok 14 - [PC-08] the pack media form requires declared codecs and keeps the fixture form unchanged
+  ---
+  duration_ms: 5.6307
+  type: 'test'
+  ...
+# Subtest: [PC-09] Motion probes each copy with its declared codec string
+ok 15 - [PC-09] Motion probes each copy with its declared codec string
+  ---
+  duration_ms: 0.514966
+  type: 'test'
+  ...
+# Subtest: [PC-10] the coordinator clock trace is opt-in and bounded
+ok 16 - [PC-10] the coordinator clock trace is opt-in and bounded
+  ---
+  duration_ms: 0.698743
+  type: 'test'
+  ...
+# Subtest: [PC-11] the capacity note is a live region once per beat, not on every frame
+ok 17 - [PC-11] the capacity note is a live region once per beat, not on every frame
+  ---
+  duration_ms: 21.285057
+  type: 'test'
+  ...
+# Subtest: [PC-12] malformed pane projections are refused at admission, not when the Player mounts
+ok 18 - [PC-12] malformed pane projections are refused at admission, not when the Player mounts
+  ---
+  duration_ms: 167.390443
+  type: 'test'
+  ...
+# Subtest: [PC-13] every compiled placeholder fixture is still admitted
+ok 19 - [PC-13] every compiled placeholder fixture is still admitted
+  ---
+  duration_ms: 58.113324
+  type: 'test'
+  ...
+# Subtest: [PC-18] action rules hold even when every snapshot agrees with its actions
+ok 20 - [PC-18] action rules hold even when every snapshot agrees with its actions
+  ---
+  duration_ms: 85.792702
+  type: 'test'
+  ...
+# Subtest: [PC-19] layout, engine_min and the beat limit are refused before any token; 128 beats is still admitted
+not ok 21 - [PC-19] layout, engine_min and the beat limit are refused before any token; 128 beats is still admitted
+  ---
+  duration_ms: 69.264502
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-admission.test.mjs:221:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    lessons the Player model would refuse but admission accepted
+    + actual - expected
+    
+    + [
+    +   'unsupported layout',
+    +   'engine_min 1.0.1',
+    +   '129 consistent beats'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'unsupported layout'
+    1: 'engine_min 1.0.1'
+    2: '129 consistent beats'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-admission.test.mjs:233:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-20] every lesson admission accepts constructs the Player model with its token
+not ok 22 - [PC-20] every lesson admission accepts constructs the Player model with its token
+  ---
+  duration_ms: 143.040766
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-admission.test.mjs:237:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    admitted lessons the model refused
+    + actual - expected
+    
+    + [
+    +   'unsupported layout: Only placeholder v3 panes/v1 projections are accepted.',
+    +   'engine_min 1.0.1: Only placeholder v3 panes/v1 projections are accepted.',
+    +   '129 consistent beats: Invalid pane fixture declarations.'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'unsupported layout: Only placeholder v3 panes/v1 projections are accepted.'
+    1: 'engine_min 1.0.1: Only placeholder v3 panes/v1 projections are accepted.'
+    2: '129 consistent beats: Invalid pane fixture declarations.'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-admission.test.mjs:257:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: [PC-14] a pack response that never arrives is abandoned at the deadline
+ok 23 - [PC-14] a pack response that never arrives is abandoned at the deadline
+  ---
+  duration_ms: 6.004763
+  type: 'test'
+  ...
+# Subtest: [PC-15] a pack body that stalls mid-stream is abandoned at the deadline
+ok 24 - [PC-15] a pack body that stalls mid-stream is abandoned at the deadline
+  ---
+  duration_ms: 1.530713
+  type: 'test'
+  ...
+# Subtest: [PC-17] one deadline covers fetching and reading; arriving chunks never extend it
+ok 25 - [PC-17] one deadline covers fetching and reading; arriving chunks never extend it
+  ---
+  duration_ms: 2.702592
+  type: 'test'
+  ...
+# Subtest: [PC-21] Player namespaces are unique and repeatable for every combination of names
+not ok 26 - [PC-21] Player namespaces are unique and repeatable for every combination of names
+  ---
+  duration_ms: 1.047157
+  type: 'test'
+  location: '<scratchpad>/r0070985/tests/part-c-binding.test.mjs:55:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    unique: cim-panes-1-1 cim-panes-1-2 cim-panes-1-1
+    
+    2 !== 3
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 3
+  actual: 2
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<scratchpad>/r0070985/tests/part-c-binding.test.mjs:58:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 22
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1363.189908

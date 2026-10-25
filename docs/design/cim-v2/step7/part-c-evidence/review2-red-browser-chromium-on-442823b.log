@@ -1,0 +1,63 @@
+
+Running 11 tests using 1 worker
+
+[1/11] tests/e2e/part-c-wordpress-panes.spec.mjs:59:1 › [PC-E2E-01] the development host mounts the composed Player beside an unchanged legacy lesson
+[2/11] tests/e2e/part-c-wordpress-panes.spec.mjs:80:1 › [PC-E2E-02] a GUI beat shows the Motion fallback until media serving exists
+[3/11] tests/e2e/part-c-wordpress-panes.spec.mjs:91:1 › [PC-E2E-03] without the PHP-projected development flag the panes lesson stays on its fallback
+[4/11] tests/e2e/part-c-wordpress-panes.spec.mjs:100:1 › [PC-E2E-04] lesson and capture bytes must match the fingerprints PHP projected
+[5/11] tests/e2e/part-c-wordpress-panes.spec.mjs:109:1 › [PC-E2E-05] a later deep link moves the panes lesson without touching the legacy lesson
+[6/11] tests/e2e/part-c-wordpress-panes.spec.mjs:117:1 › [PC-E2E-06] one stalled pack download does not hold back other lessons
+[7/11] tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (explicit instance names)
+  1) tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (explicit instance names) 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      142 |   // Namespaces are stable across reloads, and an explicit shortcode instance name is visible in them.
+      143 |   const first=await ids();
+    > 144 |   if(roots[0].instance)expect(first.some(id=>id.includes(roots[0].instance))).toBe(true);
+          |                                                                               ^
+      145 |   await p.reload();for(const i of [0,1])await expect(player(p,i)).toHaveAttribute('data-cim-state','ready');
+      146 |   expect(await ids()).toEqual(first);
+      147 |   // Keyboard tab navigation in the second Player leaves the first Player alone.
+        at <scratchpad>/partc/tests/e2e/part-c-wordpress-panes.spec.mjs:144:79
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-bc5cc-us-explicit-instance-names-/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-bc5cc-us-explicit-instance-names-/error-context.md
+
+
+[8/11] tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (unnamed embeds)
+[9/11] tests/e2e/part-c-wordpress-panes.spec.mjs:170:1 › [PC-E2E-08] a Player removed while its download is pending is cancelled and never mounts
+  2) tests/e2e/part-c-wordpress-panes.spec.mjs:170:1 › [PC-E2E-08] a Player removed while its download is pending is cancelled and never mounts 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      176 |  await p.evaluate(()=>{window.__retired=document.querySelector('[data-cim-instance="late"]');window.__retired.remove();});
+      177 |  // The request itself is cancelled, not merely ignored.
+    > 178 |  await expect.poll(async()=>(await gate(p,name)).aborted,{timeout:5000}).toBe(true);
+          |                                                                          ^
+      179 |  await gate(p,name,true);await p.waitForTimeout(300);
+      180 |  expect(await p.evaluate(()=>({ready:window.__retired.getAttribute('data-cim-state'),player:!!window.__retired.querySelector('[data-composed-player]')}))).toEqual({ready:null,player:false});
+      181 |  await expect(player(p,0)).toHaveAttribute('data-cim-state','ready');
+        at <scratchpad>/partc/tests/e2e/part-c-wordpress-panes.spec.mjs:178:74
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-ade88--cancelled-and-never-mounts/error-context.md
+
+    Error Context: test-results/tests-e2e-part-c-wordpress-ade88--cancelled-and-never-mounts/error-context.md
+
+
+[10/11] tests/e2e/part-c-wordpress-panes.spec.mjs:186:1 › [PC-E2E-09] page disposal cancels pending downloads and nothing mounts afterwards
+[11/11] tests/e2e/part-c-wordpress-panes.spec.mjs:197:1 › [PC-E2E-10] each of Pilgrim's malformed lessons keeps its fallback while an adjacent valid lesson works
+  2 failed
+    tests/e2e/part-c-wordpress-panes.spec.mjs:132:2 › [PC-E2E-07] two Players on one page keep their own IDs, focus and Beats menus (explicit instance names) 
+    tests/e2e/part-c-wordpress-panes.spec.mjs:170:1 › [PC-E2E-08] a Player removed while its download is pending is cancelled and never mounts 
+  9 passed (24.5s)
