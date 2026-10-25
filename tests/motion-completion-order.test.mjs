@@ -140,3 +140,16 @@ test('[ORDER-18] cancelling an absolute hold settle cannot turn the new playback
 test('[ORDER-19] reduced-motion final re-seeks obey cancellation without fallback or scheduled frames',async()=>{
  const s=await setup();try{s.advance(1200);await finish(s);s.video._time=0;s.video.ended=false;const abort=createRendererAbortCapability();let done=false,result;const promise=s.adapter.pane.play({asset:'gpu-memory'},{clock:{...s.clock,schedule(){assert.fail('reduced motion must not schedule');}},cancellation:abort.facade,reducedMotion:true}).then(r=>{done=true;result=r;});s.video.finishSeek(0.467);await flush();assert.equal(s.video.seeking,true);abort.controller.abort('jump');await flush();assert.equal(done,true);await promise;assert.equal(result.status,'cancelled');const writes=s.video.seekWrites;s.video.finishSeek(0.467);await flush();assert.equal(s.video.seekWrites,writes,'cancelled reduced-motion seek cannot retry later');assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);}finally{s.adapter.pane.dispose();}
 });
+
+
+test('[ORDER-20] settling a held clip during restore leaves later rewinds protected',async()=>{
+ for(const finalOffset of [0,0.033]){
+  const s=await setup({finalOffset});try{
+   s.advance(1200);await flush();s.video.finishSeek();await flush();assert.equal((await s.promise).status,'settled');const position=s.video.currentTime;
+   s.video._time=0;s.video.ended=false;s.video.dispatchEvent(new Event('timeupdate'));assert.equal(s.video.seeking,true);assert.equal(s.video.seekTargets.at(-1),position);
+   s.adapter.pane.settle({asset:'gpu-memory'});await flush();s.video.finishSeek();await flush();assert.equal(s.video.currentTime,position);assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);
+   const writes=s.video.seekWrites;s.video._time=0;s.video.ended=false;s.video.dispatchEvent(new Event('timeupdate'));
+   assert.equal(s.video.seekWrites,writes+1,'a later rewind must still start a corrective seek after settle retires an in-flight restore');assert.equal(s.video.seekTargets.at(-1),position);s.video.finishSeek();await flush();assert.equal(s.video.currentTime,position);assert.equal(s.result.status,'settled');assert.doesNotMatch(s.root.textContent,/GUI recording unavailable/);
+  }finally{s.adapter.pane.dispose();}
+ }
+});
