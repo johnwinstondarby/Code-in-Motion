@@ -2,6 +2,33 @@
 // Admission replays the compiled beats exactly as the step-3 projection builds them and
 // requires every stored snapshot to equal the replay, so a lesson the Player cannot settle
 // is refused with a reason instead of showing Ready and failing at mount.
+import {readonlyPaneData} from '../contracts/pane.mjs';
+import {validateExperience} from '../experience/validate-experience.mjs';
+
+export const MAX_PANES_BEATS=128;
+/**
+ * Every precondition the Player model places on a lesson, shared with admission so the two cannot drift.
+ * Returns null, or {message} (the model's existing error) and {reason} (the Admin/author explanation).
+ */
+export function panesModelProblem(experience){
+  const problem=(message,reason)=>Object.freeze({message,reason});
+  if(experience?.renderer!=='panes/v1')return problem('Only placeholder v3 panes/v1 projections are accepted.','The 1.1.0 Player shows panes/v1 lessons only.');
+  if(experience?.engine_min!=='1.1.0')return problem('Only placeholder v3 panes/v1 projections are accepted.',`The 1.1.0 Player shows lessons built for engine_min 1.1.0 only; this lesson declares ${JSON.stringify(experience?.engine_min)}.`);
+  if(experience?.renderer_config?.layout!=='action-context')return problem('Only placeholder v3 panes/v1 projections are accepted.',`The 1.1.0 Player supports the action-context layout only; this lesson declares layout ${JSON.stringify(experience?.renderer_config?.layout)}.`);
+  if(experience?.initial_state?.placeholder!==true)return problem('Only placeholder v3 panes/v1 projections are accepted.','Only placeholder multi-pane lessons are admitted in 1.1.0.');
+  let doc;try{doc=readonlyPaneData(experience);}catch{return problem('Invalid frozen v2 fixture envelope.','The lesson must be plain JSON data.');}
+  if(validateExperience(doc).length)return problem('Invalid frozen v2 fixture envelope.','The lesson envelope is invalid.');
+  const declarations=doc.renderer_config.panes,consoleId=declarations?.find?.(p=>p.type==='console/v1')?.id,motionId=declarations?.find?.(p=>p.type==='motion/v1')?.id;
+  if(!Array.isArray(declarations)||!consoleId||!motionId||declarations.length!==4||new Set(declarations.map(p=>p.id)).size!==4||new Set(declarations.map(p=>p.type)).size!==4||declarations.some(p=>!['console/v1','motion/v1','explanation/v1','diagram/v1'].includes(p.type)))return problem('Invalid pane fixture declarations.','The 1.1.0 Player needs one Console, Motion, Explanation and Diagram pane with distinct IDs.');
+  if(doc.steps.length>MAX_PANES_BEATS)return problem('Invalid pane fixture declarations.',`The 1.1.0 Player shows at most ${MAX_PANES_BEATS} beats; this lesson has ${doc.steps.length}. Split it into smaller lessons.`);
+  const tabs=[consoleId,motionId],ids=declarations.map(p=>p.id);
+  for(const snapshot of [doc.initial_state,...doc.steps.map(s=>s.state)]){
+    if(!tabs.includes(snapshot?.action_tab)||ids.some(id=>!Object.hasOwn(snapshot.panes??{},id)||typeof snapshot.waiting?.[id]!=='boolean'))return problem('Invalid pane fixture absolute state.','Every state needs a Console or Motion action tab, all four pane states and boolean waiting flags.');
+  }
+  return null;
+}
+
+
 const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
 const text=(x,max=16384)=>typeof x==='string'&&/\S/.test(x)&&x.length<=max;
 const stable=v=>Array.isArray(v)?'['+v.map(stable).join(',')+']':object(v)?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+stable(v[k])).join(',')+'}':JSON.stringify(v);

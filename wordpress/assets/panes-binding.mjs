@@ -58,10 +58,21 @@ function ensureStylesheets(document,moduleUrl){
 }
 
 /** Mount an admitted lesson in place of the root's static fallback. Returns a disposable player. */
-/** Stable, page-unique accessibility namespaces for panes roots, in document order. */
+/**
+ * Stable, page-unique accessibility namespaces for panes roots, in document order.
+ * A valid shortcode instance gives cim-<instance>, otherwise cim-panes-<ordinal>. Names that occur once
+ * are reserved first; repeated names are then allocated in order against every name already taken, so
+ * a generated suffix can never equal another root's final name.
+ */
 export function panesNamespaces(roots){
- const names=roots.map((root,i)=>{const explicit=root.getAttribute('data-cim-instance');return /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(explicit??'')?'cim-'+explicit:'cim-panes-'+(i+1);});
- return names.map((name,i)=>names.indexOf(name)===names.lastIndexOf(name)?name:name+'-'+(i+1));
+ const bases=roots.map((root,i)=>{const explicit=root.getAttribute('data-cim-instance');return /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(explicit??'')?'cim-'+explicit:'cim-panes-'+(i+1);});
+ const count=new Map();for(const base of bases)count.set(base,(count.get(base)??0)+1);
+ const taken=new Set(bases.filter(base=>count.get(base)===1));
+ return bases.map(base=>{
+  if(count.get(base)===1)return base;
+  let name=base,n=1;while(taken.has(name))name=base+'-'+(++n);
+  taken.add(name);return name;
+ });
 }
 
 export function mountPanesRoot(root,admitted,{document,location,reducedMotion,moduleUrl,instanceId}){

@@ -31,7 +31,6 @@ const cases=[
  ['PCM-24-projection-skipped',admission,' if(projection)fail(projection);\n','\n','PC-12',unit],
  ['PCM-25-projection-tab','src/multipane/projection.mjs','  if(snapshot.action_tab!==expected.action_tab)return','  if(false)return','PC-12',unit],
  ['PCM-26-projection-waiting','src/multipane/projection.mjs','ids.some(id=>snapshot.waiting[id]!==expected.waiting[id])','false','PC-12',unit],
- ['PCM-27-projection-layout','src/multipane/projection.mjs',"&&panes.find(p=>p.id===id).type===type",'','PC-12',unit],
  ['PCM-28-projection-explanation','src/multipane/projection.mjs',"for(const id of ['console','motion','explanation'])","for(const id of ['console','motion'])",'PC-12',unit],
  ['PCM-30-read-deadline','wordpress/assets/panes-binding.mjs','let timer=setTimeout(expire,timeoutMs);','let timer=0;','PC-14','tests/part-c-binding.test.mjs'],
  ['PCM-31-read-deadline-body','wordpress/assets/panes-binding.mjs','await within(reader.read())','await reader.read()','PC-15','tests/part-c-binding.test.mjs'],
@@ -42,6 +41,11 @@ const cases=[
  ['PCM-39-authoring-pane-id','authoring/v3/validate.mjs',"c.reject('CIM-V3-PANE-ID', p.id !== standardIds[p.type],","c.reject('CIM-V3-PANE-ID', false,",'PC-16','tests/part-c-authoring.test.mjs'],
  ['PCM-43-read-abort-request','wordpress/assets/panes-binding.mjs','controller.abort(error);reject(error);','reject(error);','PC-14','tests/part-c-binding.test.mjs'],
  ['PCM-44-read-cancel-body','wordpress/assets/panes-binding.mjs','reader?.cancel(error).catch(()=>{});','','PC-15','tests/part-c-binding.test.mjs'],
+ ['PCM-46-model-preconditions-skipped',admission,' if(model)fail(model.reason);\n','\n','PC-19',unit],
+ ['PCM-47-model-layout','src/multipane/projection.mjs',"if(experience?.renderer_config?.layout!=='action-context')return","if(false)return",'PC-19',unit],
+ ['PCM-48-model-engine','src/multipane/projection.mjs',"if(experience?.engine_min!=='1.1.0')return","if(false)return",'PC-19',unit],
+ ['PCM-49-model-beat-limit','src/multipane/projection.mjs','if(doc.steps.length>MAX_PANES_BEATS)return','if(false)return','PC-19',unit],
+ ['PCM-50-namespace-one-pass','wordpress/assets/panes-binding.mjs'," const count=new Map();for(const base of bases)count.set(base,(count.get(base)??0)+1);\n const taken=new Set(bases.filter(base=>count.get(base)===1));\n return bases.map(base=>{\n  if(count.get(base)===1)return base;\n  let name=base,n=1;while(taken.has(name))name=base+'-'+(++n);\n  taken.add(name);return name;\n });\n"," return bases.map((name,i)=>bases.indexOf(name)===bases.lastIndexOf(name)?name:name+'-'+(i+1));\n",'PC-21','tests/part-c-binding.test.mjs'],
  ['PCM-21-browser-fingerprint','wordpress/assets/panes-binding.mjs',"if(actual!==expected)throw new TypeError('Pack JSON differs from its verified fingerprint.');",'','PC-E2E-04','browser'],
  ['PCM-23-browser-containment','wordpress/assets/cim.css','  padding: 0;\n  overflow-x: auto;\n','  padding: 0;\n','PC-E2E-01','browser'],
  ['PCM-22-browser-legacy-overlap','wordpress/assets/bootstrap-module.mjs','querySelectorAll: (selector) => Array.from(document.querySelectorAll(selector)).filter((root) => !isPanesRoot(root))','querySelectorAll: (selector) => document.querySelectorAll(selector)','PC-E2E-01','browser']
@@ -51,6 +55,7 @@ const cases=[
  ,['PCM-40-browser-detach-cancel','wordpress/assets/bootstrap-module.mjs',"        else retire.abort(new Error('CiM panes root was removed while loading.'));","        else void 0;",'PC-E2E-08','browser']
  ,['PCM-41-browser-dispose-cancel','wordpress/assets/bootstrap-module.mjs',"  panesAbort.abort(new Error('CiM page host disposed.'));\n",'','PC-E2E-09','browser']
  ,['PCM-42-browser-named-namespace','wordpress/assets/panes-binding.mjs',"?'cim-'+explicit:","?'cim-panes-'+(i+1):",'PC-E2E-07','browser']
+ ,['PCM-51-browser-namespace-one-pass','wordpress/assets/panes-binding.mjs'," const count=new Map();for(const base of bases)count.set(base,(count.get(base)??0)+1);\n const taken=new Set(bases.filter(base=>count.get(base)===1));\n return bases.map(base=>{\n  if(count.get(base)===1)return base;\n  let name=base,n=1;while(taken.has(name))name=base+'-'+(++n);\n  taken.add(name);return name;\n });\n"," return bases.map((name,i)=>bases.indexOf(name)===bases.lastIndexOf(name)?name:name+'-'+(i+1));\n",'PC-E2E-12','browser']
 ];
 const run=(rule,file)=>spawnSync(process.execPath,file==='browser'?[resolve(root,'node_modules/@playwright/test/cli.js'),'test',...(process.env.CIM_PART_C_PLAYWRIGHT_CONFIG?['-c',process.env.CIM_PART_C_PLAYWRIGHT_CONFIG]:[]),'tests/e2e/part-c-wordpress-panes.spec.mjs',...(rule?['--grep',`\\[${rule}\\]`]:[]),'--workers=1','--reporter=line','--output='+resolve(work,'browser-results')]:['--test',...(rule?['--test-name-pattern',`\\[${rule}\\]`]:[]),...(file?[file]:['tests/part-c-admission.test.mjs','tests/part-c-php-discovery.test.mjs','tests/part-c-boundary.test.mjs','tests/part-c-admin.test.mjs','tests/part-c-binding.test.mjs','tests/part-c-authoring.test.mjs'])],{cwd:sandbox,encoding:'utf8',timeout:180000});
 const results=[];
