@@ -6,6 +6,7 @@ import {ENGINE_IDENTITY} from '../contracts/engine-identity.mjs';
 import {readonlyPaneData} from '../contracts/pane.mjs';
 import {validateMediaMap} from './media-map.mjs';
 import {validateEngineeringRecords} from './engineering.mjs';
+import {panesProjectionProblem} from './projection.mjs';
 
 export const PANES_ENGINE_TARGET='1.1.0';
 const issuedIdentities=new WeakMap(),tokens=new WeakMap();
@@ -34,6 +35,9 @@ export function admitPanesLesson({experience,capture,identity}={}){
  const errors=validateExperience(doc);
  if(errors.length)fail('Invalid lesson envelope: '+errors.slice(0,3).map(e=>e.path+' '+e.message).join('; '));
  const config=doc.renderer_config;
+ // Every stored snapshot must equal the replay the Player will settle (PR #111 review).
+ const projection=panesProjectionProblem(doc);
+ if(projection)fail(projection);
  // 1.1.0 admits placeholder lessons only: no real-capture verification exists yet.
  if(config?.placeholder?.enabled!==true||config.placeholder.label!=='Placeholder content'||doc.initial_state.placeholder!==true||doc.steps.some(s=>s.state.placeholder!==true))fail('Only placeholder multi-pane lessons are admitted in 1.1.0.');
  const media=config.media;

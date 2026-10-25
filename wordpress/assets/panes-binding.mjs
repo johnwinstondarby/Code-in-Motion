@@ -13,26 +13,37 @@ const STYLESHEETS=['controls.css','composition.css','engineering.css','motion.cs
 
 export function isPanesRoot(root){return root?.getAttribute?.('data-cim-pack-agreement')===PANES_AGREEMENT;}
 
-/** Same-origin JSON whose bytes must equal the SHA-256 PHP projected into its URL. */
-export async function readVerifiedPackJSON(href,{baseURI,fetch,crypto=globalThis.crypto}){
+/** A stalled lesson or capture response ends in the static fallback instead of holding the page. */
+export const PANES_FETCH_TIMEOUT_MS=15000;
+
+/** Same-origin JSON whose bytes must equal the SHA-256 PHP projected into its URL, read within the deadline. */
+export async function readVerifiedPackJSON(href,{baseURI,fetch,crypto=globalThis.crypto,signal,timeoutMs=PANES_FETCH_TIMEOUT_MS,setTimeout=globalThis.setTimeout,clearTimeout=globalThis.clearTimeout}){
  const base=new URL(baseURI),url=new URL(href,base),expected=url.searchParams.get('cim-sha256');
  if(!['http:','https:'].includes(url.protocol)||url.origin!==base.origin||!url.pathname.endsWith('.json')||!/^[a-f0-9]{64}$/.test(expected??''))throw new TypeError('Pack JSON must be a same-origin JSON URL carrying its SHA-256.');
- const response=await fetch(url.href,{credentials:'same-origin',redirect:'error',cache:'no-store'});
- if(!response.ok||response.redirected||!response.body)throw new TypeError('Pack JSON is unavailable.');
- if(Number(response.headers?.get?.('content-length'))>MAX_PANES_JSON_BYTES)throw new RangeError('Pack JSON exceeds 2 MiB.');
- const reader=response.body.getReader(),parts=[];let count=0;
- try{for(;;){const {value,done}=await reader.read();if(done)break;count+=value.byteLength;if(count>MAX_PANES_JSON_BYTES){await reader.cancel();throw new RangeError('Pack JSON exceeds 2 MiB.');}parts.push(value);}}finally{reader.releaseLock();}
- const bytes=new Uint8Array(count);let offset=0;for(const part of parts){bytes.set(part,offset);offset+=part.length;}
- const actual=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(b=>b.toString(16).padStart(2,'0')).join('');
- if(actual!==expected)throw new TypeError('Pack JSON differs from its verified fingerprint.');
- return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));
+ const controller=new AbortController();let reader=null,expire;
+ const expired=new Promise((_,reject)=>{expire=()=>{const error=new Error('Pack JSON did not arrive within '+(timeoutMs/1000)+' seconds.');controller.abort(error);reject(error);reader?.cancel(error).catch(()=>{});};});
+ expired.catch(()=>{});
+ const timer=setTimeout(expire,timeoutMs),stop=()=>expire();
+ if(signal?.aborted)stop();else signal?.addEventListener?.('abort',stop,{once:true});
+ const within=promise=>Promise.race([promise,expired]);
+ try{
+  const response=await within(fetch(url.href,{credentials:'same-origin',redirect:'error',cache:'no-store',signal:controller.signal}));
+  if(!response.ok||response.redirected||!response.body)throw new TypeError('Pack JSON is unavailable.');
+  if(Number(response.headers?.get?.('content-length'))>MAX_PANES_JSON_BYTES)throw new RangeError('Pack JSON exceeds 2 MiB.');
+  reader=response.body.getReader();const parts=[];let count=0;
+  try{for(;;){const {value,done}=await within(reader.read());if(done)break;count+=value.byteLength;if(count>MAX_PANES_JSON_BYTES){await reader.cancel();throw new RangeError('Pack JSON exceeds 2 MiB.');}parts.push(value);}}finally{try{reader.releaseLock();}catch{}}
+  const bytes=new Uint8Array(count);let offset=0;for(const part of parts){bytes.set(part,offset);offset+=part.length;}
+  const actual=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(actual!==expected)throw new TypeError('Pack JSON differs from its verified fingerprint.');
+  return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));
+ }finally{clearTimeout(timer);signal?.removeEventListener?.('abort',stop);}
 }
 
 /** Fetch, verify and admit one panes root's lesson. Throws with the admission reason on refusal. */
-export async function admitPanesRoot(root,{baseURI,fetch,identity,crypto}){
+export async function admitPanesRoot(root,{baseURI,fetch,identity,crypto,signal}){
  const lessonUrl=root.getAttribute('data-cim-pack-url'),captureUrl=root.getAttribute('data-cim-pack-capture-url');
  if(!lessonUrl||!captureUrl)throw new TypeError('Multi-pane lesson roots need lesson and capture URLs.');
- const [experience,capture]=await Promise.all([readVerifiedPackJSON(lessonUrl,{baseURI,fetch,crypto}),readVerifiedPackJSON(captureUrl,{baseURI,fetch,crypto})]);
+ const [experience,capture]=await Promise.all([readVerifiedPackJSON(lessonUrl,{baseURI,fetch,crypto,signal}),readVerifiedPackJSON(captureUrl,{baseURI,fetch,crypto,signal})]);
  const admitted=admitPanesLesson({experience,capture,identity});
  if(admitted.experience.id!==root.getAttribute('data-cim-experience'))throw new TypeError('Lesson ID does not match its shortcode.');
  return admitted;

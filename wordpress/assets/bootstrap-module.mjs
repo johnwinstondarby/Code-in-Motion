@@ -19,7 +19,7 @@ import { createWordPressRendererRegistry } from './renderer-registry.mjs';
 import { createWordPressRootLifecycleBinding } from './root-lifecycle-binding.mjs';
 import { createWordPressPlayerBinding } from './player-binding.mjs';
 import { createHostIdentity } from '../../src/multipane/admission.mjs';
-import { admitPanesRoot, isPanesRoot, mountPanesRoot } from './panes-binding.mjs';
+import { admitPanesRoot, isPanesRoot, mountPanesRoot as mountAdmittedPanesRoot } from './panes-binding.mjs';
 
 const experienceAssets = new Map(
   WORDPRESS_EXPERIENCE_REGISTRY.map(({ id, asset }) => [id, asset])
@@ -102,6 +102,8 @@ const host = createWordPressLiveHost({
 
 const transportBindings = new Map();
 const panesPlayers = new Map();
+const panesLifecycles = new Map();
+const panesAbort = new AbortController();
 let rootLifecycleBinding = null;
 let deepLinkHandler = null;
 let disposalStarted = false;
@@ -185,35 +187,56 @@ function disposeTransportBinding(root, operation) {
 }
 
 function disposePanesPlayer(root, operation) {
+  const lifecycle = panesLifecycles.get(root);
+  if (lifecycle !== undefined) {
+    panesLifecycles.delete(root);
+    try { lifecycle.dispose(); } catch (error) { reportBootstrapError(root, 'root_lifecycle_dispose', error); }
+  }
   const player = panesPlayers.get(root);
   if (player === undefined) return;
   panesPlayers.delete(root);
   try { player.dispose(); } catch (error) { reportBootstrapError(root, operation, error); }
 }
 
-async function mountPanesRoots() {
-  const mounted = [];
-  for (const root of Array.from(document.querySelectorAll(ROOT_SELECTOR)).filter(isPanesRoot)) {
+// Each panes root loads, admits and mounts on its own: a slow or stalled pack response ends in
+// that root's fallback at the read deadline and never delays another lesson or the legacy Host.
+async function mountPanesRoot(root) {
+  try {
+    const admitted = await admitPanesRoot(root, {
+      baseURI: document.baseURI,
+      fetch: (url, init) => window.fetch(url, init),
+      identity: panesIdentity,
+      signal: panesAbort.signal
+    });
+    if (disposalStarted || root.isConnected === false) return;
+    panesPlayers.set(root, mountAdmitted(root, admitted));
     try {
-      const admitted = await admitPanesRoot(root, {
-        baseURI: document.baseURI,
-        fetch: (url, init) => window.fetch(url, init),
-        identity: panesIdentity
-      });
-      if (disposalStarted || root.isConnected === false) continue;
-      panesPlayers.set(root, mountPanesRoot(root, admitted, {
-        document,
-        location: window.location,
-        moduleUrl: moduleUrl.href,
-        reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches
+      panesLifecycles.set(root, createWordPressRootLifecycleBinding({
+        MutationObserver: window.MutationObserver,
+        observeTarget: document.documentElement,
+        roots: Object.freeze([root]),
+        onDetached: disposeDetachedRoot
       }));
-      mounted.push(root);
     } catch (error) {
-      // The static fallback stays visible; the reason is reported, never rendered as lesson content.
-      reportHostDiagnostic('CIM-HST-005', root, 'panes_admission', error);
+      reportBootstrapError(root, 'root_lifecycle_bind', error);
     }
+  } catch (error) {
+    // The static fallback stays visible; the reason is reported, never rendered as lesson content.
+    if (!disposalStarted) reportHostDiagnostic('CIM-HST-005', root, 'panes_admission', error);
   }
-  return mounted;
+}
+
+function mountAdmitted(root, admitted) {
+  return mountAdmittedPanesRoot(root, admitted, {
+    document,
+    location: window.location,
+    moduleUrl: moduleUrl.href,
+    reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches
+  });
+}
+
+function mountPanesRoots() {
+  return Array.from(document.querySelectorAll(ROOT_SELECTOR)).filter(isPanesRoot).map((root) => mountPanesRoot(root));
 }
 
 function disposeDetachedRoot(root) {
@@ -224,10 +247,20 @@ function disposeDetachedRoot(root) {
   });
 }
 
+function installDeepLinkHandler() {
+  if (deepLinkHandler !== null || disposalStarted) return;
+  deepLinkHandler = () => {
+    void applyLocationDeepLink();
+  };
+  window.addEventListener('hashchange', deepLinkHandler);
+}
+
 async function mountPageHost() {
-  const [result, panesRoots] = await Promise.all([host.mount(), mountPanesRoots()]);
+  const panesMounts = mountPanesRoots();
+  if (panesMounts.length > 0) installDeepLinkHandler();
+  const result = await host.mount();
   const roots = Array.from(document.querySelectorAll(ROOT_SELECTOR)).filter((root) => !isPanesRoot(root));
-  const mountedRoots = [...panesRoots];
+  const mountedRoots = [];
 
   for (const root of roots) {
     const commandPort = host.commands(root);
@@ -269,10 +302,7 @@ async function mountPageHost() {
       reportBootstrapError(null, 'root_lifecycle_bind', error);
     }
 
-    deepLinkHandler = () => {
-      void applyLocationDeepLink();
-    };
-    window.addEventListener('hashchange', deepLinkHandler);
+    installDeepLinkHandler();
   }
 
   return result;
@@ -285,6 +315,8 @@ mountPageHost().catch((error) => {
 function disposePageHost() {
   if (disposalStarted) return;
   disposalStarted = true;
+
+  panesAbort.abort(new Error('CiM page host disposed.'));
 
   if (deepLinkHandler !== null) {
     window.removeEventListener('hashchange', deepLinkHandler);
