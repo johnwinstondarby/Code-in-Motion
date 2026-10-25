@@ -18,7 +18,7 @@ const cases=[
  ['CMP-13-missing','src/multipane/engineering.mjs',"const r=records.get(recordId);if(!r||", "const r=records.get(recordId);if(!r){Object.assign(state,structuredClone(beat.state));continue;}if(",'CMP-13'],
 ];
 if(browser)cases.push(
- ['CMP-17-seek-fallback','src/multipane/motion.mjs','if(!disposed&&revision===token&&!failed)fallback','if(false)fallback','CMP-17','browser'],
+ ['CMP-17-seek-fallback','src/multipane/motion.mjs','if(!disposed&&revision===token&&playRevision===preparedIntent&&!failed)fallback','if(false)fallback','CMP-17','browser'],
  ['CMP-07-hidden','src/multipane/action-surface.mjs',"panel.setAttribute('aria-hidden',String(inactive));panel.inert=inactive;","panel.removeAttribute('aria-hidden');panel.inert=false;",'CMP-07','browser'],
  ['CMP-07-duplicate','src/multipane/composition.mjs','showMotionHeading:false','showMotionHeading:true','CMP-07','browser'],
  ['CMP-08-details','src/multipane/motion.mjs',"{'data-media-details':''}","{'data-media-details':'',open:''}",'CMP-08','browser'],

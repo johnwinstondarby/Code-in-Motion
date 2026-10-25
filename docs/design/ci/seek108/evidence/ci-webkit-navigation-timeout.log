@@ -1,0 +1,39 @@
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0933102Z [3/8] tests/e2e/composition.spec.mjs:37:2 › 1366x768 › [CMP-09] unsupported H264 selects verified WebM and tampering never bypasses checking
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0934319Z [4/8] tests/e2e/composition.spec.mjs:38:2 › 1366x768 › [CMP-10] decode retry verifies the second copy but fingerprint failure is terminal
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0935399Z [5/8] tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0936342Z   1) tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0936807Z 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0936953Z     Test timeout of 18000ms exceeded.
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0937153Z 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0937334Z     Error: page.goto: Test timeout of 18000ms exceeded.
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0937663Z     Call log:
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0938048Z       - navigating to "http://127.0.0.1:45475/", waiting until "load"
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0938345Z 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0938352Z 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0939784Z       29 |  const path=resolve(root,'.'+decodeURIComponent(url.pathname));if(!path.startsWith(root+sep)){res.writeHead(403).end();return;}try{res.setHeader('Content-Type',extname(path)==='.css'?'text/css':'text/javascript');res.end(await readFile(path));}catch{res.writeHead(404).end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));origin='http://127.0.0.1:'+server.address().port;});
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0941310Z       30 | test.afterAll(async()=>new Promise(r=>server.close(r)));
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0942334Z     > 31 | const open=async(page,query='')=>{await page.goto(origin+query);await page.waitForFunction(()=>window.fixture?.session);};
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0942974Z          |                                              ^
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0943642Z       32 | const gui=page=>page.evaluate(()=>{fixture.session.dispatch({type:'jump',index:1});fixture.session.dispatch({type:'play'});});
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0944470Z       33 | for(const[width,height]of [[1366,768],[1536,864],[1920,1080]])test.describe(`${width}x${height}`,()=>{
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0944997Z       34 |  test.use({viewport:{width,height}});
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0946048Z         at open (/home/runner/work/Code-in-Motion/composition-mutations/candidate-QwHqpr/tests/e2e/composition.spec.mjs:31:46)
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0946959Z         at /home/runner/work/Code-in-Motion/composition-mutations/candidate-QwHqpr/tests/e2e/composition.spec.mjs:39:2046
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0947426Z 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0947865Z     Error Context: ../browser-results/tests-e2e-composition-1366-97fe3-es-holds-and-reduced-motion/error-context.md
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0948497Z 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0948955Z     Error Context: ../browser-results/tests-e2e-composition-1366-97fe3-es-holds-and-reduced-motion/error-context.md
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0949420Z 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0949426Z 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0950042Z [6/8] tests/e2e/composition.spec.mjs:40:2 › 1366x768 › [CMP-12] decode retry shares the original preparation deadline
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0951233Z [7/8] tests/e2e/composition.spec.mjs:41:2 › 1366x768 › [CMP-15] navigation during a final seek returns without blocking the page
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0952620Z [8/8] tests/e2e/composition.spec.mjs:43:2 › 1366x768 › [CMP-17] a failed absolute final seek shows fallback without blocking navigation
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0953231Z   1 failed
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0954074Z     tests/e2e/composition.spec.mjs:39:2 › 1366x768 › [CMP-11] graphical states flows text cues holds and reduced motion 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0954997Z   7 passed (1.1m)
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0955217Z 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0955859Z     at file:///home/runner/work/Code-in-Motion/Code-in-Motion/tools/check-composition-mutations.mjs:32:202
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0956389Z 
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0956493Z Node.js v22.23.2
+Browser webkit	Prove composed layout diagram and codec guards	2026-10-25T00:02:49.0967724Z ##[error]Process completed with exit code 1.
+Browser chromium	Prove composed layout diagram and codec guards	﻿2026-10-25T00:00:10.5456133Z ##[group]Run node tools/check-composition-mutations.mjs --browser

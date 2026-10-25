@@ -30,6 +30,10 @@ The first full Firefox batch passed 147/148; MOT-26 deepLink at 1920 stayed acti
 
 A subsequent Firefox batch had 143 pass / five MOT-26 readiness failures. The new instantaneous not-paused predicate itself was wrong: a planned 12-case diagnostic batch produced five passes / seven failures, and the failure snapshots show a replacement element at 1.2/1.2, ended true, captions ready, shared clock running, generation 4 active at its starting virtual time. Current native playback can finish before polling observes not-paused. MOT-26 now records the clock-event count before replay and requires a fresh running-clock notification plus ready video/captions. This proves the new transition started without requiring a transient playing state. The final settled/no-failures assertions remain; a direct final-frame predicate was added. No product code changed for either readiness correction. Failure logs, seven diagnostic JSONs, traces and screenshots are retained. An earlier planned 12-case debug batch used the same predicate but did not capture JSON because artifact collection failed before diagnostic setup; its log is retained separately rather than represented as instrumented evidence.
 
+CI on 2f222d7 found a stale **CMP-17-seek-fallback** source anchor: the prepared absolute-settle guard now includes playback intent. The browser probe stopped with Missing probe target, not a caught mutation. Its from-anchor is updated to the new guard; its fallback-removal mutation, test, assertion and timeouts are unchanged. Unit-only verify did not execute this browser-only probe. The failed CI excerpt is retained.
+
+Historical 5c1d48 CI also had a WebKit CMP-11 composition-mutation baseline timeout during page.goto waiting for load, before its assertions. Its exact cause is unknown. It is not claimed fixed by the readiness or anchor corrections, and is not labelled a reproduced #108 failure. The excerpt is retained; no timeout or retry is changed. Full final-head CI must pass.
+
 ## Rule-to-proof map
 
 | Rule | Tests | Mutation |
